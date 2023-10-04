@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  dev:
+    deps: [generate]
+    cmds:
+      - go run ./cmd/main.go
+    env:
+      DEBUG: "true"
+
+  build:
+    deps: [generate]
+    cmds:
+      - go build -o ./main ./cmd/main.go
+    env:
+      CGO_ENABLED: "1"
+
+  release:
+    deps: [generate]
+    cmds:
+      - go build -o ./main -ldflags "-s -w" ./cmd/main.go
+    env:
+      CGO_ENABLED: "1"
+
+  generate:
+    aliases: [gen]
+    cmds:
+      - go generate ./...
+    sources:
+      - ./openapi.yml
+    generates:
+      - ./api/**/*.go
+
+  update:
+    aliases: [upgrade]
+    cmds:
+      - go get -u ./...
+      - go mod tidy
+
+  lint:
+    cmds:
+      - golangci-lint run ./... --fix
+
+  coverage:
+    cmds:
+      - go-acc ./... -o coverage.out
+      - go tool cover -html=coverage.out
+
+  test:
+    cmds:
+      - go test -v ./...
