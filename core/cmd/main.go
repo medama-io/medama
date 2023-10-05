@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -25,7 +26,7 @@ const (
 func main() {
 	err := run(context.Background(), os.Args[1:])
 
-	if err == flag.ErrHelp {
+	if errors.Is(err, flag.ErrHelp) {
 		os.Exit(exitCodeInvalidShell)
 	}
 
@@ -44,7 +45,15 @@ func run(ctx context.Context, args []string) error {
 	}
 
 	switch cmd {
+	case "start":
+		s := NewStartCommand()
+		if err := s.ParseFlags(args); err != nil {
+			return err
+		}
+		return s.Run(ctx)
+
 	case "version":
+		//nolint: forbidigo // This is a CLI tool, so it's fine to use fmt for this part.
 		fmt.Println(GetVersion())
 		return nil
 

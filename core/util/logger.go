@@ -9,10 +9,6 @@ import (
 	"github.com/mattn/go-colorable"
 )
 
-type Logger struct {
-	*slog.Logger
-}
-
 // NewHandler creates a new slog handler.
 func NewHandler(w io.Writer, isDebug bool) slog.Handler {
 	logLevel := &slog.LevelVar{}
@@ -47,12 +43,21 @@ func NewHandler(w io.Writer, isDebug bool) slog.Handler {
 	return handler
 }
 
+// NewLogger creates a new logger.
+func NewLogger(w io.Writer, isDebug bool) {
+	handler := NewHandler(w, isDebug)
+	slog.SetDefault(slog.New(handler))
+
+	if isDebug {
+		slog.Debug("Debug logging enabled")
+	}
+}
+
 // Helper function to get app env from env var before initializing config used in logger.
 func getAppEnv() string {
 	appEnv := os.Getenv("APP_ENV")
 	if appEnv == "" {
 		return "development"
 	}
-
 	return appEnv
 }
