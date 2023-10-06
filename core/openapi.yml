@@ -1,0 +1,720 @@
+openapi: 3.0.3
+info:
+  version: 0.1.0
+  title: medama
+  description: Medama Analytics
+  contact:
+    email: hello@ayuhito.com
+    name: Medama Analytics
+    url: medama.io/contact
+  license:
+    url: "https://github.com/fontsource/fontsource/blob/main/LICENSE"
+    name: BUSL 1.1
+servers:
+  - url: "http://localhost:8080/api"
+    description: Local Server
+paths:
+  /auth/login:
+    post:
+      summary: ""
+      description: Login to the service and retrieve a JWT token for authentication.
+      operationId: post-auth-login
+      parameters:
+        - name: jwt
+          in: cookie
+          description: Signed JWT token for authentication.
+          schema:
+            type: string
+      requestBody:
+        description: Login details.
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Success
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  /auth/refresh:
+    post:
+      summary: ""
+      description: Login to the service and retrieve a JWT token for authentication.
+      operationId: post-auth-refresh
+      parameters:
+        - name: _me_sess
+          in: cookie
+          description: Signed JWT token for authentication.
+          schema:
+            type: string
+      requestBody:
+        description: Login details.
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Success
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  /event/hit:
+    post:
+      summary: ""
+      description: Send a hit event to register a user view.
+      operationId: post-event-hit
+      parameters:
+        - name: User-Agent
+          in: header
+          schema:
+            type: string
+        - name: Accept-Language
+          in: header
+          description: Used to infer user language.
+          schema:
+            type: string
+        - name: Sec-Ch-Ua
+          in: header
+          schema:
+            type: string
+        - name: Sec-Ch-Ua-Mobile
+          in: header
+          schema:
+            type: string
+        - name: Sec-Ch-Ua-Platform
+          in: header
+          schema:
+            type: string
+      requestBody:
+        description: Hit event metadata.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventHit"
+      responses:
+        "200":
+          description: OK.
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  /event/ping:
+    get:
+      summary: Your GET endpoint
+      description: This is a ping endpoint to determine if the user is unique or not.
+      operationId: get-event-ping
+      parameters:
+        - name: Last-Modified
+          in: header
+          description: "If this exists, then user exists in cache and is not a unique user."
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            Last-Modified:
+              schema:
+                type: string
+              description: "This is date of the current day from midnight, incremented by each page view by unique user."
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  /users:
+    post:
+      summary: Create New User
+      description: Create a new user.
+      operationId: post-user
+      requestBody:
+        description: Post the necessary fields for the API to create a new user.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreate"
+      responses:
+        "201":
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGet"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "409":
+          $ref: "#/components/responses/ConflictError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  "/users/{userId}":
+    get:
+      summary: Get User Info by User ID
+      description: Retrieve the information of the user with the matching user ID.
+      operationId: get-users-userId
+      parameters:
+        - name: userId
+          in: path
+          description: Id of an existing user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGet"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+    patch:
+      summary: ""
+      description: Update a user account's details.
+      operationId: patch-users-userId
+      parameters:
+        - name: userId
+          in: path
+          description: Id of an existing user.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: User details to update.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPatch"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGet"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "409":
+          $ref: "#/components/responses/ConflictError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  /websites:
+    get:
+      summary: Your GET endpoint
+      description: Get the list of websites.
+      operationId: get-websites
+      responses:
+        "200":
+          description: Returns a list of websites.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WebsiteGet"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+    post:
+      summary: ""
+      description: Add a new website.
+      operationId: post-websites
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebsiteCreate"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebsiteGet"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "409":
+          $ref: "#/components/responses/ConflictError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  "/websites/{id}":
+    get:
+      summary: Your GET endpoint
+      description: Get website details for an individual website.
+      operationId: get-websites-id
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier for a website.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebsiteGet"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+    patch:
+      summary: ""
+      description: Update a website's information.
+      operationId: patch-websites-id
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier for a website.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Website details to update.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebsitePatch"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebsiteGet"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+    delete:
+      summary: ""
+      description: Delete a website.
+      operationId: delete-websites-id
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier for a website.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  "/websites/{id}/active":
+    get:
+      summary: Your GET endpoint
+      description: Return the number of active users who triggered a pageview in the past 5 minutes.
+      operationId: get-websites-id-active
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsActive"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+  "/website/{id}/summary":
+    get:
+      summary: Your GET endpoint
+      description: ""
+      operationId: get-website-id-summary
+      parameters:
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsSummary"
+      servers:
+        - url: "http://localhost:8080/api"
+          description: Local Server
+components:
+  parameters:
+    PeriodStart:
+      name: start
+      in: query
+      description: Start time (seconds) in Unix epoch format.
+      required: false
+      schema:
+        type: string
+    PeriodEnd:
+      name: end
+      in: query
+      description: End time (seconds) in Unix epoch format.
+      required: false
+      schema:
+        type: string
+  responses:
+    NotFoundError:
+      description: 404 Not Found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  description:
+                    type: string
+                  code:
+                    type: integer
+                    format: int32
+                    default: 404
+                required:
+                  - description
+                  - code
+            required:
+              - error
+    BadRequestError:
+      description: 400 Bad Request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  description:
+                    type: string
+                  code:
+                    type: integer
+                    format: int32
+                    default: 400
+                required:
+                  - description
+                  - code
+            required:
+              - error
+    ConflictError:
+      description: 409 Conflict Found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  description:
+                    type: string
+                  code:
+                    type: integer
+                    format: int32
+                    default: 409
+                required:
+                  - description
+                  - code
+            required:
+              - error
+    UnauthorisedError:
+      description: 401 Unauthorised.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  description:
+                    type: string
+                  code:
+                    type: integer
+                    format: int32
+                    default: 401
+                required:
+                  - description
+                  - code
+            required:
+              - error
+    InternalServerError:
+      description: 500 Unexpected Internal Server Error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  description:
+                    type: string
+                  code:
+                    type: integer
+                    format: int32
+                    default: 500
+                required:
+                  - description
+                  - code
+            required:
+              - error
+  schemas:
+    EventHit:
+      type: object
+      title: EventHit
+      description: Website hit event.
+      properties:
+        b:
+          type: string
+          description: UUID generated for each user to link multiple events on the same page together.
+        u:
+          type: string
+          description: Page URL including query parameters.
+        r:
+          type: string
+          description: Referrer URL.
+        e:
+          type: string
+          description: "Event type consisting of either 'pagehide', 'unload', 'load', 'hidden' or 'visible'."
+        t:
+          type: integer
+          description: Title of page.
+        d:
+          type: string
+          description: Timezone of the user.
+        w:
+          type: integer
+          description: Screen width.
+        h:
+          type: integer
+          description: Screen height.
+        m:
+          type: integer
+          description: Time spent on page. Only sent on unload.
+      required:
+        - b
+        - u
+        - r
+        - e
+    UserCreate:
+      type: object
+      title: User
+      description: User model for admin.
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        language:
+          type: string
+          default: en
+      required:
+        - email
+        - password
+    UserGet:
+      type: object
+      title: User
+      description: User model for admin.
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the given user.
+          format: uuid
+        email:
+          type: string
+          format: email
+        language:
+          type: string
+        dateCreated:
+          type: integer
+          format: int64
+        dateUpdated:
+          type: integer
+          format: int64
+      required:
+        - id
+        - email
+        - language
+        - dateCreated
+        - dateUpdated
+    UserPatch:
+      type: object
+      title: User
+      description: User model for admin.
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        language:
+          type: string
+    WebsiteGet:
+      type: object
+      title: Website
+      description: Website details.
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the website.\r\n"
+          format: uuid
+        name:
+          type: string
+        hostname:
+          type: string
+          format: hostname
+        isActive:
+          type: boolean
+      required:
+        - id
+        - name
+        - hostname
+        - isActive
+    WebsiteCreate:
+      type: object
+      title: Website
+      description: Website details.
+      properties:
+        name:
+          type: string
+        hostname:
+          type: string
+        isActive:
+          type: boolean
+          default: true
+      required:
+        - name
+        - hostname
+    WebsitePatch:
+      type: object
+      title: Website
+      description: Website details.
+      properties:
+        name:
+          type: string
+        hostname:
+          type: string
+        isActive:
+          type: boolean
+          default: true
+    StatsActive:
+      type: object
+      title: StatsActive
+      description: Return the number of active realtime users.
+      properties:
+        visitors:
+          type: integer
+      required:
+        - visitors
+    StatsSummary:
+      type: object
+      title: StatsSummary
+      properties:
+        uniques:
+          type: integer
+        pageviews:
+          type: integer
+        bounces:
+          type: number
+          format: float
+        duration:
+          type: integer
