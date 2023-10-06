@@ -6,7 +6,7 @@ import (
 
 type ServerConfig struct {
 	AppEnv string `env:"APP_ENV,default=development"`
-	Port   uint   `env:"PORT,default=8080"`
+	Port   int64  `env:"PORT,default=8080"`
 
 	// Cache settings
 	CacheCleanupInterval time.Duration
