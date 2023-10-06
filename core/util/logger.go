@@ -7,6 +7,7 @@ import (
 
 	"github.com/lmittmann/tint"
 	"github.com/mattn/go-colorable"
+	"github.com/ogen-go/ogen/middleware"
 )
 
 // NewHandler creates a new slog handler.
@@ -43,13 +44,40 @@ func NewHandler(w io.Writer, isDebug bool) slog.Handler {
 	return handler
 }
 
-// SetLogger sets the default logger.
+// SetupLogger sets the default logger.
 func SetupLogger(w io.Writer, isDebug bool) {
 	handler := NewHandler(w, isDebug)
 	slog.SetDefault(slog.New(handler))
 
 	if isDebug {
 		slog.Debug("Debug logging enabled")
+	}
+}
+
+func RequestLogger() middleware.Middleware {
+	return func(
+		req middleware.Request,
+		next func(req middleware.Request) (middleware.Response, error),
+	) (middleware.Response, error) {
+		resp, err := next(req)
+
+		if err != nil {
+			slog.Error("Error", err)
+		} else {
+			attributes := []slog.Attr{
+				slog.String("operation", req.OperationName),
+				slog.String("operationId", req.OperationID),
+				slog.String("method", req.Raw.Method),
+				slog.String("path", req.Raw.URL.Path),
+			}
+
+			if tresp, ok := resp.Type.(interface{ GetStatusCode() int }); ok {
+				attributes = append(attributes, slog.Int("status_code", tresp.GetStatusCode()))
+			}
+
+			slog.LogAttrs(req.Context, slog.LevelInfo, "Success", attributes...)
+		}
+		return resp, err
 	}
 }
 

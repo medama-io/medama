@@ -12,6 +12,7 @@ import (
 	"syscall"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/middlewares"
 	"github.com/medama-io/medama/services"
 	"github.com/medama-io/medama/util"
 )
@@ -51,7 +52,11 @@ func (s *StartCommand) Run(ctx context.Context) error {
 
 	// Setup handlers
 	service := services.NewService()
-	h, err := api.NewServer(service)
+	h, err := api.NewServer(service,
+		api.WithErrorHandler(middlewares.ErrorHandler()),
+		api.WithNotFound(middlewares.NotFound()),
+		api.WithMiddleware(util.RequestLogger()),
+	)
 	if err != nil {
 		return err
 	}
@@ -79,8 +84,6 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		if err := srv.Shutdown(ctx); err != nil {
 			slog.Error("Could not gracefully shutdown the server", "error", err)
 		}
-
-		// Shutdown db
 
 		close(closed)
 	}()
