@@ -3,8 +3,14 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/google/uuid"
 )
+
+func (s *InternalServerErrorStatusCode) Error() string {
+	return fmt.Sprintf("code %d: %+v", s.StatusCode, s.Response)
+}
 
 type BadRequestError struct {
 	Error BadRequestErrorError `json:"error"`
@@ -248,16 +254,6 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 	s.Error = val
 }
 
-func (*InternalServerError) deleteWebsitesIDRes() {}
-func (*InternalServerError) getWebsitesIDRes()    {}
-func (*InternalServerError) getWebsitesRes()      {}
-func (*InternalServerError) patchUsersUserIdRes() {}
-func (*InternalServerError) patchWebsitesIDRes()  {}
-func (*InternalServerError) postAuthLoginRes()    {}
-func (*InternalServerError) postAuthRefreshRes()  {}
-func (*InternalServerError) postUserRes()         {}
-func (*InternalServerError) postWebsitesRes()     {}
-
 type InternalServerErrorError struct {
 	Description string `json:"description"`
 	Code        int32  `json:"code"`
@@ -281,6 +277,32 @@ func (s *InternalServerErrorError) SetDescription(val string) {
 // SetCode sets the value of Code.
 func (s *InternalServerErrorError) SetCode(val int32) {
 	s.Code = val
+}
+
+// InternalServerErrorStatusCode wraps InternalServerError with StatusCode.
+type InternalServerErrorStatusCode struct {
+	StatusCode int
+	Response   InternalServerError
+}
+
+// GetStatusCode returns the value of StatusCode.
+func (s *InternalServerErrorStatusCode) GetStatusCode() int {
+	return s.StatusCode
+}
+
+// GetResponse returns the value of Response.
+func (s *InternalServerErrorStatusCode) GetResponse() InternalServerError {
+	return s.Response
+}
+
+// SetStatusCode sets the value of StatusCode.
+func (s *InternalServerErrorStatusCode) SetStatusCode(val int) {
+	s.StatusCode = val
+}
+
+// SetResponse sets the value of Response.
+func (s *InternalServerErrorStatusCode) SetResponse(val InternalServerError) {
+	s.Response = val
 }
 
 type NotFoundError struct {
@@ -891,11 +913,6 @@ func (s *PostAuthRefreshReq) SetEmail(val string) {
 func (s *PostAuthRefreshReq) SetPassword(val string) {
 	s.Password = val
 }
-
-// PostEventHitInternalServerError is response for PostEventHit operation.
-type PostEventHitInternalServerError struct{}
-
-func (*PostEventHitInternalServerError) postEventHitRes() {}
 
 // PostEventHitNotFound is response for PostEventHit operation.
 type PostEventHitNotFound struct{}

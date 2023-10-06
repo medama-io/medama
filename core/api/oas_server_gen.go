@@ -92,6 +92,10 @@ type Handler interface {
 	//
 	// POST /websites
 	PostWebsites(ctx context.Context, req OptWebsiteCreate) (PostWebsitesRes, error)
+	// NewError creates *InternalServerErrorStatusCode from error returned by handler.
+	//
+	// Used for common default response.
+	NewError(ctx context.Context, err error) *InternalServerErrorStatusCode
 }
 
 // Server implements http server based on OpenAPI v3 specification and

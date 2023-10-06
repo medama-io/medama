@@ -138,3 +138,11 @@ func (UnimplementedHandler) PostUser(ctx context.Context, req OptUserCreate) (r 
 func (UnimplementedHandler) PostWebsites(ctx context.Context, req OptWebsiteCreate) (r PostWebsitesRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
+
+// NewError creates *InternalServerErrorStatusCode from error returned by handler.
+//
+// Used for common default response.
+func (UnimplementedHandler) NewError(ctx context.Context, err error) (r *InternalServerErrorStatusCode) {
+	r = new(InternalServerErrorStatusCode)
+	return r
+}

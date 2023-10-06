@@ -49,7 +49,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -89,7 +89,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -132,8 +132,8 @@ paths:
           description: OK.
         "404":
           description: Not Found
-        "500":
-          description: Internal Server Error
+        default:
+          $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
           description: Local Server
@@ -156,6 +156,8 @@ paths:
               schema:
                 type: string
               description: "This is date of the current day from midnight, incremented by each page view by unique user."
+        default:
+          $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
           description: Local Server
@@ -183,7 +185,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "409":
           $ref: "#/components/responses/ConflictError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -209,6 +211,8 @@ paths:
                 $ref: "#/components/schemas/UserGet"
         "404":
           $ref: "#/components/responses/NotFoundError"
+        default:
+          $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
           description: Local Server
@@ -242,7 +246,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "409":
           $ref: "#/components/responses/ConflictError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -265,7 +269,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -292,7 +296,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "409":
           $ref: "#/components/responses/ConflictError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -322,7 +326,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "404":
           $ref: "#/components/responses/NotFoundError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -355,7 +359,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -378,7 +382,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "404":
           $ref: "#/components/responses/NotFoundError"
-        "500":
+        default:
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
@@ -401,6 +405,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsActive"
+        default:
+          $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
           description: Local Server
@@ -424,6 +430,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsSummary"
+        default:
+          $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080/api"
           description: Local Server

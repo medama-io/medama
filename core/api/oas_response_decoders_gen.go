@@ -91,8 +91,9 @@ func decodeDeleteWebsitesIDResponse(resp *http.Response) (res DeleteWebsitesIDRe
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -122,12 +123,18 @@ func decodeDeleteWebsitesIDResponse(resp *http.Response) (res DeleteWebsitesIDRe
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodeGetEventPingResponse(resp *http.Response) (res *GetEventPingOK, _ error) {
@@ -175,7 +182,49 @@ func decodeGetEventPingResponse(resp *http.Response) (res *GetEventPingOK, _ err
 		}
 		return &wrapper, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response InternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
+	}
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodeGetUsersUserIdResponse(resp *http.Response) (res GetUsersUserIdRes, _ error) {
@@ -251,7 +300,49 @@ func decodeGetUsersUserIdResponse(resp *http.Response) (res GetUsersUserIdRes, _
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response InternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
+	}
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodeGetWebsiteIDSummaryResponse(resp *http.Response) (res *StatsSummary, _ error) {
@@ -292,7 +383,49 @@ func decodeGetWebsiteIDSummaryResponse(resp *http.Response) (res *StatsSummary, 
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response InternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
+	}
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodeGetWebsitesResponse(resp *http.Response) (res GetWebsitesRes, _ error) {
@@ -402,8 +535,9 @@ func decodeGetWebsitesResponse(resp *http.Response) (res GetWebsitesRes, _ error
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -433,12 +567,18 @@ func decodeGetWebsitesResponse(resp *http.Response) (res GetWebsitesRes, _ error
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodeGetWebsitesIDResponse(resp *http.Response) (res GetWebsitesIDRes, _ error) {
@@ -583,8 +723,9 @@ func decodeGetWebsitesIDResponse(resp *http.Response) (res GetWebsitesIDRes, _ e
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -614,12 +755,18 @@ func decodeGetWebsitesIDResponse(resp *http.Response) (res GetWebsitesIDRes, _ e
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodeGetWebsitesIDActiveResponse(resp *http.Response) (res *StatsActive, _ error) {
@@ -660,7 +807,49 @@ func decodeGetWebsitesIDActiveResponse(resp *http.Response) (res *StatsActive, _
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response InternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
+	}
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodePatchUsersUserIdResponse(resp *http.Response) (res PatchUsersUserIdRes, _ error) {
@@ -805,8 +994,9 @@ func decodePatchUsersUserIdResponse(resp *http.Response) (res PatchUsersUserIdRe
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -836,12 +1026,18 @@ func decodePatchUsersUserIdResponse(resp *http.Response) (res PatchUsersUserIdRe
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodePatchWebsitesIDResponse(resp *http.Response) (res PatchWebsitesIDRes, _ error) {
@@ -951,8 +1147,9 @@ func decodePatchWebsitesIDResponse(resp *http.Response) (res PatchWebsitesIDRes,
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -982,12 +1179,18 @@ func decodePatchWebsitesIDResponse(resp *http.Response) (res PatchWebsitesIDRes,
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodePostAuthLoginResponse(resp *http.Response) (res PostAuthLoginRes, _ error) {
@@ -1065,8 +1268,9 @@ func decodePostAuthLoginResponse(resp *http.Response) (res PostAuthLoginRes, _ e
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -1096,12 +1300,18 @@ func decodePostAuthLoginResponse(resp *http.Response) (res PostAuthLoginRes, _ e
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodePostAuthRefreshResponse(resp *http.Response) (res PostAuthRefreshRes, _ error) {
@@ -1179,8 +1389,9 @@ func decodePostAuthRefreshResponse(resp *http.Response) (res PostAuthRefreshRes,
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -1210,12 +1421,18 @@ func decodePostAuthRefreshResponse(resp *http.Response) (res PostAuthRefreshRes,
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodePostEventHitResponse(resp *http.Response) (res PostEventHitRes, _ error) {
@@ -1226,11 +1443,50 @@ func decodePostEventHitResponse(resp *http.Response) (res PostEventHitRes, _ err
 	case 404:
 		// Code 404.
 		return &PostEventHitNotFound{}, nil
-	case 500:
-		// Code 500.
-		return &PostEventHitInternalServerError{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response InternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
+	}
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodePostUserResponse(resp *http.Response) (res PostUserRes, _ error) {
@@ -1375,8 +1631,9 @@ func decodePostUserResponse(resp *http.Response) (res PostUserRes, _ error) {
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -1406,12 +1663,18 @@ func decodePostUserResponse(resp *http.Response) (res PostUserRes, _ error) {
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
 
 func decodePostWebsitesResponse(resp *http.Response) (res PostWebsitesRes, _ error) {
@@ -1556,8 +1819,9 @@ func decodePostWebsitesResponse(resp *http.Response) (res PostWebsitesRes, _ err
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
-	case 500:
-		// Code 500.
+	}
+	// Convenient error response.
+	defRes, err := func() (res *InternalServerErrorStatusCode, err error) {
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -1587,10 +1851,16 @@ func decodePostWebsitesResponse(resp *http.Response) (res PostWebsitesRes, _ err
 				}
 				return res, err
 			}
-			return &response, nil
+			return &InternalServerErrorStatusCode{
+				StatusCode: resp.StatusCode,
+				Response:   response,
+			}, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
+	}()
+	if err != nil {
+		return res, errors.Wrapf(err, "default (code %d)", resp.StatusCode)
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, errors.Wrap(defRes, "error")
 }
