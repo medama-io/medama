@@ -12,7 +12,7 @@ tasks:
   build:
     deps: [generate]
     cmds:
-      - go build -o ./main ./cmd/main.go
+      - go build -o ./main ./cmd/
     env:
       CGO_ENABLED: "1"
 

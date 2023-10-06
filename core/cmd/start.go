@@ -66,7 +66,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	h, err := api.NewServer(service,
 		api.WithErrorHandler(middlewares.ErrorHandler()),
 		api.WithNotFound(middlewares.NotFound()),
-		api.WithMiddleware(util.RequestLogger()),
+		api.WithMiddleware(middlewares.RequestLogger()),
 	)
 	if err != nil {
 		return err
