@@ -12,14 +12,16 @@ import (
 	"syscall"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/middlewares"
 	"github.com/medama-io/medama/services"
 	"github.com/medama-io/medama/util"
 )
 
 type StartCommand struct {
-	Debug  bool
-	Server ServerConfig
+	Debug    bool
+	Server   ServerConfig
+	Database DatabaseConfig
 }
 
 // NewStartCommand creates a new start command.
@@ -31,6 +33,9 @@ func NewStartCommand() *StartCommand {
 			TimeoutRead:          DefaultTimeoutRead,
 			TimeoutWrite:         DefaultTimeoutWrite,
 			TimeoutIdle:          DefaultTimeoutIdle,
+		},
+		Database: DatabaseConfig{
+			Host: DefaultDatabaseHost,
 		},
 	}
 }
@@ -50,8 +55,14 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	util.SetupLogger(os.Stdout, s.Debug)
 	slog.Info(GetVersion())
 
+	// Setup database
+	db, err := sqlite.NewClient(s.Database.Host)
+	if err != nil {
+		return err
+	}
+
 	// Setup handlers
-	service := services.NewService()
+	service := services.NewService(db)
 	h, err := api.NewServer(service,
 		api.WithErrorHandler(middlewares.ErrorHandler()),
 		api.WithNotFound(middlewares.NotFound()),

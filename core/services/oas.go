@@ -1,7 +1,13 @@
 package services
 
-type Handler struct{}
+import "github.com/medama-io/medama/db/sqlite"
 
-func NewService() *Handler {
-	return &Handler{}
+type Handler struct {
+	db *sqlite.Client
+}
+
+func NewService(db *sqlite.Client) *Handler {
+	return &Handler{
+		db: db,
+	}
 }

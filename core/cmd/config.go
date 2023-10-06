@@ -17,6 +17,10 @@ type ServerConfig struct {
 	TimeoutIdle  time.Duration
 }
 
+type DatabaseConfig struct {
+	Host string `env:"DATABASE_HOST,default=./sqlite.dev.db"`
+}
+
 const (
 	// App Environments.
 	AppEnvDevelopment = "development"
@@ -30,4 +34,7 @@ const (
 	DefaultTimeoutRead  = 5 * time.Second
 	DefaultTimeoutWrite = 10 * time.Second
 	DefaultTimeoutIdle  = 15 * time.Second
+
+	// Database constants.
+	DefaultDatabaseHost = "./sqlite.dev.db"
 )
