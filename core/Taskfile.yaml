@@ -5,7 +5,7 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - go run ./cmd/ {{.CLI_ARGS}}
+      - go run ./cmd/ {{.CLI_ARGS}} -debug
     env:
       DEBUG: "true"
 

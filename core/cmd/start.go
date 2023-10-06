@@ -11,9 +11,11 @@ import (
 	"strconv"
 	"syscall"
 
+	
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/middlewares"
+	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/services"
 	"github.com/medama-io/medama/util"
 )
@@ -58,6 +60,18 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	// Setup database
 	db, err := sqlite.NewClient(s.Database.Host)
 	if err != nil {
+		return err
+	}
+
+	// Run migrations
+	m := migrations.NewMigrationsService(db)
+	if m == nil {
+		slog.Error("Could not create migrations service")
+		return err
+	}
+	err = m.AutoMigrate()
+	if err != nil {
+		slog.Error("Could not run migrations", "error", err)
 		return err
 	}
 

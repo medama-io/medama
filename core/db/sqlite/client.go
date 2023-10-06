@@ -14,7 +14,7 @@ type Handler interface {
 }
 
 type Client struct {
-	db *sqlx.DB
+	*sqlx.DB
 }
 
 // Compile time check for Handler.
@@ -28,6 +28,6 @@ func NewClient(host string) (*Client, error) {
 	}
 
 	return &Client{
-		db: db,
+		DB: db,
 	}, nil
 }

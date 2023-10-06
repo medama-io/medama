@@ -9,6 +9,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lmittmann/tint v1.0.2
 	github.com/mattn/go-colorable v0.1.13
+	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/ogen-go/ogen v0.76.0
 	go.jetpack.io/typeid v0.1.0
 	go.opentelemetry.io/otel v1.19.0
