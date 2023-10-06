@@ -43,8 +43,8 @@ func NewHandler(w io.Writer, isDebug bool) slog.Handler {
 	return handler
 }
 
-// NewLogger creates a new logger.
-func NewLogger(w io.Writer, isDebug bool) {
+// SetLogger sets the default logger.
+func SetupLogger(w io.Writer, isDebug bool) {
 	handler := NewHandler(w, isDebug)
 	slog.SetDefault(slog.New(handler))
 
