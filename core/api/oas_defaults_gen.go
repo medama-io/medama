@@ -45,7 +45,7 @@ func (s *UnauthorisedErrorError) setDefaults() {
 // setDefaults set default value of fields.
 func (s *UserCreate) setDefaults() {
 	{
-		val := string("en")
+		val := UserCreateLanguage("en")
 		s.Language.SetTo(val)
 	}
 }

@@ -11,7 +11,7 @@ info:
     url: "https://github.com/fontsource/fontsource/blob/main/LICENSE"
     name: BUSL 1.1
 servers:
-  - url: "http://localhost:8080/api"
+  - url: "http://localhost:8080"
     description: Local Server
 paths:
   /auth/login:
@@ -52,7 +52,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   /auth/refresh:
     post:
@@ -92,7 +92,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   /event/hit:
     post:
@@ -135,7 +135,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   /event/ping:
     get:
@@ -159,7 +159,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   /users:
     post:
@@ -188,7 +188,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   "/users/{userId}":
     get:
@@ -201,7 +201,8 @@ paths:
           description: Id of an existing user.
           required: true
           schema:
-            type: integer
+            type: string
+            format: uuidv7
       responses:
         "200":
           description: User Found
@@ -214,7 +215,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
     patch:
       summary: ""
@@ -226,7 +227,8 @@ paths:
           description: Id of an existing user.
           required: true
           schema:
-            type: integer
+            type: string
+            format: uuidv7
       requestBody:
         description: User details to update.
         content:
@@ -249,7 +251,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   /websites:
     get:
@@ -272,7 +274,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
     post:
       summary: ""
@@ -299,7 +301,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   "/websites/{id}":
     get:
@@ -329,7 +331,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
     patch:
       summary: ""
@@ -362,7 +364,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
     delete:
       summary: ""
@@ -385,7 +387,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   "/websites/{id}/active":
     get:
@@ -408,7 +410,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
   "/website/{id}/summary":
     get:
@@ -433,7 +435,7 @@ paths:
         default:
           $ref: "#/components/responses/InternalServerError"
       servers:
-        - url: "http://localhost:8080/api"
+        - url: "http://localhost:8080"
           description: Local Server
 components:
   parameters:
@@ -613,6 +615,7 @@ components:
           format: password
         language:
           type: string
+          enum: [en]
           default: en
       required:
         - email
@@ -625,7 +628,7 @@ components:
         id:
           type: string
           description: Unique identifier for the given user.
-          format: uuid
+          format: uuidv7
         email:
           type: string
           format: email
@@ -664,7 +667,7 @@ components:
         id:
           type: string
           description: "Unique identifier for the website.\r\n"
-          format: uuid
+          format: uuidv7
         name:
           type: string
         hostname:

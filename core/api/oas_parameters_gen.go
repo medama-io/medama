@@ -147,7 +147,7 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 // GetUsersUserIdParams is parameters of get-users-userId operation.
 type GetUsersUserIdParams struct {
 	// Id of an existing user.
-	UserId int
+	UserId string
 }
 
 func unpackGetUsersUserIdParams(packed middleware.Parameters) (params GetUsersUserIdParams) {
@@ -156,7 +156,7 @@ func unpackGetUsersUserIdParams(packed middleware.Parameters) (params GetUsersUs
 			Name: "userId",
 			In:   "path",
 		}
-		params.UserId = packed[key].(int)
+		params.UserId = packed[key].(string)
 	}
 	return params
 }
@@ -186,7 +186,7 @@ func decodeGetUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Reques
 					return err
 				}
 
-				c, err := conv.ToInt(val)
+				c, err := conv.ToString(val)
 				if err != nil {
 					return err
 				}
@@ -514,7 +514,7 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 // PatchUsersUserIdParams is parameters of patch-users-userId operation.
 type PatchUsersUserIdParams struct {
 	// Id of an existing user.
-	UserId int
+	UserId string
 }
 
 func unpackPatchUsersUserIdParams(packed middleware.Parameters) (params PatchUsersUserIdParams) {
@@ -523,7 +523,7 @@ func unpackPatchUsersUserIdParams(packed middleware.Parameters) (params PatchUse
 			Name: "userId",
 			In:   "path",
 		}
-		params.UserId = packed[key].(int)
+		params.UserId = packed[key].(string)
 	}
 	return params
 }
@@ -553,7 +553,7 @@ func decodePatchUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Requ
 					return err
 				}
 
-				c, err := conv.ToInt(val)
+				c, err := conv.ToString(val)
 				if err != nil {
 					return err
 				}

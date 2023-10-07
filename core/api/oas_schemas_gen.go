@@ -5,7 +5,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/google/uuid"
+	"github.com/go-faster/errors"
 )
 
 func (s *InternalServerErrorStatusCode) Error() string {
@@ -716,6 +716,52 @@ func (o OptUserCreate) Or(d UserCreate) UserCreate {
 	return d
 }
 
+// NewOptUserCreateLanguage returns new OptUserCreateLanguage with value set to v.
+func NewOptUserCreateLanguage(v UserCreateLanguage) OptUserCreateLanguage {
+	return OptUserCreateLanguage{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUserCreateLanguage is optional UserCreateLanguage.
+type OptUserCreateLanguage struct {
+	Value UserCreateLanguage
+	Set   bool
+}
+
+// IsSet returns true if OptUserCreateLanguage was set.
+func (o OptUserCreateLanguage) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUserCreateLanguage) Reset() {
+	var v UserCreateLanguage
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUserCreateLanguage) SetTo(v UserCreateLanguage) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUserCreateLanguage) Get() (v UserCreateLanguage, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUserCreateLanguage) Or(d UserCreateLanguage) UserCreateLanguage {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptUserPatch returns new OptUserPatch with value set to v.
 func NewOptUserPatch(v UserPatch) OptUserPatch {
 	return OptUserPatch{
@@ -1040,9 +1086,9 @@ func (s *UnauthorisedErrorError) SetCode(val int32) {
 // User model for admin.
 // Ref: #/components/schemas/UserCreate
 type UserCreate struct {
-	Email    string    `json:"email"`
-	Password string    `json:"password"`
-	Language OptString `json:"language"`
+	Email    string                `json:"email"`
+	Password string                `json:"password"`
+	Language OptUserCreateLanguage `json:"language"`
 }
 
 // GetEmail returns the value of Email.
@@ -1056,7 +1102,7 @@ func (s *UserCreate) GetPassword() string {
 }
 
 // GetLanguage returns the value of Language.
-func (s *UserCreate) GetLanguage() OptString {
+func (s *UserCreate) GetLanguage() OptUserCreateLanguage {
 	return s.Language
 }
 
@@ -1071,23 +1117,57 @@ func (s *UserCreate) SetPassword(val string) {
 }
 
 // SetLanguage sets the value of Language.
-func (s *UserCreate) SetLanguage(val OptString) {
+func (s *UserCreate) SetLanguage(val OptUserCreateLanguage) {
 	s.Language = val
+}
+
+type UserCreateLanguage string
+
+const (
+	UserCreateLanguageEn UserCreateLanguage = "en"
+)
+
+// AllValues returns all UserCreateLanguage values.
+func (UserCreateLanguage) AllValues() []UserCreateLanguage {
+	return []UserCreateLanguage{
+		UserCreateLanguageEn,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UserCreateLanguage) MarshalText() ([]byte, error) {
+	switch s {
+	case UserCreateLanguageEn:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UserCreateLanguage) UnmarshalText(data []byte) error {
+	switch UserCreateLanguage(data) {
+	case UserCreateLanguageEn:
+		*s = UserCreateLanguageEn
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 // User model for admin.
 // Ref: #/components/schemas/UserGet
 type UserGet struct {
 	// Unique identifier for the given user.
-	ID          uuid.UUID `json:"id"`
-	Email       string    `json:"email"`
-	Language    string    `json:"language"`
-	DateCreated int64     `json:"dateCreated"`
-	DateUpdated int64     `json:"dateUpdated"`
+	ID          string `json:"id"`
+	Email       string `json:"email"`
+	Language    string `json:"language"`
+	DateCreated int64  `json:"dateCreated"`
+	DateUpdated int64  `json:"dateUpdated"`
 }
 
 // GetID returns the value of ID.
-func (s *UserGet) GetID() uuid.UUID {
+func (s *UserGet) GetID() string {
 	return s.ID
 }
 
@@ -1112,7 +1192,7 @@ func (s *UserGet) GetDateUpdated() int64 {
 }
 
 // SetID sets the value of ID.
-func (s *UserGet) SetID(val uuid.UUID) {
+func (s *UserGet) SetID(val string) {
 	s.ID = val
 }
 
@@ -1220,14 +1300,14 @@ func (s *WebsiteCreate) SetIsActive(val OptBool) {
 // Ref: #/components/schemas/WebsiteGet
 type WebsiteGet struct {
 	// Unique identifier for the website.
-	ID       uuid.UUID `json:"id"`
-	Name     string    `json:"name"`
-	Hostname string    `json:"hostname"`
-	IsActive bool      `json:"isActive"`
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Hostname string `json:"hostname"`
+	IsActive bool   `json:"isActive"`
 }
 
 // GetID returns the value of ID.
-func (s *WebsiteGet) GetID() uuid.UUID {
+func (s *WebsiteGet) GetID() string {
 	return s.ID
 }
 
@@ -1247,7 +1327,7 @@ func (s *WebsiteGet) GetIsActive() bool {
 }
 
 // SetID sets the value of ID.
-func (s *WebsiteGet) SetID(val uuid.UUID) {
+func (s *WebsiteGet) SetID(val string) {
 	s.ID = val
 }
 

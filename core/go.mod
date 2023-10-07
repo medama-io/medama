@@ -5,7 +5,6 @@ go 1.21.1
 require (
 	github.com/go-faster/errors v0.6.1
 	github.com/go-faster/jx v1.1.0
-	github.com/google/uuid v1.3.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lmittmann/tint v1.0.2
 	github.com/mattn/go-colorable v0.1.13
@@ -26,6 +25,7 @@ require (
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/gofrs/uuid/v5 v5.0.0 // indirect
+	github.com/google/uuid v1.3.1 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect

@@ -396,7 +396,7 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.IntToString(params.UserId))
+			return e.EncodeValue(conv.StringToString(params.UserId))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -884,7 +884,7 @@ func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.IntToString(params.UserId))
+			return e.EncodeValue(conv.StringToString(params.UserId))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}

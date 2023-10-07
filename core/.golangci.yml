@@ -88,6 +88,10 @@ linters-settings:
     # Default: false
     require-specific: true
 
+  revive:
+    # Disable var-naming due to auto-generated handlers.
+    var-naming: false
+
   tenv:
     # The option `all` will run against whole test files (`_test.go`) regardless of method/function signatures.
     # Otherwise, only methods that take `*testing.T`, `*testing.B`, and `testing.TB` as arguments are checked.

@@ -3,15 +3,22 @@ package middlewares
 import (
 	"log/slog"
 	"net/http"
+
+	"github.com/go-faster/jx"
 )
 
 func NotFound() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
-		_, err := w.Write([]byte("{\"status\": 404, \"message\": \"Not Found\"}"))
-		if err != nil {
-			slog.Error("Unable to write not found response", err)
-		}
+		w.Header().Set("Content-Type", "application/json")
+
+		e := jx.GetEncoder()
+		e.ObjStart()
+		e.FieldStart("error")
+		e.StrEscape("not found")
+		e.ObjEnd()
+
+		_, _ = w.Write(e.Bytes())
 
 		attributes := []slog.Attr{
 			slog.String("path", r.URL.Path),
