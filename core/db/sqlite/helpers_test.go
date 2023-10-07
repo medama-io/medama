@@ -20,6 +20,7 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.C
 	// Disable logging
 	log.SetOutput(io.Discard)
 
+	// Generate new memory db per test
 	client, err := sqlite.NewClient(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name()))
 	assert.NoError(err)
 	assert.NotNil(client)

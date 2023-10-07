@@ -48,11 +48,22 @@ func (h *Handler) PatchUsersUserId(ctx context.Context, req api.OptUserPatch, pa
 	if email != "" {
 		user.Email = email
 		err = h.db.UpdateUserEmail(ctx, user.ID, email, dateUpdated)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	password := req.Value.Password.Value
 	if password != "" {
-		err = h.db.UpdateUserPassword(ctx, user.ID, password, dateUpdated)
+		pwdHash, err := h.auth.HashPassword(password)
+		if err != nil {
+			return nil, err
+		}
+
+		err = h.db.UpdateUserPassword(ctx, user.ID, pwdHash, dateUpdated)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &api.UserGet{
@@ -65,28 +76,33 @@ func (h *Handler) PatchUsersUserId(ctx context.Context, req api.OptUserPatch, pa
 }
 
 func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.PostUserRes, error) {
-	// Generate values
+	// UUIDv7 id generation
 	typeid, err := typeid.New("user")
 	if err != nil {
 		return nil, err
 	}
 	id := typeid.String()
 
-	dateCreated := time.Now().Unix()
-	dateUpdated := dateCreated
-
+	// Validate language as an accepted enum
 	err = req.Value.Language.Value.Validate()
 	if err != nil {
 		return nil, err
 	}
 	language := string(req.Value.Language.Value)
 
-	// TODO: Hash password
+	// Hash password
+	pwdHash, err := h.auth.HashPassword(req.Value.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	dateCreated := time.Now().Unix()
+	dateUpdated := dateCreated
 
 	user := &model.User{
 		ID:          id,
 		Email:       req.Value.Email,
-		Password:    "test",
+		Password:    pwdHash,
 		Language:    language,
 		DateCreated: dateCreated,
 		DateUpdated: dateUpdated,

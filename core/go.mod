@@ -3,6 +3,7 @@ module github.com/medama-io/medama
 go 1.21.1
 
 require (
+	github.com/alexedwards/argon2id v0.0.0-20230305115115-4b3c3280a736
 	github.com/go-faster/errors v0.6.1
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.3.5
@@ -32,6 +33,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/net v0.16.0 // indirect
 	golang.org/x/sync v0.4.0 // indirect

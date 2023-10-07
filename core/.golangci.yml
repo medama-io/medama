@@ -89,8 +89,14 @@ linters-settings:
     require-specific: true
 
   revive:
-    # Disable var-naming due to auto-generated handlers.
-    var-naming: false
+    rules:
+      # Disable var-naming due to auto-generated handlers.
+      - name: var-naming
+        disabled: true
+
+  stylecheck:
+    # Remove ST1003 due to auto-generated handlers.
+    checks: ["-ST1000", "-ST1016", "-ST1020", "-ST1021", "-ST1022"]
 
   tenv:
     # The option `all` will run against whole test files (`_test.go`) regardless of method/function signatures.
