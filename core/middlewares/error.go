@@ -3,40 +3,38 @@ package middlewares
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
+	"strings"
 
-	ht "github.com/ogen-go/ogen/http"
+	"github.com/go-faster/jx"
 	"github.com/ogen-go/ogen/ogenerrors"
 )
 
-func ErrorHandler() func(ctx context.Context, w http.ResponseWriter, r *http.Request, err error) {
-	return func(ctx context.Context, w http.ResponseWriter, r *http.Request, err error) {
-		var (
-			code    = http.StatusInternalServerError
-			ogenErr ogenerrors.Error
-		)
-		switch {
-		case errors.Is(err, ht.ErrNotImplemented):
-			code = http.StatusNotImplemented
-		case errors.As(err, &ogenErr):
-			code = ogenErr.Code()
-		}
+func ErrorHandler(ctx context.Context, w http.ResponseWriter, r *http.Request, err error) {
+	code := ogenerrors.ErrorCode(err)
+	errMessage := strings.ReplaceAll(errors.Unwrap(err).Error(), "\"", "'")
 
-		w.WriteHeader(http.StatusNotFound)
-		_, err = w.Write([]byte(fmt.Sprintf("{\"status\": %d, \"message\": \"Not Found\"}", code)))
-		if err != nil {
-			slog.Error("Unable to write error handler response", err)
-		}
-
-		attributes := []slog.Attr{
-			slog.String("path", r.URL.Path),
-			slog.String("method", r.Method),
-			slog.Int("status_code", code),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(r.Context(), slog.LevelError, "Error", attributes...)
+	attributes := []slog.Attr{
+		slog.String("path", r.URL.Path),
+		slog.String("method", r.Method),
+		slog.Int("status_code", code),
+		slog.String("message", errMessage),
 	}
+	slog.LogAttrs(ctx, slog.LevelError, "error", attributes...)
+
+	if errors.Is(err, ogenerrors.ErrSecurityRequirementIsNotSatisfied) {
+		errMessage = "missing security token or cookie"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+
+	e := jx.GetEncoder()
+	e.ObjStart()
+	e.FieldStart("error")
+	e.StrEscape(errMessage)
+	e.ObjEnd()
+
+	_, _ = w.Write(e.Bytes())
 }

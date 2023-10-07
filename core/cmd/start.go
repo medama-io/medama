@@ -11,13 +11,13 @@ import (
 	"strconv"
 	"syscall"
 
-	
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/middlewares"
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/services"
 	"github.com/medama-io/medama/util"
+	"github.com/ogen-go/ogen/middleware"
 )
 
 type StartCommand struct {
@@ -77,10 +77,14 @@ func (s *StartCommand) Run(ctx context.Context) error {
 
 	// Setup handlers
 	service := services.NewService(db)
+	mw := []middleware.Middleware{
+		middlewares.Recovery(),
+		middlewares.RequestLogger(),
+	}
 	h, err := api.NewServer(service,
-		api.WithErrorHandler(middlewares.ErrorHandler()),
+		api.WithMiddleware(mw...),
+		api.WithErrorHandler(middlewares.ErrorHandler),
 		api.WithNotFound(middlewares.NotFound()),
-		api.WithMiddleware(middlewares.RequestLogger()),
 	)
 	if err != nil {
 		return err
