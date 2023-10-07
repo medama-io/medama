@@ -43,13 +43,16 @@ func (h *Handler) PatchUsersUserId(ctx context.Context, req api.OptUserPatch, pa
 	}
 
 	// Update values
-	user.Email = req.Value.Email.Value
-	user.Language = req.Value.Language.Value
-	user.DateUpdated = time.Now().Unix()
+	dateUpdated := time.Now().Unix()
+	email := req.Value.Email.Value
+	if email != "" {
+		user.Email = email
+		err = h.db.UpdateUserEmail(ctx, user.ID, email, dateUpdated)
+	}
 
-	err = h.db.UpdateUser(ctx, user)
-	if err != nil {
-		return nil, err
+	password := req.Value.Password.Value
+	if password != "" {
+		err = h.db.UpdateUserPassword(ctx, user.ID, password, dateUpdated)
 	}
 
 	return &api.UserGet{
@@ -63,10 +66,11 @@ func (h *Handler) PatchUsersUserId(ctx context.Context, req api.OptUserPatch, pa
 
 func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.PostUserRes, error) {
 	// Generate values
-	id, err := typeid.New("user")
+	typeid, err := typeid.New("user")
 	if err != nil {
 		return nil, err
 	}
+	id := typeid.String()
 
 	dateCreated := time.Now().Unix()
 	dateUpdated := dateCreated
@@ -80,7 +84,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	// TODO: Hash password
 
 	user := &model.User{
-		ID:          id.String(),
+		ID:          id,
 		Email:       req.Value.Email,
 		Password:    "test",
 		Language:    language,
@@ -89,7 +93,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	}
 
 	attributes := []slog.Attr{
-		slog.String("id", id.String()),
+		slog.String("id", id),
 		slog.String("email", req.Value.Email),
 		slog.String("language", language),
 		slog.Int64("date_created", dateCreated),
@@ -103,7 +107,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	}
 
 	return &api.UserGet{
-		ID:          id.String(),
+		ID:          id,
 		Email:       req.Value.Email,
 		Language:    language,
 		DateCreated: dateCreated,

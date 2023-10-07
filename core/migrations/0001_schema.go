@@ -12,7 +12,17 @@ func Up0001(c *sqlite.Client) error {
 	}
 
 	// Create users table
-	_, err = tx.Exec("CREATE TABLE IF NOT EXISTS users (id VARCHAR(255) PRIMARY KEY, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, language VARCHAR(255) NOT NULL, date_created INTEGER NOT NULL, date_updated INTEGER NOT NULL)")
+	_, err = tx.Exec(`--sql
+	CREATE TABLE IF NOT EXISTS users (
+		id VARCHAR(255) PRIMARY KEY,
+		email VARCHAR(255) NOT NULL,
+		password VARCHAR(255) NOT NULL,
+		language VARCHAR(255) NOT NULL,
+		date_created INTEGER NOT NULL,
+		date_updated INTEGER NOT NULL,
+		UNIQUE(email)
+	)`)
+
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {
@@ -23,7 +33,16 @@ func Up0001(c *sqlite.Client) error {
 	}
 
 	// Create websites table
-	_, err = tx.Exec("CREATE TABLE IF NOT EXISTS websites (id VARCHAR(255) PRIMARY KEY, hostname VARCHAR(255) NOT NULL, is_active BOOLEAN NOT NULL, date_created INTEGER NOT NULL, date_updated INTEGER NOT NULL)")
+	_, err = tx.Exec(`--sql
+	CREATE TABLE IF NOT EXISTS websites (
+		id VARCHAR(255) PRIMARY KEY,
+		hostname VARCHAR(255) NOT NULL,
+		is_active BOOLEAN NOT NULL,
+		date_created INTEGER NOT NULL,
+		date_updated INTEGER NOT NULL,
+		UNIQUE(hostname)
+	)`)
+
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {

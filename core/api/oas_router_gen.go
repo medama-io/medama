@@ -588,7 +588,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						case "PATCH":
 							// Leaf: PatchUsersUserId
 							r.name = "PatchUsersUserId"
-							r.summary = ""
+							r.summary = "Update User Info by User ID"
 							r.operationID = "patch-users-userId"
 							r.pathPattern = "/users/{userId}"
 							r.args = args

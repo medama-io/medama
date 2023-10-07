@@ -901,7 +901,7 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PatchUsersUserId",
-			OperationSummary: "",
+			OperationSummary: "Update User Info by User ID",
 			OperationID:      "patch-users-userId",
 			Body:             request,
 			Params: middleware.Parameters{

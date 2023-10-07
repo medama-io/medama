@@ -179,6 +179,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserGet"
+          links:
+            GetUserByUserID:
+              operationId: get-users-userId
+              parameters:
+                userId: "$response.body#/id"
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -218,7 +223,7 @@ paths:
         - url: "http://localhost:8080"
           description: Local Server
     patch:
-      summary: ""
+      summary: Update User Info by User ID
       description: Update a user account's details.
       operationId: patch-users-userId
       parameters:
