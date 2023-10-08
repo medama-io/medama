@@ -64,12 +64,12 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}
 
 	// Run migrations
-	m := migrations.NewMigrationsService(db)
+	m := migrations.NewMigrationsService(ctx, db)
 	if m == nil {
 		slog.Error("Could not create migrations service")
 		return err
 	}
-	err = m.AutoMigrate()
+	err = m.AutoMigrate(ctx)
 	if err != nil {
 		slog.Error("Could not run migrations", "error", err)
 		return err

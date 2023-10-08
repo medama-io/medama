@@ -26,8 +26,8 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.C
 	assert.NotNil(client)
 
 	// Run migrations
-	m := migrations.NewMigrationsService(client)
-	err = m.AutoMigrate()
+	m := migrations.NewMigrationsService(ctx, client)
+	err = m.AutoMigrate(ctx)
 	assert.NoError(err)
 
 	return assert, ctx, client

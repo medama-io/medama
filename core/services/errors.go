@@ -8,6 +8,6 @@ import (
 )
 
 func (h *Handler) NewError(ctx context.Context, err error) *api.InternalServerErrorStatusCode {
-	slog.Error("Error", err)
+	slog.Error("Error W", err)
 	return nil
 }

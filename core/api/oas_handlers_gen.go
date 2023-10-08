@@ -78,7 +78,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "DeleteWebsitesID",
-			OperationSummary: "",
+			OperationSummary: "Delete a website.",
 			OperationID:      "delete-websites-id",
 			Body:             nil,
 			Params: middleware.Parameters{

@@ -8,6 +8,7 @@ import (
 )
 
 type Handler interface {
+	// Users
 	// CreateUser adds a new user to the database.
 	CreateUser(ctx context.Context, user *model.User) error
 	// GetUser retrieves a user from the database by id.
@@ -20,6 +21,16 @@ type Handler interface {
 	UpdateUserPassword(ctx context.Context, id string, password string, dateUpdated int64) error
 	// DeleteUser deletes a user from the database.
 	DeleteUser(ctx context.Context, id string) error
+
+	// Websites
+	// CreateWebsite adds a new website to the database.
+	CreateWebsite(ctx context.Context, website *model.Website) error
+	// ListWebsites retrieves a list of websites from the database.
+	ListWebsites(ctx context.Context, userID string) ([]*model.Website, error)
+	// GetWebsite retrieves a website from the database by id.
+	GetWebsite(ctx context.Context, id string) (*model.Website, error)
+	// DeleteWebsite deletes a website from the database.
+	DeleteWebsite(ctx context.Context, id string) error
 }
 
 type Client struct {

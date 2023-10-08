@@ -372,7 +372,7 @@ paths:
         - url: "http://localhost:8080"
           description: Local Server
     delete:
-      summary: ""
+      summary: "Delete a website."
       description: Delete a website.
       operationId: delete-websites-id
       parameters:
