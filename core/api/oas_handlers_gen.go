@@ -112,19 +112,8 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		response, err = s.h.DeleteWebsitesID(ctx, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -190,7 +179,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		return
 	}
 
-	var response *GetEventPingOK
+	var response GetEventPingRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
@@ -210,7 +199,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		type (
 			Request  = struct{}
 			Params   = GetEventPingParams
-			Response = *GetEventPingOK
+			Response = GetEventPingRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -229,19 +218,8 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		response, err = s.h.GetEventPing(ctx, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -346,19 +324,8 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 		response, err = s.h.GetUsersUserId(ctx, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -424,7 +391,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		return
 	}
 
-	var response *StatsSummary
+	var response GetWebsiteIDSummaryRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
@@ -452,7 +419,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		type (
 			Request  = struct{}
 			Params   = GetWebsiteIDSummaryParams
-			Response = *StatsSummary
+			Response = GetWebsiteIDSummaryRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -471,19 +438,8 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		response, err = s.h.GetWebsiteIDSummary(ctx, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -569,19 +525,8 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 		response, err = s.h.GetWebsites(ctx)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -686,19 +631,8 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 		response, err = s.h.GetWebsitesID(ctx, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -764,7 +698,7 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 		return
 	}
 
-	var response *StatsActive
+	var response GetWebsitesIDActiveRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
@@ -784,7 +718,7 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 		type (
 			Request  = struct{}
 			Params   = GetWebsitesIDActiveParams
-			Response = *StatsActive
+			Response = GetWebsitesIDActiveRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -803,19 +737,8 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 		response, err = s.h.GetWebsitesIDActive(ctx, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -935,19 +858,8 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		response, err = s.h.PatchUsersUserId(ctx, request, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -1067,19 +979,8 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		response, err = s.h.PatchWebsitesID(ctx, request, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -1199,19 +1100,8 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		response, err = s.h.PostAuthLogin(ctx, request, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -1331,19 +1221,8 @@ func (s *Server) handlePostAuthRefreshRequest(args [0]string, argsEscaped bool, 
 		response, err = s.h.PostAuthRefresh(ctx, request, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -1479,19 +1358,8 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		response, err = s.h.PostEventHit(ctx, request, params)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -1596,19 +1464,8 @@ func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.
 		response, err = s.h.PostUser(ctx, request)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 
@@ -1713,19 +1570,8 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 		response, err = s.h.PostWebsites(ctx, request)
 	}
 	if err != nil {
-		if errRes, ok := errors.Into[*InternalServerErrorStatusCode](err); ok {
-			if err := encodeErrorResponse(errRes, w, span); err != nil {
-				recordError("Internal", err)
-			}
-			return
-		}
-		if errors.Is(err, ht.ErrNotImplemented) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-		if err := encodeErrorResponse(s.h.NewError(ctx, err), w, span); err != nil {
-			recordError("Internal", err)
-		}
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
 

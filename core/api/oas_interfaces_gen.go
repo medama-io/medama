@@ -5,8 +5,20 @@ type DeleteWebsitesIDRes interface {
 	deleteWebsitesIDRes()
 }
 
+type GetEventPingRes interface {
+	getEventPingRes()
+}
+
 type GetUsersUserIdRes interface {
 	getUsersUserIdRes()
+}
+
+type GetWebsiteIDSummaryRes interface {
+	getWebsiteIDSummaryRes()
+}
+
+type GetWebsitesIDActiveRes interface {
+	getWebsitesIDActiveRes()
 }
 
 type GetWebsitesIDRes interface {

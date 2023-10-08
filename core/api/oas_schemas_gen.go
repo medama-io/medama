@@ -3,14 +3,8 @@
 package api
 
 import (
-	"fmt"
-
 	"github.com/go-faster/errors"
 )
-
-func (s *InternalServerErrorStatusCode) Error() string {
-	return fmt.Sprintf("code %d: %+v", s.StatusCode, s.Response)
-}
 
 type BadRequestError struct {
 	Error BadRequestErrorError `json:"error"`
@@ -36,13 +30,8 @@ func (*BadRequestError) postUserRes()         {}
 func (*BadRequestError) postWebsitesRes()     {}
 
 type BadRequestErrorError struct {
-	Description string `json:"description"`
-	Code        int32  `json:"code"`
-}
-
-// GetDescription returns the value of Description.
-func (s *BadRequestErrorError) GetDescription() string {
-	return s.Description
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
 }
 
 // GetCode returns the value of Code.
@@ -50,14 +39,19 @@ func (s *BadRequestErrorError) GetCode() int32 {
 	return s.Code
 }
 
-// SetDescription sets the value of Description.
-func (s *BadRequestErrorError) SetDescription(val string) {
-	s.Description = val
+// GetMessage returns the value of Message.
+func (s *BadRequestErrorError) GetMessage() string {
+	return s.Message
 }
 
 // SetCode sets the value of Code.
 func (s *BadRequestErrorError) SetCode(val int32) {
 	s.Code = val
+}
+
+// SetMessage sets the value of Message.
+func (s *BadRequestErrorError) SetMessage(val string) {
+	s.Message = val
 }
 
 type ConflictError struct {
@@ -79,13 +73,8 @@ func (*ConflictError) postUserRes()         {}
 func (*ConflictError) postWebsitesRes()     {}
 
 type ConflictErrorError struct {
-	Description string `json:"description"`
-	Code        int32  `json:"code"`
-}
-
-// GetDescription returns the value of Description.
-func (s *ConflictErrorError) GetDescription() string {
-	return s.Description
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
 }
 
 // GetCode returns the value of Code.
@@ -93,14 +82,19 @@ func (s *ConflictErrorError) GetCode() int32 {
 	return s.Code
 }
 
-// SetDescription sets the value of Description.
-func (s *ConflictErrorError) SetDescription(val string) {
-	s.Description = val
+// GetMessage returns the value of Message.
+func (s *ConflictErrorError) GetMessage() string {
+	return s.Message
 }
 
 // SetCode sets the value of Code.
 func (s *ConflictErrorError) SetCode(val int32) {
 	s.Code = val
+}
+
+// SetMessage sets the value of Message.
+func (s *ConflictErrorError) SetMessage(val string) {
+	s.Message = val
 }
 
 // DeleteWebsitesIDOK is response for DeleteWebsitesID operation.
@@ -236,6 +230,8 @@ func (s *GetEventPingOK) SetLastModified(val OptString) {
 	s.LastModified = val
 }
 
+func (*GetEventPingOK) getEventPingRes() {}
+
 type GetWebsitesOKApplicationJSON []WebsiteGet
 
 func (*GetWebsitesOKApplicationJSON) getWebsitesRes() {}
@@ -254,14 +250,24 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 	s.Error = val
 }
 
-type InternalServerErrorError struct {
-	Description string `json:"description"`
-	Code        int32  `json:"code"`
-}
+func (*InternalServerError) deleteWebsitesIDRes()    {}
+func (*InternalServerError) getEventPingRes()        {}
+func (*InternalServerError) getUsersUserIdRes()      {}
+func (*InternalServerError) getWebsiteIDSummaryRes() {}
+func (*InternalServerError) getWebsitesIDActiveRes() {}
+func (*InternalServerError) getWebsitesIDRes()       {}
+func (*InternalServerError) getWebsitesRes()         {}
+func (*InternalServerError) patchUsersUserIdRes()    {}
+func (*InternalServerError) patchWebsitesIDRes()     {}
+func (*InternalServerError) postAuthLoginRes()       {}
+func (*InternalServerError) postAuthRefreshRes()     {}
+func (*InternalServerError) postEventHitRes()        {}
+func (*InternalServerError) postUserRes()            {}
+func (*InternalServerError) postWebsitesRes()        {}
 
-// GetDescription returns the value of Description.
-func (s *InternalServerErrorError) GetDescription() string {
-	return s.Description
+type InternalServerErrorError struct {
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
 }
 
 // GetCode returns the value of Code.
@@ -269,9 +275,9 @@ func (s *InternalServerErrorError) GetCode() int32 {
 	return s.Code
 }
 
-// SetDescription sets the value of Description.
-func (s *InternalServerErrorError) SetDescription(val string) {
-	s.Description = val
+// GetMessage returns the value of Message.
+func (s *InternalServerErrorError) GetMessage() string {
+	return s.Message
 }
 
 // SetCode sets the value of Code.
@@ -279,30 +285,9 @@ func (s *InternalServerErrorError) SetCode(val int32) {
 	s.Code = val
 }
 
-// InternalServerErrorStatusCode wraps InternalServerError with StatusCode.
-type InternalServerErrorStatusCode struct {
-	StatusCode int
-	Response   InternalServerError
-}
-
-// GetStatusCode returns the value of StatusCode.
-func (s *InternalServerErrorStatusCode) GetStatusCode() int {
-	return s.StatusCode
-}
-
-// GetResponse returns the value of Response.
-func (s *InternalServerErrorStatusCode) GetResponse() InternalServerError {
-	return s.Response
-}
-
-// SetStatusCode sets the value of StatusCode.
-func (s *InternalServerErrorStatusCode) SetStatusCode(val int) {
-	s.StatusCode = val
-}
-
-// SetResponse sets the value of Response.
-func (s *InternalServerErrorStatusCode) SetResponse(val InternalServerError) {
-	s.Response = val
+// SetMessage sets the value of Message.
+func (s *InternalServerErrorError) SetMessage(val string) {
+	s.Message = val
 }
 
 type NotFoundError struct {
@@ -324,13 +309,8 @@ func (*NotFoundError) getUsersUserIdRes()   {}
 func (*NotFoundError) getWebsitesIDRes()    {}
 
 type NotFoundErrorError struct {
-	Description string `json:"description"`
-	Code        int32  `json:"code"`
-}
-
-// GetDescription returns the value of Description.
-func (s *NotFoundErrorError) GetDescription() string {
-	return s.Description
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
 }
 
 // GetCode returns the value of Code.
@@ -338,14 +318,19 @@ func (s *NotFoundErrorError) GetCode() int32 {
 	return s.Code
 }
 
-// SetDescription sets the value of Description.
-func (s *NotFoundErrorError) SetDescription(val string) {
-	s.Description = val
+// GetMessage returns the value of Message.
+func (s *NotFoundErrorError) GetMessage() string {
+	return s.Message
 }
 
 // SetCode sets the value of Code.
 func (s *NotFoundErrorError) SetCode(val int32) {
 	s.Code = val
+}
+
+// SetMessage sets the value of Message.
+func (s *NotFoundErrorError) SetMessage(val string) {
+	s.Message = val
 }
 
 // NewOptBool returns new OptBool with value set to v.
@@ -986,6 +971,8 @@ func (s *StatsActive) SetVisitors(val int) {
 	s.Visitors = val
 }
 
+func (*StatsActive) getWebsitesIDActiveRes() {}
+
 // Ref: #/components/schemas/StatsSummary
 type StatsSummary struct {
 	Uniques   OptInt     `json:"uniques"`
@@ -1034,6 +1021,8 @@ func (s *StatsSummary) SetDuration(val OptInt) {
 	s.Duration = val
 }
 
+func (*StatsSummary) getWebsiteIDSummaryRes() {}
+
 type UnauthorisedError struct {
 	Error UnauthorisedErrorError `json:"error"`
 }
@@ -1059,13 +1048,8 @@ func (*UnauthorisedError) postUserRes()         {}
 func (*UnauthorisedError) postWebsitesRes()     {}
 
 type UnauthorisedErrorError struct {
-	Description string `json:"description"`
-	Code        int32  `json:"code"`
-}
-
-// GetDescription returns the value of Description.
-func (s *UnauthorisedErrorError) GetDescription() string {
-	return s.Description
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
 }
 
 // GetCode returns the value of Code.
@@ -1073,14 +1057,19 @@ func (s *UnauthorisedErrorError) GetCode() int32 {
 	return s.Code
 }
 
-// SetDescription sets the value of Description.
-func (s *UnauthorisedErrorError) SetDescription(val string) {
-	s.Description = val
+// GetMessage returns the value of Message.
+func (s *UnauthorisedErrorError) GetMessage() string {
+	return s.Message
 }
 
 // SetCode sets the value of Code.
 func (s *UnauthorisedErrorError) SetCode(val int32) {
 	s.Code = val
+}
+
+// SetMessage sets the value of Message.
+func (s *UnauthorisedErrorError) SetMessage(val string) {
+	s.Message = val
 }
 
 // User model for admin.

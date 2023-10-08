@@ -116,18 +116,18 @@ func (s *BadRequestErrorError) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *BadRequestErrorError) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("description")
-		e.Str(s.Description)
-	}
-	{
 		e.FieldStart("code")
 		e.Int32(s.Code)
+	}
+	{
+		e.FieldStart("message")
+		e.Str(s.Message)
 	}
 }
 
 var jsonFieldsNameOfBadRequestErrorError = [2]string{
-	0: "description",
-	1: "code",
+	0: "code",
+	1: "message",
 }
 
 // Decode decodes BadRequestErrorError from json.
@@ -140,20 +140,8 @@ func (s *BadRequestErrorError) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "description":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Description = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"description\"")
-			}
 		case "code":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Int32()
 				s.Code = int32(v)
@@ -163,6 +151,18 @@ func (s *BadRequestErrorError) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"code\"")
+			}
+		case "message":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Message = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"message\"")
 			}
 		default:
 			return errors.Errorf("unexpected field %q", k)
@@ -324,18 +324,18 @@ func (s *ConflictErrorError) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *ConflictErrorError) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("description")
-		e.Str(s.Description)
-	}
-	{
 		e.FieldStart("code")
 		e.Int32(s.Code)
+	}
+	{
+		e.FieldStart("message")
+		e.Str(s.Message)
 	}
 }
 
 var jsonFieldsNameOfConflictErrorError = [2]string{
-	0: "description",
-	1: "code",
+	0: "code",
+	1: "message",
 }
 
 // Decode decodes ConflictErrorError from json.
@@ -348,20 +348,8 @@ func (s *ConflictErrorError) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "description":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Description = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"description\"")
-			}
 		case "code":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Int32()
 				s.Code = int32(v)
@@ -371,6 +359,18 @@ func (s *ConflictErrorError) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"code\"")
+			}
+		case "message":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Message = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"message\"")
 			}
 		default:
 			return errors.Errorf("unexpected field %q", k)
@@ -815,18 +815,18 @@ func (s *InternalServerErrorError) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *InternalServerErrorError) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("description")
-		e.Str(s.Description)
-	}
-	{
 		e.FieldStart("code")
 		e.Int32(s.Code)
+	}
+	{
+		e.FieldStart("message")
+		e.Str(s.Message)
 	}
 }
 
 var jsonFieldsNameOfInternalServerErrorError = [2]string{
-	0: "description",
-	1: "code",
+	0: "code",
+	1: "message",
 }
 
 // Decode decodes InternalServerErrorError from json.
@@ -839,20 +839,8 @@ func (s *InternalServerErrorError) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "description":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Description = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"description\"")
-			}
 		case "code":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Int32()
 				s.Code = int32(v)
@@ -862,6 +850,18 @@ func (s *InternalServerErrorError) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"code\"")
+			}
+		case "message":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Message = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"message\"")
 			}
 		default:
 			return errors.Errorf("unexpected field %q", k)
@@ -1023,18 +1023,18 @@ func (s *NotFoundErrorError) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *NotFoundErrorError) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("description")
-		e.Str(s.Description)
-	}
-	{
 		e.FieldStart("code")
 		e.Int32(s.Code)
+	}
+	{
+		e.FieldStart("message")
+		e.Str(s.Message)
 	}
 }
 
 var jsonFieldsNameOfNotFoundErrorError = [2]string{
-	0: "description",
-	1: "code",
+	0: "code",
+	1: "message",
 }
 
 // Decode decodes NotFoundErrorError from json.
@@ -1047,20 +1047,8 @@ func (s *NotFoundErrorError) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "description":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Description = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"description\"")
-			}
 		case "code":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Int32()
 				s.Code = int32(v)
@@ -1070,6 +1058,18 @@ func (s *NotFoundErrorError) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"code\"")
+			}
+		case "message":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Message = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"message\"")
 			}
 		default:
 			return errors.Errorf("unexpected field %q", k)
@@ -2071,18 +2071,18 @@ func (s *UnauthorisedErrorError) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *UnauthorisedErrorError) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("description")
-		e.Str(s.Description)
-	}
-	{
 		e.FieldStart("code")
 		e.Int32(s.Code)
+	}
+	{
+		e.FieldStart("message")
+		e.Str(s.Message)
 	}
 }
 
 var jsonFieldsNameOfUnauthorisedErrorError = [2]string{
-	0: "description",
-	1: "code",
+	0: "code",
+	1: "message",
 }
 
 // Decode decodes UnauthorisedErrorError from json.
@@ -2095,20 +2095,8 @@ func (s *UnauthorisedErrorError) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "description":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Description = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"description\"")
-			}
 		case "code":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Int32()
 				s.Code = int32(v)
@@ -2118,6 +2106,18 @@ func (s *UnauthorisedErrorError) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"code\"")
+			}
+		case "message":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Message = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"message\"")
 			}
 		default:
 			return errors.Errorf("unexpected field %q", k)

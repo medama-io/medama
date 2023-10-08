@@ -49,7 +49,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -89,7 +89,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -132,7 +132,7 @@ paths:
           description: OK.
         "404":
           description: Not Found
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -156,7 +156,7 @@ paths:
               schema:
                 type: string
               description: "This is date of the current day from midnight, incremented by each page view by unique user."
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -190,7 +190,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "409":
           $ref: "#/components/responses/ConflictError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -217,7 +217,7 @@ paths:
                 $ref: "#/components/schemas/UserGet"
         "404":
           $ref: "#/components/responses/NotFoundError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -253,7 +253,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "409":
           $ref: "#/components/responses/ConflictError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -276,7 +276,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -303,7 +303,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "409":
           $ref: "#/components/responses/ConflictError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -333,7 +333,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "404":
           $ref: "#/components/responses/NotFoundError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -366,7 +366,7 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -389,7 +389,7 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "404":
           $ref: "#/components/responses/NotFoundError"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -412,7 +412,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsActive"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -437,7 +437,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsSummary"
-        default:
+        "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
@@ -470,15 +470,16 @@ components:
                 type: object
                 additionalProperties: false
                 properties:
-                  description:
-                    type: string
                   code:
                     type: integer
                     format: int32
                     default: 404
+                  message:
+                    type: string
                 required:
-                  - description
                   - code
+                  - message
+
             required:
               - error
     BadRequestError:
@@ -492,15 +493,15 @@ components:
                 type: object
                 additionalProperties: false
                 properties:
-                  description:
-                    type: string
                   code:
                     type: integer
                     format: int32
                     default: 400
+                  message:
+                    type: string
                 required:
-                  - description
                   - code
+                  - message
             required:
               - error
     ConflictError:
@@ -514,15 +515,15 @@ components:
                 type: object
                 additionalProperties: false
                 properties:
-                  description:
-                    type: string
                   code:
                     type: integer
                     format: int32
                     default: 409
+                  message:
+                    type: string
                 required:
-                  - description
                   - code
+                  - message
             required:
               - error
     UnauthorisedError:
@@ -536,15 +537,15 @@ components:
                 type: object
                 additionalProperties: false
                 properties:
-                  description:
-                    type: string
                   code:
                     type: integer
                     format: int32
                     default: 401
+                  message:
+                    type: string
                 required:
-                  - description
                   - code
+                  - message
             required:
               - error
     InternalServerError:
@@ -558,15 +559,15 @@ components:
                 type: object
                 additionalProperties: false
                 properties:
-                  description:
-                    type: string
                   code:
                     type: integer
                     format: int32
                     default: 500
+                  message:
+                    type: string
                 required:
-                  - description
                   - code
+                  - message
             required:
               - error
   schemas:

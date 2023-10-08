@@ -15,7 +15,7 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 	return nil, nil
 }
 
-func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (*api.StatsSummary, error) {
+func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (api.GetWebsiteIDSummaryRes, error) {
 	_, err := h.db.GetWebsite(ctx, params.ID)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 	return nil, nil
 }
 
-func (h *Handler) GetWebsitesIDActive(ctx context.Context, params api.GetWebsitesIDActiveParams) (*api.StatsActive, error) {
+func (h *Handler) GetWebsitesIDActive(ctx context.Context, params api.GetWebsitesIDActiveParams) (api.GetWebsitesIDActiveRes, error) {
 	return nil, nil
 }
 

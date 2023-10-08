@@ -34,7 +34,7 @@ type Invoker interface {
 	// This is a ping endpoint to determine if the user is unique or not.
 	//
 	// GET /event/ping
-	GetEventPing(ctx context.Context, params GetEventPingParams) (*GetEventPingOK, error)
+	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
 	// GetUsersUserId invokes get-users-userId operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
@@ -46,7 +46,7 @@ type Invoker interface {
 	// Your GET endpoint.
 	//
 	// GET /website/{id}/summary
-	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (*StatsSummary, error)
+	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error)
 	// GetWebsites invokes get-websites operation.
 	//
 	// Get the list of websites.
@@ -64,7 +64,7 @@ type Invoker interface {
 	// Return the number of active users who triggered a pageview in the past 5 minutes.
 	//
 	// GET /websites/{id}/active
-	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (*StatsActive, error)
+	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error)
 	// PatchUsersUserId invokes patch-users-userId operation.
 	//
 	// Update a user account's details.
@@ -114,12 +114,8 @@ type Client struct {
 	serverURL *url.URL
 	baseClient
 }
-type errorHandler interface {
-	NewError(ctx context.Context, err error) *InternalServerErrorStatusCode
-}
 
 var _ Handler = struct {
-	errorHandler
 	*Client
 }{}
 
@@ -256,12 +252,12 @@ func (c *Client) sendDeleteWebsitesID(ctx context.Context, params DeleteWebsites
 // This is a ping endpoint to determine if the user is unique or not.
 //
 // GET /event/ping
-func (c *Client) GetEventPing(ctx context.Context, params GetEventPingParams) (*GetEventPingOK, error) {
+func (c *Client) GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error) {
 	res, err := c.sendGetEventPing(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetEventPing(ctx context.Context, params GetEventPingParams) (res *GetEventPingOK, err error) {
+func (c *Client) sendGetEventPing(ctx context.Context, params GetEventPingParams) (res GetEventPingRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-event-ping"),
 		semconv.HTTPMethodKey.String("GET"),
@@ -435,12 +431,12 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 // Your GET endpoint.
 //
 // GET /website/{id}/summary
-func (c *Client) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (*StatsSummary, error) {
+func (c *Client) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error) {
 	res, err := c.sendGetWebsiteIDSummary(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (res *StatsSummary, err error) {
+func (c *Client) sendGetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (res GetWebsiteIDSummaryRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-website-id-summary"),
 		semconv.HTTPMethodKey.String("GET"),
@@ -726,12 +722,12 @@ func (c *Client) sendGetWebsitesID(ctx context.Context, params GetWebsitesIDPara
 // Return the number of active users who triggered a pageview in the past 5 minutes.
 //
 // GET /websites/{id}/active
-func (c *Client) GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (*StatsActive, error) {
+func (c *Client) GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error) {
 	res, err := c.sendGetWebsitesIDActive(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (res *StatsActive, err error) {
+func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (res GetWebsitesIDActiveRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-websites-id-active"),
 		semconv.HTTPMethodKey.String("GET"),

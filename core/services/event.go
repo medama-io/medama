@@ -6,7 +6,7 @@ import (
 	"github.com/medama-io/medama/api"
 )
 
-func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (*api.GetEventPingOK, error) {
+func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
 	return nil, nil
 }
 

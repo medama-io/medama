@@ -19,7 +19,7 @@ type Handler interface {
 	// This is a ping endpoint to determine if the user is unique or not.
 	//
 	// GET /event/ping
-	GetEventPing(ctx context.Context, params GetEventPingParams) (*GetEventPingOK, error)
+	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
 	// GetUsersUserId implements get-users-userId operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
@@ -31,7 +31,7 @@ type Handler interface {
 	// Your GET endpoint.
 	//
 	// GET /website/{id}/summary
-	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (*StatsSummary, error)
+	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error)
 	// GetWebsites implements get-websites operation.
 	//
 	// Get the list of websites.
@@ -49,7 +49,7 @@ type Handler interface {
 	// Return the number of active users who triggered a pageview in the past 5 minutes.
 	//
 	// GET /websites/{id}/active
-	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (*StatsActive, error)
+	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error)
 	// PatchUsersUserId implements patch-users-userId operation.
 	//
 	// Update a user account's details.
@@ -92,10 +92,6 @@ type Handler interface {
 	//
 	// POST /websites
 	PostWebsites(ctx context.Context, req OptWebsiteCreate) (PostWebsitesRes, error)
-	// NewError creates *InternalServerErrorStatusCode from error returned by handler.
-	//
-	// Used for common default response.
-	NewError(ctx context.Context, err error) *InternalServerErrorStatusCode
 }
 
 // Server implements http server based on OpenAPI v3 specification and

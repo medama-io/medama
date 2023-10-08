@@ -27,7 +27,7 @@ func (UnimplementedHandler) DeleteWebsitesID(ctx context.Context, params DeleteW
 // This is a ping endpoint to determine if the user is unique or not.
 //
 // GET /event/ping
-func (UnimplementedHandler) GetEventPing(ctx context.Context, params GetEventPingParams) (r *GetEventPingOK, _ error) {
+func (UnimplementedHandler) GetEventPing(ctx context.Context, params GetEventPingParams) (r GetEventPingRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -45,7 +45,7 @@ func (UnimplementedHandler) GetUsersUserId(ctx context.Context, params GetUsersU
 // Your GET endpoint.
 //
 // GET /website/{id}/summary
-func (UnimplementedHandler) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (r *StatsSummary, _ error) {
+func (UnimplementedHandler) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (r GetWebsiteIDSummaryRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -72,7 +72,7 @@ func (UnimplementedHandler) GetWebsitesID(ctx context.Context, params GetWebsite
 // Return the number of active users who triggered a pageview in the past 5 minutes.
 //
 // GET /websites/{id}/active
-func (UnimplementedHandler) GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (r *StatsActive, _ error) {
+func (UnimplementedHandler) GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (r GetWebsitesIDActiveRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -137,12 +137,4 @@ func (UnimplementedHandler) PostUser(ctx context.Context, req OptUserCreate) (r 
 // POST /websites
 func (UnimplementedHandler) PostWebsites(ctx context.Context, req OptWebsiteCreate) (r PostWebsitesRes, _ error) {
 	return r, ht.ErrNotImplemented
-}
-
-// NewError creates *InternalServerErrorStatusCode from error returned by handler.
-//
-// Used for common default response.
-func (UnimplementedHandler) NewError(ctx context.Context, err error) (r *InternalServerErrorStatusCode) {
-	r = new(InternalServerErrorStatusCode)
-	return r
 }

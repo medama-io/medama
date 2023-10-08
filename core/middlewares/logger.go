@@ -15,7 +15,7 @@ func RequestLogger() middleware.Middleware {
 		resp, err := next(req)
 
 		if err != nil {
-			slog.Error("Error", err)
+			slog.ErrorContext(req.Context, "Error", err)
 		} else {
 			attributes := []slog.Attr{
 				slog.String("operation", req.OperationName),
