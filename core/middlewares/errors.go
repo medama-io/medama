@@ -11,9 +11,10 @@ import (
 	"github.com/ogen-go/ogen/ogenerrors"
 )
 
+// ErrorHandler is a middleware that handles any unhandled errors by ogen.
 func ErrorHandler(ctx context.Context, w http.ResponseWriter, r *http.Request, err error) {
 	code := ogenerrors.ErrorCode(err)
-	errMessage := strings.ReplaceAll(errors.Unwrap(err).Error(), "\"", "'")
+	errMessage := strings.ReplaceAll(err.Error(), "\"", "'")
 
 	attributes := []slog.Attr{
 		slog.String("path", r.URL.Path),
@@ -33,7 +34,12 @@ func ErrorHandler(ctx context.Context, w http.ResponseWriter, r *http.Request, e
 	e := jx.GetEncoder()
 	e.ObjStart()
 	e.FieldStart("error")
+	e.ObjStart()
+	e.FieldStart("code")
+	e.Int(code)
+	e.FieldStart("message")
 	e.StrEscape(errMessage)
+	e.ObjEnd()
 	e.ObjEnd()
 
 	_, _ = w.Write(e.Bytes())

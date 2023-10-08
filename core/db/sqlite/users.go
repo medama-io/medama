@@ -46,6 +46,11 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.GetUser, error)
 
 	res, err := c.DB.QueryxContext(ctx, query, id)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			slog.DebugContext(ctx, "user not found", slog.String("id", id))
+			return nil, model.ErrUserNotFound
+		}
+
 		attributes := []slog.Attr{
 			slog.String("id", id),
 			slog.String("error", err.Error()),

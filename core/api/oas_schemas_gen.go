@@ -307,6 +307,7 @@ func (s *NotFoundError) SetError(val NotFoundErrorError) {
 func (*NotFoundError) deleteWebsitesIDRes() {}
 func (*NotFoundError) getUsersUserIdRes()   {}
 func (*NotFoundError) getWebsitesIDRes()    {}
+func (*NotFoundError) patchUsersUserIdRes() {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`

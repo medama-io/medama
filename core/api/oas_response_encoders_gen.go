@@ -395,6 +395,19 @@ func encodePatchUsersUserIdResponse(response PatchUsersUserIdRes, w http.Respons
 
 		return nil
 
+	case *NotFoundError:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(404)
+		span.SetStatus(codes.Error, http.StatusText(404))
+
+		e := jx.GetEncoder()
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
 	case *ConflictError:
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(409)

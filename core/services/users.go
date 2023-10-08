@@ -15,11 +15,11 @@ func (h *Handler) GetUsersUserId(ctx context.Context, params api.GetUsersUserIdP
 	user, err := h.db.GetUser(ctx, params.UserId)
 	if err != nil {
 		if errors.Is(err, model.ErrUserNotFound) {
-			return nil, model.ErrUserNotFound
+			return ErrNotFound(err), nil
 		}
 
 		slog.Log(ctx, slog.LevelError, "get user error", "error", err)
-		return nil, model.ErrInternalServerError
+		return nil, err
 	}
 
 	return &api.UserGet{
@@ -35,7 +35,7 @@ func (h *Handler) PatchUsersUserId(ctx context.Context, req api.OptUserPatch, pa
 	user, err := h.db.GetUser(ctx, params.UserId)
 	if err != nil {
 		if errors.Is(err, model.ErrUserNotFound) {
-			return nil, model.ErrUserNotFound
+			return ErrNotFound(err), nil
 		}
 
 		slog.Log(ctx, slog.LevelError, "get user error", "error", err)
