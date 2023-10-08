@@ -75,8 +75,11 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return err
 	}
 
+	// Setup cache
+	cache := util.NewCache(ctx, s.Server.CacheCleanupInterval)
+
 	// Setup handlers
-	service := services.NewService(db)
+	service := services.NewService(cache, db)
 	mw := []middleware.Middleware{
 		middlewares.Recovery(),
 		middlewares.RequestLogger(),

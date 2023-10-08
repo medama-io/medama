@@ -5,13 +5,19 @@ import (
 
 	"github.com/alexedwards/argon2id"
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/util"
 )
 
-type AuthService struct{}
+type AuthService struct {
+	// Cache used to store session tokens.
+	cache *util.Cache
+}
 
 // NewAuthService returns a new instance of AuthService.
-func NewAuthService() *AuthService {
-	return &AuthService{}
+func NewAuthService(cache *util.Cache) *AuthService {
+	return &AuthService{
+		cache: cache,
+	}
 }
 
 // HashPassword hashes a password using argon.
