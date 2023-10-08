@@ -159,13 +159,8 @@ func (c *Client) DeleteUser(ctx context.Context, id string) error {
 	exec := `--sql
 	DELETE FROM users WHERE id = ?`
 
-	_, err := c.DB.ExecContext(ctx, exec, id)
+	res, err := c.DB.ExecContext(ctx, exec, id)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			slog.DebugContext(ctx, "user not found", slog.String("id", id))
-			return model.ErrUserNotFound
-		}
-
 		attributes := []slog.Attr{
 			slog.String("id", id),
 			slog.String("error", err.Error()),
@@ -174,6 +169,23 @@ func (c *Client) DeleteUser(ctx context.Context, id string) error {
 		slog.LogAttrs(ctx, slog.LevelError, "failed to delete user", attributes...)
 
 		return err
+	}
+
+	// Delete statement will silently succeed if the user does not exist.
+	count, err := res.RowsAffected()
+	if err != nil {
+		attributes := []slog.Attr{
+			slog.String("id", id),
+			slog.String("error", err.Error()),
+		}
+
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get rows affected", attributes...)
+		return err
+	}
+
+	if count == 0 {
+		slog.DebugContext(ctx, "user not found", slog.String("id", id))
+		return model.ErrUserNotFound
 	}
 
 	return nil

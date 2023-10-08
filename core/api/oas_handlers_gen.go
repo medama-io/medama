@@ -78,7 +78,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "DeleteWebsitesID",
-			OperationSummary: "Delete a website.",
+			OperationSummary: "Delete website.",
 			OperationID:      "delete-websites-id",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -184,7 +184,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetEventPing",
-			OperationSummary: "Your GET endpoint",
+			OperationSummary: "Check if user is unique.",
 			OperationID:      "get-event-ping",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -290,7 +290,7 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetUsersUserId",
-			OperationSummary: "Get User Info by User ID",
+			OperationSummary: "Get User Info by User ID.",
 			OperationID:      "get-users-userId",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -340,7 +340,7 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 
 // handleGetWebsiteIDSummaryRequest handles get-website-id-summary operation.
 //
-// Your GET endpoint.
+// Get a summary of the website's stats.
 //
 // GET /website/{id}/summary
 func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -396,7 +396,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDSummary",
-			OperationSummary: "Your GET endpoint",
+			OperationSummary: "Get summary of website stats.",
 			OperationID:      "get-website-id-summary",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -454,7 +454,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 
 // handleGetWebsitesRequest handles get-websites operation.
 //
-// Get the list of websites.
+// Get a list of all websites from the user.
 //
 // GET /websites
 func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -488,24 +488,43 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 			span.SetStatus(codes.Error, stage)
 			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 		}
-		err error
+		err          error
+		opErrContext = ogenerrors.OperationContext{
+			Name: "GetWebsites",
+			ID:   "get-websites",
+		}
 	)
+	params, err := decodeGetWebsitesParams(args, argsEscaped, r)
+	if err != nil {
+		err = &ogenerrors.DecodeParamsError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		recordError("DecodeParams", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
 
 	var response GetWebsitesRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsites",
-			OperationSummary: "Your GET endpoint",
+			OperationSummary: "List of websites.",
 			OperationID:      "get-websites",
 			Body:             nil,
-			Params:           middleware.Parameters{},
-			Raw:              r,
+			Params: middleware.Parameters{
+				{
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+			},
+			Raw: r,
 		}
 
 		type (
 			Request  = struct{}
-			Params   = struct{}
+			Params   = GetWebsitesParams
 			Response = GetWebsitesRes
 		)
 		response, err = middleware.HookMiddleware[
@@ -515,14 +534,14 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 		](
 			m,
 			mreq,
-			nil,
+			unpackGetWebsitesParams,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.GetWebsites(ctx)
+				response, err = s.h.GetWebsites(ctx, params)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.GetWebsites(ctx)
+		response, err = s.h.GetWebsites(ctx, params)
 	}
 	if err != nil {
 		recordError("Internal", err)
@@ -597,7 +616,7 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsitesID",
-			OperationSummary: "Your GET endpoint",
+			OperationSummary: "Get website details.",
 			OperationID:      "get-websites-id",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -703,7 +722,7 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsitesIDActive",
-			OperationSummary: "Your GET endpoint",
+			OperationSummary: "Active users.",
 			OperationID:      "get-websites-id-active",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -824,7 +843,7 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PatchUsersUserId",
-			OperationSummary: "Update User Info by User ID",
+			OperationSummary: "Update User Info by User ID.",
 			OperationID:      "patch-users-userId",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -945,7 +964,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PatchWebsitesID",
-			OperationSummary: "",
+			OperationSummary: "Update website.",
 			OperationID:      "patch-websites-id",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -1066,7 +1085,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostAuthLogin",
-			OperationSummary: "",
+			OperationSummary: "JWT token authentication.",
 			OperationID:      "post-auth-login",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -1116,7 +1135,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 
 // handlePostAuthRefreshRequest handles post-auth-refresh operation.
 //
-// Login to the service and retrieve a JWT token for authentication.
+// Refresh the JWT token.
 //
 // POST /auth/refresh
 func (s *Server) handlePostAuthRefreshRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -1187,7 +1206,7 @@ func (s *Server) handlePostAuthRefreshRequest(args [0]string, argsEscaped bool, 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostAuthRefresh",
-			OperationSummary: "",
+			OperationSummary: "Refresh JWT token.",
 			OperationID:      "post-auth-refresh",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -1308,7 +1327,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostEventHit",
-			OperationSummary: "",
+			OperationSummary: "Send a hit event.",
 			OperationID:      "post-event-hit",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -1435,7 +1454,7 @@ func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostUser",
-			OperationSummary: "Create New User",
+			OperationSummary: "Create new user.",
 			OperationID:      "post-user",
 			Body:             request,
 			Params:           middleware.Parameters{},
@@ -1541,7 +1560,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostWebsites",
-			OperationSummary: "",
+			OperationSummary: "Add website.",
 			OperationID:      "post-websites",
 			Body:             request,
 			Params:           middleware.Parameters{},

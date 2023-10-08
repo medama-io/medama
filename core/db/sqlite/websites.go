@@ -14,13 +14,18 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 	exec := `--sql
 	INSERT INTO websites (id, user_id, hostname, date_created, date_updated) VALUES (?, ?, ?, ?, ?)`
 
-	_, err := c.DB.ExecContext(ctx, exec, website.ID, website.UserID, website.Hostname)
+	_, err := c.DB.ExecContext(ctx, exec, website.ID, website.UserID, website.Hostname, website.DateCreated, website.DateUpdated)
 	if err != nil {
 		var sqliteError sqlite3.Error
 		if errors.As(err, &sqliteError) {
-			if errors.Is(sqliteError.Code, sqlite3.ErrConstraint) {
-				slog.DebugContext(ctx, "website already exists", slog.String("id", website.ID), slog.String("user_id", website.UserID))
+			switch sqliteError.ExtendedCode {
+			// Check for unique hostname constraint
+			case sqlite3.ErrConstraintPrimaryKey:
 				return model.ErrWebsiteExists
+
+				// Check for foreign key constraint
+			case sqlite3.ErrConstraintForeignKey:
+				return model.ErrUserNotFound
 			}
 		}
 
@@ -59,6 +64,11 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 		return nil, err
 	}
 
+	if len(websites) == 0 {
+		slog.DebugContext(ctx, "no websites found", slog.String("user_id", userID))
+		return nil, model.ErrWebsiteNotFound
+	}
+
 	return websites, nil
 }
 
@@ -92,7 +102,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, id string) error {
 	exec := `--sql
 	DELETE FROM websites WHERE id = ?`
 
-	_, err := c.DB.ExecContext(ctx, exec, id)
+	res, err := c.DB.ExecContext(ctx, exec, id)
 	if err != nil {
 		attributes := []slog.Attr{
 			slog.String("id", id),
@@ -102,6 +112,23 @@ func (c *Client) DeleteWebsite(ctx context.Context, id string) error {
 		slog.LogAttrs(ctx, slog.LevelError, "failed to delete website", attributes...)
 
 		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		attributes := []slog.Attr{
+			slog.String("id", id),
+			slog.String("error", err.Error()),
+		}
+
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get rows affected", attributes...)
+
+		return err
+	}
+
+	if rowsAffected == 0 {
+		slog.DebugContext(ctx, "website not found", slog.String("id", id))
+		return model.ErrWebsiteNotFound
 	}
 
 	return nil

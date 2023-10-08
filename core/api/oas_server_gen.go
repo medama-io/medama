@@ -28,16 +28,16 @@ type Handler interface {
 	GetUsersUserId(ctx context.Context, params GetUsersUserIdParams) (GetUsersUserIdRes, error)
 	// GetWebsiteIDSummary implements get-website-id-summary operation.
 	//
-	// Your GET endpoint.
+	// Get a summary of the website's stats.
 	//
 	// GET /website/{id}/summary
 	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error)
 	// GetWebsites implements get-websites operation.
 	//
-	// Get the list of websites.
+	// Get a list of all websites from the user.
 	//
 	// GET /websites
-	GetWebsites(ctx context.Context) (GetWebsitesRes, error)
+	GetWebsites(ctx context.Context, params GetWebsitesParams) (GetWebsitesRes, error)
 	// GetWebsitesID implements get-websites-id operation.
 	//
 	// Get website details for an individual website.
@@ -70,7 +70,7 @@ type Handler interface {
 	PostAuthLogin(ctx context.Context, req OptPostAuthLoginReq, params PostAuthLoginParams) (PostAuthLoginRes, error)
 	// PostAuthRefresh implements post-auth-refresh operation.
 	//
-	// Login to the service and retrieve a JWT token for authentication.
+	// Refresh the JWT token.
 	//
 	// POST /auth/refresh
 	PostAuthRefresh(ctx context.Context, req OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error)

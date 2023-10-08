@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/medama-io/medama/model"
@@ -42,7 +43,8 @@ var _ Handler = (*Client)(nil)
 
 // NewClient returns a new instance of Client with the given configuration.
 func NewClient(host string) (*Client, error) {
-	db, err := sqlx.Connect("sqlite3", host)
+	// Enable foreign key support in sqlite
+	db, err := sqlx.Connect("sqlite3", fmt.Sprintf("file:%s", host))
 	if err != nil {
 		return nil, err
 	}

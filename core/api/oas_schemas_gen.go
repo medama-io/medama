@@ -20,14 +20,16 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 	s.Error = val
 }
 
-func (*BadRequestError) getWebsitesIDRes()    {}
-func (*BadRequestError) getWebsitesRes()      {}
-func (*BadRequestError) patchUsersUserIdRes() {}
-func (*BadRequestError) patchWebsitesIDRes()  {}
-func (*BadRequestError) postAuthLoginRes()    {}
-func (*BadRequestError) postAuthRefreshRes()  {}
-func (*BadRequestError) postUserRes()         {}
-func (*BadRequestError) postWebsitesRes()     {}
+func (*BadRequestError) getWebsiteIDSummaryRes() {}
+func (*BadRequestError) getWebsitesIDActiveRes() {}
+func (*BadRequestError) getWebsitesIDRes()       {}
+func (*BadRequestError) getWebsitesRes()         {}
+func (*BadRequestError) patchUsersUserIdRes()    {}
+func (*BadRequestError) patchWebsitesIDRes()     {}
+func (*BadRequestError) postAuthLoginRes()       {}
+func (*BadRequestError) postAuthRefreshRes()     {}
+func (*BadRequestError) postUserRes()            {}
+func (*BadRequestError) postWebsitesRes()        {}
 
 type BadRequestErrorError struct {
 	Code    int32  `json:"code"`
@@ -304,10 +306,13 @@ func (s *NotFoundError) SetError(val NotFoundErrorError) {
 	s.Error = val
 }
 
-func (*NotFoundError) deleteWebsitesIDRes() {}
-func (*NotFoundError) getUsersUserIdRes()   {}
-func (*NotFoundError) getWebsitesIDRes()    {}
-func (*NotFoundError) patchUsersUserIdRes() {}
+func (*NotFoundError) deleteWebsitesIDRes()    {}
+func (*NotFoundError) getUsersUserIdRes()      {}
+func (*NotFoundError) getWebsiteIDSummaryRes() {}
+func (*NotFoundError) getWebsitesIDActiveRes() {}
+func (*NotFoundError) getWebsitesIDRes()       {}
+func (*NotFoundError) getWebsitesRes()         {}
+func (*NotFoundError) patchUsersUserIdRes()    {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`
@@ -1038,15 +1043,17 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 	s.Error = val
 }
 
-func (*UnauthorisedError) deleteWebsitesIDRes() {}
-func (*UnauthorisedError) getWebsitesIDRes()    {}
-func (*UnauthorisedError) getWebsitesRes()      {}
-func (*UnauthorisedError) patchUsersUserIdRes() {}
-func (*UnauthorisedError) patchWebsitesIDRes()  {}
-func (*UnauthorisedError) postAuthLoginRes()    {}
-func (*UnauthorisedError) postAuthRefreshRes()  {}
-func (*UnauthorisedError) postUserRes()         {}
-func (*UnauthorisedError) postWebsitesRes()     {}
+func (*UnauthorisedError) deleteWebsitesIDRes()    {}
+func (*UnauthorisedError) getWebsiteIDSummaryRes() {}
+func (*UnauthorisedError) getWebsitesIDActiveRes() {}
+func (*UnauthorisedError) getWebsitesIDRes()       {}
+func (*UnauthorisedError) getWebsitesRes()         {}
+func (*UnauthorisedError) patchUsersUserIdRes()    {}
+func (*UnauthorisedError) patchWebsitesIDRes()     {}
+func (*UnauthorisedError) postAuthLoginRes()       {}
+func (*UnauthorisedError) postAuthRefreshRes()     {}
+func (*UnauthorisedError) postUserRes()            {}
+func (*UnauthorisedError) postWebsitesRes()        {}
 
 type UnauthorisedErrorError struct {
 	Code    int32  `json:"code"`

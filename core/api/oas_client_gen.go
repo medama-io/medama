@@ -43,16 +43,16 @@ type Invoker interface {
 	GetUsersUserId(ctx context.Context, params GetUsersUserIdParams) (GetUsersUserIdRes, error)
 	// GetWebsiteIDSummary invokes get-website-id-summary operation.
 	//
-	// Your GET endpoint.
+	// Get a summary of the website's stats.
 	//
 	// GET /website/{id}/summary
 	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error)
 	// GetWebsites invokes get-websites operation.
 	//
-	// Get the list of websites.
+	// Get a list of all websites from the user.
 	//
 	// GET /websites
-	GetWebsites(ctx context.Context) (GetWebsitesRes, error)
+	GetWebsites(ctx context.Context, params GetWebsitesParams) (GetWebsitesRes, error)
 	// GetWebsitesID invokes get-websites-id operation.
 	//
 	// Get website details for an individual website.
@@ -85,7 +85,7 @@ type Invoker interface {
 	PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq, params PostAuthLoginParams) (PostAuthLoginRes, error)
 	// PostAuthRefresh invokes post-auth-refresh operation.
 	//
-	// Login to the service and retrieve a JWT token for authentication.
+	// Refresh the JWT token.
 	//
 	// POST /auth/refresh
 	PostAuthRefresh(ctx context.Context, request OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error)
@@ -428,7 +428,7 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 
 // GetWebsiteIDSummary invokes get-website-id-summary operation.
 //
-// Your GET endpoint.
+// Get a summary of the website's stats.
 //
 // GET /website/{id}/summary
 func (c *Client) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error) {
@@ -557,15 +557,15 @@ func (c *Client) sendGetWebsiteIDSummary(ctx context.Context, params GetWebsiteI
 
 // GetWebsites invokes get-websites operation.
 //
-// Get the list of websites.
+// Get a list of all websites from the user.
 //
 // GET /websites
-func (c *Client) GetWebsites(ctx context.Context) (GetWebsitesRes, error) {
-	res, err := c.sendGetWebsites(ctx)
+func (c *Client) GetWebsites(ctx context.Context, params GetWebsitesParams) (GetWebsitesRes, error) {
+	res, err := c.sendGetWebsites(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetWebsites(ctx context.Context) (res GetWebsitesRes, err error) {
+func (c *Client) sendGetWebsites(ctx context.Context, params GetWebsitesParams) (res GetWebsitesRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-websites"),
 		semconv.HTTPMethodKey.String("GET"),
@@ -609,6 +609,25 @@ func (c *Client) sendGetWebsites(ctx context.Context) (res GetWebsitesRes, err e
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.MeSess.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
 	}
 
 	stage = "SendRequest"
@@ -1122,7 +1141,7 @@ func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLogin
 
 // PostAuthRefresh invokes post-auth-refresh operation.
 //
-// Login to the service and retrieve a JWT token for authentication.
+// Refresh the JWT token.
 //
 // POST /auth/refresh
 func (c *Client) PostAuthRefresh(ctx context.Context, request OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error) {

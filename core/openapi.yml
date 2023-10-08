@@ -1,22 +1,36 @@
 openapi: 3.0.3
 info:
+  title: Medama Analytics API
   version: 0.1.0
-  title: medama
-  description: Medama Analytics
+  description: |
+    This is the Medama Analytics OpenAPI 3.0 specification.
   contact:
     email: hello@ayuhito.com
     name: Medama Analytics
-    url: medama.io/contact
+    url: https://medama.io/contact
   license:
-    url: "https://github.com/fontsource/fontsource/blob/main/LICENSE"
+    url: "https://github.com/ayuhito/medama/blob/main/core/LICENSE"
     name: BUSL 1.1
 servers:
   - url: "http://localhost:8080"
     description: Local Server
+tags:
+  - name: auth
+    description: Authentication
+  - name: event
+    description: Page Events
+  - name: user
+    description: User Management
+  - name: website
+    description: Website Management
+  - name: stats
+    description: Statistics
 paths:
   /auth/login:
     post:
-      summary: ""
+      tags:
+        - auth
+      summary: JWT token authentication.
       description: Login to the service and retrieve a JWT token for authentication.
       operationId: post-auth-login
       parameters:
@@ -56,8 +70,10 @@ paths:
           description: Local Server
   /auth/refresh:
     post:
-      summary: ""
-      description: Login to the service and retrieve a JWT token for authentication.
+      tags:
+        - auth
+      summary: Refresh JWT token.
+      description: Refresh the JWT token.
       operationId: post-auth-refresh
       parameters:
         - name: _me_sess
@@ -96,7 +112,9 @@ paths:
           description: Local Server
   /event/hit:
     post:
-      summary: ""
+      tags:
+        - event
+      summary: Send a hit event.
       description: Send a hit event to register a user view.
       operationId: post-event-hit
       parameters:
@@ -139,13 +157,15 @@ paths:
           description: Local Server
   /event/ping:
     get:
-      summary: Your GET endpoint
+      tags:
+        - event
+      summary: Check if user is unique.
       description: This is a ping endpoint to determine if the user is unique or not.
       operationId: get-event-ping
       parameters:
         - name: Last-Modified
           in: header
-          description: "If this exists, then user exists in cache and is not a unique user."
+          description: If this exists, then user exists in cache and is not a unique user.
           schema:
             type: string
       responses:
@@ -155,7 +175,7 @@ paths:
             Last-Modified:
               schema:
                 type: string
-              description: "This is date of the current day from midnight, incremented by each page view by unique user."
+              description: This is date of the current day from midnight, incremented by each page view by unique user.
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
@@ -163,7 +183,9 @@ paths:
           description: Local Server
   /users:
     post:
-      summary: Create New User
+      tags:
+        - user
+      summary: Create new user.
       description: Create a new user.
       operationId: post-user
       requestBody:
@@ -197,7 +219,9 @@ paths:
           description: Local Server
   "/users/{userId}":
     get:
-      summary: Get User Info by User ID
+      tags:
+        - user
+      summary: Get User Info by User ID.
       description: Retrieve the information of the user with the matching user ID.
       operationId: get-users-userId
       parameters:
@@ -223,13 +247,15 @@ paths:
         - url: "http://localhost:8080"
           description: Local Server
     patch:
-      summary: Update User Info by User ID
+      tags:
+        - user
+      summary: Update User Info by User ID.
       description: Update a user account's details.
       operationId: patch-users-userId
       parameters:
         - name: userId
           in: path
-          description: Id of an existing user.
+          description: ID of an existing user.
           required: true
           schema:
             type: string
@@ -262,9 +288,13 @@ paths:
           description: Local Server
   /websites:
     get:
-      summary: Your GET endpoint
-      description: Get the list of websites.
+      tags:
+        - website
+      summary: List of websites.
+      description: Get a list of all websites from the user.
       operationId: get-websites
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
       responses:
         "200":
           description: Returns a list of websites.
@@ -278,13 +308,17 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
         - url: "http://localhost:8080"
           description: Local Server
     post:
-      summary: ""
+      tags:
+        - website
+      summary: Add website.
       description: Add a new website.
       operationId: post-websites
       requestBody:
@@ -312,7 +346,9 @@ paths:
           description: Local Server
   "/websites/{id}":
     get:
-      summary: Your GET endpoint
+      tags:
+        - website
+      summary: Get website details.
       description: Get website details for an individual website.
       operationId: get-websites-id
       parameters:
@@ -341,7 +377,9 @@ paths:
         - url: "http://localhost:8080"
           description: Local Server
     patch:
-      summary: ""
+      tags:
+        - website
+      summary: Update website.
       description: Update a website's information.
       operationId: patch-websites-id
       parameters:
@@ -374,7 +412,9 @@ paths:
         - url: "http://localhost:8080"
           description: Local Server
     delete:
-      summary: "Delete a website."
+      tags:
+        - website
+      summary: Delete website.
       description: Delete a website.
       operationId: delete-websites-id
       parameters:
@@ -398,7 +438,9 @@ paths:
           description: Local Server
   "/websites/{id}/active":
     get:
-      summary: Your GET endpoint
+      tags:
+        - stats
+      summary: Active users.
       description: Return the number of active users who triggered a pageview in the past 5 minutes.
       operationId: get-websites-id-active
       parameters:
@@ -414,6 +456,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsActive"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
@@ -421,8 +469,10 @@ paths:
           description: Local Server
   "/website/{id}/summary":
     get:
-      summary: Your GET endpoint
-      description: ""
+      tags:
+        - stats
+      summary: Get summary of website stats.
+      description: "Get a summary of the website's stats."
       operationId: get-website-id-summary
       parameters:
         - $ref: "#/components/parameters/PeriodStart"
@@ -439,6 +489,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsSummary"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
@@ -446,6 +502,12 @@ paths:
           description: Local Server
 components:
   parameters:
+    SessionAuth:
+      name: _me_sess
+      in: cookie
+      description: Signed JWT token for authentication.
+      schema:
+        type: string
     PeriodStart:
       name: start
       in: query
@@ -674,7 +736,7 @@ components:
       properties:
         id:
           type: string
-          description: "Unique identifier for the website.\r\n"
+          description: "Unique identifier for the website."
           format: uuidv7
         name:
           type: string

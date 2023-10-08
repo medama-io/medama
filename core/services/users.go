@@ -18,7 +18,6 @@ func (h *Handler) GetUsersUserId(ctx context.Context, params api.GetUsersUserIdP
 			return ErrNotFound(err), nil
 		}
 
-		slog.Log(ctx, slog.LevelError, "get user error", "error", err)
 		return nil, err
 	}
 
@@ -38,8 +37,7 @@ func (h *Handler) PatchUsersUserId(ctx context.Context, req api.OptUserPatch, pa
 			return ErrNotFound(err), nil
 		}
 
-		slog.Log(ctx, slog.LevelError, "get user error", "error", err)
-		return nil, model.ErrInternalServerError
+		return nil, err
 	}
 
 	// Update values
@@ -119,6 +117,11 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 
 	err = h.db.CreateUser(ctx, user)
 	if err != nil {
+		if errors.Is(err, model.ErrUserExists) {
+			slog.WarnContext(ctx, "user already exists when creating user", slog.String("id", id))
+			return ErrConflict(err), nil
+		}
+
 		return nil, err
 	}
 

@@ -51,7 +51,7 @@ func TestCreateUserDuplicate(t *testing.T) {
 	// Should give a duplicate error for id
 	userCreate.Email = "id2@example.com"
 	err = client.CreateUser(ctx, userCreate)
-	assert.Error(err, model.ErrUserExists)
+	assert.ErrorIs(err, model.ErrUserExists)
 
 	// Test unique email
 	userCreate.ID = "test2"
@@ -62,29 +62,17 @@ func TestCreateUserDuplicate(t *testing.T) {
 	// Should give a duplicate error for email
 	userCreate.ID = "test3"
 	err = client.CreateUser(ctx, userCreate)
-	assert.Error(err, model.ErrUserExists)
+	assert.ErrorIs(err, model.ErrUserExists)
 }
 
 func TestGetUser(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	userCreate := &model.User{
-		ID:          "test",
-		Email:       "test@example.com",
-		Password:    "password",
-		Language:    "en",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
-
-	err := client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
-
-	user, err := client.GetUser(ctx, "test")
+	user, err := client.GetUser(ctx, "test1")
 	assert.NoError(err)
 	assert.NotNil(user)
-	assert.Equal("test", user.ID)
-	assert.Equal("test@example.com", user.Email)
+	assert.Equal("test1", user.ID)
+	assert.Equal("test1@example.com", user.Email)
 	assert.Equal("en", user.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
@@ -93,31 +81,19 @@ func TestGetUser(t *testing.T) {
 func TestGetUserNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	user, err := client.GetUser(ctx, "test")
-	assert.Error(err, model.ErrUserNotFound)
+	user, err := client.GetUser(ctx, "doesnotexist")
+	assert.ErrorIs(err, model.ErrUserNotFound)
 	assert.Nil(user)
 }
 
 func TestGetUserByEmail(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	userCreate := &model.User{
-		ID:          "test",
-		Email:       "test@example.com",
-		Password:    "password",
-		Language:    "en",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
-
-	err := client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
-
-	user, err := client.GetUserByEmail(ctx, "test@example.com")
+	user, err := client.GetUserByEmail(ctx, "test1@example.com")
 	assert.NoError(err)
 	assert.NotNil(user)
-	assert.Equal("test", user.ID)
-	assert.Equal("test@example.com", user.Email)
+	assert.Equal("test1", user.ID)
+	assert.Equal("test1@example.com", user.Email)
 	assert.Equal("en", user.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
@@ -127,88 +103,65 @@ func TestGetUserByEmailNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	user, err := client.GetUserByEmail(ctx, "doesnotexist@example.com")
-	assert.Error(err, model.ErrUserNotFound)
+	assert.ErrorIs(err, model.ErrUserNotFound)
 	assert.Nil(user)
 }
 
 func TestUpdateUserEmail(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	userCreate := &model.User{
-		ID:          "test",
-		Email:       "test1@example.com",
-		Password:    "password",
-		Language:    "en",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
-
-	err := client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
-
-	err = client.UpdateUserEmail(ctx, "test", "test2@example.com", 3)
-	assert.NoError(err)
-
-	user, err := client.GetUser(ctx, "test")
+	user, err := client.GetUser(ctx, "test1")
 	assert.NoError(err)
 	assert.NotNil(user)
-	assert.Equal("test", user.ID)
-	assert.Equal("test2@example.com", user.Email)
+	assert.Equal("test1", user.ID)
+	assert.Equal("test1@example.com", user.Email)
+
+	err = client.UpdateUserEmail(ctx, "test1", "testUpdate1@example.com", 3)
+	assert.NoError(err)
+
+	user, err = client.GetUser(ctx, "test1")
+	assert.NoError(err)
+	assert.NotNil(user)
+	assert.Equal("test1", user.ID)
+	assert.Equal("testUpdate1@example.com", user.Email)
 	assert.Equal(int64(3), user.DateUpdated)
 }
 
 func TestUpdateUserPassword(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	userCreate := &model.User{
-		ID:          "test",
-		Email:       "test@example.com",
-		Password:    "password1",
-		Language:    "en",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
-
-	err := client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
-
-	err = client.UpdateUserPassword(ctx, "test", "password2", 3)
+	err := client.UpdateUserPassword(ctx, "test1", "password2", 3)
 	assert.NoError(err)
 
 	// Custom query since password is not returned by GetUser
 	var password string
 	query := `--sql
 	SELECT password FROM users WHERE id = ?`
-	err = client.DB.QueryRowxContext(ctx, query, "test").Scan(&password)
+	err = client.DB.QueryRowxContext(ctx, query, "test1").Scan(&password)
 	assert.NoError(err)
 	assert.Equal("password2", password)
 
-	user, err := client.GetUser(ctx, "test")
+	user, err := client.GetUser(ctx, "test1")
 	assert.NoError(err)
 	assert.NotNil(user)
-	assert.Equal("test", user.ID)
+	assert.Equal("test1", user.ID)
 	assert.Equal(int64(3), user.DateUpdated)
 }
 
 func TestDeleteUser(t *testing.T) {
+	assert, ctx, client := SetupDatabaseWithUsers(t)
+
+	err := client.DeleteUser(ctx, "test1")
+	assert.NoError(err)
+
+	user, err := client.GetUser(ctx, "test1")
+	assert.ErrorIs(err, model.ErrUserNotFound)
+	assert.Nil(user)
+}
+
+func TestDeleteUserNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	userCreate := &model.User{
-		ID:          "test",
-		Email:       "test@example.com",
-		Password:    "password",
-		Language:    "en",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
-
-	err := client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
-
-	err = client.DeleteUser(ctx, "test")
-	assert.NoError(err)
-
-	user, err := client.GetUser(ctx, "test")
-	assert.Error(err, model.ErrUserNotFound)
-	assert.Nil(user)
+	err := client.DeleteUser(ctx, "doesnotexist")
+	assert.ErrorIs(err, model.ErrUserNotFound)
 }

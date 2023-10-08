@@ -380,6 +380,69 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 	return params, nil
 }
 
+// GetWebsitesParams is parameters of get-websites operation.
+type GetWebsitesParams struct {
+	// Signed JWT token for authentication.
+	MeSess OptString
+}
+
+func unpackGetWebsitesParams(packed middleware.Parameters) (params GetWebsitesParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		if v, ok := packed[key]; ok {
+			params.MeSess = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeGetWebsitesParams(args [0]string, argsEscaped bool, r *http.Request) (params GetWebsitesParams, _ error) {
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotMeSessVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotMeSessVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.MeSess.SetTo(paramsDotMeSessVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // GetWebsitesIDParams is parameters of get-websites-id operation.
 type GetWebsitesIDParams struct {
 	// Unique identifier for a website.
@@ -513,7 +576,7 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 
 // PatchUsersUserIdParams is parameters of patch-users-userId operation.
 type PatchUsersUserIdParams struct {
-	// Id of an existing user.
+	// ID of an existing user.
 	UserId string
 }
 

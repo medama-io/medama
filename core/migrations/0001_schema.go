@@ -14,10 +14,10 @@ func Up0001(c *sqlite.Client) error {
 	// Create users table
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS users (
-		id VARCHAR(255) PRIMARY KEY,
-		email VARCHAR(255) NOT NULL,
-		password VARCHAR(255) NOT NULL,
-		language VARCHAR(255) NOT NULL,
+		id TEXT PRIMARY KEY,
+		email TEXT NOT NULL,
+		password TEXT NOT NULL,
+		language TEXT NOT NULL,
 		date_created INTEGER NOT NULL,
 		date_updated INTEGER NOT NULL,
 		UNIQUE(email)
@@ -35,9 +35,9 @@ func Up0001(c *sqlite.Client) error {
 	// Create websites table
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS websites (
-		id VARCHAR(255) PRIMARY KEY,
-		user_id VARCHAR(255) NOT NULL,
-		hostname VARCHAR(255) NOT NULL,
+		id TEXT PRIMARY KEY,
+		user_id TEXT NOT NULL,
+		hostname TEXT NOT NULL,
 		date_created INTEGER NOT NULL,
 		date_updated INTEGER NOT NULL,
 		FOREIGN KEY(user_id) REFERENCES users(id),

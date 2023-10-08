@@ -5,21 +5,21 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - go run ./cmd/ {{.CLI_ARGS}} -debug
+      - go run -tags "sqlite_foreign_keys" ./cmd/ {{.CLI_ARGS}} -debug
     env:
       DEBUG: "true"
 
   build:
     deps: [generate]
     cmds:
-      - go build -o ./main ./cmd/
+      - go build -tags "sqlite_foreign_keys" -o ./main ./cmd/
     env:
       CGO_ENABLED: "1"
 
   release:
     deps: [generate]
     cmds:
-      - go build -o ./main -ldflags "-s -w" ./cmd/main.go
+      - go build -tags "sqlite_foreign_keys" -o ./main -ldflags "-s -w" ./cmd/
     env:
       CGO_ENABLED: "1"
 
@@ -49,4 +49,7 @@ tasks:
 
   test:
     cmds:
-      - go test -v ./...
+      - go test -v ./... -tags "sqlite_foreign_keys"
+    env:
+      GOEXPERIMENT: loopvar
+      CGO_ENABLED: "1"

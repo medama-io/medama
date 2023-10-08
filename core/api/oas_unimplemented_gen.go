@@ -42,7 +42,7 @@ func (UnimplementedHandler) GetUsersUserId(ctx context.Context, params GetUsersU
 
 // GetWebsiteIDSummary implements get-website-id-summary operation.
 //
-// Your GET endpoint.
+// Get a summary of the website's stats.
 //
 // GET /website/{id}/summary
 func (UnimplementedHandler) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (r GetWebsiteIDSummaryRes, _ error) {
@@ -51,10 +51,10 @@ func (UnimplementedHandler) GetWebsiteIDSummary(ctx context.Context, params GetW
 
 // GetWebsites implements get-websites operation.
 //
-// Get the list of websites.
+// Get a list of all websites from the user.
 //
 // GET /websites
-func (UnimplementedHandler) GetWebsites(ctx context.Context) (r GetWebsitesRes, _ error) {
+func (UnimplementedHandler) GetWebsites(ctx context.Context, params GetWebsitesParams) (r GetWebsitesRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -105,7 +105,7 @@ func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req OptPostAuthLo
 
 // PostAuthRefresh implements post-auth-refresh operation.
 //
-// Login to the service and retrieve a JWT token for authentication.
+// Refresh the JWT token.
 //
 // POST /auth/refresh
 func (UnimplementedHandler) PostAuthRefresh(ctx context.Context, req OptPostAuthRefreshReq, params PostAuthRefreshParams) (r PostAuthRefreshRes, _ error) {
