@@ -1014,7 +1014,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 
 // handlePostAuthLoginRequest handles post-auth-login operation.
 //
-// Login to the service and retrieve a JWT token for authentication.
+// Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
 func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -1085,14 +1085,14 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostAuthLogin",
-			OperationSummary: "JWT token authentication.",
+			OperationSummary: "Session token authentication.",
 			OperationID:      "post-auth-login",
 			Body:             request,
 			Params: middleware.Parameters{
 				{
-					Name: "jwt",
+					Name: "_me_sess",
 					In:   "cookie",
-				}: params.Jwt,
+				}: params.MeSess,
 			},
 			Raw: r,
 		}
@@ -1135,7 +1135,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 
 // handlePostAuthRefreshRequest handles post-auth-refresh operation.
 //
-// Refresh the JWT token.
+// Refresh the session token.
 //
 // POST /auth/refresh
 func (s *Server) handlePostAuthRefreshRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -1206,7 +1206,7 @@ func (s *Server) handlePostAuthRefreshRequest(args [0]string, argsEscaped bool, 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostAuthRefresh",
-			OperationSummary: "Refresh JWT token.",
+			OperationSummary: "Refresh session token.",
 			OperationID:      "post-auth-refresh",
 			Body:             request,
 			Params: middleware.Parameters{

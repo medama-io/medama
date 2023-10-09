@@ -451,7 +451,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						case "POST":
 							// Leaf: PostAuthLogin
 							r.name = "PostAuthLogin"
-							r.summary = "JWT token authentication."
+							r.summary = "Session token authentication."
 							r.operationID = "post-auth-login"
 							r.pathPattern = "/auth/login"
 							r.args = args
@@ -473,7 +473,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						case "POST":
 							// Leaf: PostAuthRefresh
 							r.name = "PostAuthRefresh"
-							r.summary = "Refresh JWT token."
+							r.summary = "Refresh session token."
 							r.operationID = "post-auth-refresh"
 							r.pathPattern = "/auth/refresh"
 							r.args = args

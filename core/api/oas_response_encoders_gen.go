@@ -592,6 +592,25 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
 	case *PostAuthLoginOK:
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Set-Cookie" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Set-Cookie",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.SetCookie.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Set-Cookie header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
@@ -644,6 +663,25 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 func encodePostAuthRefreshResponse(response PostAuthRefreshRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
 	case *PostAuthRefreshOK:
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Set-Cookie" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Set-Cookie",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.SetCookie.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Set-Cookie header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 

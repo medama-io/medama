@@ -8,6 +8,7 @@ tasks:
       - go run -tags "sqlite_foreign_keys" ./cmd/ {{.CLI_ARGS}} -debug
     env:
       DEBUG: "true"
+      GOEXPERIMENT: loopvar
 
   build:
     deps: [generate]
@@ -15,6 +16,7 @@ tasks:
       - go build -tags "sqlite_foreign_keys" -o ./main ./cmd/
     env:
       CGO_ENABLED: "1"
+      GOEXPERIMENT: loopvar
 
   release:
     deps: [generate]
@@ -22,6 +24,7 @@ tasks:
       - go build -tags "sqlite_foreign_keys" -o ./main -ldflags "-s -w" ./cmd/
     env:
       CGO_ENABLED: "1"
+      GOEXPERIMENT: loopvar
 
   generate:
     aliases: [gen]
@@ -48,8 +51,9 @@ tasks:
       - go tool cover -html=coverage.out
 
   test:
+    deps: [generate]
     cmds:
       - go test -v ./... -tags "sqlite_foreign_keys"
     env:
-      GOEXPERIMENT: loopvar
       CGO_ENABLED: "1"
+      GOEXPERIMENT: loopvar

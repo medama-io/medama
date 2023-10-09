@@ -892,7 +892,19 @@ func (o OptWebsitePatch) Or(d WebsitePatch) WebsitePatch {
 }
 
 // PostAuthLoginOK is response for PostAuthLogin operation.
-type PostAuthLoginOK struct{}
+type PostAuthLoginOK struct {
+	SetCookie OptString
+}
+
+// GetSetCookie returns the value of SetCookie.
+func (s *PostAuthLoginOK) GetSetCookie() OptString {
+	return s.SetCookie
+}
+
+// SetSetCookie sets the value of SetCookie.
+func (s *PostAuthLoginOK) SetSetCookie(val OptString) {
+	s.SetCookie = val
+}
 
 func (*PostAuthLoginOK) postAuthLoginRes() {}
 
@@ -922,7 +934,19 @@ func (s *PostAuthLoginReq) SetPassword(val string) {
 }
 
 // PostAuthRefreshOK is response for PostAuthRefresh operation.
-type PostAuthRefreshOK struct{}
+type PostAuthRefreshOK struct {
+	SetCookie OptString
+}
+
+// GetSetCookie returns the value of SetCookie.
+func (s *PostAuthRefreshOK) GetSetCookie() OptString {
+	return s.SetCookie
+}
+
+// SetSetCookie sets the value of SetCookie.
+func (s *PostAuthRefreshOK) SetSetCookie(val OptString) {
+	s.SetCookie = val
+}
 
 func (*PostAuthRefreshOK) postAuthRefreshRes() {}
 

@@ -40,7 +40,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 	return nil
 }
 
-func (c *Client) GetUser(ctx context.Context, id string) (*model.GetUser, error) {
+func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	query := `--sql
 	SELECT id, email, language, date_created, date_updated FROM users WHERE id = ?`
 
@@ -63,7 +63,7 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.GetUser, error)
 	defer res.Close()
 
 	if res.Next() {
-		user := &model.GetUser{}
+		user := &model.User{}
 
 		err := res.StructScan(user)
 		if err != nil {
@@ -76,9 +76,9 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.GetUser, error)
 	return nil, model.ErrUserNotFound
 }
 
-func (c *Client) GetUserByEmail(ctx context.Context, email string) (*model.GetUser, error) {
+func (c *Client) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
 	query := `--sql
-	SELECT id, email, language, date_created, date_updated FROM users WHERE email = ?`
+	SELECT id, email, password, language, date_created, date_updated FROM users WHERE email = ?`
 
 	res, err := c.DB.QueryxContext(ctx, query, email)
 	if err != nil {
@@ -94,7 +94,7 @@ func (c *Client) GetUserByEmail(ctx context.Context, email string) (*model.GetUs
 	defer res.Close()
 
 	if res.Next() {
-		user := &model.GetUser{}
+		user := &model.User{}
 
 		err := res.StructScan(user)
 		if err != nil {

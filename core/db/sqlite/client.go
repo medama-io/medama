@@ -13,9 +13,9 @@ type Handler interface {
 	// CreateUser adds a new user to the database.
 	CreateUser(ctx context.Context, user *model.User) error
 	// GetUser retrieves a user from the database by id.
-	GetUser(ctx context.Context, id string) (*model.GetUser, error)
+	GetUser(ctx context.Context, id string) (*model.User, error)
 	// GetUserByEmail retrieves a user from the database by email.
-	GetUserByEmail(ctx context.Context, email string) (*model.GetUser, error)
+	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
 	// UpdateUserEmail updates a user's email in the database.
 	UpdateUserEmail(ctx context.Context, id string, email string, dateUpdated int64) error
 	// UpdateUserPassword updates a user's password in the database.

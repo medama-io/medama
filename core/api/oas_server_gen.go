@@ -64,13 +64,13 @@ type Handler interface {
 	PatchWebsitesID(ctx context.Context, req OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
 	// PostAuthLogin implements post-auth-login operation.
 	//
-	// Login to the service and retrieve a JWT token for authentication.
+	// Login to the service and retrieve a session token for authentication.
 	//
 	// POST /auth/login
 	PostAuthLogin(ctx context.Context, req OptPostAuthLoginReq, params PostAuthLoginParams) (PostAuthLoginRes, error)
 	// PostAuthRefresh implements post-auth-refresh operation.
 	//
-	// Refresh the JWT token.
+	// Refresh the session token.
 	//
 	// POST /auth/refresh
 	PostAuthRefresh(ctx context.Context, req OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error)

@@ -1414,7 +1414,46 @@ func decodePostAuthLoginResponse(resp *http.Response) (res PostAuthLoginRes, _ e
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
-		return &PostAuthLoginOK{}, nil
+		var wrapper PostAuthLoginOK
+		h := uri.NewHeaderDecoder(resp.Header)
+		// Parse "Set-Cookie" header.
+		{
+			cfg := uri.HeaderParameterDecodingConfig{
+				Name:    "Set-Cookie",
+				Explode: false,
+			}
+			if err := func() error {
+				if err := h.HasParam(cfg); err == nil {
+					if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+						var wrapperDotSetCookieVal string
+						if err := func() error {
+							val, err := d.DecodeValue()
+							if err != nil {
+								return err
+							}
+
+							c, err := conv.ToString(val)
+							if err != nil {
+								return err
+							}
+
+							wrapperDotSetCookieVal = c
+							return nil
+						}(); err != nil {
+							return err
+						}
+						wrapper.SetCookie.SetTo(wrapperDotSetCookieVal)
+						return nil
+					}); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return res, errors.Wrap(err, "parse Set-Cookie header")
+			}
+		}
+		return &wrapper, nil
 	case 400:
 		// Code 400.
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
@@ -1528,7 +1567,46 @@ func decodePostAuthRefreshResponse(resp *http.Response) (res PostAuthRefreshRes,
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
-		return &PostAuthRefreshOK{}, nil
+		var wrapper PostAuthRefreshOK
+		h := uri.NewHeaderDecoder(resp.Header)
+		// Parse "Set-Cookie" header.
+		{
+			cfg := uri.HeaderParameterDecodingConfig{
+				Name:    "Set-Cookie",
+				Explode: false,
+			}
+			if err := func() error {
+				if err := h.HasParam(cfg); err == nil {
+					if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+						var wrapperDotSetCookieVal string
+						if err := func() error {
+							val, err := d.DecodeValue()
+							if err != nil {
+								return err
+							}
+
+							c, err := conv.ToString(val)
+							if err != nil {
+								return err
+							}
+
+							wrapperDotSetCookieVal = c
+							return nil
+						}(); err != nil {
+							return err
+						}
+						wrapper.SetCookie.SetTo(wrapperDotSetCookieVal)
+						return nil
+					}); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return res, errors.Wrap(err, "parse Set-Cookie header")
+			}
+		}
+		return &wrapper, nil
 	case 400:
 		// Code 400.
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))

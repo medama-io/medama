@@ -382,7 +382,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 
 // GetWebsitesParams is parameters of get-websites operation.
 type GetWebsitesParams struct {
-	// Signed JWT token for authentication.
+	// Session token for authentication.
 	MeSess OptString
 }
 
@@ -708,18 +708,18 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 
 // PostAuthLoginParams is parameters of post-auth-login operation.
 type PostAuthLoginParams struct {
-	// Signed JWT token for authentication.
-	Jwt OptString
+	// Session token for authentication.
+	MeSess OptString
 }
 
 func unpackPostAuthLoginParams(packed middleware.Parameters) (params PostAuthLoginParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "jwt",
+			Name: "_me_sess",
 			In:   "cookie",
 		}
 		if v, ok := packed[key]; ok {
-			params.Jwt = v.(OptString)
+			params.MeSess = v.(OptString)
 		}
 	}
 	return params
@@ -727,15 +727,15 @@ func unpackPostAuthLoginParams(packed middleware.Parameters) (params PostAuthLog
 
 func decodePostAuthLoginParams(args [0]string, argsEscaped bool, r *http.Request) (params PostAuthLoginParams, _ error) {
 	c := uri.NewCookieDecoder(r)
-	// Decode cookie: jwt.
+	// Decode cookie: _me_sess.
 	if err := func() error {
 		cfg := uri.CookieParameterDecodingConfig{
-			Name:    "jwt",
+			Name:    "_me_sess",
 			Explode: true,
 		}
 		if err := c.HasParam(cfg); err == nil {
 			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotJwtVal string
+				var paramsDotMeSessVal string
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -747,12 +747,12 @@ func decodePostAuthLoginParams(args [0]string, argsEscaped bool, r *http.Request
 						return err
 					}
 
-					paramsDotJwtVal = c
+					paramsDotMeSessVal = c
 					return nil
 				}(); err != nil {
 					return err
 				}
-				params.Jwt.SetTo(paramsDotJwtVal)
+				params.MeSess.SetTo(paramsDotMeSessVal)
 				return nil
 			}); err != nil {
 				return err
@@ -761,7 +761,7 @@ func decodePostAuthLoginParams(args [0]string, argsEscaped bool, r *http.Request
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "jwt",
+			Name: "_me_sess",
 			In:   "cookie",
 			Err:  err,
 		}
@@ -771,7 +771,7 @@ func decodePostAuthLoginParams(args [0]string, argsEscaped bool, r *http.Request
 
 // PostAuthRefreshParams is parameters of post-auth-refresh operation.
 type PostAuthRefreshParams struct {
-	// Signed JWT token for authentication.
+	// Session token for authentication.
 	MeSess OptString
 }
 

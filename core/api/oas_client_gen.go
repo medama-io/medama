@@ -79,13 +79,13 @@ type Invoker interface {
 	PatchWebsitesID(ctx context.Context, request OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
 	// PostAuthLogin invokes post-auth-login operation.
 	//
-	// Login to the service and retrieve a JWT token for authentication.
+	// Login to the service and retrieve a session token for authentication.
 	//
 	// POST /auth/login
 	PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq, params PostAuthLoginParams) (PostAuthLoginRes, error)
 	// PostAuthRefresh invokes post-auth-refresh operation.
 	//
-	// Refresh the JWT token.
+	// Refresh the session token.
 	//
 	// POST /auth/refresh
 	PostAuthRefresh(ctx context.Context, request OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error)
@@ -1031,7 +1031,7 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 
 // PostAuthLogin invokes post-auth-login operation.
 //
-// Login to the service and retrieve a JWT token for authentication.
+// Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
 func (c *Client) PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq, params PostAuthLoginParams) (PostAuthLoginRes, error) {
@@ -1107,14 +1107,14 @@ func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLogin
 	stage = "EncodeCookieParams"
 	cookie := uri.NewCookieEncoder(r)
 	{
-		// Encode "jwt" parameter.
+		// Encode "_me_sess" parameter.
 		cfg := uri.CookieParameterEncodingConfig{
-			Name:    "jwt",
+			Name:    "_me_sess",
 			Explode: true,
 		}
 
 		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Jwt.Get(); ok {
+			if val, ok := params.MeSess.Get(); ok {
 				return e.EncodeValue(conv.StringToString(val))
 			}
 			return nil
@@ -1141,7 +1141,7 @@ func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLogin
 
 // PostAuthRefresh invokes post-auth-refresh operation.
 //
-// Refresh the JWT token.
+// Refresh the session token.
 //
 // POST /auth/refresh
 func (c *Client) PostAuthRefresh(ctx context.Context, request OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error) {

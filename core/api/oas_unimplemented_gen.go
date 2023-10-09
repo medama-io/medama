@@ -96,7 +96,7 @@ func (UnimplementedHandler) PatchWebsitesID(ctx context.Context, req OptWebsiteP
 
 // PostAuthLogin implements post-auth-login operation.
 //
-// Login to the service and retrieve a JWT token for authentication.
+// Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
 func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req OptPostAuthLoginReq, params PostAuthLoginParams) (r PostAuthLoginRes, _ error) {
@@ -105,7 +105,7 @@ func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req OptPostAuthLo
 
 // PostAuthRefresh implements post-auth-refresh operation.
 //
-// Refresh the JWT token.
+// Refresh the session token.
 //
 // POST /auth/refresh
 func (UnimplementedHandler) PostAuthRefresh(ctx context.Context, req OptPostAuthRefreshReq, params PostAuthRefreshParams) (r PostAuthRefreshRes, _ error) {
