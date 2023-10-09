@@ -4,6 +4,8 @@ import "errors"
 
 var (
 	// General
+	// ErrUnauthorised is returned when a user is not authorised.
+	ErrUnauthorised = errors.New("unauthorised session")
 	// ErrInternalServerError is the default generic error.
 	ErrInternalServerError = errors.New("internal server error")
 

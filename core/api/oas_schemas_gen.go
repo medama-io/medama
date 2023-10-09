@@ -99,6 +99,20 @@ func (s *ConflictErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
+type CookieAuth struct {
+	APIKey string
+}
+
+// GetAPIKey returns the value of APIKey.
+func (s *CookieAuth) GetAPIKey() string {
+	return s.APIKey
+}
+
+// SetAPIKey sets the value of APIKey.
+func (s *CookieAuth) SetAPIKey(val string) {
+	s.APIKey = val
+}
+
 // DeleteWebsitesIDOK is response for DeleteWebsitesID operation.
 type DeleteWebsitesIDOK struct{}
 
@@ -1239,7 +1253,34 @@ func (s *UserGet) SetDateUpdated(val int64) {
 
 func (*UserGet) getUsersUserIdRes()   {}
 func (*UserGet) patchUsersUserIdRes() {}
-func (*UserGet) postUserRes()         {}
+
+// UserGetHeaders wraps UserGet with response headers.
+type UserGetHeaders struct {
+	SetCookie OptString
+	Response  UserGet
+}
+
+// GetSetCookie returns the value of SetCookie.
+func (s *UserGetHeaders) GetSetCookie() OptString {
+	return s.SetCookie
+}
+
+// GetResponse returns the value of Response.
+func (s *UserGetHeaders) GetResponse() UserGet {
+	return s.Response
+}
+
+// SetSetCookie sets the value of SetCookie.
+func (s *UserGetHeaders) SetSetCookie(val OptString) {
+	s.SetCookie = val
+}
+
+// SetResponse sets the value of Response.
+func (s *UserGetHeaders) SetResponse(val UserGet) {
+	s.Response = val
+}
+
+func (*UserGetHeaders) postUserRes() {}
 
 // User model for admin.
 // Ref: #/components/schemas/UserPatch

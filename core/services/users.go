@@ -125,11 +125,20 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 		return nil, err
 	}
 
-	return &api.UserGet{
-		ID:          id,
-		Email:       req.Value.Email,
-		Language:    language,
-		DateCreated: dateCreated,
-		DateUpdated: dateUpdated,
+	// Add session to cache
+	_, cookie, err := h.auth.CreateSession(ctx, user.ID, model.SessionDuration)
+	if err != nil {
+		return nil, err
+	}
+
+	return &api.UserGetHeaders{
+		SetCookie: api.NewOptString(cookie.String()),
+		Response: api.UserGet{
+			ID:          id,
+			Email:       req.Value.Email,
+			Language:    language,
+			DateCreated: dateCreated,
+			DateUpdated: dateUpdated,
+		},
 	}, nil
 }

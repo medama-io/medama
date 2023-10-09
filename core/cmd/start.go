@@ -80,11 +80,13 @@ func (s *StartCommand) Run(ctx context.Context) error {
 
 	// Setup handlers
 	service := services.NewService(cache, db)
+	authHandler := middlewares.NewAuthHandler(cache)
 	mw := []middleware.Middleware{
 		middlewares.Recovery(),
 		middlewares.RequestLogger(),
 	}
 	h, err := api.NewServer(service,
+		authHandler,
 		api.WithMiddleware(mw...),
 		api.WithErrorHandler(middlewares.ErrorHandler),
 		api.WithNotFound(middlewares.NotFound()),

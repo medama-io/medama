@@ -765,13 +765,32 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter,
 
 func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *UserGet:
+	case *UserGetHeaders:
 		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Set-Cookie" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Set-Cookie",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.SetCookie.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Set-Cookie header")
+				}
+			}
+		}
 		w.WriteHeader(201)
 		span.SetStatus(codes.Ok, http.StatusText(201))
 
 		e := jx.GetEncoder()
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}

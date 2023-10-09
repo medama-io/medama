@@ -73,6 +73,8 @@ paths:
     post:
       tags:
         - auth
+      security:
+        - CookieAuth: []
       summary: Refresh session token.
       description: Refresh the session token.
       operationId: post-auth-refresh
@@ -203,6 +205,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserGet"
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Set the cookie for the session.
           links:
             GetUserByUserID:
               operationId: get-users-userId
@@ -223,6 +230,8 @@ paths:
     get:
       tags:
         - user
+      security:
+        - CookieAuth: []
       summary: Get User Info by User ID.
       description: Retrieve the information of the user with the matching user ID.
       operationId: get-users-userId
@@ -251,6 +260,8 @@ paths:
     patch:
       tags:
         - user
+      security:
+        - CookieAuth: []
       summary: Update User Info by User ID.
       description: Update a user account's details.
       operationId: patch-users-userId
@@ -292,6 +303,8 @@ paths:
     get:
       tags:
         - website
+      security:
+        - CookieAuth: []
       summary: List of websites.
       description: Get a list of all websites from the user.
       operationId: get-websites
@@ -320,6 +333,8 @@ paths:
     post:
       tags:
         - website
+      security:
+        - CookieAuth: []
       summary: Add website.
       description: Add a new website.
       operationId: post-websites
@@ -350,6 +365,8 @@ paths:
     get:
       tags:
         - website
+      security:
+        - CookieAuth: []
       summary: Get website details.
       description: Get website details for an individual website.
       operationId: get-websites-id
@@ -381,6 +398,8 @@ paths:
     patch:
       tags:
         - website
+      security:
+        - CookieAuth: []
       summary: Update website.
       description: Update a website's information.
       operationId: patch-websites-id
@@ -416,6 +435,8 @@ paths:
     delete:
       tags:
         - website
+      security:
+        - CookieAuth: []
       summary: Delete website.
       description: Delete a website.
       operationId: delete-websites-id
@@ -442,6 +463,8 @@ paths:
     get:
       tags:
         - stats
+      security:
+        - CookieAuth: []
       summary: Active users.
       description: Return the number of active users who triggered a pageview in the past 5 minutes.
       operationId: get-websites-id-active
@@ -473,6 +496,8 @@ paths:
     get:
       tags:
         - stats
+      security:
+        - CookieAuth: []
       summary: Get summary of website stats.
       description: "Get a summary of the website's stats."
       operationId: get-website-id-summary
