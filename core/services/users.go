@@ -126,7 +126,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	}
 
 	// Add session to cache
-	_, cookie, err := h.auth.CreateSession(ctx, user.ID, model.SessionDuration)
+	cookie, err := h.auth.CreateSession(ctx, user.ID, model.SessionDuration)
 	if err != nil {
 		return nil, err
 	}

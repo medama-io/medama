@@ -42,7 +42,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 
 func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	query := `--sql
-	SELECT id, email, language, date_created, date_updated FROM users WHERE id = ?`
+	SELECT id, email, password, language, date_created, date_updated FROM users WHERE id = ?`
 
 	res, err := c.DB.QueryxContext(ctx, query, id)
 	if err != nil {

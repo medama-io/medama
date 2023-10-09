@@ -75,18 +75,22 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return err
 	}
 
-	// Setup cache
-	cache := util.NewCache(ctx, s.Server.CacheCleanupInterval)
+	// Setup auth service
+	auth, err := util.NewAuthService(ctx)
+	if err != nil {
+		return err
+	}
 
 	// Setup handlers
-	service := services.NewService(cache, db)
-	authHandler := middlewares.NewAuthHandler(cache)
+	service := services.NewService(auth, db)
+
+	authMiddleware := middlewares.NewAuthHandler(auth)
 	mw := []middleware.Middleware{
 		middlewares.Recovery(),
 		middlewares.RequestLogger(),
 	}
 	h, err := api.NewServer(service,
-		authHandler,
+		authMiddleware,
 		api.WithMiddleware(mw...),
 		api.WithErrorHandler(middlewares.ErrorHandler),
 		api.WithNotFound(middlewares.NotFound()),

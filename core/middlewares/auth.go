@@ -9,23 +9,23 @@ import (
 )
 
 type Handler struct {
-	cache *util.Cache
+	auth *util.AuthService
 }
 
 // Compile time check for Handler.
 var _ api.SecurityHandler = (*Handler)(nil)
 
 // NewAuthHandler returns a new instance of the auth service handler.
-func NewAuthHandler(cache *util.Cache) *Handler {
+func NewAuthHandler(auth *util.AuthService) *Handler {
 	return &Handler{
-		cache: cache,
+		auth: auth,
 	}
 }
 
 // HandleCookieAuth handles cookie based authentication.
 func (h *Handler) HandleCookieAuth(ctx context.Context, _operationName string, t api.CookieAuth) (context.Context, error) {
-	// Check if session exists
-	_, err := h.cache.Get(ctx, t.APIKey)
+	// Decrypt and read session cookie
+	_, err := h.auth.ReadSession(ctx, t.APIKey)
 	// If session does not exist, return error
 	if err != nil {
 		return nil, model.ErrUnauthorised

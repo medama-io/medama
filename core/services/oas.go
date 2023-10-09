@@ -6,14 +6,14 @@ import (
 )
 
 type Handler struct {
-	auth *AuthService
+	auth *util.AuthService
 	db   *sqlite.Client
 }
 
 // NewService returns a new instance of the ogen service handler.
-func NewService(cache *util.Cache, db *sqlite.Client) *Handler {
+func NewService(auth *util.AuthService, db *sqlite.Client) *Handler {
 	return &Handler{
-		auth: NewAuthService(cache),
+		auth: auth,
 		db:   db,
 	}
 }

@@ -1,0 +1,186 @@
+package util
+
+import (
+	"context"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"fmt"
+	"io"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/alexedwards/argon2id"
+	"github.com/medama-io/medama/model"
+	"go.jetpack.io/typeid"
+)
+
+const (
+	// DefaultCipherKeySize is the default size of the cipher key.
+	DefaultCipherKeySize = 32
+)
+
+type AuthService struct {
+	// Cache used to store session tokens.
+	Cache *Cache
+	// Key used to encrypt session tokens.
+	aes32Key []byte
+}
+
+// NewAuthService returns a new instance of AuthService.
+func NewAuthService(ctx context.Context) (*AuthService, error) {
+	// Generate a new random key for encrypting session tokens.
+	// Since we store sessions in an in-memory cache, it doesn't
+	// matter if the key doesn't persist as sessions will be
+	// invalidated when the server restarts.
+	key := make([]byte, DefaultCipherKeySize)
+	_, err := rand.Read(key)
+	if err != nil {
+		return nil, err
+	}
+
+	return &AuthService{
+		aes32Key: key,
+		Cache:    NewCache(ctx, model.SessionDuration),
+	}, nil
+}
+
+// HashPassword hashes a password using argon.
+func (a *AuthService) HashPassword(password string) (string, error) {
+	hash, err := argon2id.CreateHash(password, argon2id.DefaultParams)
+	if err != nil {
+		return "", err
+	}
+
+	return hash, nil
+}
+
+// ComparePasswords compares a supplied password with a stored hash.
+func (a *AuthService) ComparePasswords(suppliedPassword string, storedHash string) (bool, error) {
+	match, err := argon2id.ComparePasswordAndHash(suppliedPassword, storedHash)
+	if err != nil {
+		return false, err
+	}
+
+	return match, nil
+}
+
+// CreateSession creates a new session token and stores it in the cache.
+func (a *AuthService) CreateSession(ctx context.Context, userId string, duration time.Duration) (*http.Cookie, error) {
+	// Generate session token.
+	sessionIdType, err := typeid.New("sess")
+	if err != nil {
+		return nil, err
+	}
+	sessionId := sessionIdType.String()
+
+	// Create session cookie.
+	cookie := &http.Cookie{
+		Name:     model.SessionCookieName,
+		Value:    sessionId,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	}
+
+	// Create a new AES cipher block.
+	block, err := aes.NewCipher(a.aes32Key)
+	if err != nil {
+		return nil, err
+	}
+
+	// Wrap the block in a GCM cipher.
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create a random 12 byte nonce.
+	nonce := make([]byte, aesgcm.NonceSize())
+	_, err = io.ReadFull(rand.Reader, nonce)
+	if err != nil {
+		return nil, err
+	}
+
+	// Authenticate cookie name and value with {name:value} format.
+	plaintext := fmt.Sprintf("%s:%s", cookie.Name, cookie.Value)
+
+	// Encrypt with nonce for variable ciphertext.
+	encryptedValue := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
+
+	// Replace cookie value with encrypted value.
+	cookie.Value = string(encryptedValue)
+
+	// Set session token in cache after signing and encrypting.
+	a.Cache.Set(sessionId, userId, duration)
+
+	return cookie, nil
+}
+
+// DecryptSession decrypts a session cookie to return the session token.
+func (a *AuthService) DecryptSession(ctx context.Context, session string) (string, error) {
+	// Create a new AES cipher block.
+	block, err := aes.NewCipher(a.aes32Key)
+	if err != nil {
+		return "", err
+	}
+
+	// Wrap the block in a GCM cipher.
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	// Check for potential index out of range error.
+	nonceSize := aesgcm.NonceSize()
+	if len(session) < nonceSize {
+		return "", model.ErrInvalidSession
+	}
+
+	// Extract nonce from session token.
+	nonce, ciphertext := session[:nonceSize], session[nonceSize:]
+
+	// Decrypt session token.
+	plaintext, err := aesgcm.Open(nil, []byte(nonce), []byte(ciphertext), nil)
+	if err != nil {
+		return "", model.ErrInvalidSession
+	}
+
+	// Split plaintext into name and value.
+	name, value, ok := strings.Cut(string(plaintext), ":")
+	if !ok {
+		return "", model.ErrInvalidSession
+	}
+
+	// Check if cookie name is valid.
+	if name != model.SessionCookieName {
+		return "", model.ErrInvalidSession
+	}
+
+	return value, nil
+}
+
+// ReadSession decrypts and reads a session token from the cache.
+// This returns the user id associated with the session token.
+func (a *AuthService) ReadSession(ctx context.Context, session string) (string, error) {
+	// Decrypt session token.
+	value, err := a.DecryptSession(ctx, session)
+	if err != nil {
+		return "", err
+	}
+
+	// Check if session exists.
+	userId, err := a.Cache.Get(ctx, value)
+	if err != nil {
+		return "", model.ErrSessionNotFound
+	}
+
+	return userId.(string), nil
+}
+
+// RevokeSession deletes a session token from the cache.
+func (a *AuthService) RevokeSession(ctx context.Context, sessionId string) {
+	a.Cache.Delete(sessionId)
+}

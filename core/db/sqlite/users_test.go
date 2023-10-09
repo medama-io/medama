@@ -133,18 +133,11 @@ func TestUpdateUserPassword(t *testing.T) {
 	err := client.UpdateUserPassword(ctx, "test1", "password2", 3)
 	assert.NoError(err)
 
-	// Custom query since password is not returned by GetUser
-	var password string
-	query := `--sql
-	SELECT password FROM users WHERE id = ?`
-	err = client.DB.QueryRowxContext(ctx, query, "test1").Scan(&password)
-	assert.NoError(err)
-	assert.Equal("password2", password)
-
 	user, err := client.GetUser(ctx, "test1")
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
+	assert.Equal("password2", user.Password)
 	assert.Equal(int64(3), user.DateUpdated)
 }
 

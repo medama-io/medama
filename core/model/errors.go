@@ -9,6 +9,12 @@ var (
 	// ErrInternalServerError is the default generic error.
 	ErrInternalServerError = errors.New("internal server error")
 
+	// Authentication
+	// ErrInvalidSession is returned when a session is invalid.
+	ErrInvalidSession = errors.New("invalid session")
+	// ErrSessionNotFound is returned when a session is not found.
+	ErrSessionNotFound = errors.New("session not found")
+
 	// Users
 	// ErrUserExists is returned when a user already exists.
 	ErrUserExists = errors.New("user already exists")

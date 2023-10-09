@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func SetupTest(t *testing.T) (*assert.Assertions, context.Context) {
+func SetupCacheTest(t *testing.T) (*assert.Assertions, context.Context) {
 	t.Helper()
 	assert := assert.New(t)
 	ctx := context.Background()
@@ -20,7 +20,7 @@ func SetupTest(t *testing.T) (*assert.Assertions, context.Context) {
 }
 
 func TestGetSet(t *testing.T) {
-	assert, ctx := SetupTest(t)
+	assert, ctx := SetupCacheTest(t)
 
 	cycle := 100 * time.Millisecond
 	c := util.NewCache(ctx, cycle)
@@ -51,7 +51,7 @@ func TestGetSet(t *testing.T) {
 }
 
 func TestHas(t *testing.T) {
-	assert, ctx := SetupTest(t)
+	assert, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 
 	c.Set("hello", "Hello", time.Hour)
@@ -65,7 +65,7 @@ func TestHas(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	assert, ctx := SetupTest(t)
+	assert, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 	c.Set("hello", "Hello", time.Hour)
 	_, err := c.Get(ctx, "hello")
@@ -78,7 +78,7 @@ func TestDelete(t *testing.T) {
 }
 
 func TestRange(t *testing.T) {
-	assert, ctx := SetupTest(t)
+	assert, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 	c.Set("hello", "Hello", time.Hour)
 	c.Set("world", "World", time.Hour)
@@ -93,7 +93,7 @@ func TestRange(t *testing.T) {
 }
 
 func TestRangeTimer(t *testing.T) {
-	_, ctx := SetupTest(t)
+	_, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 	c.Set("message", "Hello", time.Nanosecond)
 	c.Set("world", "World", time.Nanosecond)
