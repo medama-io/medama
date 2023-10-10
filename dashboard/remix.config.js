@@ -2,4 +2,5 @@
 export default {
 	postcss: true,
 	ignoredRouteFiles: ['**/.*'],
+	serverDependenciesToBundle: ['react-remove-scroll'],
 };

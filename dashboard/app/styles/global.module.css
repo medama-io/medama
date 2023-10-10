@@ -1,0 +1,9 @@
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	justify-content: flex-start;
+
+	font-size: var(--mantine-font-size-md);
+	line-height: 160%;
+}

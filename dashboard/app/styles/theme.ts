@@ -1,5 +1,5 @@
 import { createTheme } from '@mantine/core';
 
 export default createTheme({
-	/** Overrides */
+	fontFamily: '"Inter Variable", sans-serif',
 });

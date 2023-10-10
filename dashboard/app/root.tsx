@@ -1,5 +1,6 @@
 import '@mantine/core/styles/global.css';
-import '@fontsource-variable/inter';
+import '@/styles/global.module.css';
+import '@fontsource-variable/inter/wght.css';
 
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { cssBundleHref } from '@remix-run/css-bundle';
@@ -13,6 +14,7 @@ import {
 	ScrollRestoration,
 } from '@remix-run/react';
 
+import { AppShell } from '@/components/layout/AppShell';
 import theme from '@/styles/theme';
 
 export const links: LinksFunction = () => [
@@ -31,7 +33,9 @@ export default function App() {
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>
-					<Outlet />
+					<AppShell>
+						<Outlet />
+					</AppShell>
 					<ScrollRestoration />
 					<Scripts />
 					<LiveReload />
