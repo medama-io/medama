@@ -20,6 +20,9 @@ importers:
       '@fontsource-variable/inter':
         specifier: ^5.0.13
         version: 5.0.13
+      '@legendapp/state':
+        specifier: ^1.11.3
+        version: 1.11.3(react@18.2.0)
       '@mantine/core':
         specifier: ^7.1.2
         version: 7.1.2(@mantine/hooks@7.1.2)(@types/react@18.2.27)(react-dom@18.2.0)(react@18.2.0)
@@ -1212,6 +1215,14 @@ packages:
   /@jspm/core@2.0.1:
     resolution: {integrity: sha512-Lg3PnLp0QXpxwLIAuuJboLeRaIhrgJjeuh797QADg3xz8wGLugQOS5DpsE8A6i6Adgzf+bacllkKZG3J0tGfDw==}
     dev: true
+
+  /@legendapp/state@1.11.3(react@18.2.0):
+    resolution: {integrity: sha512-PxhugsvKbsG6gEgG+yCtO8rOrnu9uQrwmXal+P3rIAw1XYukpbxhfmwigVnyJkrbwg/49/tHQtSjLJbS4oN2Qg==}
+    dependencies:
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - react
+    dev: false
 
   /@mantine/core@7.1.2(@mantine/hooks@7.1.2)(@types/react@18.2.27)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-EZg82V/+uA2bM981mEUOUGfqKIRsMfvxLdAPQpurhtqsnq4yBj1xjC3KzX/Eas9QhhHuR+4DJJyGTuO9aOK6nQ==}
@@ -7153,6 +7164,14 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.6.2
+    dev: false
+
+  /use-sync-external-store@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /util-deprecate@1.0.2:

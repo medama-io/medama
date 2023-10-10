@@ -1,7 +1,8 @@
-import '@mantine/core/styles/global.css';
+import '@mantine/core/styles.css';
 import '@/styles/global.module.css';
 import '@fontsource-variable/inter/wght.css';
 
+import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { cssBundleHref } from '@remix-run/css-bundle';
 import type { LinksFunction } from '@remix-run/node';
@@ -16,6 +17,8 @@ import {
 
 import { AppShell } from '@/components/layout/AppShell';
 import theme from '@/styles/theme';
+
+enableReactUse();
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),

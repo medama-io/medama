@@ -2,8 +2,8 @@ import type { MetaFunction } from '@remix-run/node';
 
 export const meta: MetaFunction = () => {
 	return [
-		{ title: 'Medama' },
-		{ name: 'description', content: 'Privacy friendly web analytics.' },
+		{ title: 'Medama | Privacy Focused Web Analytics.' },
+		{ name: 'description', content: 'Privacy focused web analytics.' },
 	];
 };
 
