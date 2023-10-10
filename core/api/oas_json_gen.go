@@ -2173,10 +2173,6 @@ func (s *UserGet) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *UserGet) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("id")
-		e.Str(s.ID)
-	}
-	{
 		e.FieldStart("email")
 		e.Str(s.Email)
 	}
@@ -2194,12 +2190,11 @@ func (s *UserGet) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfUserGet = [5]string{
-	0: "id",
-	1: "email",
-	2: "language",
-	3: "dateCreated",
-	4: "dateUpdated",
+var jsonFieldsNameOfUserGet = [4]string{
+	0: "email",
+	1: "language",
+	2: "dateCreated",
+	3: "dateUpdated",
 }
 
 // Decode decodes UserGet from json.
@@ -2211,20 +2206,8 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "id":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.ID = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"id\"")
-			}
 		case "email":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
 				s.Email = string(v)
@@ -2236,7 +2219,7 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"email\"")
 			}
 		case "language":
-			requiredBitSet[0] |= 1 << 2
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Str()
 				s.Language = string(v)
@@ -2248,7 +2231,7 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"language\"")
 			}
 		case "dateCreated":
-			requiredBitSet[0] |= 1 << 3
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Int64()
 				s.DateCreated = int64(v)
@@ -2260,7 +2243,7 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"dateCreated\"")
 			}
 		case "dateUpdated":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
 				v, err := d.Int64()
 				s.DateUpdated = int64(v)
@@ -2281,7 +2264,7 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00011111,
+		0b00001111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

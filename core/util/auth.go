@@ -5,6 +5,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"net/http"
@@ -66,57 +67,35 @@ func (a *AuthService) ComparePasswords(suppliedPassword string, storedHash strin
 	return match, nil
 }
 
-// CreateSession creates a new session token and stores it in the cache.
-func (a *AuthService) CreateSession(ctx context.Context, userId string, duration time.Duration) (*http.Cookie, error) {
-	// Generate session token.
-	sessionIdType, err := typeid.New("sess")
-	if err != nil {
-		return nil, err
-	}
-	sessionId := sessionIdType.String()
-
-	// Create session cookie.
-	cookie := &http.Cookie{
-		Name:     model.SessionCookieName,
-		Value:    sessionId,
-		Path:     "/",
-		HttpOnly: true,
-		Secure:   true,
-		SameSite: http.SameSiteStrictMode,
-	}
-
+// EncryptSession encrypts a session token and stores it in the cache.
+func (a *AuthService) EncryptSession(ctx context.Context, sessionId string, duration time.Duration) (string, error) {
 	// Create a new AES cipher block.
 	block, err := aes.NewCipher(a.aes32Key)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	// Wrap the block in a GCM cipher.
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	// Create a random 12 byte nonce.
 	nonce := make([]byte, aesgcm.NonceSize())
 	_, err = io.ReadFull(rand.Reader, nonce)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	// Authenticate cookie name and value with {name:value} format.
-	plaintext := fmt.Sprintf("%s:%s", cookie.Name, cookie.Value)
+	plaintext := fmt.Sprintf("%s:%s", model.SessionCookieName, sessionId)
 
 	// Encrypt with nonce for variable ciphertext.
 	encryptedValue := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
 
-	// Replace cookie value with encrypted value.
-	cookie.Value = string(encryptedValue)
-
-	// Set session token in cache after signing and encrypting.
-	a.Cache.Set(sessionId, userId, duration)
-
-	return cookie, nil
+	// Return encrypted session token.
+	return string(encryptedValue), nil
 }
 
 // DecryptSession decrypts a session cookie to return the session token.
@@ -162,17 +141,55 @@ func (a *AuthService) DecryptSession(ctx context.Context, session string) (strin
 	return value, nil
 }
 
+// CreateSession creates a new session token and stores it in the cache.
+// This returns an encrypted session token as a cookie.
+func (a *AuthService) CreateSession(ctx context.Context, userId string) (*http.Cookie, error) {
+	// Generate session token.
+	sessionIdType, err := typeid.New("sess")
+	if err != nil {
+		return nil, err
+	}
+	sessionId := sessionIdType.String()
+
+	// Create session cookie.
+	cookie := &http.Cookie{
+		Name:     model.SessionCookieName,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	}
+
+	// Encrypt session token.
+	encryptedSession, err := a.EncryptSession(ctx, sessionId, model.SessionDuration)
+
+	// Update cookie value with encrypted base64 enoded session token.
+	encodedSession := base64.URLEncoding.EncodeToString([]byte(encryptedSession))
+	cookie.Value = encodedSession
+
+	// Set session token in cache.
+	a.Cache.Set(sessionId, userId, model.SessionDuration)
+
+	return cookie, err
+}
+
 // ReadSession decrypts and reads a session token from the cache.
-// This returns the user id associated with the session token.
+// This returns the user id associated with the encrypted session value.
 func (a *AuthService) ReadSession(ctx context.Context, session string) (string, error) {
+	// Decode base64 encoded session token.
+	encryptedSession, err := base64.URLEncoding.DecodeString(session)
+	if err != nil {
+		return "", model.ErrInvalidSession
+	}
+
 	// Decrypt session token.
-	value, err := a.DecryptSession(ctx, session)
+	sessionId, err := a.DecryptSession(ctx, string(encryptedSession))
 	if err != nil {
 		return "", err
 	}
 
 	// Check if session exists.
-	userId, err := a.Cache.Get(ctx, value)
+	userId, err := a.Cache.Get(ctx, sessionId)
 	if err != nil {
 		return "", model.ErrSessionNotFound
 	}

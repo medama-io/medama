@@ -666,10 +666,6 @@ components:
       title: User
       description: User model for admin.
       properties:
-        id:
-          type: string
-          description: Unique identifier for the given user.
-          format: uuidv7
         email:
           type: string
           format: email

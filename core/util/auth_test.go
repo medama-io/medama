@@ -2,9 +2,9 @@ package util_test
 
 import (
 	"context"
+	"encoding/base64"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util"
@@ -23,11 +23,11 @@ func SetupAuthTest(t *testing.T) (*assert.Assertions, context.Context, *util.Aut
 	return assert, ctx, auth
 }
 
-func TestAuthEncryptAndDecrypt(t *testing.T) {
+func TestAuthCreateAndRead(t *testing.T) {
 	assert, ctx, auth := SetupAuthTest(t)
 
 	// We don't want the cookie to expire
-	cookie, err := auth.CreateSession(ctx, "test_user", 24*time.Hour)
+	cookie, err := auth.CreateSession(ctx, "test_user_id")
 	assert.NoError(err)
 	assert.NotNil(cookie)
 
@@ -40,14 +40,14 @@ func TestAuthEncryptAndDecrypt(t *testing.T) {
 	// Decrypt cookie
 	userId, err := auth.ReadSession(ctx, cookie.Value)
 	assert.NoError(err)
-	assert.Equal("test_user", userId)
+	assert.Equal("test_user_id", userId)
 }
 
 func TestAuthWithInvalidSession(t *testing.T) {
 	assert, ctx, auth := SetupAuthTest(t)
 
 	// We don't want the cookie to expire
-	cookie, err := auth.CreateSession(ctx, "test_user", 24*time.Hour)
+	cookie, err := auth.CreateSession(ctx, "test_user")
 	assert.NoError(err)
 	assert.NotNil(cookie)
 
@@ -60,12 +60,14 @@ func TestAuthWithInvalidSession(t *testing.T) {
 func TestAuthWithExpiredSession(t *testing.T) {
 	assert, ctx, auth := SetupAuthTest(t)
 
-	cookie, err := auth.CreateSession(ctx, "test_user", 24*time.Hour)
+	cookie, err := auth.CreateSession(ctx, "test_user_id")
 	assert.NoError(err)
 	assert.NotNil(cookie)
 
 	// Delete from cache to simulate expired session
-	sessionId, err := auth.DecryptSession(ctx, cookie.Value)
+	base64Decode, err := base64.URLEncoding.DecodeString(cookie.Value)
+	assert.NoError(err)
+	sessionId, err := auth.DecryptSession(ctx, string(base64Decode))
 	assert.NoError(err)
 	assert.NotEmpty(sessionId)
 	auth.Cache.Delete(sessionId)

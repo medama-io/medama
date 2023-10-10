@@ -1060,17 +1060,10 @@ func (s *UserCreateLanguage) UnmarshalText(data []byte) error {
 // User model for admin.
 // Ref: #/components/schemas/UserGet
 type UserGet struct {
-	// Unique identifier for the given user.
-	ID          string `json:"id"`
 	Email       string `json:"email"`
 	Language    string `json:"language"`
 	DateCreated int64  `json:"dateCreated"`
 	DateUpdated int64  `json:"dateUpdated"`
-}
-
-// GetID returns the value of ID.
-func (s *UserGet) GetID() string {
-	return s.ID
 }
 
 // GetEmail returns the value of Email.
@@ -1091,11 +1084,6 @@ func (s *UserGet) GetDateCreated() int64 {
 // GetDateUpdated returns the value of DateUpdated.
 func (s *UserGet) GetDateUpdated() int64 {
 	return s.DateUpdated
-}
-
-// SetID sets the value of ID.
-func (s *UserGet) SetID(val string) {
-	s.ID = val
 }
 
 // SetEmail sets the value of Email.

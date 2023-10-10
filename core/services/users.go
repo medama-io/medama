@@ -27,7 +27,6 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 	}
 
 	return &api.UserGet{
-		ID:          user.ID,
 		Email:       user.Email,
 		Language:    user.Language,
 		DateCreated: user.DateCreated,
@@ -76,7 +75,6 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 	}
 
 	return &api.UserGet{
-		ID:          user.ID,
 		Email:       user.Email,
 		Language:    user.Language,
 		DateCreated: user.DateCreated,
@@ -137,7 +135,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	}
 
 	// Add session to cache
-	cookie, err := h.auth.CreateSession(ctx, user.ID, model.SessionDuration)
+	cookie, err := h.auth.CreateSession(ctx, user.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +143,6 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	return &api.UserGetHeaders{
 		SetCookie: api.NewOptString(cookie.String()),
 		Response: api.UserGet{
-			ID:          id,
 			Email:       req.Value.Email,
 			Language:    language,
 			DateCreated: dateCreated,

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/medama-io/medama/api"
-	"github.com/medama-io/medama/model"
 )
 
 func (h *Handler) PostAuthLogin(ctx context.Context, req api.OptPostAuthLoginReq) (api.PostAuthLoginRes, error) {
@@ -24,7 +23,7 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req api.OptPostAuthLoginReq
 	}
 
 	// Create session.
-	cookie, err := h.auth.CreateSession(ctx, user.ID, model.SessionDuration)
+	cookie, err := h.auth.CreateSession(ctx, user.ID)
 	if err != nil {
 		return nil, err
 	}
