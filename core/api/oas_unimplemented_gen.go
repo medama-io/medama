@@ -31,12 +31,12 @@ func (UnimplementedHandler) GetEventPing(ctx context.Context, params GetEventPin
 	return r, ht.ErrNotImplemented
 }
 
-// GetUsersUserId implements get-users-userId operation.
+// GetUser implements get-user operation.
 //
 // Retrieve the information of the user with the matching user ID.
 //
-// GET /users/{userId}
-func (UnimplementedHandler) GetUsersUserId(ctx context.Context, params GetUsersUserIdParams) (r GetUsersUserIdRes, _ error) {
+// GET /user
+func (UnimplementedHandler) GetUser(ctx context.Context, params GetUserParams) (r GetUserRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -76,12 +76,12 @@ func (UnimplementedHandler) GetWebsitesIDActive(ctx context.Context, params GetW
 	return r, ht.ErrNotImplemented
 }
 
-// PatchUsersUserId implements patch-users-userId operation.
+// PatchUser implements patch-user operation.
 //
 // Update a user account's details.
 //
-// PATCH /users/{userId}
-func (UnimplementedHandler) PatchUsersUserId(ctx context.Context, req OptUserPatch, params PatchUsersUserIdParams) (r PatchUsersUserIdRes, _ error) {
+// PATCH /user
+func (UnimplementedHandler) PatchUser(ctx context.Context, req OptUserPatch, params PatchUserParams) (r PatchUserRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -116,7 +116,7 @@ func (UnimplementedHandler) PostEventHit(ctx context.Context, req OptEventHit, p
 //
 // Create a new user.
 //
-// POST /users
+// POST /user
 func (UnimplementedHandler) PostUser(ctx context.Context, req OptUserCreate) (r PostUserRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

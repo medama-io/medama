@@ -11,8 +11,13 @@ import (
 	"go.jetpack.io/typeid"
 )
 
-func (h *Handler) GetUsersUserId(ctx context.Context, params api.GetUsersUserIdParams) (api.GetUsersUserIdRes, error) {
-	user, err := h.db.GetUser(ctx, params.UserId)
+func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.GetUserRes, error) {
+	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	if !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
+	user, err := h.db.GetUser(ctx, userId)
 	if err != nil {
 		if errors.Is(err, model.ErrUserNotFound) {
 			return ErrNotFound(err), nil
@@ -30,8 +35,14 @@ func (h *Handler) GetUsersUserId(ctx context.Context, params api.GetUsersUserIdP
 	}, nil
 }
 
-func (h *Handler) PatchUsersUserId(ctx context.Context, req api.OptUserPatch, params api.PatchUsersUserIdParams) (api.PatchUsersUserIdRes, error) {
-	user, err := h.db.GetUser(ctx, params.UserId)
+func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params api.PatchUserParams) (api.PatchUserRes, error) {
+	// Check user exists
+	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	if !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
+	user, err := h.db.GetUser(ctx, userId)
 	if err != nil {
 		if errors.Is(err, model.ErrUserNotFound) {
 			return ErrNotFound(err), nil

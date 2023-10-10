@@ -126,53 +126,27 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						return
 					}
 				}
-			case 'u': // Prefix: "users"
-				if l := len("users"); len(elem) >= l && elem[0:l] == "users" {
+			case 'u': // Prefix: "user"
+				if l := len("user"); len(elem) >= l && elem[0:l] == "user" {
 					elem = elem[l:]
 				} else {
 					break
 				}
 
 				if len(elem) == 0 {
+					// Leaf node.
 					switch r.Method {
+					case "GET":
+						s.handleGetUserRequest([0]string{}, elemIsEscaped, w, r)
+					case "PATCH":
+						s.handlePatchUserRequest([0]string{}, elemIsEscaped, w, r)
 					case "POST":
 						s.handlePostUserRequest([0]string{}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "POST")
+						s.notAllowed(w, r, "GET,PATCH,POST")
 					}
 
 					return
-				}
-				switch elem[0] {
-				case '/': // Prefix: "/"
-					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
-						elem = elem[l:]
-					} else {
-						break
-					}
-
-					// Param: "userId"
-					// Leaf parameter
-					args[0] = elem
-					elem = ""
-
-					if len(elem) == 0 {
-						// Leaf node.
-						switch r.Method {
-						case "GET":
-							s.handleGetUsersUserIdRequest([1]string{
-								args[0],
-							}, elemIsEscaped, w, r)
-						case "PATCH":
-							s.handlePatchUsersUserIdRequest([1]string{
-								args[0],
-							}, elemIsEscaped, w, r)
-						default:
-							s.notAllowed(w, r, "GET,PATCH")
-						}
-
-						return
-					}
 				}
 			case 'w': // Prefix: "website"
 				if l := len("website"); len(elem) >= l && elem[0:l] == "website" {
@@ -410,7 +384,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					case "POST":
 						// Leaf: PostAuthLogin
 						r.name = "PostAuthLogin"
-						r.summary = "Session token authentication."
+						r.summary = "Session Token Authentication."
 						r.operationID = "post-auth-login"
 						r.pathPattern = "/auth/login"
 						r.args = args
@@ -443,7 +417,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						case "POST":
 							// Leaf: PostEventHit
 							r.name = "PostEventHit"
-							r.summary = "Send a hit event."
+							r.summary = "Send Hit Event."
 							r.operationID = "post-event-hit"
 							r.pathPattern = "/event/hit"
 							r.args = args
@@ -465,7 +439,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						case "GET":
 							// Leaf: GetEventPing
 							r.name = "GetEventPing"
-							r.summary = "Check if user is unique."
+							r.summary = "Unique User Check."
 							r.operationID = "get-event-ping"
 							r.pathPattern = "/event/ping"
 							r.args = args
@@ -476,8 +450,8 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						}
 					}
 				}
-			case 'u': // Prefix: "users"
-				if l := len("users"); len(elem) >= l && elem[0:l] == "users" {
+			case 'u': // Prefix: "user"
+				if l := len("user"); len(elem) >= l && elem[0:l] == "user" {
 					elem = elem[l:]
 				} else {
 					break
@@ -485,54 +459,35 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 				if len(elem) == 0 {
 					switch method {
+					case "GET":
+						// Leaf: GetUser
+						r.name = "GetUser"
+						r.summary = "Get User Info."
+						r.operationID = "get-user"
+						r.pathPattern = "/user"
+						r.args = args
+						r.count = 0
+						return r, true
+					case "PATCH":
+						// Leaf: PatchUser
+						r.name = "PatchUser"
+						r.summary = "Update User Info."
+						r.operationID = "patch-user"
+						r.pathPattern = "/user"
+						r.args = args
+						r.count = 0
+						return r, true
 					case "POST":
+						// Leaf: PostUser
 						r.name = "PostUser"
-						r.summary = "Create new user."
+						r.summary = "Create New User."
 						r.operationID = "post-user"
-						r.pathPattern = "/users"
+						r.pathPattern = "/user"
 						r.args = args
 						r.count = 0
 						return r, true
 					default:
 						return
-					}
-				}
-				switch elem[0] {
-				case '/': // Prefix: "/"
-					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
-						elem = elem[l:]
-					} else {
-						break
-					}
-
-					// Param: "userId"
-					// Leaf parameter
-					args[0] = elem
-					elem = ""
-
-					if len(elem) == 0 {
-						switch method {
-						case "GET":
-							// Leaf: GetUsersUserId
-							r.name = "GetUsersUserId"
-							r.summary = "Get User Info by User ID."
-							r.operationID = "get-users-userId"
-							r.pathPattern = "/users/{userId}"
-							r.args = args
-							r.count = 1
-							return r, true
-						case "PATCH":
-							// Leaf: PatchUsersUserId
-							r.name = "PatchUsersUserId"
-							r.summary = "Update User Info by User ID."
-							r.operationID = "patch-users-userId"
-							r.pathPattern = "/users/{userId}"
-							r.args = args
-							r.count = 1
-							return r, true
-						default:
-							return
-						}
 					}
 				}
 			case 'w': // Prefix: "website"
@@ -578,7 +533,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							case "GET":
 								// Leaf: GetWebsiteIDSummary
 								r.name = "GetWebsiteIDSummary"
-								r.summary = "Get summary of website stats."
+								r.summary = "Get Stat Summary."
 								r.operationID = "get-website-id-summary"
 								r.pathPattern = "/website/{hostname}/summary"
 								r.args = args
@@ -600,7 +555,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						switch method {
 						case "GET":
 							r.name = "GetWebsites"
-							r.summary = "List of websites."
+							r.summary = "List Websites."
 							r.operationID = "get-websites"
 							r.pathPattern = "/websites"
 							r.args = args
@@ -608,7 +563,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							return r, true
 						case "POST":
 							r.name = "PostWebsites"
-							r.summary = "Add website."
+							r.summary = "Add Website."
 							r.operationID = "post-websites"
 							r.pathPattern = "/websites"
 							r.args = args
@@ -639,7 +594,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							switch method {
 							case "DELETE":
 								r.name = "DeleteWebsitesID"
-								r.summary = "Delete website."
+								r.summary = "Delete Website."
 								r.operationID = "delete-websites-id"
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
@@ -647,7 +602,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								return r, true
 							case "GET":
 								r.name = "GetWebsitesID"
-								r.summary = "Get website details."
+								r.summary = "Get Website."
 								r.operationID = "get-websites-id"
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
@@ -655,7 +610,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								return r, true
 							case "PATCH":
 								r.name = "PatchWebsitesID"
-								r.summary = "Update website."
+								r.summary = "Update Website."
 								r.operationID = "patch-websites-id"
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
@@ -678,7 +633,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								case "GET":
 									// Leaf: GetWebsitesIDActive
 									r.name = "GetWebsitesIDActive"
-									r.summary = "Active users."
+									r.summary = "Get Active Users."
 									r.operationID = "get-websites-id-active"
 									r.pathPattern = "/websites/{hostname}/active"
 									r.args = args

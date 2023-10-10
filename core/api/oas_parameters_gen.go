@@ -188,43 +188,33 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 	return params, nil
 }
 
-// GetUsersUserIdParams is parameters of get-users-userId operation.
-type GetUsersUserIdParams struct {
-	// Id of an existing user.
-	UserId string
+// GetUserParams is parameters of get-user operation.
+type GetUserParams struct {
+	// Session token for authentication.
+	MeSess string
 }
 
-func unpackGetUsersUserIdParams(packed middleware.Parameters) (params GetUsersUserIdParams) {
+func unpackGetUserParams(packed middleware.Parameters) (params GetUserParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "userId",
-			In:   "path",
+			Name: "_me_sess",
+			In:   "cookie",
 		}
-		params.UserId = packed[key].(string)
+		params.MeSess = packed[key].(string)
 	}
 	return params
 }
 
-func decodeGetUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Request) (params GetUsersUserIdParams, _ error) {
-	// Decode path: userId.
+func decodeGetUserParams(args [0]string, argsEscaped bool, r *http.Request) (params GetUserParams, _ error) {
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
 	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
 		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "userId",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
 				val, err := d.DecodeValue()
 				if err != nil {
 					return err
@@ -235,9 +225,9 @@ func decodeGetUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Reques
 					return err
 				}
 
-				params.UserId = c
+				params.MeSess = c
 				return nil
-			}(); err != nil {
+			}); err != nil {
 				return err
 			}
 		} else {
@@ -246,8 +236,8 @@ func decodeGetUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Reques
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "userId",
-			In:   "path",
+			Name: "_me_sess",
+			In:   "cookie",
 			Err:  err,
 		}
 	}
@@ -745,43 +735,33 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 	return params, nil
 }
 
-// PatchUsersUserIdParams is parameters of patch-users-userId operation.
-type PatchUsersUserIdParams struct {
-	// ID of an existing user.
-	UserId string
+// PatchUserParams is parameters of patch-user operation.
+type PatchUserParams struct {
+	// Session token for authentication.
+	MeSess string
 }
 
-func unpackPatchUsersUserIdParams(packed middleware.Parameters) (params PatchUsersUserIdParams) {
+func unpackPatchUserParams(packed middleware.Parameters) (params PatchUserParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "userId",
-			In:   "path",
+			Name: "_me_sess",
+			In:   "cookie",
 		}
-		params.UserId = packed[key].(string)
+		params.MeSess = packed[key].(string)
 	}
 	return params
 }
 
-func decodePatchUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Request) (params PatchUsersUserIdParams, _ error) {
-	// Decode path: userId.
+func decodePatchUserParams(args [0]string, argsEscaped bool, r *http.Request) (params PatchUserParams, _ error) {
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
 	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
 		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "userId",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
 				val, err := d.DecodeValue()
 				if err != nil {
 					return err
@@ -792,9 +772,9 @@ func decodePatchUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Requ
 					return err
 				}
 
-				params.UserId = c
+				params.MeSess = c
 				return nil
-			}(); err != nil {
+			}); err != nil {
 				return err
 			}
 		} else {
@@ -803,8 +783,8 @@ func decodePatchUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Requ
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "userId",
-			In:   "path",
+			Name: "_me_sess",
+			In:   "cookie",
 			Err:  err,
 		}
 	}

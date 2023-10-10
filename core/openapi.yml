@@ -30,7 +30,7 @@ paths:
     post:
       tags:
         - auth
-      summary: Session token authentication.
+      summary: Session Token Authentication.
       description: Login to the service and retrieve a session token for authentication.
       operationId: post-auth-login
       requestBody:
@@ -71,7 +71,7 @@ paths:
     post:
       tags:
         - event
-      summary: Send a hit event.
+      summary: Send Hit Event.
       description: Send a hit event to register a user view.
       operationId: post-event-hit
       parameters:
@@ -116,7 +116,7 @@ paths:
     get:
       tags:
         - event
-      summary: Check if user is unique.
+      summary: Unique User Check.
       description: This is a ping endpoint to determine if the user is unique or not.
       operationId: get-event-ping
       parameters:
@@ -138,11 +138,39 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-  /users:
+  /user:
+    get:
+      tags:
+        - user
+      security:
+        - CookieAuth: []
+      summary: Get User Info.
+      description: Retrieve the information of the user with the matching user ID.
+      operationId: get-user
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      responses:
+        "200":
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGet"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080"
+          description: Local Server
     post:
       tags:
         - user
-      summary: Create new user.
+      summary: Create New User.
       description: Create a new user.
       operationId: post-user
       requestBody:
@@ -164,8 +192,8 @@ paths:
                 type: string
               description: Set the cookie for the session.
           links:
-            GetUserByUserID:
-              operationId: get-users-userId
+            GetUser:
+              operationId: get-user
               parameters:
                 userId: "$response.body#/id"
         "400":
@@ -179,53 +207,16 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-  "/users/{userId}":
-    get:
-      tags:
-        - user
-      security:
-        - CookieAuth: []
-      summary: Get User Info by User ID.
-      description: Retrieve the information of the user with the matching user ID.
-      operationId: get-users-userId
-      parameters:
-        - name: userId
-          in: path
-          description: Id of an existing user.
-          required: true
-          schema:
-            type: string
-            format: uuidv7
-      responses:
-        "200":
-          description: User Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserGet"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-      servers:
-        - url: "http://localhost:8080"
-          description: Local Server
     patch:
       tags:
         - user
       security:
         - CookieAuth: []
-      summary: Update User Info by User ID.
+      summary: Update User Info.
       description: Update a user account's details.
-      operationId: patch-users-userId
+      operationId: patch-user
       parameters:
-        - name: userId
-          in: path
-          description: ID of an existing user.
-          required: true
-          schema:
-            type: string
-            format: uuidv7
+        - $ref: "#/components/parameters/SessionAuth"
       requestBody:
         description: User details to update.
         content:
@@ -258,7 +249,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: List of websites.
+      summary: List Websites.
       description: Get a list of all websites from the user.
       operationId: get-websites
       parameters:
@@ -288,7 +279,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Add website.
+      summary: Add Website.
       description: Add a new website.
       operationId: post-websites
       requestBody:
@@ -320,7 +311,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Get website details.
+      summary: Get Website.
       description: Get website details for an individual website.
       operationId: get-websites-id
       parameters:
@@ -349,7 +340,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Update website.
+      summary: Update Website.
       description: Update a website's information.
       operationId: patch-websites-id
       parameters:
@@ -384,7 +375,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Delete website.
+      summary: Delete Website.
       description: Delete a website.
       operationId: delete-websites-id
       parameters:
@@ -410,7 +401,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Active users.
+      summary: Get Active Users.
       description: Return the number of active users who triggered a pageview in the past 5 minutes.
       operationId: get-websites-id-active
       parameters:
@@ -440,7 +431,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get summary of website stats.
+      summary: Get Stat Summary.
       description: Get a summary of the website's stats.
       operationId: get-website-id-summary
       parameters:

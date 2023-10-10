@@ -21,11 +21,12 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 }
 
 func (*BadRequestError) deleteWebsitesIDRes()    {}
+func (*BadRequestError) getUserRes()             {}
 func (*BadRequestError) getWebsiteIDSummaryRes() {}
 func (*BadRequestError) getWebsitesIDActiveRes() {}
 func (*BadRequestError) getWebsitesIDRes()       {}
 func (*BadRequestError) getWebsitesRes()         {}
-func (*BadRequestError) patchUsersUserIdRes()    {}
+func (*BadRequestError) patchUserRes()           {}
 func (*BadRequestError) patchWebsitesIDRes()     {}
 func (*BadRequestError) postAuthLoginRes()       {}
 func (*BadRequestError) postUserRes()            {}
@@ -70,9 +71,9 @@ func (s *ConflictError) SetError(val ConflictErrorError) {
 	s.Error = val
 }
 
-func (*ConflictError) patchUsersUserIdRes() {}
-func (*ConflictError) postUserRes()         {}
-func (*ConflictError) postWebsitesRes()     {}
+func (*ConflictError) patchUserRes()    {}
+func (*ConflictError) postUserRes()     {}
+func (*ConflictError) postWebsitesRes() {}
 
 type ConflictErrorError struct {
 	Code    int32  `json:"code"`
@@ -268,12 +269,12 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 
 func (*InternalServerError) deleteWebsitesIDRes()    {}
 func (*InternalServerError) getEventPingRes()        {}
-func (*InternalServerError) getUsersUserIdRes()      {}
+func (*InternalServerError) getUserRes()             {}
 func (*InternalServerError) getWebsiteIDSummaryRes() {}
 func (*InternalServerError) getWebsitesIDActiveRes() {}
 func (*InternalServerError) getWebsitesIDRes()       {}
 func (*InternalServerError) getWebsitesRes()         {}
-func (*InternalServerError) patchUsersUserIdRes()    {}
+func (*InternalServerError) patchUserRes()           {}
 func (*InternalServerError) patchWebsitesIDRes()     {}
 func (*InternalServerError) postAuthLoginRes()       {}
 func (*InternalServerError) postEventHitRes()        {}
@@ -320,12 +321,12 @@ func (s *NotFoundError) SetError(val NotFoundErrorError) {
 }
 
 func (*NotFoundError) deleteWebsitesIDRes()    {}
-func (*NotFoundError) getUsersUserIdRes()      {}
+func (*NotFoundError) getUserRes()             {}
 func (*NotFoundError) getWebsiteIDSummaryRes() {}
 func (*NotFoundError) getWebsitesIDActiveRes() {}
 func (*NotFoundError) getWebsitesIDRes()       {}
 func (*NotFoundError) getWebsitesRes()         {}
-func (*NotFoundError) patchUsersUserIdRes()    {}
+func (*NotFoundError) patchUserRes()           {}
 func (*NotFoundError) patchWebsitesIDRes()     {}
 
 type NotFoundErrorError struct {
@@ -948,11 +949,12 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 }
 
 func (*UnauthorisedError) deleteWebsitesIDRes()    {}
+func (*UnauthorisedError) getUserRes()             {}
 func (*UnauthorisedError) getWebsiteIDSummaryRes() {}
 func (*UnauthorisedError) getWebsitesIDActiveRes() {}
 func (*UnauthorisedError) getWebsitesIDRes()       {}
 func (*UnauthorisedError) getWebsitesRes()         {}
-func (*UnauthorisedError) patchUsersUserIdRes()    {}
+func (*UnauthorisedError) patchUserRes()           {}
 func (*UnauthorisedError) patchWebsitesIDRes()     {}
 func (*UnauthorisedError) postAuthLoginRes()       {}
 func (*UnauthorisedError) postUserRes()            {}
@@ -1116,8 +1118,8 @@ func (s *UserGet) SetDateUpdated(val int64) {
 	s.DateUpdated = val
 }
 
-func (*UserGet) getUsersUserIdRes()   {}
-func (*UserGet) patchUsersUserIdRes() {}
+func (*UserGet) getUserRes()   {}
+func (*UserGet) patchUserRes() {}
 
 // UserGetHeaders wraps UserGet with response headers.
 type UserGetHeaders struct {

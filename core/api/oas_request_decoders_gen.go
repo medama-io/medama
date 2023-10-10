@@ -15,7 +15,7 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func (s *Server) decodePatchUsersUserIdRequest(r *http.Request) (
+func (s *Server) decodePatchUserRequest(r *http.Request) (
 	req OptUserPatch,
 	close func() error,
 	rerr error,

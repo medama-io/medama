@@ -9,8 +9,8 @@ type GetEventPingRes interface {
 	getEventPingRes()
 }
 
-type GetUsersUserIdRes interface {
-	getUsersUserIdRes()
+type GetUserRes interface {
+	getUserRes()
 }
 
 type GetWebsiteIDSummaryRes interface {
@@ -29,8 +29,8 @@ type GetWebsitesRes interface {
 	getWebsitesRes()
 }
 
-type PatchUsersUserIdRes interface {
-	patchUsersUserIdRes()
+type PatchUserRes interface {
+	patchUserRes()
 }
 
 type PatchWebsitesIDRes interface {

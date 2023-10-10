@@ -122,7 +122,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "DeleteWebsitesID",
-			OperationSummary: "Delete website.",
+			OperationSummary: "Delete Website.",
 			OperationID:      "delete-websites-id",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -232,7 +232,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetEventPing",
-			OperationSummary: "Check if user is unique.",
+			OperationSummary: "Unique User Check.",
 			OperationID:      "get-event-ping",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -280,20 +280,20 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 	}
 }
 
-// handleGetUsersUserIdRequest handles get-users-userId operation.
+// handleGetUserRequest handles get-user operation.
 //
 // Retrieve the information of the user with the matching user ID.
 //
-// GET /users/{userId}
-func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+// GET /user
+func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-users-userId"),
+		otelogen.OperationID("get-user"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/users/{userId}"),
+		semconv.HTTPRouteKey.String("/user"),
 	}
 
 	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetUsersUserId",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetUser",
 		trace.WithAttributes(otelAttrs...),
 		serverSpanKind,
 	)
@@ -318,15 +318,15 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetUsersUserId",
-			ID:   "get-users-userId",
+			Name: "GetUser",
+			ID:   "get-user",
 		}
 	)
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetUsersUserId", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, "GetUser", r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -366,7 +366,7 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 			return
 		}
 	}
-	params, err := decodeGetUsersUserIdParams(args, argsEscaped, r)
+	params, err := decodeGetUserParams(args, argsEscaped, r)
 	if err != nil {
 		err = &ogenerrors.DecodeParamsError{
 			OperationContext: opErrContext,
@@ -377,27 +377,27 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 		return
 	}
 
-	var response GetUsersUserIdRes
+	var response GetUserRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetUsersUserId",
-			OperationSummary: "Get User Info by User ID.",
-			OperationID:      "get-users-userId",
+			OperationName:    "GetUser",
+			OperationSummary: "Get User Info.",
+			OperationID:      "get-user",
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
-					Name: "userId",
-					In:   "path",
-				}: params.UserId,
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
 			},
 			Raw: r,
 		}
 
 		type (
 			Request  = struct{}
-			Params   = GetUsersUserIdParams
-			Response = GetUsersUserIdRes
+			Params   = GetUserParams
+			Response = GetUserRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -406,14 +406,14 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 		](
 			m,
 			mreq,
-			unpackGetUsersUserIdParams,
+			unpackGetUserParams,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.GetUsersUserId(ctx, params)
+				response, err = s.h.GetUser(ctx, params)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.GetUsersUserId(ctx, params)
+		response, err = s.h.GetUser(ctx, params)
 	}
 	if err != nil {
 		recordError("Internal", err)
@@ -421,7 +421,7 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 		return
 	}
 
-	if err := encodeGetUsersUserIdResponse(response, w, span); err != nil {
+	if err := encodeGetUserResponse(response, w, span); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -532,7 +532,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDSummary",
-			OperationSummary: "Get summary of website stats.",
+			OperationSummary: "Get Stat Summary.",
 			OperationID:      "get-website-id-summary",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -694,7 +694,7 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsites",
-			OperationSummary: "List of websites.",
+			OperationSummary: "List Websites.",
 			OperationID:      "get-websites",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -844,7 +844,7 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsitesID",
-			OperationSummary: "Get website details.",
+			OperationSummary: "Get Website.",
 			OperationID:      "get-websites-id",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -998,7 +998,7 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsitesIDActive",
-			OperationSummary: "Active users.",
+			OperationSummary: "Get Active Users.",
 			OperationID:      "get-websites-id-active",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -1050,20 +1050,20 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 	}
 }
 
-// handlePatchUsersUserIdRequest handles patch-users-userId operation.
+// handlePatchUserRequest handles patch-user operation.
 //
 // Update a user account's details.
 //
-// PATCH /users/{userId}
-func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+// PATCH /user
+func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("patch-users-userId"),
+		otelogen.OperationID("patch-user"),
 		semconv.HTTPMethodKey.String("PATCH"),
-		semconv.HTTPRouteKey.String("/users/{userId}"),
+		semconv.HTTPRouteKey.String("/user"),
 	}
 
 	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PatchUsersUserId",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "PatchUser",
 		trace.WithAttributes(otelAttrs...),
 		serverSpanKind,
 	)
@@ -1088,15 +1088,15 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "PatchUsersUserId",
-			ID:   "patch-users-userId",
+			Name: "PatchUser",
+			ID:   "patch-user",
 		}
 	)
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "PatchUsersUserId", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, "PatchUser", r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -1136,7 +1136,7 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 			return
 		}
 	}
-	params, err := decodePatchUsersUserIdParams(args, argsEscaped, r)
+	params, err := decodePatchUserParams(args, argsEscaped, r)
 	if err != nil {
 		err = &ogenerrors.DecodeParamsError{
 			OperationContext: opErrContext,
@@ -1146,7 +1146,7 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
-	request, close, err := s.decodePatchUsersUserIdRequest(r)
+	request, close, err := s.decodePatchUserRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -1162,27 +1162,27 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		}
 	}()
 
-	var response PatchUsersUserIdRes
+	var response PatchUserRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "PatchUsersUserId",
-			OperationSummary: "Update User Info by User ID.",
-			OperationID:      "patch-users-userId",
+			OperationName:    "PatchUser",
+			OperationSummary: "Update User Info.",
+			OperationID:      "patch-user",
 			Body:             request,
 			Params: middleware.Parameters{
 				{
-					Name: "userId",
-					In:   "path",
-				}: params.UserId,
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
 			},
 			Raw: r,
 		}
 
 		type (
 			Request  = OptUserPatch
-			Params   = PatchUsersUserIdParams
-			Response = PatchUsersUserIdRes
+			Params   = PatchUserParams
+			Response = PatchUserRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -1191,14 +1191,14 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		](
 			m,
 			mreq,
-			unpackPatchUsersUserIdParams,
+			unpackPatchUserParams,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.PatchUsersUserId(ctx, request, params)
+				response, err = s.h.PatchUser(ctx, request, params)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.PatchUsersUserId(ctx, request, params)
+		response, err = s.h.PatchUser(ctx, request, params)
 	}
 	if err != nil {
 		recordError("Internal", err)
@@ -1206,7 +1206,7 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 		return
 	}
 
-	if err := encodePatchUsersUserIdResponse(response, w, span); err != nil {
+	if err := encodePatchUserResponse(response, w, span); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1332,7 +1332,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PatchWebsitesID",
-			OperationSummary: "Update website.",
+			OperationSummary: "Update Website.",
 			OperationID:      "patch-websites-id",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -1447,7 +1447,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostAuthLogin",
-			OperationSummary: "Session token authentication.",
+			OperationSummary: "Session Token Authentication.",
 			OperationID:      "post-auth-login",
 			Body:             request,
 			Params:           middleware.Parameters{},
@@ -1563,7 +1563,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostEventHit",
-			OperationSummary: "Send a hit event.",
+			OperationSummary: "Send Hit Event.",
 			OperationID:      "post-event-hit",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -1631,12 +1631,12 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 //
 // Create a new user.
 //
-// POST /users
+// POST /user
 func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-user"),
 		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/users"),
+		semconv.HTTPRouteKey.String("/user"),
 	}
 
 	// Start a span for this request.
@@ -1690,7 +1690,7 @@ func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostUser",
-			OperationSummary: "Create new user.",
+			OperationSummary: "Create New User.",
 			OperationID:      "post-user",
 			Body:             request,
 			Params:           middleware.Parameters{},
@@ -1840,7 +1840,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostWebsites",
-			OperationSummary: "Add website.",
+			OperationSummary: "Add Website.",
 			OperationID:      "post-websites",
 			Body:             request,
 			Params:           middleware.Parameters{},

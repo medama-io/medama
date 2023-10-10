@@ -36,12 +36,12 @@ type Invoker interface {
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
-	// GetUsersUserId invokes get-users-userId operation.
+	// GetUser invokes get-user operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
 	//
-	// GET /users/{userId}
-	GetUsersUserId(ctx context.Context, params GetUsersUserIdParams) (GetUsersUserIdRes, error)
+	// GET /user
+	GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error)
 	// GetWebsiteIDSummary invokes get-website-id-summary operation.
 	//
 	// Get a summary of the website's stats.
@@ -66,12 +66,12 @@ type Invoker interface {
 	//
 	// GET /websites/{hostname}/active
 	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error)
-	// PatchUsersUserId invokes patch-users-userId operation.
+	// PatchUser invokes patch-user operation.
 	//
 	// Update a user account's details.
 	//
-	// PATCH /users/{userId}
-	PatchUsersUserId(ctx context.Context, request OptUserPatch, params PatchUsersUserIdParams) (PatchUsersUserIdRes, error)
+	// PATCH /user
+	PatchUser(ctx context.Context, request OptUserPatch, params PatchUserParams) (PatchUserRes, error)
 	// PatchWebsitesID invokes patch-websites-id operation.
 	//
 	// Update a website's information.
@@ -94,7 +94,7 @@ type Invoker interface {
 	//
 	// Create a new user.
 	//
-	// POST /users
+	// POST /user
 	PostUser(ctx context.Context, request OptUserCreate) (PostUserRes, error)
 	// PostWebsites invokes post-websites operation.
 	//
@@ -382,21 +382,21 @@ func (c *Client) sendGetEventPing(ctx context.Context, params GetEventPingParams
 	return result, nil
 }
 
-// GetUsersUserId invokes get-users-userId operation.
+// GetUser invokes get-user operation.
 //
 // Retrieve the information of the user with the matching user ID.
 //
-// GET /users/{userId}
-func (c *Client) GetUsersUserId(ctx context.Context, params GetUsersUserIdParams) (GetUsersUserIdRes, error) {
-	res, err := c.sendGetUsersUserId(ctx, params)
+// GET /user
+func (c *Client) GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error) {
+	res, err := c.sendGetUser(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdParams) (res GetUsersUserIdRes, err error) {
+func (c *Client) sendGetUser(ctx context.Context, params GetUserParams) (res GetUserRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-users-userId"),
+		otelogen.OperationID("get-user"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/users/{userId}"),
+		semconv.HTTPRouteKey.String("/user"),
 	}
 
 	// Run stopwatch.
@@ -411,7 +411,7 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "GetUsersUserId",
+	ctx, span := c.cfg.Tracer.Start(ctx, "GetUser",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -428,26 +428,8 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [2]string
-	pathParts[0] = "/users/"
-	{
-		// Encode "userId" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "userId",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.UserId))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[1] = encoded
-	}
+	var pathParts [1]string
+	pathParts[0] = "/user"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	stage = "EncodeRequest"
@@ -456,12 +438,28 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 		return res, errors.Wrap(err, "create request")
 	}
 
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.MeSess))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
+	}
+
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
 			stage = "Security:CookieAuth"
-			switch err := c.securityCookieAuth(ctx, "GetUsersUserId", r); {
+			switch err := c.securityCookieAuth(ctx, "GetUser", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -497,7 +495,7 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeGetUsersUserIdResponse(resp)
+	result, err := decodeGetUserResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1083,21 +1081,21 @@ func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsites
 	return result, nil
 }
 
-// PatchUsersUserId invokes patch-users-userId operation.
+// PatchUser invokes patch-user operation.
 //
 // Update a user account's details.
 //
-// PATCH /users/{userId}
-func (c *Client) PatchUsersUserId(ctx context.Context, request OptUserPatch, params PatchUsersUserIdParams) (PatchUsersUserIdRes, error) {
-	res, err := c.sendPatchUsersUserId(ctx, request, params)
+// PATCH /user
+func (c *Client) PatchUser(ctx context.Context, request OptUserPatch, params PatchUserParams) (PatchUserRes, error) {
+	res, err := c.sendPatchUser(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch, params PatchUsersUserIdParams) (res PatchUsersUserIdRes, err error) {
+func (c *Client) sendPatchUser(ctx context.Context, request OptUserPatch, params PatchUserParams) (res PatchUserRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("patch-users-userId"),
+		otelogen.OperationID("patch-user"),
 		semconv.HTTPMethodKey.String("PATCH"),
-		semconv.HTTPRouteKey.String("/users/{userId}"),
+		semconv.HTTPRouteKey.String("/user"),
 	}
 	// Validate request before sending.
 	if err := func() error {
@@ -1128,7 +1126,7 @@ func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch,
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PatchUsersUserId",
+	ctx, span := c.cfg.Tracer.Start(ctx, "PatchUser",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1145,26 +1143,8 @@ func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch,
 
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [2]string
-	pathParts[0] = "/users/"
-	{
-		// Encode "userId" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "userId",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.UserId))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[1] = encoded
-	}
+	var pathParts [1]string
+	pathParts[0] = "/user"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	stage = "EncodeRequest"
@@ -1172,8 +1152,24 @@ func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch,
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodePatchUsersUserIdRequest(request, r); err != nil {
+	if err := encodePatchUserRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.MeSess))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
 	}
 
 	{
@@ -1181,7 +1177,7 @@ func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch,
 		var satisfied bitset
 		{
 			stage = "Security:CookieAuth"
-			switch err := c.securityCookieAuth(ctx, "PatchUsersUserId", r); {
+			switch err := c.securityCookieAuth(ctx, "PatchUser", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -1217,7 +1213,7 @@ func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch,
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodePatchUsersUserIdResponse(resp)
+	result, err := decodePatchUserResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1610,7 +1606,7 @@ func (c *Client) sendPostEventHit(ctx context.Context, request OptEventHit, para
 //
 // Create a new user.
 //
-// POST /users
+// POST /user
 func (c *Client) PostUser(ctx context.Context, request OptUserCreate) (PostUserRes, error) {
 	res, err := c.sendPostUser(ctx, request)
 	return res, err
@@ -1620,7 +1616,7 @@ func (c *Client) sendPostUser(ctx context.Context, request OptUserCreate) (res P
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-user"),
 		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/users"),
+		semconv.HTTPRouteKey.String("/user"),
 	}
 	// Validate request before sending.
 	if err := func() error {
@@ -1669,7 +1665,7 @@ func (c *Client) sendPostUser(ctx context.Context, request OptUserCreate) (res P
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = "/users"
+	pathParts[0] = "/user"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	stage = "EncodeRequest"

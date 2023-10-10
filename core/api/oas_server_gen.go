@@ -20,12 +20,12 @@ type Handler interface {
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
-	// GetUsersUserId implements get-users-userId operation.
+	// GetUser implements get-user operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
 	//
-	// GET /users/{userId}
-	GetUsersUserId(ctx context.Context, params GetUsersUserIdParams) (GetUsersUserIdRes, error)
+	// GET /user
+	GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error)
 	// GetWebsiteIDSummary implements get-website-id-summary operation.
 	//
 	// Get a summary of the website's stats.
@@ -50,12 +50,12 @@ type Handler interface {
 	//
 	// GET /websites/{hostname}/active
 	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error)
-	// PatchUsersUserId implements patch-users-userId operation.
+	// PatchUser implements patch-user operation.
 	//
 	// Update a user account's details.
 	//
-	// PATCH /users/{userId}
-	PatchUsersUserId(ctx context.Context, req OptUserPatch, params PatchUsersUserIdParams) (PatchUsersUserIdRes, error)
+	// PATCH /user
+	PatchUser(ctx context.Context, req OptUserPatch, params PatchUserParams) (PatchUserRes, error)
 	// PatchWebsitesID implements patch-websites-id operation.
 	//
 	// Update a website's information.
@@ -78,7 +78,7 @@ type Handler interface {
 	//
 	// Create a new user.
 	//
-	// POST /users
+	// POST /user
 	PostUser(ctx context.Context, req OptUserCreate) (PostUserRes, error)
 	// PostWebsites implements post-websites operation.
 	//

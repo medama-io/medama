@@ -11,7 +11,7 @@ import (
 	ht "github.com/ogen-go/ogen/http"
 )
 
-func encodePatchUsersUserIdRequest(
+func encodePatchUserRequest(
 	req OptUserPatch,
 	r *http.Request,
 ) error {
