@@ -28,7 +28,6 @@ func (*BadRequestError) getWebsitesRes()         {}
 func (*BadRequestError) patchUsersUserIdRes()    {}
 func (*BadRequestError) patchWebsitesIDRes()     {}
 func (*BadRequestError) postAuthLoginRes()       {}
-func (*BadRequestError) postAuthRefreshRes()     {}
 func (*BadRequestError) postUserRes()            {}
 func (*BadRequestError) postWebsitesRes()        {}
 
@@ -277,7 +276,6 @@ func (*InternalServerError) getWebsitesRes()         {}
 func (*InternalServerError) patchUsersUserIdRes()    {}
 func (*InternalServerError) patchWebsitesIDRes()     {}
 func (*InternalServerError) postAuthLoginRes()       {}
-func (*InternalServerError) postAuthRefreshRes()     {}
 func (*InternalServerError) postEventHitRes()        {}
 func (*InternalServerError) postUserRes()            {}
 func (*InternalServerError) postWebsitesRes()        {}
@@ -533,52 +531,6 @@ func (o OptPostAuthLoginReq) Get() (v PostAuthLoginReq, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPostAuthLoginReq) Or(d PostAuthLoginReq) PostAuthLoginReq {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptPostAuthRefreshReq returns new OptPostAuthRefreshReq with value set to v.
-func NewOptPostAuthRefreshReq(v PostAuthRefreshReq) OptPostAuthRefreshReq {
-	return OptPostAuthRefreshReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPostAuthRefreshReq is optional PostAuthRefreshReq.
-type OptPostAuthRefreshReq struct {
-	Value PostAuthRefreshReq
-	Set   bool
-}
-
-// IsSet returns true if OptPostAuthRefreshReq was set.
-func (o OptPostAuthRefreshReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPostAuthRefreshReq) Reset() {
-	var v PostAuthRefreshReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPostAuthRefreshReq) SetTo(v PostAuthRefreshReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPostAuthRefreshReq) Get() (v PostAuthRefreshReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPostAuthRefreshReq) Or(d PostAuthRefreshReq) PostAuthRefreshReq {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -903,48 +855,6 @@ func (s *PostAuthLoginReq) SetPassword(val string) {
 	s.Password = val
 }
 
-// PostAuthRefreshOK is response for PostAuthRefresh operation.
-type PostAuthRefreshOK struct {
-	SetCookie OptString
-}
-
-// GetSetCookie returns the value of SetCookie.
-func (s *PostAuthRefreshOK) GetSetCookie() OptString {
-	return s.SetCookie
-}
-
-// SetSetCookie sets the value of SetCookie.
-func (s *PostAuthRefreshOK) SetSetCookie(val OptString) {
-	s.SetCookie = val
-}
-
-func (*PostAuthRefreshOK) postAuthRefreshRes() {}
-
-type PostAuthRefreshReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-// GetEmail returns the value of Email.
-func (s *PostAuthRefreshReq) GetEmail() string {
-	return s.Email
-}
-
-// GetPassword returns the value of Password.
-func (s *PostAuthRefreshReq) GetPassword() string {
-	return s.Password
-}
-
-// SetEmail sets the value of Email.
-func (s *PostAuthRefreshReq) SetEmail(val string) {
-	s.Email = val
-}
-
-// SetPassword sets the value of Password.
-func (s *PostAuthRefreshReq) SetPassword(val string) {
-	s.Password = val
-}
-
 // PostEventHitNotFound is response for PostEventHit operation.
 type PostEventHitNotFound struct{}
 
@@ -1045,7 +955,6 @@ func (*UnauthorisedError) getWebsitesRes()         {}
 func (*UnauthorisedError) patchUsersUserIdRes()    {}
 func (*UnauthorisedError) patchWebsitesIDRes()     {}
 func (*UnauthorisedError) postAuthLoginRes()       {}
-func (*UnauthorisedError) postAuthRefreshRes()     {}
 func (*UnauthorisedError) postUserRes()            {}
 func (*UnauthorisedError) postWebsitesRes()        {}
 

@@ -83,13 +83,7 @@ type Invoker interface {
 	// Login to the service and retrieve a session token for authentication.
 	//
 	// POST /auth/login
-	PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq, params PostAuthLoginParams) (PostAuthLoginRes, error)
-	// PostAuthRefresh invokes post-auth-refresh operation.
-	//
-	// Refresh the session token.
-	//
-	// POST /auth/refresh
-	PostAuthRefresh(ctx context.Context, request OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error)
+	PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq) (PostAuthLoginRes, error)
 	// PostEventHit invokes post-event-hit operation.
 	//
 	// Send a hit event to register a user view.
@@ -244,10 +238,7 @@ func (c *Client) sendDeleteWebsitesID(ctx context.Context, params DeleteWebsites
 		}
 
 		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.StringToString(params.MeSess))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode cookie")
 		}
@@ -637,10 +628,7 @@ func (c *Client) sendGetWebsiteIDSummary(ctx context.Context, params GetWebsiteI
 		}
 
 		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.StringToString(params.MeSess))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode cookie")
 		}
@@ -761,10 +749,7 @@ func (c *Client) sendGetWebsites(ctx context.Context, params GetWebsitesParams) 
 		}
 
 		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.StringToString(params.MeSess))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode cookie")
 		}
@@ -903,10 +888,7 @@ func (c *Client) sendGetWebsitesID(ctx context.Context, params GetWebsitesIDPara
 		}
 
 		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.StringToString(params.MeSess))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode cookie")
 		}
@@ -1046,10 +1028,7 @@ func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsites
 		}
 
 		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.StringToString(params.MeSess))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode cookie")
 		}
@@ -1333,10 +1312,7 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 		}
 
 		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.StringToString(params.MeSess))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode cookie")
 		}
@@ -1396,12 +1372,12 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 // Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
-func (c *Client) PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq, params PostAuthLoginParams) (PostAuthLoginRes, error) {
-	res, err := c.sendPostAuthLogin(ctx, request, params)
+func (c *Client) PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq) (PostAuthLoginRes, error) {
+	res, err := c.sendPostAuthLogin(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLoginReq, params PostAuthLoginParams) (res PostAuthLoginRes, err error) {
+func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLoginReq) (res PostAuthLoginRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-auth-login"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1466,25 +1442,6 @@ func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLogin
 		return res, errors.Wrap(err, "encode request")
 	}
 
-	stage = "EncodeCookieParams"
-	cookie := uri.NewCookieEncoder(r)
-	{
-		// Encode "_me_sess" parameter.
-		cfg := uri.CookieParameterEncodingConfig{
-			Name:    "_me_sess",
-			Explode: true,
-		}
-
-		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode cookie")
-		}
-	}
-
 	stage = "SendRequest"
 	resp, err := c.cfg.Client.Do(r)
 	if err != nil {
@@ -1494,149 +1451,6 @@ func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLogin
 
 	stage = "DecodeResponse"
 	result, err := decodePostAuthLoginResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// PostAuthRefresh invokes post-auth-refresh operation.
-//
-// Refresh the session token.
-//
-// POST /auth/refresh
-func (c *Client) PostAuthRefresh(ctx context.Context, request OptPostAuthRefreshReq, params PostAuthRefreshParams) (PostAuthRefreshRes, error) {
-	res, err := c.sendPostAuthRefresh(ctx, request, params)
-	return res, err
-}
-
-func (c *Client) sendPostAuthRefresh(ctx context.Context, request OptPostAuthRefreshReq, params PostAuthRefreshParams) (res PostAuthRefreshRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("post-auth-refresh"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/auth/refresh"),
-	}
-	// Validate request before sending.
-	if err := func() error {
-		if value, ok := request.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return res, errors.Wrap(err, "validate")
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PostAuthRefresh",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [1]string
-	pathParts[0] = "/auth/refresh"
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "POST", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-	if err := encodePostAuthRefreshRequest(request, r); err != nil {
-		return res, errors.Wrap(err, "encode request")
-	}
-
-	stage = "EncodeCookieParams"
-	cookie := uri.NewCookieEncoder(r)
-	{
-		// Encode "_me_sess" parameter.
-		cfg := uri.CookieParameterEncodingConfig{
-			Name:    "_me_sess",
-			Explode: true,
-		}
-
-		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.MeSess.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode cookie")
-		}
-	}
-
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			stage = "Security:CookieAuth"
-			switch err := c.securityCookieAuth(ctx, "PostAuthRefresh", r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"CookieAuth\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodePostAuthRefreshResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

@@ -60,53 +60,23 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 			switch elem[0] {
-			case 'a': // Prefix: "auth/"
-				if l := len("auth/"); len(elem) >= l && elem[0:l] == "auth/" {
+			case 'a': // Prefix: "auth/login"
+				if l := len("auth/login"); len(elem) >= l && elem[0:l] == "auth/login" {
 					elem = elem[l:]
 				} else {
 					break
 				}
 
 				if len(elem) == 0 {
-					break
-				}
-				switch elem[0] {
-				case 'l': // Prefix: "login"
-					if l := len("login"); len(elem) >= l && elem[0:l] == "login" {
-						elem = elem[l:]
-					} else {
-						break
+					// Leaf node.
+					switch r.Method {
+					case "POST":
+						s.handlePostAuthLoginRequest([0]string{}, elemIsEscaped, w, r)
+					default:
+						s.notAllowed(w, r, "POST")
 					}
 
-					if len(elem) == 0 {
-						// Leaf node.
-						switch r.Method {
-						case "POST":
-							s.handlePostAuthLoginRequest([0]string{}, elemIsEscaped, w, r)
-						default:
-							s.notAllowed(w, r, "POST")
-						}
-
-						return
-					}
-				case 'r': // Prefix: "refresh"
-					if l := len("refresh"); len(elem) >= l && elem[0:l] == "refresh" {
-						elem = elem[l:]
-					} else {
-						break
-					}
-
-					if len(elem) == 0 {
-						// Leaf node.
-						switch r.Method {
-						case "POST":
-							s.handlePostAuthRefreshRequest([0]string{}, elemIsEscaped, w, r)
-						default:
-							s.notAllowed(w, r, "POST")
-						}
-
-						return
-					}
+					return
 				}
 			case 'e': // Prefix: "event/"
 				if l := len("event/"); len(elem) >= l && elem[0:l] == "event/" {
@@ -428,60 +398,26 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				break
 			}
 			switch elem[0] {
-			case 'a': // Prefix: "auth/"
-				if l := len("auth/"); len(elem) >= l && elem[0:l] == "auth/" {
+			case 'a': // Prefix: "auth/login"
+				if l := len("auth/login"); len(elem) >= l && elem[0:l] == "auth/login" {
 					elem = elem[l:]
 				} else {
 					break
 				}
 
 				if len(elem) == 0 {
-					break
-				}
-				switch elem[0] {
-				case 'l': // Prefix: "login"
-					if l := len("login"); len(elem) >= l && elem[0:l] == "login" {
-						elem = elem[l:]
-					} else {
-						break
-					}
-
-					if len(elem) == 0 {
-						switch method {
-						case "POST":
-							// Leaf: PostAuthLogin
-							r.name = "PostAuthLogin"
-							r.summary = "Session token authentication."
-							r.operationID = "post-auth-login"
-							r.pathPattern = "/auth/login"
-							r.args = args
-							r.count = 0
-							return r, true
-						default:
-							return
-						}
-					}
-				case 'r': // Prefix: "refresh"
-					if l := len("refresh"); len(elem) >= l && elem[0:l] == "refresh" {
-						elem = elem[l:]
-					} else {
-						break
-					}
-
-					if len(elem) == 0 {
-						switch method {
-						case "POST":
-							// Leaf: PostAuthRefresh
-							r.name = "PostAuthRefresh"
-							r.summary = "Refresh session token."
-							r.operationID = "post-auth-refresh"
-							r.pathPattern = "/auth/refresh"
-							r.args = args
-							r.count = 0
-							return r, true
-						default:
-							return
-						}
+					switch method {
+					case "POST":
+						// Leaf: PostAuthLogin
+						r.name = "PostAuthLogin"
+						r.summary = "Session token authentication."
+						r.operationID = "post-auth-login"
+						r.pathPattern = "/auth/login"
+						r.args = args
+						r.count = 0
+						return r, true
+					default:
+						return
 					}
 				}
 			case 'e': // Prefix: "event/"

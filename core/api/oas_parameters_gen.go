@@ -18,7 +18,7 @@ import (
 // DeleteWebsitesIDParams is parameters of delete-websites-id operation.
 type DeleteWebsitesIDParams struct {
 	// Session token for authentication.
-	MeSess OptString
+	MeSess string
 	// Hostname for the website.
 	Hostname string
 }
@@ -29,9 +29,7 @@ func unpackDeleteWebsitesIDParams(packed middleware.Parameters) (params DeleteWe
 			Name: "_me_sess",
 			In:   "cookie",
 		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
+		params.MeSess = packed[key].(string)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -53,28 +51,23 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 		}
 		if err := c.HasParam(cfg); err == nil {
 			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return validate.ErrFieldRequired
 		}
 		return nil
 	}(); err != nil {
@@ -264,7 +257,7 @@ func decodeGetUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Reques
 // GetWebsiteIDSummaryParams is parameters of get-website-id-summary operation.
 type GetWebsiteIDSummaryParams struct {
 	// Session token for authentication.
-	MeSess OptString
+	MeSess string
 	// Start time (seconds) in Unix epoch format.
 	Start OptString
 	// End time (seconds) in Unix epoch format.
@@ -279,9 +272,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			Name: "_me_sess",
 			In:   "cookie",
 		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
+		params.MeSess = packed[key].(string)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -322,28 +313,23 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 		}
 		if err := c.HasParam(cfg); err == nil {
 			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return validate.ErrFieldRequired
 		}
 		return nil
 	}(); err != nil {
@@ -486,7 +472,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 // GetWebsitesParams is parameters of get-websites operation.
 type GetWebsitesParams struct {
 	// Session token for authentication.
-	MeSess OptString
+	MeSess string
 }
 
 func unpackGetWebsitesParams(packed middleware.Parameters) (params GetWebsitesParams) {
@@ -495,9 +481,7 @@ func unpackGetWebsitesParams(packed middleware.Parameters) (params GetWebsitesPa
 			Name: "_me_sess",
 			In:   "cookie",
 		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
+		params.MeSess = packed[key].(string)
 	}
 	return params
 }
@@ -512,28 +496,23 @@ func decodeGetWebsitesParams(args [0]string, argsEscaped bool, r *http.Request) 
 		}
 		if err := c.HasParam(cfg); err == nil {
 			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return validate.ErrFieldRequired
 		}
 		return nil
 	}(); err != nil {
@@ -549,7 +528,7 @@ func decodeGetWebsitesParams(args [0]string, argsEscaped bool, r *http.Request) 
 // GetWebsitesIDParams is parameters of get-websites-id operation.
 type GetWebsitesIDParams struct {
 	// Session token for authentication.
-	MeSess OptString
+	MeSess string
 	// Hostname for the website.
 	Hostname string
 }
@@ -560,9 +539,7 @@ func unpackGetWebsitesIDParams(packed middleware.Parameters) (params GetWebsites
 			Name: "_me_sess",
 			In:   "cookie",
 		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
+		params.MeSess = packed[key].(string)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -584,28 +561,23 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 		}
 		if err := c.HasParam(cfg); err == nil {
 			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return validate.ErrFieldRequired
 		}
 		return nil
 	}(); err != nil {
@@ -666,7 +638,7 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 // GetWebsitesIDActiveParams is parameters of get-websites-id-active operation.
 type GetWebsitesIDActiveParams struct {
 	// Session token for authentication.
-	MeSess OptString
+	MeSess string
 	// Hostname for the website.
 	Hostname string
 }
@@ -677,9 +649,7 @@ func unpackGetWebsitesIDActiveParams(packed middleware.Parameters) (params GetWe
 			Name: "_me_sess",
 			In:   "cookie",
 		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
+		params.MeSess = packed[key].(string)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -701,28 +671,23 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 		}
 		if err := c.HasParam(cfg); err == nil {
 			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return validate.ErrFieldRequired
 		}
 		return nil
 	}(); err != nil {
@@ -849,7 +814,7 @@ func decodePatchUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Requ
 // PatchWebsitesIDParams is parameters of patch-websites-id operation.
 type PatchWebsitesIDParams struct {
 	// Session token for authentication.
-	MeSess OptString
+	MeSess string
 	// Hostname for the website.
 	Hostname string
 }
@@ -860,9 +825,7 @@ func unpackPatchWebsitesIDParams(packed middleware.Parameters) (params PatchWebs
 			Name: "_me_sess",
 			In:   "cookie",
 		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
+		params.MeSess = packed[key].(string)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -884,28 +847,23 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 		}
 		if err := c.HasParam(cfg); err == nil {
 			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return validate.ErrFieldRequired
 		}
 		return nil
 	}(); err != nil {
@@ -957,132 +915,6 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// PostAuthLoginParams is parameters of post-auth-login operation.
-type PostAuthLoginParams struct {
-	// Session token for authentication.
-	MeSess OptString
-}
-
-func unpackPostAuthLoginParams(packed middleware.Parameters) (params PostAuthLoginParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "_me_sess",
-			In:   "cookie",
-		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
-	}
-	return params
-}
-
-func decodePostAuthLoginParams(args [0]string, argsEscaped bool, r *http.Request) (params PostAuthLoginParams, _ error) {
-	c := uri.NewCookieDecoder(r)
-	// Decode cookie: _me_sess.
-	if err := func() error {
-		cfg := uri.CookieParameterDecodingConfig{
-			Name:    "_me_sess",
-			Explode: true,
-		}
-		if err := c.HasParam(cfg); err == nil {
-			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "_me_sess",
-			In:   "cookie",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// PostAuthRefreshParams is parameters of post-auth-refresh operation.
-type PostAuthRefreshParams struct {
-	// Session token for authentication.
-	MeSess OptString
-}
-
-func unpackPostAuthRefreshParams(packed middleware.Parameters) (params PostAuthRefreshParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "_me_sess",
-			In:   "cookie",
-		}
-		if v, ok := packed[key]; ok {
-			params.MeSess = v.(OptString)
-		}
-	}
-	return params
-}
-
-func decodePostAuthRefreshParams(args [0]string, argsEscaped bool, r *http.Request) (params PostAuthRefreshParams, _ error) {
-	c := uri.NewCookieDecoder(r)
-	// Decode cookie: _me_sess.
-	if err := func() error {
-		cfg := uri.CookieParameterDecodingConfig{
-			Name:    "_me_sess",
-			Explode: true,
-		}
-		if err := c.HasParam(cfg); err == nil {
-			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotMeSessVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotMeSessVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.MeSess.SetTo(paramsDotMeSessVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "_me_sess",
-			In:   "cookie",
 			Err:  err,
 		}
 	}

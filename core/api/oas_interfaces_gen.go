@@ -41,10 +41,6 @@ type PostAuthLoginRes interface {
 	postAuthLoginRes()
 }
 
-type PostAuthRefreshRes interface {
-	postAuthRefreshRes()
-}
-
 type PostEventHitRes interface {
 	postEventHitRes()
 }

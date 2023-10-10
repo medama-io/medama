@@ -1426,16 +1426,6 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 			ID:   "post-auth-login",
 		}
 	)
-	params, err := decodePostAuthLoginParams(args, argsEscaped, r)
-	if err != nil {
-		err = &ogenerrors.DecodeParamsError{
-			OperationContext: opErrContext,
-			Err:              err,
-		}
-		recordError("DecodeParams", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
 	request, close, err := s.decodePostAuthLoginRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
@@ -1460,18 +1450,13 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 			OperationSummary: "Session token authentication.",
 			OperationID:      "post-auth-login",
 			Body:             request,
-			Params: middleware.Parameters{
-				{
-					Name: "_me_sess",
-					In:   "cookie",
-				}: params.MeSess,
-			},
-			Raw: r,
+			Params:           middleware.Parameters{},
+			Raw:              r,
 		}
 
 		type (
 			Request  = OptPostAuthLoginReq
-			Params   = PostAuthLoginParams
+			Params   = struct{}
 			Response = PostAuthLoginRes
 		)
 		response, err = middleware.HookMiddleware[
@@ -1481,14 +1466,14 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		](
 			m,
 			mreq,
-			unpackPostAuthLoginParams,
+			nil,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.PostAuthLogin(ctx, request, params)
+				response, err = s.h.PostAuthLogin(ctx, request)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.PostAuthLogin(ctx, request, params)
+		response, err = s.h.PostAuthLogin(ctx, request)
 	}
 	if err != nil {
 		recordError("Internal", err)
@@ -1497,171 +1482,6 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 	}
 
 	if err := encodePostAuthLoginResponse(response, w, span); err != nil {
-		recordError("EncodeResponse", err)
-		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-		}
-		return
-	}
-}
-
-// handlePostAuthRefreshRequest handles post-auth-refresh operation.
-//
-// Refresh the session token.
-//
-// POST /auth/refresh
-func (s *Server) handlePostAuthRefreshRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("post-auth-refresh"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/auth/refresh"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PostAuthRefresh",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		err          error
-		opErrContext = ogenerrors.OperationContext{
-			Name: "PostAuthRefresh",
-			ID:   "post-auth-refresh",
-		}
-	)
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "PostAuthRefresh", r)
-			if err != nil {
-				err = &ogenerrors.SecurityError{
-					OperationContext: opErrContext,
-					Security:         "CookieAuth",
-					Err:              err,
-				}
-				recordError("Security:CookieAuth", err)
-				s.cfg.ErrorHandler(ctx, w, r, err)
-				return
-			}
-			if ok {
-				satisfied[0] |= 1 << 0
-				ctx = sctx
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			err = &ogenerrors.SecurityError{
-				OperationContext: opErrContext,
-				Err:              ogenerrors.ErrSecurityRequirementIsNotSatisfied,
-			}
-			recordError("Security", err)
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-	}
-	params, err := decodePostAuthRefreshParams(args, argsEscaped, r)
-	if err != nil {
-		err = &ogenerrors.DecodeParamsError{
-			OperationContext: opErrContext,
-			Err:              err,
-		}
-		recordError("DecodeParams", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-	request, close, err := s.decodePostAuthRefreshRequest(r)
-	if err != nil {
-		err = &ogenerrors.DecodeRequestError{
-			OperationContext: opErrContext,
-			Err:              err,
-		}
-		recordError("DecodeRequest", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-	defer func() {
-		if err := close(); err != nil {
-			recordError("CloseRequest", err)
-		}
-	}()
-
-	var response PostAuthRefreshRes
-	if m := s.cfg.Middleware; m != nil {
-		mreq := middleware.Request{
-			Context:          ctx,
-			OperationName:    "PostAuthRefresh",
-			OperationSummary: "Refresh session token.",
-			OperationID:      "post-auth-refresh",
-			Body:             request,
-			Params: middleware.Parameters{
-				{
-					Name: "_me_sess",
-					In:   "cookie",
-				}: params.MeSess,
-			},
-			Raw: r,
-		}
-
-		type (
-			Request  = OptPostAuthRefreshReq
-			Params   = PostAuthRefreshParams
-			Response = PostAuthRefreshRes
-		)
-		response, err = middleware.HookMiddleware[
-			Request,
-			Params,
-			Response,
-		](
-			m,
-			mreq,
-			unpackPostAuthRefreshParams,
-			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.PostAuthRefresh(ctx, request, params)
-				return response, err
-			},
-		)
-	} else {
-		response, err = s.h.PostAuthRefresh(ctx, request, params)
-	}
-	if err != nil {
-		recordError("Internal", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-
-	if err := encodePostAuthRefreshResponse(response, w, span); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
