@@ -10,14 +10,14 @@ import (
 func TestCreateUser(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	userCreate := &model.User{
-		ID:          "test",
-		Email:       "email@example.com",
-		Password:    "password",
-		Language:    "en",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
+	userCreate := model.NewUser(
+		"test",
+		"email@example.com",
+		"password",
+		"en",
+		1,
+		2,
+	)
 
 	err := client.CreateUser(ctx, userCreate)
 	assert.NoError(err)

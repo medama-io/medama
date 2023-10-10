@@ -49,19 +49,3 @@ func (s *UserCreate) setDefaults() {
 		s.Language.SetTo(val)
 	}
 }
-
-// setDefaults set default value of fields.
-func (s *WebsiteCreate) setDefaults() {
-	{
-		val := bool(true)
-		s.IsActive.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *WebsitePatch) setDefaults() {
-	{
-		val := bool(true)
-		s.IsActive.SetTo(val)
-	}
-}

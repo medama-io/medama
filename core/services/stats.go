@@ -9,7 +9,7 @@ import (
 )
 
 func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (api.GetWebsiteIDSummaryRes, error) {
-	_, err := h.db.GetWebsite(ctx, params.ID)
+	_, err := h.db.GetWebsite(ctx, params.Hostname)
 	if err != nil {
 		if errors.Is(err, model.ErrWebsiteNotFound) {
 			return ErrNotFound(err), nil

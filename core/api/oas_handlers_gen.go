@@ -24,12 +24,12 @@ import (
 //
 // Delete a website.
 //
-// DELETE /websites/{id}
+// DELETE /websites/{hostname}
 func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("delete-websites-id"),
 		semconv.HTTPMethodKey.String("DELETE"),
-		semconv.HTTPRouteKey.String("/websites/{id}"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}"),
 	}
 
 	// Start a span for this request.
@@ -127,9 +127,13 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
-					Name: "id",
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+				{
+					Name: "hostname",
 					In:   "path",
-				}: params.ID,
+				}: params.Hostname,
 			},
 			Raw: r,
 		}
@@ -430,12 +434,12 @@ func (s *Server) handleGetUsersUserIdRequest(args [1]string, argsEscaped bool, w
 //
 // Get a summary of the website's stats.
 //
-// GET /website/{id}/summary
+// GET /website/{hostname}/summary
 func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-website-id-summary"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/website/{id}/summary"),
+		semconv.HTTPRouteKey.String("/website/{hostname}/summary"),
 	}
 
 	// Start a span for this request.
@@ -533,6 +537,10 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,
@@ -541,9 +549,9 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.End,
 				{
-					Name: "id",
+					Name: "hostname",
 					In:   "path",
-				}: params.ID,
+				}: params.Hostname,
 			},
 			Raw: r,
 		}
@@ -738,12 +746,12 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 //
 // Get website details for an individual website.
 //
-// GET /websites/{id}
+// GET /websites/{hostname}
 func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-websites-id"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/websites/{id}"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}"),
 	}
 
 	// Start a span for this request.
@@ -841,9 +849,13 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
-					Name: "id",
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+				{
+					Name: "hostname",
 					In:   "path",
-				}: params.ID,
+				}: params.Hostname,
 			},
 			Raw: r,
 		}
@@ -888,12 +900,12 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 //
 // Return the number of active users who triggered a pageview in the past 5 minutes.
 //
-// GET /websites/{id}/active
+// GET /websites/{hostname}/active
 func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-websites-id-active"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/websites/{id}/active"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}/active"),
 	}
 
 	// Start a span for this request.
@@ -991,9 +1003,13 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
-					Name: "id",
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+				{
+					Name: "hostname",
 					In:   "path",
-				}: params.ID,
+				}: params.Hostname,
 			},
 			Raw: r,
 		}
@@ -1203,12 +1219,12 @@ func (s *Server) handlePatchUsersUserIdRequest(args [1]string, argsEscaped bool,
 //
 // Update a website's information.
 //
-// PATCH /websites/{id}
+// PATCH /websites/{hostname}
 func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("patch-websites-id"),
 		semconv.HTTPMethodKey.String("PATCH"),
-		semconv.HTTPRouteKey.String("/websites/{id}"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}"),
 	}
 
 	// Start a span for this request.
@@ -1321,9 +1337,13 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 			Body:             request,
 			Params: middleware.Parameters{
 				{
-					Name: "id",
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+				{
+					Name: "hostname",
 					In:   "path",
-				}: params.ID,
+				}: params.Hostname,
 			},
 			Raw: r,
 		}

@@ -20,6 +20,7 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 	s.Error = val
 }
 
+func (*BadRequestError) deleteWebsitesIDRes()    {}
 func (*BadRequestError) getWebsiteIDSummaryRes() {}
 func (*BadRequestError) getWebsitesIDActiveRes() {}
 func (*BadRequestError) getWebsitesIDRes()       {}
@@ -327,6 +328,7 @@ func (*NotFoundError) getWebsitesIDActiveRes() {}
 func (*NotFoundError) getWebsitesIDRes()       {}
 func (*NotFoundError) getWebsitesRes()         {}
 func (*NotFoundError) patchUsersUserIdRes()    {}
+func (*NotFoundError) patchWebsitesIDRes()     {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`
@@ -351,52 +353,6 @@ func (s *NotFoundErrorError) SetCode(val int32) {
 // SetMessage sets the value of Message.
 func (s *NotFoundErrorError) SetMessage(val string) {
 	s.Message = val
-}
-
-// NewOptBool returns new OptBool with value set to v.
-func NewOptBool(v bool) OptBool {
-	return OptBool{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptBool is optional bool.
-type OptBool struct {
-	Value bool
-	Set   bool
-}
-
-// IsSet returns true if OptBool was set.
-func (o OptBool) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptBool) Reset() {
-	var v bool
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptBool) SetTo(v bool) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptBool) Get() (v bool, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptBool) Or(d bool) bool {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
 }
 
 // NewOptEventHit returns new OptEventHit with value set to v.
@@ -1323,9 +1279,8 @@ func (s *UserPatch) SetLanguage(val OptString) {
 // Website details.
 // Ref: #/components/schemas/WebsiteCreate
 type WebsiteCreate struct {
-	Name     string  `json:"name"`
-	Hostname string  `json:"hostname"`
-	IsActive OptBool `json:"isActive"`
+	Name     string `json:"name"`
+	Hostname string `json:"hostname"`
 }
 
 // GetName returns the value of Name.
@@ -1338,11 +1293,6 @@ func (s *WebsiteCreate) GetHostname() string {
 	return s.Hostname
 }
 
-// GetIsActive returns the value of IsActive.
-func (s *WebsiteCreate) GetIsActive() OptBool {
-	return s.IsActive
-}
-
 // SetName sets the value of Name.
 func (s *WebsiteCreate) SetName(val string) {
 	s.Name = val
@@ -1353,24 +1303,11 @@ func (s *WebsiteCreate) SetHostname(val string) {
 	s.Hostname = val
 }
 
-// SetIsActive sets the value of IsActive.
-func (s *WebsiteCreate) SetIsActive(val OptBool) {
-	s.IsActive = val
-}
-
 // Website details.
 // Ref: #/components/schemas/WebsiteGet
 type WebsiteGet struct {
-	// Unique identifier for the website.
-	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Hostname string `json:"hostname"`
-	IsActive bool   `json:"isActive"`
-}
-
-// GetID returns the value of ID.
-func (s *WebsiteGet) GetID() string {
-	return s.ID
 }
 
 // GetName returns the value of Name.
@@ -1383,16 +1320,6 @@ func (s *WebsiteGet) GetHostname() string {
 	return s.Hostname
 }
 
-// GetIsActive returns the value of IsActive.
-func (s *WebsiteGet) GetIsActive() bool {
-	return s.IsActive
-}
-
-// SetID sets the value of ID.
-func (s *WebsiteGet) SetID(val string) {
-	s.ID = val
-}
-
 // SetName sets the value of Name.
 func (s *WebsiteGet) SetName(val string) {
 	s.Name = val
@@ -1401,11 +1328,6 @@ func (s *WebsiteGet) SetName(val string) {
 // SetHostname sets the value of Hostname.
 func (s *WebsiteGet) SetHostname(val string) {
 	s.Hostname = val
-}
-
-// SetIsActive sets the value of IsActive.
-func (s *WebsiteGet) SetIsActive(val bool) {
-	s.IsActive = val
 }
 
 func (*WebsiteGet) getWebsitesIDRes()   {}
@@ -1417,7 +1339,6 @@ func (*WebsiteGet) postWebsitesRes()    {}
 type WebsitePatch struct {
 	Name     OptString `json:"name"`
 	Hostname OptString `json:"hostname"`
-	IsActive OptBool   `json:"isActive"`
 }
 
 // GetName returns the value of Name.
@@ -1430,11 +1351,6 @@ func (s *WebsitePatch) GetHostname() OptString {
 	return s.Hostname
 }
 
-// GetIsActive returns the value of IsActive.
-func (s *WebsitePatch) GetIsActive() OptBool {
-	return s.IsActive
-}
-
 // SetName sets the value of Name.
 func (s *WebsitePatch) SetName(val OptString) {
 	s.Name = val
@@ -1443,9 +1359,4 @@ func (s *WebsitePatch) SetName(val OptString) {
 // SetHostname sets the value of Hostname.
 func (s *WebsitePatch) SetHostname(val OptString) {
 	s.Hostname = val
-}
-
-// SetIsActive sets the value of IsActive.
-func (s *WebsitePatch) SetIsActive(val OptBool) {
-	s.IsActive = val
 }

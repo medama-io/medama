@@ -35,13 +35,12 @@ func Up0001(c *sqlite.Client) error {
 	// Create websites table
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS websites (
-		id TEXT PRIMARY KEY,
+		hostname TEXT PRIMARY KEY,
 		user_id TEXT NOT NULL,
-		hostname TEXT NOT NULL,
+		name TEXT NOT NULL,
 		date_created INTEGER NOT NULL,
 		date_updated INTEGER NOT NULL,
-		FOREIGN KEY(user_id) REFERENCES users(id),
-		UNIQUE(hostname)
+		FOREIGN KEY(user_id) REFERENCES users(id)
 	)`)
 
 	if err != nil {

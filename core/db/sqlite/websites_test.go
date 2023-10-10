@@ -10,70 +10,47 @@ import (
 func TestCreateWebsite(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	websiteCreate := &model.Website{
-		ID:          "test",
-		UserID:      "test1",
-		Hostname:    "example.com",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
+	websiteCreate := model.NewWebsite(
+		"test1",
+		"example.com",
+		"Example",
+		1,
+		2,
+	)
 
 	err := client.CreateWebsite(ctx, websiteCreate)
 	assert.NoError(err)
 
-	website, err := client.GetWebsite(ctx, "test")
+	website, err := client.GetWebsite(ctx, "example.com")
 	assert.NoError(err)
 	assert.NotNil(website)
-	assert.Equal("test", website.ID)
 	assert.Equal("test1", website.UserID)
 	assert.Equal("example.com", website.Hostname)
+	assert.Equal("Example", website.Name)
 	assert.Equal(int64(1), website.DateCreated)
 	assert.Equal(int64(2), website.DateUpdated)
-}
-
-func TestCreateWebsiteDuplicateID(t *testing.T) {
-	assert, ctx, client := SetupDatabaseWithUsers(t)
-
-	websiteCreate := &model.Website{
-		ID:          "test",
-		UserID:      "test1",
-		Hostname:    "example.com",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
-
-	// Test unique id
-	err := client.CreateWebsite(ctx, websiteCreate)
-	assert.NoError(err)
-
-	websiteCreate.Hostname = "example2.com"
-	// Should give a duplicate error for id
-	err = client.CreateWebsite(ctx, websiteCreate)
-	assert.Error(err, model.ErrWebsiteExists)
 }
 
 func TestCreateWebsiteDuplicateHostname(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	websiteCreate := &model.Website{
-		UserID:      "test1",
-		Hostname:    "example.com",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
+	websiteCreate := model.NewWebsite(
+		"test1",
+		"example.com",
+		"Example",
+		1,
+		2,
+	)
 
 	// Test unique id
-	websiteCreate.ID = "test"
 	err := client.CreateWebsite(ctx, websiteCreate)
 	assert.NoError(err)
 
 	// Should give a duplicate error for id
-	websiteCreate.ID = "test2"
 	err = client.CreateWebsite(ctx, websiteCreate)
 	assert.Error(err, model.ErrWebsiteExists)
 
 	// Test unique email
-	websiteCreate.ID = "test3"
 	websiteCreate.Hostname = "example2.com"
 	err = client.CreateWebsite(ctx, websiteCreate)
 	assert.NoError(err)
@@ -82,13 +59,13 @@ func TestCreateWebsiteDuplicateHostname(t *testing.T) {
 func TestCreateWebsiteMissingUser(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	websiteCreate := &model.Website{
-		ID:          "test",
-		UserID:      "doesnotexist",
-		Hostname:    "exampledoesnotexist.com",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
+	websiteCreate := model.NewWebsite(
+		"doesnotexist",
+		"exampledoesnotexist.com",
+		"DoesNotExist",
+		1,
+		2,
+	)
 
 	err := client.CreateWebsite(ctx, websiteCreate)
 	assert.ErrorIs(err, model.ErrUserNotFound)
@@ -114,10 +91,9 @@ func TestListWebsitesNotFound(t *testing.T) {
 func TestGetWebsite(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithWebsites(t)
 
-	website, err := client.GetWebsite(ctx, "website1-test1")
+	website, err := client.GetWebsite(ctx, "website1-test1.com")
 	assert.NoError(err)
 	assert.NotNil(website)
-	assert.Equal("website1-test1", website.ID)
 	assert.Equal("test1", website.UserID)
 	assert.Equal("website1-test1.com", website.Hostname)
 	assert.Equal(int64(1), website.DateCreated)
@@ -127,7 +103,7 @@ func TestGetWebsite(t *testing.T) {
 func TestGetWebsiteNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	website, err := client.GetWebsite(ctx, "doesnotexist")
+	website, err := client.GetWebsite(ctx, "doesnotexist.com")
 	assert.ErrorIs(err, model.ErrWebsiteNotFound)
 	assert.Nil(website)
 }
@@ -135,14 +111,14 @@ func TestGetWebsiteNotFound(t *testing.T) {
 func TestDeleteWebsite(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithWebsites(t)
 
-	website, err := client.GetWebsite(ctx, "website1-test1")
+	website, err := client.GetWebsite(ctx, "website1-test1.com")
 	assert.NoError(err)
 	assert.NotNil(website)
 
-	err = client.DeleteWebsite(ctx, "website1-test1")
+	err = client.DeleteWebsite(ctx, "website1-test1.com")
 	assert.NoError(err)
 
-	website, err = client.GetWebsite(ctx, "website1-test1")
+	website, err = client.GetWebsite(ctx, "website1-test1.com")
 	assert.ErrorIs(err, model.ErrWebsiteNotFound)
 	assert.Nil(website)
 }

@@ -1127,41 +1127,6 @@ func (s *NotFoundErrorError) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes bool as json.
-func (o OptBool) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Bool(bool(o.Value))
-}
-
-// Decode decodes bool from json.
-func (o *OptBool) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptBool to nil")
-	}
-	o.Set = true
-	v, err := d.Bool()
-	if err != nil {
-		return err
-	}
-	o.Value = bool(v)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptBool) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptBool) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes EventHit as json.
 func (o OptEventHit) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -2622,18 +2587,11 @@ func (s *WebsiteCreate) encodeFields(e *jx.Encoder) {
 		e.FieldStart("hostname")
 		e.Str(s.Hostname)
 	}
-	{
-		if s.IsActive.Set {
-			e.FieldStart("isActive")
-			s.IsActive.Encode(e)
-		}
-	}
 }
 
-var jsonFieldsNameOfWebsiteCreate = [3]string{
+var jsonFieldsNameOfWebsiteCreate = [2]string{
 	0: "name",
 	1: "hostname",
-	2: "isActive",
 }
 
 // Decode decodes WebsiteCreate from json.
@@ -2642,7 +2600,6 @@ func (s *WebsiteCreate) Decode(d *jx.Decoder) error {
 		return errors.New("invalid: unable to decode WebsiteCreate to nil")
 	}
 	var requiredBitSet [1]uint8
-	s.setDefaults()
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -2669,16 +2626,6 @@ func (s *WebsiteCreate) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"hostname\"")
-			}
-		case "isActive":
-			if err := func() error {
-				s.IsActive.Reset()
-				if err := s.IsActive.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"isActive\"")
 			}
 		default:
 			return d.Skip()
@@ -2746,10 +2693,6 @@ func (s *WebsiteGet) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *WebsiteGet) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("id")
-		e.Str(s.ID)
-	}
-	{
 		e.FieldStart("name")
 		e.Str(s.Name)
 	}
@@ -2757,17 +2700,11 @@ func (s *WebsiteGet) encodeFields(e *jx.Encoder) {
 		e.FieldStart("hostname")
 		e.Str(s.Hostname)
 	}
-	{
-		e.FieldStart("isActive")
-		e.Bool(s.IsActive)
-	}
 }
 
-var jsonFieldsNameOfWebsiteGet = [4]string{
-	0: "id",
-	1: "name",
-	2: "hostname",
-	3: "isActive",
+var jsonFieldsNameOfWebsiteGet = [2]string{
+	0: "name",
+	1: "hostname",
 }
 
 // Decode decodes WebsiteGet from json.
@@ -2779,20 +2716,8 @@ func (s *WebsiteGet) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "id":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.ID = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"id\"")
-			}
 		case "name":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
 				s.Name = string(v)
@@ -2804,7 +2729,7 @@ func (s *WebsiteGet) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
 		case "hostname":
-			requiredBitSet[0] |= 1 << 2
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Str()
 				s.Hostname = string(v)
@@ -2814,18 +2739,6 @@ func (s *WebsiteGet) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"hostname\"")
-			}
-		case "isActive":
-			requiredBitSet[0] |= 1 << 3
-			if err := func() error {
-				v, err := d.Bool()
-				s.IsActive = bool(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"isActive\"")
 			}
 		default:
 			return d.Skip()
@@ -2837,7 +2750,7 @@ func (s *WebsiteGet) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00001111,
+		0b00000011,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -2904,18 +2817,11 @@ func (s *WebsitePatch) encodeFields(e *jx.Encoder) {
 			s.Hostname.Encode(e)
 		}
 	}
-	{
-		if s.IsActive.Set {
-			e.FieldStart("isActive")
-			s.IsActive.Encode(e)
-		}
-	}
 }
 
-var jsonFieldsNameOfWebsitePatch = [3]string{
+var jsonFieldsNameOfWebsitePatch = [2]string{
 	0: "name",
 	1: "hostname",
-	2: "isActive",
 }
 
 // Decode decodes WebsitePatch from json.
@@ -2923,7 +2829,6 @@ func (s *WebsitePatch) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode WebsitePatch to nil")
 	}
-	s.setDefaults()
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -2946,16 +2851,6 @@ func (s *WebsitePatch) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"hostname\"")
-			}
-		case "isActive":
-			if err := func() error {
-				s.IsActive.Reset()
-				if err := s.IsActive.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"isActive\"")
 			}
 		default:
 			return d.Skip()

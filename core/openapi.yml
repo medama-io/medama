@@ -361,7 +361,7 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-  "/websites/{id}":
+  "/websites/{hostname}":
     get:
       tags:
         - website
@@ -371,12 +371,8 @@ paths:
       description: Get website details for an individual website.
       operationId: get-websites-id
       parameters:
-        - name: id
-          in: path
-          description: Unique identifier for a website.
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
       responses:
         "200":
           description: OK
@@ -404,12 +400,8 @@ paths:
       description: Update a website's information.
       operationId: patch-websites-id
       parameters:
-        - name: id
-          in: path
-          description: Unique identifier for a website.
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
       requestBody:
         description: Website details to update.
         content:
@@ -427,6 +419,8 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
@@ -441,15 +435,13 @@ paths:
       description: Delete a website.
       operationId: delete-websites-id
       parameters:
-        - name: id
-          in: path
-          description: Unique identifier for a website.
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
       responses:
         "200":
           description: Success
+        "400":
+          $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
         "404":
@@ -459,7 +451,7 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-  "/websites/{id}/active":
+  "/websites/{hostname}/active":
     get:
       tags:
         - stats
@@ -469,11 +461,8 @@ paths:
       description: Return the number of active users who triggered a pageview in the past 5 minutes.
       operationId: get-websites-id-active
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
       responses:
         "200":
           description: OK
@@ -492,23 +481,20 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-  "/website/{id}/summary":
+  "/website/{hostname}/summary":
     get:
       tags:
         - stats
       security:
         - CookieAuth: []
       summary: Get summary of website stats.
-      description: "Get a summary of the website's stats."
+      description: Get a summary of the website's stats.
       operationId: get-website-id-summary
       parameters:
+        - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/Hostname"
       responses:
         "200":
           description: OK
@@ -530,14 +516,22 @@ paths:
 components:
   securitySchemes:
     CookieAuth:
-      type: apiKey
-      in: cookie
       name: _me_sess
+      in: cookie
+      type: apiKey
+      description: Session token for authentication.
   parameters:
     SessionAuth:
       name: _me_sess
       in: cookie
       description: Session token for authentication.
+      schema:
+        type: string
+    Hostname:
+      name: hostname
+      in: path
+      description: Hostname for the website.
+      required: true
       schema:
         type: string
     PeriodStart:
@@ -766,22 +760,14 @@ components:
       title: Website
       description: Website details.
       properties:
-        id:
-          type: string
-          description: "Unique identifier for the website."
-          format: uuidv7
         name:
           type: string
         hostname:
           type: string
           format: hostname
-        isActive:
-          type: boolean
       required:
-        - id
         - name
         - hostname
-        - isActive
     WebsiteCreate:
       type: object
       title: Website
@@ -791,9 +777,6 @@ components:
           type: string
         hostname:
           type: string
-        isActive:
-          type: boolean
-          default: true
       required:
         - name
         - hostname
@@ -806,9 +789,6 @@ components:
           type: string
         hostname:
           type: string
-        isActive:
-          type: boolean
-          default: true
     StatsActive:
       type: object
       title: StatsActive

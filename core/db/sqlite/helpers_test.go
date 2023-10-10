@@ -43,14 +43,14 @@ func SetupDatabaseWithUsers(t *testing.T) (*assert.Assertions, context.Context, 
 	passwords := []string{"password1", "password2", "password3"}
 
 	for i, id := range ids {
-		userCreate := &model.User{
-			ID:          id,
-			Email:       emails[i],
-			Password:    passwords[i],
-			Language:    "en",
-			DateCreated: 1,
-			DateUpdated: 2,
-		}
+		userCreate := model.NewUser(
+			id,
+			emails[i],
+			passwords[i],
+			"en",
+			1,
+			2,
+		)
 
 		err := client.CreateUser(ctx, userCreate)
 		assert.NoError(err)
@@ -69,13 +69,13 @@ func SetupDatabaseWithWebsites(t *testing.T) (*assert.Assertions, context.Contex
 	// 3 websites each for 3 users
 	for _, id := range ids {
 		for _, user_id := range user_ids {
-			websiteCreate := &model.Website{
-				ID:          fmt.Sprintf("%s-%s", id, user_id),
-				UserID:      user_id,
-				Hostname:    fmt.Sprintf("%s-%s.com", id, user_id),
-				DateCreated: 1,
-				DateUpdated: 2,
-			}
+			websiteCreate := model.NewWebsite(
+				user_id,
+				fmt.Sprintf("%s-%s.com", id, user_id),
+				fmt.Sprintf("%s-%s", id, user_id),
+				1,
+				2,
+			)
 
 			err := client.CreateWebsite(ctx, websiteCreate)
 			assert.NoError(err)

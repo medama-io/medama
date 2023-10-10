@@ -17,23 +17,74 @@ import (
 
 // DeleteWebsitesIDParams is parameters of delete-websites-id operation.
 type DeleteWebsitesIDParams struct {
-	// Unique identifier for a website.
-	ID string
+	// Session token for authentication.
+	MeSess OptString
+	// Hostname for the website.
+	Hostname string
 }
 
 func unpackDeleteWebsitesIDParams(packed middleware.Parameters) (params DeleteWebsitesIDParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "id",
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		if v, ok := packed[key]; ok {
+			params.MeSess = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "hostname",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.Hostname = packed[key].(string)
 	}
 	return params
 }
 
 func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request) (params DeleteWebsitesIDParams, _ error) {
-	// Decode path: id.
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotMeSessVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotMeSessVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.MeSess.SetTo(paramsDotMeSessVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	// Decode path: hostname.
 	if err := func() error {
 		param := args[0]
 		if argsEscaped {
@@ -45,7 +96,7 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 		}
 		if len(param) > 0 {
 			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
+				Param:   "hostname",
 				Value:   param,
 				Style:   uri.PathStyleSimple,
 				Explode: false,
@@ -62,7 +113,7 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 					return err
 				}
 
-				params.ID = c
+				params.Hostname = c
 				return nil
 			}(); err != nil {
 				return err
@@ -73,7 +124,7 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
+			Name: "hostname",
 			In:   "path",
 			Err:  err,
 		}
@@ -212,14 +263,26 @@ func decodeGetUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Reques
 
 // GetWebsiteIDSummaryParams is parameters of get-website-id-summary operation.
 type GetWebsiteIDSummaryParams struct {
+	// Session token for authentication.
+	MeSess OptString
 	// Start time (seconds) in Unix epoch format.
 	Start OptString
 	// End time (seconds) in Unix epoch format.
 	End OptString
-	ID  string
+	// Hostname for the website.
+	Hostname string
 }
 
 func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWebsiteIDSummaryParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		if v, ok := packed[key]; ok {
+			params.MeSess = v.(OptString)
+		}
+	}
 	{
 		key := middleware.ParameterKey{
 			Name: "start",
@@ -240,16 +303,56 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "id",
+			Name: "hostname",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.Hostname = packed[key].(string)
 	}
 	return params
 }
 
 func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDSummaryParams, _ error) {
 	q := uri.NewQueryDecoder(r.URL.Query())
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotMeSessVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotMeSessVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.MeSess.SetTo(paramsDotMeSessVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
 	// Decode query: start.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -332,7 +435,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode path: id.
+	// Decode path: hostname.
 	if err := func() error {
 		param := args[0]
 		if argsEscaped {
@@ -344,7 +447,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 		}
 		if len(param) > 0 {
 			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
+				Param:   "hostname",
 				Value:   param,
 				Style:   uri.PathStyleSimple,
 				Explode: false,
@@ -361,7 +464,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 					return err
 				}
 
-				params.ID = c
+				params.Hostname = c
 				return nil
 			}(); err != nil {
 				return err
@@ -372,7 +475,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
+			Name: "hostname",
 			In:   "path",
 			Err:  err,
 		}
@@ -445,23 +548,74 @@ func decodeGetWebsitesParams(args [0]string, argsEscaped bool, r *http.Request) 
 
 // GetWebsitesIDParams is parameters of get-websites-id operation.
 type GetWebsitesIDParams struct {
-	// Unique identifier for a website.
-	ID string
+	// Session token for authentication.
+	MeSess OptString
+	// Hostname for the website.
+	Hostname string
 }
 
 func unpackGetWebsitesIDParams(packed middleware.Parameters) (params GetWebsitesIDParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "id",
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		if v, ok := packed[key]; ok {
+			params.MeSess = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "hostname",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.Hostname = packed[key].(string)
 	}
 	return params
 }
 
 func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsitesIDParams, _ error) {
-	// Decode path: id.
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotMeSessVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotMeSessVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.MeSess.SetTo(paramsDotMeSessVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	// Decode path: hostname.
 	if err := func() error {
 		param := args[0]
 		if argsEscaped {
@@ -473,7 +627,7 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 		}
 		if len(param) > 0 {
 			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
+				Param:   "hostname",
 				Value:   param,
 				Style:   uri.PathStyleSimple,
 				Explode: false,
@@ -490,7 +644,7 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 					return err
 				}
 
-				params.ID = c
+				params.Hostname = c
 				return nil
 			}(); err != nil {
 				return err
@@ -501,7 +655,7 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
+			Name: "hostname",
 			In:   "path",
 			Err:  err,
 		}
@@ -511,22 +665,74 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 
 // GetWebsitesIDActiveParams is parameters of get-websites-id-active operation.
 type GetWebsitesIDActiveParams struct {
-	ID string
+	// Session token for authentication.
+	MeSess OptString
+	// Hostname for the website.
+	Hostname string
 }
 
 func unpackGetWebsitesIDActiveParams(packed middleware.Parameters) (params GetWebsitesIDActiveParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "id",
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		if v, ok := packed[key]; ok {
+			params.MeSess = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "hostname",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.Hostname = packed[key].(string)
 	}
 	return params
 }
 
 func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsitesIDActiveParams, _ error) {
-	// Decode path: id.
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotMeSessVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotMeSessVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.MeSess.SetTo(paramsDotMeSessVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	// Decode path: hostname.
 	if err := func() error {
 		param := args[0]
 		if argsEscaped {
@@ -538,7 +744,7 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 		}
 		if len(param) > 0 {
 			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
+				Param:   "hostname",
 				Value:   param,
 				Style:   uri.PathStyleSimple,
 				Explode: false,
@@ -555,7 +761,7 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 					return err
 				}
 
-				params.ID = c
+				params.Hostname = c
 				return nil
 			}(); err != nil {
 				return err
@@ -566,7 +772,7 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
+			Name: "hostname",
 			In:   "path",
 			Err:  err,
 		}
@@ -642,23 +848,74 @@ func decodePatchUsersUserIdParams(args [1]string, argsEscaped bool, r *http.Requ
 
 // PatchWebsitesIDParams is parameters of patch-websites-id operation.
 type PatchWebsitesIDParams struct {
-	// Unique identifier for a website.
-	ID string
+	// Session token for authentication.
+	MeSess OptString
+	// Hostname for the website.
+	Hostname string
 }
 
 func unpackPatchWebsitesIDParams(packed middleware.Parameters) (params PatchWebsitesIDParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "id",
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		if v, ok := packed[key]; ok {
+			params.MeSess = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "hostname",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.Hostname = packed[key].(string)
 	}
 	return params
 }
 
 func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request) (params PatchWebsitesIDParams, _ error) {
-	// Decode path: id.
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotMeSessVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotMeSessVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.MeSess.SetTo(paramsDotMeSessVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	// Decode path: hostname.
 	if err := func() error {
 		param := args[0]
 		if argsEscaped {
@@ -670,7 +927,7 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 		}
 		if len(param) > 0 {
 			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
+				Param:   "hostname",
 				Value:   param,
 				Style:   uri.PathStyleSimple,
 				Explode: false,
@@ -687,7 +944,7 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 					return err
 				}
 
-				params.ID = c
+				params.Hostname = c
 				return nil
 			}(); err != nil {
 				return err
@@ -698,7 +955,7 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
+			Name: "hostname",
 			In:   "path",
 			Err:  err,
 		}

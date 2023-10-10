@@ -12,7 +12,7 @@ type Handler interface {
 	//
 	// Delete a website.
 	//
-	// DELETE /websites/{id}
+	// DELETE /websites/{hostname}
 	DeleteWebsitesID(ctx context.Context, params DeleteWebsitesIDParams) (DeleteWebsitesIDRes, error)
 	// GetEventPing implements get-event-ping operation.
 	//
@@ -30,7 +30,7 @@ type Handler interface {
 	//
 	// Get a summary of the website's stats.
 	//
-	// GET /website/{id}/summary
+	// GET /website/{hostname}/summary
 	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error)
 	// GetWebsites implements get-websites operation.
 	//
@@ -42,13 +42,13 @@ type Handler interface {
 	//
 	// Get website details for an individual website.
 	//
-	// GET /websites/{id}
+	// GET /websites/{hostname}
 	GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error)
 	// GetWebsitesIDActive implements get-websites-id-active operation.
 	//
 	// Return the number of active users who triggered a pageview in the past 5 minutes.
 	//
-	// GET /websites/{id}/active
+	// GET /websites/{hostname}/active
 	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error)
 	// PatchUsersUserId implements patch-users-userId operation.
 	//
@@ -60,7 +60,7 @@ type Handler interface {
 	//
 	// Update a website's information.
 	//
-	// PATCH /websites/{id}
+	// PATCH /websites/{hostname}
 	PatchWebsitesID(ctx context.Context, req OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
 	// PostAuthLogin implements post-auth-login operation.
 	//

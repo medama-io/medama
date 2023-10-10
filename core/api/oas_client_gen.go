@@ -28,7 +28,7 @@ type Invoker interface {
 	//
 	// Delete a website.
 	//
-	// DELETE /websites/{id}
+	// DELETE /websites/{hostname}
 	DeleteWebsitesID(ctx context.Context, params DeleteWebsitesIDParams) (DeleteWebsitesIDRes, error)
 	// GetEventPing invokes get-event-ping operation.
 	//
@@ -46,7 +46,7 @@ type Invoker interface {
 	//
 	// Get a summary of the website's stats.
 	//
-	// GET /website/{id}/summary
+	// GET /website/{hostname}/summary
 	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error)
 	// GetWebsites invokes get-websites operation.
 	//
@@ -58,13 +58,13 @@ type Invoker interface {
 	//
 	// Get website details for an individual website.
 	//
-	// GET /websites/{id}
+	// GET /websites/{hostname}
 	GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error)
 	// GetWebsitesIDActive invokes get-websites-id-active operation.
 	//
 	// Return the number of active users who triggered a pageview in the past 5 minutes.
 	//
-	// GET /websites/{id}/active
+	// GET /websites/{hostname}/active
 	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error)
 	// PatchUsersUserId invokes patch-users-userId operation.
 	//
@@ -76,7 +76,7 @@ type Invoker interface {
 	//
 	// Update a website's information.
 	//
-	// PATCH /websites/{id}
+	// PATCH /websites/{hostname}
 	PatchWebsitesID(ctx context.Context, request OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
 	// PostAuthLogin invokes post-auth-login operation.
 	//
@@ -164,7 +164,7 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 //
 // Delete a website.
 //
-// DELETE /websites/{id}
+// DELETE /websites/{hostname}
 func (c *Client) DeleteWebsitesID(ctx context.Context, params DeleteWebsitesIDParams) (DeleteWebsitesIDRes, error) {
 	res, err := c.sendDeleteWebsitesID(ctx, params)
 	return res, err
@@ -174,7 +174,7 @@ func (c *Client) sendDeleteWebsitesID(ctx context.Context, params DeleteWebsites
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("delete-websites-id"),
 		semconv.HTTPMethodKey.String("DELETE"),
-		semconv.HTTPRouteKey.String("/websites/{id}"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}"),
 	}
 
 	// Run stopwatch.
@@ -209,14 +209,14 @@ func (c *Client) sendDeleteWebsitesID(ctx context.Context, params DeleteWebsites
 	var pathParts [2]string
 	pathParts[0] = "/websites/"
 	{
-		// Encode "id" parameter.
+		// Encode "hostname" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
+			Param:   "hostname",
 			Style:   uri.PathStyleSimple,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			return e.EncodeValue(conv.StringToString(params.Hostname))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -232,6 +232,25 @@ func (c *Client) sendDeleteWebsitesID(ctx context.Context, params DeleteWebsites
 	r, err := ht.NewRequest(ctx, "DELETE", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.MeSess.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
 	}
 
 	{
@@ -499,7 +518,7 @@ func (c *Client) sendGetUsersUserId(ctx context.Context, params GetUsersUserIdPa
 //
 // Get a summary of the website's stats.
 //
-// GET /website/{id}/summary
+// GET /website/{hostname}/summary
 func (c *Client) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error) {
 	res, err := c.sendGetWebsiteIDSummary(ctx, params)
 	return res, err
@@ -509,7 +528,7 @@ func (c *Client) sendGetWebsiteIDSummary(ctx context.Context, params GetWebsiteI
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-website-id-summary"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/website/{id}/summary"),
+		semconv.HTTPRouteKey.String("/website/{hostname}/summary"),
 	}
 
 	// Run stopwatch.
@@ -544,14 +563,14 @@ func (c *Client) sendGetWebsiteIDSummary(ctx context.Context, params GetWebsiteI
 	var pathParts [3]string
 	pathParts[0] = "/website/"
 	{
-		// Encode "id" parameter.
+		// Encode "hostname" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
+			Param:   "hostname",
 			Style:   uri.PathStyleSimple,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			return e.EncodeValue(conv.StringToString(params.Hostname))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -606,6 +625,25 @@ func (c *Client) sendGetWebsiteIDSummary(ctx context.Context, params GetWebsiteI
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.MeSess.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
 	}
 
 	{
@@ -785,7 +823,7 @@ func (c *Client) sendGetWebsites(ctx context.Context, params GetWebsitesParams) 
 //
 // Get website details for an individual website.
 //
-// GET /websites/{id}
+// GET /websites/{hostname}
 func (c *Client) GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error) {
 	res, err := c.sendGetWebsitesID(ctx, params)
 	return res, err
@@ -795,7 +833,7 @@ func (c *Client) sendGetWebsitesID(ctx context.Context, params GetWebsitesIDPara
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-websites-id"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/websites/{id}"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}"),
 	}
 
 	// Run stopwatch.
@@ -830,14 +868,14 @@ func (c *Client) sendGetWebsitesID(ctx context.Context, params GetWebsitesIDPara
 	var pathParts [2]string
 	pathParts[0] = "/websites/"
 	{
-		// Encode "id" parameter.
+		// Encode "hostname" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
+			Param:   "hostname",
 			Style:   uri.PathStyleSimple,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			return e.EncodeValue(conv.StringToString(params.Hostname))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -853,6 +891,25 @@ func (c *Client) sendGetWebsitesID(ctx context.Context, params GetWebsitesIDPara
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.MeSess.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
 	}
 
 	{
@@ -908,7 +965,7 @@ func (c *Client) sendGetWebsitesID(ctx context.Context, params GetWebsitesIDPara
 //
 // Return the number of active users who triggered a pageview in the past 5 minutes.
 //
-// GET /websites/{id}/active
+// GET /websites/{hostname}/active
 func (c *Client) GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error) {
 	res, err := c.sendGetWebsitesIDActive(ctx, params)
 	return res, err
@@ -918,7 +975,7 @@ func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsites
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("get-websites-id-active"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/websites/{id}/active"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}/active"),
 	}
 
 	// Run stopwatch.
@@ -953,14 +1010,14 @@ func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsites
 	var pathParts [3]string
 	pathParts[0] = "/websites/"
 	{
-		// Encode "id" parameter.
+		// Encode "hostname" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
+			Param:   "hostname",
 			Style:   uri.PathStyleSimple,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			return e.EncodeValue(conv.StringToString(params.Hostname))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -977,6 +1034,25 @@ func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsites
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.MeSess.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
 	}
 
 	{
@@ -1174,7 +1250,7 @@ func (c *Client) sendPatchUsersUserId(ctx context.Context, request OptUserPatch,
 //
 // Update a website's information.
 //
-// PATCH /websites/{id}
+// PATCH /websites/{hostname}
 func (c *Client) PatchWebsitesID(ctx context.Context, request OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error) {
 	res, err := c.sendPatchWebsitesID(ctx, request, params)
 	return res, err
@@ -1184,7 +1260,7 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("patch-websites-id"),
 		semconv.HTTPMethodKey.String("PATCH"),
-		semconv.HTTPRouteKey.String("/websites/{id}"),
+		semconv.HTTPRouteKey.String("/websites/{hostname}"),
 	}
 
 	// Run stopwatch.
@@ -1219,14 +1295,14 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 	var pathParts [2]string
 	pathParts[0] = "/websites/"
 	{
-		// Encode "id" parameter.
+		// Encode "hostname" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
+			Param:   "hostname",
 			Style:   uri.PathStyleSimple,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			return e.EncodeValue(conv.StringToString(params.Hostname))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -1245,6 +1321,25 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 	}
 	if err := encodePatchWebsitesIDRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeCookieParams"
+	cookie := uri.NewCookieEncoder(r)
+	{
+		// Encode "_me_sess" parameter.
+		cfg := uri.CookieParameterEncodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+
+		if err := cookie.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.MeSess.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode cookie")
+		}
 	}
 
 	{

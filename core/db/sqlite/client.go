@@ -28,6 +28,8 @@ type Handler interface {
 	CreateWebsite(ctx context.Context, website *model.Website) error
 	// ListWebsites retrieves a list of websites from the database.
 	ListWebsites(ctx context.Context, userID string) ([]*model.Website, error)
+	// UpdateWebsite updates a website in the database.
+	UpdateWebsite(ctx context.Context, website *model.Website) error
 	// GetWebsite retrieves a website from the database by id.
 	GetWebsite(ctx context.Context, id string) (*model.Website, error)
 	// DeleteWebsite deletes a website from the database.

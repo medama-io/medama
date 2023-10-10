@@ -222,7 +222,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						break
 					}
 
-					// Param: "id"
+					// Param: "hostname"
 					// Match until "/"
 					idx := strings.IndexByte(elem, '/')
 					if idx < 0 {
@@ -283,7 +283,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							break
 						}
 
-						// Param: "id"
+						// Param: "hostname"
 						// Match until "/"
 						idx := strings.IndexByte(elem, '/')
 						if idx < 0 {
@@ -617,7 +617,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						break
 					}
 
-					// Param: "id"
+					// Param: "hostname"
 					// Match until "/"
 					idx := strings.IndexByte(elem, '/')
 					if idx < 0 {
@@ -644,7 +644,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.name = "GetWebsiteIDSummary"
 								r.summary = "Get summary of website stats."
 								r.operationID = "get-website-id-summary"
-								r.pathPattern = "/website/{id}/summary"
+								r.pathPattern = "/website/{hostname}/summary"
 								r.args = args
 								r.count = 1
 								return r, true
@@ -690,7 +690,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							break
 						}
 
-						// Param: "id"
+						// Param: "hostname"
 						// Match until "/"
 						idx := strings.IndexByte(elem, '/')
 						if idx < 0 {
@@ -705,7 +705,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.name = "DeleteWebsitesID"
 								r.summary = "Delete website."
 								r.operationID = "delete-websites-id"
-								r.pathPattern = "/websites/{id}"
+								r.pathPattern = "/websites/{hostname}"
 								r.args = args
 								r.count = 1
 								return r, true
@@ -713,7 +713,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.name = "GetWebsitesID"
 								r.summary = "Get website details."
 								r.operationID = "get-websites-id"
-								r.pathPattern = "/websites/{id}"
+								r.pathPattern = "/websites/{hostname}"
 								r.args = args
 								r.count = 1
 								return r, true
@@ -721,7 +721,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.name = "PatchWebsitesID"
 								r.summary = "Update website."
 								r.operationID = "patch-websites-id"
-								r.pathPattern = "/websites/{id}"
+								r.pathPattern = "/websites/{hostname}"
 								r.args = args
 								r.count = 1
 								return r, true
@@ -744,7 +744,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = "GetWebsitesIDActive"
 									r.summary = "Active users."
 									r.operationID = "get-websites-id-active"
-									r.pathPattern = "/websites/{id}/active"
+									r.pathPattern = "/websites/{hostname}/active"
 									r.args = args
 									r.count = 1
 									return r, true

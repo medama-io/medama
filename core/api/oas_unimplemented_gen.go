@@ -17,7 +17,7 @@ var _ Handler = UnimplementedHandler{}
 //
 // Delete a website.
 //
-// DELETE /websites/{id}
+// DELETE /websites/{hostname}
 func (UnimplementedHandler) DeleteWebsitesID(ctx context.Context, params DeleteWebsitesIDParams) (r DeleteWebsitesIDRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
@@ -44,7 +44,7 @@ func (UnimplementedHandler) GetUsersUserId(ctx context.Context, params GetUsersU
 //
 // Get a summary of the website's stats.
 //
-// GET /website/{id}/summary
+// GET /website/{hostname}/summary
 func (UnimplementedHandler) GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (r GetWebsiteIDSummaryRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
@@ -62,7 +62,7 @@ func (UnimplementedHandler) GetWebsites(ctx context.Context, params GetWebsitesP
 //
 // Get website details for an individual website.
 //
-// GET /websites/{id}
+// GET /websites/{hostname}
 func (UnimplementedHandler) GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (r GetWebsitesIDRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
@@ -71,7 +71,7 @@ func (UnimplementedHandler) GetWebsitesID(ctx context.Context, params GetWebsite
 //
 // Return the number of active users who triggered a pageview in the past 5 minutes.
 //
-// GET /websites/{id}/active
+// GET /websites/{hostname}/active
 func (UnimplementedHandler) GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (r GetWebsitesIDActiveRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
@@ -89,7 +89,7 @@ func (UnimplementedHandler) PatchUsersUserId(ctx context.Context, req OptUserPat
 //
 // Update a website's information.
 //
-// PATCH /websites/{id}
+// PATCH /websites/{hostname}
 func (UnimplementedHandler) PatchWebsitesID(ctx context.Context, req OptWebsitePatch, params PatchWebsitesIDParams) (r PatchWebsitesIDRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
