@@ -200,6 +200,8 @@ paths:
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
         "409":
           $ref: "#/components/responses/ConflictError"
         "500":
@@ -494,6 +496,72 @@ components:
       schema:
         type: string
   responses:
+    BadRequestError:
+      description: 400 Bad Request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    default: 400
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+            required:
+              - error
+    UnauthorisedError:
+      description: 401 Unauthorised.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    default: 401
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+            required:
+              - error
+    ForbiddenError:
+      description: 403 Forbidden.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                additionalProperties: false
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    default: 403
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+            required:
+              - error
     NotFoundError:
       description: 404 Not Found.
       content:
@@ -517,28 +585,6 @@ components:
 
             required:
               - error
-    BadRequestError:
-      description: 400 Bad Request.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: object
-                additionalProperties: false
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    default: 400
-                  message:
-                    type: string
-                required:
-                  - code
-                  - message
-            required:
-              - error
     ConflictError:
       description: 409 Conflict Found.
       content:
@@ -554,28 +600,6 @@ components:
                     type: integer
                     format: int32
                     default: 409
-                  message:
-                    type: string
-                required:
-                  - code
-                  - message
-            required:
-              - error
-    UnauthorisedError:
-      description: 401 Unauthorised.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: object
-                additionalProperties: false
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    default: 401
                   message:
                     type: string
                 required:

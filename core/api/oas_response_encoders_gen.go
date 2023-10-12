@@ -804,6 +804,19 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 
 		return nil
 
+	case *ForbiddenError:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(403)
+		span.SetStatus(codes.Error, http.StatusText(403))
+
+		e := jx.GetEncoder()
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
 	case *ConflictError:
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(409)

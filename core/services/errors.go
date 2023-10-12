@@ -26,6 +26,16 @@ func ErrConflict(err error) *api.ConflictError {
 	}
 }
 
+// ErrForbidden returns an API specific ForbiddenError pointer.
+func ErrForbidden(err error) *api.ForbiddenError {
+	return &api.ForbiddenError{
+		Error: api.ForbiddenErrorError{
+			Code:    http.StatusForbidden,
+			Message: err.Error(),
+		},
+	}
+}
+
 // ErrNotFound returns an API specific NotFoundError pointer.
 func ErrNotFound(err error) *api.NotFoundError {
 	return &api.NotFoundError{

@@ -232,6 +232,47 @@ func (s *EventHit) SetM(val OptInt) {
 	s.M = val
 }
 
+type ForbiddenError struct {
+	Error ForbiddenErrorError `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ForbiddenError) GetError() ForbiddenErrorError {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ForbiddenError) SetError(val ForbiddenErrorError) {
+	s.Error = val
+}
+
+func (*ForbiddenError) postUserRes() {}
+
+type ForbiddenErrorError struct {
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
+}
+
+// GetCode returns the value of Code.
+func (s *ForbiddenErrorError) GetCode() int32 {
+	return s.Code
+}
+
+// GetMessage returns the value of Message.
+func (s *ForbiddenErrorError) GetMessage() string {
+	return s.Message
+}
+
+// SetCode sets the value of Code.
+func (s *ForbiddenErrorError) SetCode(val int32) {
+	s.Code = val
+}
+
+// SetMessage sets the value of Message.
+func (s *ForbiddenErrorError) SetMessage(val string) {
+	s.Message = val
+}
+
 // GetEventPingOK is response for GetEventPing operation.
 type GetEventPingOK struct {
 	LastModified OptString

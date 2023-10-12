@@ -107,6 +107,14 @@ func TestGetUserByEmailNotFound(t *testing.T) {
 	assert.Nil(user)
 }
 
+func TestGetUserCount(t *testing.T) {
+	assert, ctx, client := SetupDatabaseWithUsers(t)
+
+	count, err := client.GetUserCount(ctx)
+	assert.NoError(err)
+	assert.Equal(int64(3), count)
+}
+
 func TestUpdateUserEmail(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 

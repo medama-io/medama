@@ -83,6 +83,15 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 }
 
 func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.PostUserRes, error) {
+	// Do not allow user account creation if number of users exceeds 1
+	count, err := h.db.GetUserCount(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return ErrForbidden(model.ErrUserExists), nil
+	}
+
 	// UUIDv7 id generation
 	typeid, err := typeid.New("user")
 	if err != nil {

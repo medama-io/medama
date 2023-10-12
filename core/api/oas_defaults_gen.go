@@ -19,6 +19,14 @@ func (s *ConflictErrorError) setDefaults() {
 }
 
 // setDefaults set default value of fields.
+func (s *ForbiddenErrorError) setDefaults() {
+	{
+		val := int32(403)
+		s.Code = val
+	}
+}
+
+// setDefaults set default value of fields.
 func (s *InternalServerErrorError) setDefaults() {
 	{
 		val := int32(500)

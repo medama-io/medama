@@ -107,6 +107,24 @@ func (c *Client) GetUserByEmail(ctx context.Context, email string) (*model.User,
 	return nil, model.ErrUserNotFound
 }
 
+func (c *Client) GetUserCount(ctx context.Context) (int64, error) {
+	query := `--sql
+	SELECT COUNT(*) FROM users`
+
+	var count int64
+	err := c.DB.GetContext(ctx, &count, query)
+	if err != nil {
+		attributes := []slog.Attr{
+			slog.String("error", err.Error()),
+		}
+
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get user count", attributes...)
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (c *Client) UpdateUserEmail(ctx context.Context, id string, email string, dateUpdated int64) error {
 	exec := `--sql
 	UPDATE users SET email = ?, date_updated = ? WHERE id = ?`

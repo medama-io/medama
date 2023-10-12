@@ -16,6 +16,8 @@ type Handler interface {
 	GetUser(ctx context.Context, id string) (*model.User, error)
 	// GetUserByEmail retrieves a user from the database by email.
 	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
+	// GetUserCount retrieves the total number of users from the database.
+	GetUserCount(ctx context.Context) (int64, error)
 	// UpdateUserEmail updates a user's email in the database.
 	UpdateUserEmail(ctx context.Context, id string, email string, dateUpdated int64) error
 	// UpdateUserPassword updates a user's password in the database.
