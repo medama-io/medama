@@ -4,13 +4,13 @@ import {
 	type MetaFunction,
 } from '@remix-run/node';
 
-import { Signup } from '@/components/login/Login';
+import { Setup } from '@/components/setup/Setup';
 import { type PostUser } from '@/utils/types';
 import { postUser } from '@/utils/user';
 
 export const meta: MetaFunction = () => {
 	return [
-		{ title: 'Signup | Medama' },
+		{ title: 'Setup | Medama' },
 		{ name: 'description', content: 'Sign up to Medama Analytics.' },
 	];
 };
@@ -33,7 +33,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	};
 
 	const res = await postUser(post);
-	console.log(res);
 
 	if (res.data.email) {
 		return json(res.data, {
@@ -46,5 +45,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
-	return <Signup />;
+	return <Setup />;
 }

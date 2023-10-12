@@ -1,4 +1,10 @@
-import type { MetaFunction } from '@remix-run/node';
+import {
+	type LoaderFunctionArgs,
+	type MetaFunction,
+	redirect,
+} from '@remix-run/node';
+
+import { getSession } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -7,35 +13,19 @@ export const meta: MetaFunction = () => {
 	];
 };
 
+export const loader = ({ request }: LoaderFunctionArgs) => {
+	// Check for session cookie and redirect to login if missing
+	if (!getSession(request)) {
+		throw redirect('/login');
+	}
+
+	return { status: 200 };
+};
+
 export default function Index() {
 	return (
 		<div>
-			<h1>Welcome to Remix</h1>
-			<ul>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/tutorials/blog"
-						rel="noreferrer"
-					>
-						15m Quickstart Blog Tutorial
-					</a>
-				</li>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/tutorials/jokes"
-						rel="noreferrer"
-					>
-						Deep Dive Jokes App Tutorial
-					</a>
-				</li>
-				<li>
-					<a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-						Remix Docs
-					</a>
-				</li>
-			</ul>
+			<h1>Homepage</h1>
 		</div>
 	);
 }

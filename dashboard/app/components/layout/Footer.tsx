@@ -1,9 +1,13 @@
-import { Box, type BoxProps, Text } from '@mantine/core';
+import { Box, Text } from '@mantine/core';
 
-export const Footer = ({ ...rest }: BoxProps) => {
+import classes from './Footer.module.css';
+
+export const Footer = () => {
 	return (
-		<Box component="footer" {...rest}>
-			<Text>Footer</Text>
+		<Box component="footer" className={classes.footer}>
+			<div className={classes.inner}>
+				<Text>Footer</Text>
+			</div>
 		</Box>
 	);
 };

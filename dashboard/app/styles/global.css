@@ -1,0 +1,23 @@
+:root {
+	--me-color-text-light: #fcfcfc;
+	--me-color-bg-dark: #111111;
+}
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	justify-content: flex-start;
+
+	font-size: var(--mantine-font-size-md);
+	line-height: 160%;
+}
+
+main {
+	max-width: 1440px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 80px 120px;
+
+	display: flex;
+}
