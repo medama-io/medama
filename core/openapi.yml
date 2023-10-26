@@ -38,18 +38,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: false
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-              required:
-                - email
-                - password
+              $ref: "#/components/schemas/AuthLogin"
       responses:
         "200":
           description: Success
@@ -630,6 +619,20 @@ components:
             required:
               - error
   schemas:
+    AuthLogin:
+      type: object
+      title: AuthLogin
+      description: Request body for logging in.
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - email
+        - password
     EventHit:
       type: object
       title: EventHit
@@ -669,8 +672,8 @@ components:
         - e
     UserCreate:
       type: object
-      title: User
-      description: User model for admin.
+      title: UserCreate
+      description: Request body for creating a user.
       properties:
         email:
           type: string
@@ -687,8 +690,8 @@ components:
         - password
     UserGet:
       type: object
-      title: User
-      description: User model for admin.
+      title: UserGet
+      description: Response body for getting a user.
       properties:
         email:
           type: string
@@ -709,8 +712,8 @@ components:
         - dateUpdated
     UserPatch:
       type: object
-      title: User
-      description: User model for admin.
+      title: UserPatch
+      description: Request body for updating a user.
       properties:
         email:
           type: string
@@ -722,8 +725,8 @@ components:
           type: string
     WebsiteGet:
       type: object
-      title: Website
-      description: Website details.
+      title: WebsiteGet
+      description: Response body for getting a website.
       properties:
         name:
           type: string
@@ -735,8 +738,8 @@ components:
         - hostname
     WebsiteCreate:
       type: object
-      title: Website
-      description: Website details.
+      title: WebsiteCreate
+      description: Request body for creating a website.
       properties:
         name:
           type: string
@@ -747,8 +750,8 @@ components:
         - hostname
     WebsitePatch:
       type: object
-      title: Website
-      description: Website details.
+      title: WebsitePatch
+      description: Request body for updating a website.
       properties:
         name:
           type: string

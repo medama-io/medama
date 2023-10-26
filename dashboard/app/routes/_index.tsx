@@ -1,10 +1,22 @@
 import {
+	json,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
 } from '@remix-run/node';
+import {
+	isRouteErrorResponse,
+	useLoaderData,
+	useRouteError,
+} from '@remix-run/react';
 
-import { getSession } from '@/utils/cookies';
+import { type components } from '@/api/types';
+import { websiteList } from '@/api/websites';
+import { hasSession } from '@/utils/cookies';
+
+interface LoaderData {
+	websites: Array<components['schemas']['WebsiteGet']>;
+}
 
 export const meta: MetaFunction = () => {
 	return [
@@ -13,19 +25,43 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
 	// Check for session cookie and redirect to login if missing
-	if (!getSession(request)) {
+	if (!hasSession(request)) {
 		throw redirect('/login');
 	}
 
-	return { status: 200 };
+	const { data } = await websiteList({ cookie: request.headers.get('Cookie') });
+
+	if (!data) {
+		throw json('Failed to get websites.', {
+			status: 500,
+		});
+	}
+
+	return json<LoaderData>({ websites: data });
 };
 
 export default function Index() {
+	const { websites } = useLoaderData<LoaderData>();
+
 	return (
 		<div>
-			<h1>Homepage</h1>
+			<h1>Websites</h1>
+			{JSON.stringify(websites)}
 		</div>
 	);
 }
+
+export const ErrorBoundary = () => {
+	const error = useRouteError();
+
+	if (isRouteErrorResponse(error) && error.status === 404) {
+		return (
+			<div>
+				<h1>404</h1>
+				<p>No websites found</p>
+			</div>
+		);
+	}
+};

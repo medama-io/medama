@@ -165,7 +165,7 @@ func (s *Server) decodePatchWebsitesIDRequest(r *http.Request) (
 }
 
 func (s *Server) decodePostAuthLoginRequest(r *http.Request) (
-	req OptPostAuthLoginReq,
+	req OptAuthLogin,
 	close func() error,
 	rerr error,
 ) {
@@ -207,7 +207,7 @@ func (s *Server) decodePostAuthLoginRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptPostAuthLoginReq
+		var request OptAuthLogin
 		if err := func() error {
 			request.Reset()
 			if err := request.Decode(d); err != nil {

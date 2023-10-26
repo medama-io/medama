@@ -2,14 +2,13 @@ import { Footer } from './Footer';
 import { Header } from './Header';
 
 interface AppShellProps {
-	isLoggedIn: boolean;
 	children: React.ReactNode;
 }
 
-export const AppShell = ({ isLoggedIn, children }: AppShellProps) => {
+export const AppShell = ({ children }: AppShellProps) => {
 	return (
 		<>
-			<Header isLoggedIn={isLoggedIn} />
+			<Header />
 			<main>{children}</main>
 			<Footer />
 		</>

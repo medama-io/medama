@@ -52,7 +52,7 @@ func encodePatchWebsitesIDRequest(
 }
 
 func encodePostAuthLoginRequest(
-	req OptPostAuthLoginReq,
+	req OptAuthLogin,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

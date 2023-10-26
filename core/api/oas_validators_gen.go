@@ -10,32 +10,7 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func (s GetWebsitesOKApplicationJSON) Validate() error {
-	alias := ([]WebsiteGet)(s)
-	if alias == nil {
-		return errors.New("nil is invalid value")
-	}
-	var failures []validate.FieldError
-	for i, elem := range alias {
-		if err := func() error {
-			if err := elem.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			failures = append(failures, validate.FieldError{
-				Name:  fmt.Sprintf("[%d]", i),
-				Error: err,
-			})
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s *PostAuthLoginReq) Validate() error {
+func (s *AuthLogin) Validate() error {
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
@@ -55,6 +30,31 @@ func (s *PostAuthLoginReq) Validate() error {
 			Name:  "email",
 			Error: err,
 		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s GetWebsitesOKApplicationJSON) Validate() error {
+	alias := ([]WebsiteGet)(s)
+	if alias == nil {
+		return errors.New("nil is invalid value")
+	}
+	var failures []validate.FieldError
+	for i, elem := range alias {
+		if err := func() error {
+			if err := elem.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			failures = append(failures, validate.FieldError{
+				Name:  fmt.Sprintf("[%d]", i),
+				Error: err,
+			})
+		}
 	}
 	if len(failures) > 0 {
 		return &validate.Error{Fields: failures}

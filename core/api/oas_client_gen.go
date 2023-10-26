@@ -83,7 +83,7 @@ type Invoker interface {
 	// Login to the service and retrieve a session token for authentication.
 	//
 	// POST /auth/login
-	PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq) (PostAuthLoginRes, error)
+	PostAuthLogin(ctx context.Context, request OptAuthLogin) (PostAuthLoginRes, error)
 	// PostEventHit invokes post-event-hit operation.
 	//
 	// Send a hit event to register a user view.
@@ -1368,12 +1368,12 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 // Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
-func (c *Client) PostAuthLogin(ctx context.Context, request OptPostAuthLoginReq) (PostAuthLoginRes, error) {
+func (c *Client) PostAuthLogin(ctx context.Context, request OptAuthLogin) (PostAuthLoginRes, error) {
 	res, err := c.sendPostAuthLogin(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendPostAuthLogin(ctx context.Context, request OptPostAuthLoginReq) (res PostAuthLoginRes, err error) {
+func (c *Client) sendPostAuthLogin(ctx context.Context, request OptAuthLogin) (res PostAuthLoginRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-auth-login"),
 		semconv.HTTPMethodKey.String("POST"),

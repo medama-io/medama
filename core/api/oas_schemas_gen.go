@@ -6,6 +6,33 @@ import (
 	"github.com/go-faster/errors"
 )
 
+// Request body for logging in.
+// Ref: #/components/schemas/AuthLogin
+type AuthLogin struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// GetEmail returns the value of Email.
+func (s *AuthLogin) GetEmail() string {
+	return s.Email
+}
+
+// GetPassword returns the value of Password.
+func (s *AuthLogin) GetPassword() string {
+	return s.Password
+}
+
+// SetEmail sets the value of Email.
+func (s *AuthLogin) SetEmail(val string) {
+	s.Email = val
+}
+
+// SetPassword sets the value of Password.
+func (s *AuthLogin) SetPassword(val string) {
+	s.Password = val
+}
+
 type BadRequestError struct {
 	Error BadRequestErrorError `json:"error"`
 }
@@ -395,6 +422,52 @@ func (s *NotFoundErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
+// NewOptAuthLogin returns new OptAuthLogin with value set to v.
+func NewOptAuthLogin(v AuthLogin) OptAuthLogin {
+	return OptAuthLogin{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptAuthLogin is optional AuthLogin.
+type OptAuthLogin struct {
+	Value AuthLogin
+	Set   bool
+}
+
+// IsSet returns true if OptAuthLogin was set.
+func (o OptAuthLogin) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptAuthLogin) Reset() {
+	var v AuthLogin
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptAuthLogin) SetTo(v AuthLogin) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptAuthLogin) Get() (v AuthLogin, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptAuthLogin) Or(d AuthLogin) AuthLogin {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptEventHit returns new OptEventHit with value set to v.
 func NewOptEventHit(v EventHit) OptEventHit {
 	return OptEventHit{
@@ -527,52 +600,6 @@ func (o OptInt) Get() (v int, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptInt) Or(d int) int {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptPostAuthLoginReq returns new OptPostAuthLoginReq with value set to v.
-func NewOptPostAuthLoginReq(v PostAuthLoginReq) OptPostAuthLoginReq {
-	return OptPostAuthLoginReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPostAuthLoginReq is optional PostAuthLoginReq.
-type OptPostAuthLoginReq struct {
-	Value PostAuthLoginReq
-	Set   bool
-}
-
-// IsSet returns true if OptPostAuthLoginReq was set.
-func (o OptPostAuthLoginReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPostAuthLoginReq) Reset() {
-	var v PostAuthLoginReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPostAuthLoginReq) SetTo(v PostAuthLoginReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPostAuthLoginReq) Get() (v PostAuthLoginReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPostAuthLoginReq) Or(d PostAuthLoginReq) PostAuthLoginReq {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -872,31 +899,6 @@ func (s *PostAuthLoginOK) SetSetCookie(val OptString) {
 
 func (*PostAuthLoginOK) postAuthLoginRes() {}
 
-type PostAuthLoginReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-// GetEmail returns the value of Email.
-func (s *PostAuthLoginReq) GetEmail() string {
-	return s.Email
-}
-
-// GetPassword returns the value of Password.
-func (s *PostAuthLoginReq) GetPassword() string {
-	return s.Password
-}
-
-// SetEmail sets the value of Email.
-func (s *PostAuthLoginReq) SetEmail(val string) {
-	s.Email = val
-}
-
-// SetPassword sets the value of Password.
-func (s *PostAuthLoginReq) SetPassword(val string) {
-	s.Password = val
-}
-
 // PostEventHitNotFound is response for PostEventHit operation.
 type PostEventHitNotFound struct{}
 
@@ -1026,7 +1028,7 @@ func (s *UnauthorisedErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
-// User model for admin.
+// Request body for creating a user.
 // Ref: #/components/schemas/UserCreate
 type UserCreate struct {
 	Email    string                `json:"email"`
@@ -1098,7 +1100,7 @@ func (s *UserCreateLanguage) UnmarshalText(data []byte) error {
 	}
 }
 
-// User model for admin.
+// Response body for getting a user.
 // Ref: #/components/schemas/UserGet
 type UserGet struct {
 	Email       string `json:"email"`
@@ -1178,7 +1180,7 @@ func (s *UserGetHeaders) SetResponse(val UserGet) {
 
 func (*UserGetHeaders) postUserRes() {}
 
-// User model for admin.
+// Request body for updating a user.
 // Ref: #/components/schemas/UserPatch
 type UserPatch struct {
 	Email    OptString `json:"email"`
@@ -1216,7 +1218,7 @@ func (s *UserPatch) SetLanguage(val OptString) {
 	s.Language = val
 }
 
-// Website details.
+// Request body for creating a website.
 // Ref: #/components/schemas/WebsiteCreate
 type WebsiteCreate struct {
 	Name     string `json:"name"`
@@ -1243,7 +1245,7 @@ func (s *WebsiteCreate) SetHostname(val string) {
 	s.Hostname = val
 }
 
-// Website details.
+// Response body for getting a website.
 // Ref: #/components/schemas/WebsiteGet
 type WebsiteGet struct {
 	Name     string `json:"name"`
@@ -1274,7 +1276,7 @@ func (*WebsiteGet) getWebsitesIDRes()   {}
 func (*WebsiteGet) patchWebsitesIDRes() {}
 func (*WebsiteGet) postWebsitesRes()    {}
 
-// Website details.
+// Request body for updating a website.
 // Ref: #/components/schemas/WebsitePatch
 type WebsitePatch struct {
 	Name     OptString `json:"name"`

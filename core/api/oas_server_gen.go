@@ -67,7 +67,7 @@ type Handler interface {
 	// Login to the service and retrieve a session token for authentication.
 	//
 	// POST /auth/login
-	PostAuthLogin(ctx context.Context, req OptPostAuthLoginReq) (PostAuthLoginRes, error)
+	PostAuthLogin(ctx context.Context, req OptAuthLogin) (PostAuthLoginRes, error)
 	// PostEventHit implements post-event-hit operation.
 	//
 	// Send a hit event to register a user view.

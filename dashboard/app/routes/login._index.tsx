@@ -1,11 +1,15 @@
 import {
+	type ActionFunctionArgs,
+	json,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
 } from '@remix-run/node';
 
+import { authLogin } from '@/api/auth';
+import { userGet } from '@/api/user';
 import { Login } from '@/components/login/Login';
-import { getSession } from '@/utils/cookies';
+import { hasSession } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -14,13 +18,46 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
 	// If the user is already logged in, redirect them to the dashboard.
-	if (getSession(request)) {
-		throw redirect('/');
+	if (hasSession(request)) {
+		// Check if session hasn't been revoked
+		await userGet({ cookie: request.headers.get('Cookie'), noRedirect: true });
 	}
 
 	return { status: 200 };
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+	const body = await request.formData();
+
+	const email = body.get('email')?.toString();
+	const password = body.get('password')?.toString();
+
+	if (!email || !password) {
+		throw json('Missing email or password', {
+			status: 400,
+		});
+	}
+
+	const { cookie } = await authLogin({
+		body: {
+			email,
+			password,
+		},
+	});
+
+	if (!cookie) {
+		throw json('Failed to login.', {
+			status: 401,
+		});
+	}
+
+	return redirect('/', {
+		headers: {
+			'Set-Cookie': cookie,
+		},
+	});
 };
 
 export default function Index() {

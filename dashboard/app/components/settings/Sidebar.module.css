@@ -1,0 +1,8 @@
+.wrapper {
+	width: 250px;
+	padding: 20px;
+
+	align-items: stretch;
+
+	background-color: var(--me-color-bg-grey);
+}

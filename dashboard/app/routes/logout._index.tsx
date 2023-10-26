@@ -5,8 +5,8 @@ import {
 } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
-import { getSession } from '@/utils/cookies';
-import { SESSION_NAME } from '@/utils/types';
+import { isLoggedIn$ } from '@/observables';
+import { EXPIRE_COOKIE, hasSession } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -21,13 +21,13 @@ interface LoaderData {
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
 	// If the user is already logged in, expire session cookie with success message.
-	if (getSession(request)) {
+	if (hasSession(request)) {
 		return json<LoaderData>(
 			{ loggedOut: true },
 			{
 				status: 200,
 				headers: {
-					'Set-Cookie': `${SESSION_NAME}=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+					'Set-Cookie': EXPIRE_COOKIE,
 				},
 			}
 		);
@@ -38,6 +38,8 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 
 export default function Index() {
 	const { loggedOut } = useLoaderData<LoaderData>();
+	isLoggedIn$.set(false);
+
 	return (
 		<div>
 			<h1>Logout</h1>

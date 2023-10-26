@@ -11,37 +11,45 @@ import {
 	type LoaderFunctionArgs,
 } from '@remix-run/node';
 import {
+	isRouteErrorResponse,
 	Links,
 	LiveReload,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useLoaderData,
+	useRouteError,
+	useRouteLoaderData,
 } from '@remix-run/react';
 
 import { AppShell } from '@/components/layout/AppShell';
+import { isLoggedIn$ } from '@/observables';
 import theme from '@/styles/theme';
-
-import { getSession } from './utils/cookies';
+import { hasSession } from '@/utils/cookies';
 
 enableReactUse();
-
-export const links: LinksFunction = () => [
-	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
-];
 
 interface LoaderData {
 	isLoggedIn: boolean;
 }
 
+interface DocumentProps {
+	children: React.ReactNode;
+}
+
+export const links: LinksFunction = () => [
+	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+];
+
 export const loader = ({ request }: LoaderFunctionArgs) => {
-	const session = getSession(request);
+	const session = hasSession(request);
+
 	return json<LoaderData>({ isLoggedIn: Boolean(session) });
 };
 
-export default function App() {
-	const { isLoggedIn } = useLoaderData<LoaderData>();
+export const Document = ({ children }: DocumentProps) => {
+	const data = useRouteLoaderData<LoaderData>('root');
+	data?.isLoggedIn && isLoggedIn$.set(data.isLoggedIn);
 
 	return (
 		<html lang="en">
@@ -54,9 +62,7 @@ export default function App() {
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>
-					<AppShell isLoggedIn={isLoggedIn}>
-						<Outlet />
-					</AppShell>
+					<AppShell>{children}</AppShell>
 					<ScrollRestoration />
 					<Scripts />
 					<LiveReload />
@@ -64,4 +70,43 @@ export default function App() {
 			</body>
 		</html>
 	);
+};
+
+export default function App() {
+	return (
+		<Document>
+			<Outlet />
+		</Document>
+	);
 }
+
+export const ErrorBoundary = () => {
+	const error = useRouteError();
+
+	if (isRouteErrorResponse(error)) {
+		switch (error.status) {
+			case 401: {
+				return (
+					<Document>
+						<p>You don&apos;t have access to this page.</p>
+					</Document>
+				);
+			}
+			case 404: {
+				return <Document>Page not found!</Document>;
+			}
+		}
+
+		return (
+			<Document>
+				Something went wrong: {error.status} {error.statusText}
+			</Document>
+		);
+	}
+
+	if (error instanceof Error) {
+		return <Document>Something went wrong: {error.message}</Document>;
+	}
+
+	return <Document>Something went wrong: Unknown Error</Document>;
+};

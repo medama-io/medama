@@ -99,7 +99,7 @@ func (UnimplementedHandler) PatchWebsitesID(ctx context.Context, req OptWebsiteP
 // Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
-func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req OptPostAuthLoginReq) (r PostAuthLoginRes, _ error) {
+func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req OptAuthLogin) (r PostAuthLoginRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 

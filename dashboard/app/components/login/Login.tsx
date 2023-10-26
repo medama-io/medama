@@ -9,6 +9,7 @@ import {
 	TextInput,
 	Title,
 } from '@mantine/core';
+import { Form } from '@remix-run/react';
 
 import classes from './Login.module.css';
 import { email$, password$ } from './observables';
@@ -24,28 +25,32 @@ export const Login = () => {
 			</Title>
 
 			<Paper withBorder shadow="md" p={30} mt={30} radius="md">
-				<TextInput
-					label="Email"
-					required
-					onChange={(e) => email$.set(e.currentTarget.value)}
-					value={email}
-				/>
-				<PasswordInput
-					label="Password"
-					required
-					mt="md"
-					onChange={(e) => password$.set(e.currentTarget.value)}
-					value={password}
-				/>
-				<Group justify="space-between" mt="lg">
-					<Checkbox label="Remember me" />
-					<Anchor component="button" size="sm">
-						Forgot password?
-					</Anchor>
-				</Group>
-				<Button fullWidth mt="xl">
-					Sign in
-				</Button>
+				<Form method="post">
+					<TextInput
+						name="email"
+						label="Email"
+						required
+						onChange={(e) => email$.set(e.currentTarget.value)}
+						value={email}
+					/>
+					<PasswordInput
+						name="password"
+						label="Password"
+						required
+						mt="md"
+						onChange={(e) => password$.set(e.currentTarget.value)}
+						value={password}
+					/>
+					<Group justify="space-between" mt="lg">
+						<Checkbox label="Remember me" />
+						<Anchor component="button" size="sm">
+							Forgot password?
+						</Anchor>
+					</Group>
+					<Button fullWidth mt="xl" type="submit">
+						Sign in
+					</Button>
+				</Form>
 			</Paper>
 		</Container>
 	);

@@ -9,6 +9,7 @@
 		"resolveJsonModule": true,
 		"target": "ES2022",
 		"strict": true,
+		"noUncheckedIndexedAccess": true,
 		"allowJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",

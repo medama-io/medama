@@ -1455,7 +1455,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		}
 
 		type (
-			Request  = OptPostAuthLoginReq
+			Request  = OptAuthLogin
 			Params   = struct{}
 			Response = PostAuthLoginRes
 		)

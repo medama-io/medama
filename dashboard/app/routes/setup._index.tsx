@@ -2,11 +2,11 @@ import {
 	type ActionFunctionArgs,
 	json,
 	type MetaFunction,
+	redirect,
 } from '@remix-run/node';
 
+import { userCreate } from '@/api/user';
 import { Setup } from '@/components/setup/Setup';
-import { type PostUser } from '@/utils/types';
-import { postUser } from '@/utils/user';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -22,26 +22,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const password = body.get('password')?.toString();
 
 	if (!email || !password) {
-		return new Response('Missing email or password', {
+		throw json('Missing email or password.', {
 			status: 400,
 		});
 	}
 
-	const post: PostUser = {
-		email,
-		password,
-	};
+	const { cookie } = await userCreate({
+		body: {
+			email,
+			password,
+		},
+	});
 
-	const res = await postUser(post);
-
-	if (res.data.email) {
-		return json(res.data, {
-			status: 200,
-			headers: {
-				'Set-Cookie': res.cookie,
-			},
+	if (!cookie) {
+		throw json('Failed to get session.', {
+			status: 500,
 		});
 	}
+
+	return redirect('/', {
+		headers: {
+			'Set-Cookie': cookie,
+		},
+	});
 };
 
 export default function Index() {

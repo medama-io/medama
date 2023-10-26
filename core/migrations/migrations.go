@@ -22,13 +22,12 @@ type Service struct {
 }
 
 // CreateMigrationsTable creates the migrations table.
-func CreateMigrationsTable(ctx context.Context, c *sqlite.Client) error {
+func CreateMigrationsTable(c *sqlite.Client) error {
 	_, err := c.Exec("CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)")
 	if err != nil {
 		return err
 	}
 
-	slog.DebugContext(ctx, "migrations table created")
 	return nil
 }
 
@@ -39,7 +38,7 @@ func NewMigrationsService(ctx context.Context, c *sqlite.Client) *Service {
 		{ID: 1, Name: "0001_schema.go", Up: Up0001, Down: Down0001},
 	}
 
-	err := CreateMigrationsTable(ctx, c)
+	err := CreateMigrationsTable(c)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed to create migrations table", "error", err)
 		return nil

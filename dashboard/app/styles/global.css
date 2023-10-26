@@ -1,5 +1,7 @@
 :root {
 	--me-color-text-light: #fcfcfc;
+
+	--me-color-bg-grey: #f3f3f3;
 	--me-color-bg-dark: #111111;
 }
 
@@ -15,6 +17,7 @@ body {
 
 main {
 	max-width: 1440px;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 80px 120px;

@@ -6,7 +6,7 @@ import (
 	"github.com/medama-io/medama/api"
 )
 
-func (h *Handler) PostAuthLogin(ctx context.Context, req api.OptPostAuthLoginReq) (api.PostAuthLoginRes, error) {
+func (h *Handler) PostAuthLogin(ctx context.Context, req api.OptAuthLogin) (api.PostAuthLoginRes, error) {
 	// Check email and password.
 	user, err := h.db.GetUserByEmail(ctx, req.Value.Email)
 	if err != nil {

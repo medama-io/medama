@@ -55,6 +55,9 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 
 	websites, err := h.db.ListWebsites(ctx, userId)
 	if err != nil {
+		if errors.Is(err, model.ErrWebsiteNotFound) {
+			return ErrNotFound(err), nil
+		}
 		return nil, err
 	}
 
