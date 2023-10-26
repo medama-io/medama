@@ -1,0 +1,17 @@
+{
+	"name": "@medama/tracker",
+	"version": "0.1.0",
+	"description": "Tracker script for Medama Analytics",
+	"main": "dist/default.js",
+	"scripts": {
+		"build": "npm run build:default && npm run build:size",
+		"build:default": "google-closure-compiler -O ADVANCED src/default.js --js_output_file dist/default.js --language_out ECMASCRIPT5_STRICT",
+		"build:size": "node ./scripts/size.js"
+	},
+	"author": "Ayuhito",
+	"license": "MIT",
+	"devDependencies": {
+		"google-closure-compiler": "^20230802.0.0",
+		"gzip-size": "6"
+	}
+}
