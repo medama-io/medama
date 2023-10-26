@@ -19,11 +19,9 @@ import {
 	Scripts,
 	ScrollRestoration,
 	useRouteError,
-	useRouteLoaderData,
 } from '@remix-run/react';
 
 import { AppShell } from '@/components/layout/AppShell';
-import { isLoggedIn$ } from '@/observables';
 import theme from '@/styles/theme';
 import { hasSession } from '@/utils/cookies';
 
@@ -48,9 +46,6 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 };
 
 export const Document = ({ children }: DocumentProps) => {
-	const data = useRouteLoaderData<LoaderData>('root');
-	data?.isLoggedIn && isLoggedIn$.set(data.isLoggedIn);
-
 	return (
 		<html lang="en">
 			<head>

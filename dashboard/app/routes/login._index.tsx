@@ -5,6 +5,8 @@ import {
 	type MetaFunction,
 	redirect,
 } from '@remix-run/node';
+import { useRevalidator } from '@remix-run/react';
+import { useEffect } from 'react';
 
 import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';
@@ -23,6 +25,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	if (hasSession(request)) {
 		// Check if session hasn't been revoked
 		await userGet({ cookie: request.headers.get('Cookie'), noRedirect: true });
+
+		return redirect('/');
 	}
 
 	return { status: 200 };
@@ -61,5 +65,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
+	// We want to call the revalidator to trigger the root loader and update the header accordingly.
+	const revalidator = useRevalidator();
+	useEffect(() => {
+		revalidator.revalidate();
+	}, [revalidator]);
+
 	return <Login />;
 }

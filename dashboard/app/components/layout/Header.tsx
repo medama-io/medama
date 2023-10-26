@@ -1,13 +1,15 @@
 import { Box, Button, Group, SimpleGrid, Text } from '@mantine/core';
-import { NavLink, useLocation } from '@remix-run/react';
-
-import { isLoggedIn$ } from '@/observables';
+import { NavLink, useLocation, useRouteLoaderData } from '@remix-run/react';
 
 import classes from './Header.module.css';
 
 interface HeaderNavLinkProps {
 	label: string;
 	to: string;
+}
+
+interface RootLoaderData {
+	isLoggedIn: boolean;
 }
 
 const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
@@ -26,7 +28,8 @@ const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 };
 
 export const Header = () => {
-	const isLoggedIn = isLoggedIn$.use();
+	const data = useRouteLoaderData<RootLoaderData>('root');
+	const isLoggedIn = Boolean(data?.isLoggedIn);
 
 	return (
 		<Box component="header" className={classes.header}>
