@@ -238,6 +238,32 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
+    delete:
+      tags:
+        - user
+      security:
+        - CookieAuth: []
+      summary: Delete User.
+      description: Delete a user account.
+      operationId: delete-user
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      responses:
+        "200":
+          description: Success
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "409":
+          $ref: "#/components/responses/ConflictError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080"
+          description: Local Server
   /websites:
     get:
       tags:

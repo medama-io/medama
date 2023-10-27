@@ -47,6 +47,7 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 	s.Error = val
 }
 
+func (*BadRequestError) deleteUserRes()          {}
 func (*BadRequestError) deleteWebsitesIDRes()    {}
 func (*BadRequestError) getUserRes()             {}
 func (*BadRequestError) getWebsiteIDSummaryRes() {}
@@ -98,6 +99,7 @@ func (s *ConflictError) SetError(val ConflictErrorError) {
 	s.Error = val
 }
 
+func (*ConflictError) deleteUserRes()   {}
 func (*ConflictError) patchUserRes()    {}
 func (*ConflictError) postUserRes()     {}
 func (*ConflictError) postWebsitesRes() {}
@@ -140,6 +142,11 @@ func (s *CookieAuth) GetAPIKey() string {
 func (s *CookieAuth) SetAPIKey(val string) {
 	s.APIKey = val
 }
+
+// DeleteUserOK is response for DeleteUser operation.
+type DeleteUserOK struct{}
+
+func (*DeleteUserOK) deleteUserRes() {}
 
 // DeleteWebsitesIDOK is response for DeleteWebsitesID operation.
 type DeleteWebsitesIDOK struct{}
@@ -335,6 +342,7 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 	s.Error = val
 }
 
+func (*InternalServerError) deleteUserRes()          {}
 func (*InternalServerError) deleteWebsitesIDRes()    {}
 func (*InternalServerError) getEventPingRes()        {}
 func (*InternalServerError) getUserRes()             {}
@@ -388,6 +396,7 @@ func (s *NotFoundError) SetError(val NotFoundErrorError) {
 	s.Error = val
 }
 
+func (*NotFoundError) deleteUserRes()          {}
 func (*NotFoundError) deleteWebsitesIDRes()    {}
 func (*NotFoundError) getUserRes()             {}
 func (*NotFoundError) getWebsiteIDSummaryRes() {}
@@ -1037,6 +1046,7 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 	s.Error = val
 }
 
+func (*UnauthorisedError) deleteUserRes()          {}
 func (*UnauthorisedError) deleteWebsitesIDRes()    {}
 func (*UnauthorisedError) getUserRes()             {}
 func (*UnauthorisedError) getWebsiteIDSummaryRes() {}

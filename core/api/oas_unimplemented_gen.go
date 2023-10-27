@@ -13,6 +13,15 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
+// DeleteUser implements delete-user operation.
+//
+// Delete a user account.
+//
+// DELETE /user
+func (UnimplementedHandler) DeleteUser(ctx context.Context, params DeleteUserParams) (r DeleteUserRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // DeleteWebsitesID implements delete-websites-id operation.
 //
 // Delete a website.

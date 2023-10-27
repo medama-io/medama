@@ -195,3 +195,46 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 		},
 	}, nil
 }
+
+func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (api.DeleteUserRes, error) {
+	// Get user id from request context and check if user exists
+	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	if !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
+	attributes := []slog.Attr{
+		slog.String("id", userId),
+	}
+	slog.LogAttrs(ctx, slog.LevelDebug, "getting user...", attributes...)
+
+	user, err := h.db.GetUser(ctx, userId)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+
+		if errors.Is(err, model.ErrUserNotFound) {
+			slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
+			return ErrNotFound(err), nil
+		}
+
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
+		return nil, err
+	}
+
+	attributes = append(attributes,
+		slog.String("email", user.Email),
+		slog.String("language", user.Language),
+		slog.Int64("date_created", user.DateCreated),
+		slog.Int64("date_updated", user.DateUpdated),
+	)
+	slog.LogAttrs(ctx, slog.LevelDebug, "deleting user", attributes...)
+
+	err = h.db.DeleteUser(ctx, user.ID)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to delete user", attributes...)
+		return nil, err
+	}
+
+	return nil, nil
+}

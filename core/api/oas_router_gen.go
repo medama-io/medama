@@ -136,6 +136,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				if len(elem) == 0 {
 					// Leaf node.
 					switch r.Method {
+					case "DELETE":
+						s.handleDeleteUserRequest([0]string{}, elemIsEscaped, w, r)
 					case "GET":
 						s.handleGetUserRequest([0]string{}, elemIsEscaped, w, r)
 					case "PATCH":
@@ -143,7 +145,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					case "POST":
 						s.handlePostUserRequest([0]string{}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "GET,PATCH,POST")
+						s.notAllowed(w, r, "DELETE,GET,PATCH,POST")
 					}
 
 					return
@@ -459,6 +461,15 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 				if len(elem) == 0 {
 					switch method {
+					case "DELETE":
+						// Leaf: DeleteUser
+						r.name = "DeleteUser"
+						r.summary = "Delete User."
+						r.operationID = "delete-user"
+						r.pathPattern = "/user"
+						r.args = args
+						r.count = 0
+						return r, true
 					case "GET":
 						// Leaf: GetUser
 						r.name = "GetUser"

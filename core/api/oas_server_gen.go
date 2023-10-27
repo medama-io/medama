@@ -8,6 +8,12 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
+	// DeleteUser implements delete-user operation.
+	//
+	// Delete a user account.
+	//
+	// DELETE /user
+	DeleteUser(ctx context.Context, params DeleteUserParams) (DeleteUserRes, error)
 	// DeleteWebsitesID implements delete-websites-id operation.
 	//
 	// Delete a website.
