@@ -12,17 +12,26 @@ import (
 )
 
 func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.GetUserRes, error) {
+	// Get user id from request context and check if user exists
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
+	attributes := []slog.Attr{
+		slog.String("id", userId),
+	}
+	slog.LogAttrs(ctx, slog.LevelDebug, "getting user...", attributes...)
 
 	user, err := h.db.GetUser(ctx, userId)
 	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+
 		if errors.Is(err, model.ErrUserNotFound) {
+			slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
 			return ErrNotFound(err), nil
 		}
 
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
 		return nil, err
 	}
 
@@ -35,18 +44,27 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 }
 
 func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params api.PatchUserParams) (api.PatchUserRes, error) {
-	// Check user exists
+	// Get user id from request context and check if user exists
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
+	attributes := []slog.Attr{
+		slog.String("id", userId),
+	}
+	slog.LogAttrs(ctx, slog.LevelDebug, "getting user...", attributes...)
+
 	user, err := h.db.GetUser(ctx, userId)
 	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+
 		if errors.Is(err, model.ErrUserNotFound) {
+			slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
 			return ErrNotFound(err), nil
 		}
 
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
 		return nil, err
 	}
 
@@ -57,6 +75,8 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 		user.Email = email
 		err = h.db.UpdateUserEmail(ctx, user.ID, email, dateUpdated)
 		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to update user email", attributes...)
 			return nil, err
 		}
 	}
@@ -65,11 +85,15 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 	if password != "" {
 		pwdHash, err := h.auth.HashPassword(password)
 		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to hash password", attributes...)
 			return nil, err
 		}
 
 		err = h.db.UpdateUserPassword(ctx, user.ID, pwdHash, dateUpdated)
 		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to update user password", attributes...)
 			return nil, err
 		}
 	}
@@ -93,36 +117,42 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 		return ErrForbidden(model.ErrUserMax), nil
 	} */
 
+	attributes := []slog.Attr{}
+
 	// UUIDv7 id generation
 	typeid, err := typeid.New("user")
 	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to generate user id", attributes...)
 		return nil, err
 	}
 	id := typeid.String()
 	email := req.Value.Email
 
 	// Validate language as an accepted enum
-	err = req.Value.Language.Value.Validate()
+	/* err = req.Value.Language.Value.Validate()
 	if err != nil {
-		return nil, err
-	}
+		//nolint:nilerr // We know it returns only one error type.
+		return ErrBadRequest(model.ErrUserInvalidLanguage), nil
+	} */
 	language := string(req.Value.Language.Value)
 
 	dateCreated := time.Now().Unix()
 	dateUpdated := dateCreated
 
-	attributes := []slog.Attr{
-		slog.String("id", id),
+	attributes = append(attributes,
 		slog.String("email", email),
 		slog.String("language", language),
 		slog.Int64("date_created", dateCreated),
 		slog.Int64("date_updated", dateUpdated),
-	}
+	)
 	slog.LogAttrs(ctx, slog.LevelDebug, "creating user", attributes...)
 
 	// Hash password
 	pwdHash, err := h.auth.HashPassword(req.Value.Password)
 	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to hash password", attributes...)
 		return nil, err
 	}
 
@@ -137,17 +167,21 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 
 	err = h.db.CreateUser(ctx, user)
 	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
 		if errors.Is(err, model.ErrUserExists) {
-			slog.WarnContext(ctx, "user already exists when creating user", slog.String("id", id))
+			slog.LogAttrs(ctx, slog.LevelWarn, "user already exists", attributes...)
 			return ErrConflict(err), nil
 		}
 
+		slog.LogAttrs(ctx, slog.LevelError, "failed to create user", attributes...)
 		return nil, err
 	}
 
 	// Add session to cache
 	cookie, err := h.auth.CreateSession(ctx, user.ID)
 	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to create session", attributes...)
 		return nil, err
 	}
 

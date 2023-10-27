@@ -18,6 +18,8 @@ var (
 	// Users
 	// ErrUserExists is returned when a user already exists.
 	ErrUserExists = errors.New("user already exists")
+	// ErrUserInvalidLanguage is returned when a user has an invalid language.
+	ErrUserInvalidLanguage = errors.New("invalid user language selection")
 	// ErrUserMax is returned when the maximum number of users has been reached.
 	ErrUserMax = errors.New("maximum number of users reached (1)")
 	// ErrUserNotFound is returned when a user is not found.
