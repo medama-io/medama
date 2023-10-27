@@ -27,7 +27,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -40,7 +40,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -53,7 +53,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -66,7 +66,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -111,7 +111,7 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter,
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -131,7 +131,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -144,7 +144,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -157,7 +157,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -170,7 +170,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -183,7 +183,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -203,7 +203,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -216,7 +216,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -229,7 +229,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -242,7 +242,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -255,7 +255,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -275,7 +275,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -288,7 +288,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -301,7 +301,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -314,7 +314,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -327,7 +327,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -347,7 +347,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -360,7 +360,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -373,7 +373,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -386,7 +386,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -399,7 +399,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -419,7 +419,7 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -432,7 +432,7 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -445,7 +445,7 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -458,7 +458,7 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -471,7 +471,7 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -491,7 +491,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -504,7 +504,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -517,7 +517,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -530,7 +530,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -543,7 +543,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		w.WriteHeader(409)
 		span.SetStatus(codes.Error, http.StatusText(409))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -556,7 +556,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -576,7 +576,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -589,7 +589,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -602,7 +602,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -615,7 +615,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -628,7 +628,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -673,7 +673,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -686,7 +686,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -699,7 +699,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -731,7 +731,7 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter,
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -770,7 +770,7 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		w.WriteHeader(201)
 		span.SetStatus(codes.Ok, http.StatusText(201))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -783,7 +783,7 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -796,7 +796,7 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -809,7 +809,7 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		w.WriteHeader(403)
 		span.SetStatus(codes.Error, http.StatusText(403))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -822,7 +822,7 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		w.WriteHeader(409)
 		span.SetStatus(codes.Error, http.StatusText(409))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -835,7 +835,7 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -855,7 +855,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		w.WriteHeader(201)
 		span.SetStatus(codes.Ok, http.StatusText(201))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -868,7 +868,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		w.WriteHeader(400)
 		span.SetStatus(codes.Error, http.StatusText(400))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -881,7 +881,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		w.WriteHeader(401)
 		span.SetStatus(codes.Error, http.StatusText(401))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -894,7 +894,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		w.WriteHeader(409)
 		span.SetStatus(codes.Error, http.StatusText(409))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
@@ -907,7 +907,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
-		e := jx.GetEncoder()
+		e := new(jx.Encoder)
 		response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
