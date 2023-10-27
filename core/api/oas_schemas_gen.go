@@ -309,16 +309,16 @@ func (s *ForbiddenErrorError) SetMessage(val string) {
 
 // GetEventPingOK is response for GetEventPing operation.
 type GetEventPingOK struct {
-	LastModified OptString
+	LastModified string
 }
 
 // GetLastModified returns the value of LastModified.
-func (s *GetEventPingOK) GetLastModified() OptString {
+func (s *GetEventPingOK) GetLastModified() string {
 	return s.LastModified
 }
 
 // SetLastModified sets the value of LastModified.
-func (s *GetEventPingOK) SetLastModified(val OptString) {
+func (s *GetEventPingOK) SetLastModified(val string) {
 	s.LastModified = val
 }
 
@@ -663,16 +663,16 @@ func (o OptUserPatchLanguage) Or(d UserPatchLanguage) UserPatchLanguage {
 
 // PostAuthLoginOK is response for PostAuthLogin operation.
 type PostAuthLoginOK struct {
-	SetCookie OptString
+	SetCookie string
 }
 
 // GetSetCookie returns the value of SetCookie.
-func (s *PostAuthLoginOK) GetSetCookie() OptString {
+func (s *PostAuthLoginOK) GetSetCookie() string {
 	return s.SetCookie
 }
 
 // SetSetCookie sets the value of SetCookie.
-func (s *PostAuthLoginOK) SetSetCookie(val OptString) {
+func (s *PostAuthLoginOK) SetSetCookie(val string) {
 	s.SetCookie = val
 }
 
@@ -934,12 +934,12 @@ func (*UserGet) patchUserRes() {}
 
 // UserGetHeaders wraps UserGet with response headers.
 type UserGetHeaders struct {
-	SetCookie OptString
+	SetCookie string
 	Response  UserGet
 }
 
 // GetSetCookie returns the value of SetCookie.
-func (s *UserGetHeaders) GetSetCookie() OptString {
+func (s *UserGetHeaders) GetSetCookie() string {
 	return s.SetCookie
 }
 
@@ -949,7 +949,7 @@ func (s *UserGetHeaders) GetResponse() UserGet {
 }
 
 // SetSetCookie sets the value of SetCookie.
-func (s *UserGetHeaders) SetSetCookie(val OptString) {
+func (s *UserGetHeaders) SetSetCookie(val string) {
 	s.SetCookie = val
 }
 

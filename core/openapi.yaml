@@ -48,6 +48,7 @@ paths:
               schema:
                 type: string
               description: Set the cookie for the session.
+              required: true
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -124,6 +125,7 @@ paths:
               schema:
                 type: string
               description: This is date of the current day from midnight, incremented by each page view by unique user.
+              required: true
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:
@@ -183,15 +185,16 @@ paths:
               schema:
                 type: string
               description: Set the cookie for the session.
+              required: true
           links:
             GetUser:
               operationId: get-user
               parameters:
-                SessionAuth: $response.header.Set-Cookie
+                _me_sess: $response.header.Set-Cookie
             PatchUser:
               operationId: patch-user
               parameters:
-                SessionAuth: $response.header.Set-Cookie
+                _me_sess: $response.header.Set-Cookie
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":

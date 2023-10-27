@@ -51,7 +51,7 @@ tasks:
 
   e2e:
     cmds:
-      - docker compose -f compose-test.yaml up --abort-on-container-exit
+      - docker compose -f compose-test.yaml up --abort-on-container-exit --build
 
   test:
     deps: [generate]
