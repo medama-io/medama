@@ -18,6 +18,8 @@ var (
 	// Users
 	// ErrUserExists is returned when a user already exists.
 	ErrUserExists = errors.New("user already exists")
+	// ErrUserMax is returned when the maximum number of users has been reached.
+	ErrUserMax = errors.New("maximum number of users reached (1)")
 	// ErrUserNotFound is returned when a user is not found.
 	ErrUserNotFound = errors.New("user not found")
 

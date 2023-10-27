@@ -10,4 +10,4 @@ RUN go mod tidy
 RUN task build
 
 # Run final binary
-CMD ["./bin/main", "start"]
+CMD ["./bin/main", "start", "-debug"]

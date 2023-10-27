@@ -1237,6 +1237,22 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 		semconv.HTTPMethodKey.String("PATCH"),
 		semconv.HTTPRouteKey.String("/websites/{hostname}"),
 	}
+	// Validate request before sending.
+	if err := func() error {
+		if value, ok := request.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
 
 	// Run stopwatch.
 	startTime := time.Now()
@@ -1708,6 +1724,22 @@ func (c *Client) sendPostWebsites(ctx context.Context, request OptWebsiteCreate)
 		otelogen.OperationID("post-websites"),
 		semconv.HTTPMethodKey.String("POST"),
 		semconv.HTTPRouteKey.String("/websites"),
+	}
+	// Validate request before sending.
+	if err := func() error {
+		if value, ok := request.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
 	}
 
 	// Run stopwatch.

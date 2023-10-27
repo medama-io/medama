@@ -111,6 +111,22 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 			}(); err != nil {
 				return err
 			}
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    1,
+					MinLengthSet: true,
+					MaxLength:    253,
+					MaxLengthSet: true,
+					Email:        false,
+					Hostname:     true,
+					Regex:        nil,
+				}).Validate(string(params.Hostname)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
 		} else {
 			return validate.ErrFieldRequired
 		}
@@ -445,6 +461,22 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			}(); err != nil {
 				return err
 			}
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    1,
+					MinLengthSet: true,
+					MaxLength:    253,
+					MaxLengthSet: true,
+					Email:        false,
+					Hostname:     true,
+					Regex:        nil,
+				}).Validate(string(params.Hostname)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
 		} else {
 			return validate.ErrFieldRequired
 		}
@@ -611,6 +643,22 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 			}(); err != nil {
 				return err
 			}
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    1,
+					MinLengthSet: true,
+					MaxLength:    253,
+					MaxLengthSet: true,
+					Email:        false,
+					Hostname:     true,
+					Regex:        nil,
+				}).Validate(string(params.Hostname)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
 		} else {
 			return validate.ErrFieldRequired
 		}
@@ -717,6 +765,22 @@ func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.R
 				}
 
 				params.Hostname = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    1,
+					MinLengthSet: true,
+					MaxLength:    253,
+					MaxLengthSet: true,
+					Email:        false,
+					Hostname:     true,
+					Regex:        nil,
+				}).Validate(string(params.Hostname)); err != nil {
+					return errors.Wrap(err, "string")
+				}
 				return nil
 			}(); err != nil {
 				return err
@@ -883,6 +947,22 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 				}
 
 				params.Hostname = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    1,
+					MinLengthSet: true,
+					MaxLength:    253,
+					MaxLengthSet: true,
+					Email:        false,
+					Hostname:     true,
+					Regex:        nil,
+				}).Validate(string(params.Hostname)); err != nil {
+					return errors.Wrap(err, "string")
+				}
 				return nil
 			}(); err != nil {
 				return err

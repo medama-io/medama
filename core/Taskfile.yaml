@@ -7,7 +7,6 @@ tasks:
     cmds:
       - go run -tags "sqlite_foreign_keys" ./cmd/ {{.CLI_ARGS}} -debug
     env:
-      DEBUG: "true"
       GOEXPERIMENT: loopvar
 
   build:

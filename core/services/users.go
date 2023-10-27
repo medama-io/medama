@@ -28,7 +28,7 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 
 	return &api.UserGet{
 		Email:       user.Email,
-		Language:    user.Language,
+		Language:    api.UserGetLanguage(user.Language),
 		DateCreated: user.DateCreated,
 		DateUpdated: user.DateUpdated,
 	}, nil
@@ -76,7 +76,7 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 
 	return &api.UserGet{
 		Email:       user.Email,
-		Language:    user.Language,
+		Language:    api.UserGetLanguage(user.Language),
 		DateCreated: user.DateCreated,
 		DateUpdated: user.DateUpdated,
 	}, nil
@@ -84,13 +84,14 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 
 func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.PostUserRes, error) {
 	// Do not allow user account creation if number of users exceeds 1
-	count, err := h.db.GetUserCount(ctx)
+	/* count, err := h.db.GetUserCount(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if count > 0 {
-		return ErrForbidden(model.ErrUserExists), nil
-	}
+		slog.WarnContext(ctx, "maximum number of users reached when creating user", slog.Int("count", count))
+		return ErrForbidden(model.ErrUserMax), nil
+	} */
 
 	// UUIDv7 id generation
 	typeid, err := typeid.New("user")
@@ -98,6 +99,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 		return nil, err
 	}
 	id := typeid.String()
+	email := req.Value.Email
 
 	// Validate language as an accepted enum
 	err = req.Value.Language.Value.Validate()
@@ -106,32 +108,32 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	}
 	language := string(req.Value.Language.Value)
 
+	dateCreated := time.Now().Unix()
+	dateUpdated := dateCreated
+
+	attributes := []slog.Attr{
+		slog.String("id", id),
+		slog.String("email", email),
+		slog.String("language", language),
+		slog.Int64("date_created", dateCreated),
+		slog.Int64("date_updated", dateUpdated),
+	}
+	slog.LogAttrs(ctx, slog.LevelDebug, "creating user", attributes...)
+
 	// Hash password
 	pwdHash, err := h.auth.HashPassword(req.Value.Password)
 	if err != nil {
 		return nil, err
 	}
 
-	dateCreated := time.Now().Unix()
-	dateUpdated := dateCreated
-
 	user := &model.User{
 		ID:          id,
-		Email:       req.Value.Email,
+		Email:       email,
 		Password:    pwdHash,
 		Language:    language,
 		DateCreated: dateCreated,
 		DateUpdated: dateUpdated,
 	}
-
-	attributes := []slog.Attr{
-		slog.String("id", id),
-		slog.String("email", req.Value.Email),
-		slog.String("language", language),
-		slog.Int64("date_created", dateCreated),
-		slog.Int64("date_updated", dateUpdated),
-	}
-	slog.LogAttrs(ctx, slog.LevelDebug, "creating user", attributes...)
 
 	err = h.db.CreateUser(ctx, user)
 	if err != nil {
@@ -152,8 +154,8 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	return &api.UserGetHeaders{
 		SetCookie: api.NewOptString(cookie.String()),
 		Response: api.UserGet{
-			Email:       req.Value.Email,
-			Language:    language,
+			Email:       user.Email,
+			Language:    api.UserGetLanguage(user.Language),
 			DateCreated: dateCreated,
 			DateUpdated: dateUpdated,
 		},

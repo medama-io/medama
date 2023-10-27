@@ -790,6 +790,52 @@ func (o OptUserPatch) Or(d UserPatch) UserPatch {
 	return d
 }
 
+// NewOptUserPatchLanguage returns new OptUserPatchLanguage with value set to v.
+func NewOptUserPatchLanguage(v UserPatchLanguage) OptUserPatchLanguage {
+	return OptUserPatchLanguage{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUserPatchLanguage is optional UserPatchLanguage.
+type OptUserPatchLanguage struct {
+	Value UserPatchLanguage
+	Set   bool
+}
+
+// IsSet returns true if OptUserPatchLanguage was set.
+func (o OptUserPatchLanguage) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUserPatchLanguage) Reset() {
+	var v UserPatchLanguage
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUserPatchLanguage) SetTo(v UserPatchLanguage) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUserPatchLanguage) Get() (v UserPatchLanguage, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUserPatchLanguage) Or(d UserPatchLanguage) UserPatchLanguage {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptWebsiteCreate returns new OptWebsiteCreate with value set to v.
 func NewOptWebsiteCreate(v WebsiteCreate) OptWebsiteCreate {
 	return OptWebsiteCreate{
@@ -1103,10 +1149,10 @@ func (s *UserCreateLanguage) UnmarshalText(data []byte) error {
 // Response body for getting a user.
 // Ref: #/components/schemas/UserGet
 type UserGet struct {
-	Email       string `json:"email"`
-	Language    string `json:"language"`
-	DateCreated int64  `json:"dateCreated"`
-	DateUpdated int64  `json:"dateUpdated"`
+	Email       string          `json:"email"`
+	Language    UserGetLanguage `json:"language"`
+	DateCreated int64           `json:"dateCreated"`
+	DateUpdated int64           `json:"dateUpdated"`
 }
 
 // GetEmail returns the value of Email.
@@ -1115,7 +1161,7 @@ func (s *UserGet) GetEmail() string {
 }
 
 // GetLanguage returns the value of Language.
-func (s *UserGet) GetLanguage() string {
+func (s *UserGet) GetLanguage() UserGetLanguage {
 	return s.Language
 }
 
@@ -1135,7 +1181,7 @@ func (s *UserGet) SetEmail(val string) {
 }
 
 // SetLanguage sets the value of Language.
-func (s *UserGet) SetLanguage(val string) {
+func (s *UserGet) SetLanguage(val UserGetLanguage) {
 	s.Language = val
 }
 
@@ -1180,12 +1226,46 @@ func (s *UserGetHeaders) SetResponse(val UserGet) {
 
 func (*UserGetHeaders) postUserRes() {}
 
+type UserGetLanguage string
+
+const (
+	UserGetLanguageEn UserGetLanguage = "en"
+)
+
+// AllValues returns all UserGetLanguage values.
+func (UserGetLanguage) AllValues() []UserGetLanguage {
+	return []UserGetLanguage{
+		UserGetLanguageEn,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UserGetLanguage) MarshalText() ([]byte, error) {
+	switch s {
+	case UserGetLanguageEn:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UserGetLanguage) UnmarshalText(data []byte) error {
+	switch UserGetLanguage(data) {
+	case UserGetLanguageEn:
+		*s = UserGetLanguageEn
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 // Request body for updating a user.
 // Ref: #/components/schemas/UserPatch
 type UserPatch struct {
-	Email    OptString `json:"email"`
-	Password OptString `json:"password"`
-	Language OptString `json:"language"`
+	Email    OptString            `json:"email"`
+	Password OptString            `json:"password"`
+	Language OptUserPatchLanguage `json:"language"`
 }
 
 // GetEmail returns the value of Email.
@@ -1199,7 +1279,7 @@ func (s *UserPatch) GetPassword() OptString {
 }
 
 // GetLanguage returns the value of Language.
-func (s *UserPatch) GetLanguage() OptString {
+func (s *UserPatch) GetLanguage() OptUserPatchLanguage {
 	return s.Language
 }
 
@@ -1214,8 +1294,42 @@ func (s *UserPatch) SetPassword(val OptString) {
 }
 
 // SetLanguage sets the value of Language.
-func (s *UserPatch) SetLanguage(val OptString) {
+func (s *UserPatch) SetLanguage(val OptUserPatchLanguage) {
 	s.Language = val
+}
+
+type UserPatchLanguage string
+
+const (
+	UserPatchLanguageEn UserPatchLanguage = "en"
+)
+
+// AllValues returns all UserPatchLanguage values.
+func (UserPatchLanguage) AllValues() []UserPatchLanguage {
+	return []UserPatchLanguage{
+		UserPatchLanguageEn,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UserPatchLanguage) MarshalText() ([]byte, error) {
+	switch s {
+	case UserPatchLanguageEn:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UserPatchLanguage) UnmarshalText(data []byte) error {
+	switch UserPatchLanguage(data) {
+	case UserPatchLanguageEn:
+		*s = UserPatchLanguageEn
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 // Request body for creating a website.

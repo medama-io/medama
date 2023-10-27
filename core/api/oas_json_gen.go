@@ -1718,6 +1718,39 @@ func (s *OptUserPatch) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes UserPatchLanguage as json.
+func (o OptUserPatchLanguage) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes UserPatchLanguage from json.
+func (o *OptUserPatchLanguage) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptUserPatchLanguage to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptUserPatchLanguage) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptUserPatchLanguage) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes WebsiteCreate as json.
 func (o OptWebsiteCreate) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -2386,7 +2419,7 @@ func (s *UserGet) encodeFields(e *jx.Encoder) {
 	}
 	{
 		e.FieldStart("language")
-		e.Str(s.Language)
+		s.Language.Encode(e)
 	}
 	{
 		e.FieldStart("dateCreated")
@@ -2411,6 +2444,7 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 		return errors.New("invalid: unable to decode UserGet to nil")
 	}
 	var requiredBitSet [1]uint8
+	s.setDefaults()
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -2429,9 +2463,7 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 		case "language":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				v, err := d.Str()
-				s.Language = string(v)
-				if err != nil {
+				if err := s.Language.Decode(d); err != nil {
 					return err
 				}
 				return nil
@@ -2518,6 +2550,44 @@ func (s *UserGet) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes UserGetLanguage as json.
+func (s UserGetLanguage) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes UserGetLanguage from json.
+func (s *UserGetLanguage) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode UserGetLanguage to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch UserGetLanguage(v) {
+	case UserGetLanguageEn:
+		*s = UserGetLanguageEn
+	default:
+		*s = UserGetLanguage(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s UserGetLanguage) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *UserGetLanguage) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode implements json.Marshaler.
 func (s *UserPatch) Encode(e *jx.Encoder) {
 	e.ObjStart()
@@ -2558,6 +2628,7 @@ func (s *UserPatch) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode UserPatch to nil")
 	}
+	s.setDefaults()
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -2611,6 +2682,44 @@ func (s *UserPatch) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *UserPatch) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes UserPatchLanguage as json.
+func (s UserPatchLanguage) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes UserPatchLanguage from json.
+func (s *UserPatchLanguage) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode UserPatchLanguage to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch UserPatchLanguage(v) {
+	case UserPatchLanguageEn:
+		*s = UserPatchLanguageEn
+	default:
+		*s = UserPatchLanguage(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s UserPatchLanguage) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *UserPatchLanguage) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

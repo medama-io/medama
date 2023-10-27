@@ -57,3 +57,19 @@ func (s *UserCreate) setDefaults() {
 		s.Language.SetTo(val)
 	}
 }
+
+// setDefaults set default value of fields.
+func (s *UserGet) setDefaults() {
+	{
+		val := UserGetLanguage("en")
+		s.Language = val
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *UserPatch) setDefaults() {
+	{
+		val := UserPatchLanguage("en")
+		s.Language.SetTo(val)
+	}
+}
