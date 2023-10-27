@@ -13,7 +13,7 @@ tasks:
   build:
     deps: [generate]
     cmds:
-      - go build -tags "sqlite_foreign_keys" -o ./main ./cmd/
+      - go build -tags "sqlite_foreign_keys" -o ./bin/main ./cmd/
     env:
       CGO_ENABLED: "1"
       GOEXPERIMENT: loopvar
@@ -31,7 +31,7 @@ tasks:
     cmds:
       - go generate ./...
     sources:
-      - ./openapi.yml
+      - ./openapi.yaml
     generates:
       - ./api/**/*.go
 
@@ -49,6 +49,10 @@ tasks:
     cmds:
       - go-acc ./... -o coverage.out
       - go tool cover -html=coverage.out
+
+  e2e:
+    cmds:
+      - docker compose -f compose-test.yaml up --abort-on-container-exit
 
   test:
     deps: [generate]

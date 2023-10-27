@@ -39,3 +39,7 @@ pids
 
 # Generated binaries
 main
+bin/
+
+# Schemathesis cache
+.hypothesis

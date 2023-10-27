@@ -7,7 +7,7 @@
 		"build": "remix build",
 		"dev": "remix dev --manual",
 		"start": "remix-serve ./build/index.js",
-		"generate": "openapi-typescript ../core/openapi.yml -o ./app/api/types.d.ts",
+		"generate": "openapi-typescript ../core/openapi.yaml -o ./app/api/types.d.ts",
 		"lint": "eslint . --fix",
 		"typecheck": "tsc"
 	},

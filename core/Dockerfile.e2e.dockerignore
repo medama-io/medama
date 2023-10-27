@@ -1,0 +1,14 @@
+*
+!api/
+!cmd/
+!db/
+!middlewares/
+!migrations/
+!model/
+!services/
+!util/
+!generate.go
+!go.mod
+!go.sum
+!openapi.yaml
+!Taskfile.yaml

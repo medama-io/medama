@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"syscall"
 
+	generate "github.com/medama-io/medama"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/middlewares"
@@ -99,9 +100,14 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return err
 	}
 
+	// We need to add additional static routes for the web app.
+	mux := http.NewServeMux()
+	mux.Handle("/openapi.yaml", http.FileServer(http.FS(generate.OpenAPIDocument)))
+	mux.Handle("/", h)
+
 	srv := &http.Server{
 		Addr:         ":" + strconv.FormatInt(s.Server.Port, 10),
-		Handler:      h,
+		Handler:      mux,
 		ReadTimeout:  s.Server.TimeoutRead,
 		WriteTimeout: s.Server.TimeoutWrite,
 		IdleTimeout:  s.Server.TimeoutIdle,

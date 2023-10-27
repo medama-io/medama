@@ -184,7 +184,11 @@ paths:
             GetUser:
               operationId: get-user
               parameters:
-                userId: "$response.body#/id"
+                SessionAuth: $response.header.Set-Cookie
+            PatchUser:
+              operationId: patch-user
+              parameters:
+                SessionAuth: $response.header.Set-Cookie
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":

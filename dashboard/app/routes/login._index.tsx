@@ -25,7 +25,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	if (hasSession(request)) {
 		// Check if session hasn't been revoked
 		await userGet({ cookie: request.headers.get('Cookie'), noRedirect: true });
-
 		return redirect('/');
 	}
 
