@@ -77,37 +77,37 @@ type Invoker interface {
 	// Update a user account's details.
 	//
 	// PATCH /user
-	PatchUser(ctx context.Context, request OptUserPatch, params PatchUserParams) (PatchUserRes, error)
+	PatchUser(ctx context.Context, request *UserPatch, params PatchUserParams) (PatchUserRes, error)
 	// PatchWebsitesID invokes patch-websites-id operation.
 	//
 	// Update a website's information.
 	//
 	// PATCH /websites/{hostname}
-	PatchWebsitesID(ctx context.Context, request OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
+	PatchWebsitesID(ctx context.Context, request *WebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
 	// PostAuthLogin invokes post-auth-login operation.
 	//
 	// Login to the service and retrieve a session token for authentication.
 	//
 	// POST /auth/login
-	PostAuthLogin(ctx context.Context, request OptAuthLogin) (PostAuthLoginRes, error)
+	PostAuthLogin(ctx context.Context, request *AuthLogin) (PostAuthLoginRes, error)
 	// PostEventHit invokes post-event-hit operation.
 	//
 	// Send a hit event to register a user view.
 	//
 	// POST /event/hit
-	PostEventHit(ctx context.Context, request OptEventHit, params PostEventHitParams) (PostEventHitRes, error)
+	PostEventHit(ctx context.Context, request *EventHit, params PostEventHitParams) (PostEventHitRes, error)
 	// PostUser invokes post-user operation.
 	//
 	// Create a new user.
 	//
 	// POST /user
-	PostUser(ctx context.Context, request OptUserCreate) (PostUserRes, error)
+	PostUser(ctx context.Context, request *UserCreate) (PostUserRes, error)
 	// PostWebsites invokes post-websites operation.
 	//
 	// Add a new website.
 	//
 	// POST /websites
-	PostWebsites(ctx context.Context, request OptWebsiteCreate) (PostWebsitesRes, error)
+	PostWebsites(ctx context.Context, request *WebsiteCreate) (PostWebsitesRes, error)
 }
 
 // Client implements OAS client.
@@ -1213,12 +1213,12 @@ func (c *Client) sendGetWebsitesIDActive(ctx context.Context, params GetWebsites
 // Update a user account's details.
 //
 // PATCH /user
-func (c *Client) PatchUser(ctx context.Context, request OptUserPatch, params PatchUserParams) (PatchUserRes, error) {
+func (c *Client) PatchUser(ctx context.Context, request *UserPatch, params PatchUserParams) (PatchUserRes, error) {
 	res, err := c.sendPatchUser(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendPatchUser(ctx context.Context, request OptUserPatch, params PatchUserParams) (res PatchUserRes, err error) {
+func (c *Client) sendPatchUser(ctx context.Context, request *UserPatch, params PatchUserParams) (res PatchUserRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("patch-user"),
 		semconv.HTTPMethodKey.String("PATCH"),
@@ -1226,15 +1226,8 @@ func (c *Client) sendPatchUser(ctx context.Context, request OptUserPatch, params
 	}
 	// Validate request before sending.
 	if err := func() error {
-		if value, ok := request.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
+		if err := request.Validate(); err != nil {
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -1353,12 +1346,12 @@ func (c *Client) sendPatchUser(ctx context.Context, request OptUserPatch, params
 // Update a website's information.
 //
 // PATCH /websites/{hostname}
-func (c *Client) PatchWebsitesID(ctx context.Context, request OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error) {
+func (c *Client) PatchWebsitesID(ctx context.Context, request *WebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error) {
 	res, err := c.sendPatchWebsitesID(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatch, params PatchWebsitesIDParams) (res PatchWebsitesIDRes, err error) {
+func (c *Client) sendPatchWebsitesID(ctx context.Context, request *WebsitePatch, params PatchWebsitesIDParams) (res PatchWebsitesIDRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("patch-websites-id"),
 		semconv.HTTPMethodKey.String("PATCH"),
@@ -1366,15 +1359,8 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 	}
 	// Validate request before sending.
 	if err := func() error {
-		if value, ok := request.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
+		if err := request.Validate(); err != nil {
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -1511,12 +1497,12 @@ func (c *Client) sendPatchWebsitesID(ctx context.Context, request OptWebsitePatc
 // Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
-func (c *Client) PostAuthLogin(ctx context.Context, request OptAuthLogin) (PostAuthLoginRes, error) {
+func (c *Client) PostAuthLogin(ctx context.Context, request *AuthLogin) (PostAuthLoginRes, error) {
 	res, err := c.sendPostAuthLogin(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendPostAuthLogin(ctx context.Context, request OptAuthLogin) (res PostAuthLoginRes, err error) {
+func (c *Client) sendPostAuthLogin(ctx context.Context, request *AuthLogin) (res PostAuthLoginRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-auth-login"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1524,15 +1510,8 @@ func (c *Client) sendPostAuthLogin(ctx context.Context, request OptAuthLogin) (r
 	}
 	// Validate request before sending.
 	if err := func() error {
-		if value, ok := request.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
+		if err := request.Validate(); err != nil {
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -1602,12 +1581,12 @@ func (c *Client) sendPostAuthLogin(ctx context.Context, request OptAuthLogin) (r
 // Send a hit event to register a user view.
 //
 // POST /event/hit
-func (c *Client) PostEventHit(ctx context.Context, request OptEventHit, params PostEventHitParams) (PostEventHitRes, error) {
+func (c *Client) PostEventHit(ctx context.Context, request *EventHit, params PostEventHitParams) (PostEventHitRes, error) {
 	res, err := c.sendPostEventHit(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendPostEventHit(ctx context.Context, request OptEventHit, params PostEventHitParams) (res PostEventHitRes, err error) {
+func (c *Client) sendPostEventHit(ctx context.Context, request *EventHit, params PostEventHitParams) (res PostEventHitRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-event-hit"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1750,12 +1729,12 @@ func (c *Client) sendPostEventHit(ctx context.Context, request OptEventHit, para
 // Create a new user.
 //
 // POST /user
-func (c *Client) PostUser(ctx context.Context, request OptUserCreate) (PostUserRes, error) {
+func (c *Client) PostUser(ctx context.Context, request *UserCreate) (PostUserRes, error) {
 	res, err := c.sendPostUser(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendPostUser(ctx context.Context, request OptUserCreate) (res PostUserRes, err error) {
+func (c *Client) sendPostUser(ctx context.Context, request *UserCreate) (res PostUserRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-user"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1763,15 +1742,8 @@ func (c *Client) sendPostUser(ctx context.Context, request OptUserCreate) (res P
 	}
 	// Validate request before sending.
 	if err := func() error {
-		if value, ok := request.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
+		if err := request.Validate(); err != nil {
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -1841,12 +1813,12 @@ func (c *Client) sendPostUser(ctx context.Context, request OptUserCreate) (res P
 // Add a new website.
 //
 // POST /websites
-func (c *Client) PostWebsites(ctx context.Context, request OptWebsiteCreate) (PostWebsitesRes, error) {
+func (c *Client) PostWebsites(ctx context.Context, request *WebsiteCreate) (PostWebsitesRes, error) {
 	res, err := c.sendPostWebsites(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendPostWebsites(ctx context.Context, request OptWebsiteCreate) (res PostWebsitesRes, err error) {
+func (c *Client) sendPostWebsites(ctx context.Context, request *WebsiteCreate) (res PostWebsitesRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("post-websites"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1854,15 +1826,8 @@ func (c *Client) sendPostWebsites(ctx context.Context, request OptWebsiteCreate)
 	}
 	// Validate request before sending.
 	if err := func() error {
-		if value, ok := request.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
+		if err := request.Validate(); err != nil {
+			return err
 		}
 		return nil
 	}(); err != nil {

@@ -10,6 +10,6 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	return nil, nil
 }
 
-func (h *Handler) PostEventHit(ctx context.Context, req api.OptEventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
+func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
 	return nil, nil
 }

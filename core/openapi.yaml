@@ -39,6 +39,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/AuthLogin"
+        required: true
       responses:
         "200":
           description: Success
@@ -91,6 +92,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/EventHit"
+        required: true
       responses:
         "200":
           description: OK.
@@ -168,6 +170,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserCreate"
+        required: true
       responses:
         "201":
           description: User Created
@@ -218,6 +221,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserPatch"
+        required: true
       responses:
         "200":
           description: Success
@@ -308,6 +312,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/WebsiteCreate"
+        required: true
       responses:
         "201":
           description: Created
@@ -373,6 +378,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/WebsitePatch"
+        required: true
       responses:
         "200":
           description: Success

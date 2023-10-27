@@ -61,37 +61,37 @@ type Handler interface {
 	// Update a user account's details.
 	//
 	// PATCH /user
-	PatchUser(ctx context.Context, req OptUserPatch, params PatchUserParams) (PatchUserRes, error)
+	PatchUser(ctx context.Context, req *UserPatch, params PatchUserParams) (PatchUserRes, error)
 	// PatchWebsitesID implements patch-websites-id operation.
 	//
 	// Update a website's information.
 	//
 	// PATCH /websites/{hostname}
-	PatchWebsitesID(ctx context.Context, req OptWebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
+	PatchWebsitesID(ctx context.Context, req *WebsitePatch, params PatchWebsitesIDParams) (PatchWebsitesIDRes, error)
 	// PostAuthLogin implements post-auth-login operation.
 	//
 	// Login to the service and retrieve a session token for authentication.
 	//
 	// POST /auth/login
-	PostAuthLogin(ctx context.Context, req OptAuthLogin) (PostAuthLoginRes, error)
+	PostAuthLogin(ctx context.Context, req *AuthLogin) (PostAuthLoginRes, error)
 	// PostEventHit implements post-event-hit operation.
 	//
 	// Send a hit event to register a user view.
 	//
 	// POST /event/hit
-	PostEventHit(ctx context.Context, req OptEventHit, params PostEventHitParams) (PostEventHitRes, error)
+	PostEventHit(ctx context.Context, req *EventHit, params PostEventHitParams) (PostEventHitRes, error)
 	// PostUser implements post-user operation.
 	//
 	// Create a new user.
 	//
 	// POST /user
-	PostUser(ctx context.Context, req OptUserCreate) (PostUserRes, error)
+	PostUser(ctx context.Context, req *UserCreate) (PostUserRes, error)
 	// PostWebsites implements post-websites operation.
 	//
 	// Add a new website.
 	//
 	// POST /websites
-	PostWebsites(ctx context.Context, req OptWebsiteCreate) (PostWebsitesRes, error)
+	PostWebsites(ctx context.Context, req *WebsiteCreate) (PostWebsitesRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

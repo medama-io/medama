@@ -12,15 +12,21 @@ import (
 )
 
 // ErrorHandler is a middleware that handles any unhandled errors by ogen.
-func ErrorHandler(ctx context.Context, w http.ResponseWriter, r *http.Request, err error) {
+func ErrorHandler(ctx context.Context, w http.ResponseWriter, req *http.Request, err error) {
 	code := ogenerrors.ErrorCode(err)
 	errMessage := strings.ReplaceAll(err.Error(), "\"", "'")
 
 	attributes := []slog.Attr{
-		slog.String("path", r.URL.Path),
-		slog.String("method", r.Method),
+		slog.String("path", req.URL.Path),
+		slog.String("method", req.Method),
 		slog.Int("status_code", code),
 		slog.String("message", errMessage),
+		slog.String("Accept", req.Header.Get("Accept")),
+		slog.String("Accept-Encoding", req.Header.Get("Accept-Encoding")),
+		slog.String("Connection", req.Header.Get("Connection")),
+		slog.String("Content-Type", req.Header.Get("Content-Type")),
+		slog.String("Content-Length", req.Header.Get("Content-Length")),
+		slog.String("User-Agent", req.Header.Get("User-Agent")),
 	}
 	slog.LogAttrs(ctx, slog.LevelError, "error", attributes...)
 

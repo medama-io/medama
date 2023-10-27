@@ -90,7 +90,7 @@ func (UnimplementedHandler) GetWebsitesIDActive(ctx context.Context, params GetW
 // Update a user account's details.
 //
 // PATCH /user
-func (UnimplementedHandler) PatchUser(ctx context.Context, req OptUserPatch, params PatchUserParams) (r PatchUserRes, _ error) {
+func (UnimplementedHandler) PatchUser(ctx context.Context, req *UserPatch, params PatchUserParams) (r PatchUserRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -99,7 +99,7 @@ func (UnimplementedHandler) PatchUser(ctx context.Context, req OptUserPatch, par
 // Update a website's information.
 //
 // PATCH /websites/{hostname}
-func (UnimplementedHandler) PatchWebsitesID(ctx context.Context, req OptWebsitePatch, params PatchWebsitesIDParams) (r PatchWebsitesIDRes, _ error) {
+func (UnimplementedHandler) PatchWebsitesID(ctx context.Context, req *WebsitePatch, params PatchWebsitesIDParams) (r PatchWebsitesIDRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -108,7 +108,7 @@ func (UnimplementedHandler) PatchWebsitesID(ctx context.Context, req OptWebsiteP
 // Login to the service and retrieve a session token for authentication.
 //
 // POST /auth/login
-func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req OptAuthLogin) (r PostAuthLoginRes, _ error) {
+func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req *AuthLogin) (r PostAuthLoginRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -117,7 +117,7 @@ func (UnimplementedHandler) PostAuthLogin(ctx context.Context, req OptAuthLogin)
 // Send a hit event to register a user view.
 //
 // POST /event/hit
-func (UnimplementedHandler) PostEventHit(ctx context.Context, req OptEventHit, params PostEventHitParams) (r PostEventHitRes, _ error) {
+func (UnimplementedHandler) PostEventHit(ctx context.Context, req *EventHit, params PostEventHitParams) (r PostEventHitRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -126,7 +126,7 @@ func (UnimplementedHandler) PostEventHit(ctx context.Context, req OptEventHit, p
 // Create a new user.
 //
 // POST /user
-func (UnimplementedHandler) PostUser(ctx context.Context, req OptUserCreate) (r PostUserRes, _ error) {
+func (UnimplementedHandler) PostUser(ctx context.Context, req *UserCreate) (r PostUserRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -135,6 +135,6 @@ func (UnimplementedHandler) PostUser(ctx context.Context, req OptUserCreate) (r 
 // Add a new website.
 //
 // POST /websites
-func (UnimplementedHandler) PostWebsites(ctx context.Context, req OptWebsiteCreate) (r PostWebsitesRes, _ error) {
+func (UnimplementedHandler) PostWebsites(ctx context.Context, req *WebsiteCreate) (r PostWebsitesRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

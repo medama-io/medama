@@ -43,7 +43,7 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 	}, nil
 }
 
-func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params api.PatchUserParams) (api.PatchUserRes, error) {
+func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.PatchUserParams) (api.PatchUserRes, error) {
 	// Get user id from request context and check if user exists
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -70,7 +70,7 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 
 	// Update values
 	dateUpdated := time.Now().Unix()
-	email := req.Value.Email.Value
+	email := req.Email.Value
 	if email != "" {
 		user.Email = email
 		err = h.db.UpdateUserEmail(ctx, user.ID, email, dateUpdated)
@@ -81,7 +81,7 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 		}
 	}
 
-	password := req.Value.Password.Value
+	password := req.Password.Value
 	if password != "" {
 		pwdHash, err := h.auth.HashPassword(password)
 		if err != nil {
@@ -106,7 +106,7 @@ func (h *Handler) PatchUser(ctx context.Context, req api.OptUserPatch, params ap
 	}, nil
 }
 
-func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.PostUserRes, error) {
+func (h *Handler) PostUser(ctx context.Context, req *api.UserCreate) (api.PostUserRes, error) {
 	// Do not allow user account creation if number of users exceeds 1
 	/* count, err := h.db.GetUserCount(ctx)
 	if err != nil {
@@ -127,7 +127,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 		return nil, err
 	}
 	id := typeid.String()
-	email := req.Value.Email
+	email := req.Email
 
 	// Validate language as an accepted enum
 	/* err = req.Value.Language.Value.Validate()
@@ -135,7 +135,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 		//nolint:nilerr // We know it returns only one error type.
 		return ErrBadRequest(model.ErrUserInvalidLanguage), nil
 	} */
-	language := string(req.Value.Language.Value)
+	language := string(req.Language.Value)
 
 	dateCreated := time.Now().Unix()
 	dateUpdated := dateCreated
@@ -149,7 +149,7 @@ func (h *Handler) PostUser(ctx context.Context, req api.OptUserCreate) (api.Post
 	slog.LogAttrs(ctx, slog.LevelDebug, "creating user", attributes...)
 
 	// Hash password
-	pwdHash, err := h.auth.HashPassword(req.Value.Password)
+	pwdHash, err := h.auth.HashPassword(req.Password)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to hash password", attributes...)

@@ -99,7 +99,7 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 	}, nil
 }
 
-func (h *Handler) PatchWebsitesID(ctx context.Context, req api.OptWebsitePatch, params api.PatchWebsitesIDParams) (api.PatchWebsitesIDRes, error) {
+func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, params api.PatchWebsitesIDParams) (api.PatchWebsitesIDRes, error) {
 	// Get user ID from context
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -120,12 +120,12 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req api.OptWebsitePatch, 
 	}
 
 	// Update values
-	if req.Value.Hostname.Value != "" {
-		website.Hostname = req.Value.Hostname.Value
+	if req.Hostname.Value != "" {
+		website.Hostname = req.Hostname.Value
 	}
 
-	if req.Value.Name.Value != "" {
-		website.Name = req.Value.Name.Value
+	if req.Name.Value != "" {
+		website.Name = req.Name.Value
 	}
 
 	website.DateUpdated = time.Now().Unix()
@@ -143,7 +143,7 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req api.OptWebsitePatch, 
 	return nil, nil
 }
 
-func (h *Handler) PostWebsites(ctx context.Context, req api.OptWebsiteCreate) (api.PostWebsitesRes, error) {
+func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api.PostWebsitesRes, error) {
 	// Get user ID from context
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -154,8 +154,8 @@ func (h *Handler) PostWebsites(ctx context.Context, req api.OptWebsiteCreate) (a
 	dateCreated := time.Now().Unix()
 	websiteCreate := model.NewWebsite(
 		userId,
-		req.Value.Hostname,
-		req.Value.Name,
+		req.Hostname,
+		req.Name,
 		dateCreated,
 		dateCreated,
 	)
@@ -166,7 +166,7 @@ func (h *Handler) PostWebsites(ctx context.Context, req api.OptWebsiteCreate) (a
 	}
 
 	return &api.WebsiteGet{
-		Name:     req.Value.Hostname,
-		Hostname: req.Value.Hostname,
+		Name:     req.Hostname,
+		Hostname: req.Hostname,
 	}, nil
 }

@@ -1330,7 +1330,7 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 		}
 
 		type (
-			Request  = OptUserPatch
+			Request  = *UserPatch
 			Params   = PatchUserParams
 			Response = PatchUserRes
 		)
@@ -1499,7 +1499,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		}
 
 		type (
-			Request  = OptWebsitePatch
+			Request  = *WebsitePatch
 			Params   = PatchWebsitesIDParams
 			Response = PatchWebsitesIDRes
 		)
@@ -1605,7 +1605,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		}
 
 		type (
-			Request  = OptAuthLogin
+			Request  = *AuthLogin
 			Params   = struct{}
 			Response = PostAuthLoginRes
 		)
@@ -1742,7 +1742,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		}
 
 		type (
-			Request  = OptEventHit
+			Request  = *EventHit
 			Params   = PostEventHitParams
 			Response = PostEventHitRes
 		)
@@ -1848,7 +1848,7 @@ func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.
 		}
 
 		type (
-			Request  = OptUserCreate
+			Request  = *UserCreate
 			Params   = struct{}
 			Response = PostUserRes
 		)
@@ -1998,7 +1998,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 		}
 
 		type (
-			Request  = OptWebsiteCreate
+			Request  = *WebsiteCreate
 			Params   = struct{}
 			Response = PostWebsitesRes
 		)
