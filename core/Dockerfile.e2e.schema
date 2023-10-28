@@ -1,0 +1,9 @@
+## Base Python Image
+FROM python:3.9-slim-bullseye AS base
+
+RUN python -m pip install schemathesis
+
+WORKDIR /tests
+COPY /tests/e2e /tests
+
+CMD ["pytest", "-v", "-rA", "/tests"]

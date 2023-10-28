@@ -5,13 +5,14 @@ services:
   api:
     build:
       context: ./
-      dockerfile: Dockerfile.e2e
+      dockerfile: Dockerfile.e2e.api
     ports:
       - "8080:8080"
 
   test:
-    image: schemathesis/schemathesis:latest
-    command: run --checks all --wait-for-schema=3 --endpoint /user --hypothesis-max-examples=200 --sanitize-output=false -w auto --show-errors-tracebacks http://api:8080/openapi.yaml --report
+    build:
+      context: ./
+      dockerfile: Dockerfile.e2e.schema
     tty: true
     depends_on:
       - api
