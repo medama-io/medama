@@ -50,13 +50,32 @@ func RequestLogger() middleware.Middleware {
 			}
 
 			level := slog.LevelInfo
-			msg := "Success"
+			msg := "success"
 			code := getCode(resp.Type)
 			if code != 0 {
 				attributes = append(attributes, slog.Int("status_code", code))
 
-				if code == http.StatusInternalServerError {
-					msg = "Internal Server Error"
+				switch code {
+				case http.StatusOK:
+					msg = "200 OK"
+
+				case http.StatusCreated:
+					msg = "201 created"
+
+				case http.StatusBadRequest:
+					msg = "400 bad request"
+
+				case http.StatusUnauthorized:
+					msg = "401 unauthorised"
+
+				case http.StatusNotFound:
+					msg = "404 not found"
+
+				case http.StatusConflict:
+					msg = "409 conflict"
+
+				case http.StatusInternalServerError:
+					msg = "500 internal server error"
 					level = slog.LevelError
 				}
 			}

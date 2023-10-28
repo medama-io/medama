@@ -195,6 +195,10 @@ paths:
               operationId: patch-user
               parameters:
                 _me_sess: $response.header.Set-Cookie
+            DeleteUser:
+              operationId: delete-user
+              parameters:
+                _me_sess: $response.header.Set-Cookie
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -502,6 +506,7 @@ components:
       required: true
       schema:
         type: string
+        example: _me_sess=token; Path=/; HttpOnly; Secure; SameSite=Strict
     Hostname:
       name: hostname
       in: path

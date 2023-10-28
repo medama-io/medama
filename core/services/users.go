@@ -186,7 +186,7 @@ func (h *Handler) PostUser(ctx context.Context, req *api.UserCreate) (api.PostUs
 	}
 
 	return &api.UserGetHeaders{
-		SetCookie: api.NewOptString(cookie.String()),
+		SetCookie: cookie.String(),
 		Response: api.UserGet{
 			Email:       user.Email,
 			Language:    api.UserGetLanguage(user.Language),
@@ -236,5 +236,5 @@ func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (
 		return nil, err
 	}
 
-	return nil, nil
+	return &api.DeleteUserOK{}, nil
 }

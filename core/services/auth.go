@@ -29,6 +29,6 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.Po
 	}
 
 	return &api.PostAuthLoginOK{
-		SetCookie: api.NewOptString(cookie.String()),
+		SetCookie: cookie.String(),
 	}, nil
 }
