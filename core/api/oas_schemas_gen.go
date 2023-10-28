@@ -405,6 +405,7 @@ func (*NotFoundError) getWebsitesIDRes()       {}
 func (*NotFoundError) getWebsitesRes()         {}
 func (*NotFoundError) patchUserRes()           {}
 func (*NotFoundError) patchWebsitesIDRes()     {}
+func (*NotFoundError) postAuthLoginRes()       {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`

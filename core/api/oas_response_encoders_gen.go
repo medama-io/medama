@@ -766,6 +766,19 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 
 		return nil
 
+	case *NotFoundError:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(404)
+		span.SetStatus(codes.Error, http.StatusText(404))
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
 	case *InternalServerError:
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(500)

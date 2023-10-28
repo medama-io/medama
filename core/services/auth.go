@@ -2,14 +2,20 @@ package services
 
 import (
 	"context"
+	"errors"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/model"
 )
 
 func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.PostAuthLoginRes, error) {
 	// Check email and password.
 	user, err := h.db.GetUserByEmail(ctx, req.Email)
 	if err != nil {
+		if errors.Is(err, model.ErrUserNotFound) {
+			return ErrNotFound(err), nil
+		}
+
 		return nil, err
 	}
 
