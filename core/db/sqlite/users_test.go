@@ -135,6 +135,19 @@ func TestUpdateUserEmail(t *testing.T) {
 	assert.Equal(int64(3), user.DateUpdated)
 }
 
+func TestUpdateUserEmailExisting(t *testing.T) {
+	assert, ctx, client := SetupDatabaseWithUsers(t)
+
+	user, err := client.GetUser(ctx, "test1")
+	assert.NoError(err)
+	assert.NotNil(user)
+	assert.Equal("test1", user.ID)
+	assert.Equal("test1@example.com", user.Email)
+
+	err = client.UpdateUserEmail(ctx, "test1", "test2@example.com", 3)
+	assert.ErrorIs(err, model.ErrUserExists)
+}
+
 func TestUpdateUserPassword(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 

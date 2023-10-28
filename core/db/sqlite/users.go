@@ -101,10 +101,16 @@ func (c *Client) UpdateUserEmail(ctx context.Context, id string, email string, d
 
 	_, err := c.DB.ExecContext(ctx, exec, email, dateUpdated, id)
 	if err != nil {
+		var sqliteError sqlite3.Error
+		if errors.As(err, &sqliteError) {
+			if errors.Is(sqliteError.Code, sqlite3.ErrConstraint) {
+				return model.ErrUserExists
+			}
+		}
+
 		if errors.Is(err, sql.ErrNoRows) {
 			return model.ErrUserNotFound
 		}
-
 		return err
 	}
 

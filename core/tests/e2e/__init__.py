@@ -1,9 +1,10 @@
+import os
 import requests
 import schemathesis
 from schemathesis import DataGenerationMethod
 
 schema = schemathesis.from_uri("http://api:8080/openapi.yaml", data_generation_methods=[DataGenerationMethod.positive, DataGenerationMethod.negative], sanitize_output=False)
-EXAMPLE_COUNT = 100
+EXAMPLE_COUNT = os.getenv("SCHEMA_EXAMPLE_COUNT", default=100)
 
 # Authentication
 AUTH_ENDPOINT = "http://api:8080/auth/login"

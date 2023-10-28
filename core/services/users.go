@@ -75,6 +75,16 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		user.Email = email
 		err = h.db.UpdateUserEmail(ctx, user.ID, email, dateUpdated)
 		if err != nil {
+			if errors.Is(err, model.ErrUserExists) {
+				slog.LogAttrs(ctx, slog.LevelDebug, "email to patch already exists", attributes...)
+				return ErrConflict(err), nil
+			}
+
+			if errors.Is(err, model.ErrUserNotFound) {
+				slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
+				return ErrNotFound(err), nil
+			}
+
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to update user email", attributes...)
 			return nil, err
