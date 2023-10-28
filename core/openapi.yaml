@@ -201,6 +201,26 @@ paths:
               operationId: delete-user
               parameters:
                 _me_sess: $response.header.Set-Cookie
+            PostWebsites:
+              operationId: post-websites
+              parameters:
+                _me_sess: $response.header.Set-Cookie
+            GetWebsites:
+              operationId: get-websites
+              parameters:
+                _me_sess: $response.header.Set-Cookie
+            GetWebsite:
+              operationId: get-websites-id
+              parameters:
+                _me_sess: $response.header.Set-Cookie
+            PatchWebsite:
+              operationId: patch-websites-id
+              parameters:
+                _me_sess: $response.header.Set-Cookie
+            DeleteWebsite:
+              operationId: delete-websites-id
+              parameters:
+                _me_sess: $response.header.Set-Cookie
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -329,6 +349,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WebsiteGet"
+          links:
+            GetWebsite:
+              operationId: get-websites-id
+              parameters:
+                hostname: $response.body#/hostname
+            PatchWebsite:
+              operationId: patch-websites-id
+              parameters:
+                hostname: $response.body#/hostname
+            DeleteWebsite:
+              operationId: delete-websites-id
+              parameters:
+                hostname: $response.body#/hostname
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":

@@ -18,6 +18,10 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 
 	websites, err := h.db.ListWebsites(ctx, userId)
 	if err != nil {
+		if errors.Is(err, model.ErrWebsiteNotFound) {
+			return ErrNotFound(err), nil
+		}
+
 		return nil, err
 	}
 
@@ -140,7 +144,10 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 		return nil, err
 	}
 
-	return nil, nil
+	return &api.WebsiteGet{
+		Name:     website.Hostname,
+		Hostname: website.Hostname,
+	}, nil
 }
 
 func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api.PostWebsitesRes, error) {

@@ -32,32 +32,6 @@ func Up0001(c *sqlite.Client) error {
 		return err
 	}
 
-	// Create user indexes
-	_, err = tx.Exec(`--sql
-	CREATE UNIQUE INDEX IF NOT EXISTS users_id_idx ON users(id)
-	`)
-	if err != nil {
-		rollbackErr := tx.Rollback()
-		if rollbackErr != nil {
-			return rollbackErr
-		}
-
-		return err
-	}
-
-	_, err = tx.Exec(`--sql
-	CREATE UNIQUE INDEX IF NOT EXISTS users_email_idx ON users(email)
-	`)
-
-	if err != nil {
-		rollbackErr := tx.Rollback()
-		if rollbackErr != nil {
-			return rollbackErr
-		}
-
-		return err
-	}
-
 	// Create websites table
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS websites (
