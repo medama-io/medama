@@ -3,6 +3,7 @@ package middlewares
 import (
 	"log/slog"
 	"net/http"
+	"time"
 
 	"github.com/medama-io/medama/api"
 	"github.com/ogen-go/ogen/middleware"
@@ -39,7 +40,9 @@ func RequestLogger() middleware.Middleware {
 		req middleware.Request,
 		next func(req middleware.Request) (middleware.Response, error),
 	) (middleware.Response, error) {
+		startTime := time.Now()
 		resp, err := next(req)
+		duration := time.Since(startTime)
 
 		if err == nil {
 			attributes := []slog.Attr{
@@ -47,6 +50,7 @@ func RequestLogger() middleware.Middleware {
 				slog.String("operationId", req.OperationID),
 				slog.String("method", req.Raw.Method),
 				slog.String("path", req.Raw.URL.Path),
+				slog.String("duration", duration.String()),
 			}
 
 			level := slog.LevelInfo
