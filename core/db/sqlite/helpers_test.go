@@ -7,7 +7,9 @@ import (
 	"log"
 	"testing"
 
+	_ "github.com/marcboeker/go-duckdb"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/model"
@@ -26,8 +28,13 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.C
 	assert.NoError(err)
 	assert.NotNil(client)
 
+	// Empty duckdb client not used in tests
+	duckdbClient, err := duckdb.NewClient("")
+	assert.NoError(err)
+	assert.NotNil(duckdbClient)
+
 	// Run migrations
-	m := migrations.NewMigrationsService(ctx, client)
+	m := migrations.NewMigrationsService(ctx, client, duckdbClient)
 	err = m.AutoMigrate(ctx)
 	assert.NoError(err)
 

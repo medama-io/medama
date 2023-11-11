@@ -13,6 +13,7 @@ import (
 
 	generate "github.com/medama-io/medama"
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/middlewares"
 	"github.com/medama-io/medama/migrations"
@@ -22,9 +23,10 @@ import (
 )
 
 type StartCommand struct {
-	Debug    bool
-	Server   ServerConfig
-	Database DatabaseConfig
+	Debug  bool
+	Server ServerConfig
+	SQLite SQLiteConfig
+	DuckDB DuckDBConfig
 }
 
 // NewStartCommand creates a new start command.
@@ -37,8 +39,11 @@ func NewStartCommand() *StartCommand {
 			TimeoutWrite:         DefaultTimeoutWrite,
 			TimeoutIdle:          DefaultTimeoutIdle,
 		},
-		Database: DatabaseConfig{
-			Host: DefaultDatabaseHost,
+		SQLite: SQLiteConfig{
+			Host: DefaultSQLiteHost,
+		},
+		DuckDB: DuckDBConfig{
+			Host: DefaultDuckDBHost,
 		},
 	}
 }
@@ -59,13 +64,18 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	slog.Info(GetVersion())
 
 	// Setup database
-	db, err := sqlite.NewClient(s.Database.Host)
+	sqlite, err := sqlite.NewClient(s.SQLite.Host)
+	if err != nil {
+		return err
+	}
+
+	duckdb, err := duckdb.NewClient(s.DuckDB.Host)
 	if err != nil {
 		return err
 	}
 
 	// Run migrations
-	m := migrations.NewMigrationsService(ctx, db)
+	m := migrations.NewMigrationsService(ctx, sqlite, duckdb)
 	if m == nil {
 		slog.Error("Could not create migrations service")
 		return err
@@ -83,7 +93,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}
 
 	// Setup handlers
-	service := services.NewService(auth, db)
+	service := services.NewService(auth, sqlite, duckdb)
 
 	authMiddleware := middlewares.NewAuthHandler(auth)
 	mw := []middleware.Middleware{

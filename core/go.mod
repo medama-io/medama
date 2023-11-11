@@ -1,6 +1,6 @@
 module github.com/medama-io/medama
 
-go 1.21.3
+go 1.21.4
 
 require (
 	github.com/alexedwards/argon2id v1.0.0
@@ -8,6 +8,7 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lmittmann/tint v1.0.2
+	github.com/marcboeker/go-duckdb v1.5.1
 	github.com/mattn/go-colorable v0.1.13
 	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/ogen-go/ogen v0.77.0
@@ -30,6 +31,7 @@ require (
 	github.com/gofrs/uuid/v5 v5.0.0 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect

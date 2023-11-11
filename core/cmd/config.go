@@ -17,8 +17,12 @@ type ServerConfig struct {
 	TimeoutIdle  time.Duration
 }
 
-type DatabaseConfig struct {
+type SQLiteConfig struct {
 	Host string `env:"DATABASE_HOST,default=./sqlite.dev.db"`
+}
+
+type DuckDBConfig struct {
+	Host string `env:"DATABASE_HOST,default=./duckdb.dev.db"`
 }
 
 const (
@@ -36,5 +40,6 @@ const (
 	DefaultTimeoutIdle  = 15 * time.Second
 
 	// Database constants.
-	DefaultDatabaseHost = "./sqlite.dev.db"
+	DefaultSQLiteHost = "./sqlite.dev.db"
+	DefaultDuckDBHost = "./duckdb.dev.db"
 )
