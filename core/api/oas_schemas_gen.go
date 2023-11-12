@@ -161,11 +161,13 @@ type EventHit struct {
 	// Page URL including query parameters.
 	U string `json:"u"`
 	// Referrer URL.
-	R string `json:"r"`
+	R OptString `json:"r"`
+	// If the user is a unique user or not.
+	P OptBool `json:"p"`
 	// Event type consisting of either 'pagehide', 'unload', 'load', 'hidden' or 'visible'.
 	E string `json:"e"`
 	// Title of page.
-	T OptInt `json:"t"`
+	T OptString `json:"t"`
 	// Timezone of the user.
 	D OptString `json:"d"`
 	// Screen width.
@@ -187,8 +189,13 @@ func (s *EventHit) GetU() string {
 }
 
 // GetR returns the value of R.
-func (s *EventHit) GetR() string {
+func (s *EventHit) GetR() OptString {
 	return s.R
+}
+
+// GetP returns the value of P.
+func (s *EventHit) GetP() OptBool {
+	return s.P
 }
 
 // GetE returns the value of E.
@@ -197,7 +204,7 @@ func (s *EventHit) GetE() string {
 }
 
 // GetT returns the value of T.
-func (s *EventHit) GetT() OptInt {
+func (s *EventHit) GetT() OptString {
 	return s.T
 }
 
@@ -232,8 +239,13 @@ func (s *EventHit) SetU(val string) {
 }
 
 // SetR sets the value of R.
-func (s *EventHit) SetR(val string) {
+func (s *EventHit) SetR(val OptString) {
 	s.R = val
+}
+
+// SetP sets the value of P.
+func (s *EventHit) SetP(val OptBool) {
+	s.P = val
 }
 
 // SetE sets the value of E.
@@ -242,7 +254,7 @@ func (s *EventHit) SetE(val string) {
 }
 
 // SetT sets the value of T.
-func (s *EventHit) SetT(val OptInt) {
+func (s *EventHit) SetT(val OptString) {
 	s.T = val
 }
 
@@ -430,6 +442,52 @@ func (s *NotFoundErrorError) SetCode(val int32) {
 // SetMessage sets the value of Message.
 func (s *NotFoundErrorError) SetMessage(val string) {
 	s.Message = val
+}
+
+// NewOptBool returns new OptBool with value set to v.
+func NewOptBool(v bool) OptBool {
+	return OptBool{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptBool is optional bool.
+type OptBool struct {
+	Value bool
+	Set   bool
+}
+
+// IsSet returns true if OptBool was set.
+func (o OptBool) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptBool) Reset() {
+	var v bool
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptBool) SetTo(v bool) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptBool) Get() (v bool, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptBool) Or(d bool) bool {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
 }
 
 // NewOptFloat32 returns new OptFloat32 with value set to v.

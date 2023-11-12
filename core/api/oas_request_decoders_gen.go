@@ -253,7 +253,7 @@ func (s *Server) decodePostEventHitRequest(r *http.Request) (
 		return req, close, errors.Wrap(err, "parse media type")
 	}
 	switch {
-	case ct == "application/json":
+ 	case ct == "application/json", ct == "text/plain":
 		if r.ContentLength == 0 {
 			return req, close, validate.ErrBodyRequired
 		}

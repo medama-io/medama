@@ -27,16 +27,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const { cookie } = await userCreate({
+	const { res, cookie } = await userCreate({
 		body: {
 			email,
 			password,
 		},
 	});
 
-	if (!cookie) {
+	if (!res.ok || !cookie) {
 		throw json('Failed to get session.', {
-			status: 500,
+			status: res.status,
 		});
 	}
 

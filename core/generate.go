@@ -3,7 +3,8 @@ package generate
 import "embed"
 
 // OpenAPI Codegen
-//go:generate go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml --convenient-errors off
+//
+//go:generate ./generate.sh
 
 // Embed OpenAPI Specification
 //

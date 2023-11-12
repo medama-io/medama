@@ -98,6 +98,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	authMiddleware := middlewares.NewAuthHandler(auth)
 	mw := []middleware.Middleware{
 		middlewares.RequestLogger(),
+		middlewares.RequestContext(),
 		middlewares.Recovery(),
 	}
 	h, err := api.NewServer(service,

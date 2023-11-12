@@ -20,7 +20,7 @@ interface LoaderData {
 
 export const meta: MetaFunction = () => {
 	return [
-		{ title: 'Medama | Privacy Focused Web Analytics.' },
+		{ title: 'Medama | Privacy Focused Web Analytics' },
 		{ name: 'description', content: 'Privacy focused web analytics.' },
 	];
 };

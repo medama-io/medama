@@ -1,11 +1,15 @@
 package duckdb
 
 import (
+	"context"
+
 	"github.com/jmoiron/sqlx"
+	"github.com/medama-io/medama/model"
 )
 
 type Handler interface {
-	// Events
+	// Views
+	AddPageView(ctx context.Context, event *model.PageView) error
 }
 
 type Client struct {

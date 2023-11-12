@@ -65,10 +65,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Index() {
 	// We want to call the revalidator to trigger the root loader and update the header accordingly.
-	const revalidator = useRevalidator();
+	/* const revalidator = useRevalidator();
 	useEffect(() => {
 		revalidator.revalidate();
-	}, [revalidator]);
+	}, [revalidator]); */
 
 	return <Login />;
 }

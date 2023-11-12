@@ -733,11 +733,14 @@ components:
         r:
           type: string
           description: Referrer URL.
+        p:
+          type: boolean
+          description: If the user is a unique user or not.
         e:
           type: string
           description: "Event type consisting of either 'pagehide', 'unload', 'load', 'hidden' or 'visible'."
         t:
-          type: integer
+          type: string
           description: Title of page.
         d:
           type: string
@@ -754,7 +757,6 @@ components:
       required:
         - b
         - u
-        - r
         - e
     UserCreate:
       type: object

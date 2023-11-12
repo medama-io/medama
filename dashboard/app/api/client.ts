@@ -1,6 +1,6 @@
 import { json } from '@remix-run/node';
 
-import { expireSession } from '@/utils/cookies';
+import { EXPIRE_COOKIE, expireSession } from '@/utils/cookies';
 
 import { type components, type paths } from './types';
 
@@ -61,6 +61,7 @@ const client = async (
 
 		// If it is 401 and noRedirect is true, do not throw anything but expire the invalid session
 		if (res.status === 401 && noRedirect) {
+			res.headers.set('Set-Cookie', EXPIRE_COOKIE);
 			return res;
 		}
 

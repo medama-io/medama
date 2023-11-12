@@ -54,6 +54,7 @@ export const Document = ({ children }: DocumentProps) => {
 				<Meta />
 				<Links />
 				<ColorSchemeScript />
+				<script data-api="localhost:8080" src="/medama.js" />
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>

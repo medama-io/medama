@@ -22,7 +22,7 @@ const EventType = {
  * @property {string} u Page URL.
  * @property {string} r Referrer URL.
  * @property {EventType} e Event type.
- * @property {boolean=} p Ping cache to see if the user is unique or not.
+ * @property {boolean=} p If the user is unique or not.
  * @property {string=} t Title of the page.
  * @property {string=} d Timezone of the user.
  * @property {number=} w Screen width.
@@ -45,21 +45,22 @@ var Payload;
 	}
 
 	/**
-	 * Generate a UUID for linking multiple beacon events together for the same user.
+	 * Get API URL from data-host in script tag with the correct protocol.
+	 */
+	const host =
+		document.location.protocol +
+		'//' +
+		document.currentScript.getAttribute('data-api');
+
+	/**
+	 * Generate a unique ID for linking multiple beacon events together for the same user.
 	 * This is necessary for us to determine how long someone has spent on a page.
 	 *
 	 * @remarks We intentionally use Math.random() instead of the Web Crypto API
 	 * because uniqueness against collisions is not a requirement and is worth
 	 * the tradeoff for bundle size and performance.
 	 */
-	const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-		/[xy]/g,
-		function (c) {
-			var r = (Math.random() * 16) | 0,
-				v = c == 'x' ? r : (r & 0x3) | 0x8;
-			return v.toString(16);
-		}
-	);
+	const uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
@@ -71,10 +72,7 @@ var Payload;
 	 */
 	let isUnique = true;
 	let xhr = new XMLHttpRequest();
-	xhr.open(
-		'GET',
-		document.currentScript.getAttribute('data-api') + '/api/event/ping'
-	);
+	xhr.open('GET', host + '/event/ping');
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === XMLHttpRequest.DONE) {
 			if (xhr.status === 304) {
@@ -105,11 +103,14 @@ var Payload;
 		/**
 		 * Payload to send to the server.
 		 * @type {Payload}
+		 * @remarks We use string literals for the keys to tell Closure Compiler
+		 * to not rename them.
 		 */
+		// prettier-ignore
 		const payload = {
-			b: uuid,
-			u: location.href,
-			r: document.referrer,
+			"b": uid,
+			"u": location.href,
+			"r": document.referrer,
 			/**
 			 * Get timezone for country detection.
 			 *
@@ -117,23 +118,19 @@ var Payload;
 			 * "new" for this even though it is unnecessary.
 			 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 			 */
-			d: Intl.DateTimeFormat().resolvedOptions().timeZone,
-			p: isUnique,
-			t: document.title,
-			w: self.screen.width,
-			h: self.screen.height,
-			e: eventType,
-			m:
+			"d": Intl.DateTimeFormat().resolvedOptions().timeZone,
+			"p": isUnique,
+			"t": document.title,
+			"w": self.screen.width,
+			"h": self.screen.height,
+			"e": eventType,
+			"m":
 				eventType === EventType.UNLOAD || eventType === EventType.PAGEHIDE
 					? self.performance.now() - hiddenTimeMs
 					: undefined,
 		};
 
-		// Get API URL from data-host in <script> tag
-		navigator.sendBeacon(
-			document.currentScript.getAttribute('data-api') + '/api/event',
-			JSON.stringify(payload)
-		);
+		navigator.sendBeacon(host + '/event/hit', JSON.stringify(payload));
 	};
 
 	// Prefer pagehide if available because it's more reliable than unload.

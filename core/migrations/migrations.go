@@ -51,7 +51,9 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 		{ID: 1, Name: "0001_sqlite_schema.go", Type: SQLite, Up: Up0001, Down: Down0001},
 	}
 
-	duckdbMigrations := []*Migration[duckdb.Client]{}
+	duckdbMigrations := []*Migration[duckdb.Client]{
+		{ID: 2, Name: "0002_duckdb_schema.go", Type: DuckDB, Up: Up0002, Down: Down0002},
+	}
 
 	err := CreateMigrationsTable(sqliteC)
 	if err != nil {
