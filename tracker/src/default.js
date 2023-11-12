@@ -125,7 +125,9 @@ var Payload;
 			"h": self.screen.height,
 			"e": eventType,
 			"m":
-				eventType === EventType.UNLOAD || eventType === EventType.PAGEHIDE
+				eventType === EventType.PAGEHIDE ||
+				eventType === EventType.HIDDEN ||
+				eventType === EventType.UNLOAD
 					? self.performance.now() - hiddenTimeMs
 					: undefined,
 		};
@@ -174,7 +176,6 @@ var Payload;
 				sendBeacon(EventType.HIDDEN);
 			} else {
 				hiddenTimeMs += self.performance.now() - hiddenTimeTemp;
-				sendBeacon(EventType.VISIBLE);
 			}
 		},
 		{ capture: true }
@@ -187,6 +188,7 @@ var Payload;
 			sendBeacon(EventType.LOAD);
 		},
 		{
+			once: true,
 			capture: true,
 		}
 	);

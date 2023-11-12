@@ -181,3 +181,24 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 
 	return nil
 }
+
+func (c *Client) WebsiteExists(ctx context.Context, hostname string) (bool, error) {
+	var exists bool
+
+	query := `--sql
+	SELECT EXISTS(SELECT 1 FROM websites WHERE hostname = ?)`
+
+	err := c.GetContext(ctx, &exists, query, hostname)
+	if err != nil {
+		attributes := []slog.Attr{
+			slog.String("hostname", hostname),
+			slog.String("error", err.Error()),
+		}
+
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+
+		return false, err
+	}
+
+	return exists, nil
+}

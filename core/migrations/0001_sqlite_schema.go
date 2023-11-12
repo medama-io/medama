@@ -69,7 +69,15 @@ func Down0001(c *sqlite.Client) error {
 	}
 
 	// Drop users table
-	_, err = tx.Exec("DROP TABLE IF EXISTS users")
+	_, err = tx.Exec(`--sql
+	DROP TABLE IF EXISTS users`)
+	if err != nil {
+		return err
+	}
+
+	// Drop websites table
+	_, err = tx.Exec(`--sql
+	DROP TABLE IF EXISTS websites`)
 	if err != nil {
 		return err
 	}

@@ -35,7 +35,7 @@ type Service struct {
 // CreateMigrationsTable creates the migrations table.
 func CreateMigrationsTable(c *sqlite.Client) error {
 	exec := `--sql
-	CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`
+	CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY, name TEXT NOT NULL, type TEXT NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`
 	_, err := c.Exec(exec)
 	if err != nil {
 		return err

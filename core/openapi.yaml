@@ -99,8 +99,10 @@ paths:
       responses:
         "200":
           description: OK.
+        "400":
+          $ref: "#/components/responses/BadRequestError"
         "404":
-          description: Not Found
+          $ref: "#/components/responses/NotFoundError"
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:

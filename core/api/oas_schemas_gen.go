@@ -57,6 +57,7 @@ func (*BadRequestError) getWebsitesRes()         {}
 func (*BadRequestError) patchUserRes()           {}
 func (*BadRequestError) patchWebsitesIDRes()     {}
 func (*BadRequestError) postAuthLoginRes()       {}
+func (*BadRequestError) postEventHitRes()        {}
 func (*BadRequestError) postUserRes()            {}
 func (*BadRequestError) postWebsitesRes()        {}
 
@@ -418,6 +419,7 @@ func (*NotFoundError) getWebsitesRes()         {}
 func (*NotFoundError) patchUserRes()           {}
 func (*NotFoundError) patchWebsitesIDRes()     {}
 func (*NotFoundError) postAuthLoginRes()       {}
+func (*NotFoundError) postEventHitRes()        {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`
@@ -736,11 +738,6 @@ func (s *PostAuthLoginOK) SetSetCookie(val string) {
 }
 
 func (*PostAuthLoginOK) postAuthLoginRes() {}
-
-// PostEventHitNotFound is response for PostEventHit operation.
-type PostEventHitNotFound struct{}
-
-func (*PostEventHitNotFound) postEventHitRes() {}
 
 // PostEventHitOK is response for PostEventHit operation.
 type PostEventHitOK struct{}

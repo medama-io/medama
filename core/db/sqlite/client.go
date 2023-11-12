@@ -34,6 +34,8 @@ type Handler interface {
 	UpdateWebsite(ctx context.Context, website *model.Website) error
 	// GetWebsite retrieves a website from the database by id.
 	GetWebsite(ctx context.Context, id string) (*model.Website, error)
+	// WebsiteExists checks if a website exists in the database.
+	WebsiteExists(ctx context.Context, id string) (bool, error)
 	// DeleteWebsite deletes a website from the database.
 	DeleteWebsite(ctx context.Context, id string) error
 }

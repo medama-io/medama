@@ -108,6 +108,22 @@ func TestGetWebsiteNotFound(t *testing.T) {
 	assert.Nil(website)
 }
 
+func TestWebsiteExists(t *testing.T) {
+	assert, ctx, client := SetupDatabaseWithWebsites(t)
+
+	exists, err := client.WebsiteExists(ctx, "website1-test1.com")
+	assert.NoError(err)
+	assert.True(exists)
+}
+
+func TestWebsiteExistsNotFound(t *testing.T) {
+	assert, ctx, client := SetupDatabase(t)
+
+	exists, err := client.WebsiteExists(ctx, "doesnotexist.com")
+	assert.NoError(err)
+	assert.False(exists)
+}
+
 func TestDeleteWebsite(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithWebsites(t)
 

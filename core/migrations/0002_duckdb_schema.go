@@ -14,13 +14,13 @@ func Up0002(c *duckdb.Client) error {
 	// Create views table
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS views (
-		bid TEXT NOT NULL,
-		event_type TEXT NOT NULL,
+		bid TEXT PRIMARY KEY,
 		hostname TEXT NOT NULL,
 		pathname TEXT,
 		referrer TEXT,
 		title TEXT,
 		timezone TEXT,
+		language TEXT,
 		screen_width INTEGER,
 		screen_height INTEGER,
 		duration_ms INTEGER,
@@ -53,7 +53,8 @@ func Down0002(c *duckdb.Client) error {
 	}
 
 	// Drop views table
-	_, err = tx.Exec("DROP TABLE IF EXISTS views")
+	_, err = tx.Exec(`--sql
+	DROP TABLE IF EXISTS views`)
 	if err != nil {
 		return err
 	}
