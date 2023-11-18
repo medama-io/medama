@@ -11,6 +11,10 @@ import (
 )
 
 func (s *AuthLogin) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
@@ -82,6 +86,10 @@ func (s GetWebsitesOKApplicationJSON) Validate() error {
 }
 
 func (s *StatsSummary) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if value, ok := s.Bounces.Get(); ok {
@@ -108,6 +116,10 @@ func (s *StatsSummary) Validate() error {
 }
 
 func (s *UserCreate) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
@@ -181,6 +193,10 @@ func (s UserCreateLanguage) Validate() error {
 }
 
 func (s *UserGet) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
@@ -219,6 +235,10 @@ func (s *UserGet) Validate() error {
 }
 
 func (s *UserGetHeaders) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := s.Response.Validate(); err != nil {
@@ -247,6 +267,10 @@ func (s UserGetLanguage) Validate() error {
 }
 
 func (s *UserPatch) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if value, ok := s.Email.Get(); ok {
@@ -334,6 +358,10 @@ func (s UserPatchLanguage) Validate() error {
 }
 
 func (s *WebsiteCreate) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
@@ -380,6 +408,10 @@ func (s *WebsiteCreate) Validate() error {
 }
 
 func (s *WebsiteGet) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
@@ -426,6 +458,10 @@ func (s *WebsiteGet) Validate() error {
 }
 
 func (s *WebsitePatch) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
 	var failures []validate.FieldError
 	if err := func() error {
 		if value, ok := s.Name.Get(); ok {

@@ -5,20 +5,15 @@ package api
 import (
 	"context"
 	"net/http"
-	"time"
 
 	"github.com/go-faster/errors"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/metric"
-	semconv "go.opentelemetry.io/otel/semconv/v1.19.0"
-	"go.opentelemetry.io/otel/trace"
 
 	ht "github.com/ogen-go/ogen/http"
 	"github.com/ogen-go/ogen/middleware"
 	"github.com/ogen-go/ogen/ogenerrors"
-	"github.com/ogen-go/ogen/otelogen"
 )
+
+func recordError(string, error) {}
 
 // handleDeleteUserRequest handles delete-user operation.
 //
@@ -26,36 +21,9 @@ import (
 //
 // DELETE /user
 func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("delete-user"),
-		semconv.HTTPMethodKey.String("DELETE"),
-		semconv.HTTPRouteKey.String("/user"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "DeleteUser",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "DeleteUser",
@@ -161,7 +129,7 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 		return
 	}
 
-	if err := encodeDeleteUserResponse(response, w, span); err != nil {
+	if err := encodeDeleteUserResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -176,36 +144,9 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 //
 // DELETE /websites/{hostname}
 func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("delete-websites-id"),
-		semconv.HTTPMethodKey.String("DELETE"),
-		semconv.HTTPRouteKey.String("/websites/{hostname}"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "DeleteWebsitesID",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "DeleteWebsitesID",
@@ -315,7 +256,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		return
 	}
 
-	if err := encodeDeleteWebsitesIDResponse(response, w, span); err != nil {
+	if err := encodeDeleteWebsitesIDResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -330,36 +271,9 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 //
 // GET /event/ping
 func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-event-ping"),
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/event/ping"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetEventPing",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "GetEventPing",
@@ -421,7 +335,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		return
 	}
 
-	if err := encodeGetEventPingResponse(response, w, span); err != nil {
+	if err := encodeGetEventPingResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -436,36 +350,9 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 //
 // GET /user
 func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-user"),
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/user"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetUser",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "GetUser",
@@ -571,7 +458,7 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 		return
 	}
 
-	if err := encodeGetUserResponse(response, w, span); err != nil {
+	if err := encodeGetUserResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -586,36 +473,9 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 //
 // GET /website/{hostname}/summary
 func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-website-id-summary"),
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/website/{hostname}/summary"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetWebsiteIDSummary",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "GetWebsiteIDSummary",
@@ -733,7 +593,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		return
 	}
 
-	if err := encodeGetWebsiteIDSummaryResponse(response, w, span); err != nil {
+	if err := encodeGetWebsiteIDSummaryResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -748,36 +608,9 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 //
 // GET /websites
 func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-websites"),
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/websites"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetWebsites",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "GetWebsites",
@@ -883,7 +716,7 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 		return
 	}
 
-	if err := encodeGetWebsitesResponse(response, w, span); err != nil {
+	if err := encodeGetWebsitesResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -898,36 +731,9 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 //
 // GET /websites/{hostname}
 func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-websites-id"),
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/websites/{hostname}"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetWebsitesID",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "GetWebsitesID",
@@ -1037,7 +843,7 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 		return
 	}
 
-	if err := encodeGetWebsitesIDResponse(response, w, span); err != nil {
+	if err := encodeGetWebsitesIDResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1052,36 +858,9 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 //
 // GET /websites/{hostname}/active
 func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("get-websites-id-active"),
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/websites/{hostname}/active"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetWebsitesIDActive",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "GetWebsitesIDActive",
@@ -1191,7 +970,7 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 		return
 	}
 
-	if err := encodeGetWebsitesIDActiveResponse(response, w, span); err != nil {
+	if err := encodeGetWebsitesIDActiveResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1206,36 +985,9 @@ func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bo
 //
 // PATCH /user
 func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("patch-user"),
-		semconv.HTTPMethodKey.String("PATCH"),
-		semconv.HTTPRouteKey.String("/user"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PatchUser",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "PatchUser",
@@ -1356,7 +1108,7 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 		return
 	}
 
-	if err := encodePatchUserResponse(response, w, span); err != nil {
+	if err := encodePatchUserResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1371,36 +1123,9 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 //
 // PATCH /websites/{hostname}
 func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("patch-websites-id"),
-		semconv.HTTPMethodKey.String("PATCH"),
-		semconv.HTTPRouteKey.String("/websites/{hostname}"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PatchWebsitesID",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "PatchWebsitesID",
@@ -1525,7 +1250,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		return
 	}
 
-	if err := encodePatchWebsitesIDResponse(response, w, span); err != nil {
+	if err := encodePatchWebsitesIDResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1540,36 +1265,9 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 //
 // POST /auth/login
 func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("post-auth-login"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/auth/login"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PostAuthLogin",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "PostAuthLogin",
@@ -1631,7 +1329,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		return
 	}
 
-	if err := encodePostAuthLoginResponse(response, w, span); err != nil {
+	if err := encodePostAuthLoginResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1646,36 +1344,9 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 //
 // POST /event/hit
 func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("post-event-hit"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/event/hit"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PostEventHit",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "PostEventHit",
@@ -1768,7 +1439,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		return
 	}
 
-	if err := encodePostEventHitResponse(response, w, span); err != nil {
+	if err := encodePostEventHitResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1783,36 +1454,9 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 //
 // POST /user
 func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("post-user"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/user"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PostUser",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "PostUser",
@@ -1874,7 +1518,7 @@ func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.
 		return
 	}
 
-	if err := encodePostUserResponse(response, w, span); err != nil {
+	if err := encodePostUserResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -1889,36 +1533,9 @@ func (s *Server) handlePostUserRequest(args [0]string, argsEscaped bool, w http.
 //
 // POST /websites
 func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("post-websites"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/websites"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "PostWebsites",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+	ctx := r.Context()
 
 	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
 			Name: "PostWebsites",
@@ -2024,7 +1641,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 		return
 	}
 
-	if err := encodePostWebsitesResponse(response, w, span); err != nil {
+	if err := encodePostWebsitesResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)

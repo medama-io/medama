@@ -7,25 +7,21 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/trace"
 
 	"github.com/ogen-go/ogen/conv"
 	"github.com/ogen-go/ogen/uri"
 )
 
-func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *DeleteUserOK:
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -36,9 +32,8 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, spa
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -49,9 +44,8 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, spa
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -62,9 +56,8 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, spa
 		return nil
 
 	case *ConflictError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(409)
-		span.SetStatus(codes.Error, http.StatusText(409))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -75,9 +68,8 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, spa
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -92,18 +84,16 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, spa
 	}
 }
 
-func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.ResponseWriter, span trace.Span) error {
+func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *DeleteWebsitesIDOK:
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -114,9 +104,8 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -127,9 +116,8 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -140,9 +128,8 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -157,7 +144,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 	}
 }
 
-func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter, span trace.Span) error {
+func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *GetEventPingOK:
 		// Encoding response headers.
@@ -177,14 +164,12 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter,
 			}
 		}
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -199,12 +184,19 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter,
 	}
 }
 
-func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *UserGet:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -215,9 +207,8 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -228,9 +219,8 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -241,9 +231,8 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -254,9 +243,8 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -271,12 +259,19 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter, span trac
 	}
 }
 
-func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.ResponseWriter, span trace.Span) error {
+func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsSummary:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -287,9 +282,8 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -300,9 +294,8 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -313,9 +306,8 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -326,9 +318,8 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -343,12 +334,19 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 	}
 }
 
-func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, span trace.Span) error {
+func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *GetWebsitesOKApplicationJSON:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -359,9 +357,8 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -372,9 +369,8 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -385,9 +381,8 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -398,9 +393,8 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -415,12 +409,19 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter, s
 	}
 }
 
-func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWriter, span trace.Span) error {
+func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *WebsiteGet:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -431,9 +432,8 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -444,9 +444,8 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -457,9 +456,8 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -470,9 +468,8 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -487,12 +484,11 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 	}
 }
 
-func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.ResponseWriter, span trace.Span) error {
+func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsActive:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -503,9 +499,8 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -516,9 +511,8 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -529,9 +523,8 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -542,9 +535,8 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -559,12 +551,19 @@ func encodeGetWebsitesIDActiveResponse(response GetWebsitesIDActiveRes, w http.R
 	}
 }
 
-func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *UserGet:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -575,9 +574,8 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -588,9 +586,8 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -601,9 +598,8 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -614,9 +610,8 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		return nil
 
 	case *ConflictError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(409)
-		span.SetStatus(codes.Error, http.StatusText(409))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -627,9 +622,8 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -644,12 +638,19 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter, span 
 	}
 }
 
-func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseWriter, span trace.Span) error {
+func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *WebsiteGet:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -660,9 +661,8 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -673,9 +673,8 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -686,9 +685,8 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -699,9 +697,8 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -716,7 +713,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 	}
 }
 
-func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWriter, span trace.Span) error {
+func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *PostAuthLoginOK:
 		// Encoding response headers.
@@ -736,14 +733,12 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 			}
 		}
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -754,9 +749,8 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -767,9 +761,8 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -780,9 +773,8 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -797,18 +789,16 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 	}
 }
 
-func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter, span trace.Span) error {
+func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *PostEventHitOK:
 		w.WriteHeader(200)
-		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -819,9 +809,8 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter,
 		return nil
 
 	case *NotFoundError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -832,9 +821,8 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter,
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -849,10 +837,18 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter,
 	}
 }
 
-func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodePostUserResponse(response PostUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *UserGetHeaders:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -870,7 +866,6 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 			}
 		}
 		w.WriteHeader(201)
-		span.SetStatus(codes.Ok, http.StatusText(201))
 
 		e := new(jx.Encoder)
 		response.Response.Encode(e)
@@ -881,9 +876,8 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -894,9 +888,8 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -907,9 +900,8 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		return nil
 
 	case *ForbiddenError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(403)
-		span.SetStatus(codes.Error, http.StatusText(403))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -920,9 +912,8 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		return nil
 
 	case *ConflictError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(409)
-		span.SetStatus(codes.Error, http.StatusText(409))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -933,9 +924,8 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -950,12 +940,19 @@ func encodePostUserResponse(response PostUserRes, w http.ResponseWriter, span tr
 	}
 }
 
-func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter, span trace.Span) error {
+func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *WebsiteGet:
-		w.Header().Set("Content-Type", "application/json")
+		if err := func() error {
+			if err := response.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrap(err, "validate")
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(201)
-		span.SetStatus(codes.Ok, http.StatusText(201))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -966,9 +963,8 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		return nil
 
 	case *BadRequestError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(400)
-		span.SetStatus(codes.Error, http.StatusText(400))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -979,9 +975,8 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		return nil
 
 	case *UnauthorisedError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(401)
-		span.SetStatus(codes.Error, http.StatusText(401))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -992,9 +987,8 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		return nil
 
 	case *ConflictError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(409)
-		span.SetStatus(codes.Error, http.StatusText(409))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
@@ -1005,9 +999,8 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter,
 		return nil
 
 	case *InternalServerError:
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(500)
-		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
 		response.Encode(e)

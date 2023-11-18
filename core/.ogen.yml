@@ -1,0 +1,14 @@
+generator:
+  features:
+    enable:
+      - "paths/server"
+      - "webhooks/server"
+      - "server/response/validation"
+    disable:
+      - "paths/client"
+      - "webhooks/client"
+      - "client/request/validation"
+      - "ogen/otel"
+      - "ogen/unimplemented"
+      - "debug/example_tests"
+  convenient_errors: false

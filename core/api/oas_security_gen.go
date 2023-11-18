@@ -55,22 +55,3 @@ func (s *Server) securityCookieAuth(ctx context.Context, operationName string, r
 	}
 	return rctx, true, err
 }
-
-// SecuritySource is provider of security values (tokens, passwords, etc.).
-type SecuritySource interface {
-	// CookieAuth provides CookieAuth security value.
-	// Session token for authentication.
-	CookieAuth(ctx context.Context, operationName string) (CookieAuth, error)
-}
-
-func (s *Client) securityCookieAuth(ctx context.Context, operationName string, req *http.Request) error {
-	t, err := s.sec.CookieAuth(ctx, operationName)
-	if err != nil {
-		return errors.Wrap(err, "security source \"CookieAuth\"")
-	}
-	req.AddCookie(&http.Cookie{
-		Name:  "_me_sess",
-		Value: t.APIKey,
-	})
-	return nil
-}
