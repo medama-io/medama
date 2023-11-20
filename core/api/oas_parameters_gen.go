@@ -1039,12 +1039,10 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 
 // PostEventHitParams is parameters of post-event-hit operation.
 type PostEventHitParams struct {
+	// Used to infer user browser, OS and device.
 	UserAgent OptString
 	// Used to infer user language.
-	AcceptLanguage  OptString
-	SecChUa         OptString
-	SecChUaMobile   OptString
-	SecChUaPlatform OptString
+	AcceptLanguage OptString
 }
 
 func unpackPostEventHitParams(packed middleware.Parameters) (params PostEventHitParams) {
@@ -1064,33 +1062,6 @@ func unpackPostEventHitParams(packed middleware.Parameters) (params PostEventHit
 		}
 		if v, ok := packed[key]; ok {
 			params.AcceptLanguage = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "Sec-Ch-Ua",
-			In:   "header",
-		}
-		if v, ok := packed[key]; ok {
-			params.SecChUa = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "Sec-Ch-Ua-Mobile",
-			In:   "header",
-		}
-		if v, ok := packed[key]; ok {
-			params.SecChUaMobile = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "Sec-Ch-Ua-Platform",
-			In:   "header",
-		}
-		if v, ok := packed[key]; ok {
-			params.SecChUaPlatform = v.(OptString)
 		}
 	}
 	return params
@@ -1172,123 +1143,6 @@ func decodePostEventHitParams(args [0]string, argsEscaped bool, r *http.Request)
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "Accept-Language",
-			In:   "header",
-			Err:  err,
-		}
-	}
-	// Decode header: Sec-Ch-Ua.
-	if err := func() error {
-		cfg := uri.HeaderParameterDecodingConfig{
-			Name:    "Sec-Ch-Ua",
-			Explode: false,
-		}
-		if err := h.HasParam(cfg); err == nil {
-			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotSecChUaVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotSecChUaVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.SecChUa.SetTo(paramsDotSecChUaVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "Sec-Ch-Ua",
-			In:   "header",
-			Err:  err,
-		}
-	}
-	// Decode header: Sec-Ch-Ua-Mobile.
-	if err := func() error {
-		cfg := uri.HeaderParameterDecodingConfig{
-			Name:    "Sec-Ch-Ua-Mobile",
-			Explode: false,
-		}
-		if err := h.HasParam(cfg); err == nil {
-			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotSecChUaMobileVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotSecChUaMobileVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.SecChUaMobile.SetTo(paramsDotSecChUaMobileVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "Sec-Ch-Ua-Mobile",
-			In:   "header",
-			Err:  err,
-		}
-	}
-	// Decode header: Sec-Ch-Ua-Platform.
-	if err := func() error {
-		cfg := uri.HeaderParameterDecodingConfig{
-			Name:    "Sec-Ch-Ua-Platform",
-			Explode: false,
-		}
-		if err := h.HasParam(cfg); err == nil {
-			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotSecChUaPlatformVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotSecChUaPlatformVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.SecChUaPlatform.SetTo(paramsDotSecChUaPlatformVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "Sec-Ch-Ua-Platform",
 			In:   "header",
 			Err:  err,
 		}

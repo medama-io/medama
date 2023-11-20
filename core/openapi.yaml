@@ -72,21 +72,10 @@ paths:
           in: header
           schema:
             type: string
+          description: Used to infer user browser, OS and device.
         - name: Accept-Language
           in: header
           description: Used to infer user language.
-          schema:
-            type: string
-        - name: Sec-Ch-Ua
-          in: header
-          schema:
-            type: string
-        - name: Sec-Ch-Ua-Mobile
-          in: header
-          schema:
-            type: string
-        - name: Sec-Ch-Ua-Platform
-          in: header
           schema:
             type: string
       requestBody:

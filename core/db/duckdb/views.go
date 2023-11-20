@@ -7,11 +7,12 @@ import (
 )
 
 func (c *Client) AddPageView(ctx context.Context, event *model.PageView) error {
+	exec := `--sql
+	INSERT INTO views (bid, hostname, pathname, referrer, title, timezone, language, ua_raw, ua_browser, ua_version, ua_os, ua_device_type, screen_width, screen_height, date_created)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
 	// Insert the page view into the database
-	_, err := c.DB.ExecContext(ctx, `--sql
-		INSERT INTO views (bid, hostname, pathname, referrer, title, timezone, language, screen_width, screen_height, date_created)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-		event.BID, event.Hostname, event.Pathname, event.Referrer, event.Title, event.Timezone, event.Language, event.ScreenWidth, event.ScreenHeight, event.DateCreated)
+	_, err := c.DB.ExecContext(ctx, exec, event.BID, event.Hostname, event.Pathname, event.Referrer, event.Title, event.Timezone, event.Language, event.RawUserAgent, event.BrowserName, event.BrowserVersion, event.OS, event.DeviceType, event.ScreenWidth, event.ScreenHeight, event.DateCreated)
 	if err != nil {
 		return err
 	}

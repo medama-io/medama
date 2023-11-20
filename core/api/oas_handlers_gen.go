@@ -1396,18 +1396,6 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 					Name: "Accept-Language",
 					In:   "header",
 				}: params.AcceptLanguage,
-				{
-					Name: "Sec-Ch-Ua",
-					In:   "header",
-				}: params.SecChUa,
-				{
-					Name: "Sec-Ch-Ua-Mobile",
-					In:   "header",
-				}: params.SecChUaMobile,
-				{
-					Name: "Sec-Ch-Ua-Platform",
-					In:   "header",
-				}: params.SecChUaPlatform,
 			},
 			Raw: r,
 		}
