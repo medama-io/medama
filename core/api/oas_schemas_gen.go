@@ -492,52 +492,6 @@ func (o OptBool) Or(d bool) bool {
 	return d
 }
 
-// NewOptFloat32 returns new OptFloat32 with value set to v.
-func NewOptFloat32(v float32) OptFloat32 {
-	return OptFloat32{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptFloat32 is optional float32.
-type OptFloat32 struct {
-	Value float32
-	Set   bool
-}
-
-// IsSet returns true if OptFloat32 was set.
-func (o OptFloat32) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptFloat32) Reset() {
-	var v float32
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptFloat32) SetTo(v float32) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptFloat32) Get() (v float32, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptFloat32) Or(d float32) float32 {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptInt returns new OptInt with value set to v.
 func NewOptInt(v int) OptInt {
 	return OptInt{
@@ -764,49 +718,49 @@ func (*StatsActive) getWebsitesIDActiveRes() {}
 
 // Ref: #/components/schemas/StatsSummary
 type StatsSummary struct {
-	Uniques   OptInt     `json:"uniques"`
-	Pageviews OptInt     `json:"pageviews"`
-	Bounces   OptFloat32 `json:"bounces"`
-	Duration  OptInt     `json:"duration"`
+	Uniques   int `json:"uniques"`
+	Pageviews int `json:"pageviews"`
+	Bounces   int `json:"bounces"`
+	Duration  int `json:"duration"`
 }
 
 // GetUniques returns the value of Uniques.
-func (s *StatsSummary) GetUniques() OptInt {
+func (s *StatsSummary) GetUniques() int {
 	return s.Uniques
 }
 
 // GetPageviews returns the value of Pageviews.
-func (s *StatsSummary) GetPageviews() OptInt {
+func (s *StatsSummary) GetPageviews() int {
 	return s.Pageviews
 }
 
 // GetBounces returns the value of Bounces.
-func (s *StatsSummary) GetBounces() OptFloat32 {
+func (s *StatsSummary) GetBounces() int {
 	return s.Bounces
 }
 
 // GetDuration returns the value of Duration.
-func (s *StatsSummary) GetDuration() OptInt {
+func (s *StatsSummary) GetDuration() int {
 	return s.Duration
 }
 
 // SetUniques sets the value of Uniques.
-func (s *StatsSummary) SetUniques(val OptInt) {
+func (s *StatsSummary) SetUniques(val int) {
 	s.Uniques = val
 }
 
 // SetPageviews sets the value of Pageviews.
-func (s *StatsSummary) SetPageviews(val OptInt) {
+func (s *StatsSummary) SetPageviews(val int) {
 	s.Pageviews = val
 }
 
 // SetBounces sets the value of Bounces.
-func (s *StatsSummary) SetBounces(val OptFloat32) {
+func (s *StatsSummary) SetBounces(val int) {
 	s.Bounces = val
 }
 
 // SetDuration sets the value of Duration.
-func (s *StatsSummary) SetDuration(val OptInt) {
+func (s *StatsSummary) SetDuration(val int) {
 	s.Duration = val
 }
 

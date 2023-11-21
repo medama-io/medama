@@ -34,17 +34,25 @@ export interface DataResponseArray<
 export interface ClientOptions<
 	Body extends ComponentSchema | undefined = ComponentSchema
 > {
-	cookie?: string | null;
 	body?: Body extends ComponentSchema ? components['schemas'][Body] : undefined;
+	cookie?: string | null;
 	method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
 	noRedirect?: boolean;
+	// This is used to replace any variables in the path
+	pathKey?: string;
 }
 
 const client = async (
 	path: keyof paths,
-	{ cookie, body, method, noRedirect }: ClientOptions
+	{ cookie, body, method, noRedirect, pathKey }: ClientOptions
 ): Promise<Response> => {
-	const res = await fetch(`${LOCALHOST}${path}`, {
+	let newPath;
+	// Replace any path closed in curly braces with the pathKey
+	if (pathKey !== undefined) {
+		newPath = path.replace(/{.*}/, pathKey);
+	}
+
+	const res = await fetch(`${LOCALHOST}${newPath ?? path}`, {
 		method: method ?? 'GET',
 		headers: {
 			...DEFAULT_HEADERS,

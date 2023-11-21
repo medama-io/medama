@@ -10,6 +10,9 @@ import (
 type Handler interface {
 	// Views
 	AddPageView(ctx context.Context, event *model.PageView) error
+	UpdatePageView(ctx context.Context, event *model.PageViewUpdate) error
+	// Stats
+	GetWebsiteSummary(ctx context.Context, hostname string) (*model.StatsSummary, error)
 }
 
 type Client struct {

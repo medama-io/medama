@@ -262,14 +262,6 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsSummary:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 

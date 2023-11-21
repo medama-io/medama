@@ -1500,41 +1500,6 @@ func (s *OptBool) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes float32 as json.
-func (o OptFloat32) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Float32(float32(o.Value))
-}
-
-// Decode decodes float32 from json.
-func (o *OptFloat32) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptFloat32 to nil")
-	}
-	o.Set = true
-	v, err := d.Float32()
-	if err != nil {
-		return err
-	}
-	o.Value = float32(v)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptFloat32) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptFloat32) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes int as json.
 func (o OptInt) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -1777,28 +1742,20 @@ func (s *StatsSummary) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *StatsSummary) encodeFields(e *jx.Encoder) {
 	{
-		if s.Uniques.Set {
-			e.FieldStart("uniques")
-			s.Uniques.Encode(e)
-		}
+		e.FieldStart("uniques")
+		e.Int(s.Uniques)
 	}
 	{
-		if s.Pageviews.Set {
-			e.FieldStart("pageviews")
-			s.Pageviews.Encode(e)
-		}
+		e.FieldStart("pageviews")
+		e.Int(s.Pageviews)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
-		}
+		e.FieldStart("bounces")
+		e.Int(s.Bounces)
 	}
 	{
-		if s.Duration.Set {
-			e.FieldStart("duration")
-			s.Duration.Encode(e)
-		}
+		e.FieldStart("duration")
+		e.Int(s.Duration)
 	}
 }
 
@@ -1814,13 +1771,16 @@ func (s *StatsSummary) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode StatsSummary to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "uniques":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.Uniques.Reset()
-				if err := s.Uniques.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Uniques = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1828,9 +1788,11 @@ func (s *StatsSummary) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
 		case "pageviews":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.Pageviews.Reset()
-				if err := s.Pageviews.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Pageviews = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1838,9 +1800,11 @@ func (s *StatsSummary) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"pageviews\"")
 			}
 		case "bounces":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Bounces = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1848,9 +1812,11 @@ func (s *StatsSummary) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"bounces\"")
 			}
 		case "duration":
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				s.Duration.Reset()
-				if err := s.Duration.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Duration = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1863,6 +1829,38 @@ func (s *StatsSummary) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode StatsSummary")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00001111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfStatsSummary) {
+					name = jsonFieldsNameOfStatsSummary[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil

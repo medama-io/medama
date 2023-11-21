@@ -881,7 +881,11 @@ components:
         pageviews:
           type: integer
         bounces:
-          type: number
-          format: float
+          type: integer
         duration:
           type: integer
+      required:
+        - uniques
+        - pageviews
+        - bounces
+        - duration

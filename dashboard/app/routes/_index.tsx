@@ -1,3 +1,4 @@
+import { Button } from '@mantine/core';
 import {
 	json,
 	type LoaderFunctionArgs,
@@ -6,6 +7,7 @@ import {
 } from '@remix-run/node';
 import {
 	isRouteErrorResponse,
+	NavLink,
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
@@ -61,6 +63,9 @@ export const ErrorBoundary = () => {
 			<div>
 				<h1>404</h1>
 				<p>No websites found</p>
+				<Button component={NavLink} to="/add">
+					Add Website
+				</Button>
 			</div>
 		);
 	}

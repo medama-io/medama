@@ -6,15 +6,15 @@ import {
 	redirect,
 } from '@remix-run/node';
 
-import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';
-import { Login } from '@/components/login/Login';
+import { websiteCreate } from '@/api/websites';
+import { Add } from '@/components/add/Add';
 import { hasSession } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [
-		{ title: 'Login | Medama' },
-		{ name: 'description', content: 'Login into Medama Analytics.' },
+		{ title: 'Add Website | Medama' },
+		{ name: 'description', content: 'Add a website to Medama Analytics.' },
 	];
 };
 
@@ -22,8 +22,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	// If the user is already logged in, redirect them to the dashboard.
 	if (hasSession(request)) {
 		// Check if session hasn't been revoked
-		await userGet({ cookie: request.headers.get('Cookie'), noRedirect: true });
-		return redirect('/');
+		await userGet({ cookie: request.headers.get('Cookie') });
 	}
 
 	return { status: 200 };
@@ -32,35 +31,32 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const body = await request.formData();
 
-	const email = body.get('email')?.toString();
-	const password = body.get('password')?.toString();
+	const name = body.get('name')?.toString();
+	const hostname = body.get('hostname')?.toString();
 
-	if (!email || !password) {
-		throw json('Missing email or password', {
+	if (!hostname) {
+		throw json('Missing hostname', {
 			status: 400,
 		});
 	}
 
-	const { cookie } = await authLogin({
+	const { data, res } = await websiteCreate({
+		cookie: request.headers.get('Cookie'),
 		body: {
-			email,
-			password,
+			name: name ?? hostname,
+			hostname,
 		},
 	});
 
-	if (!cookie) {
-		throw json('Failed to login.', {
-			status: 401,
+	if (!data) {
+		throw json('Failed to create website.', {
+			status: res.status,
 		});
 	}
 
-	return redirect('/', {
-		headers: {
-			'Set-Cookie': cookie,
-		},
-	});
+	return redirect(`/websites/${data.hostname}`);
 };
 
 export default function Index() {
-	return <Login />;
+	return <Add />;
 }

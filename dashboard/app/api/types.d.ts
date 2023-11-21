@@ -38,6 +38,11 @@ export interface paths {
      */
     post: operations["post-user"];
     /**
+     * Delete User.
+     * @description Delete a user account.
+     */
+    delete: operations["delete-user"];
+    /**
      * Update User Info.
      * @description Update a user account's details.
      */
@@ -112,11 +117,13 @@ export interface components {
       /** @description Page URL including query parameters. */
       u: string;
       /** @description Referrer URL. */
-      r: string;
+      r?: string;
+      /** @description If the user is a unique user or not. */
+      p?: boolean;
       /** @description Event type consisting of either 'pagehide', 'unload', 'load', 'hidden' or 'visible'. */
       e: string;
       /** @description Title of page. */
-      t?: number;
+      t?: string;
       /** @description Timezone of the user. */
       d?: string;
       /** @description Screen width. */
@@ -148,7 +155,11 @@ export interface components {
     UserGet: {
       /** Format: email */
       email: string;
-      language: string;
+      /**
+       * @default en
+       * @enum {string}
+       */
+      language: "en";
       /** Format: int64 */
       dateCreated: number;
       /** Format: int64 */
@@ -163,7 +174,11 @@ export interface components {
       email?: string;
       /** Format: password */
       password?: string;
-      language?: string;
+      /**
+       * @default en
+       * @enum {string}
+       */
+      language?: "en";
     };
     /**
      * WebsiteGet
@@ -180,6 +195,7 @@ export interface components {
      */
     WebsiteCreate: {
       name: string;
+      /** Format: hostname */
       hostname: string;
     };
     /**
@@ -188,6 +204,7 @@ export interface components {
      */
     WebsitePatch: {
       name?: string;
+      /** Format: hostname */
       hostname?: string;
     };
     /**
@@ -199,11 +216,10 @@ export interface components {
     };
     /** StatsSummary */
     StatsSummary: {
-      uniques?: number;
-      pageviews?: number;
-      /** Format: float */
-      bounces?: number;
-      duration?: number;
+      uniques: number;
+      pageviews: number;
+      bounces: number;
+      duration: number;
     };
   };
   responses: {
@@ -325,7 +341,7 @@ export interface operations {
    */
   "post-auth-login": {
     /** @description Login details. */
-    requestBody?: {
+    requestBody: {
       content: {
         "application/json": components["schemas"]["AuthLogin"];
       };
@@ -335,12 +351,13 @@ export interface operations {
       200: {
         headers: {
           /** @description Set the cookie for the session. */
-          "Set-Cookie"?: string;
+          "Set-Cookie": string;
         };
         content: never;
       };
       400: components["responses"]["BadRequestError"];
       401: components["responses"]["UnauthorisedError"];
+      404: components["responses"]["NotFoundError"];
       500: components["responses"]["InternalServerError"];
     };
   };
@@ -351,16 +368,14 @@ export interface operations {
   "post-event-hit": {
     parameters: {
       header?: {
+        /** @description Used to infer user browser, OS and device. */
         "User-Agent"?: string;
         /** @description Used to infer user language. */
         "Accept-Language"?: string;
-        "Sec-Ch-Ua"?: string;
-        "Sec-Ch-Ua-Mobile"?: string;
-        "Sec-Ch-Ua-Platform"?: string;
       };
     };
     /** @description Hit event metadata. */
-    requestBody?: {
+    requestBody: {
       content: {
         "application/json": components["schemas"]["EventHit"];
       };
@@ -370,10 +385,8 @@ export interface operations {
       200: {
         content: never;
       };
-      /** @description Not Found */
-      404: {
-        content: never;
-      };
+      400: components["responses"]["BadRequestError"];
+      404: components["responses"]["NotFoundError"];
       500: components["responses"]["InternalServerError"];
     };
   };
@@ -393,7 +406,7 @@ export interface operations {
       200: {
         headers: {
           /** @description This is date of the current day from midnight, incremented by each page view by unique user. */
-          "Last-Modified"?: string;
+          "Last-Modified": string;
         };
         content: never;
       };
@@ -429,7 +442,7 @@ export interface operations {
    */
   "post-user": {
     /** @description Post the necessary fields for the API to create a new user. */
-    requestBody?: {
+    requestBody: {
       content: {
         "application/json": components["schemas"]["UserCreate"];
       };
@@ -439,7 +452,7 @@ export interface operations {
       201: {
         headers: {
           /** @description Set the cookie for the session. */
-          "Set-Cookie"?: string;
+          "Set-Cookie": string;
         };
         content: {
           "application/json": components["schemas"]["UserGet"];
@@ -448,6 +461,28 @@ export interface operations {
       400: components["responses"]["BadRequestError"];
       401: components["responses"]["UnauthorisedError"];
       403: components["responses"]["ForbiddenError"];
+      409: components["responses"]["ConflictError"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  /**
+   * Delete User.
+   * @description Delete a user account.
+   */
+  "delete-user": {
+    parameters: {
+      cookie: {
+        _me_sess: components["parameters"]["SessionAuth"];
+      };
+    };
+    responses: {
+      /** @description Success */
+      200: {
+        content: never;
+      };
+      400: components["responses"]["BadRequestError"];
+      401: components["responses"]["UnauthorisedError"];
+      404: components["responses"]["NotFoundError"];
       409: components["responses"]["ConflictError"];
       500: components["responses"]["InternalServerError"];
     };
@@ -463,7 +498,7 @@ export interface operations {
       };
     };
     /** @description User details to update. */
-    requestBody?: {
+    requestBody: {
       content: {
         "application/json": components["schemas"]["UserPatch"];
       };
@@ -510,7 +545,7 @@ export interface operations {
    * @description Add a new website.
    */
   "post-websites": {
-    requestBody?: {
+    requestBody: {
       content: {
         "application/json": components["schemas"]["WebsiteCreate"];
       };
@@ -592,7 +627,7 @@ export interface operations {
       };
     };
     /** @description Website details to update. */
-    requestBody?: {
+    requestBody: {
       content: {
         "application/json": components["schemas"]["WebsitePatch"];
       };

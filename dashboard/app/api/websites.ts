@@ -1,4 +1,9 @@
-import { client, type ClientOptions, type DataResponseArray } from './client';
+import {
+	client,
+	type ClientOptions,
+	type DataResponse,
+	type DataResponseArray,
+} from './client';
 
 const websiteList = async (
 	opts: ClientOptions
@@ -7,4 +12,11 @@ const websiteList = async (
 	return { data: await res.json(), res };
 };
 
-export { websiteList };
+const websiteCreate = async (
+	opts: ClientOptions
+): Promise<DataResponse<'WebsiteCreate'>> => {
+	const res = await client('/websites', { method: 'POST', ...opts });
+	return { data: await res.json(), res };
+};
+
+export { websiteCreate, websiteList };
