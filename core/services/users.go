@@ -130,7 +130,7 @@ func (h *Handler) PostUser(ctx context.Context, req *api.UserCreate) (api.PostUs
 	attributes := []slog.Attr{}
 
 	// UUIDv7 id generation
-	typeid, err := typeid.New("user")
+	typeid, err := typeid.WithPrefix("user")
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to generate user id", attributes...)

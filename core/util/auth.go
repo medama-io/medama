@@ -145,7 +145,7 @@ func (a *AuthService) DecryptSession(ctx context.Context, session string) (strin
 // This returns an encrypted session token as a cookie.
 func (a *AuthService) CreateSession(ctx context.Context, userId string) (*http.Cookie, error) {
 	// Generate session token.
-	sessionIdType, err := typeid.New("sess")
+	sessionIdType, err := typeid.WithPrefix("sess")
 	if err != nil {
 		return nil, err
 	}

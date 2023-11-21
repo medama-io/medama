@@ -14,7 +14,7 @@ require (
 	github.com/medama-io/go-useragent v0.0.0-20231118151641-642da8a8a685
 	github.com/ogen-go/ogen v0.78.0
 	github.com/stretchr/testify v1.8.4
-	go.jetpack.io/typeid v0.1.0
+	go.jetpack.io/typeid v1.0.0
 	go.uber.org/multierr v1.11.0
 )
 
