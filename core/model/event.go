@@ -11,40 +11,174 @@ const (
 	RequestKeyBody RequestKey = "request"
 )
 
-type BrowserName string
+// BrowserName - The name of the user's browser, stored as an integer to save
+// space in the database.
+type BrowserName uint8
 
 const (
-	Chrome    BrowserName = ua.Chrome
-	Edge      BrowserName = ua.Edge
-	Firefox   BrowserName = ua.Firefox
-	IE        BrowserName = ua.IE
-	Opera     BrowserName = ua.Opera
-	OperaMini BrowserName = ua.OperaMini
-	Safari    BrowserName = ua.Safari
-	Vivaldi   BrowserName = ua.Vivaldi
-	Samsung   BrowserName = ua.Samsung
-	Nintendo  BrowserName = ua.Nintendo
+	Chrome    BrowserName = 1
+	Edge      BrowserName = 2
+	Firefox   BrowserName = 3
+	IE        BrowserName = 4
+	Opera     BrowserName = 5
+	OperaMini BrowserName = 6
+	Safari    BrowserName = 7
+	Vivaldi   BrowserName = 8
+	Samsung   BrowserName = 9
+	Nintendo  BrowserName = 10
 )
 
-type OSName string // Operating System
+// NewBrowserName converts the browser name to a BrowserName integer.
+func NewBrowserName(browser string) BrowserName {
+	switch browser {
+	case ua.Chrome:
+		return Chrome
+	case ua.Edge:
+		return Edge
+	case ua.Firefox:
+		return Firefox
+	case ua.IE:
+		return IE
+	case ua.Opera:
+		return Opera
+	case ua.OperaMini:
+		return OperaMini
+	case ua.Safari:
+		return Safari
+	case ua.Vivaldi:
+		return Vivaldi
+	case ua.Samsung:
+		return Samsung
+	case ua.Nintendo:
+		return Nintendo
+	default:
+		return 0
+	}
+}
+
+// String converts the browser name to a string.
+func (b BrowserName) String() string {
+	switch b {
+	case Chrome:
+		return ua.Chrome
+	case Edge:
+		return ua.Edge
+	case Firefox:
+		return ua.Firefox
+	case IE:
+		return ua.IE
+	case Opera:
+		return ua.Opera
+	case OperaMini:
+		return ua.OperaMini
+	case Safari:
+		return ua.Safari
+	case Vivaldi:
+		return ua.Vivaldi
+	case Samsung:
+		return ua.Samsung
+	case Nintendo:
+		return ua.Nintendo
+	default:
+		return ""
+	}
+}
+
+// OSName - The name of the user's operating system, stored as an integer to
+// save space in the database.
+type OSName uint8
 
 const (
-	Android  OSName = ua.Android
-	ChromeOS OSName = ua.ChromeOS
-	IOS      OSName = ua.IOS
-	Linux    OSName = ua.Linux
-	MacOS    OSName = ua.MacOS
-	Windows  OSName = ua.Windows
+	Android  OSName = 1
+	ChromeOS OSName = 2
+	IOS      OSName = 3
+	Linux    OSName = 4
+	MacOS    OSName = 5
+	Windows  OSName = 6
 )
 
-type DeviceType string
+// NewOSName converts the OS name to a OSName integer.
+func NewOSName(os string) OSName {
+	switch os {
+	case ua.Android:
+		return Android
+	case ua.ChromeOS:
+		return ChromeOS
+	case ua.IOS:
+		return IOS
+	case ua.Linux:
+		return Linux
+	case ua.MacOS:
+		return MacOS
+	case ua.Windows:
+		return Windows
+	default:
+		return 0
+	}
+}
+
+// String converts the OS name to a string.
+func (o OSName) String() string {
+	switch o {
+	case Android:
+		return ua.Android
+	case ChromeOS:
+		return ua.ChromeOS
+	case IOS:
+		return ua.IOS
+	case Linux:
+		return ua.Linux
+	case MacOS:
+		return ua.MacOS
+	case Windows:
+		return ua.Windows
+	default:
+		return ""
+	}
+}
+
+// DeviceType - The type of device the user is using, stored as an integer to
+// save space in the database.
+type DeviceType uint8
 
 const (
-	IsDesktop DeviceType = ua.Desktop
-	IsMobile  DeviceType = ua.Mobile
-	IsTablet  DeviceType = ua.Tablet
-	IsTV      DeviceType = ua.TV
+	IsDesktop DeviceType = 1
+	IsMobile  DeviceType = 2
+	IsTablet  DeviceType = 3
+	IsTV      DeviceType = 4
 )
+
+// NewDeviceType converts the device type to a DeviceType integer.
+func NewDeviceType(desktop bool, mobile bool, tablet bool, tv bool) DeviceType {
+	switch {
+	case desktop:
+		return IsDesktop
+	case mobile:
+		return IsMobile
+	case tablet:
+		return IsTablet
+	case tv:
+		return IsTV
+	default:
+		return 0
+	}
+}
+
+// String converts the device type to a string.
+func (d DeviceType) String() string {
+	switch d {
+	case IsDesktop:
+		return ua.Desktop
+	case IsMobile:
+		return ua.Mobile
+	case IsTablet:
+		return ua.Tablet
+	case IsTV:
+		return ua.TV
+	default:
+		return ""
+	}
+}
 
 type PageView struct {
 	// Beacon ID - Used to determine if multiple event types are
@@ -79,9 +213,9 @@ type PageView struct {
 	RawUserAgent string `db:"ua_raw"`
 
 	// ScreenWidth - The width of the user's screen.
-	ScreenWidth int `json:"screen_width" db:"screen_width"`
+	ScreenWidth uint16 `json:"screen_width" db:"screen_width"`
 	// ScreenHeight - The height of the user's screen.
-	ScreenHeight int `json:"screen_height" db:"screen_height"`
+	ScreenHeight uint16 `json:"screen_height" db:"screen_height"`
 
 	// DateCreated - Creation timestamp in UNIX.
 	DateCreated int64 `json:"date_created" db:"date_created"`

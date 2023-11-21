@@ -22,14 +22,14 @@ func Up0002(c *duckdb.Client) error {
 		timezone TEXT,
 		language TEXT,
 		ua_raw TEXT,
-		ua_browser TEXT,
+		ua_browser UTINYINT,
 		ua_version TEXT,
-		ua_os TEXT,
-		ua_device_type TEXT,
-		screen_width INTEGER,
-		screen_height INTEGER,
-		duration_ms INTEGER,
-		date_created INTEGER NOT NULL
+		ua_os UTINYINT,
+		ua_device_type UTINYINT,
+		screen_width USMALLINT,
+		screen_height USMALLINT,
+		duration_ms UINTEGER,
+		date_created UINTEGER NOT NULL
 	)`)
 
 	if err != nil {

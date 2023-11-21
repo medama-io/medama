@@ -55,22 +55,26 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 	// Parse user agent
 	rawUserAgent := reqBody.Header.Get("User-Agent")
 	ua := h.useragent.Parse(rawUserAgent)
+
+	uaBrowser := model.NewBrowserName(ua.Browser)
+	uaVersion := ua.GetMajorVersion()
+	uaOS := model.NewOSName(ua.OS)
+	uaDeviceType := model.NewDeviceType(ua.Desktop, ua.Mobile, ua.Tablet, ua.TV)
 	isUnknownUA := false
-	var deviceType model.DeviceType
-	switch {
-	case ua.Desktop:
-		deviceType = model.IsDesktop
-	case ua.Mobile:
-		deviceType = model.IsMobile
-	case ua.Tablet:
-		deviceType = model.IsTablet
-	case ua.TV:
-		deviceType = model.IsTV
-	}
 	// If there are unfilled fields, we want to mark this as an unknown user agent
 	// and store the raw user agent string.
-	if deviceType == "" || ua.OS == "" || ua.Browser == "" || ua.Version == "" {
+	if uaBrowser == 0 || uaOS == 0 || uaDeviceType == 0 || uaVersion == "" {
 		isUnknownUA = true
+	}
+
+	// Verify screen height and width for overflow as we store them as uint16
+	// in the database.
+	screenHeight := uint16(req.H.Value)
+	screenWidth := uint16(req.W.Value)
+	if screenHeight > 65535 || screenWidth > 65535 {
+		attributes = append(attributes, slog.Int("screen_height", req.H.Value), slog.Int("screen_width", req.W.Value))
+		slog.LogAttrs(ctx, slog.LevelDebug, "screen height or width is too large", attributes...)
+		return ErrBadRequest(errors.New("screen height or width is too large")), nil
 	}
 
 	// Add to database
@@ -89,13 +93,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			Title:          req.T.Value,
 			Timezone:       req.D.Value,
 			Language:       acceptLanguage,
-			BrowserName:    model.BrowserName(ua.Browser),
-			BrowserVersion: ua.GetMajorVersion(),
-			OS:             model.OSName(ua.OS),
-			DeviceType:     deviceType,
+			BrowserName:    uaBrowser,
+			BrowserVersion: uaVersion,
+			OS:             uaOS,
+			DeviceType:     uaDeviceType,
 
-			ScreenWidth:  req.W.Value,
-			ScreenHeight: req.H.Value,
+			ScreenWidth:  uint16(req.W.Value),
+			ScreenHeight: uint16(req.H.Value),
 			DateCreated:  dateCreated,
 		}
 
@@ -114,13 +118,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			slog.String("title", event.Title),
 			slog.String("timezone", event.Timezone),
 			slog.String("language", event.Language),
-			slog.String("browser_name", string(event.BrowserName)),
+			slog.String("browser_name", event.BrowserName.String()),
 			slog.String("browser_version", event.BrowserVersion),
-			slog.String("os", string(event.OS)),
-			slog.String("device_type", string(event.DeviceType)),
+			slog.String("os", event.OS.String()),
+			slog.String("device_type", event.DeviceType.String()),
 			slog.String("raw_user_agent", event.RawUserAgent),
-			slog.Int("screen_width", event.ScreenWidth),
-			slog.Int("screen_height", event.ScreenHeight),
+			slog.Int("screen_width", int(event.ScreenWidth)),
+			slog.Int("screen_height", int(event.ScreenHeight)),
 			slog.Int64("date_created", event.DateCreated),
 		)
 
