@@ -189,6 +189,8 @@ type PageView struct {
 	// Pathname - The pathname of the associated URL linked to the page view.
 	Pathname string `db:"pathname"`
 
+	// IsUnique - Whether or not the page view is unique.
+	IsUnique bool `db:"is_unique"`
 	// Referrer - The referrer of the page view.
 	Referrer string `db:"referrer"`
 	// Title - The page title of the page view.

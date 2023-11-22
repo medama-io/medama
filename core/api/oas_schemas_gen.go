@@ -323,6 +323,7 @@ func (s *ForbiddenErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
+// This is set to 0 if the user is a unique user, otherwise 1.
 type GetEventPingOK struct {
 	Data io.Reader
 }
@@ -339,9 +340,15 @@ func (s GetEventPingOK) Read(p []byte) (n int, err error) {
 
 // GetEventPingOKHeaders wraps GetEventPingOK with response headers.
 type GetEventPingOKHeaders struct {
-	CacheControl string
-	LastModified string
-	Response     GetEventPingOK
+	AccessControlAllowOrigin string
+	CacheControl             string
+	LastModified             string
+	Response                 GetEventPingOK
+}
+
+// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
+func (s *GetEventPingOKHeaders) GetAccessControlAllowOrigin() string {
+	return s.AccessControlAllowOrigin
 }
 
 // GetCacheControl returns the value of CacheControl.
@@ -357,6 +364,11 @@ func (s *GetEventPingOKHeaders) GetLastModified() string {
 // GetResponse returns the value of Response.
 func (s *GetEventPingOKHeaders) GetResponse() GetEventPingOK {
 	return s.Response
+}
+
+// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
+func (s *GetEventPingOKHeaders) SetAccessControlAllowOrigin(val string) {
+	s.AccessControlAllowOrigin = val
 }
 
 // SetCacheControl sets the value of CacheControl.

@@ -124,11 +124,17 @@ paths:
                 type: string
               description: This is set to 1 day to prevent the user from being counted as a unique user again.
               required: true
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              description: This is set to allow all origins to access this endpoint.
+              required: true
           content:
             text/plain:
               schema:
+                description: This is set to 0 if the user is a unique user, otherwise 1.
                 type: string
-                example: "1"
+                example: "0"
         "400":
           $ref: "#/components/responses/BadRequestError"
         "500":

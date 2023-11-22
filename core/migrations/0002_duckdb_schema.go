@@ -17,6 +17,7 @@ func Up0002(c *duckdb.Client) error {
 		bid TEXT PRIMARY KEY,
 		hostname TEXT NOT NULL,
 		pathname TEXT,
+		is_unique BOOLEAN,
 		referrer TEXT,
 		title TEXT,
 		timezone TEXT,

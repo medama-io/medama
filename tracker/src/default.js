@@ -63,23 +63,10 @@ var Payload;
 	const uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
 	/**
-	 * Ping the server with the cache endpoint and read the last modified header to determine
-	 * if the user is unique or not.
-	 *
-	 * If the response is not cached, then the user is unique. If it is cached, the
-	 * last-modified header will return the timestamp of the day at midnight incremented by
-	 * how many times the user has visited the site.
+	 * Whether the user is unique or not.
+	 * This is updated when the server checks the ping cache on page load.
 	 */
 	let isUnique = true;
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', host + '/event/ping');
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState === XMLHttpRequest.DONE) {
-			if (xhr.status === 304) {
-				isUnique = false;
-			}
-		}
-	};
 
 	/**
 	 * Counter for how long a page may have been hidden.
@@ -92,6 +79,15 @@ var Payload;
 	 * the total time spent on a page.
 	 */
 	let hiddenTimeTemp = 0;
+
+	/**
+	 * XMLHttpRequest object for pinging the server.
+	 *
+	 * @remarks We hoist this variable to the top to let the closure compiler infer
+	 * that it can declare this variable together with the other variables in a single
+	 * line instead of separately, which saves us a few bytes.
+	 */
+	let xhr = new XMLHttpRequest();
 
 	/**
 	 * Send a beacon event to the server.
@@ -181,10 +177,25 @@ var Payload;
 		{ capture: true }
 	);
 
-	// Load event is used to track when a user has loaded in a page.
-	document.addEventListener(
-		EventType.LOAD,
+	/**
+	 * Ping the server with the cache endpoint and read the last modified header to determine
+	 * if the user is unique or not.
+	 *
+	 * If the response is not cached, then the user is unique. If it is cached, the
+	 * last-modified header will return the timestamp of the day at midnight incremented by
+	 * how many times the user has visited the site.
+	 */
+	xhr.open('GET', host + '/event/ping');
+	xhr.setRequestHeader('Content-Type', 'text/plain');
+	xhr.addEventListener(
+		'load',
 		() => {
+			// Check if response is 1. If it is, then the user is not unique.
+			if (xhr.responseText === '1') {
+				isUnique = false;
+			}
+
+			// Send the first beacon event to the server.
 			sendBeacon(EventType.LOAD);
 		},
 		{
@@ -192,4 +203,5 @@ var Payload;
 			capture: true,
 		}
 	);
+	xhr.send();
 })();
