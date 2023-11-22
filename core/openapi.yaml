@@ -105,7 +105,7 @@ paths:
       description: This is a ping endpoint to determine if the user is unique or not.
       operationId: get-event-ping
       parameters:
-        - name: Last-Modified
+        - name: If-Modified-Since
           in: header
           description: If this exists, then user exists in cache and is not a unique user.
           schema:
@@ -119,6 +119,13 @@ paths:
                 type: string
               description: This is date of the current day from midnight, incremented by each page view by unique user.
               required: true
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "1"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
         "500":
           $ref: "#/components/responses/InternalServerError"
       servers:

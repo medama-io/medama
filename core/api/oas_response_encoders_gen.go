@@ -3,6 +3,7 @@
 package api
 
 import (
+	"io"
 	"net/http"
 
 	"github.com/go-faster/errors"
@@ -146,7 +147,8 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 
 func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *GetEventPingOK:
+	case *GetEventPingOKHeaders:
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -164,6 +166,23 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 			}
 		}
 		w.WriteHeader(200)
+
+		writer := w
+		if _, err := io.Copy(writer, response.Response); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *BadRequestError:
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(400)
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
 
 		return nil
 

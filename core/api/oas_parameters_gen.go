@@ -200,17 +200,17 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 // GetEventPingParams is parameters of get-event-ping operation.
 type GetEventPingParams struct {
 	// If this exists, then user exists in cache and is not a unique user.
-	LastModified OptString
+	IfModifiedSince OptString
 }
 
 func unpackGetEventPingParams(packed middleware.Parameters) (params GetEventPingParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "Last-Modified",
+			Name: "If-Modified-Since",
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.LastModified = v.(OptString)
+			params.IfModifiedSince = v.(OptString)
 		}
 	}
 	return params
@@ -218,15 +218,15 @@ func unpackGetEventPingParams(packed middleware.Parameters) (params GetEventPing
 
 func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request) (params GetEventPingParams, _ error) {
 	h := uri.NewHeaderDecoder(r.Header)
-	// Decode header: Last-Modified.
+	// Decode header: If-Modified-Since.
 	if err := func() error {
 		cfg := uri.HeaderParameterDecodingConfig{
-			Name:    "Last-Modified",
+			Name:    "If-Modified-Since",
 			Explode: false,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLastModifiedVal string
+				var paramsDotIfModifiedSinceVal string
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -238,12 +238,12 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 						return err
 					}
 
-					paramsDotLastModifiedVal = c
+					paramsDotIfModifiedSinceVal = c
 					return nil
 				}(); err != nil {
 					return err
 				}
-				params.LastModified.SetTo(paramsDotLastModifiedVal)
+				params.IfModifiedSince.SetTo(paramsDotIfModifiedSinceVal)
 				return nil
 			}); err != nil {
 				return err
@@ -252,7 +252,7 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "Last-Modified",
+			Name: "If-Modified-Since",
 			In:   "header",
 			Err:  err,
 		}

@@ -3,6 +3,8 @@
 package api
 
 import (
+	"io"
+
 	"github.com/go-faster/errors"
 )
 
@@ -49,6 +51,7 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 
 func (*BadRequestError) deleteUserRes()          {}
 func (*BadRequestError) deleteWebsitesIDRes()    {}
+func (*BadRequestError) getEventPingRes()        {}
 func (*BadRequestError) getUserRes()             {}
 func (*BadRequestError) getWebsiteIDSummaryRes() {}
 func (*BadRequestError) getWebsitesIDActiveRes() {}
@@ -320,22 +323,47 @@ func (s *ForbiddenErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
-// GetEventPingOK is response for GetEventPing operation.
 type GetEventPingOK struct {
+	Data io.Reader
+}
+
+// Read reads data from the Data reader.
+//
+// Kept to satisfy the io.Reader interface.
+func (s GetEventPingOK) Read(p []byte) (n int, err error) {
+	if s.Data == nil {
+		return 0, io.EOF
+	}
+	return s.Data.Read(p)
+}
+
+// GetEventPingOKHeaders wraps GetEventPingOK with response headers.
+type GetEventPingOKHeaders struct {
 	LastModified string
+	Response     GetEventPingOK
 }
 
 // GetLastModified returns the value of LastModified.
-func (s *GetEventPingOK) GetLastModified() string {
+func (s *GetEventPingOKHeaders) GetLastModified() string {
 	return s.LastModified
 }
 
+// GetResponse returns the value of Response.
+func (s *GetEventPingOKHeaders) GetResponse() GetEventPingOK {
+	return s.Response
+}
+
 // SetLastModified sets the value of LastModified.
-func (s *GetEventPingOK) SetLastModified(val string) {
+func (s *GetEventPingOKHeaders) SetLastModified(val string) {
 	s.LastModified = val
 }
 
-func (*GetEventPingOK) getEventPingRes() {}
+// SetResponse sets the value of Response.
+func (s *GetEventPingOKHeaders) SetResponse(val GetEventPingOK) {
+	s.Response = val
+}
+
+func (*GetEventPingOKHeaders) getEventPingRes() {}
 
 type GetWebsitesOKApplicationJSON []WebsiteGet
 

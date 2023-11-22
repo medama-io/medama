@@ -6,14 +6,61 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
 )
 
+const OneDay = 24 * time.Hour
+
 func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
-	return &api.GetEventPingOK{}, nil
+	attributes := []slog.Attr{}
+	// Check if if-modified-since header is set
+	ifModified := params.IfModifiedSince.Value
+	attributes = append(attributes, slog.String("if_modified", ifModified))
+
+	// If it is not set, it is a unique user.
+	if ifModified == "" {
+		// Get current day but reset the time to 00:00:00
+		currentDay := time.Now().UTC().Truncate(OneDay)
+
+		// Return body to activate caching which is the number of seconds
+		body := strings.NewReader(strconv.Itoa(currentDay.Second()))
+
+		lastModified := currentDay.Format(http.TimeFormat)
+
+		attributes = append(attributes, slog.String("last_modified", lastModified))
+		slog.LogAttrs(ctx, slog.LevelDebug, "last modified header not set", attributes...)
+
+		return &api.GetEventPingOKHeaders{
+			LastModified: lastModified,
+			Response:     api.GetEventPingOK{Data: body},
+		}, nil
+	}
+
+	// Otherwise, this is not a unique user.
+	// Increment the last modified date by one second.
+	lastModifiedTime, err := time.Parse(http.TimeFormat, ifModified)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to parse if modified since header", attributes...)
+		return ErrBadRequest(err), nil
+	}
+	lastModifiedTime = lastModifiedTime.Add(time.Second)
+
+	// Return body to activate caching
+	body := strings.NewReader(strconv.Itoa(lastModifiedTime.Second()))
+
+	lastModified := lastModifiedTime.Format(http.TimeFormat)
+	attributes = append(attributes, slog.String("last_modified", lastModified))
+	slog.LogAttrs(ctx, slog.LevelDebug, "last modified header set", attributes...)
+	return &api.GetEventPingOKHeaders{
+		LastModified: lastModified,
+		Response:     api.GetEventPingOK{Data: body},
+	}, nil
 }
 
 func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {

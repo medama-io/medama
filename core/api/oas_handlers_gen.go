@@ -301,9 +301,9 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
-					Name: "Last-Modified",
+					Name: "If-Modified-Since",
 					In:   "header",
-				}: params.LastModified,
+				}: params.IfModifiedSince,
 			},
 			Raw: r,
 		}
