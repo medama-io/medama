@@ -339,8 +339,14 @@ func (s GetEventPingOK) Read(p []byte) (n int, err error) {
 
 // GetEventPingOKHeaders wraps GetEventPingOK with response headers.
 type GetEventPingOKHeaders struct {
+	CacheControl string
 	LastModified string
 	Response     GetEventPingOK
+}
+
+// GetCacheControl returns the value of CacheControl.
+func (s *GetEventPingOKHeaders) GetCacheControl() string {
+	return s.CacheControl
 }
 
 // GetLastModified returns the value of LastModified.
@@ -351,6 +357,11 @@ func (s *GetEventPingOKHeaders) GetLastModified() string {
 // GetResponse returns the value of Response.
 func (s *GetEventPingOKHeaders) GetResponse() GetEventPingOK {
 	return s.Response
+}
+
+// SetCacheControl sets the value of CacheControl.
+func (s *GetEventPingOKHeaders) SetCacheControl(val string) {
+	s.CacheControl = val
 }
 
 // SetLastModified sets the value of LastModified.

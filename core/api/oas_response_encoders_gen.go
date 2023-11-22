@@ -152,6 +152,18 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Cache-Control" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Cache-Control",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					return e.EncodeValue(conv.StringToString(response.CacheControl))
+				}); err != nil {
+					return errors.Wrap(err, "encode Cache-Control header")
+				}
+			}
 			// Encode "Last-Modified" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{

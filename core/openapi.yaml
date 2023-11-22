@@ -119,6 +119,11 @@ paths:
                 type: string
               description: This is date of the current day from midnight, incremented by each page view by unique user.
               required: true
+            Cache-Control:
+              schema:
+                type: string
+              description: This is set to 1 day to prevent the user from being counted as a unique user again.
+              required: true
           content:
             text/plain:
               schema:

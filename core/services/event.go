@@ -14,7 +14,11 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
-const OneDay = 24 * time.Hour
+const (
+	OneDay = 24 * time.Hour
+	// Set to 1 day to reset the ping cache every day.
+	CacheControl = "public, max-age=86400"
+)
 
 func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
 	attributes := []slog.Attr{}
@@ -22,11 +26,11 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	ifModified := params.IfModifiedSince.Value
 	attributes = append(attributes, slog.String("if_modified", ifModified))
 
+	// Get current day but reset the time to 00:00:00
+	currentDay := time.Now().UTC().Truncate(OneDay)
+
 	// If it is not set, it is a unique user.
 	if ifModified == "" {
-		// Get current day but reset the time to 00:00:00
-		currentDay := time.Now().UTC().Truncate(OneDay)
-
 		// Return body to activate caching which is the number of seconds
 		body := strings.NewReader(strconv.Itoa(currentDay.Second()))
 
@@ -37,28 +41,37 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 
 		return &api.GetEventPingOKHeaders{
 			LastModified: lastModified,
+			CacheControl: CacheControl,
 			Response:     api.GetEventPingOK{Data: body},
 		}, nil
 	}
 
-	// Otherwise, this is not a unique user.
-	// Increment the last modified date by one second.
+	// Otherwise, this is not a unique user. Parse the if-modified-since header
+	// and increment it by one second.
 	lastModifiedTime, err := time.Parse(http.TimeFormat, ifModified)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to parse if modified since header", attributes...)
 		return ErrBadRequest(err), nil
 	}
+
+	// If the last modified time is one day ago, reset it to the current day.
+	if lastModifiedTime.Before(currentDay) {
+		lastModifiedTime = currentDay
+	}
+
+	// Increment the last modified date by one second.
 	lastModifiedTime = lastModifiedTime.Add(time.Second)
+	lastModified := lastModifiedTime.Format(http.TimeFormat)
 
 	// Return body to activate caching
 	body := strings.NewReader(strconv.Itoa(lastModifiedTime.Second()))
 
-	lastModified := lastModifiedTime.Format(http.TimeFormat)
 	attributes = append(attributes, slog.String("last_modified", lastModified))
 	slog.LogAttrs(ctx, slog.LevelDebug, "last modified header set", attributes...)
 	return &api.GetEventPingOKHeaders{
 		LastModified: lastModified,
+		CacheControl: CacheControl,
 		Response:     api.GetEventPingOK{Data: body},
 	}, nil
 }
