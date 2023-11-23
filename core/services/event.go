@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"errors"
 	"log/slog"
 	"net/http"
 	"net/url"
@@ -133,12 +132,17 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		// to determine the country of the user's location without compromising
 		// their privacy using IP addresses.
 		countryCode, err := h.timezoneMap.GetCode(req.D.Value)
+		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get country code from timezone", attributes...)
+			return ErrInternalServerError(model.ErrInvalidTimezone), nil
+		}
 
 		// Get request from context
 		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
 		if !ok {
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get request from context", attributes...)
-			return ErrInternalServerError(errors.New("failed to get request from context")), nil
+			return ErrInternalServerError(model.ErrRequestContext), nil
 		}
 
 		// Get users language from Accept-Language header
@@ -166,8 +170,14 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		if screenHeight > 65535 || screenWidth > 65535 {
 			attributes = append(attributes, slog.Int("screen_height", req.H.Value), slog.Int("screen_width", req.W.Value))
 			slog.LogAttrs(ctx, slog.LevelDebug, "screen height or width is too large", attributes...)
-			return ErrBadRequest(errors.New("screen height or width is too large")), nil
+			return ErrBadRequest(model.ErrInvalidScreenSize), nil
 		}
+
+		// Get utm source, medium, and campaigm from URL query parameters.
+		queries := u.Query()
+		utmSource := queries.Get("utm_source")
+		utmMedium := queries.Get("utm_medium")
+		utmCampaign := queries.Get("utm_campaign")
 
 		// Get date created
 		dateCreated := time.Now().Unix()
@@ -188,9 +198,14 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			OS:             uaOS,
 			DeviceType:     uaDeviceType,
 
-			ScreenWidth:  uint16(req.W.Value),
-			ScreenHeight: uint16(req.H.Value),
-			DateCreated:  dateCreated,
+			ScreenWidth:  screenWidth,
+			ScreenHeight: screenHeight,
+
+			UTMSource:   utmSource,
+			UTMMedium:   utmMedium,
+			UTMCampaign: utmCampaign,
+
+			DateCreated: dateCreated,
 		}
 
 		// If the user agent was unable to be parsed, store the raw user agent
@@ -252,7 +267,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 	default:
 		attributes = append(attributes, slog.String("event_type", req.E))
 		slog.LogAttrs(ctx, slog.LevelError, "invalid event type", attributes...)
-		return ErrBadRequest(err), nil
+		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 	}
 
 	return &api.PostEventHitOK{}, nil

@@ -15,6 +15,16 @@ var (
 	// ErrSessionNotFound is returned when a session is not found.
 	ErrSessionNotFound = errors.New("session not found")
 
+	// Events
+	// ErrInvalidScreenSize is returned when a screen size is invalid.
+	ErrInvalidScreenSize = errors.New("screen height or width is too large")
+	// ErrInvalidTimezone is returned when a given timezone is invalid.
+	ErrInvalidTimezone = errors.New("invalid country code")
+	// ErrInvalidTrackerEvent is returned when a given tracker event is invalid.
+	ErrInvalidTrackerEvent = errors.New("invalid tracker event")
+	// ErrRequestContext is returned when a request context is not found.
+	ErrRequestContext = errors.New("failed to get request from context")
+
 	// Users
 	// ErrUserExists is returned when a user already exists.
 	ErrUserExists = errors.New("user already exists")

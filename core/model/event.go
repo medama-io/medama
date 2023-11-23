@@ -217,6 +217,13 @@ type PageView struct {
 	// ScreenHeight - The height of the user's screen.
 	ScreenHeight uint16 `json:"screen_height" db:"screen_height"`
 
+	// UTMSource - The UTM source of the page view.
+	UTMSource string `db:"utm_source"`
+	// UTMMedium - The UTM medium of the page view.
+	UTMMedium string `db:"utm_medium"`
+	// UTMCampaign - The UTM campaign of the page view.
+	UTMCampaign string `db:"utm_campaign"`
+
 	// DateCreated - Creation timestamp in UNIX.
 	DateCreated int64 `json:"date_created" db:"date_created"`
 }

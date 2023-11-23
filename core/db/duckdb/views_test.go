@@ -23,6 +23,9 @@ func TestAddPageView(t *testing.T) {
 		DeviceType:     1,
 		ScreenWidth:    1920,
 		ScreenHeight:   1080,
+		UTMSource:      "test_source",
+		UTMMedium:      "test_medium",
+		UTMCampaign:    "test_campaign",
 		DateCreated:    1,
 	}
 
@@ -47,6 +50,9 @@ func TestUpdatePageView(t *testing.T) {
 		DeviceType:     1,
 		ScreenWidth:    1920,
 		ScreenHeight:   1080,
+		UTMSource:      "test_source",
+		UTMMedium:      "test_medium",
+		UTMCampaign:    "test_campaign",
 		DateCreated:    1,
 	}
 

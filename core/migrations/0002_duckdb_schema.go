@@ -29,6 +29,9 @@ func Up0002(c *duckdb.Client) error {
 		ua_device_type UTINYINT,
 		screen_width USMALLINT,
 		screen_height USMALLINT,
+		utm_source TEXT,
+		utm_medium TEXT,
+		utm_campaign TEXT,
 		duration_ms UINTEGER,
 		date_created UINTEGER NOT NULL
 	)`)
