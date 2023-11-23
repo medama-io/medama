@@ -120,50 +120,55 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
-	// If is unique is not set, default to true
-	isUnique, exists := req.P.Get()
-	if !exists {
-		isUnique = true
-	}
-
-	// Get request from context
-	reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
-	if !ok {
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get request from context", attributes...)
-		return ErrInternalServerError(errors.New("failed to get request from context")), nil
-	}
-
-	// Get users language from Accept-Language header
-	acceptLanguage := reqBody.Header.Get("Accept-Language")
-
-	// Parse user agent
-	rawUserAgent := reqBody.Header.Get("User-Agent")
-	ua := h.useragent.Parse(rawUserAgent)
-
-	uaBrowser := model.NewBrowserName(ua.Browser)
-	uaVersion := ua.GetMajorVersion()
-	uaOS := model.NewOSName(ua.OS)
-	uaDeviceType := model.NewDeviceType(ua.Desktop, ua.Mobile, ua.Tablet, ua.TV)
-	isUnknownUA := false
-	// If there are unfilled fields, we want to mark this as an unknown user agent
-	// and store the raw user agent string.
-	if uaBrowser == 0 || uaOS == 0 || uaDeviceType == 0 || uaVersion == "" {
-		isUnknownUA = true
-	}
-
-	// Verify screen height and width for overflow as we store them as uint16
-	// in the database.
-	screenHeight := uint16(req.H.Value)
-	screenWidth := uint16(req.W.Value)
-	if screenHeight > 65535 || screenWidth > 65535 {
-		attributes = append(attributes, slog.Int("screen_height", req.H.Value), slog.Int("screen_width", req.W.Value))
-		slog.LogAttrs(ctx, slog.LevelDebug, "screen height or width is too large", attributes...)
-		return ErrBadRequest(errors.New("screen height or width is too large")), nil
-	}
-
 	// Add to database
 	switch req.E {
 	case "load":
+		// If is unique is not set, default to true
+		isUnique, exists := req.P.Get()
+		if !exists {
+			isUnique = true
+		}
+
+		// Get country code from user's timezone. This is used as a best effort
+		// to determine the country of the user's location without compromising
+		// their privacy using IP addresses.
+		countryCode, err := h.timezoneMap.GetCode(req.D.Value)
+
+		// Get request from context
+		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
+		if !ok {
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get request from context", attributes...)
+			return ErrInternalServerError(errors.New("failed to get request from context")), nil
+		}
+
+		// Get users language from Accept-Language header
+		acceptLanguage := reqBody.Header.Get("Accept-Language")
+
+		// Parse user agent
+		rawUserAgent := reqBody.Header.Get("User-Agent")
+		ua := h.useragent.Parse(rawUserAgent)
+
+		uaBrowser := model.NewBrowserName(ua.Browser)
+		uaVersion := ua.GetMajorVersion()
+		uaOS := model.NewOSName(ua.OS)
+		uaDeviceType := model.NewDeviceType(ua.Desktop, ua.Mobile, ua.Tablet, ua.TV)
+		isUnknownUA := false
+		// If there are unfilled fields, we want to mark this as an unknown user agent
+		// and store the raw user agent string.
+		if uaBrowser == 0 || uaOS == 0 || uaDeviceType == 0 || uaVersion == "" {
+			isUnknownUA = true
+		}
+
+		// Verify screen height and width for overflow as we store them as uint16
+		// in the database.
+		screenHeight := uint16(req.H.Value)
+		screenWidth := uint16(req.W.Value)
+		if screenHeight > 65535 || screenWidth > 65535 {
+			attributes = append(attributes, slog.Int("screen_height", req.H.Value), slog.Int("screen_width", req.W.Value))
+			slog.LogAttrs(ctx, slog.LevelDebug, "screen height or width is too large", attributes...)
+			return ErrBadRequest(errors.New("screen height or width is too large")), nil
+		}
+
 		// Get date created
 		dateCreated := time.Now().Unix()
 
@@ -176,7 +181,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			IsUnique:       isUnique,
 			Referrer:       req.R.Value,
 			Title:          req.T.Value,
-			Timezone:       req.D.Value,
+			CountryCode:    countryCode,
 			Language:       acceptLanguage,
 			BrowserName:    uaBrowser,
 			BrowserVersion: uaVersion,
@@ -202,7 +207,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			slog.Bool("is_unique", event.IsUnique),
 			slog.String("referrer", event.Referrer),
 			slog.String("title", event.Title),
-			slog.String("timezone", event.Timezone),
+			slog.String("country_code", countryCode),
 			slog.String("language", event.Language),
 			slog.String("browser_name", event.BrowserName.String()),
 			slog.String("browser_version", event.BrowserVersion),

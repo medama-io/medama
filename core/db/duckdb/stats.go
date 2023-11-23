@@ -22,7 +22,7 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, hostname string) (*model
 	// the median function can return a float for an even number of rows.
 	exec := `--sql
 		SELECT
-			COUNT(DISTINCT is_unique) AS uniques,
+			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			COUNT(*) AS pageviews,
 			COUNT(CASE WHEN is_unique = true AND duration_ms < 5000 THEN 1 END) AS bounces,
 			CAST(median(duration_ms) AS INTEGER) AS duration

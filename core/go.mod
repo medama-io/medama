@@ -11,6 +11,7 @@ require (
 	github.com/marcboeker/go-duckdb v1.5.2
 	github.com/mattn/go-colorable v0.1.13
 	github.com/mattn/go-sqlite3 v1.14.18
+	github.com/medama-io/go-timezone-country v0.0.0-20231123071734-4d155b30031c
 	github.com/medama-io/go-useragent v0.0.0-20231118151641-642da8a8a685
 	github.com/ogen-go/ogen v0.78.0
 	github.com/stretchr/testify v1.8.4

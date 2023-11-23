@@ -195,10 +195,8 @@ type PageView struct {
 	Referrer string `db:"referrer"`
 	// Title - The page title of the page view.
 	Title string `db:"title"`
-	// Timezone - The timezone associated with the user's browser, allowing us
-	// to determine the country of the user's location without compromising
-	// their privacy with usage of IP addresses.
-	Timezone string `db:"timezone"`
+	// CountryCode - The country code associated with the user's timezone.
+	CountryCode string `db:"country_code"`
 	// Language - The language associated with the user's browser.
 	Language string `db:"language"`
 
