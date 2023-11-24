@@ -33,7 +33,7 @@ func Up0002(c *duckdb.Client) error {
 		utm_medium TEXT,
 		utm_campaign TEXT,
 		duration_ms UINTEGER,
-		date_created UINTEGER NOT NULL
+		date_updated TIMESTAMPTZ NOT NULL
 	)`)
 
 	if err != nil {

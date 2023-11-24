@@ -53,8 +53,8 @@ func (*BadRequestError) deleteUserRes()          {}
 func (*BadRequestError) deleteWebsitesIDRes()    {}
 func (*BadRequestError) getEventPingRes()        {}
 func (*BadRequestError) getUserRes()             {}
+func (*BadRequestError) getWebsiteIDPagesRes()   {}
 func (*BadRequestError) getWebsiteIDSummaryRes() {}
-func (*BadRequestError) getWebsitesIDActiveRes() {}
 func (*BadRequestError) getWebsitesIDRes()       {}
 func (*BadRequestError) getWebsitesRes()         {}
 func (*BadRequestError) patchUserRes()           {}
@@ -410,8 +410,8 @@ func (*InternalServerError) deleteUserRes()          {}
 func (*InternalServerError) deleteWebsitesIDRes()    {}
 func (*InternalServerError) getEventPingRes()        {}
 func (*InternalServerError) getUserRes()             {}
+func (*InternalServerError) getWebsiteIDPagesRes()   {}
 func (*InternalServerError) getWebsiteIDSummaryRes() {}
-func (*InternalServerError) getWebsitesIDActiveRes() {}
 func (*InternalServerError) getWebsitesIDRes()       {}
 func (*InternalServerError) getWebsitesRes()         {}
 func (*InternalServerError) patchUserRes()           {}
@@ -463,8 +463,8 @@ func (s *NotFoundError) SetError(val NotFoundErrorError) {
 func (*NotFoundError) deleteUserRes()          {}
 func (*NotFoundError) deleteWebsitesIDRes()    {}
 func (*NotFoundError) getUserRes()             {}
+func (*NotFoundError) getWebsiteIDPagesRes()   {}
 func (*NotFoundError) getWebsiteIDSummaryRes() {}
-func (*NotFoundError) getWebsitesIDActiveRes() {}
 func (*NotFoundError) getWebsitesIDRes()       {}
 func (*NotFoundError) getWebsitesRes()         {}
 func (*NotFoundError) patchUserRes()           {}
@@ -583,6 +583,52 @@ func (o OptInt) Get() (v int, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptInt) Or(d int) int {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptInt32 returns new OptInt32 with value set to v.
+func NewOptInt32(v int32) OptInt32 {
+	return OptInt32{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptInt32 is optional int32.
+type OptInt32 struct {
+	Value int32
+	Set   bool
+}
+
+// IsSet returns true if OptInt32 was set.
+func (o OptInt32) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptInt32) Reset() {
+	var v int32
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptInt32) SetTo(v int32) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptInt32) Get() (v int32, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptInt32) Or(d int32) int32 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -749,30 +795,104 @@ type PostEventHitOK struct{}
 
 func (*PostEventHitOK) postEventHitRes() {}
 
-// Return the number of active realtime users.
-// Ref: #/components/schemas/StatsActive
-type StatsActive struct {
-	Visitors int `json:"visitors"`
+type StatsPages []StatsPagesItem
+
+func (*StatsPages) getWebsiteIDPagesRes() {}
+
+type StatsPagesItem struct {
+	// Pathname of the page.
+	Path OptString `json:"path"`
+	// Title of the page.
+	Title OptString `json:"title"`
+	// Number of unique users.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+	// Number of page views.
+	Pageviews OptInt `json:"pageviews"`
+	// Number of bounces.
+	Bounces OptInt `json:"bounces"`
+	// Total time spent on page in milliseconds.
+	Duration OptInt `json:"duration"`
 }
 
-// GetVisitors returns the value of Visitors.
-func (s *StatsActive) GetVisitors() int {
-	return s.Visitors
+// GetPath returns the value of Path.
+func (s *StatsPagesItem) GetPath() OptString {
+	return s.Path
 }
 
-// SetVisitors sets the value of Visitors.
-func (s *StatsActive) SetVisitors(val int) {
-	s.Visitors = val
+// GetTitle returns the value of Title.
+func (s *StatsPagesItem) GetTitle() OptString {
+	return s.Title
 }
 
-func (*StatsActive) getWebsitesIDActiveRes() {}
+// GetUniques returns the value of Uniques.
+func (s *StatsPagesItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsPagesItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// GetPageviews returns the value of Pageviews.
+func (s *StatsPagesItem) GetPageviews() OptInt {
+	return s.Pageviews
+}
+
+// GetBounces returns the value of Bounces.
+func (s *StatsPagesItem) GetBounces() OptInt {
+	return s.Bounces
+}
+
+// GetDuration returns the value of Duration.
+func (s *StatsPagesItem) GetDuration() OptInt {
+	return s.Duration
+}
+
+// SetPath sets the value of Path.
+func (s *StatsPagesItem) SetPath(val OptString) {
+	s.Path = val
+}
+
+// SetTitle sets the value of Title.
+func (s *StatsPagesItem) SetTitle(val OptString) {
+	s.Title = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsPagesItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsPagesItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+// SetPageviews sets the value of Pageviews.
+func (s *StatsPagesItem) SetPageviews(val OptInt) {
+	s.Pageviews = val
+}
+
+// SetBounces sets the value of Bounces.
+func (s *StatsPagesItem) SetBounces(val OptInt) {
+	s.Bounces = val
+}
+
+// SetDuration sets the value of Duration.
+func (s *StatsPagesItem) SetDuration(val OptInt) {
+	s.Duration = val
+}
 
 // Ref: #/components/schemas/StatsSummary
 type StatsSummary struct {
-	Uniques   int `json:"uniques"`
-	Pageviews int `json:"pageviews"`
-	Bounces   int `json:"bounces"`
-	Duration  int `json:"duration"`
+	Uniques   int    `json:"uniques"`
+	Pageviews int    `json:"pageviews"`
+	Bounces   int    `json:"bounces"`
+	Duration  int    `json:"duration"`
+	Active    OptInt `json:"active"`
 }
 
 // GetUniques returns the value of Uniques.
@@ -795,6 +915,11 @@ func (s *StatsSummary) GetDuration() int {
 	return s.Duration
 }
 
+// GetActive returns the value of Active.
+func (s *StatsSummary) GetActive() OptInt {
+	return s.Active
+}
+
 // SetUniques sets the value of Uniques.
 func (s *StatsSummary) SetUniques(val int) {
 	s.Uniques = val
@@ -813,6 +938,11 @@ func (s *StatsSummary) SetBounces(val int) {
 // SetDuration sets the value of Duration.
 func (s *StatsSummary) SetDuration(val int) {
 	s.Duration = val
+}
+
+// SetActive sets the value of Active.
+func (s *StatsSummary) SetActive(val OptInt) {
+	s.Active = val
 }
 
 func (*StatsSummary) getWebsiteIDSummaryRes() {}
@@ -834,8 +964,8 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 func (*UnauthorisedError) deleteUserRes()          {}
 func (*UnauthorisedError) deleteWebsitesIDRes()    {}
 func (*UnauthorisedError) getUserRes()             {}
+func (*UnauthorisedError) getWebsiteIDPagesRes()   {}
 func (*UnauthorisedError) getWebsiteIDSummaryRes() {}
-func (*UnauthorisedError) getWebsitesIDActiveRes() {}
 func (*UnauthorisedError) getWebsitesIDRes()       {}
 func (*UnauthorisedError) getWebsitesRes()         {}
 func (*UnauthorisedError) patchUserRes()           {}

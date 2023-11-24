@@ -77,19 +77,19 @@ export interface paths {
      */
     patch: operations["patch-websites-id"];
   };
-  "/websites/{hostname}/active": {
-    /**
-     * Get Active Users.
-     * @description Return the number of active users who triggered a pageview in the past 5 minutes.
-     */
-    get: operations["get-websites-id-active"];
-  };
   "/website/{hostname}/summary": {
     /**
      * Get Stat Summary.
      * @description Get a summary of the website's stats.
      */
     get: operations["get-website-id-summary"];
+  };
+  "/website/{hostname}/pages": {
+    /**
+     * Get Page Stats.
+     * @description Get a list of pages and their stats.
+     */
+    get: operations["get-website-id-pages"];
   };
 }
 
@@ -207,20 +207,50 @@ export interface components {
       /** Format: hostname */
       hostname?: string;
     };
-    /**
-     * StatsActive
-     * @description Return the number of active realtime users.
-     */
-    StatsActive: {
-      visitors: number;
-    };
     /** StatsSummary */
     StatsSummary: {
       uniques: number;
       pageviews: number;
       bounces: number;
       duration: number;
+      active?: number;
     };
+    /** StatsPages */
+    StatsPages: {
+        /** @description Pathname of the page. */
+        path?: string;
+        /** @description Title of the page. */
+        title?: string;
+        /** @description Number of unique users. */
+        uniques: number;
+        /**
+         * Format: float
+         * @description Percentage of unique users.
+         */
+        uniquepercentage: number;
+        /** @description Number of page views. */
+        pageviews?: number;
+        /** @description Number of bounces. */
+        bounces?: number;
+        /** @description Total time spent on page in milliseconds. */
+        duration?: number;
+      }[];
+    /** StatsReferrers */
+    StatsReferrers: {
+        /** @description Referrer URL. */
+        referrer: string;
+        /** @description Number of unique users from referrer. */
+        uniques: number;
+        /**
+         * Format: float
+         * @description Percentage of unique users from referrer.
+         */
+        uniquepercentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
+      }[];
   };
   responses: {
     /** @description 400 Bad Request. */
@@ -319,10 +349,14 @@ export interface components {
     SessionAuth: string;
     /** @description Hostname for the website. */
     Hostname: string;
+    /** @description Return a summary of the stats. */
+    Summary?: boolean;
     /** @description Start time (seconds) in Unix epoch format. */
     PeriodStart?: string;
     /** @description End time (seconds) in Unix epoch format. */
     PeriodEnd?: string;
+    /** @description Limit the number of results. */
+    Limit?: number;
   };
   requestBodies: never;
   headers: never;
@@ -398,7 +432,7 @@ export interface operations {
     parameters: {
       header?: {
         /** @description If this exists, then user exists in cache and is not a unique user. */
-        "Last-Modified"?: string;
+        "If-Modified-Since"?: string;
       };
     };
     responses: {
@@ -407,9 +441,16 @@ export interface operations {
         headers: {
           /** @description This is date of the current day from midnight, incremented by each page view by unique user. */
           "Last-Modified": string;
+          /** @description This is set to 1 day to prevent the user from being counted as a unique user again. */
+          "Cache-Control": string;
+          /** @description This is set to allow all origins to access this endpoint. */
+          "Access-Control-Allow-Origin": string;
         };
-        content: never;
+        content: {
+          "text/plain": string;
+        };
       };
+      400: components["responses"]["BadRequestError"];
       500: components["responses"]["InternalServerError"];
     };
   };
@@ -646,32 +687,6 @@ export interface operations {
     };
   };
   /**
-   * Get Active Users.
-   * @description Return the number of active users who triggered a pageview in the past 5 minutes.
-   */
-  "get-websites-id-active": {
-    parameters: {
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsActive"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
    * Get Stat Summary.
    * @description Get a summary of the website's stats.
    */
@@ -693,6 +708,38 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["StatsSummary"];
+        };
+      };
+      400: components["responses"]["BadRequestError"];
+      401: components["responses"]["UnauthorisedError"];
+      404: components["responses"]["NotFoundError"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  /**
+   * Get Page Stats.
+   * @description Get a list of pages and their stats.
+   */
+  "get-website-id-pages": {
+    parameters: {
+      query?: {
+        summary?: components["parameters"]["Summary"];
+        start?: components["parameters"]["PeriodStart"];
+        end?: components["parameters"]["PeriodEnd"];
+        limit?: components["parameters"]["Limit"];
+      };
+      path: {
+        hostname: components["parameters"]["Hostname"];
+      };
+      cookie: {
+        _me_sess: components["parameters"]["SessionAuth"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["StatsPages"];
         };
       };
       400: components["responses"]["BadRequestError"];

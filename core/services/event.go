@@ -179,9 +179,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		utmMedium := queries.Get("utm_medium")
 		utmCampaign := queries.Get("utm_campaign")
 
-		// Get date created
-		dateCreated := time.Now().Unix()
-
 		event := &model.PageView{
 			// Required
 			BID:      req.B,
@@ -204,8 +201,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			UTMSource:   utmSource,
 			UTMMedium:   utmMedium,
 			UTMCampaign: utmCampaign,
-
-			DateCreated: dateCreated,
 		}
 
 		// If the user agent was unable to be parsed, store the raw user agent
@@ -231,7 +226,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			slog.String("raw_user_agent", event.RawUserAgent),
 			slog.Int("screen_width", int(event.ScreenWidth)),
 			slog.Int("screen_height", int(event.ScreenHeight)),
-			slog.Int64("date_created", event.DateCreated),
 		)
 
 		err = h.analyticsDB.AddPageView(ctx, event)

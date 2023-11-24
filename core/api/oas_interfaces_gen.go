@@ -17,12 +17,12 @@ type GetUserRes interface {
 	getUserRes()
 }
 
-type GetWebsiteIDSummaryRes interface {
-	getWebsiteIDSummaryRes()
+type GetWebsiteIDPagesRes interface {
+	getWebsiteIDPagesRes()
 }
 
-type GetWebsitesIDActiveRes interface {
-	getWebsitesIDActiveRes()
+type GetWebsiteIDSummaryRes interface {
+	getWebsiteIDSummaryRes()
 }
 
 type GetWebsitesIDRes interface {

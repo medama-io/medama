@@ -181,25 +181,57 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						break
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/summary"
-						if l := len("/summary"); len(elem) >= l && elem[0:l] == "/summary" {
+					case '/': // Prefix: "/"
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							// Leaf node.
-							switch r.Method {
-							case "GET":
-								s.handleGetWebsiteIDSummaryRequest([1]string{
-									args[0],
-								}, elemIsEscaped, w, r)
-							default:
-								s.notAllowed(w, r, "GET")
+							break
+						}
+						switch elem[0] {
+						case 'p': // Prefix: "pages"
+							if l := len("pages"); len(elem) >= l && elem[0:l] == "pages" {
+								elem = elem[l:]
+							} else {
+								break
 							}
 
-							return
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDPagesRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+						case 's': // Prefix: "summary"
+							if l := len("summary"); len(elem) >= l && elem[0:l] == "summary" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDSummaryRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
 						}
 					}
 				case 's': // Prefix: "s"
@@ -230,15 +262,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						}
 
 						// Param: "hostname"
-						// Match until "/"
-						idx := strings.IndexByte(elem, '/')
-						if idx < 0 {
-							idx = len(elem)
-						}
-						args[0] = elem[:idx]
-						elem = elem[idx:]
+						// Leaf parameter
+						args[0] = elem
+						elem = ""
 
 						if len(elem) == 0 {
+							// Leaf node.
 							switch r.Method {
 							case "DELETE":
 								s.handleDeleteWebsitesIDRequest([1]string{
@@ -257,28 +286,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							}
 
 							return
-						}
-						switch elem[0] {
-						case '/': // Prefix: "/active"
-							if l := len("/active"); len(elem) >= l && elem[0:l] == "/active" {
-								elem = elem[l:]
-							} else {
-								break
-							}
-
-							if len(elem) == 0 {
-								// Leaf node.
-								switch r.Method {
-								case "GET":
-									s.handleGetWebsitesIDActiveRequest([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
-								default:
-									s.notAllowed(w, r, "GET")
-								}
-
-								return
-							}
 						}
 					}
 				}
@@ -532,26 +539,60 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						break
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/summary"
-						if l := len("/summary"); len(elem) >= l && elem[0:l] == "/summary" {
+					case '/': // Prefix: "/"
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							switch method {
-							case "GET":
-								// Leaf: GetWebsiteIDSummary
-								r.name = "GetWebsiteIDSummary"
-								r.summary = "Get Stat Summary."
-								r.operationID = "get-website-id-summary"
-								r.pathPattern = "/website/{hostname}/summary"
-								r.args = args
-								r.count = 1
-								return r, true
-							default:
-								return
+							break
+						}
+						switch elem[0] {
+						case 'p': // Prefix: "pages"
+							if l := len("pages"); len(elem) >= l && elem[0:l] == "pages" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDPages
+									r.name = "GetWebsiteIDPages"
+									r.summary = "Get Page Stats."
+									r.operationID = "get-website-id-pages"
+									r.pathPattern = "/website/{hostname}/pages"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+						case 's': // Prefix: "summary"
+							if l := len("summary"); len(elem) >= l && elem[0:l] == "summary" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDSummary
+									r.name = "GetWebsiteIDSummary"
+									r.summary = "Get Stat Summary."
+									r.operationID = "get-website-id-summary"
+									r.pathPattern = "/website/{hostname}/summary"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
 							}
 						}
 					}
@@ -593,17 +634,14 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						}
 
 						// Param: "hostname"
-						// Match until "/"
-						idx := strings.IndexByte(elem, '/')
-						if idx < 0 {
-							idx = len(elem)
-						}
-						args[0] = elem[:idx]
-						elem = elem[idx:]
+						// Leaf parameter
+						args[0] = elem
+						elem = ""
 
 						if len(elem) == 0 {
 							switch method {
 							case "DELETE":
+								// Leaf: DeleteWebsitesID
 								r.name = "DeleteWebsitesID"
 								r.summary = "Delete Website."
 								r.operationID = "delete-websites-id"
@@ -612,6 +650,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.count = 1
 								return r, true
 							case "GET":
+								// Leaf: GetWebsitesID
 								r.name = "GetWebsitesID"
 								r.summary = "Get Website."
 								r.operationID = "get-websites-id"
@@ -620,6 +659,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.count = 1
 								return r, true
 							case "PATCH":
+								// Leaf: PatchWebsitesID
 								r.name = "PatchWebsitesID"
 								r.summary = "Update Website."
 								r.operationID = "patch-websites-id"
@@ -629,30 +669,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								return r, true
 							default:
 								return
-							}
-						}
-						switch elem[0] {
-						case '/': // Prefix: "/active"
-							if l := len("/active"); len(elem) >= l && elem[0:l] == "/active" {
-								elem = elem[l:]
-							} else {
-								break
-							}
-
-							if len(elem) == 0 {
-								switch method {
-								case "GET":
-									// Leaf: GetWebsitesIDActive
-									r.name = "GetWebsitesIDActive"
-									r.summary = "Get Active Users."
-									r.operationID = "get-websites-id-active"
-									r.pathPattern = "/websites/{hostname}/active"
-									r.args = args
-									r.count = 1
-									return r, true
-								default:
-									return
-								}
 							}
 						}
 					}

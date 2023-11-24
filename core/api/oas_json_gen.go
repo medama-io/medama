@@ -1636,57 +1636,209 @@ func (s *OptUserPatchLanguage) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes StatsPages as json.
+func (s StatsPages) Encode(e *jx.Encoder) {
+	unwrapped := []StatsPagesItem(s)
+
+	e.ArrStart()
+	for _, elem := range unwrapped {
+		elem.Encode(e)
+	}
+	e.ArrEnd()
+}
+
+// Decode decodes StatsPages from json.
+func (s *StatsPages) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode StatsPages to nil")
+	}
+	var unwrapped []StatsPagesItem
+	if err := func() error {
+		unwrapped = make([]StatsPagesItem, 0)
+		if err := d.Arr(func(d *jx.Decoder) error {
+			var elem StatsPagesItem
+			if err := elem.Decode(d); err != nil {
+				return err
+			}
+			unwrapped = append(unwrapped, elem)
+			return nil
+		}); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return errors.Wrap(err, "alias")
+	}
+	*s = StatsPages(unwrapped)
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s StatsPages) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *StatsPages) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode implements json.Marshaler.
-func (s *StatsActive) Encode(e *jx.Encoder) {
+func (s *StatsPagesItem) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *StatsActive) encodeFields(e *jx.Encoder) {
+func (s *StatsPagesItem) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("visitors")
-		e.Int(s.Visitors)
+		if s.Path.Set {
+			e.FieldStart("path")
+			s.Path.Encode(e)
+		}
+	}
+	{
+		if s.Title.Set {
+			e.FieldStart("title")
+			s.Title.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("uniques")
+		e.Int(s.Uniques)
+	}
+	{
+		e.FieldStart("uniquepercentage")
+		e.Float32(s.Uniquepercentage)
+	}
+	{
+		if s.Pageviews.Set {
+			e.FieldStart("pageviews")
+			s.Pageviews.Encode(e)
+		}
+	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
 	}
 }
 
-var jsonFieldsNameOfStatsActive = [1]string{
-	0: "visitors",
+var jsonFieldsNameOfStatsPagesItem = [7]string{
+	0: "path",
+	1: "title",
+	2: "uniques",
+	3: "uniquepercentage",
+	4: "pageviews",
+	5: "bounces",
+	6: "duration",
 }
 
-// Decode decodes StatsActive from json.
-func (s *StatsActive) Decode(d *jx.Decoder) error {
+// Decode decodes StatsPagesItem from json.
+func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode StatsActive to nil")
+		return errors.New("invalid: unable to decode StatsPagesItem to nil")
 	}
 	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "visitors":
-			requiredBitSet[0] |= 1 << 0
+		case "path":
+			if err := func() error {
+				s.Path.Reset()
+				if err := s.Path.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"path\"")
+			}
+		case "title":
+			if err := func() error {
+				s.Title.Reset()
+				if err := s.Title.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"title\"")
+			}
+		case "uniques":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Int()
-				s.Visitors = int(v)
+				s.Uniques = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"visitors\"")
+				return errors.Wrap(err, "decode field \"uniques\"")
+			}
+		case "uniquepercentage":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				v, err := d.Float32()
+				s.Uniquepercentage = float32(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"uniquepercentage\"")
+			}
+		case "pageviews":
+			if err := func() error {
+				s.Pageviews.Reset()
+				if err := s.Pageviews.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pageviews\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode StatsActive")
+		return errors.Wrap(err, "decode StatsPagesItem")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000001,
+		0b00001100,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -1698,8 +1850,8 @@ func (s *StatsActive) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfStatsActive) {
-					name = jsonFieldsNameOfStatsActive[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfStatsPagesItem) {
+					name = jsonFieldsNameOfStatsPagesItem[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -1720,14 +1872,14 @@ func (s *StatsActive) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *StatsActive) MarshalJSON() ([]byte, error) {
+func (s *StatsPagesItem) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *StatsActive) UnmarshalJSON(data []byte) error {
+func (s *StatsPagesItem) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -1757,13 +1909,20 @@ func (s *StatsSummary) encodeFields(e *jx.Encoder) {
 		e.FieldStart("duration")
 		e.Int(s.Duration)
 	}
+	{
+		if s.Active.Set {
+			e.FieldStart("active")
+			s.Active.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsSummary = [4]string{
+var jsonFieldsNameOfStatsSummary = [5]string{
 	0: "uniques",
 	1: "pageviews",
 	2: "bounces",
 	3: "duration",
+	4: "active",
 }
 
 // Decode decodes StatsSummary from json.
@@ -1822,6 +1981,16 @@ func (s *StatsSummary) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"duration\"")
+			}
+		case "active":
+			if err := func() error {
+				s.Active.Reset()
+				if err := s.Active.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"active\"")
 			}
 		default:
 			return d.Skip()

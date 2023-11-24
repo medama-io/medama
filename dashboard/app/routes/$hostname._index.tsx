@@ -1,21 +1,26 @@
 import { type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
-import { statsSummary } from '@/api/stats';
+import { statsPages, statsSummary } from '@/api/stats';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-	const { data } = await statsSummary({
+	const { data: summary } = await statsSummary({
 		cookie: request.headers.get('Cookie'),
 		pathKey: params.hostname,
 	});
 
-	if (!data) {
+	const { data: pages } = await statsPages({
+		cookie: request.headers.get('Cookie'),
+		pathKey: params.hostname,
+	});
+
+	if (!summary) {
 		throw new Response('Failed to get stats.', {
 			status: 500,
 		});
 	}
 
-	return { status: 200, data };
+	return { status: 200, summary, pages };
 };
 
 export const meta: MetaFunction<typeof loader> = () => {
@@ -23,6 +28,13 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function Index() {
-	const { data } = useLoaderData<typeof loader>();
-	return <>{JSON.stringify(data)}</>;
+	const { summary, pages } = useLoaderData<typeof loader>();
+	return (
+		<div>
+			<h1>Summary</h1>
+			{JSON.stringify(summary)}
+			<h1>Pages</h1>
+			{JSON.stringify(pages)}
+		</div>
+	);
 }

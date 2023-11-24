@@ -467,6 +467,149 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 	}
 }
 
+// handleGetWebsiteIDPagesRequest handles get-website-id-pages operation.
+//
+// Get a list of pages and their stats.
+//
+// GET /website/{hostname}/pages
+func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var (
+		err          error
+		opErrContext = ogenerrors.OperationContext{
+			Name: "GetWebsiteIDPages",
+			ID:   "get-website-id-pages",
+		}
+	)
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDPages", r)
+			if err != nil {
+				err = &ogenerrors.SecurityError{
+					OperationContext: opErrContext,
+					Security:         "CookieAuth",
+					Err:              err,
+				}
+				recordError("Security:CookieAuth", err)
+				s.cfg.ErrorHandler(ctx, w, r, err)
+				return
+			}
+			if ok {
+				satisfied[0] |= 1 << 0
+				ctx = sctx
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			err = &ogenerrors.SecurityError{
+				OperationContext: opErrContext,
+				Err:              ogenerrors.ErrSecurityRequirementIsNotSatisfied,
+			}
+			recordError("Security", err)
+			s.cfg.ErrorHandler(ctx, w, r, err)
+			return
+		}
+	}
+	params, err := decodeGetWebsiteIDPagesParams(args, argsEscaped, r)
+	if err != nil {
+		err = &ogenerrors.DecodeParamsError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		recordError("DecodeParams", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	var response GetWebsiteIDPagesRes
+	if m := s.cfg.Middleware; m != nil {
+		mreq := middleware.Request{
+			Context:          ctx,
+			OperationName:    "GetWebsiteIDPages",
+			OperationSummary: "Get Page Stats.",
+			OperationID:      "get-website-id-pages",
+			Body:             nil,
+			Params: middleware.Parameters{
+				{
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+				{
+					Name: "hostname",
+					In:   "path",
+				}: params.Hostname,
+				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
+				{
+					Name: "start",
+					In:   "query",
+				}: params.Start,
+				{
+					Name: "end",
+					In:   "query",
+				}: params.End,
+				{
+					Name: "limit",
+					In:   "query",
+				}: params.Limit,
+			},
+			Raw: r,
+		}
+
+		type (
+			Request  = struct{}
+			Params   = GetWebsiteIDPagesParams
+			Response = GetWebsiteIDPagesRes
+		)
+		response, err = middleware.HookMiddleware[
+			Request,
+			Params,
+			Response,
+		](
+			m,
+			mreq,
+			unpackGetWebsiteIDPagesParams,
+			func(ctx context.Context, request Request, params Params) (response Response, err error) {
+				response, err = s.h.GetWebsiteIDPages(ctx, params)
+				return response, err
+			},
+		)
+	} else {
+		response, err = s.h.GetWebsiteIDPages(ctx, params)
+	}
+	if err != nil {
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	if err := encodeGetWebsiteIDPagesResponse(response, w); err != nil {
+		recordError("EncodeResponse", err)
+		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
+			s.cfg.ErrorHandler(ctx, w, r, err)
+		}
+		return
+	}
+}
+
 // handleGetWebsiteIDSummaryRequest handles get-website-id-summary operation.
 //
 // Get a summary of the website's stats.
@@ -551,6 +694,10 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					In:   "cookie",
 				}: params.MeSess,
 				{
+					Name: "hostname",
+					In:   "path",
+				}: params.Hostname,
+				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,
@@ -558,10 +705,6 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					Name: "end",
 					In:   "query",
 				}: params.End,
-				{
-					Name: "hostname",
-					In:   "path",
-				}: params.Hostname,
 			},
 			Raw: r,
 		}
@@ -844,133 +987,6 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 	}
 
 	if err := encodeGetWebsitesIDResponse(response, w); err != nil {
-		recordError("EncodeResponse", err)
-		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-		}
-		return
-	}
-}
-
-// handleGetWebsitesIDActiveRequest handles get-websites-id-active operation.
-//
-// Return the number of active users who triggered a pageview in the past 5 minutes.
-//
-// GET /websites/{hostname}/active
-func (s *Server) handleGetWebsitesIDActiveRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	var (
-		err          error
-		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsitesIDActive",
-			ID:   "get-websites-id-active",
-		}
-	)
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsitesIDActive", r)
-			if err != nil {
-				err = &ogenerrors.SecurityError{
-					OperationContext: opErrContext,
-					Security:         "CookieAuth",
-					Err:              err,
-				}
-				recordError("Security:CookieAuth", err)
-				s.cfg.ErrorHandler(ctx, w, r, err)
-				return
-			}
-			if ok {
-				satisfied[0] |= 1 << 0
-				ctx = sctx
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			err = &ogenerrors.SecurityError{
-				OperationContext: opErrContext,
-				Err:              ogenerrors.ErrSecurityRequirementIsNotSatisfied,
-			}
-			recordError("Security", err)
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-	}
-	params, err := decodeGetWebsitesIDActiveParams(args, argsEscaped, r)
-	if err != nil {
-		err = &ogenerrors.DecodeParamsError{
-			OperationContext: opErrContext,
-			Err:              err,
-		}
-		recordError("DecodeParams", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-
-	var response GetWebsitesIDActiveRes
-	if m := s.cfg.Middleware; m != nil {
-		mreq := middleware.Request{
-			Context:          ctx,
-			OperationName:    "GetWebsitesIDActive",
-			OperationSummary: "Get Active Users.",
-			OperationID:      "get-websites-id-active",
-			Body:             nil,
-			Params: middleware.Parameters{
-				{
-					Name: "_me_sess",
-					In:   "cookie",
-				}: params.MeSess,
-				{
-					Name: "hostname",
-					In:   "path",
-				}: params.Hostname,
-			},
-			Raw: r,
-		}
-
-		type (
-			Request  = struct{}
-			Params   = GetWebsitesIDActiveParams
-			Response = GetWebsitesIDActiveRes
-		)
-		response, err = middleware.HookMiddleware[
-			Request,
-			Params,
-			Response,
-		](
-			m,
-			mreq,
-			unpackGetWebsitesIDActiveParams,
-			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.GetWebsitesIDActive(ctx, params)
-				return response, err
-			},
-		)
-	} else {
-		response, err = s.h.GetWebsitesIDActive(ctx, params)
-	}
-	if err != nil {
-		recordError("Internal", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-
-	if err := encodeGetWebsitesIDActiveResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)

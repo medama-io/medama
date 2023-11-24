@@ -10,4 +10,14 @@ const statsSummary = async (
 	return { data: await res.json(), res };
 };
 
-export { statsSummary };
+const statsPages = async (
+	opts: ClientOptions<'StatsPages'>
+): Promise<DataResponse<'StatsPages'>> => {
+	const res = await client('/website/{hostname}/pages', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
+export { statsPages, statsSummary };

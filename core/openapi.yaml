@@ -473,36 +473,6 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-  "/websites/{hostname}/active":
-    get:
-      tags:
-        - stats
-      security:
-        - CookieAuth: []
-      summary: Get Active Users.
-      description: Return the number of active users who triggered a pageview in the past 5 minutes.
-      operationId: get-websites-id-active
-      parameters:
-        - $ref: "#/components/parameters/SessionAuth"
-        - $ref: "#/components/parameters/Hostname"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StatsActive"
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorisedError"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-      servers:
-        - url: "http://localhost:8080"
-          description: Local Server
   "/website/{hostname}/summary":
     get:
       tags:
@@ -514,9 +484,9 @@ paths:
       operationId: get-website-id-summary
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/Hostname"
       responses:
         "200":
           description: OK
@@ -524,6 +494,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsSummary"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080"
+          description: Local Server
+  "/website/{hostname}/pages":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Page Stats.
+      description: Get a list of pages and their stats.
+      operationId: get-website-id-pages
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsPages"
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -561,6 +565,14 @@ components:
         minLength: 1
         maxLength: 253 # FQDN limit
         format: hostname
+    Summary:
+      name: summary
+      in: query
+      description: Return a summary of the stats.
+      required: false
+      schema:
+        type: boolean
+        default: false
     PeriodStart:
       name: start
       in: query
@@ -575,6 +587,17 @@ components:
       required: false
       schema:
         type: string
+    Limit:
+      name: limit
+      in: query
+      description: Limit the number of results.
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 5
+        minimum: 1
+        maximum: 500
   responses:
     BadRequestError:
       description: 400 Bad Request.
@@ -881,15 +904,6 @@ components:
           minLength: 1
           maxLength: 253 # FQDN limit
           format: hostname
-    StatsActive:
-      type: object
-      title: StatsActive
-      description: Return the number of active realtime users.
-      properties:
-        visitors:
-          type: integer
-      required:
-        - visitors
     StatsSummary:
       type: object
       title: StatsSummary
@@ -902,8 +916,68 @@ components:
           type: integer
         duration:
           type: integer
+        active:
+          type: integer
       required:
         - uniques
         - pageviews
         - bounces
         - duration
+    StatsPages:
+      type: array
+      title: StatsPages
+      items:
+        type: object
+        properties:
+          path:
+            type: string
+            description: Pathname of the page.
+          title:
+            type: string
+            description: Title of the page.
+          uniques:
+            type: integer
+            description: Number of unique users.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users.
+            format: float
+          pageviews:
+            type: integer
+            description: Number of page views.
+          bounces:
+            type: integer
+            description: Number of bounces.
+          duration:
+            type: integer
+            description: Total time spent on page in milliseconds.
+        required:
+          - url
+          - uniques
+          - uniquepercentage
+    StatsReferrers:
+      type: array
+      title: StatsReferrers
+      items:
+        type: object
+        properties:
+          referrer:
+            type: string
+            description: Referrer URL.
+          uniques:
+            type: integer
+            description: Number of unique users from referrer.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from referrer.
+            format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
+        required:
+          - referrer
+          - uniques
+          - uniquepercentage

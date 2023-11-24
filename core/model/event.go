@@ -223,9 +223,6 @@ type PageView struct {
 	UTMMedium string `db:"utm_medium"`
 	// UTMCampaign - The UTM campaign of the page view.
 	UTMCampaign string `db:"utm_campaign"`
-
-	// DateCreated - Creation timestamp in UNIX.
-	DateCreated int64 `json:"date_created" db:"date_created"`
 }
 
 type PageViewUpdate struct {

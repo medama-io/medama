@@ -26,7 +26,6 @@ func TestAddPageView(t *testing.T) {
 		UTMSource:      "test_source",
 		UTMMedium:      "test_medium",
 		UTMCampaign:    "test_campaign",
-		DateCreated:    1,
 	}
 
 	err := client.AddPageView(ctx, event)
@@ -53,7 +52,6 @@ func TestUpdatePageView(t *testing.T) {
 		UTMSource:      "test_source",
 		UTMMedium:      "test_medium",
 		UTMCampaign:    "test_campaign",
-		DateCreated:    1,
 	}
 
 	err := client.AddPageView(ctx, event)

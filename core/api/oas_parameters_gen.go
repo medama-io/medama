@@ -316,25 +316,45 @@ func decodeGetUserParams(args [0]string, argsEscaped bool, r *http.Request) (par
 	return params, nil
 }
 
-// GetWebsiteIDSummaryParams is parameters of get-website-id-summary operation.
-type GetWebsiteIDSummaryParams struct {
+// GetWebsiteIDPagesParams is parameters of get-website-id-pages operation.
+type GetWebsiteIDPagesParams struct {
 	// Session token for authentication.
 	MeSess string
+	// Hostname for the website.
+	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Start time (seconds) in Unix epoch format.
 	Start OptString
 	// End time (seconds) in Unix epoch format.
 	End OptString
-	// Hostname for the website.
-	Hostname string
+	// Limit the number of results.
+	Limit OptInt32
 }
 
-func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWebsiteIDSummaryParams) {
+func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebsiteIDPagesParams) {
 	{
 		key := middleware.ParameterKey{
 			Name: "_me_sess",
 			In:   "cookie",
 		}
 		params.MeSess = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "hostname",
+			In:   "path",
+		}
+		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -356,15 +376,17 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "hostname",
-			In:   "path",
+			Name: "limit",
+			In:   "query",
 		}
-		params.Hostname = packed[key].(string)
+		if v, ok := packed[key]; ok {
+			params.Limit = v.(OptInt32)
+		}
 	}
 	return params
 }
 
-func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDSummaryParams, _ error) {
+func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDPagesParams, _ error) {
 	q := uri.NewQueryDecoder(r.URL.Query())
 	c := uri.NewCookieDecoder(r)
 	// Decode cookie: _me_sess.
@@ -398,6 +420,113 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 		return params, &ogenerrors.DecodeParamError{
 			Name: "_me_sess",
 			In:   "cookie",
+			Err:  err,
+		}
+	}
+	// Decode path: hostname.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "hostname",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.Hostname = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    1,
+					MinLengthSet: true,
+					MaxLength:    253,
+					MaxLengthSet: true,
+					Email:        false,
+					Hostname:     true,
+					Regex:        nil,
+				}).Validate(string(params.Hostname)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "hostname",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -483,6 +612,164 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
+	// Set default value for query: limit.
+	{
+		val := int32(5)
+		params.Limit.SetTo(val)
+	}
+	// Decode query: limit.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "limit",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotLimitVal int32
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToInt32(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotLimitVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Limit.SetTo(paramsDotLimitVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Limit.Get(); ok {
+					if err := func() error {
+						if err := (validate.Int{
+							MinSet:        true,
+							Min:           1,
+							MaxSet:        true,
+							Max:           500,
+							MinExclusive:  false,
+							MaxExclusive:  false,
+							MultipleOfSet: false,
+							MultipleOf:    0,
+						}).Validate(int64(value)); err != nil {
+							return errors.Wrap(err, "int")
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "limit",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// GetWebsiteIDSummaryParams is parameters of get-website-id-summary operation.
+type GetWebsiteIDSummaryParams struct {
+	// Session token for authentication.
+	MeSess string
+	// Hostname for the website.
+	Hostname string
+	// Start time (seconds) in Unix epoch format.
+	Start OptString
+	// End time (seconds) in Unix epoch format.
+	End OptString
+}
+
+func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWebsiteIDSummaryParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		params.MeSess = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "hostname",
+			In:   "path",
+		}
+		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "start",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Start = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "end",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.End = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDSummaryParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
 	// Decode path: hostname.
 	if err := func() error {
 		param := args[0]
@@ -541,6 +828,88 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode query: start.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "start",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotStartVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotStartVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Start.SetTo(paramsDotStartVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "start",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: end.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "end",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotEndVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotEndVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.End.SetTo(paramsDotEndVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "end",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -630,132 +999,6 @@ func unpackGetWebsitesIDParams(packed middleware.Parameters) (params GetWebsites
 }
 
 func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsitesIDParams, _ error) {
-	c := uri.NewCookieDecoder(r)
-	// Decode cookie: _me_sess.
-	if err := func() error {
-		cfg := uri.CookieParameterDecodingConfig{
-			Name:    "_me_sess",
-			Explode: true,
-		}
-		if err := c.HasParam(cfg); err == nil {
-			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.MeSess = c
-				return nil
-			}); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "_me_sess",
-			In:   "cookie",
-			Err:  err,
-		}
-	}
-	// Decode path: hostname.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "hostname",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.Hostname = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-			if err := func() error {
-				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
-				}).Validate(string(params.Hostname)); err != nil {
-					return errors.Wrap(err, "string")
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "hostname",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// GetWebsitesIDActiveParams is parameters of get-websites-id-active operation.
-type GetWebsitesIDActiveParams struct {
-	// Session token for authentication.
-	MeSess string
-	// Hostname for the website.
-	Hostname string
-}
-
-func unpackGetWebsitesIDActiveParams(packed middleware.Parameters) (params GetWebsitesIDActiveParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "_me_sess",
-			In:   "cookie",
-		}
-		params.MeSess = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "hostname",
-			In:   "path",
-		}
-		params.Hostname = packed[key].(string)
-	}
-	return params
-}
-
-func decodeGetWebsitesIDActiveParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsitesIDActiveParams, _ error) {
 	c := uri.NewCookieDecoder(r)
 	// Decode cookie: _me_sess.
 	if err := func() error {

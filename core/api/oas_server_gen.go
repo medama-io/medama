@@ -32,6 +32,12 @@ type Handler interface {
 	//
 	// GET /user
 	GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error)
+	// GetWebsiteIDPages implements get-website-id-pages operation.
+	//
+	// Get a list of pages and their stats.
+	//
+	// GET /website/{hostname}/pages
+	GetWebsiteIDPages(ctx context.Context, params GetWebsiteIDPagesParams) (GetWebsiteIDPagesRes, error)
 	// GetWebsiteIDSummary implements get-website-id-summary operation.
 	//
 	// Get a summary of the website's stats.
@@ -50,12 +56,6 @@ type Handler interface {
 	//
 	// GET /websites/{hostname}
 	GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error)
-	// GetWebsitesIDActive implements get-websites-id-active operation.
-	//
-	// Return the number of active users who triggered a pageview in the past 5 minutes.
-	//
-	// GET /websites/{hostname}/active
-	GetWebsitesIDActive(ctx context.Context, params GetWebsitesIDActiveParams) (GetWebsitesIDActiveRes, error)
 	// PatchUser implements patch-user operation.
 	//
 	// Update a user account's details.

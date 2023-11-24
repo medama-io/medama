@@ -20,12 +20,15 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, hostname string) (*model
 	//
 	// Duration is the median duration of all pageviews. It needs to be casted to an integer as
 	// the median function can return a float for an even number of rows.
+	//
+	// Active is the number of unique visitors that have visited the website in the last 5 minutes.
 	exec := `--sql
 		SELECT
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			COUNT(*) AS pageviews,
 			COUNT(CASE WHEN is_unique = true AND duration_ms < 5000 THEN 1 END) AS bounces,
-			CAST(median(duration_ms) AS INTEGER) AS duration
+			CAST(median(duration_ms) AS INTEGER) AS duration,
+			COUNT(CASE WHEN is_unique = true AND CAST(date_diff('minute', now(), date_updated) AS INTEGER) < 5 THEN 1 END) AS active
 		FROM views
 		WHERE hostname = ?`
 	err := c.GetContext(ctx, &summary, exec, hostname)

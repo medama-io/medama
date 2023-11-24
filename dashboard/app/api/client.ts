@@ -35,6 +35,7 @@ export interface ClientOptions<
 	Body extends ComponentSchema | undefined = ComponentSchema
 > {
 	body?: Body extends ComponentSchema ? components['schemas'][Body] : undefined;
+	query?: Record<string, string | number | boolean>;
 	cookie?: string | null;
 	method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
 	noRedirect?: boolean;
@@ -44,7 +45,7 @@ export interface ClientOptions<
 
 const client = async (
 	path: keyof paths,
-	{ cookie, body, method, noRedirect, pathKey }: ClientOptions
+	{ cookie, body, method, noRedirect, pathKey, query }: ClientOptions
 ): Promise<Response> => {
 	let newPath;
 	// Replace any path closed in curly braces with the pathKey
@@ -52,7 +53,15 @@ const client = async (
 		newPath = path.replace(/{.*}/, pathKey);
 	}
 
-	const res = await fetch(`${LOCALHOST}${newPath ?? path}`, {
+	// Add the query to the path
+	const url = new URL(`${LOCALHOST}${newPath ?? path}`);
+	if (query !== undefined) {
+		for (const [key, value] of Object.entries(query)) {
+			url.searchParams.append(key, String(value));
+		}
+	}
+
+	const res = await fetch(url, {
 		method: method ?? 'GET',
 		headers: {
 			...DEFAULT_HEADERS,

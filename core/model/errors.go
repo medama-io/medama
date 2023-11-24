@@ -4,6 +4,8 @@ import "errors"
 
 var (
 	// General
+	// ErrInvalidParameter is returned when a parameter is invalid.
+	ErrInvalidParameter = errors.New("invalid parameter")
 	// ErrUnauthorised is returned when a user is not authorised.
 	ErrUnauthorised = errors.New("unauthorised session")
 	// ErrInternalServerError is the default generic error.
