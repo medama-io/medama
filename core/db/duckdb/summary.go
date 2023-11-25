@@ -27,8 +27,8 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, hostname string) (*model
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			COUNT(*) AS pageviews,
 			COUNT(CASE WHEN is_unique = true AND duration_ms < 5000 THEN 1 END) AS bounces,
-			CAST(median(duration_ms) AS INTEGER) AS duration,
-			COUNT(CASE WHEN is_unique = true AND CAST(date_diff('minute', now(), date_updated) AS INTEGER) < 5 THEN 1 END) AS active
+			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
+			COUNT(CASE WHEN is_unique = true AND (date_diff('minute', now(), date_updated) < 5) THEN 1 END) AS active
 		FROM views
 		WHERE hostname = ?`
 	err := c.GetContext(ctx, &summary, exec, hostname)

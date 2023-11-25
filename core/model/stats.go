@@ -30,10 +30,12 @@ type StatsTimeSummary struct {
 
 type StatsTime struct {
 	StatsTimeSummary
-	Title     string `db:"title"`
-	Pageviews int    `db:"pageviews"`
-	Bounces   int    `db:"bounces"`
-	Uniques   int    `db:"uniques"`
+	DurationUpperQuartile int    `db:"duration_upper_quartile"`
+	DurationLowerQuartile int    `db:"duration_lower_quartile"`
+	Title                 string `db:"title"`
+	Pageviews             int    `db:"pageviews"`
+	Bounces               int    `db:"bounces"`
+	Uniques               int    `db:"uniques"`
 }
 
 type StatsReferrers struct {

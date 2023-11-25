@@ -1293,7 +1293,7 @@ components:
           uniques:
             type: integer
             description: Number of unique users.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users.
             format: float
@@ -1309,7 +1309,7 @@ components:
         required:
           - path
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsTime:
       type: array
       title: StatsTime
@@ -1324,10 +1324,16 @@ components:
             description: Title of the page.
           duration:
             type: integer
-            description: Total time spent on page in milliseconds.
-          durationpercentage:
+            description: Median time spent on page in milliseconds.
+          duration_upper_quartile:
+            type: integer
+            description: Total time spent on page in milliseconds for the upper quartile (75%).
+          duration_lower_quartile:
+            type: integer
+            description: Total time spent on page in milliseconds for the lower quartile (25%).
+          duration_percentage:
             type: number
-            description: Percentage of time spent on page.
+            description: Percentage of time contributing to the total time spent on the website.
             format: float
           uniques:
             type: integer
@@ -1338,7 +1344,7 @@ components:
         required:
           - path
           - duration
-          - durationpercentage
+          - duration_percentage
     StatsReferrers:
       type: array
       title: StatsReferrers

@@ -63,7 +63,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		// Get summary
 		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, params.Hostname)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages summary", attributes...)
 			return ErrInternalServerError(err), nil
 		}
@@ -74,7 +74,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			res = append(res, api.StatsPagesItem{
 				Path:             page.Pathname,
 				Uniques:          page.Uniques,
-				Uniquepercentage: page.UniquePercentage,
+				UniquePercentage: page.UniquePercentage,
 			})
 		}
 
@@ -83,7 +83,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		// Get pages
 		pages, err := h.analyticsDB.GetWebsitePages(ctx, params.Hostname)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages", attributes...)
 			return ErrInternalServerError(err), nil
 		}
@@ -94,7 +94,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			res = append(res, api.StatsPagesItem{
 				Path:             page.Pathname,
 				Uniques:          page.Uniques,
-				Uniquepercentage: page.UniquePercentage,
+				UniquePercentage: page.UniquePercentage,
 				Title:            api.NewOptString(page.Title),
 				Pageviews:        api.NewOptInt(page.Pageviews),
 				Bounces:          api.NewOptInt(page.Bounces),
@@ -109,7 +109,71 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 }
 
 func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	} else if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Check parameter if it is asking for summary
+	switch params.Summary.Value {
+	case true:
+		// Get summary
+		times, err := h.analyticsDB.GetWebsiteTimeSummary(ctx, params.Hostname)
+		if err != nil {
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time summary", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		// Create API response
+		var res api.StatsTime
+		for _, page := range times {
+			res = append(res, api.StatsTimeItem{
+				Path:               page.Pathname,
+				Duration:           page.Duration,
+				DurationPercentage: page.DurationPercentage,
+			})
+		}
+
+		return &res, nil
+	case false:
+		// Get time
+		times, err := h.analyticsDB.GetWebsiteTime(ctx, params.Hostname)
+		if err != nil {
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		// Create API response
+		var res api.StatsTime
+		for _, page := range times {
+			res = append(res, api.StatsTimeItem{
+				Path:                  page.Pathname,
+				Duration:              page.Duration,
+				DurationPercentage:    page.DurationPercentage,
+				DurationUpperQuartile: api.NewOptInt(page.DurationUpperQuartile),
+				DurationLowerQuartile: api.NewOptInt(page.DurationLowerQuartile),
+				Title:                 api.NewOptString(page.Title),
+				Bounces:               api.NewOptInt(page.Bounces),
+				Uniques:               api.NewOptInt(page.Uniques),
+			})
+		}
+
+		return &res, nil
+	default:
+		return ErrBadRequest(model.ErrInvalidParameter), nil
+	}
 }
 
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {

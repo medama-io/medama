@@ -22,8 +22,8 @@ type Handler interface {
 	// Summary
 	GetWebsiteSummary(ctx context.Context, hostname string) (*model.StatsSummary, error)
 	// Time
-	// GetWebsiteTime(ctx context.Context, hostname string) ([]*model.StatsTime, error)
-	// GetWebsiteTimeSummary(ctx context.Context, hostname string) ([]*model.StatsTimeSummary, error)
+	GetWebsiteTime(ctx context.Context, hostname string) ([]*model.StatsTime, error)
+	GetWebsiteTimeSummary(ctx context.Context, hostname string) ([]*model.StatsTimeSummary, error)
 	// Types
 	// GetWebsiteBrowsers(ctx context.Context, hostname string) ([]*model.StatsBrowsers, error)
 	// GetWebsiteBrowsersSummary(ctx context.Context, hostname string) ([]*model.StatsBrowsersSummary, error)

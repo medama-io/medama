@@ -1089,7 +1089,7 @@ type StatsPagesItem struct {
 	// Number of unique users.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 	// Number of page views.
 	Pageviews OptInt `json:"pageviews"`
 	// Number of bounces.
@@ -1113,9 +1113,9 @@ func (s *StatsPagesItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsPagesItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsPagesItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // GetPageviews returns the value of Pageviews.
@@ -1148,9 +1148,9 @@ func (s *StatsPagesItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsPagesItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsPagesItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 // SetPageviews sets the value of Pageviews.
@@ -1348,10 +1348,14 @@ type StatsTimeItem struct {
 	Path string `json:"path"`
 	// Title of the page.
 	Title OptString `json:"title"`
-	// Total time spent on page in milliseconds.
+	// Median time spent on page in milliseconds.
 	Duration int `json:"duration"`
-	// Percentage of time spent on page.
-	Durationpercentage float32 `json:"durationpercentage"`
+	// Total time spent on page in milliseconds for the upper quartile (75%).
+	DurationUpperQuartile OptInt `json:"duration_upper_quartile"`
+	// Total time spent on page in milliseconds for the lower quartile (25%).
+	DurationLowerQuartile OptInt `json:"duration_lower_quartile"`
+	// Percentage of time contributing to the total time spent on the website.
+	DurationPercentage float32 `json:"duration_percentage"`
 	// Number of unique users.
 	Uniques OptInt `json:"uniques"`
 	// Number of bounces.
@@ -1373,9 +1377,19 @@ func (s *StatsTimeItem) GetDuration() int {
 	return s.Duration
 }
 
-// GetDurationpercentage returns the value of Durationpercentage.
-func (s *StatsTimeItem) GetDurationpercentage() float32 {
-	return s.Durationpercentage
+// GetDurationUpperQuartile returns the value of DurationUpperQuartile.
+func (s *StatsTimeItem) GetDurationUpperQuartile() OptInt {
+	return s.DurationUpperQuartile
+}
+
+// GetDurationLowerQuartile returns the value of DurationLowerQuartile.
+func (s *StatsTimeItem) GetDurationLowerQuartile() OptInt {
+	return s.DurationLowerQuartile
+}
+
+// GetDurationPercentage returns the value of DurationPercentage.
+func (s *StatsTimeItem) GetDurationPercentage() float32 {
+	return s.DurationPercentage
 }
 
 // GetUniques returns the value of Uniques.
@@ -1403,9 +1417,19 @@ func (s *StatsTimeItem) SetDuration(val int) {
 	s.Duration = val
 }
 
-// SetDurationpercentage sets the value of Durationpercentage.
-func (s *StatsTimeItem) SetDurationpercentage(val float32) {
-	s.Durationpercentage = val
+// SetDurationUpperQuartile sets the value of DurationUpperQuartile.
+func (s *StatsTimeItem) SetDurationUpperQuartile(val OptInt) {
+	s.DurationUpperQuartile = val
+}
+
+// SetDurationLowerQuartile sets the value of DurationLowerQuartile.
+func (s *StatsTimeItem) SetDurationLowerQuartile(val OptInt) {
+	s.DurationLowerQuartile = val
+}
+
+// SetDurationPercentage sets the value of DurationPercentage.
+func (s *StatsTimeItem) SetDurationPercentage(val float32) {
+	s.DurationPercentage = val
 }
 
 // SetUniques sets the value of Uniques.

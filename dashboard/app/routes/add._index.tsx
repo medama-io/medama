@@ -46,7 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const { data, res } = await websiteCreate({
 		cookie: request.headers.get('Cookie'),
 		body: {
-			name: name ?? hostname,
+			name: name === '' ? hostname : name,
 			hostname,
 		},
 	});
@@ -57,7 +57,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	return redirect(`/websites/${data.hostname}`);
+	return redirect(`/${data.hostname}`);
 };
 
 export default function Index() {

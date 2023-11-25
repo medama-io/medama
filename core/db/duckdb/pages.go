@@ -16,7 +16,7 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, hostname string) ([
 	//
 	// Uniques is the number of unique visitors that match the pathname.
 	//
-	// UniquesPercentage is the percentage of unique visitors that match the pathname
+	// UniquePercentage is the percentage of unique visitors that match the pathname
 	// out of all unique visitors for the website.
 	//
 	// This is ordered by the number of unique visitors in descending order.
@@ -24,13 +24,13 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, hostname string) ([
 		SELECT
 			pathname,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			(uniques / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)) * 100 AS uniques_percentage
+			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage
 		FROM views
 		WHERE hostname = ?
 		GROUP BY pathname
-		ORDER BY uniques, pathname DESC`
+		ORDER BY uniques DESC`
 
-	err := c.SelectContext(ctx, &pages, query, hostname)
+	err := c.SelectContext(ctx, &pages, query, hostname, hostname)
 	if err != nil {
 		return nil, err
 	}
@@ -46,6 +46,8 @@ func (c *Client) GetWebsitePages(ctx context.Context, hostname string) ([]*model
 	//
 	// Pathname is the path of the page. If it is empty, it is the homepage and defaults to "/".
 	//
+	// Title is the title of the page.
+	//
 	// Uniques is the number of unique visitors that match the pathname.
 	//
 	// UniquesPercentage is the percentage of unique visitors that match the pathname
@@ -56,22 +58,22 @@ func (c *Client) GetWebsitePages(ctx context.Context, hostname string) ([]*model
 	// Bounces is the number of bounces that match the pathname. This is calculated if the duration
 	// of the pageview is less than 5000 milliseconds.
 	//
-	// Duration is the average duration of the pageview that match the pathname in milliseconds.
+	// Duration is the median duration of the pageview that match the pathname in milliseconds.
 	//
 	// This is ordered by the number of unique visitors in descending order.
 	query := `--sql
 		SELECT
 			pathname,
+			title,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			(uniques / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)) * 100 AS unique_percentage,
+			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage,
 			COUNT(*) AS pageviews,
 			COUNT(CASE WHEN duration_ms < 5000 THEN 1 END) AS bounces,
-			CAST(AVG(duration_ms) AS INTEGER) AS duration
+			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE hostname = ?
-		GROUP BY pathname
-		ORDER BY uniques, pageviews, pathname DESC`
-	// TODO: Switch to DECIMAL for uniques_percentage
+		GROUP BY pathname, title
+		ORDER BY uniques DESC`
 
 	err := c.SelectContext(ctx, &pages, query, hostname, hostname)
 	if err != nil {

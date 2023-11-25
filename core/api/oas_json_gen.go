@@ -2644,8 +2644,8 @@ func (s *StatsPagesItem) encodeFields(e *jx.Encoder) {
 		e.Int(s.Uniques)
 	}
 	{
-		e.FieldStart("uniquepercentage")
-		e.Float32(s.Uniquepercentage)
+		e.FieldStart("unique_percentage")
+		e.Float32(s.UniquePercentage)
 	}
 	{
 		if s.Pageviews.Set {
@@ -2671,7 +2671,7 @@ var jsonFieldsNameOfStatsPagesItem = [7]string{
 	0: "path",
 	1: "title",
 	2: "uniques",
-	3: "uniquepercentage",
+	3: "unique_percentage",
 	4: "pageviews",
 	5: "bounces",
 	6: "duration",
@@ -2720,17 +2720,17 @@ func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
-		case "uniquepercentage":
+		case "unique_percentage":
 			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
 				v, err := d.Float32()
-				s.Uniquepercentage = float32(v)
+				s.UniquePercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniquepercentage\"")
+				return errors.Wrap(err, "decode field \"unique_percentage\"")
 			}
 		case "pageviews":
 			if err := func() error {
@@ -3450,8 +3450,20 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 		e.Int(s.Duration)
 	}
 	{
-		e.FieldStart("durationpercentage")
-		e.Float32(s.Durationpercentage)
+		if s.DurationUpperQuartile.Set {
+			e.FieldStart("duration_upper_quartile")
+			s.DurationUpperQuartile.Encode(e)
+		}
+	}
+	{
+		if s.DurationLowerQuartile.Set {
+			e.FieldStart("duration_lower_quartile")
+			s.DurationLowerQuartile.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("duration_percentage")
+		e.Float32(s.DurationPercentage)
 	}
 	{
 		if s.Uniques.Set {
@@ -3467,13 +3479,15 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfStatsTimeItem = [6]string{
+var jsonFieldsNameOfStatsTimeItem = [8]string{
 	0: "path",
 	1: "title",
 	2: "duration",
-	3: "durationpercentage",
-	4: "uniques",
-	5: "bounces",
+	3: "duration_upper_quartile",
+	4: "duration_lower_quartile",
+	5: "duration_percentage",
+	6: "uniques",
+	7: "bounces",
 }
 
 // Decode decodes StatsTimeItem from json.
@@ -3519,17 +3533,37 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"duration\"")
 			}
-		case "durationpercentage":
-			requiredBitSet[0] |= 1 << 3
+		case "duration_upper_quartile":
+			if err := func() error {
+				s.DurationUpperQuartile.Reset()
+				if err := s.DurationUpperQuartile.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration_upper_quartile\"")
+			}
+		case "duration_lower_quartile":
+			if err := func() error {
+				s.DurationLowerQuartile.Reset()
+				if err := s.DurationLowerQuartile.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration_lower_quartile\"")
+			}
+		case "duration_percentage":
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				v, err := d.Float32()
-				s.Durationpercentage = float32(v)
+				s.DurationPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"durationpercentage\"")
+				return errors.Wrap(err, "decode field \"duration_percentage\"")
 			}
 		case "uniques":
 			if err := func() error {
@@ -3561,7 +3595,7 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00001101,
+		0b00100101,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

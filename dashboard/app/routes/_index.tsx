@@ -51,6 +51,9 @@ export default function Index() {
 		<div>
 			<h1>Websites</h1>
 			{JSON.stringify(websites)}
+			<Button component={NavLink} to="/localhost">
+				localhost
+			</Button>
 		</div>
 	);
 }
