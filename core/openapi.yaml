@@ -539,6 +539,361 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
+  "/website/{hostname}/time":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Time Stats.
+      description: Get a list of pages and their time stats.
+      operationId: get-website-id-time
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsTime"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080"
+          description: Local Server
+  "/website/{hostname}/referrers":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Referrer Stats.
+      description: Get a list of referrers and their stats.
+      operationId: get-website-id-referrers
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsReferrers"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/sources":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get UTM Source Stats.
+      description: Get a list of UTM sources and their stats.
+      operationId: get-website-id-sources
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsUTMSources"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/mediums":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get UTM Medium Stats.
+      description: Get a list of UTM mediums and their stats.
+      operationId: get-website-id-mediums
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsUTMMediums"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/campaigns":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get UTM Campaign Stats.
+      description: Get a list of UTM campaigns and their stats.
+      operationId: get-website-id-campaigns
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsUTMCampaigns"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/browsers":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Browser Stats.
+      description: Get a list of browsers and their stats.
+      operationId: get-website-id-browsers
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsBrowsers"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/os":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get OS Stats.
+      description: Get a list of OS and their stats.
+      operationId: get-website-id-os
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsOS"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/devices":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Device Stats.
+      description: Get a list of devices and their stats.
+      operationId: get-website-id-device
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsDevices"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/screens":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Screen Stats.
+      description: Get a list of screen sizes and their stats.
+      operationId: get-website-id-screen
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsScreens"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/countries":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Country Stats.
+      description: Get a list of countries and their stats.
+      operationId: get-website-id-country
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsCountries"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/website/{hostname}/languages":
+    "get":
+      tags:
+        - stats
+      security:
+        - CookieAuth: []
+      summary: Get Language Stats.
+      description: Get a list of languages and their stats.
+      operationId: get-website-id-language
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/PeriodStart"
+        - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsLanguages"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     CookieAuth:
@@ -952,9 +1307,38 @@ components:
             type: integer
             description: Total time spent on page in milliseconds.
         required:
-          - url
+          - path
           - uniques
           - uniquepercentage
+    StatsTime:
+      type: array
+      title: StatsTime
+      items:
+        type: object
+        properties:
+          path:
+            type: string
+            description: Pathname of the page.
+          title:
+            type: string
+            description: Title of the page.
+          duration:
+            type: integer
+            description: Total time spent on page in milliseconds.
+          durationpercentage:
+            type: number
+            description: Percentage of time spent on page.
+            format: float
+          uniques:
+            type: integer
+            description: Number of unique users.
+          bounces:
+            type: integer
+            description: Number of bounces.
+        required:
+          - path
+          - duration
+          - durationpercentage
     StatsReferrers:
       type: array
       title: StatsReferrers
@@ -979,5 +1363,191 @@ components:
             description: Total time spent on page from referrer in milliseconds.
         required:
           - referrer
+          - uniques
+          - uniquepercentage
+    StatsUTMSources:
+      type: array
+      title: StatsUTMSources
+      items:
+        type: object
+        properties:
+          source:
+            type: string
+            description: UTM source.
+          uniques:
+            type: integer
+            description: Number of unique users from UTM source.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from UTM source.
+            format: float
+        required:
+          - source
+          - uniques
+          - uniquepercentage
+    StatsUTMMediums:
+      type: array
+      title: StatsUTMMediums
+      items:
+        type: object
+        properties:
+          medium:
+            type: string
+            description: UTM medium.
+          uniques:
+            type: integer
+            description: Number of unique users from UTM medium.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from UTM medium.
+            format: float
+        required:
+          - medium
+          - uniques
+          - uniquepercentage
+    StatsUTMCampaigns:
+      type: array
+      title: StatsUTMCampaigns
+      items:
+        type: object
+        properties:
+          campaign:
+            type: string
+            description: UTM campaign.
+          uniques:
+            type: integer
+            description: Number of unique users from UTM campaign.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from UTM campaign.
+            format: float
+        required:
+          - campaign
+          - uniques
+          - uniquepercentage
+    StatsBrowsers:
+      type: array
+      title: StatsBrowsers
+      items:
+        type: object
+        properties:
+          browser:
+            type: string
+            description: Browser name.
+          uniques:
+            type: integer
+            description: Number of unique users from browser.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from browser.
+            format: float
+          version:
+            type: string
+            description: Browser version.
+        required:
+          - browser
+          - uniques
+          - uniquepercentage
+    StatsOS:
+      type: array
+      title: StatsOS
+      items:
+        type: object
+        properties:
+          os:
+            type: string
+            description: OS name.
+          uniques:
+            type: integer
+            description: Number of unique users from OS.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from OS.
+            format: float
+          version:
+            type: string
+            description: OS version.
+        required:
+          - os
+          - uniques
+          - uniquepercentage
+    StatsDevices:
+      type: array
+      title: StatsDevices
+      items:
+        type: object
+        properties:
+          device:
+            type: string
+            description: Device name.
+          uniques:
+            type: integer
+            description: Number of unique users from device.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from device.
+            format: float
+        required:
+          - device
+          - uniques
+          - uniquepercentage
+    StatsScreens:
+      type: array
+      title: StatsScreens
+      items:
+        type: object
+        properties:
+          screen:
+            type: string
+            description: Screen size.
+          uniques:
+            type: integer
+            description: Number of unique users from screen size.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from screen size.
+            format: float
+        required:
+          - screen
+          - uniques
+          - uniquepercentage
+    StatsCountries:
+      type: array
+      title: StatsCountries
+      items:
+        type: object
+        properties:
+          country:
+            type: string
+            description: Country name.
+          uniques:
+            type: integer
+            description: Number of unique users from country.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from country.
+            format: float
+        required:
+          - country
+          - uniques
+          - uniquepercentage
+    StatsLanguages:
+      type: array
+      title: StatsLanguages
+      items:
+        type: object
+        properties:
+          language:
+            type: string
+            description: Language name.
+          uniques:
+            type: integer
+            description: Number of unique users from language.
+          uniquepercentage:
+            type: number
+            description: Percentage of unique users from language.
+            format: float
+        required:
+          - language
           - uniques
           - uniquepercentage

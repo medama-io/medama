@@ -63,7 +63,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, hostname string) ([]*model
 		SELECT
 			pathname,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			(uniques / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)) * 100 AS uniques_percentage,
+			(uniques / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)) * 100 AS unique_percentage,
 			COUNT(*) AS pageviews,
 			COUNT(CASE WHEN duration_ms < 5000 THEN 1 END) AS bounces,
 			CAST(AVG(duration_ms) AS INTEGER) AS duration

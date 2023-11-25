@@ -17,12 +17,56 @@ type GetUserRes interface {
 	getUserRes()
 }
 
+type GetWebsiteIDBrowsersRes interface {
+	getWebsiteIDBrowsersRes()
+}
+
+type GetWebsiteIDCampaignsRes interface {
+	getWebsiteIDCampaignsRes()
+}
+
+type GetWebsiteIDCountryRes interface {
+	getWebsiteIDCountryRes()
+}
+
+type GetWebsiteIDDeviceRes interface {
+	getWebsiteIDDeviceRes()
+}
+
+type GetWebsiteIDLanguageRes interface {
+	getWebsiteIDLanguageRes()
+}
+
+type GetWebsiteIDMediumsRes interface {
+	getWebsiteIDMediumsRes()
+}
+
+type GetWebsiteIDOsRes interface {
+	getWebsiteIDOsRes()
+}
+
 type GetWebsiteIDPagesRes interface {
 	getWebsiteIDPagesRes()
 }
 
+type GetWebsiteIDReferrersRes interface {
+	getWebsiteIDReferrersRes()
+}
+
+type GetWebsiteIDScreenRes interface {
+	getWebsiteIDScreenRes()
+}
+
+type GetWebsiteIDSourcesRes interface {
+	getWebsiteIDSourcesRes()
+}
+
 type GetWebsiteIDSummaryRes interface {
 	getWebsiteIDSummaryRes()
+}
+
+type GetWebsiteIDTimeRes interface {
+	getWebsiteIDTimeRes()
 }
 
 type GetWebsitesIDRes interface {

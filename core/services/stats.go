@@ -72,9 +72,9 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		var res api.StatsPages
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
-				Path:             api.NewOptString(page.Pathname),
+				Path:             page.Pathname,
 				Uniques:          page.Uniques,
-				Uniquepercentage: page.UniquesPercentage,
+				Uniquepercentage: page.UniquePercentage,
 			})
 		}
 
@@ -92,9 +92,9 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		var res api.StatsPages
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
-				Path:             api.NewOptString(page.Pathname),
+				Path:             page.Pathname,
 				Uniques:          page.Uniques,
-				Uniquepercentage: page.UniquesPercentage,
+				Uniquepercentage: page.UniquePercentage,
 				Title:            api.NewOptString(page.Title),
 				Pageviews:        api.NewOptInt(page.Pageviews),
 				Bounces:          api.NewOptInt(page.Bounces),
@@ -106,4 +106,48 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
+}
+
+func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDScreen(ctx context.Context, params api.GetWebsiteIDScreenParams) (api.GetWebsiteIDScreenRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
+	return nil, nil
+}
+
+func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
+	return nil, nil
 }

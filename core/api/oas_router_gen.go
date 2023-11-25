@@ -192,6 +192,158 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							break
 						}
 						switch elem[0] {
+						case 'b': // Prefix: "browsers"
+							if l := len("browsers"); len(elem) >= l && elem[0:l] == "browsers" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDBrowsersRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+						case 'c': // Prefix: "c"
+							if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'a': // Prefix: "ampaigns"
+								if l := len("ampaigns"); len(elem) >= l && elem[0:l] == "ampaigns" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleGetWebsiteIDCampaignsRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+							case 'o': // Prefix: "ountries"
+								if l := len("ountries"); len(elem) >= l && elem[0:l] == "ountries" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleGetWebsiteIDCountryRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+							}
+						case 'd': // Prefix: "devices"
+							if l := len("devices"); len(elem) >= l && elem[0:l] == "devices" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDDeviceRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+						case 'l': // Prefix: "languages"
+							if l := len("languages"); len(elem) >= l && elem[0:l] == "languages" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDLanguageRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+						case 'm': // Prefix: "mediums"
+							if l := len("mediums"); len(elem) >= l && elem[0:l] == "mediums" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDMediumsRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+						case 'o': // Prefix: "os"
+							if l := len("os"); len(elem) >= l && elem[0:l] == "os" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDOsRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
 						case 'p': // Prefix: "pages"
 							if l := len("pages"); len(elem) >= l && elem[0:l] == "pages" {
 								elem = elem[l:]
@@ -212,8 +364,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 								return
 							}
-						case 's': // Prefix: "summary"
-							if l := len("summary"); len(elem) >= l && elem[0:l] == "summary" {
+						case 'r': // Prefix: "referrers"
+							if l := len("referrers"); len(elem) >= l && elem[0:l] == "referrers" {
 								elem = elem[l:]
 							} else {
 								break
@@ -223,7 +375,99 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 								// Leaf node.
 								switch r.Method {
 								case "GET":
-									s.handleGetWebsiteIDSummaryRequest([1]string{
+									s.handleGetWebsiteIDReferrersRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+						case 's': // Prefix: "s"
+							if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'c': // Prefix: "creens"
+								if l := len("creens"); len(elem) >= l && elem[0:l] == "creens" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleGetWebsiteIDScreenRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+							case 'o': // Prefix: "ources"
+								if l := len("ources"); len(elem) >= l && elem[0:l] == "ources" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleGetWebsiteIDSourcesRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+							case 'u': // Prefix: "ummary"
+								if l := len("ummary"); len(elem) >= l && elem[0:l] == "ummary" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleGetWebsiteIDSummaryRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+							}
+						case 't': // Prefix: "time"
+							if l := len("time"); len(elem) >= l && elem[0:l] == "time" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetWebsiteIDTimeRequest([1]string{
 										args[0],
 									}, elemIsEscaped, w, r)
 								default:
@@ -550,6 +794,172 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							break
 						}
 						switch elem[0] {
+						case 'b': // Prefix: "browsers"
+							if l := len("browsers"); len(elem) >= l && elem[0:l] == "browsers" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDBrowsers
+									r.name = "GetWebsiteIDBrowsers"
+									r.summary = "Get Browser Stats."
+									r.operationID = "get-website-id-browsers"
+									r.pathPattern = "/website/{hostname}/browsers"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+						case 'c': // Prefix: "c"
+							if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'a': // Prefix: "ampaigns"
+								if l := len("ampaigns"); len(elem) >= l && elem[0:l] == "ampaigns" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										// Leaf: GetWebsiteIDCampaigns
+										r.name = "GetWebsiteIDCampaigns"
+										r.summary = "Get UTM Campaign Stats."
+										r.operationID = "get-website-id-campaigns"
+										r.pathPattern = "/website/{hostname}/campaigns"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+							case 'o': // Prefix: "ountries"
+								if l := len("ountries"); len(elem) >= l && elem[0:l] == "ountries" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										// Leaf: GetWebsiteIDCountry
+										r.name = "GetWebsiteIDCountry"
+										r.summary = "Get Country Stats."
+										r.operationID = "get-website-id-country"
+										r.pathPattern = "/website/{hostname}/countries"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+							}
+						case 'd': // Prefix: "devices"
+							if l := len("devices"); len(elem) >= l && elem[0:l] == "devices" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDDevice
+									r.name = "GetWebsiteIDDevice"
+									r.summary = "Get Device Stats."
+									r.operationID = "get-website-id-device"
+									r.pathPattern = "/website/{hostname}/devices"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+						case 'l': // Prefix: "languages"
+							if l := len("languages"); len(elem) >= l && elem[0:l] == "languages" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDLanguage
+									r.name = "GetWebsiteIDLanguage"
+									r.summary = "Get Language Stats."
+									r.operationID = "get-website-id-language"
+									r.pathPattern = "/website/{hostname}/languages"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+						case 'm': // Prefix: "mediums"
+							if l := len("mediums"); len(elem) >= l && elem[0:l] == "mediums" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDMediums
+									r.name = "GetWebsiteIDMediums"
+									r.summary = "Get UTM Medium Stats."
+									r.operationID = "get-website-id-mediums"
+									r.pathPattern = "/website/{hostname}/mediums"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+						case 'o': // Prefix: "os"
+							if l := len("os"); len(elem) >= l && elem[0:l] == "os" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDOs
+									r.name = "GetWebsiteIDOs"
+									r.summary = "Get OS Stats."
+									r.operationID = "get-website-id-os"
+									r.pathPattern = "/website/{hostname}/os"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
 						case 'p': // Prefix: "pages"
 							if l := len("pages"); len(elem) >= l && elem[0:l] == "pages" {
 								elem = elem[l:]
@@ -572,8 +982,8 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									return
 								}
 							}
-						case 's': // Prefix: "summary"
-							if l := len("summary"); len(elem) >= l && elem[0:l] == "summary" {
+						case 'r': // Prefix: "referrers"
+							if l := len("referrers"); len(elem) >= l && elem[0:l] == "referrers" {
 								elem = elem[l:]
 							} else {
 								break
@@ -582,11 +992,111 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							if len(elem) == 0 {
 								switch method {
 								case "GET":
-									// Leaf: GetWebsiteIDSummary
-									r.name = "GetWebsiteIDSummary"
-									r.summary = "Get Stat Summary."
-									r.operationID = "get-website-id-summary"
-									r.pathPattern = "/website/{hostname}/summary"
+									// Leaf: GetWebsiteIDReferrers
+									r.name = "GetWebsiteIDReferrers"
+									r.summary = "Get Referrer Stats."
+									r.operationID = "get-website-id-referrers"
+									r.pathPattern = "/website/{hostname}/referrers"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+						case 's': // Prefix: "s"
+							if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'c': // Prefix: "creens"
+								if l := len("creens"); len(elem) >= l && elem[0:l] == "creens" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										// Leaf: GetWebsiteIDScreen
+										r.name = "GetWebsiteIDScreen"
+										r.summary = "Get Screen Stats."
+										r.operationID = "get-website-id-screen"
+										r.pathPattern = "/website/{hostname}/screens"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+							case 'o': // Prefix: "ources"
+								if l := len("ources"); len(elem) >= l && elem[0:l] == "ources" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										// Leaf: GetWebsiteIDSources
+										r.name = "GetWebsiteIDSources"
+										r.summary = "Get UTM Source Stats."
+										r.operationID = "get-website-id-sources"
+										r.pathPattern = "/website/{hostname}/sources"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+							case 'u': // Prefix: "ummary"
+								if l := len("ummary"); len(elem) >= l && elem[0:l] == "ummary" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										// Leaf: GetWebsiteIDSummary
+										r.name = "GetWebsiteIDSummary"
+										r.summary = "Get Stat Summary."
+										r.operationID = "get-website-id-summary"
+										r.pathPattern = "/website/{hostname}/summary"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+							}
+						case 't': // Prefix: "time"
+							if l := len("time"); len(elem) >= l && elem[0:l] == "time" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									// Leaf: GetWebsiteIDTime
+									r.name = "GetWebsiteIDTime"
+									r.summary = "Get Time Stats."
+									r.operationID = "get-website-id-time"
+									r.pathPattern = "/website/{hostname}/time"
 									r.args = args
 									r.count = 1
 									return r, true

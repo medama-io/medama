@@ -49,20 +49,31 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 	s.Error = val
 }
 
-func (*BadRequestError) deleteUserRes()          {}
-func (*BadRequestError) deleteWebsitesIDRes()    {}
-func (*BadRequestError) getEventPingRes()        {}
-func (*BadRequestError) getUserRes()             {}
-func (*BadRequestError) getWebsiteIDPagesRes()   {}
-func (*BadRequestError) getWebsiteIDSummaryRes() {}
-func (*BadRequestError) getWebsitesIDRes()       {}
-func (*BadRequestError) getWebsitesRes()         {}
-func (*BadRequestError) patchUserRes()           {}
-func (*BadRequestError) patchWebsitesIDRes()     {}
-func (*BadRequestError) postAuthLoginRes()       {}
-func (*BadRequestError) postEventHitRes()        {}
-func (*BadRequestError) postUserRes()            {}
-func (*BadRequestError) postWebsitesRes()        {}
+func (*BadRequestError) deleteUserRes()            {}
+func (*BadRequestError) deleteWebsitesIDRes()      {}
+func (*BadRequestError) getEventPingRes()          {}
+func (*BadRequestError) getUserRes()               {}
+func (*BadRequestError) getWebsiteIDBrowsersRes()  {}
+func (*BadRequestError) getWebsiteIDCampaignsRes() {}
+func (*BadRequestError) getWebsiteIDCountryRes()   {}
+func (*BadRequestError) getWebsiteIDDeviceRes()    {}
+func (*BadRequestError) getWebsiteIDLanguageRes()  {}
+func (*BadRequestError) getWebsiteIDMediumsRes()   {}
+func (*BadRequestError) getWebsiteIDOsRes()        {}
+func (*BadRequestError) getWebsiteIDPagesRes()     {}
+func (*BadRequestError) getWebsiteIDReferrersRes() {}
+func (*BadRequestError) getWebsiteIDScreenRes()    {}
+func (*BadRequestError) getWebsiteIDSourcesRes()   {}
+func (*BadRequestError) getWebsiteIDSummaryRes()   {}
+func (*BadRequestError) getWebsiteIDTimeRes()      {}
+func (*BadRequestError) getWebsitesIDRes()         {}
+func (*BadRequestError) getWebsitesRes()           {}
+func (*BadRequestError) patchUserRes()             {}
+func (*BadRequestError) patchWebsitesIDRes()       {}
+func (*BadRequestError) postAuthLoginRes()         {}
+func (*BadRequestError) postEventHitRes()          {}
+func (*BadRequestError) postUserRes()              {}
+func (*BadRequestError) postWebsitesRes()          {}
 
 type BadRequestErrorError struct {
 	Code    int32  `json:"code"`
@@ -296,7 +307,17 @@ func (s *ForbiddenError) SetError(val ForbiddenErrorError) {
 	s.Error = val
 }
 
-func (*ForbiddenError) postUserRes() {}
+func (*ForbiddenError) getWebsiteIDBrowsersRes()  {}
+func (*ForbiddenError) getWebsiteIDCampaignsRes() {}
+func (*ForbiddenError) getWebsiteIDCountryRes()   {}
+func (*ForbiddenError) getWebsiteIDDeviceRes()    {}
+func (*ForbiddenError) getWebsiteIDLanguageRes()  {}
+func (*ForbiddenError) getWebsiteIDMediumsRes()   {}
+func (*ForbiddenError) getWebsiteIDOsRes()        {}
+func (*ForbiddenError) getWebsiteIDReferrersRes() {}
+func (*ForbiddenError) getWebsiteIDScreenRes()    {}
+func (*ForbiddenError) getWebsiteIDSourcesRes()   {}
+func (*ForbiddenError) postUserRes()              {}
 
 type ForbiddenErrorError struct {
 	Code    int32  `json:"code"`
@@ -406,20 +427,31 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 	s.Error = val
 }
 
-func (*InternalServerError) deleteUserRes()          {}
-func (*InternalServerError) deleteWebsitesIDRes()    {}
-func (*InternalServerError) getEventPingRes()        {}
-func (*InternalServerError) getUserRes()             {}
-func (*InternalServerError) getWebsiteIDPagesRes()   {}
-func (*InternalServerError) getWebsiteIDSummaryRes() {}
-func (*InternalServerError) getWebsitesIDRes()       {}
-func (*InternalServerError) getWebsitesRes()         {}
-func (*InternalServerError) patchUserRes()           {}
-func (*InternalServerError) patchWebsitesIDRes()     {}
-func (*InternalServerError) postAuthLoginRes()       {}
-func (*InternalServerError) postEventHitRes()        {}
-func (*InternalServerError) postUserRes()            {}
-func (*InternalServerError) postWebsitesRes()        {}
+func (*InternalServerError) deleteUserRes()            {}
+func (*InternalServerError) deleteWebsitesIDRes()      {}
+func (*InternalServerError) getEventPingRes()          {}
+func (*InternalServerError) getUserRes()               {}
+func (*InternalServerError) getWebsiteIDBrowsersRes()  {}
+func (*InternalServerError) getWebsiteIDCampaignsRes() {}
+func (*InternalServerError) getWebsiteIDCountryRes()   {}
+func (*InternalServerError) getWebsiteIDDeviceRes()    {}
+func (*InternalServerError) getWebsiteIDLanguageRes()  {}
+func (*InternalServerError) getWebsiteIDMediumsRes()   {}
+func (*InternalServerError) getWebsiteIDOsRes()        {}
+func (*InternalServerError) getWebsiteIDPagesRes()     {}
+func (*InternalServerError) getWebsiteIDReferrersRes() {}
+func (*InternalServerError) getWebsiteIDScreenRes()    {}
+func (*InternalServerError) getWebsiteIDSourcesRes()   {}
+func (*InternalServerError) getWebsiteIDSummaryRes()   {}
+func (*InternalServerError) getWebsiteIDTimeRes()      {}
+func (*InternalServerError) getWebsitesIDRes()         {}
+func (*InternalServerError) getWebsitesRes()           {}
+func (*InternalServerError) patchUserRes()             {}
+func (*InternalServerError) patchWebsitesIDRes()       {}
+func (*InternalServerError) postAuthLoginRes()         {}
+func (*InternalServerError) postEventHitRes()          {}
+func (*InternalServerError) postUserRes()              {}
+func (*InternalServerError) postWebsitesRes()          {}
 
 type InternalServerErrorError struct {
 	Code    int32  `json:"code"`
@@ -460,17 +492,28 @@ func (s *NotFoundError) SetError(val NotFoundErrorError) {
 	s.Error = val
 }
 
-func (*NotFoundError) deleteUserRes()          {}
-func (*NotFoundError) deleteWebsitesIDRes()    {}
-func (*NotFoundError) getUserRes()             {}
-func (*NotFoundError) getWebsiteIDPagesRes()   {}
-func (*NotFoundError) getWebsiteIDSummaryRes() {}
-func (*NotFoundError) getWebsitesIDRes()       {}
-func (*NotFoundError) getWebsitesRes()         {}
-func (*NotFoundError) patchUserRes()           {}
-func (*NotFoundError) patchWebsitesIDRes()     {}
-func (*NotFoundError) postAuthLoginRes()       {}
-func (*NotFoundError) postEventHitRes()        {}
+func (*NotFoundError) deleteUserRes()            {}
+func (*NotFoundError) deleteWebsitesIDRes()      {}
+func (*NotFoundError) getUserRes()               {}
+func (*NotFoundError) getWebsiteIDBrowsersRes()  {}
+func (*NotFoundError) getWebsiteIDCampaignsRes() {}
+func (*NotFoundError) getWebsiteIDCountryRes()   {}
+func (*NotFoundError) getWebsiteIDDeviceRes()    {}
+func (*NotFoundError) getWebsiteIDLanguageRes()  {}
+func (*NotFoundError) getWebsiteIDMediumsRes()   {}
+func (*NotFoundError) getWebsiteIDOsRes()        {}
+func (*NotFoundError) getWebsiteIDPagesRes()     {}
+func (*NotFoundError) getWebsiteIDReferrersRes() {}
+func (*NotFoundError) getWebsiteIDScreenRes()    {}
+func (*NotFoundError) getWebsiteIDSourcesRes()   {}
+func (*NotFoundError) getWebsiteIDSummaryRes()   {}
+func (*NotFoundError) getWebsiteIDTimeRes()      {}
+func (*NotFoundError) getWebsitesIDRes()         {}
+func (*NotFoundError) getWebsitesRes()           {}
+func (*NotFoundError) patchUserRes()             {}
+func (*NotFoundError) patchWebsitesIDRes()       {}
+func (*NotFoundError) postAuthLoginRes()         {}
+func (*NotFoundError) postEventHitRes()          {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`
@@ -795,13 +838,252 @@ type PostEventHitOK struct{}
 
 func (*PostEventHitOK) postEventHitRes() {}
 
+type StatsBrowsers []StatsBrowsersItem
+
+func (*StatsBrowsers) getWebsiteIDBrowsersRes() {}
+
+type StatsBrowsersItem struct {
+	// Browser name.
+	Browser string `json:"browser"`
+	// Number of unique users from browser.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from browser.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+	// Browser version.
+	Version OptString `json:"version"`
+}
+
+// GetBrowser returns the value of Browser.
+func (s *StatsBrowsersItem) GetBrowser() string {
+	return s.Browser
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsBrowsersItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsBrowsersItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// GetVersion returns the value of Version.
+func (s *StatsBrowsersItem) GetVersion() OptString {
+	return s.Version
+}
+
+// SetBrowser sets the value of Browser.
+func (s *StatsBrowsersItem) SetBrowser(val string) {
+	s.Browser = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsBrowsersItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsBrowsersItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+// SetVersion sets the value of Version.
+func (s *StatsBrowsersItem) SetVersion(val OptString) {
+	s.Version = val
+}
+
+type StatsCountries []StatsCountriesItem
+
+func (*StatsCountries) getWebsiteIDCountryRes() {}
+
+type StatsCountriesItem struct {
+	// Country name.
+	Country string `json:"country"`
+	// Number of unique users from country.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from country.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+}
+
+// GetCountry returns the value of Country.
+func (s *StatsCountriesItem) GetCountry() string {
+	return s.Country
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsCountriesItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsCountriesItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// SetCountry sets the value of Country.
+func (s *StatsCountriesItem) SetCountry(val string) {
+	s.Country = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsCountriesItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsCountriesItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+type StatsDevices []StatsDevicesItem
+
+func (*StatsDevices) getWebsiteIDDeviceRes() {}
+
+type StatsDevicesItem struct {
+	// Device name.
+	Device string `json:"device"`
+	// Number of unique users from device.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from device.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+}
+
+// GetDevice returns the value of Device.
+func (s *StatsDevicesItem) GetDevice() string {
+	return s.Device
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsDevicesItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsDevicesItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// SetDevice sets the value of Device.
+func (s *StatsDevicesItem) SetDevice(val string) {
+	s.Device = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsDevicesItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsDevicesItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+type StatsLanguages []StatsLanguagesItem
+
+func (*StatsLanguages) getWebsiteIDLanguageRes() {}
+
+type StatsLanguagesItem struct {
+	// Language name.
+	Language string `json:"language"`
+	// Number of unique users from language.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from language.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+}
+
+// GetLanguage returns the value of Language.
+func (s *StatsLanguagesItem) GetLanguage() string {
+	return s.Language
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsLanguagesItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsLanguagesItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// SetLanguage sets the value of Language.
+func (s *StatsLanguagesItem) SetLanguage(val string) {
+	s.Language = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsLanguagesItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsLanguagesItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+type StatsOS []StatsOSItem
+
+func (*StatsOS) getWebsiteIDOsRes() {}
+
+type StatsOSItem struct {
+	// OS name.
+	Os string `json:"os"`
+	// Number of unique users from OS.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from OS.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+	// OS version.
+	Version OptString `json:"version"`
+}
+
+// GetOs returns the value of Os.
+func (s *StatsOSItem) GetOs() string {
+	return s.Os
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsOSItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsOSItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// GetVersion returns the value of Version.
+func (s *StatsOSItem) GetVersion() OptString {
+	return s.Version
+}
+
+// SetOs sets the value of Os.
+func (s *StatsOSItem) SetOs(val string) {
+	s.Os = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsOSItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsOSItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+// SetVersion sets the value of Version.
+func (s *StatsOSItem) SetVersion(val OptString) {
+	s.Version = val
+}
+
 type StatsPages []StatsPagesItem
 
 func (*StatsPages) getWebsiteIDPagesRes() {}
 
 type StatsPagesItem struct {
 	// Pathname of the page.
-	Path OptString `json:"path"`
+	Path string `json:"path"`
 	// Title of the page.
 	Title OptString `json:"title"`
 	// Number of unique users.
@@ -817,7 +1099,7 @@ type StatsPagesItem struct {
 }
 
 // GetPath returns the value of Path.
-func (s *StatsPagesItem) GetPath() OptString {
+func (s *StatsPagesItem) GetPath() string {
 	return s.Path
 }
 
@@ -852,7 +1134,7 @@ func (s *StatsPagesItem) GetDuration() OptInt {
 }
 
 // SetPath sets the value of Path.
-func (s *StatsPagesItem) SetPath(val OptString) {
+func (s *StatsPagesItem) SetPath(val string) {
 	s.Path = val
 }
 
@@ -884,6 +1166,116 @@ func (s *StatsPagesItem) SetBounces(val OptInt) {
 // SetDuration sets the value of Duration.
 func (s *StatsPagesItem) SetDuration(val OptInt) {
 	s.Duration = val
+}
+
+type StatsReferrers []StatsReferrersItem
+
+func (*StatsReferrers) getWebsiteIDReferrersRes() {}
+
+type StatsReferrersItem struct {
+	// Referrer URL.
+	Referrer string `json:"referrer"`
+	// Number of unique users from referrer.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from referrer.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+	// Number of bounces from referrer.
+	Bounces OptInt `json:"bounces"`
+	// Total time spent on page from referrer in milliseconds.
+	Duration OptInt `json:"duration"`
+}
+
+// GetReferrer returns the value of Referrer.
+func (s *StatsReferrersItem) GetReferrer() string {
+	return s.Referrer
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsReferrersItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsReferrersItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// GetBounces returns the value of Bounces.
+func (s *StatsReferrersItem) GetBounces() OptInt {
+	return s.Bounces
+}
+
+// GetDuration returns the value of Duration.
+func (s *StatsReferrersItem) GetDuration() OptInt {
+	return s.Duration
+}
+
+// SetReferrer sets the value of Referrer.
+func (s *StatsReferrersItem) SetReferrer(val string) {
+	s.Referrer = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsReferrersItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsReferrersItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+// SetBounces sets the value of Bounces.
+func (s *StatsReferrersItem) SetBounces(val OptInt) {
+	s.Bounces = val
+}
+
+// SetDuration sets the value of Duration.
+func (s *StatsReferrersItem) SetDuration(val OptInt) {
+	s.Duration = val
+}
+
+type StatsScreens []StatsScreensItem
+
+func (*StatsScreens) getWebsiteIDScreenRes() {}
+
+type StatsScreensItem struct {
+	// Screen size.
+	Screen string `json:"screen"`
+	// Number of unique users from screen size.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from screen size.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+}
+
+// GetScreen returns the value of Screen.
+func (s *StatsScreensItem) GetScreen() string {
+	return s.Screen
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsScreensItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsScreensItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// SetScreen sets the value of Screen.
+func (s *StatsScreensItem) SetScreen(val string) {
+	s.Screen = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsScreensItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsScreensItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
 }
 
 // Ref: #/components/schemas/StatsSummary
@@ -947,6 +1339,214 @@ func (s *StatsSummary) SetActive(val OptInt) {
 
 func (*StatsSummary) getWebsiteIDSummaryRes() {}
 
+type StatsTime []StatsTimeItem
+
+func (*StatsTime) getWebsiteIDTimeRes() {}
+
+type StatsTimeItem struct {
+	// Pathname of the page.
+	Path string `json:"path"`
+	// Title of the page.
+	Title OptString `json:"title"`
+	// Total time spent on page in milliseconds.
+	Duration int `json:"duration"`
+	// Percentage of time spent on page.
+	Durationpercentage float32 `json:"durationpercentage"`
+	// Number of unique users.
+	Uniques OptInt `json:"uniques"`
+	// Number of bounces.
+	Bounces OptInt `json:"bounces"`
+}
+
+// GetPath returns the value of Path.
+func (s *StatsTimeItem) GetPath() string {
+	return s.Path
+}
+
+// GetTitle returns the value of Title.
+func (s *StatsTimeItem) GetTitle() OptString {
+	return s.Title
+}
+
+// GetDuration returns the value of Duration.
+func (s *StatsTimeItem) GetDuration() int {
+	return s.Duration
+}
+
+// GetDurationpercentage returns the value of Durationpercentage.
+func (s *StatsTimeItem) GetDurationpercentage() float32 {
+	return s.Durationpercentage
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsTimeItem) GetUniques() OptInt {
+	return s.Uniques
+}
+
+// GetBounces returns the value of Bounces.
+func (s *StatsTimeItem) GetBounces() OptInt {
+	return s.Bounces
+}
+
+// SetPath sets the value of Path.
+func (s *StatsTimeItem) SetPath(val string) {
+	s.Path = val
+}
+
+// SetTitle sets the value of Title.
+func (s *StatsTimeItem) SetTitle(val OptString) {
+	s.Title = val
+}
+
+// SetDuration sets the value of Duration.
+func (s *StatsTimeItem) SetDuration(val int) {
+	s.Duration = val
+}
+
+// SetDurationpercentage sets the value of Durationpercentage.
+func (s *StatsTimeItem) SetDurationpercentage(val float32) {
+	s.Durationpercentage = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsTimeItem) SetUniques(val OptInt) {
+	s.Uniques = val
+}
+
+// SetBounces sets the value of Bounces.
+func (s *StatsTimeItem) SetBounces(val OptInt) {
+	s.Bounces = val
+}
+
+type StatsUTMCampaigns []StatsUTMCampaignsItem
+
+func (*StatsUTMCampaigns) getWebsiteIDCampaignsRes() {}
+
+type StatsUTMCampaignsItem struct {
+	// UTM campaign.
+	Campaign string `json:"campaign"`
+	// Number of unique users from UTM campaign.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from UTM campaign.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+}
+
+// GetCampaign returns the value of Campaign.
+func (s *StatsUTMCampaignsItem) GetCampaign() string {
+	return s.Campaign
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsUTMCampaignsItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsUTMCampaignsItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// SetCampaign sets the value of Campaign.
+func (s *StatsUTMCampaignsItem) SetCampaign(val string) {
+	s.Campaign = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsUTMCampaignsItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsUTMCampaignsItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+type StatsUTMMediums []StatsUTMMediumsItem
+
+func (*StatsUTMMediums) getWebsiteIDMediumsRes() {}
+
+type StatsUTMMediumsItem struct {
+	// UTM medium.
+	Medium string `json:"medium"`
+	// Number of unique users from UTM medium.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from UTM medium.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+}
+
+// GetMedium returns the value of Medium.
+func (s *StatsUTMMediumsItem) GetMedium() string {
+	return s.Medium
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsUTMMediumsItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsUTMMediumsItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// SetMedium sets the value of Medium.
+func (s *StatsUTMMediumsItem) SetMedium(val string) {
+	s.Medium = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsUTMMediumsItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsUTMMediumsItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
+type StatsUTMSources []StatsUTMSourcesItem
+
+func (*StatsUTMSources) getWebsiteIDSourcesRes() {}
+
+type StatsUTMSourcesItem struct {
+	// UTM source.
+	Source string `json:"source"`
+	// Number of unique users from UTM source.
+	Uniques int `json:"uniques"`
+	// Percentage of unique users from UTM source.
+	Uniquepercentage float32 `json:"uniquepercentage"`
+}
+
+// GetSource returns the value of Source.
+func (s *StatsUTMSourcesItem) GetSource() string {
+	return s.Source
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsUTMSourcesItem) GetUniques() int {
+	return s.Uniques
+}
+
+// GetUniquepercentage returns the value of Uniquepercentage.
+func (s *StatsUTMSourcesItem) GetUniquepercentage() float32 {
+	return s.Uniquepercentage
+}
+
+// SetSource sets the value of Source.
+func (s *StatsUTMSourcesItem) SetSource(val string) {
+	s.Source = val
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsUTMSourcesItem) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetUniquepercentage sets the value of Uniquepercentage.
+func (s *StatsUTMSourcesItem) SetUniquepercentage(val float32) {
+	s.Uniquepercentage = val
+}
+
 type UnauthorisedError struct {
 	Error UnauthorisedErrorError `json:"error"`
 }
@@ -961,18 +1561,29 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 	s.Error = val
 }
 
-func (*UnauthorisedError) deleteUserRes()          {}
-func (*UnauthorisedError) deleteWebsitesIDRes()    {}
-func (*UnauthorisedError) getUserRes()             {}
-func (*UnauthorisedError) getWebsiteIDPagesRes()   {}
-func (*UnauthorisedError) getWebsiteIDSummaryRes() {}
-func (*UnauthorisedError) getWebsitesIDRes()       {}
-func (*UnauthorisedError) getWebsitesRes()         {}
-func (*UnauthorisedError) patchUserRes()           {}
-func (*UnauthorisedError) patchWebsitesIDRes()     {}
-func (*UnauthorisedError) postAuthLoginRes()       {}
-func (*UnauthorisedError) postUserRes()            {}
-func (*UnauthorisedError) postWebsitesRes()        {}
+func (*UnauthorisedError) deleteUserRes()            {}
+func (*UnauthorisedError) deleteWebsitesIDRes()      {}
+func (*UnauthorisedError) getUserRes()               {}
+func (*UnauthorisedError) getWebsiteIDBrowsersRes()  {}
+func (*UnauthorisedError) getWebsiteIDCampaignsRes() {}
+func (*UnauthorisedError) getWebsiteIDCountryRes()   {}
+func (*UnauthorisedError) getWebsiteIDDeviceRes()    {}
+func (*UnauthorisedError) getWebsiteIDLanguageRes()  {}
+func (*UnauthorisedError) getWebsiteIDMediumsRes()   {}
+func (*UnauthorisedError) getWebsiteIDOsRes()        {}
+func (*UnauthorisedError) getWebsiteIDPagesRes()     {}
+func (*UnauthorisedError) getWebsiteIDReferrersRes() {}
+func (*UnauthorisedError) getWebsiteIDScreenRes()    {}
+func (*UnauthorisedError) getWebsiteIDSourcesRes()   {}
+func (*UnauthorisedError) getWebsiteIDSummaryRes()   {}
+func (*UnauthorisedError) getWebsiteIDTimeRes()      {}
+func (*UnauthorisedError) getWebsitesIDRes()         {}
+func (*UnauthorisedError) getWebsitesRes()           {}
+func (*UnauthorisedError) patchUserRes()             {}
+func (*UnauthorisedError) patchWebsitesIDRes()       {}
+func (*UnauthorisedError) postAuthLoginRes()         {}
+func (*UnauthorisedError) postUserRes()              {}
+func (*UnauthorisedError) postWebsitesRes()          {}
 
 type UnauthorisedErrorError struct {
 	Code    int32  `json:"code"`

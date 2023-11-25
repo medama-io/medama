@@ -32,18 +32,84 @@ type Handler interface {
 	//
 	// GET /user
 	GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error)
+	// GetWebsiteIDBrowsers implements get-website-id-browsers operation.
+	//
+	// Get a list of browsers and their stats.
+	//
+	// GET /website/{hostname}/browsers
+	GetWebsiteIDBrowsers(ctx context.Context, params GetWebsiteIDBrowsersParams) (GetWebsiteIDBrowsersRes, error)
+	// GetWebsiteIDCampaigns implements get-website-id-campaigns operation.
+	//
+	// Get a list of UTM campaigns and their stats.
+	//
+	// GET /website/{hostname}/campaigns
+	GetWebsiteIDCampaigns(ctx context.Context, params GetWebsiteIDCampaignsParams) (GetWebsiteIDCampaignsRes, error)
+	// GetWebsiteIDCountry implements get-website-id-country operation.
+	//
+	// Get a list of countries and their stats.
+	//
+	// GET /website/{hostname}/countries
+	GetWebsiteIDCountry(ctx context.Context, params GetWebsiteIDCountryParams) (GetWebsiteIDCountryRes, error)
+	// GetWebsiteIDDevice implements get-website-id-device operation.
+	//
+	// Get a list of devices and their stats.
+	//
+	// GET /website/{hostname}/devices
+	GetWebsiteIDDevice(ctx context.Context, params GetWebsiteIDDeviceParams) (GetWebsiteIDDeviceRes, error)
+	// GetWebsiteIDLanguage implements get-website-id-language operation.
+	//
+	// Get a list of languages and their stats.
+	//
+	// GET /website/{hostname}/languages
+	GetWebsiteIDLanguage(ctx context.Context, params GetWebsiteIDLanguageParams) (GetWebsiteIDLanguageRes, error)
+	// GetWebsiteIDMediums implements get-website-id-mediums operation.
+	//
+	// Get a list of UTM mediums and their stats.
+	//
+	// GET /website/{hostname}/mediums
+	GetWebsiteIDMediums(ctx context.Context, params GetWebsiteIDMediumsParams) (GetWebsiteIDMediumsRes, error)
+	// GetWebsiteIDOs implements get-website-id-os operation.
+	//
+	// Get a list of OS and their stats.
+	//
+	// GET /website/{hostname}/os
+	GetWebsiteIDOs(ctx context.Context, params GetWebsiteIDOsParams) (GetWebsiteIDOsRes, error)
 	// GetWebsiteIDPages implements get-website-id-pages operation.
 	//
 	// Get a list of pages and their stats.
 	//
 	// GET /website/{hostname}/pages
 	GetWebsiteIDPages(ctx context.Context, params GetWebsiteIDPagesParams) (GetWebsiteIDPagesRes, error)
+	// GetWebsiteIDReferrers implements get-website-id-referrers operation.
+	//
+	// Get a list of referrers and their stats.
+	//
+	// GET /website/{hostname}/referrers
+	GetWebsiteIDReferrers(ctx context.Context, params GetWebsiteIDReferrersParams) (GetWebsiteIDReferrersRes, error)
+	// GetWebsiteIDScreen implements get-website-id-screen operation.
+	//
+	// Get a list of screen sizes and their stats.
+	//
+	// GET /website/{hostname}/screens
+	GetWebsiteIDScreen(ctx context.Context, params GetWebsiteIDScreenParams) (GetWebsiteIDScreenRes, error)
+	// GetWebsiteIDSources implements get-website-id-sources operation.
+	//
+	// Get a list of UTM sources and their stats.
+	//
+	// GET /website/{hostname}/sources
+	GetWebsiteIDSources(ctx context.Context, params GetWebsiteIDSourcesParams) (GetWebsiteIDSourcesRes, error)
 	// GetWebsiteIDSummary implements get-website-id-summary operation.
 	//
 	// Get a summary of the website's stats.
 	//
 	// GET /website/{hostname}/summary
 	GetWebsiteIDSummary(ctx context.Context, params GetWebsiteIDSummaryParams) (GetWebsiteIDSummaryRes, error)
+	// GetWebsiteIDTime implements get-website-id-time operation.
+	//
+	// Get a list of pages and their time stats.
+	//
+	// GET /website/{hostname}/time
+	GetWebsiteIDTime(ctx context.Context, params GetWebsiteIDTimeParams) (GetWebsiteIDTimeRes, error)
 	// GetWebsites implements get-websites operation.
 	//
 	// Get a list of all websites from the user.
