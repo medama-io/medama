@@ -34,8 +34,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const body = await request.formData();
 
-	const name = body.get('name')?.toString();
-	const hostname = body.get('hostname')?.toString();
+	const hostname = body.get('hostname')
+		? String(body.get('hostname'))
+		: undefined;
+	const name = body.get('name') ? String(body.get('name')) : hostname;
 
 	if (!hostname) {
 		throw json('Missing hostname', {
@@ -46,7 +48,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const { data, res } = await websiteCreate({
 		cookie: request.headers.get('Cookie'),
 		body: {
-			name: name === '' ? hostname : name,
+			name,
 			hostname,
 		},
 	});

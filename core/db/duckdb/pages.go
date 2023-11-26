@@ -2,13 +2,15 @@ package duckdb
 
 import (
 	"context"
+	"strings"
 
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsitePagesSummary returns a summary of the pages for the given hostname.
-func (c *Client) GetWebsitePagesSummary(ctx context.Context, hostname string) ([]*model.StatsPagesSummary, error) {
+func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter Filter) ([]*model.StatsPagesSummary, error) {
 	var pages []*model.StatsPagesSummary
+	var query strings.Builder
 
 	// Array of page paths and their relevant counts
 	//
@@ -20,17 +22,17 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, hostname string) ([
 	// out of all unique visitors for the website.
 	//
 	// This is ordered by the number of unique visitors in descending order.
-	query := `--sql
+	query.WriteString(`--sql
 		SELECT
 			pathname,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage
 		FROM views
-		WHERE hostname = ?
-		GROUP BY pathname
-		ORDER BY uniques DESC`
+		WHERE `)
+	query.WriteString(filter.String())
+	query.WriteString(` GROUP BY pathname ORDER BY uniques DESC`)
 
-	err := c.SelectContext(ctx, &pages, query, hostname, hostname)
+	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
 		return nil, err
 	}
@@ -39,8 +41,9 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, hostname string) ([
 }
 
 // GetWebsitePages returns the pages statistics for the given hostname.
-func (c *Client) GetWebsitePages(ctx context.Context, hostname string) ([]*model.StatsPages, error) {
+func (c *Client) GetWebsitePages(ctx context.Context, filter Filter) ([]*model.StatsPages, error) {
 	var pages []*model.StatsPages
+	var query strings.Builder
 
 	// Array of page paths and their relevant counts
 	//
@@ -61,7 +64,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, hostname string) ([]*model
 	// Duration is the median duration of the pageview that match the pathname in milliseconds.
 	//
 	// This is ordered by the number of unique visitors in descending order.
-	query := `--sql
+	query.WriteString(`--sql
 		SELECT
 			pathname,
 			title,
@@ -71,11 +74,11 @@ func (c *Client) GetWebsitePages(ctx context.Context, hostname string) ([]*model
 			COUNT(CASE WHEN duration_ms < 5000 THEN 1 END) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
-		WHERE hostname = ?
-		GROUP BY pathname, title
-		ORDER BY uniques DESC`
+		WHERE `)
+	query.WriteString(filter.String())
+	query.WriteString(` GROUP BY pathname, title ORDER BY uniques DESC`)
 
-	err := c.SelectContext(ctx, &pages, query, hostname, hostname)
+	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
 		return nil, err
 	}

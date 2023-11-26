@@ -2,13 +2,15 @@ package duckdb
 
 import (
 	"context"
+	"strings"
 
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteCountries returns the countries for the given hostname.
-func (c *Client) GetWebsiteCountries(ctx context.Context, hostname string) ([]*model.StatsCountries, error) {
+func (c *Client) GetWebsiteCountries(ctx context.Context, filter Filter) ([]*model.StatsCountries, error) {
 	var countries []*model.StatsCountries
+	var query strings.Builder
 
 	// Array of countries
 	//
@@ -17,17 +19,17 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, hostname string) ([]*m
 	// Uniques is the number of uniques for the country.
 	//
 	// UniquePercentage is the percentage the country contributes to the total uniques.
-	query := `
+	query.WriteString(`--sql
 		SELECT
 			country_code AS country,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2) AS unique_percentage,
 		FROM views
-		WHERE hostname = ?
-		GROUP BY country
-		ORDER BY uniques DESC;`
+		WHERE `)
+	query.WriteString(filter.String())
+	query.WriteString(` GROUP BY country ORDER BY uniques DESC;`)
 
-	err := c.SelectContext(ctx, &countries, query, hostname, hostname)
+	err := c.SelectContext(ctx, &countries, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
 		return nil, err
 	}
@@ -36,8 +38,9 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, hostname string) ([]*m
 }
 
 // GetWebsiteLanguages returns the languages for the given hostname.
-func (c *Client) GetWebsiteLanguages(ctx context.Context, hostname string) ([]*model.StatsLanguages, error) {
+func (c *Client) GetWebsiteLanguages(ctx context.Context, filter Filter) ([]*model.StatsLanguages, error) {
 	var languages []*model.StatsLanguages
+	var query strings.Builder
 
 	// Array of languages
 	//
@@ -46,17 +49,17 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, hostname string) ([]*m
 	// Uniques is the number of uniques for the language.
 	//
 	// UniquePercentage is the percentage the language contributes to the total uniques.
-	query := `
+	query.WriteString(`--sql
 		SELECT
 			language,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2) AS unique_percentage,
 		FROM views
-		WHERE hostname = ?
-		GROUP BY language
-		ORDER BY uniques DESC;`
+		WHERE `)
+	query.WriteString(filter.String())
+	query.WriteString(` GROUP BY language ORDER BY uniques DESC;`)
 
-	err := c.SelectContext(ctx, &languages, query, hostname, hostname)
+	err := c.SelectContext(ctx, &languages, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
 		return nil, err
 	}

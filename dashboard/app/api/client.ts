@@ -35,7 +35,7 @@ export interface ClientOptions<
 	Body extends ComponentSchema | undefined = ComponentSchema
 > {
 	body?: Body extends ComponentSchema ? components['schemas'][Body] : undefined;
-	query?: Record<string, string | number | boolean>;
+	query?: Record<string, string | number | boolean | undefined>;
 	cookie?: string | null;
 	method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
 	noRedirect?: boolean;
@@ -57,9 +57,13 @@ const client = async (
 	const url = new URL(`${LOCALHOST}${newPath ?? path}`);
 	if (query !== undefined) {
 		for (const [key, value] of Object.entries(query)) {
-			url.searchParams.append(key, String(value));
+			if (value !== undefined) {
+				url.searchParams.append(key, String(value));
+			}
 		}
 	}
+
+	console.log(url.toString());
 
 	const res = await fetch(url, {
 		method: method ?? 'GET',

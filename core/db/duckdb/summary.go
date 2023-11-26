@@ -2,13 +2,15 @@ package duckdb
 
 import (
 	"context"
+	"strings"
 
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteSummary returns the summary stats for the given website.
-func (c *Client) GetWebsiteSummary(ctx context.Context, hostname string) (*model.StatsSummary, error) {
+func (c *Client) GetWebsiteSummary(ctx context.Context, filter Filter) (*model.StatsSummary, error) {
 	var summary model.StatsSummary
+	var query strings.Builder
 
 	// Uniques are determined by the number of is_unique values that are true.
 	//
@@ -22,7 +24,7 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, hostname string) (*model
 	// the median function can return a float for an even number of rows.
 	//
 	// Active is the number of unique visitors that have visited the website in the last 5 minutes.
-	exec := `--sql
+	query.WriteString(`--sql
 		SELECT
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			COUNT(*) AS pageviews,
@@ -30,8 +32,10 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, hostname string) (*model
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
 			COUNT(CASE WHEN is_unique = true AND (date_diff('minute', now(), date_updated) < 5) THEN 1 END) AS active
 		FROM views
-		WHERE hostname = ?`
-	err := c.GetContext(ctx, &summary, exec, hostname)
+		WHERE `)
+	query.WriteString(filter.String())
+
+	err := c.GetContext(ctx, &summary, query.String(), filter.Args()...)
 	if err != nil {
 		return nil, err
 	}

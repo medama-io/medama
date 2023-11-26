@@ -18,8 +18,10 @@ export const meta: MetaFunction = () => {
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const body = await request.formData();
 
-	const email = body.get('email')?.toString();
-	const password = body.get('password')?.toString();
+	const email = body.get('email') ? String(body.get('email')) : undefined;
+	const password = body.get('password')
+		? String(body.get('password'))
+		: undefined;
 
 	if (!email || !password) {
 		throw json('Missing email or password.', {

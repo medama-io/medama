@@ -16,13 +16,13 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.Po
 			return ErrNotFound(err), nil
 		}
 
-		return nil, err
+		return ErrInternalServerError(err), nil
 	}
 
 	// Compare password hashes.
 	match, err := h.auth.ComparePasswords(req.Password, user.Password)
 	if err != nil {
-		return nil, err
+		return ErrInternalServerError(err), nil
 	}
 	if !match {
 		return ErrUnauthorised(err), nil
@@ -31,7 +31,7 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.Po
 	// Create session.
 	cookie, err := h.auth.CreateSession(ctx, user.ID)
 	if err != nil {
-		return nil, err
+		return ErrInternalServerError(err), nil
 	}
 
 	return &api.PostAuthLoginOK{

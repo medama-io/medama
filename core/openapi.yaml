@@ -487,6 +487,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
       responses:
         "200":
           description: OK
@@ -520,6 +521,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -554,6 +556,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -588,6 +591,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -620,6 +624,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -652,6 +657,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -684,6 +690,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -717,6 +724,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -749,6 +757,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -781,6 +790,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -813,6 +823,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -845,6 +856,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -877,6 +889,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -929,6 +942,15 @@ components:
       schema:
         type: boolean
         default: false
+    Path:
+      name: path
+      in: query
+      description: Path of the page.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 2048
     PeriodStart:
       name: start
       in: query

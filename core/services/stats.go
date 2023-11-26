@@ -5,12 +5,14 @@ import (
 	"log/slog"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/model"
 )
 
 func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (api.GetWebsiteIDSummaryRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -24,8 +26,14 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get summary
-	summary, err := h.analyticsDB.GetWebsiteSummary(ctx, params.Hostname)
+	summary, err := h.analyticsDB.GetWebsiteSummary(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website summary", attributes...)
@@ -44,6 +52,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteIDPagesParams) (api.GetWebsiteIDPagesRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -57,11 +66,17 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, params.Hostname)
+		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages summary", attributes...)
@@ -69,7 +84,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		}
 
 		// Create API response
-		var res api.StatsPages
+		res := api.StatsPages{}
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
 				Path:             page.Pathname,
@@ -81,7 +96,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		return &res, nil
 	case false:
 		// Get pages
-		pages, err := h.analyticsDB.GetWebsitePages(ctx, params.Hostname)
+		pages, err := h.analyticsDB.GetWebsitePages(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages", attributes...)
@@ -89,7 +104,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		}
 
 		// Create API response
-		var res api.StatsPages
+		res := api.StatsPages{}
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
 				Path:             page.Pathname,
@@ -111,6 +126,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -124,11 +140,17 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		times, err := h.analyticsDB.GetWebsiteTimeSummary(ctx, params.Hostname)
+		times, err := h.analyticsDB.GetWebsiteTimeSummary(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time summary", attributes...)
@@ -136,7 +158,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		}
 
 		// Create API response
-		var res api.StatsTime
+		res := api.StatsTime{}
 		for _, page := range times {
 			res = append(res, api.StatsTimeItem{
 				Path:               page.Pathname,
@@ -148,7 +170,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		return &res, nil
 	case false:
 		// Get time
-		times, err := h.analyticsDB.GetWebsiteTime(ctx, params.Hostname)
+		times, err := h.analyticsDB.GetWebsiteTime(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time", attributes...)
@@ -156,7 +178,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		}
 
 		// Create API response
-		var res api.StatsTime
+		res := api.StatsTime{}
 		for _, page := range times {
 			res = append(res, api.StatsTimeItem{
 				Path:                  page.Pathname,
@@ -179,6 +201,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -193,11 +216,17 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, params.Hostname)
+		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers summary", attributes...)
@@ -205,7 +234,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		}
 
 		// Create API response
-		var res api.StatsReferrers
+		res := api.StatsReferrers{}
 		for _, page := range referrers {
 			res = append(res, api.StatsReferrersItem{
 				Referrer:         page.Referrer,
@@ -217,7 +246,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		return &res, nil
 	case false:
 		// Get referrers
-		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, params.Hostname)
+		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers", attributes...)
@@ -225,7 +254,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		}
 
 		// Create API response
-		var res api.StatsReferrers
+		res := api.StatsReferrers{}
 		for _, page := range referrers {
 			res = append(res, api.StatsReferrersItem{
 				Referrer:         page.Referrer,
@@ -245,6 +274,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -259,8 +289,14 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get sources
-	sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, params.Hostname)
+	sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm sources", attributes...)
@@ -268,7 +304,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create API response
-	var res api.StatsUTMSources
+	res := api.StatsUTMSources{}
 	for _, page := range sources {
 		res = append(res, api.StatsUTMSourcesItem{
 			Source:           page.Source,
@@ -283,6 +319,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -297,8 +334,14 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get mediums
-	mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, params.Hostname)
+	mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm mediums", attributes...)
@@ -306,7 +349,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create API response
-	var res api.StatsUTMMediums
+	res := api.StatsUTMMediums{}
 	for _, page := range mediums {
 		res = append(res, api.StatsUTMMediumsItem{
 			Medium:           page.Medium,
@@ -321,6 +364,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -335,8 +379,14 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get campaigns
-	campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, params.Hostname)
+	campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm campaigns", attributes...)
@@ -344,7 +394,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create API response
-	var res api.StatsUTMCampaigns
+	res := api.StatsUTMCampaigns{}
 	for _, page := range campaigns {
 		res = append(res, api.StatsUTMCampaignsItem{
 			Campaign:         page.Campaign,
@@ -359,6 +409,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -373,11 +424,17 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, params.Hostname)
+		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers summary", attributes...)
@@ -385,7 +442,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		}
 
 		// Create API response
-		var res api.StatsBrowsers
+		res := api.StatsBrowsers{}
 		for _, page := range browsers {
 			res = append(res, api.StatsBrowsersItem{
 				Browser:          page.Browser.String(),
@@ -397,7 +454,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		return &res, nil
 	case false:
 		// Get browsers
-		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, params.Hostname)
+		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filter)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers", attributes...)
@@ -405,7 +462,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		}
 
 		// Create API response
-		var res api.StatsBrowsers
+		res := api.StatsBrowsers{}
 		for _, page := range browsers {
 			res = append(res, api.StatsBrowsersItem{
 				Browser:          page.Browser.String(),
@@ -424,6 +481,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -438,8 +496,14 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get OS
-	oss, err := h.analyticsDB.GetWebsiteOS(ctx, params.Hostname)
+	os, err := h.analyticsDB.GetWebsiteOS(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website os", attributes...)
@@ -447,8 +511,8 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	}
 
 	// Create API response
-	var res api.StatsOS
-	for _, page := range oss {
+	res := api.StatsOS{}
+	for _, page := range os {
 		res = append(res, api.StatsOSItem{
 			Os:               page.OS.String(),
 			Uniques:          page.Uniques,
@@ -462,6 +526,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -476,8 +541,14 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get devices
-	devices, err := h.analyticsDB.GetWebsiteDevices(ctx, params.Hostname)
+	devices, err := h.analyticsDB.GetWebsiteDevices(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website devices", attributes...)
@@ -485,7 +556,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	}
 
 	// Create API response
-	var res api.StatsDevices
+	res := api.StatsDevices{}
 	for _, page := range devices {
 		res = append(res, api.StatsDevicesItem{
 			Device:           page.Device.String(),
@@ -504,6 +575,7 @@ func (h *Handler) GetWebsiteIDScreen(ctx context.Context, params api.GetWebsiteI
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -518,8 +590,14 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get languages
-	languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, params.Hostname)
+	languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website languages", attributes...)
@@ -527,7 +605,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create API response
-	var res api.StatsLanguages
+	res := api.StatsLanguages{}
 	for _, page := range languages {
 		res = append(res, api.StatsLanguagesItem{
 			Language:         page.Language,
@@ -542,6 +620,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
+		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -556,8 +635,14 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Create filter for database query
+	filter := duckdb.Filter{
+		Hostname: params.Hostname,
+		Pathname: params.Path.Value,
+	}
+
 	// Get countries
-	countries, err := h.analyticsDB.GetWebsiteCountries(ctx, params.Hostname)
+	countries, err := h.analyticsDB.GetWebsiteCountries(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website countries", attributes...)
@@ -565,7 +650,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create API response
-	var res api.StatsCountries
+	res := api.StatsCountries{}
 	for _, page := range countries {
 		// Convert country code to country name
 		country, err := h.codeCountryMap.GetCountry(page.Country)

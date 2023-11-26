@@ -12,28 +12,28 @@ type Handler interface {
 	AddPageView(ctx context.Context, event *model.PageView) error
 	UpdatePageView(ctx context.Context, event *model.PageViewUpdate) error
 	// Pages
-	GetWebsitePages(ctx context.Context, hostname string) ([]*model.StatsPages, error)
-	GetWebsitePagesSummary(ctx context.Context, hostname string) ([]*model.StatsPagesSummary, error)
+	GetWebsitePages(ctx context.Context, filter Filter) ([]*model.StatsPages, error)
+	GetWebsitePagesSummary(ctx context.Context, filter Filter) ([]*model.StatsPagesSummary, error)
 	// Locales
-	GetWebsiteCountries(ctx context.Context, hostname string) ([]*model.StatsCountries, error)
-	GetWebsiteLanguages(ctx context.Context, hostname string) ([]*model.StatsLanguages, error)
+	GetWebsiteCountries(ctx context.Context, filter Filter) ([]*model.StatsCountries, error)
+	GetWebsiteLanguages(ctx context.Context, filter Filter) ([]*model.StatsLanguages, error)
 	// Referrers
-	GetWebsiteReferrers(ctx context.Context, hostname string) ([]*model.StatsReferrers, error)
-	GetWebsiteReferrersSummary(ctx context.Context, hostname string) ([]*model.StatsReferrerSummary, error)
+	GetWebsiteReferrers(ctx context.Context, filter Filter) ([]*model.StatsReferrers, error)
+	GetWebsiteReferrersSummary(ctx context.Context, filter Filter) ([]*model.StatsReferrerSummary, error)
 	// Summary
-	GetWebsiteSummary(ctx context.Context, hostname string) (*model.StatsSummary, error)
+	GetWebsiteSummary(ctx context.Context, filter Filter) (*model.StatsSummary, error)
 	// Time
-	GetWebsiteTime(ctx context.Context, hostname string) ([]*model.StatsTime, error)
-	GetWebsiteTimeSummary(ctx context.Context, hostname string) ([]*model.StatsTimeSummary, error)
+	GetWebsiteTime(ctx context.Context, filter Filter) ([]*model.StatsTime, error)
+	GetWebsiteTimeSummary(ctx context.Context, filter Filter) ([]*model.StatsTimeSummary, error)
 	// Types
-	GetWebsiteBrowsers(ctx context.Context, hostname string) ([]*model.StatsBrowsers, error)
-	GetWebsiteBrowsersSummary(ctx context.Context, hostname string) ([]*model.StatsBrowserSummary, error)
-	GetWebsiteOS(ctx context.Context, hostname string) ([]*model.StatsOS, error)
-	GetWebsiteDevices(ctx context.Context, hostname string) ([]*model.StatsDevices, error)
+	GetWebsiteBrowsers(ctx context.Context, filter Filter) ([]*model.StatsBrowsers, error)
+	GetWebsiteBrowsersSummary(ctx context.Context, filter Filter) ([]*model.StatsBrowserSummary, error)
+	GetWebsiteOS(ctx context.Context, filter Filter) ([]*model.StatsOS, error)
+	GetWebsiteDevices(ctx context.Context, filter Filter) ([]*model.StatsDevices, error)
 	// UTM
-	GetWebsiteUTMSources(ctx context.Context, hostname string) ([]*model.StatsUTMSources, error)
-	GetWebsiteUTMMediums(ctx context.Context, hostname string) ([]*model.StatsUTMMediums, error)
-	GetWebsiteUTMCampaigns(ctx context.Context, hostname string) ([]*model.StatsUTMCampaigns, error)
+	GetWebsiteUTMSources(ctx context.Context, filter Filter) ([]*model.StatsUTMSources, error)
+	GetWebsiteUTMMediums(ctx context.Context, filter Filter) ([]*model.StatsUTMMediums, error)
+	GetWebsiteUTMCampaigns(ctx context.Context, filter Filter) ([]*model.StatsUTMCampaigns, error)
 }
 
 type Client struct {

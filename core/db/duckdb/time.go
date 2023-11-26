@@ -2,13 +2,15 @@ package duckdb
 
 import (
 	"context"
+	"strings"
 
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteTimeSummary returns a summary of the time for the given hostname.
-func (c *Client) GetWebsiteTimeSummary(ctx context.Context, hostname string) ([]*model.StatsTimeSummary, error) {
+func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter Filter) ([]*model.StatsTimeSummary, error) {
 	var times []*model.StatsTimeSummary
+	var query strings.Builder
 
 	// Array of time summaries
 	//
@@ -17,17 +19,17 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, hostname string) ([]
 	// Duration is the median duration the user spent on the page in milliseconds.
 	//
 	// DurationPercentage is the percentage the pathname contributes to the total duration.
-	query := `
+	query.WriteString(`--sql
 		SELECT
 			pathname,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
 			ROUND(ifnull(SUM(duration_ms), 0) * 100.0 / (SELECT SUM(duration_ms) FROM views WHERE hostname = ?), 2) AS duration_percentage
 		FROM views
-		WHERE hostname = ?
-		GROUP BY pathname
-		ORDER BY duration DESC;`
+		WHERE `)
+	query.WriteString(filter.String())
+	query.WriteString(` GROUP BY pathname ORDER BY duration DESC;`)
 
-	err := c.SelectContext(ctx, &times, query, hostname, hostname)
+	err := c.SelectContext(ctx, &times, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
 		return nil, err
 	}
@@ -36,8 +38,9 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, hostname string) ([]
 }
 
 // GetWebsiteTime returns the time for the given hostname.
-func (c *Client) GetWebsiteTime(ctx context.Context, hostname string) ([]*model.StatsTime, error) {
+func (c *Client) GetWebsiteTime(ctx context.Context, filter Filter) ([]*model.StatsTime, error) {
 	var times []*model.StatsTime
+	var query strings.Builder
 
 	// Array of time summaries
 	//
@@ -56,7 +59,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, hostname string) ([]*model.
 	// Bounces is the total number of bounces for the page.
 	//
 	// Uniques is the total number of uniques for the page.
-	query := `
+	query.WriteString(`--sql
 		SELECT
 			pathname,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
@@ -67,11 +70,11 @@ func (c *Client) GetWebsiteTime(ctx context.Context, hostname string) ([]*model.
 			COUNT(CASE WHEN duration_ms < 5000 THEN 1 END) AS bounces,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 		FROM views
-		WHERE hostname = ?
-		GROUP BY pathname, title
-		ORDER BY duration DESC;`
+		WHERE `)
+	query.WriteString(filter.String())
+	query.WriteString(` GROUP BY pathname, title ORDER BY duration DESC;`)
 
-	err := c.SelectContext(ctx, &times, query, hostname, hostname)
+	err := c.SelectContext(ctx, &times, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
 		return nil, err
 	}

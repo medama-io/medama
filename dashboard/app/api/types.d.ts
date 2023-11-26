@@ -396,7 +396,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from browser.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
         /** @description Browser version. */
         version?: string;
       }[];
@@ -410,9 +410,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from OS.
          */
-        uniquepercentage: number;
-        /** @description OS version. */
-        version?: string;
+        unique_percentage: number;
       }[];
     /** StatsDevices */
     StatsDevices: {
@@ -424,7 +422,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from device.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
       }[];
     /** StatsScreens */
     StatsScreens: {
@@ -436,7 +434,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from screen size.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
       }[];
     /** StatsCountries */
     StatsCountries: {
@@ -448,7 +446,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from country.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
       }[];
     /** StatsLanguages */
     StatsLanguages: {
@@ -460,7 +458,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from language.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
       }[];
   };
   responses: {
