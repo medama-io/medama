@@ -165,13 +165,13 @@ func (s *StatsCountriesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.Uniquepercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "uniquepercentage",
+			Name:  "unique_percentage",
 			Error: err,
 		})
 	}
@@ -213,13 +213,13 @@ func (s *StatsDevicesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.Uniquepercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "uniquepercentage",
+			Name:  "unique_percentage",
 			Error: err,
 		})
 	}
@@ -261,13 +261,13 @@ func (s *StatsLanguagesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.Uniquepercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "uniquepercentage",
+			Name:  "unique_percentage",
 			Error: err,
 		})
 	}
@@ -309,13 +309,13 @@ func (s *StatsOSItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.Uniquepercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "uniquepercentage",
+			Name:  "unique_percentage",
 			Error: err,
 		})
 	}
@@ -453,13 +453,13 @@ func (s *StatsScreensItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.Uniquepercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "uniquepercentage",
+			Name:  "unique_percentage",
 			Error: err,
 		})
 	}

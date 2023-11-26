@@ -4,7 +4,9 @@ import { useLoaderData } from '@remix-run/react';
 import {
 	statsBrowsers,
 	statsCampaigns,
+	statsDevices,
 	statsMediums,
+	statsOS,
 	statsPages,
 	statsReferrers,
 	statsSources,
@@ -26,6 +28,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		campaigns,
 		browsers,
 		browserSummary,
+		os,
+		devices,
 	] = await Promise.all([
 		// Main summary
 		statsSummary({
@@ -93,6 +97,14 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 				summary: true,
 			},
 		}),
+		statsOS({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
+		statsDevices({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
 	]);
 
 	if (!summary) {
@@ -115,6 +127,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		campaigns: campaigns.data,
 		browsers: browsers.data,
 		browserSummary: browserSummary.data,
+		os: os.data,
+		devices: devices.data,
 	};
 };
 
@@ -136,6 +150,8 @@ export default function Index() {
 		campaigns,
 		browsers,
 		browserSummary,
+		os,
+		devices,
 	} = useLoaderData<typeof loader>();
 
 	return (
@@ -168,6 +184,10 @@ export default function Index() {
 			{JSON.stringify(browserSummary, undefined, 2)}
 			<p>Full</p>
 			{JSON.stringify(browsers, undefined, 2)}
+			<h1>OS</h1>
+			{JSON.stringify(os, undefined, 2)}
+			<h1>Devices</h1>
+			{JSON.stringify(devices, undefined, 2)}
 		</div>
 	);
 }

@@ -422,14 +422,82 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 }
 
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
-	return nil, nil
-}
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
 
-func (h *Handler) GetWebsiteIDScreen(ctx context.Context, params api.GetWebsiteIDScreenParams) (api.GetWebsiteIDScreenRes, error) {
-	return nil, nil
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Get OS
+	oss, err := h.analyticsDB.GetWebsiteOS(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website os", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+
+	// Create API response
+	var res api.StatsOS
+	for _, page := range oss {
+		res = append(res, api.StatsOSItem{
+			Os:               page.OS.String(),
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
 }
 
 func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Get devices
+	devices, err := h.analyticsDB.GetWebsiteDevices(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website devices", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+
+	// Create API response
+	var res api.StatsDevices
+	for _, page := range devices {
+		res = append(res, api.StatsDevicesItem{
+			Device:           page.Device.String(),
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
+}
+
+func (h *Handler) GetWebsiteIDScreen(ctx context.Context, params api.GetWebsiteIDScreenParams) (api.GetWebsiteIDScreenRes, error) {
 	return nil, nil
 }
 

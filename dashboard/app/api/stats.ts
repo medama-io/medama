@@ -80,10 +80,32 @@ const statsBrowsers = async (
 	return { data: await res.json(), res };
 };
 
+const statsOS = async (
+	opts: ClientOptions<'StatsOS'>
+): Promise<DataResponse<'StatsOS'>> => {
+	const res = await client('/website/{hostname}/os', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
+const statsDevices = async (
+	opts: ClientOptions<'StatsDevices'>
+): Promise<DataResponse<'StatsDevices'>> => {
+	const res = await client('/website/{hostname}/devices', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
 export {
 	statsBrowsers,
 	statsCampaigns,
+	statsDevices,
 	statsMediums,
+	statsOS,
 	statsPages,
 	statsReferrers,
 	statsSources,

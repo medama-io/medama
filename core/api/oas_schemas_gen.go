@@ -903,7 +903,7 @@ type StatsCountriesItem struct {
 	// Number of unique users from country.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from country.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetCountry returns the value of Country.
@@ -916,9 +916,9 @@ func (s *StatsCountriesItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsCountriesItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsCountriesItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetCountry sets the value of Country.
@@ -931,9 +931,9 @@ func (s *StatsCountriesItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsCountriesItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsCountriesItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 type StatsDevices []StatsDevicesItem
@@ -946,7 +946,7 @@ type StatsDevicesItem struct {
 	// Number of unique users from device.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from device.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetDevice returns the value of Device.
@@ -959,9 +959,9 @@ func (s *StatsDevicesItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsDevicesItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsDevicesItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetDevice sets the value of Device.
@@ -974,9 +974,9 @@ func (s *StatsDevicesItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsDevicesItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsDevicesItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 type StatsLanguages []StatsLanguagesItem
@@ -989,7 +989,7 @@ type StatsLanguagesItem struct {
 	// Number of unique users from language.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from language.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetLanguage returns the value of Language.
@@ -1002,9 +1002,9 @@ func (s *StatsLanguagesItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsLanguagesItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsLanguagesItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetLanguage sets the value of Language.
@@ -1017,9 +1017,9 @@ func (s *StatsLanguagesItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsLanguagesItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsLanguagesItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 type StatsOS []StatsOSItem
@@ -1032,9 +1032,7 @@ type StatsOSItem struct {
 	// Number of unique users from OS.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from OS.
-	Uniquepercentage float32 `json:"uniquepercentage"`
-	// OS version.
-	Version OptString `json:"version"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetOs returns the value of Os.
@@ -1047,14 +1045,9 @@ func (s *StatsOSItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsOSItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
-}
-
-// GetVersion returns the value of Version.
-func (s *StatsOSItem) GetVersion() OptString {
-	return s.Version
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsOSItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetOs sets the value of Os.
@@ -1067,14 +1060,9 @@ func (s *StatsOSItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsOSItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
-}
-
-// SetVersion sets the value of Version.
-func (s *StatsOSItem) SetVersion(val OptString) {
-	s.Version = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsOSItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 type StatsPages []StatsPagesItem
@@ -1245,7 +1233,7 @@ type StatsScreensItem struct {
 	// Number of unique users from screen size.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from screen size.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetScreen returns the value of Screen.
@@ -1258,9 +1246,9 @@ func (s *StatsScreensItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsScreensItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsScreensItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetScreen sets the value of Screen.
@@ -1273,9 +1261,9 @@ func (s *StatsScreensItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsScreensItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsScreensItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 // Ref: #/components/schemas/StatsSummary

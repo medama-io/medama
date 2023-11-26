@@ -28,8 +28,8 @@ type Handler interface {
 	// Types
 	GetWebsiteBrowsers(ctx context.Context, hostname string) ([]*model.StatsBrowsers, error)
 	GetWebsiteBrowsersSummary(ctx context.Context, hostname string) ([]*model.StatsBrowserSummary, error)
-	// GetWebsiteOS(ctx context.Context, hostname string) ([]*model.StatsOS, error)
-	// GetWebsiteDevices(ctx context.Context, hostname string) ([]*model.StatsDevices, error)
+	GetWebsiteOS(ctx context.Context, hostname string) ([]*model.StatsOS, error)
+	GetWebsiteDevices(ctx context.Context, hostname string) ([]*model.StatsDevices, error)
 	// UTM
 	GetWebsiteUTMSources(ctx context.Context, hostname string) ([]*model.StatsUTMSources, error)
 	GetWebsiteUTMMediums(ctx context.Context, hostname string) ([]*model.StatsUTMMediums, error)

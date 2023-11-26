@@ -1467,17 +1467,14 @@ components:
           uniques:
             type: integer
             description: Number of unique users from OS.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from OS.
             format: float
-          version:
-            type: string
-            description: OS version.
         required:
           - os
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsDevices:
       type: array
       title: StatsDevices
@@ -1490,14 +1487,14 @@ components:
           uniques:
             type: integer
             description: Number of unique users from device.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from device.
             format: float
         required:
           - device
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsScreens:
       type: array
       title: StatsScreens
@@ -1510,14 +1507,14 @@ components:
           uniques:
             type: integer
             description: Number of unique users from screen size.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from screen size.
             format: float
         required:
           - screen
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsCountries:
       type: array
       title: StatsCountries
@@ -1530,14 +1527,14 @@ components:
           uniques:
             type: integer
             description: Number of unique users from country.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from country.
             format: float
         required:
           - country
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsLanguages:
       type: array
       title: StatsLanguages
@@ -1550,11 +1547,11 @@ components:
           uniques:
             type: integer
             description: Number of unique users from language.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from language.
             format: float
         required:
           - language
           - uniques
-          - uniquepercentage
+          - unique_percentage
