@@ -47,7 +47,17 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 		return nil, err
 	}
 
-	return nil, nil
+	// Delete all views associated with website
+	err = h.analyticsDB.DeleteWebsite(ctx, params.Hostname)
+	if err != nil {
+		if errors.Is(err, model.ErrWebsiteNotFound) {
+			return ErrNotFound(err), nil
+		}
+
+		return nil, err
+	}
+
+	return &api.DeleteWebsitesIDOK{}, nil
 }
 
 func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams) (api.GetWebsitesRes, error) {
