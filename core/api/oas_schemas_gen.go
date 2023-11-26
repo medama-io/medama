@@ -1161,8 +1161,10 @@ type StatsReferrers []StatsReferrersItem
 func (*StatsReferrers) getWebsiteIDReferrersRes() {}
 
 type StatsReferrersItem struct {
-	// Referrer URL.
-	Referrer string `json:"referrer"`
+	// Referrer hostname.
+	ReferrerHost string `json:"referrer_host"`
+	// Referrer pathname.
+	ReferrerPath OptString `json:"referrer_path"`
 	// Number of unique users from referrer.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from referrer.
@@ -1173,9 +1175,14 @@ type StatsReferrersItem struct {
 	Duration OptInt `json:"duration"`
 }
 
-// GetReferrer returns the value of Referrer.
-func (s *StatsReferrersItem) GetReferrer() string {
-	return s.Referrer
+// GetReferrerHost returns the value of ReferrerHost.
+func (s *StatsReferrersItem) GetReferrerHost() string {
+	return s.ReferrerHost
+}
+
+// GetReferrerPath returns the value of ReferrerPath.
+func (s *StatsReferrersItem) GetReferrerPath() OptString {
+	return s.ReferrerPath
 }
 
 // GetUniques returns the value of Uniques.
@@ -1198,9 +1205,14 @@ func (s *StatsReferrersItem) GetDuration() OptInt {
 	return s.Duration
 }
 
-// SetReferrer sets the value of Referrer.
-func (s *StatsReferrersItem) SetReferrer(val string) {
-	s.Referrer = val
+// SetReferrerHost sets the value of ReferrerHost.
+func (s *StatsReferrersItem) SetReferrerHost(val string) {
+	s.ReferrerHost = val
+}
+
+// SetReferrerPath sets the value of ReferrerPath.
+func (s *StatsReferrersItem) SetReferrerPath(val OptString) {
+	s.ReferrerPath = val
 }
 
 // SetUniques sets the value of Uniques.

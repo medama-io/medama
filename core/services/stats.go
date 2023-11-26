@@ -237,7 +237,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		res := api.StatsReferrers{}
 		for _, page := range referrers {
 			res = append(res, api.StatsReferrersItem{
-				Referrer:         page.Referrer,
+				ReferrerHost:     page.ReferrerHostname,
 				Uniques:          page.Uniques,
 				UniquePercentage: page.UniquePercentage,
 			})
@@ -257,7 +257,8 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		res := api.StatsReferrers{}
 		for _, page := range referrers {
 			res = append(res, api.StatsReferrersItem{
-				Referrer:         page.Referrer,
+				ReferrerHost:     page.ReferrerHostname,
+				ReferrerPath:     api.NewOptString(page.ReferrerPathname),
 				Uniques:          page.Uniques,
 				UniquePercentage: page.UniquePercentage,
 				Bounces:          api.NewOptInt(page.Bounces),

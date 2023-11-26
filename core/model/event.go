@@ -191,8 +191,10 @@ type PageView struct {
 
 	// IsUnique - Whether or not the page view is unique.
 	IsUnique bool `db:"is_unique"`
-	// Referrer - The referrer of the page view.
-	Referrer string `db:"referrer"`
+	// ReferrerHostname - The hostname of the referrer of the page view.
+	ReferrerHostname string `db:"referrer_hostname"`
+	// ReferrerPathname - The pathname of the referrer of the page view.
+	ReferrerPathname string `db:"referrer_pathname"`
 	// Title - The page title of the page view.
 	Title string `db:"title"`
 	// CountryCode - The country code associated with the user's timezone.

@@ -1374,9 +1374,12 @@ components:
       items:
         type: object
         properties:
-          referrer:
+          referrer_host:
             type: string
-            description: Referrer URL.
+            description: Referrer hostname.
+          referrer_path:
+            type: string
+            description: Referrer pathname.
           uniques:
             type: integer
             description: Number of unique users from referrer.
@@ -1391,7 +1394,7 @@ components:
             type: integer
             description: Total time spent on page from referrer in milliseconds.
         required:
-          - referrer
+          - referrer_host
           - uniques
           - unique_percentage
     StatsUTMSources:

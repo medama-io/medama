@@ -130,17 +130,21 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
-		referrerURL, err := url.Parse(req.R.Value)
-		if err != nil {
-			attributes = append(attributes, slog.String("referrer", req.R.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelWarn, "invalid referrer url", attributes...)
-		}
+		referrerHostname := ""
+		referrerPathname := ""
+		if req.R.Value != "" {
+			referrerURL, err := url.Parse(req.R.Value)
+			if err != nil {
+				attributes = append(attributes, slog.String("referrer", req.R.Value), slog.String("error", err.Error()))
+				slog.LogAttrs(ctx, slog.LevelError, "failed to parse referrer", attributes...)
+				return ErrBadRequest(err), nil
+			}
 
-		referrer := ""
-		if referrerURL != nil {
-			referrerHostname := referrerURL.Hostname()
-			if referrerHostname != "" && referrerHostname != hostname {
-				referrer = referrerHostname
+			referrerHostname = referrerURL.Hostname()
+			referrerPathname = referrerURL.Path
+			if referrerHostname == hostname {
+				referrerHostname = ""
+				referrerPathname = ""
 			}
 		}
 
@@ -201,15 +205,16 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			Hostname: hostname,
 			Pathname: pathname,
 			// Optional
-			IsUnique:       isUnique,
-			Referrer:       referrer,
-			Title:          req.T.Value,
-			CountryCode:    countryCode,
-			Language:       acceptLanguage,
-			BrowserName:    uaBrowser,
-			BrowserVersion: uaVersion,
-			OS:             uaOS,
-			DeviceType:     uaDeviceType,
+			IsUnique:         isUnique,
+			ReferrerHostname: referrerHostname,
+			ReferrerPathname: referrerPathname,
+			Title:            req.T.Value,
+			CountryCode:      countryCode,
+			Language:         acceptLanguage,
+			BrowserName:      uaBrowser,
+			BrowserVersion:   uaVersion,
+			OS:               uaOS,
+			DeviceType:       uaDeviceType,
 
 			ScreenWidth:  screenWidth,
 			ScreenHeight: screenHeight,
@@ -231,7 +236,8 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			slog.String("hostname", event.Hostname),
 			slog.String("pathname", event.Pathname),
 			slog.Bool("is_unique", event.IsUnique),
-			slog.String("referrer", event.Referrer),
+			slog.String("referrer_hostname", event.ReferrerHostname),
+			slog.String("referrer_pathname", event.ReferrerPathname),
 			slog.String("title", event.Title),
 			slog.String("country_code", countryCode),
 			slog.String("language", event.Language),

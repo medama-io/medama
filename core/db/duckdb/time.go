@@ -23,7 +23,7 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter Filter) ([]*m
 		SELECT
 			pathname,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
-			ROUND(ifnull(SUM(duration_ms), 0) * 100.0 / (SELECT SUM(duration_ms) FROM views WHERE hostname = ?), 2) AS duration_percentage
+			ifnull(ROUND(SUM(duration_ms) * 100.0 / (SELECT SUM(duration_ms) FROM views WHERE hostname = ?), 2), 0) AS duration_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())

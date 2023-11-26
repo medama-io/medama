@@ -39,15 +39,16 @@ type StatsTime struct {
 }
 
 type StatsReferrerSummary struct {
-	Referrer         string  `db:"referrer"`
+	ReferrerHostname string  `db:"referrer_hostname"`
 	Uniques          int     `db:"uniques"`
 	UniquePercentage float32 `db:"unique_percentage"`
 }
 
 type StatsReferrers struct {
 	StatsReferrerSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	ReferrerPathname string `db:"referrer_pathname"`
+	Bounces          int    `db:"bounces"`
+	Duration         int    `db:"duration"`
 }
 
 type StatsUTMSources struct {

@@ -2861,8 +2861,14 @@ func (s *StatsReferrersItem) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *StatsReferrersItem) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("referrer")
-		e.Str(s.Referrer)
+		e.FieldStart("referrer_host")
+		e.Str(s.ReferrerHost)
+	}
+	{
+		if s.ReferrerPath.Set {
+			e.FieldStart("referrer_path")
+			s.ReferrerPath.Encode(e)
+		}
 	}
 	{
 		e.FieldStart("uniques")
@@ -2886,12 +2892,13 @@ func (s *StatsReferrersItem) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfStatsReferrersItem = [5]string{
-	0: "referrer",
-	1: "uniques",
-	2: "unique_percentage",
-	3: "bounces",
-	4: "duration",
+var jsonFieldsNameOfStatsReferrersItem = [6]string{
+	0: "referrer_host",
+	1: "referrer_path",
+	2: "uniques",
+	3: "unique_percentage",
+	4: "bounces",
+	5: "duration",
 }
 
 // Decode decodes StatsReferrersItem from json.
@@ -2903,20 +2910,30 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "referrer":
+		case "referrer_host":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
-				s.Referrer = string(v)
+				s.ReferrerHost = string(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"referrer\"")
+				return errors.Wrap(err, "decode field \"referrer_host\"")
+			}
+		case "referrer_path":
+			if err := func() error {
+				s.ReferrerPath.Reset()
+				if err := s.ReferrerPath.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"referrer_path\"")
 			}
 		case "uniques":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Int()
 				s.Uniques = int(v)
@@ -2928,7 +2945,7 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
 		case "unique_percentage":
-			requiredBitSet[0] |= 1 << 2
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
 				v, err := d.Float32()
 				s.UniquePercentage = float32(v)
@@ -2969,7 +2986,7 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000111,
+		0b00001101,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

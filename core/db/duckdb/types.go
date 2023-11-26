@@ -23,7 +23,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter Filter) (
 		SELECT
 			ua_browser AS browser,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2) AS unique_percentage
+			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
@@ -55,7 +55,7 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter Filter) ([]*mode
 		SELECT
 			ua_browser AS browser,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2) AS unique_percentage,
+			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
 			ua_version AS version
 		FROM views
 		WHERE `)
@@ -86,7 +86,7 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter Filter) ([]*model.Stat
 		SELECT
 			ua_os AS os,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2) AS unique_percentage
+			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
@@ -116,7 +116,7 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter Filter) ([]*model
 		SELECT
 			ua_device_type AS device,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2) AS unique_percentage
+			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
