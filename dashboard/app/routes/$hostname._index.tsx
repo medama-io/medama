@@ -2,6 +2,7 @@ import { type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import {
+	statsBrowsers,
 	statsCampaigns,
 	statsMediums,
 	statsPages,
@@ -23,6 +24,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		sources,
 		mediums,
 		campaigns,
+		browsers,
+		browserSummary,
 	] = await Promise.all([
 		// Main summary
 		statsSummary({
@@ -78,6 +81,18 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 			cookie: request.headers.get('Cookie'),
 			pathKey: params.hostname,
 		}),
+		// Types
+		statsBrowsers({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
+		statsBrowsers({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+			query: {
+				summary: true,
+			},
+		}),
 	]);
 
 	if (!summary) {
@@ -98,6 +113,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		sources: sources.data,
 		mediums: mediums.data,
 		campaigns: campaigns.data,
+		browsers: browsers.data,
+		browserSummary: browserSummary.data,
 	};
 };
 
@@ -117,6 +134,8 @@ export default function Index() {
 		sources,
 		mediums,
 		campaigns,
+		browsers,
+		browserSummary,
 	} = useLoaderData<typeof loader>();
 
 	return (
@@ -144,6 +163,11 @@ export default function Index() {
 			{JSON.stringify(mediums, undefined, 2)}
 			<h1>Campaigns</h1>
 			{JSON.stringify(campaigns, undefined, 2)}
+			<h1>Browsers</h1>
+			<p>Summary</p>
+			{JSON.stringify(browserSummary, undefined, 2)}
+			<p>Full</p>
+			{JSON.stringify(browsers, undefined, 2)}
 		</div>
 	);
 }

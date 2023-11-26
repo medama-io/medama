@@ -357,7 +357,68 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 }
 
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Check parameter if it is asking for summary
+	switch params.Summary.Value {
+	case true:
+		// Get summary
+		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, params.Hostname)
+		if err != nil {
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers summary", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		// Create API response
+		var res api.StatsBrowsers
+		for _, page := range browsers {
+			res = append(res, api.StatsBrowsersItem{
+				Browser:          page.Browser.String(),
+				Uniques:          page.Uniques,
+				UniquePercentage: page.UniquePercentage,
+			})
+		}
+
+		return &res, nil
+	case false:
+		// Get browsers
+		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, params.Hostname)
+		if err != nil {
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		// Create API response
+		var res api.StatsBrowsers
+		for _, page := range browsers {
+			res = append(res, api.StatsBrowsersItem{
+				Browser:          page.Browser.String(),
+				Uniques:          page.Uniques,
+				UniquePercentage: page.UniquePercentage,
+				Version:          api.NewOptString(page.Version),
+			})
+		}
+
+		return &res, nil
+	default:
+		return ErrBadRequest(model.ErrInvalidParameter), nil
+	}
 }
 
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {

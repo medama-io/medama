@@ -1704,8 +1704,8 @@ func (s *StatsBrowsersItem) encodeFields(e *jx.Encoder) {
 		e.Int(s.Uniques)
 	}
 	{
-		e.FieldStart("uniquepercentage")
-		e.Float32(s.Uniquepercentage)
+		e.FieldStart("unique_percentage")
+		e.Float32(s.UniquePercentage)
 	}
 	{
 		if s.Version.Set {
@@ -1718,7 +1718,7 @@ func (s *StatsBrowsersItem) encodeFields(e *jx.Encoder) {
 var jsonFieldsNameOfStatsBrowsersItem = [4]string{
 	0: "browser",
 	1: "uniques",
-	2: "uniquepercentage",
+	2: "unique_percentage",
 	3: "version",
 }
 
@@ -1755,17 +1755,17 @@ func (s *StatsBrowsersItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
-		case "uniquepercentage":
+		case "unique_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.Uniquepercentage = float32(v)
+				s.UniquePercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniquepercentage\"")
+				return errors.Wrap(err, "decode field \"unique_percentage\"")
 			}
 		case "version":
 			if err := func() error {

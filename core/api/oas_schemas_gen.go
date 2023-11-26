@@ -848,7 +848,7 @@ type StatsBrowsersItem struct {
 	// Number of unique users from browser.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from browser.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 	// Browser version.
 	Version OptString `json:"version"`
 }
@@ -863,9 +863,9 @@ func (s *StatsBrowsersItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsBrowsersItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsBrowsersItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // GetVersion returns the value of Version.
@@ -883,9 +883,9 @@ func (s *StatsBrowsersItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsBrowsersItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsBrowsersItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 // SetVersion sets the value of Version.

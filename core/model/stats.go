@@ -68,27 +68,27 @@ type StatsUTMCampaigns struct {
 	UniquePercentage float32 `db:"unique_percentage"`
 }
 
-type StatsBrowsersSummary struct {
-	Browser          string  `db:"browser"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+type StatsBrowserSummary struct {
+	Browser          BrowserName `db:"browser"`
+	Uniques          int         `db:"uniques"`
+	UniquePercentage float32     `db:"unique_percentage"`
 }
 
 type StatsBrowsers struct {
-	StatsBrowsersSummary
+	StatsBrowserSummary
 	Version string `db:"version"`
 }
 
 type StatsOS struct {
-	OS               string  `db:"os"`
+	OS               OSName  `db:"os"`
 	Uniques          int     `db:"uniques"`
 	UniquePercentage float32 `db:"unique_percentage"`
 }
 
 type StatsDevices struct {
-	Device           string  `db:"device"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Device           DeviceType `db:"device"`
+	Uniques          int        `db:"uniques"`
+	UniquePercentage float32    `db:"unique_percentage"`
 }
 
 type StatsScreens struct {

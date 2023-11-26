@@ -70,7 +70,18 @@ const statsCampaigns = async (
 	return { data: await res.json(), res };
 };
 
+const statsBrowsers = async (
+	opts: ClientOptions<'StatsBrowsers'>
+): Promise<DataResponse<'StatsBrowsers'>> => {
+	const res = await client('/website/{hostname}/browsers', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
 export {
+	statsBrowsers,
 	statsCampaigns,
 	statsMediums,
 	statsPages,

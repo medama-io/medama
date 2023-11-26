@@ -1444,7 +1444,7 @@ components:
           uniques:
             type: integer
             description: Number of unique users from browser.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from browser.
             format: float
@@ -1454,7 +1454,7 @@ components:
         required:
           - browser
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsOS:
       type: array
       title: StatsOS
