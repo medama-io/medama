@@ -1,6 +1,6 @@
 import { Button, TextInput } from '@mantine/core';
 import {
-	type ActionFunction,
+	type ActionFunctionArgs,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node';
@@ -179,11 +179,11 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 	};
 };
 
-export const meta: MetaFunction<typeof loader> = () => {
+export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
 };
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action = async ({ request, params }: ActionFunctionArgs) => {
 	const body = await request.formData();
 	const filters = {
 		path: body.get('path') ? String(body.get('path')) : undefined,

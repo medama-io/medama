@@ -128,6 +128,22 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			isUnique = true
 		}
 
+		// Parse referrer URL and remove any query parameters or self-referencing
+		// hostnames.
+		referrerURL, err := url.Parse(req.R.Value)
+		if err != nil {
+			attributes = append(attributes, slog.String("referrer", req.R.Value), slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelWarn, "invalid referrer url", attributes...)
+		}
+
+		referrer := ""
+		if referrerURL != nil {
+			referrerHostname := referrerURL.Hostname()
+			if referrerHostname != "" && referrerHostname != hostname {
+				referrer = referrerHostname
+			}
+		}
+
 		// Get country code from user's timezone. This is used as a best effort
 		// to determine the country of the user's location without compromising
 		// their privacy using IP addresses.
@@ -186,7 +202,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			Pathname: pathname,
 			// Optional
 			IsUnique:       isUnique,
-			Referrer:       req.R.Value,
+			Referrer:       referrer,
 			Title:          req.T.Value,
 			CountryCode:    countryCode,
 			Language:       acceptLanguage,
