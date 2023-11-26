@@ -100,10 +100,32 @@ const statsDevices = async (
 	return { data: await res.json(), res };
 };
 
+const statsCountries = async (
+	opts: ClientOptions<'StatsCountries'>
+): Promise<DataResponse<'StatsCountries'>> => {
+	const res = await client('/website/{hostname}/countries', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
+const statsLanguages = async (
+	opts: ClientOptions<'StatsLanguages'>
+): Promise<DataResponse<'StatsLanguages'>> => {
+	const res = await client('/website/{hostname}/languages', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
 export {
 	statsBrowsers,
 	statsCampaigns,
+	statsCountries,
 	statsDevices,
+	statsLanguages,
 	statsMediums,
 	statsOS,
 	statsPages,

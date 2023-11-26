@@ -4,7 +4,9 @@ import { useLoaderData } from '@remix-run/react';
 import {
 	statsBrowsers,
 	statsCampaigns,
+	statsCountries,
 	statsDevices,
+	statsLanguages,
 	statsMediums,
 	statsOS,
 	statsPages,
@@ -30,6 +32,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		browserSummary,
 		os,
 		devices,
+		countries,
+		languages,
 	] = await Promise.all([
 		// Main summary
 		statsSummary({
@@ -105,6 +109,15 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 			cookie: request.headers.get('Cookie'),
 			pathKey: params.hostname,
 		}),
+		// Locale
+		statsCountries({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
+		statsLanguages({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
 	]);
 
 	if (!summary) {
@@ -129,6 +142,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		browserSummary: browserSummary.data,
 		os: os.data,
 		devices: devices.data,
+		countries: countries.data,
+		languages: languages.data,
 	};
 };
 
@@ -152,6 +167,8 @@ export default function Index() {
 		browserSummary,
 		os,
 		devices,
+		countries,
+		languages,
 	} = useLoaderData<typeof loader>();
 
 	return (
@@ -188,6 +205,10 @@ export default function Index() {
 			{JSON.stringify(os, undefined, 2)}
 			<h1>Devices</h1>
 			{JSON.stringify(devices, undefined, 2)}
+			<h1>Countries</h1>
+			{JSON.stringify(countries, undefined, 2)}
+			<h1>Languages</h1>
+			{JSON.stringify(languages, undefined, 2)}
 		</div>
 	);
 }

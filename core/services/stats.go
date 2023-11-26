@@ -502,9 +502,85 @@ func (h *Handler) GetWebsiteIDScreen(ctx context.Context, params api.GetWebsiteI
 }
 
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Get languages
+	languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website languages", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+
+	// Create API response
+	var res api.StatsLanguages
+	for _, page := range languages {
+		res = append(res, api.StatsLanguagesItem{
+			Language:         page.Language,
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
 }
 
 func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Get countries
+	countries, err := h.analyticsDB.GetWebsiteCountries(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website countries", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+
+	// Create API response
+	var res api.StatsCountries
+	for _, page := range countries {
+		// Convert country code to country name
+		country, err := h.codeCountryMap.GetCountry(page.Country)
+		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get country name", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		res = append(res, api.StatsCountriesItem{
+			Country:          country,
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
 }

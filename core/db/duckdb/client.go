@@ -15,8 +15,8 @@ type Handler interface {
 	GetWebsitePages(ctx context.Context, hostname string) ([]*model.StatsPages, error)
 	GetWebsitePagesSummary(ctx context.Context, hostname string) ([]*model.StatsPagesSummary, error)
 	// Locales
-	// GetWebsiteCountries(ctx context.Context, hostname string) ([]*model.StatsCountries, error)
-	// GetWebsiteLanguages(ctx context.Context, hostname string) ([]*model.StatsLanguages, error)
+	GetWebsiteCountries(ctx context.Context, hostname string) ([]*model.StatsCountries, error)
+	GetWebsiteLanguages(ctx context.Context, hostname string) ([]*model.StatsLanguages, error)
 	// Referrers
 	GetWebsiteReferrers(ctx context.Context, hostname string) ([]*model.StatsReferrers, error)
 	GetWebsiteReferrersSummary(ctx context.Context, hostname string) ([]*model.StatsReferrerSummary, error)
