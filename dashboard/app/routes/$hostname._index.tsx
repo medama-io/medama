@@ -2,8 +2,11 @@ import { type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import {
+	statsCampaigns,
+	statsMediums,
 	statsPages,
 	statsReferrers,
+	statsSources,
 	statsSummary,
 	statsTime,
 } from '@/api/stats';
@@ -17,6 +20,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		timeSummary,
 		referrers,
 		referrerSummary,
+		sources,
+		mediums,
+		campaigns,
 	] = await Promise.all([
 		// Main summary
 		statsSummary({
@@ -59,6 +65,19 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 				summary: true,
 			},
 		}),
+		// UTM
+		statsSources({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
+		statsMediums({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
+		statsCampaigns({
+			cookie: request.headers.get('Cookie'),
+			pathKey: params.hostname,
+		}),
 	]);
 
 	if (!summary) {
@@ -76,6 +95,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		timeSummary: timeSummary.data,
 		referrers: referrers.data,
 		referrerSummary: referrerSummary.data,
+		sources: sources.data,
+		mediums: mediums.data,
+		campaigns: campaigns.data,
 	};
 };
 
@@ -92,6 +114,9 @@ export default function Index() {
 		timeSummary,
 		referrers,
 		referrerSummary,
+		sources,
+		mediums,
+		campaigns,
 	} = useLoaderData<typeof loader>();
 
 	return (
@@ -113,6 +138,12 @@ export default function Index() {
 			{JSON.stringify(referrerSummary, undefined, 2)}
 			<p>Full</p>
 			{JSON.stringify(referrers, undefined, 2)}
+			<h1>Sources</h1>
+			{JSON.stringify(sources, undefined, 2)}
+			<h1>Mediums</h1>
+			{JSON.stringify(mediums, undefined, 2)}
+			<h1>Campaigns</h1>
+			{JSON.stringify(campaigns, undefined, 2)}
 		</div>
 	);
 }

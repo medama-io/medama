@@ -1384,14 +1384,14 @@ components:
           uniques:
             type: integer
             description: Number of unique users from UTM source.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from UTM source.
             format: float
         required:
           - source
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsUTMMediums:
       type: array
       title: StatsUTMMediums
@@ -1404,14 +1404,14 @@ components:
           uniques:
             type: integer
             description: Number of unique users from UTM medium.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from UTM medium.
             format: float
         required:
           - medium
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsUTMCampaigns:
       type: array
       title: StatsUTMCampaigns
@@ -1424,14 +1424,14 @@ components:
           uniques:
             type: integer
             description: Number of unique users from UTM campaign.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from UTM campaign.
             format: float
         required:
           - campaign
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsBrowsers:
       type: array
       title: StatsBrowsers

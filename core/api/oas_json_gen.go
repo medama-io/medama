@@ -3709,15 +3709,15 @@ func (s *StatsUTMCampaignsItem) encodeFields(e *jx.Encoder) {
 		e.Int(s.Uniques)
 	}
 	{
-		e.FieldStart("uniquepercentage")
-		e.Float32(s.Uniquepercentage)
+		e.FieldStart("unique_percentage")
+		e.Float32(s.UniquePercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsUTMCampaignsItem = [3]string{
 	0: "campaign",
 	1: "uniques",
-	2: "uniquepercentage",
+	2: "unique_percentage",
 }
 
 // Decode decodes StatsUTMCampaignsItem from json.
@@ -3753,17 +3753,17 @@ func (s *StatsUTMCampaignsItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
-		case "uniquepercentage":
+		case "unique_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.Uniquepercentage = float32(v)
+				s.UniquePercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniquepercentage\"")
+				return errors.Wrap(err, "decode field \"unique_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -3889,15 +3889,15 @@ func (s *StatsUTMMediumsItem) encodeFields(e *jx.Encoder) {
 		e.Int(s.Uniques)
 	}
 	{
-		e.FieldStart("uniquepercentage")
-		e.Float32(s.Uniquepercentage)
+		e.FieldStart("unique_percentage")
+		e.Float32(s.UniquePercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsUTMMediumsItem = [3]string{
 	0: "medium",
 	1: "uniques",
-	2: "uniquepercentage",
+	2: "unique_percentage",
 }
 
 // Decode decodes StatsUTMMediumsItem from json.
@@ -3933,17 +3933,17 @@ func (s *StatsUTMMediumsItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
-		case "uniquepercentage":
+		case "unique_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.Uniquepercentage = float32(v)
+				s.UniquePercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniquepercentage\"")
+				return errors.Wrap(err, "decode field \"unique_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -4069,15 +4069,15 @@ func (s *StatsUTMSourcesItem) encodeFields(e *jx.Encoder) {
 		e.Int(s.Uniques)
 	}
 	{
-		e.FieldStart("uniquepercentage")
-		e.Float32(s.Uniquepercentage)
+		e.FieldStart("unique_percentage")
+		e.Float32(s.UniquePercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsUTMSourcesItem = [3]string{
 	0: "source",
 	1: "uniques",
-	2: "uniquepercentage",
+	2: "unique_percentage",
 }
 
 // Decode decodes StatsUTMSourcesItem from json.
@@ -4113,17 +4113,17 @@ func (s *StatsUTMSourcesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
-		case "uniquepercentage":
+		case "unique_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.Uniquepercentage = float32(v)
+				s.UniquePercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniquepercentage\"")
+				return errors.Wrap(err, "decode field \"unique_percentage\"")
 			}
 		default:
 			return d.Skip()

@@ -31,9 +31,9 @@ type Handler interface {
 	// GetWebsiteOS(ctx context.Context, hostname string) ([]*model.StatsOS, error)
 	// GetWebsiteDevices(ctx context.Context, hostname string) ([]*model.StatsDevices, error)
 	// UTM
-	// GetWebsiteUTMSources(ctx context.Context, hostname string) ([]*model.StatsUTMSources, error)
-	// GetWebsiteUTMMediums(ctx context.Context, hostname string) ([]*model.StatsUTMMediums, error)
-	// GetWebsiteUTMCampaigns(ctx context.Context, hostname string) ([]*model.StatsUTMCampaigns, error)
+	GetWebsiteUTMSources(ctx context.Context, hostname string) ([]*model.StatsUTMSources, error)
+	GetWebsiteUTMMediums(ctx context.Context, hostname string) ([]*model.StatsUTMMediums, error)
+	GetWebsiteUTMCampaigns(ctx context.Context, hostname string) ([]*model.StatsUTMCampaigns, error)
 }
 
 type Client struct {

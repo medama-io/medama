@@ -40,4 +40,42 @@ const statsReferrers = async (
 	return { data: await res.json(), res };
 };
 
-export { statsPages, statsReferrers, statsSummary, statsTime };
+const statsSources = async (
+	opts: ClientOptions<'StatsUTMSources'>
+): Promise<DataResponse<'StatsUTMSources'>> => {
+	const res = await client('/website/{hostname}/sources', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
+const statsMediums = async (
+	opts: ClientOptions<'StatsUTMMediums'>
+): Promise<DataResponse<'StatsUTMMediums'>> => {
+	const res = await client('/website/{hostname}/mediums', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
+const statsCampaigns = async (
+	opts: ClientOptions<'StatsUTMCampaigns'>
+): Promise<DataResponse<'StatsUTMCampaigns'>> => {
+	const res = await client('/website/{hostname}/campaigns', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
+export {
+	statsCampaigns,
+	statsMediums,
+	statsPages,
+	statsReferrers,
+	statsSources,
+	statsSummary,
+	statsTime,
+};

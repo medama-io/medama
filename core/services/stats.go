@@ -243,15 +243,117 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 }
 
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Get sources
+	sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm sources", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+
+	// Create API response
+	var res api.StatsUTMSources
+	for _, page := range sources {
+		res = append(res, api.StatsUTMSourcesItem{
+			Source:           page.Source,
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
 }
 
 func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Get mediums
+	mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm mediums", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+
+	// Create API response
+	var res api.StatsUTMMediums
+	for _, page := range mediums {
+		res = append(res, api.StatsUTMMediumsItem{
+			Medium:           page.Medium,
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
 }
 
 func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Get campaigns
+	campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm campaigns", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+
+	// Create API response
+	var res api.StatsUTMCampaigns
+	for _, page := range campaigns {
+		res = append(res, api.StatsUTMCampaignsItem{
+			Campaign:         page.Campaign,
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
 }
 
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {

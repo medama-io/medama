@@ -360,7 +360,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from UTM source.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
       }[];
     /** StatsUTMMediums */
     StatsUTMMediums: {
@@ -372,7 +372,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from UTM medium.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
       }[];
     /** StatsUTMCampaigns */
     StatsUTMCampaigns: {
@@ -384,7 +384,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from UTM campaign.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
       }[];
     /** StatsBrowsers */
     StatsBrowsers: {

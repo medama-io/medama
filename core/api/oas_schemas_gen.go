@@ -1452,7 +1452,7 @@ type StatsUTMCampaignsItem struct {
 	// Number of unique users from UTM campaign.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from UTM campaign.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetCampaign returns the value of Campaign.
@@ -1465,9 +1465,9 @@ func (s *StatsUTMCampaignsItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsUTMCampaignsItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsUTMCampaignsItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetCampaign sets the value of Campaign.
@@ -1480,9 +1480,9 @@ func (s *StatsUTMCampaignsItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsUTMCampaignsItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsUTMCampaignsItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 type StatsUTMMediums []StatsUTMMediumsItem
@@ -1495,7 +1495,7 @@ type StatsUTMMediumsItem struct {
 	// Number of unique users from UTM medium.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from UTM medium.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetMedium returns the value of Medium.
@@ -1508,9 +1508,9 @@ func (s *StatsUTMMediumsItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsUTMMediumsItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsUTMMediumsItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetMedium sets the value of Medium.
@@ -1523,9 +1523,9 @@ func (s *StatsUTMMediumsItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsUTMMediumsItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsUTMMediumsItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 type StatsUTMSources []StatsUTMSourcesItem
@@ -1538,7 +1538,7 @@ type StatsUTMSourcesItem struct {
 	// Number of unique users from UTM source.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from UTM source.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 }
 
 // GetSource returns the value of Source.
@@ -1551,9 +1551,9 @@ func (s *StatsUTMSourcesItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsUTMSourcesItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsUTMSourcesItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // SetSource sets the value of Source.
@@ -1566,9 +1566,9 @@ func (s *StatsUTMSourcesItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsUTMSourcesItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsUTMSourcesItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 type UnauthorisedError struct {
