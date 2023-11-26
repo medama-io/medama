@@ -286,3 +286,7 @@ export default function Index() {
 		</div>
 	);
 }
+
+// We don't want to revalidate this page, as we want to always replace the loader
+// data with the action data.
+export const shouldRevalidate = () => false;
