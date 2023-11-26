@@ -1178,7 +1178,7 @@ type StatsReferrersItem struct {
 	// Number of unique users from referrer.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from referrer.
-	Uniquepercentage float32 `json:"uniquepercentage"`
+	UniquePercentage float32 `json:"unique_percentage"`
 	// Number of bounces from referrer.
 	Bounces OptInt `json:"bounces"`
 	// Total time spent on page from referrer in milliseconds.
@@ -1195,9 +1195,9 @@ func (s *StatsReferrersItem) GetUniques() int {
 	return s.Uniques
 }
 
-// GetUniquepercentage returns the value of Uniquepercentage.
-func (s *StatsReferrersItem) GetUniquepercentage() float32 {
-	return s.Uniquepercentage
+// GetUniquePercentage returns the value of UniquePercentage.
+func (s *StatsReferrersItem) GetUniquePercentage() float32 {
+	return s.UniquePercentage
 }
 
 // GetBounces returns the value of Bounces.
@@ -1220,9 +1220,9 @@ func (s *StatsReferrersItem) SetUniques(val int) {
 	s.Uniques = val
 }
 
-// SetUniquepercentage sets the value of Uniquepercentage.
-func (s *StatsReferrersItem) SetUniquepercentage(val float32) {
-	s.Uniquepercentage = val
+// SetUniquePercentage sets the value of UniquePercentage.
+func (s *StatsReferrersItem) SetUniquePercentage(val float32) {
+	s.UniquePercentage = val
 }
 
 // SetBounces sets the value of Bounces.

@@ -585,6 +585,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Limit"
@@ -1357,7 +1358,7 @@ components:
           uniques:
             type: integer
             description: Number of unique users from referrer.
-          uniquepercentage:
+          unique_percentage:
             type: number
             description: Percentage of unique users from referrer.
             format: float
@@ -1370,7 +1371,7 @@ components:
         required:
           - referrer
           - uniques
-          - uniquepercentage
+          - unique_percentage
     StatsUTMSources:
       type: array
       title: StatsUTMSources

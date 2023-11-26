@@ -1675,6 +1675,10 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 					In:   "path",
 				}: params.Hostname,
 				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
+				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,

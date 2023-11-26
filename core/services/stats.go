@@ -177,7 +177,69 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 }
 
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
-	return nil, nil
+	attributes := []slog.Attr{
+		slog.String("hostname", params.Hostname),
+	}
+
+	// Check if website exists
+	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		return ErrInternalServerError(err), nil
+	}
+	if !exists {
+		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
+	// Check parameter if it is asking for summary
+	switch params.Summary.Value {
+	case true:
+		// Get summary
+		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, params.Hostname)
+		if err != nil {
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers summary", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		// Create API response
+		var res api.StatsReferrers
+		for _, page := range referrers {
+			res = append(res, api.StatsReferrersItem{
+				Referrer:         page.Referrer,
+				Uniques:          page.Uniques,
+				UniquePercentage: page.UniquePercentage,
+			})
+		}
+
+		return &res, nil
+	case false:
+		// Get referrers
+		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, params.Hostname)
+		if err != nil {
+			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		// Create API response
+		var res api.StatsReferrers
+		for _, page := range referrers {
+			res = append(res, api.StatsReferrersItem{
+				Referrer:         page.Referrer,
+				Uniques:          page.Uniques,
+				UniquePercentage: page.UniquePercentage,
+				Bounces:          api.NewOptInt(page.Bounces),
+				Duration:         api.NewOptInt(page.Duration),
+			})
+		}
+
+		return &res, nil
+	default:
+		return ErrBadRequest(model.ErrInvalidParameter), nil
+	}
 }
 
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {

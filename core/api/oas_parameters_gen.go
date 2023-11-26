@@ -2932,6 +2932,8 @@ type GetWebsiteIDReferrersParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Start time (seconds) in Unix epoch format.
 	Start OptString
 	// End time (seconds) in Unix epoch format.
@@ -2954,6 +2956,15 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3080,6 +3091,52 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}

@@ -344,7 +344,7 @@ export interface components {
          * Format: float
          * @description Percentage of unique users from referrer.
          */
-        uniquepercentage: number;
+        unique_percentage: number;
         /** @description Number of bounces from referrer. */
         bounces?: number;
         /** @description Total time spent on page from referrer in milliseconds. */
@@ -998,6 +998,7 @@ export interface operations {
   "get-website-id-referrers": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         limit?: components["parameters"]["Limit"];

@@ -50,7 +50,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, hostname string) ([]*model
 	//
 	// Uniques is the number of unique visitors that match the pathname.
 	//
-	// UniquesPercentage is the percentage of unique visitors that match the pathname
+	// UniquePercentage is the percentage of unique visitors that match the pathname
 	// out of all unique visitors for the website.
 	//
 	// Pageviews is the number of pageviews that match the pathname.

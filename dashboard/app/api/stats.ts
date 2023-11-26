@@ -30,4 +30,14 @@ const statsTime = async (
 	return { data: await res.json(), res };
 };
 
-export { statsPages, statsSummary, statsTime };
+const statsReferrers = async (
+	opts: ClientOptions<'StatsReferrers'>
+): Promise<DataResponse<'StatsReferrers'>> => {
+	const res = await client('/website/{hostname}/referrers', {
+		method: 'GET',
+		...opts,
+	});
+	return { data: await res.json(), res };
+};
+
+export { statsPages, statsReferrers, statsSummary, statsTime };
