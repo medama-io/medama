@@ -488,6 +488,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
       responses:
         "200":
           description: OK
@@ -522,6 +523,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -557,6 +559,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -592,6 +595,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -625,6 +629,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -658,6 +663,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -691,6 +697,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -725,6 +732,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -758,6 +766,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -791,6 +800,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -824,6 +834,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -857,6 +868,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -890,6 +902,7 @@ paths:
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -951,6 +964,14 @@ components:
         type: string
         minLength: 1
         maxLength: 2048
+    Referrer:
+      name: referrer
+      in: query
+      description: Referrer name of the page.
+      required: false
+      schema:
+        type: string
+        minLength: 1
     PeriodStart:
       name: start
       in: query

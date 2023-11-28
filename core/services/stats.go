@@ -28,8 +28,9 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get summary
@@ -68,8 +69,9 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Check parameter if it is asking for summary
@@ -142,8 +144,9 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Check parameter if it is asking for summary
@@ -218,8 +221,9 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Check parameter if it is asking for summary
@@ -292,8 +296,9 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get sources
@@ -337,8 +342,9 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get mediums
@@ -382,8 +388,9 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get campaigns
@@ -427,8 +434,9 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Check parameter if it is asking for summary
@@ -499,8 +507,9 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get OS
@@ -544,8 +553,9 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get devices
@@ -593,8 +603,9 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get languages
@@ -638,8 +649,9 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 
 	// Create filter for database query
 	filter := duckdb.Filter{
-		Hostname: params.Hostname,
-		Pathname: params.Path.Value,
+		Hostname:         params.Hostname,
+		Pathname:         params.Path.Value,
+		ReferrerHostname: params.Referrer.Value,
 	}
 
 	// Get countries

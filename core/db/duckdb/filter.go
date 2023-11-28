@@ -5,8 +5,9 @@ import (
 )
 
 type Filter struct {
-	Hostname string
-	Pathname string
+	Hostname         string
+	Pathname         string
+	ReferrerHostname string
 }
 
 // String builds the WHERE query string.
@@ -19,6 +20,10 @@ func (f *Filter) String() string {
 
 	if f.Pathname != "" {
 		query.WriteString(" AND pathname = ?")
+	}
+
+	if f.ReferrerHostname != "" {
+		query.WriteString(" AND referrer_hostname = ?")
 	}
 
 	return query.String()
@@ -40,6 +45,10 @@ func (f *Filter) Args(startValues ...string) []interface{} {
 
 	if f.Pathname != "" {
 		args = append(args, f.Pathname)
+	}
+
+	if f.ReferrerHostname != "" {
+		args = append(args, f.ReferrerHostname)
 	}
 
 	return args

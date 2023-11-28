@@ -145,7 +145,7 @@ var Payload;
 		navigator.sendBeacon(host + '/event/hit', JSON.stringify(payload));
 
 		// Clean up all temporary variables. If the event is a history change, then we need to reset the id and timers
-		// because the page is not actually reloading including the script.
+		// because the page is not actually reloading the script.
 		if (eventType === EventType.UNLOAD) {
 			isUnique = false; // Ping cache won't be called again, so we can assume the user is not unique.
 			uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -252,6 +252,8 @@ var Payload;
 				document.addEventListener(
 					'popstate',
 					() => {
+						// Unfortunately, we can't use unload here because we can't call it before
+						// the history change.
 						sendBeacon(EventType.LOAD);
 					},
 					{
