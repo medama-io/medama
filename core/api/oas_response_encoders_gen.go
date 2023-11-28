@@ -1779,8 +1779,8 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 
 func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *PostEventHitOK:
-		w.WriteHeader(200)
+	case *PostEventHitNoContent:
+		w.WriteHeader(204)
 
 		return nil
 

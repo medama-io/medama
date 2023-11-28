@@ -86,7 +86,7 @@ paths:
               $ref: "#/components/schemas/EventHit"
         required: true
       responses:
-        "200":
+        "204":
           description: OK.
         "400":
           $ref: "#/components/responses/BadRequestError"
@@ -1148,7 +1148,7 @@ components:
           description: If the user is a unique user or not.
         e:
           type: string
-          description: "Event type consisting of either 'pagehide', 'unload', 'load', 'hidden' or 'visible'."
+          description: "Event type consisting of either 'pagehide', 'unload', 'load', 'hidden', 'visible' or 'replace'."
         t:
           type: string
           description: Title of page.

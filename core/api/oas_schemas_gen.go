@@ -179,7 +179,7 @@ type EventHit struct {
 	R OptString `json:"r"`
 	// If the user is a unique user or not.
 	P OptBool `json:"p"`
-	// Event type consisting of either 'pagehide', 'unload', 'load', 'hidden' or 'visible'.
+	// Event type consisting of either 'pagehide', 'unload', 'load', 'hidden', 'visible' or 'replace'.
 	E string `json:"e"`
 	// Title of page.
 	T OptString `json:"t"`
@@ -833,10 +833,10 @@ func (s *PostAuthLoginOK) SetSetCookie(val string) {
 
 func (*PostAuthLoginOK) postAuthLoginRes() {}
 
-// PostEventHitOK is response for PostEventHit operation.
-type PostEventHitOK struct{}
+// PostEventHitNoContent is response for PostEventHit operation.
+type PostEventHitNoContent struct{}
 
-func (*PostEventHitOK) postEventHitRes() {}
+func (*PostEventHitNoContent) postEventHitRes() {}
 
 type StatsBrowsers []StatsBrowsersItem
 

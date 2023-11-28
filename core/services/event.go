@@ -121,7 +121,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 	// Add to database
 	switch req.E {
-	case "load":
+	case "load", "replace":
 		// If is unique is not set, default to true
 		isUnique, exists := req.P.Get()
 		if !exists {
@@ -286,5 +286,5 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 	}
 
-	return &api.PostEventHitOK{}, nil
+	return &api.PostEventHitNoContent{}, nil
 }

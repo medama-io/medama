@@ -32,9 +32,9 @@ const EventType = {
 var Payload;
 
 /**
- * Note that we don't try inline global values such as `self` or `document` because
+ * Note that we don't try to inline global values such as `self` or `document` because
  * while it does reduce actual bundle size, it is LESS efficient with gzip compression
- * which is more practical.
+ * which should be a more practical benchmark for users.
  *
  * @see https://github.com/google/closure-compiler/wiki/FAQ#closure-compiler-inlined-all-my-strings-which-made-my-code-size-bigger-why-did-it-do-that
  */
@@ -45,12 +45,17 @@ var Payload;
 	}
 
 	/**
+	 * document.currentScript can only be called when the script is being executed. If
+	 * we call the script in an event listener, then it will be null. So we need to
+	 * make a copy of the currentScript object to use later.
+	 */
+	const currentScript = document.currentScript;
+
+	/**
 	 * Get API URL from data-host in script tag with the correct protocol.
 	 */
 	const host =
-		document.location.protocol +
-		'//' +
-		document.currentScript.getAttribute('data-api');
+		document.location.protocol + '//' + currentScript.getAttribute('data-api');
 
 	/**
 	 * Generate a unique ID for linking multiple beacon events together for the same user.
@@ -60,7 +65,7 @@ var Payload;
 	 * because uniqueness against collisions is not a requirement and is worth
 	 * the tradeoff for bundle size and performance.
 	 */
-	const uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
+	let uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
 	/**
 	 * Whether the user is unique or not.
@@ -81,13 +86,22 @@ var Payload;
 	let hiddenTimeTemp = 0;
 
 	/**
-	 * XMLHttpRequest object for pinging the server.
-	 *
-	 * @remarks We hoist this variable to the top to let the closure compiler infer
-	 * that it can declare this variable together with the other variables in a single
-	 * line instead of separately, which saves us a few bytes.
+	 * @remarks We hoist the following variables to the top to let the closure compiler
+	 * infer that it can declare these variables together with the other variables in a
+	 * single line instead of separately, which saves us a few bytes.
 	 */
-	let xhr = new XMLHttpRequest();
+
+	/**
+	 * XMLHttpRequest object for pinging the server used in load event.
+	 */
+	const xhr = new XMLHttpRequest();
+
+	/**
+	 * Copy of the original pushState and replaceState functions, used for overriding
+	 * the History API to track navigation changes.
+	 */
+	const pushState = history.pushState;
+	const replaceState = history.replaceState;
 
 	/**
 	 * Send a beacon event to the server.
@@ -129,6 +143,15 @@ var Payload;
 		};
 
 		navigator.sendBeacon(host + '/event/hit', JSON.stringify(payload));
+
+		// Clean up all temporary variables. If the event is a history change, then we need to reset the id and timers
+		// because the page is not actually reloading including the script.
+		if (eventType === EventType.UNLOAD) {
+			isUnique = false; // Ping cache won't be called again, so we can assume the user is not unique.
+			uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
+			hiddenTimeMs = 0;
+			hiddenTimeTemp = 0;
+		}
 	};
 
 	// Prefer pagehide if available because it's more reliable than unload.
@@ -142,9 +165,7 @@ var Payload;
 			() => {
 				sendBeacon(EventType.PAGEHIDE);
 			},
-			{
-				capture: true,
-			}
+			{ capture: true }
 		);
 	} else {
 		// Otherwise, use unload. This will break bfcache, but it's better than nothing.
@@ -156,9 +177,7 @@ var Payload;
 			() => {
 				sendBeacon(EventType.UNLOAD);
 			},
-			{
-				capture: true,
-			}
+			{ capture: true }
 		);
 	}
 
@@ -181,26 +200,100 @@ var Payload;
 	 * Ping the server with the cache endpoint and read the last modified header to determine
 	 * if the user is unique or not.
 	 *
-	 * If the response is not cached, then the user is unique. If it is cached, the
-	 * last-modified header will return the timestamp of the day at midnight incremented by
-	 * how many times the user has visited the site.
+	 * If the response is not cached, then the user is unique. If it is cached, then the
+	 * browser will send an If-Modified-Since header indicating the user is not unique.
 	 */
 	xhr.open('GET', host + '/event/ping');
 	xhr.setRequestHeader('Content-Type', 'text/plain');
 	xhr.addEventListener(
-		'load',
+		EventType.LOAD,
 		() => {
-			// Check if response is 1. If it is, then the user is not unique.
+			// The server will respond with a 0 or 1 depending on whether an If-Modified-Since
+			// header was sent or not. It also considers if the header is more than a day old
+			// to reset the cache. If the response is 1 then the user is not unique.
 			if (xhr.responseText === '1') {
 				isUnique = false;
 			}
 
 			// Send the first beacon event to the server.
 			sendBeacon(EventType.LOAD);
+
+			// Check if hash mode is enabled. If it is, then we need to send a beacon event
+			// when the hash changes. If disabled, it is safe to override the History API.
+			if (currentScript.getAttribute('data-hash')) {
+				// Hash mode is enabled. Add hashchange event listener.
+				document.addEventListener(
+					'hashchange',
+					() => {
+						sendBeacon(EventType.LOAD);
+					},
+					{
+						capture: true,
+					}
+				);
+			} else {
+				// Add pushState event listeners to track navigation changes with
+				// router libraries that use the History API.
+				history.pushState = function () {
+					sendBeacon(EventType.UNLOAD);
+					pushState.apply(history, arguments);
+					sendBeacon(EventType.LOAD);
+				};
+
+				// replaceState is used by some router libraries to replace the current
+				// history state instead of pushing a new one.
+				history.replaceState = function () {
+					sendBeacon(EventType.UNLOAD);
+					replaceState.apply(history, arguments);
+					sendBeacon(EventType.LOAD);
+				};
+
+				// popstate is fired when the back or forward button is pressed.
+				document.addEventListener(
+					'popstate',
+					() => {
+						sendBeacon(EventType.LOAD);
+					},
+					{
+						capture: true,
+					}
+				);
+			}
+
+			// Add event listeners for all outbound links.
+			// Get all elements with an href attribute.
+			/* const links = document.getElementsByTagName('a');
+			for (let i = 0; i < links.length; i++) {
+				// Get the link.
+				const link = links[i];
+
+				// Check if the link is outbound.
+				if (link.host !== document.location.host && link.host !== '') {
+					// Add event listener to the link.
+					link.addEventListener('click', () => {
+						sendBeacon(EventType.REPLACE);
+					});
+
+					// Handle middle click and ctrl/cmd click.
+					link.addEventListener(
+						'auxclick',
+						(event) => {
+							if (event.button === 1) {
+								sendBeacon(EventType.REPLACE);
+							}
+						},
+						{
+							capture: true,
+						}
+					);
+				}
+			} */
 		},
 		{
-			once: true,
 			capture: true,
+			// The load event might be called multiple times, so we only want to
+			// listen to it once.
+			once: true,
 		}
 	);
 	xhr.send();

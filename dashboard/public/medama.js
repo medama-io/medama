@@ -1,44 +1,48 @@
 (function () {
 	if (document) {
-		var d =
-				document.location.protocol +
-				'//' +
-				document.currentScript.getAttribute('data-api'),
-			h = Date.now().toString(36) + Math.random().toString(36).substr(2),
-			e = !0,
+		var g = document.currentScript,
+			h = document.location.protocol + '//' + g.getAttribute('data-api'),
+			k = Date.now().toString(36) + Math.random().toString(36).substr(2),
+			d = !0,
+			e = 0,
 			f = 0,
-			g = 0,
 			b = new XMLHttpRequest(),
-			c = function (a) {
-				a = {
-					b: h,
+			l = history.pushState,
+			m = history.replaceState,
+			a = function (c) {
+				var n = {
+					b: k,
 					u: location.href,
 					r: document.referrer,
 					d: Intl.DateTimeFormat().resolvedOptions().timeZone,
-					p: e,
+					p: d,
 					t: document.title,
 					w: self.screen.width,
 					h: self.screen.height,
-					e: a,
+					e: c,
 					m:
-						'pagehide' === a || 'hidden' === a || 'unload' === a
-							? self.performance.now() - f
+						'pagehide' === c || 'hidden' === c || 'unload' === c
+							? self.performance.now() - e
 							: void 0,
 				};
-				navigator.sendBeacon(d + '/event/hit', JSON.stringify(a));
+				navigator.sendBeacon(h + '/event/hit', JSON.stringify(n));
+				'unload' === c &&
+					((d = !1),
+					(k = Date.now().toString(36) + Math.random().toString(36).substr(2)),
+					(f = e = 0));
 			};
 		'onpagehide' in self
 			? document.addEventListener(
 					'pagehide',
 					function () {
-						c('pagehide');
+						a('pagehide');
 					},
 					{ capture: !0 }
 			  )
 			: document.addEventListener(
 					'unload',
 					function () {
-						c('unload');
+						a('unload');
 					},
 					{ capture: !0 }
 			  );
@@ -46,20 +50,45 @@
 			'visibilitychange',
 			function () {
 				'hidden' === document.visibilityState
-					? ((g = self.performance.now()), c('hidden'))
-					: (f += self.performance.now() - g);
+					? ((f = self.performance.now()), a('hidden'))
+					: (e += self.performance.now() - f);
 			},
 			{ capture: !0 }
 		);
-		b.open('GET', d + '/event/ping');
+		b.open('GET', h + '/event/ping');
 		b.setRequestHeader('Content-Type', 'text/plain');
 		b.addEventListener(
 			'load',
 			function () {
-				'1' === b.responseText && (e = !1);
-				c('load');
+				'1' === b.responseText && (d = !1);
+				a('load');
+				g.getAttribute('data-hash')
+					? document.addEventListener(
+							'hashchange',
+							function () {
+								a('load');
+							},
+							{ capture: !0 }
+					  )
+					: ((history.pushState = function () {
+							a('unload');
+							l.apply(history, arguments);
+							a('load');
+					  }),
+					  (history.replaceState = function () {
+							a('unload');
+							m.apply(history, arguments);
+							a('load');
+					  }),
+					  document.addEventListener(
+							'popstate',
+							function () {
+								a('load');
+							},
+							{ capture: !0 }
+					  ));
 			},
-			{ once: !0, capture: !0 }
+			{ capture: !0, once: !0 }
 		);
 		b.send();
 	}
