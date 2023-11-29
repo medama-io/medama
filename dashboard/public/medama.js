@@ -7,10 +7,15 @@
 			e = 0,
 			f = 0,
 			b = new XMLHttpRequest(),
-			l = history.pushState,
-			m = history.replaceState,
+			m = history.pushState,
+			n = history.replaceState,
+			l = function () {
+				d = !1;
+				k = Date.now().toString(36) + Math.random().toString(36).substr(2);
+				f = e = 0;
+			},
 			a = function (c) {
-				var n = {
+				var p = {
 					b: k,
 					u: location.href,
 					r: document.referrer,
@@ -25,11 +30,8 @@
 							? self.performance.now() - e
 							: void 0,
 				};
-				navigator.sendBeacon(h + '/event/hit', JSON.stringify(n));
-				'unload' === c &&
-					((d = !1),
-					(k = Date.now().toString(36) + Math.random().toString(36).substr(2)),
-					(f = e = 0));
+				navigator.sendBeacon(h + '/event/hit', JSON.stringify(p));
+				'unload' === c && l();
 			};
 		'onpagehide' in self
 			? document.addEventListener(
@@ -72,17 +74,18 @@
 					  )
 					: ((history.pushState = function () {
 							a('unload');
-							l.apply(history, arguments);
+							m.apply(history, arguments);
 							a('load');
 					  }),
 					  (history.replaceState = function () {
 							a('unload');
-							m.apply(history, arguments);
+							n.apply(history, arguments);
 							a('load');
 					  }),
-					  document.addEventListener(
+					  window.addEventListener(
 							'popstate',
 							function () {
+								l();
 								a('load');
 							},
 							{ capture: !0 }

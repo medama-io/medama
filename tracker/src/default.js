@@ -100,8 +100,19 @@ var Payload;
 	 * Copy of the original pushState and replaceState functions, used for overriding
 	 * the History API to track navigation changes.
 	 */
-	const pushState = history.pushState;
-	const replaceState = history.replaceState;
+	const historyPush = history.pushState;
+	const historyReplace = history.replaceState;
+
+	/**
+	 * Cleanup temporary variables and reset the unique ID.
+	 */
+	const cleanup = () => {
+		// Ping cache won't be called again, so we can assume the user is not unique.
+		isUnique = false;
+		uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
+		hiddenTimeMs = 0;
+		hiddenTimeTemp = 0;
+	};
 
 	/**
 	 * Send a beacon event to the server.
@@ -144,13 +155,10 @@ var Payload;
 
 		navigator.sendBeacon(host + '/event/hit', JSON.stringify(payload));
 
-		// Clean up all temporary variables. If the event is a history change, then we need to reset the id and timers
+		// If the event is a history change, then we need to reset the id and timers
 		// because the page is not actually reloading the script.
 		if (eventType === EventType.UNLOAD) {
-			isUnique = false; // Ping cache won't be called again, so we can assume the user is not unique.
-			uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
-			hiddenTimeMs = 0;
-			hiddenTimeTemp = 0;
+			cleanup();
 		}
 	};
 
@@ -236,7 +244,7 @@ var Payload;
 				// router libraries that use the History API.
 				history.pushState = function () {
 					sendBeacon(EventType.UNLOAD);
-					pushState.apply(history, arguments);
+					historyPush.apply(history, arguments);
 					sendBeacon(EventType.LOAD);
 				};
 
@@ -244,16 +252,19 @@ var Payload;
 				// history state instead of pushing a new one.
 				history.replaceState = function () {
 					sendBeacon(EventType.UNLOAD);
-					replaceState.apply(history, arguments);
+					historyReplace.apply(history, arguments);
 					sendBeacon(EventType.LOAD);
 				};
 
 				// popstate is fired when the back or forward button is pressed.
-				document.addEventListener(
+				// We use window instead of document here because the document state
+				// doesn't change immediately when the event is fired.
+				window.addEventListener(
 					'popstate',
 					() => {
 						// Unfortunately, we can't use unload here because we can't call it before
-						// the history change.
+						// the history change, so cleanup any temporary variables here.
+						cleanup();
 						sendBeacon(EventType.LOAD);
 					},
 					{
