@@ -177,7 +177,7 @@ type EventHit struct {
 	// Page URL including query parameters.
 	U url.URL `json:"u"`
 	// Referrer URL.
-	R OptURI `json:"r"`
+	R OptString `json:"r"`
 	// If the user is a unique user or not.
 	P bool `json:"p"`
 	// Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
@@ -205,7 +205,7 @@ func (s *EventHit) GetU() url.URL {
 }
 
 // GetR returns the value of R.
-func (s *EventHit) GetR() OptURI {
+func (s *EventHit) GetR() OptString {
 	return s.R
 }
 
@@ -255,7 +255,7 @@ func (s *EventHit) SetU(val url.URL) {
 }
 
 // SetR sets the value of R.
-func (s *EventHit) SetR(val OptURI) {
+func (s *EventHit) SetR(val OptString) {
 	s.R = val
 }
 
@@ -775,52 +775,6 @@ func (o OptString) Get() (v string, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptString) Or(d string) string {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptURI returns new OptURI with value set to v.
-func NewOptURI(v url.URL) OptURI {
-	return OptURI{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptURI is optional url.URL.
-type OptURI struct {
-	Value url.URL
-	Set   bool
-}
-
-// IsSet returns true if OptURI was set.
-func (o OptURI) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptURI) Reset() {
-	var v url.URL
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptURI) SetTo(v url.URL) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptURI) Get() (v url.URL, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptURI) Or(d url.URL) url.URL {
 	if v, ok := o.Get(); ok {
 		return v
 	}

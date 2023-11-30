@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -118,9 +119,17 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		// hostnames.
 		referrerHostname := ""
 		referrerPathname := ""
-		if req.R.IsSet() {
-			referrerHostname = req.R.Value.Hostname()
-			referrerPathname = req.R.Value.Path
+		if req.R.Value != "" {
+			referrer, err := url.Parse(req.R.Value)
+			if err != nil {
+				attributes = append(attributes, slog.String("error", err.Error()))
+				slog.LogAttrs(ctx, slog.LevelError, "failed to parse referrer URL", attributes...)
+				return ErrBadRequest(err), nil
+			}
+			referrerHostname = referrer.Hostname()
+			referrerPathname = referrer.Path
+			// If the referrer hostname is the same as the current hostname, we
+			// want to remove it.
 			if referrerHostname == hostname {
 				referrerHostname = ""
 				referrerPathname = ""

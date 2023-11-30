@@ -1165,7 +1165,6 @@ components:
         r:
           type: string
           description: Referrer URL.
-          format: uri
         p:
           type: boolean
           description: If the user is a unique user or not.
