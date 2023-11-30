@@ -1161,15 +1161,22 @@ components:
         u:
           type: string
           description: Page URL including query parameters.
+          format: uri
         r:
           type: string
           description: Referrer URL.
+          format: uri
         p:
           type: boolean
           description: If the user is a unique user or not.
         e:
           type: string
-          description: "Event type consisting of either 'pagehide', 'unload', 'load', 'hidden', 'visible' or 'replace'."
+          description: "Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'."
+          enum:
+            - pagehide
+            - unload
+            - load
+            - hidden
         t:
           type: string
           description: Title of page.
@@ -1188,7 +1195,9 @@ components:
       required:
         - b
         - u
+        - p
         - e
+        - d
     UserCreate:
       type: object
       title: UserCreate
@@ -1398,6 +1407,7 @@ components:
           referrer_host:
             type: string
             description: Referrer hostname.
+            format: hostname
           referrer_path:
             type: string
             description: Referrer pathname.

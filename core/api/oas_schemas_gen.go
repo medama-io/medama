@@ -4,6 +4,7 @@ package api
 
 import (
 	"io"
+	"net/url"
 
 	"github.com/go-faster/errors"
 )
@@ -174,17 +175,17 @@ type EventHit struct {
 	// UUID generated for each user to link multiple events on the same page together.
 	B string `json:"b"`
 	// Page URL including query parameters.
-	U string `json:"u"`
+	U url.URL `json:"u"`
 	// Referrer URL.
-	R OptString `json:"r"`
+	R OptURI `json:"r"`
 	// If the user is a unique user or not.
-	P OptBool `json:"p"`
-	// Event type consisting of either 'pagehide', 'unload', 'load', 'hidden', 'visible' or 'replace'.
-	E string `json:"e"`
+	P bool `json:"p"`
+	// Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
+	E EventHitE `json:"e"`
 	// Title of page.
 	T OptString `json:"t"`
 	// Timezone of the user.
-	D OptString `json:"d"`
+	D string `json:"d"`
 	// Screen width.
 	W OptInt `json:"w"`
 	// Screen height.
@@ -199,22 +200,22 @@ func (s *EventHit) GetB() string {
 }
 
 // GetU returns the value of U.
-func (s *EventHit) GetU() string {
+func (s *EventHit) GetU() url.URL {
 	return s.U
 }
 
 // GetR returns the value of R.
-func (s *EventHit) GetR() OptString {
+func (s *EventHit) GetR() OptURI {
 	return s.R
 }
 
 // GetP returns the value of P.
-func (s *EventHit) GetP() OptBool {
+func (s *EventHit) GetP() bool {
 	return s.P
 }
 
 // GetE returns the value of E.
-func (s *EventHit) GetE() string {
+func (s *EventHit) GetE() EventHitE {
 	return s.E
 }
 
@@ -224,7 +225,7 @@ func (s *EventHit) GetT() OptString {
 }
 
 // GetD returns the value of D.
-func (s *EventHit) GetD() OptString {
+func (s *EventHit) GetD() string {
 	return s.D
 }
 
@@ -249,22 +250,22 @@ func (s *EventHit) SetB(val string) {
 }
 
 // SetU sets the value of U.
-func (s *EventHit) SetU(val string) {
+func (s *EventHit) SetU(val url.URL) {
 	s.U = val
 }
 
 // SetR sets the value of R.
-func (s *EventHit) SetR(val OptString) {
+func (s *EventHit) SetR(val OptURI) {
 	s.R = val
 }
 
 // SetP sets the value of P.
-func (s *EventHit) SetP(val OptBool) {
+func (s *EventHit) SetP(val bool) {
 	s.P = val
 }
 
 // SetE sets the value of E.
-func (s *EventHit) SetE(val string) {
+func (s *EventHit) SetE(val EventHitE) {
 	s.E = val
 }
 
@@ -274,7 +275,7 @@ func (s *EventHit) SetT(val OptString) {
 }
 
 // SetD sets the value of D.
-func (s *EventHit) SetD(val OptString) {
+func (s *EventHit) SetD(val string) {
 	s.D = val
 }
 
@@ -291,6 +292,62 @@ func (s *EventHit) SetH(val OptInt) {
 // SetM sets the value of M.
 func (s *EventHit) SetM(val OptInt) {
 	s.M = val
+}
+
+// Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
+type EventHitE string
+
+const (
+	EventHitEPagehide EventHitE = "pagehide"
+	EventHitEUnload   EventHitE = "unload"
+	EventHitELoad     EventHitE = "load"
+	EventHitEHidden   EventHitE = "hidden"
+)
+
+// AllValues returns all EventHitE values.
+func (EventHitE) AllValues() []EventHitE {
+	return []EventHitE{
+		EventHitEPagehide,
+		EventHitEUnload,
+		EventHitELoad,
+		EventHitEHidden,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s EventHitE) MarshalText() ([]byte, error) {
+	switch s {
+	case EventHitEPagehide:
+		return []byte(s), nil
+	case EventHitEUnload:
+		return []byte(s), nil
+	case EventHitELoad:
+		return []byte(s), nil
+	case EventHitEHidden:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *EventHitE) UnmarshalText(data []byte) error {
+	switch EventHitE(data) {
+	case EventHitEPagehide:
+		*s = EventHitEPagehide
+		return nil
+	case EventHitEUnload:
+		*s = EventHitEUnload
+		return nil
+	case EventHitELoad:
+		*s = EventHitELoad
+		return nil
+	case EventHitEHidden:
+		*s = EventHitEHidden
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type ForbiddenError struct {
@@ -718,6 +775,52 @@ func (o OptString) Get() (v string, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptString) Or(d string) string {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptURI returns new OptURI with value set to v.
+func NewOptURI(v url.URL) OptURI {
+	return OptURI{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptURI is optional url.URL.
+type OptURI struct {
+	Value url.URL
+	Set   bool
+}
+
+// IsSet returns true if OptURI was set.
+func (o OptURI) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptURI) Reset() {
+	var v url.URL
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptURI) SetTo(v url.URL) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptURI) Get() (v url.URL, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptURI) Or(d url.URL) url.URL {
 	if v, ok := o.Get(); ok {
 		return v
 	}

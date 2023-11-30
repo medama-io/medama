@@ -60,6 +60,44 @@ func (s *AuthLogin) Validate() error {
 	return nil
 }
 
+func (s *EventHit) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.E.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "e",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s EventHitE) Validate() error {
+	switch s {
+	case "pagehide":
+		return nil
+	case "unload":
+		return nil
+	case "load":
+		return nil
+	case "hidden":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s GetWebsitesOKApplicationJSON) Validate() error {
 	alias := ([]WebsiteGet)(s)
 	if alias == nil {
@@ -404,6 +442,25 @@ func (s *StatsReferrersItem) Validate() error {
 	}
 
 	var failures []validate.FieldError
+	if err := func() error {
+		if err := (validate.String{
+			MinLength:    0,
+			MinLengthSet: false,
+			MaxLength:    0,
+			MaxLengthSet: false,
+			Email:        false,
+			Hostname:     true,
+			Regex:        nil,
+		}).Validate(string(s.ReferrerHost)); err != nil {
+			return errors.Wrap(err, "string")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "referrer_host",
+			Error: err,
+		})
+	}
 	if err := func() error {
 		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
 			return errors.Wrap(err, "float")

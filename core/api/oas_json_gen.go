@@ -9,6 +9,7 @@ import (
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
 
+	"github.com/ogen-go/ogen/json"
 	"github.com/ogen-go/ogen/validate"
 )
 
@@ -556,7 +557,7 @@ func (s *EventHit) encodeFields(e *jx.Encoder) {
 	}
 	{
 		e.FieldStart("u")
-		e.Str(s.U)
+		json.EncodeURI(e, s.U)
 	}
 	{
 		if s.R.Set {
@@ -565,14 +566,12 @@ func (s *EventHit) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.P.Set {
-			e.FieldStart("p")
-			s.P.Encode(e)
-		}
+		e.FieldStart("p")
+		e.Bool(s.P)
 	}
 	{
 		e.FieldStart("e")
-		e.Str(s.E)
+		s.E.Encode(e)
 	}
 	{
 		if s.T.Set {
@@ -581,10 +580,8 @@ func (s *EventHit) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.D.Set {
-			e.FieldStart("d")
-			s.D.Encode(e)
-		}
+		e.FieldStart("d")
+		e.Str(s.D)
 	}
 	{
 		if s.W.Set {
@@ -643,8 +640,8 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 		case "u":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				v, err := d.Str()
-				s.U = string(v)
+				v, err := json.DecodeURI(d)
+				s.U = v
 				if err != nil {
 					return err
 				}
@@ -663,9 +660,11 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"r\"")
 			}
 		case "p":
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				s.P.Reset()
-				if err := s.P.Decode(d); err != nil {
+				v, err := d.Bool()
+				s.P = bool(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -675,9 +674,7 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 		case "e":
 			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
-				v, err := d.Str()
-				s.E = string(v)
-				if err != nil {
+				if err := s.E.Decode(d); err != nil {
 					return err
 				}
 				return nil
@@ -695,9 +692,11 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"t\"")
 			}
 		case "d":
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
-				s.D.Reset()
-				if err := s.D.Decode(d); err != nil {
+				v, err := d.Str()
+				s.D = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -744,7 +743,7 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [2]uint8{
-		0b00010011,
+		0b01011011,
 		0b00000000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
@@ -787,6 +786,50 @@ func (s *EventHit) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *EventHit) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes EventHitE as json.
+func (s EventHitE) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes EventHitE from json.
+func (s *EventHitE) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode EventHitE to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch EventHitE(v) {
+	case EventHitEPagehide:
+		*s = EventHitEPagehide
+	case EventHitEUnload:
+		*s = EventHitEUnload
+	case EventHitELoad:
+		*s = EventHitELoad
+	case EventHitEHidden:
+		*s = EventHitEHidden
+	default:
+		*s = EventHitE(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s EventHitE) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *EventHitE) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -1465,41 +1508,6 @@ func (s *NotFoundErrorError) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes bool as json.
-func (o OptBool) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Bool(bool(o.Value))
-}
-
-// Decode decodes bool from json.
-func (o *OptBool) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptBool to nil")
-	}
-	o.Set = true
-	v, err := d.Bool()
-	if err != nil {
-		return err
-	}
-	o.Value = bool(v)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptBool) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptBool) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes int as json.
 func (o OptInt) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -1566,6 +1574,41 @@ func (s OptString) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptString) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes url.URL as json.
+func (o OptURI) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	json.EncodeURI(e, o.Value)
+}
+
+// Decode decodes url.URL from json.
+func (o *OptURI) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptURI to nil")
+	}
+	o.Set = true
+	v, err := json.DecodeURI(d)
+	if err != nil {
+		return err
+	}
+	o.Value = v
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptURI) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptURI) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

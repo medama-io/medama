@@ -4,7 +4,6 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
-	"net/url"
 	"strings"
 	"time"
 
@@ -29,11 +28,11 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	attributes = append(attributes, slog.String("if_modified", ifModified))
 
 	// Get current day but reset the time to 00:00:00
-	currentDay := time.Now().UTC().Truncate(OneDay)
+	currentDay := time.Now().Truncate(OneDay)
 
 	// If it is not set, it is a unique user.
 	if ifModified == "" {
-		// Return body to activate caching which is the number of seconds
+		// Return body to activate caching.
 		body := strings.NewReader("0")
 
 		lastModified := currentDay.Format(http.TimeFormat)
@@ -62,7 +61,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	if lastModifiedTime.Before(currentDay) {
 		lastModifiedTime = currentDay
 
-		// Return body to activate caching which is the number of seconds
+		// Return body to activate caching.
 		body := strings.NewReader("0")
 
 		lastModified := lastModifiedTime.Format(http.TimeFormat)
@@ -96,15 +95,8 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
 	attributes := []slog.Attr{}
 
-	// Split url into hostname and pathname
-	u, err := url.Parse(req.U)
-	if err != nil {
-		attributes = append(attributes, slog.String("url", req.U), slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to parse url", attributes...)
-		return ErrBadRequest(err), nil
-	}
-	hostname := u.Hostname()
-	pathname := u.Path
+	hostname := req.U.Hostname()
+	pathname := req.U.Path
 
 	// Verify hostname exists
 	exists, err := h.db.WebsiteExists(ctx, hostname)
@@ -121,27 +113,14 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 	// Add to database
 	switch req.E {
-	case "load", "replace":
-		// If is unique is not set, default to true
-		isUnique, exists := req.P.Get()
-		if !exists {
-			isUnique = true
-		}
-
+	case api.EventHitELoad:
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
 		referrerHostname := ""
 		referrerPathname := ""
-		if req.R.Value != "" {
-			referrerURL, err := url.Parse(req.R.Value)
-			if err != nil {
-				attributes = append(attributes, slog.String("referrer", req.R.Value), slog.String("error", err.Error()))
-				slog.LogAttrs(ctx, slog.LevelError, "failed to parse referrer", attributes...)
-				return ErrBadRequest(err), nil
-			}
-
-			referrerHostname = referrerURL.Hostname()
-			referrerPathname = referrerURL.Path
+		if req.R.IsSet() {
+			referrerHostname = req.R.Value.Hostname()
+			referrerPathname = req.R.Value.Path
 			if referrerHostname == hostname {
 				referrerHostname = ""
 				referrerPathname = ""
@@ -151,7 +130,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		// Get country code from user's timezone. This is used as a best effort
 		// to determine the country of the user's location without compromising
 		// their privacy using IP addresses.
-		countryCode, err := h.timezoneMap.GetCode(req.D.Value)
+		countryCode, err := h.timezoneMap.GetCode(req.D)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get country code from timezone", attributes...)
@@ -194,7 +173,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
-		queries := u.Query()
+		queries := req.U.Query()
 		utmSource := queries.Get("utm_source")
 		utmMedium := queries.Get("utm_medium")
 		utmCampaign := queries.Get("utm_campaign")
@@ -205,7 +184,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			Hostname: hostname,
 			Pathname: pathname,
 			// Optional
-			IsUnique:         isUnique,
+			IsUnique:         req.P,
 			ReferrerHostname: referrerHostname,
 			ReferrerPathname: referrerPathname,
 			Title:            req.T.Value,
@@ -232,7 +211,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		attributes = append(attributes,
 			slog.String("bid", event.BID),
-			slog.String("event_type", req.E),
+			slog.String("event_type", string(req.E)),
 			slog.String("hostname", event.Hostname),
 			slog.String("pathname", event.Pathname),
 			slog.Bool("is_unique", event.IsUnique),
@@ -259,7 +238,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		// Log success
 		slog.LogAttrs(ctx, slog.LevelDebug, "added page view", attributes...)
-	case "pagehide", "unload", "hidden":
+	case api.EventHitEPagehide, api.EventHitEUnload, api.EventHitEHidden:
 		event := &model.PageViewUpdate{
 			BID:        req.B,
 			DurationMs: req.M.Value,
@@ -267,7 +246,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		attributes = append(attributes,
 			slog.String("bid", event.BID),
-			slog.String("event_type", req.E),
+			slog.String("event_type", string(req.E)),
 			slog.Int("duration_ms", event.DurationMs),
 		)
 
@@ -281,7 +260,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		// Log success
 		slog.LogAttrs(ctx, slog.LevelDebug, "updated page view", attributes...)
 	default:
-		attributes = append(attributes, slog.String("event_type", req.E))
+		attributes = append(attributes, slog.String("event_type", string(req.E)))
 		slog.LogAttrs(ctx, slog.LevelError, "invalid event type", attributes...)
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 	}
