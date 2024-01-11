@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteSummary returns the summary stats for the given website.
-func (c *Client) GetWebsiteSummary(ctx context.Context, filter Filter) (*model.StatsSummary, error) {
+func (c *Client) GetWebsiteSummary(ctx context.Context, filter db.Filter) (*model.StatsSummary, error) {
 	var summary model.StatsSummary
 	var query strings.Builder
 

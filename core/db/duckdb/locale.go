@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteCountries returns the countries for the given hostname.
-func (c *Client) GetWebsiteCountries(ctx context.Context, filter Filter) ([]*model.StatsCountries, error) {
+func (c *Client) GetWebsiteCountries(ctx context.Context, filter db.Filter) ([]*model.StatsCountries, error) {
 	var countries []*model.StatsCountries
 	var query strings.Builder
 
@@ -38,7 +39,7 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter Filter) ([]*mod
 }
 
 // GetWebsiteLanguages returns the languages for the given hostname.
-func (c *Client) GetWebsiteLanguages(ctx context.Context, filter Filter) ([]*model.StatsLanguages, error) {
+func (c *Client) GetWebsiteLanguages(ctx context.Context, filter db.Filter) ([]*model.StatsLanguages, error) {
 	var languages []*model.StatsLanguages
 	var query strings.Builder
 

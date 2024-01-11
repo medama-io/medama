@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsitePagesSummary returns a summary of the pages for the given hostname.
-func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter Filter) ([]*model.StatsPagesSummary, error) {
+func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter db.Filter) ([]*model.StatsPagesSummary, error) {
 	var pages []*model.StatsPagesSummary
 	var query strings.Builder
 
@@ -41,7 +42,7 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter Filter) ([]*
 }
 
 // GetWebsitePages returns the pages statistics for the given hostname.
-func (c *Client) GetWebsitePages(ctx context.Context, filter Filter) ([]*model.StatsPages, error) {
+func (c *Client) GetWebsitePages(ctx context.Context, filter db.Filter) ([]*model.StatsPages, error) {
 	var pages []*model.StatsPages
 	var query strings.Builder
 

@@ -5,7 +5,7 @@ import (
 	"log/slog"
 
 	"github.com/medama-io/medama/api"
-	"github.com/medama-io/medama/db/duckdb"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
@@ -27,7 +27,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -68,7 +68,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -143,7 +143,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -220,7 +220,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -295,7 +295,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -341,7 +341,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -387,7 +387,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -433,7 +433,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -506,7 +506,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -552,7 +552,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -602,7 +602,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
@@ -648,7 +648,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := duckdb.Filter{
+	filter := db.Filter{
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,

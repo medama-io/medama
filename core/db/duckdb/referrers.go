@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteReferrersSummary returns a summary of the referrers for the given filters.
-func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter Filter) ([]*model.StatsReferrerSummary, error) {
+func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter db.Filter) ([]*model.StatsReferrerSummary, error) {
 	var referrers []*model.StatsReferrerSummary
 	var query strings.Builder
 
@@ -38,7 +39,7 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter Filter) 
 }
 
 // GetWebsiteReferrers returns the referrers for the given hostname.
-func (c *Client) GetWebsiteReferrers(ctx context.Context, filter Filter) ([]*model.StatsReferrers, error) {
+func (c *Client) GetWebsiteReferrers(ctx context.Context, filter db.Filter) ([]*model.StatsReferrers, error) {
 	var referrers []*model.StatsReferrers
 	var query strings.Builder
 

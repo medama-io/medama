@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteUTMSources returns the utm sources for the given hostname.
-func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter Filter) ([]*model.StatsUTMSources, error) {
+func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter db.Filter) ([]*model.StatsUTMSources, error) {
 	var utms []*model.StatsUTMSources
 	var query strings.Builder
 
@@ -20,7 +21,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter Filter) ([]*mo
 	//
 	// UniquePercentage is the percentage the utm source contributes to the total uniques.
 	query.WriteString(`--sql
-		SELECT
+		SELECTs
 			utm_source AS source,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
@@ -38,7 +39,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter Filter) ([]*mo
 }
 
 // GetWebsiteUTMMediums returns the utm mediums for the given hostname.
-func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter Filter) ([]*model.StatsUTMMediums, error) {
+func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter db.Filter) ([]*model.StatsUTMMediums, error) {
 	var utms []*model.StatsUTMMediums
 	var query strings.Builder
 
@@ -68,7 +69,7 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter Filter) ([]*mo
 }
 
 // GetWebsiteUTMCampaigns returns the utm campaigns for the given hostname.
-func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter Filter) ([]*model.StatsUTMCampaigns, error) {
+func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter db.Filter) ([]*model.StatsUTMCampaigns, error) {
 	var utms []*model.StatsUTMCampaigns
 	var query strings.Builder
 

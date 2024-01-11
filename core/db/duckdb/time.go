@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteTimeSummary returns a summary of the time for the given hostname.
-func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter Filter) ([]*model.StatsTimeSummary, error) {
+func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter db.Filter) ([]*model.StatsTimeSummary, error) {
 	var times []*model.StatsTimeSummary
 	var query strings.Builder
 
@@ -38,7 +39,7 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter Filter) ([]*m
 }
 
 // GetWebsiteTime returns the time for the given hostname.
-func (c *Client) GetWebsiteTime(ctx context.Context, filter Filter) ([]*model.StatsTime, error) {
+func (c *Client) GetWebsiteTime(ctx context.Context, filter db.Filter) ([]*model.StatsTime, error) {
 	var times []*model.StatsTime
 	var query strings.Builder
 

@@ -15,7 +15,6 @@ import (
 const (
 	// CorsOrigin is the origin to allow for CORS.
 	CorsOrigin = "*"
-
 	// OneDay is the duration of one day.
 	OneDay = 24 * time.Hour
 	// Set to no-cache to disable caching.

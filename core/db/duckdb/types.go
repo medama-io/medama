@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteBrowserSummary returns a summary of the browsers for the given hostname.
-func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter Filter) ([]*model.StatsBrowserSummary, error) {
+func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter db.Filter) ([]*model.StatsBrowserSummary, error) {
 	var browsers []*model.StatsBrowserSummary
 	var query strings.Builder
 
@@ -38,7 +39,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter Filter) (
 }
 
 // GetWebsiteBrowser returns the browsers for the given hostname.
-func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter Filter) ([]*model.StatsBrowsers, error) {
+func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter db.Filter) ([]*model.StatsBrowsers, error) {
 	var browsers []*model.StatsBrowsers
 	var query strings.Builder
 
@@ -71,7 +72,7 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter Filter) ([]*mode
 }
 
 // GetWebsiteOS returns the operating systems for the given hostname.
-func (c *Client) GetWebsiteOS(ctx context.Context, filter Filter) ([]*model.StatsOS, error) {
+func (c *Client) GetWebsiteOS(ctx context.Context, filter db.Filter) ([]*model.StatsOS, error) {
 	var os []*model.StatsOS
 	var query strings.Builder
 
@@ -101,7 +102,7 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter Filter) ([]*model.Stat
 }
 
 // GetWebsiteDevices returns the devices for the given hostname.
-func (c *Client) GetWebsiteDevices(ctx context.Context, filter Filter) ([]*model.StatsDevices, error) {
+func (c *Client) GetWebsiteDevices(ctx context.Context, filter db.Filter) ([]*model.StatsDevices, error) {
 	var devices []*model.StatsDevices
 	var query strings.Builder
 

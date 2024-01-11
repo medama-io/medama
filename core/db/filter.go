@@ -1,9 +1,11 @@
-package duckdb
+package db
 
 import (
 	"strings"
 )
 
+// Filter is a struct that contains all the possible filters that can be applied
+// to a query.
 type Filter struct {
 	Hostname         string
 	Pathname         string
