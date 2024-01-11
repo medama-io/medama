@@ -1406,7 +1406,6 @@ components:
           referrer_host:
             type: string
             description: Referrer hostname.
-            format: hostname
           referrer_path:
             type: string
             description: Referrer pathname.

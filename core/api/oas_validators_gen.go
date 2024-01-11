@@ -443,25 +443,6 @@ func (s *StatsReferrersItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.String{
-			MinLength:    0,
-			MinLengthSet: false,
-			MaxLength:    0,
-			MaxLengthSet: false,
-			Email:        false,
-			Hostname:     true,
-			Regex:        nil,
-		}).Validate(string(s.ReferrerHost)); err != nil {
-			return errors.Wrap(err, "string")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "referrer_host",
-			Error: err,
-		})
-	}
-	if err := func() error {
 		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
