@@ -51,14 +51,6 @@ func (s *UnauthorisedErrorError) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *UserCreate) setDefaults() {
-	{
-		val := UserCreateLanguage("en")
-		s.Language.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
 func (s *UserGet) setDefaults() {
 	{
 		val := UserGetLanguage("en")

@@ -23,10 +23,10 @@ import (
 )
 
 type StartCommand struct {
-	Debug  bool
-	Server ServerConfig
-	SQLite SQLiteConfig
-	DuckDB DuckDBConfig
+	Debug       bool
+	Server      ServerConfig
+	AppDB       AppDBConfig
+	AnalyticsDB AnalyticsDBConfig
 }
 
 // NewStartCommand creates a new start command.
@@ -39,10 +39,10 @@ func NewStartCommand() *StartCommand {
 			TimeoutWrite:         DefaultTimeoutWrite,
 			TimeoutIdle:          DefaultTimeoutIdle,
 		},
-		SQLite: SQLiteConfig{
+		AppDB: AppDBConfig{
 			Host: DefaultSQLiteHost,
 		},
-		DuckDB: DuckDBConfig{
+		AnalyticsDB: AnalyticsDBConfig{
 			Host: DefaultDuckDBHost,
 		},
 	}
@@ -64,12 +64,12 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	slog.Info(GetVersion())
 
 	// Setup database
-	sqlite, err := sqlite.NewClient(s.SQLite.Host)
+	sqlite, err := sqlite.NewClient(s.AppDB.Host)
 	if err != nil {
 		return err
 	}
 
-	duckdb, err := duckdb.NewClient(s.DuckDB.Host)
+	duckdb, err := duckdb.NewClient(s.AnalyticsDB.Host)
 	if err != nil {
 		return err
 	}

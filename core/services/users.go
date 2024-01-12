@@ -8,7 +8,6 @@ import (
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
-	"go.jetpack.io/typeid"
 )
 
 func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.GetUserRes, error) {
@@ -36,7 +35,7 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 	}
 
 	return &api.UserGet{
-		Email:       user.Email,
+		Username:    user.Username,
 		Language:    api.UserGetLanguage(user.Language),
 		DateCreated: user.DateCreated,
 		DateUpdated: user.DateUpdated,
@@ -70,10 +69,10 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 
 	// Update values
 	dateUpdated := time.Now().Unix()
-	email := req.Email.Value
-	if email != "" {
-		user.Email = email
-		err = h.db.UpdateUserEmail(ctx, user.ID, email, dateUpdated)
+	username := req.Username.Value
+	if username != "" {
+		user.Username = username
+		err = h.db.UpdateUserUsername(ctx, user.ID, username, dateUpdated)
 		if err != nil {
 			if errors.Is(err, model.ErrUserExists) {
 				slog.LogAttrs(ctx, slog.LevelDebug, "email to patch already exists", attributes...)
@@ -109,100 +108,10 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 	}
 
 	return &api.UserGet{
-		Email:       user.Email,
+		Username:    user.Username,
 		Language:    api.UserGetLanguage(user.Language),
 		DateCreated: user.DateCreated,
 		DateUpdated: user.DateUpdated,
-	}, nil
-}
-
-func (h *Handler) PostUser(ctx context.Context, req *api.UserCreate) (api.PostUserRes, error) {
-	// Do not allow user account creation if number of users exceeds 1
-	/* count, err := h.db.GetUserCount(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if count > 0 {
-		slog.WarnContext(ctx, "maximum number of users reached when creating user", slog.Int("count", count))
-		return ErrForbidden(model.ErrUserMax), nil
-	} */
-
-	attributes := []slog.Attr{}
-
-	// UUIDv7 id generation
-	typeid, err := typeid.WithPrefix("user")
-	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to generate user id", attributes...)
-		return nil, err
-	}
-	id := typeid.String()
-	email := req.Email
-
-	// Validate language as an accepted enum
-	/* err = req.Value.Language.Value.Validate()
-	if err != nil {
-		//nolint:nilerr // We know it returns only one error type.
-		return ErrBadRequest(model.ErrUserInvalidLanguage), nil
-	} */
-	language := string(req.Language.Value)
-
-	dateCreated := time.Now().Unix()
-	dateUpdated := dateCreated
-
-	attributes = append(attributes,
-		slog.String("email", email),
-		slog.String("language", language),
-		slog.Int64("date_created", dateCreated),
-		slog.Int64("date_updated", dateUpdated),
-	)
-	slog.LogAttrs(ctx, slog.LevelDebug, "creating user", attributes...)
-
-	// Hash password
-	pwdHash, err := h.auth.HashPassword(req.Password)
-	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to hash password", attributes...)
-		return nil, err
-	}
-
-	user := &model.User{
-		ID:          id,
-		Email:       email,
-		Password:    pwdHash,
-		Language:    language,
-		DateCreated: dateCreated,
-		DateUpdated: dateUpdated,
-	}
-
-	err = h.db.CreateUser(ctx, user)
-	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		if errors.Is(err, model.ErrUserExists) {
-			slog.LogAttrs(ctx, slog.LevelWarn, "user already exists", attributes...)
-			return ErrConflict(err), nil
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to create user", attributes...)
-		return nil, err
-	}
-
-	// Add session to cache
-	cookie, err := h.auth.CreateSession(ctx, user.ID)
-	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to create session", attributes...)
-		return nil, err
-	}
-
-	return &api.UserGetHeaders{
-		SetCookie: cookie.String(),
-		Response: api.UserGet{
-			Email:       user.Email,
-			Language:    api.UserGetLanguage(user.Language),
-			DateCreated: dateCreated,
-			DateUpdated: dateUpdated,
-		},
 	}, nil
 }
 
@@ -232,7 +141,7 @@ func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (
 	}
 
 	attributes = append(attributes,
-		slog.String("email", user.Email),
+		slog.String("email", user.Username),
 		slog.String("language", user.Language),
 		slog.Int64("date_created", user.DateCreated),
 		slog.Int64("date_updated", user.DateUpdated),

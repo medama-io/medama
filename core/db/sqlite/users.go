@@ -11,9 +11,9 @@ import (
 
 func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 	exec := `--sql
-	INSERT INTO users (id, email, password, language, date_created, date_updated) VALUES (?, ?, ?, ?, ?, ?)`
+	INSERT INTO users (id, username, password, language, date_created, date_updated) VALUES (?, ?, ?, ?, ?, ?)`
 
-	_, err := c.DB.ExecContext(ctx, exec, user.ID, user.Email, user.Password, user.Language, user.DateCreated, user.DateUpdated)
+	_, err := c.DB.ExecContext(ctx, exec, user.ID, user.Username, user.Password, user.Language, user.DateCreated, user.DateUpdated)
 	if err != nil {
 		var sqliteError sqlite3.Error
 		if errors.As(err, &sqliteError) {
@@ -30,7 +30,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 
 func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	query := `--sql
-	SELECT id, email, password, language, date_created, date_updated FROM users WHERE id = ?`
+	SELECT id, username, password, language, date_created, date_updated FROM users WHERE id = ?`
 
 	res, err := c.DB.QueryxContext(ctx, query, id)
 	if err != nil {
@@ -57,11 +57,11 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	return nil, model.ErrUserNotFound
 }
 
-func (c *Client) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
+func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	query := `--sql
-	SELECT id, email, password, language, date_created, date_updated FROM users WHERE email = ?`
+	SELECT id, username, password, language, date_created, date_updated FROM users WHERE username = ?`
 
-	res, err := c.DB.QueryxContext(ctx, query, email)
+	res, err := c.DB.QueryxContext(ctx, query, username)
 	if err != nil {
 		return nil, err
 	}
@@ -82,24 +82,11 @@ func (c *Client) GetUserByEmail(ctx context.Context, email string) (*model.User,
 	return nil, model.ErrUserNotFound
 }
 
-func (c *Client) GetUserCount(ctx context.Context) (int64, error) {
-	query := `--sql
-	SELECT COUNT(*) FROM users`
-
-	var count int64
-	err := c.DB.GetContext(ctx, &count, query)
-	if err != nil {
-		return 0, err
-	}
-
-	return count, nil
-}
-
-func (c *Client) UpdateUserEmail(ctx context.Context, id string, email string, dateUpdated int64) error {
+func (c *Client) UpdateUserUsername(ctx context.Context, id string, username string, dateUpdated int64) error {
 	exec := `--sql
-	UPDATE users SET email = ?, date_updated = ? WHERE id = ?`
+	UPDATE users SET username = ?, date_updated = ? WHERE id = ?`
 
-	_, err := c.DB.ExecContext(ctx, exec, email, dateUpdated, id)
+	_, err := c.DB.ExecContext(ctx, exec, username, dateUpdated, id)
 	if err != nil {
 		var sqliteError sqlite3.Error
 		if errors.As(err, &sqliteError) {

@@ -17,11 +17,11 @@ type ServerConfig struct {
 	TimeoutIdle  time.Duration
 }
 
-type SQLiteConfig struct {
+type AppDBConfig struct {
 	Host string `env:"DATABASE_HOST,default=./sqlite.dev.db"`
 }
 
-type DuckDBConfig struct {
+type AnalyticsDBConfig struct {
 	Host string `env:"DATABASE_HOST,default=./duckdb.dev.db"`
 }
 

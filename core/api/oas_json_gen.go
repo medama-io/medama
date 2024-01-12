@@ -23,8 +23,8 @@ func (s *AuthLogin) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *AuthLogin) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("email")
-		e.Str(s.Email)
+		e.FieldStart("username")
+		e.Str(s.Username)
 	}
 	{
 		e.FieldStart("password")
@@ -33,7 +33,7 @@ func (s *AuthLogin) encodeFields(e *jx.Encoder) {
 }
 
 var jsonFieldsNameOfAuthLogin = [2]string{
-	0: "email",
+	0: "username",
 	1: "password",
 }
 
@@ -46,17 +46,17 @@ func (s *AuthLogin) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "email":
+		case "username":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
-				s.Email = string(v)
+				s.Username = string(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"email\"")
+				return errors.Wrap(err, "decode field \"username\"")
 			}
 		case "password":
 			requiredBitSet[0] |= 1 << 1
@@ -1574,39 +1574,6 @@ func (s OptString) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptString) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes UserCreateLanguage as json.
-func (o OptUserCreateLanguage) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Str(string(o.Value))
-}
-
-// Decode decodes UserCreateLanguage from json.
-func (o *OptUserCreateLanguage) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptUserCreateLanguage to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptUserCreateLanguage) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptUserCreateLanguage) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -4398,175 +4365,6 @@ func (s *UnauthorisedErrorError) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s *UserCreate) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields encodes fields.
-func (s *UserCreate) encodeFields(e *jx.Encoder) {
-	{
-		e.FieldStart("email")
-		e.Str(s.Email)
-	}
-	{
-		e.FieldStart("password")
-		e.Str(s.Password)
-	}
-	{
-		if s.Language.Set {
-			e.FieldStart("language")
-			s.Language.Encode(e)
-		}
-	}
-}
-
-var jsonFieldsNameOfUserCreate = [3]string{
-	0: "email",
-	1: "password",
-	2: "language",
-}
-
-// Decode decodes UserCreate from json.
-func (s *UserCreate) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode UserCreate to nil")
-	}
-	var requiredBitSet [1]uint8
-	s.setDefaults()
-
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		case "email":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Email = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"email\"")
-			}
-		case "password":
-			requiredBitSet[0] |= 1 << 1
-			if err := func() error {
-				v, err := d.Str()
-				s.Password = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"password\"")
-			}
-		case "language":
-			if err := func() error {
-				s.Language.Reset()
-				if err := s.Language.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"language\"")
-			}
-		default:
-			return d.Skip()
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode UserCreate")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [1]uint8{
-		0b00000011,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(jsonFieldsNameOfUserCreate) {
-					name = jsonFieldsNameOfUserCreate[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s *UserCreate) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UserCreate) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes UserCreateLanguage as json.
-func (s UserCreateLanguage) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes UserCreateLanguage from json.
-func (s *UserCreateLanguage) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode UserCreateLanguage to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch UserCreateLanguage(v) {
-	case UserCreateLanguageEn:
-		*s = UserCreateLanguageEn
-	default:
-		*s = UserCreateLanguage(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s UserCreateLanguage) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UserCreateLanguage) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
 func (s *UserGet) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -4576,8 +4374,8 @@ func (s *UserGet) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *UserGet) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("email")
-		e.Str(s.Email)
+		e.FieldStart("username")
+		e.Str(s.Username)
 	}
 	{
 		e.FieldStart("language")
@@ -4594,7 +4392,7 @@ func (s *UserGet) encodeFields(e *jx.Encoder) {
 }
 
 var jsonFieldsNameOfUserGet = [4]string{
-	0: "email",
+	0: "username",
 	1: "language",
 	2: "dateCreated",
 	3: "dateUpdated",
@@ -4610,17 +4408,17 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "email":
+		case "username":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
-				s.Email = string(v)
+				s.Username = string(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"email\"")
+				return errors.Wrap(err, "decode field \"username\"")
 			}
 		case "language":
 			requiredBitSet[0] |= 1 << 1
@@ -4760,9 +4558,9 @@ func (s *UserPatch) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *UserPatch) encodeFields(e *jx.Encoder) {
 	{
-		if s.Email.Set {
-			e.FieldStart("email")
-			s.Email.Encode(e)
+		if s.Username.Set {
+			e.FieldStart("username")
+			s.Username.Encode(e)
 		}
 	}
 	{
@@ -4780,7 +4578,7 @@ func (s *UserPatch) encodeFields(e *jx.Encoder) {
 }
 
 var jsonFieldsNameOfUserPatch = [3]string{
-	0: "email",
+	0: "username",
 	1: "password",
 	2: "language",
 }
@@ -4794,15 +4592,15 @@ func (s *UserPatch) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "email":
+		case "username":
 			if err := func() error {
-				s.Email.Reset()
-				if err := s.Email.Decode(d); err != nil {
+				s.Username.Reset()
+				if err := s.Username.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"email\"")
+				return errors.Wrap(err, "decode field \"username\"")
 			}
 		case "password":
 			if err := func() error {

@@ -20,24 +20,24 @@ func (s *AuthLogin) Validate() error {
 		if err := (validate.String{
 			MinLength:    3,
 			MinLengthSet: true,
-			MaxLength:    320,
+			MaxLength:    120,
 			MaxLengthSet: true,
-			Email:        true,
+			Email:        false,
 			Hostname:     false,
 			Regex:        nil,
-		}).Validate(string(s.Email)); err != nil {
+		}).Validate(string(s.Username)); err != nil {
 			return errors.Wrap(err, "string")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "email",
+			Name:  "username",
 			Error: err,
 		})
 	}
 	if err := func() error {
 		if err := (validate.String{
-			MinLength:    8,
+			MinLength:    5,
 			MinLengthSet: true,
 			MaxLength:    128,
 			MaxLengthSet: true,
@@ -699,83 +699,6 @@ func (s *StatsUTMSourcesItem) Validate() error {
 	return nil
 }
 
-func (s *UserCreate) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if err := (validate.String{
-			MinLength:    3,
-			MinLengthSet: true,
-			MaxLength:    320,
-			MaxLengthSet: true,
-			Email:        true,
-			Hostname:     false,
-			Regex:        nil,
-		}).Validate(string(s.Email)); err != nil {
-			return errors.Wrap(err, "string")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "email",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if err := (validate.String{
-			MinLength:    8,
-			MinLengthSet: true,
-			MaxLength:    128,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     false,
-			Regex:        nil,
-		}).Validate(string(s.Password)); err != nil {
-			return errors.Wrap(err, "string")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "password",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if value, ok := s.Language.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "language",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s UserCreateLanguage) Validate() error {
-	switch s {
-	case "en":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
 func (s *UserGet) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -786,18 +709,18 @@ func (s *UserGet) Validate() error {
 		if err := (validate.String{
 			MinLength:    3,
 			MinLengthSet: true,
-			MaxLength:    320,
+			MaxLength:    120,
 			MaxLengthSet: true,
-			Email:        true,
+			Email:        false,
 			Hostname:     false,
 			Regex:        nil,
-		}).Validate(string(s.Email)); err != nil {
+		}).Validate(string(s.Username)); err != nil {
 			return errors.Wrap(err, "string")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "email",
+			Name:  "username",
 			Error: err,
 		})
 	}
@@ -809,29 +732,6 @@ func (s *UserGet) Validate() error {
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
 			Name:  "language",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s *UserGetHeaders) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if err := s.Response.Validate(); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "Response",
 			Error: err,
 		})
 	}
@@ -857,14 +757,14 @@ func (s *UserPatch) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if value, ok := s.Email.Get(); ok {
+		if value, ok := s.Username.Get(); ok {
 			if err := func() error {
 				if err := (validate.String{
 					MinLength:    3,
 					MinLengthSet: true,
-					MaxLength:    320,
+					MaxLength:    120,
 					MaxLengthSet: true,
-					Email:        true,
+					Email:        false,
 					Hostname:     false,
 					Regex:        nil,
 				}).Validate(string(value)); err != nil {
@@ -878,7 +778,7 @@ func (s *UserPatch) Validate() error {
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "email",
+			Name:  "username",
 			Error: err,
 		})
 	}
@@ -886,7 +786,7 @@ func (s *UserPatch) Validate() error {
 		if value, ok := s.Password.Get(); ok {
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    8,
+					MinLength:    5,
 					MinLengthSet: true,
 					MaxLength:    128,
 					MaxLengthSet: true,

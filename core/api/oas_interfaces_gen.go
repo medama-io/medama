@@ -93,10 +93,6 @@ type PostEventHitRes interface {
 	postEventHitRes()
 }
 
-type PostUserRes interface {
-	postUserRes()
-}
-
 type PostWebsitesRes interface {
 	postWebsitesRes()
 }

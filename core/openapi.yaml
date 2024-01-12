@@ -171,78 +171,6 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-    post:
-      tags:
-        - user
-      summary: Create New User.
-      description: Create a new user.
-      operationId: post-user
-      requestBody:
-        description: Post the necessary fields for the API to create a new user.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserCreate"
-        required: true
-      responses:
-        "201":
-          description: User Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserGet"
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-              description: Set the cookie for the session.
-              required: true
-          links:
-            GetUser:
-              operationId: get-user
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-            PatchUser:
-              operationId: patch-user
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-            DeleteUser:
-              operationId: delete-user
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-            PostWebsites:
-              operationId: post-websites
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-            GetWebsites:
-              operationId: get-websites
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-            GetWebsite:
-              operationId: get-websites-id
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-            PatchWebsite:
-              operationId: patch-websites-id
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-            DeleteWebsite:
-              operationId: delete-websites-id
-              parameters:
-                _me_sess: $response.header.Set-Cookie
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorisedError"
-        "403":
-          $ref: "#/components/responses/ForbiddenError"
-        "409":
-          $ref: "#/components/responses/ConflictError"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-      servers:
-        - url: "http://localhost:8080"
-          description: Local Server
     patch:
       tags:
         - user
@@ -1137,18 +1065,17 @@ components:
       title: AuthLogin
       description: Request body for logging in.
       properties:
-        email:
+        username:
           type: string
           minLength: 3
-          maxLength: 320
-          format: email
+          maxLength: 120
         password:
           type: string
-          minLength: 8
+          minLength: 5
           maxLength: 128
           format: password
       required:
-        - email
+        - username
         - password
     EventHit:
       type: object
@@ -1197,38 +1124,15 @@ components:
         - p
         - e
         - d
-    UserCreate:
-      type: object
-      title: UserCreate
-      description: Request body for creating a user.
-      properties:
-        email:
-          type: string
-          minLength: 3
-          maxLength: 320
-          format: email
-        password:
-          type: string
-          minLength: 8
-          maxLength: 128
-          format: password
-        language:
-          type: string
-          enum: [en]
-          default: en
-      required:
-        - email
-        - password
     UserGet:
       type: object
       title: UserGet
       description: Response body for getting a user.
       properties:
-        email:
+        username:
           type: string
           minLength: 3
-          maxLength: 320
-          format: email
+          maxLength: 120
         language:
           type: string
           enum: [en]
@@ -1240,7 +1144,7 @@ components:
           type: integer
           format: int64
       required:
-        - email
+        - username
         - language
         - dateCreated
         - dateUpdated
@@ -1249,14 +1153,13 @@ components:
       title: UserPatch
       description: Request body for updating a user.
       properties:
-        email:
+        username:
           type: string
           minLength: 3
-          maxLength: 320
-          format: email
+          maxLength: 120
         password:
           type: string
-          minLength: 8
+          minLength: 5
           maxLength: 128
           format: password
         language:

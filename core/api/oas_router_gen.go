@@ -142,10 +142,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						s.handleGetUserRequest([0]string{}, elemIsEscaped, w, r)
 					case "PATCH":
 						s.handlePatchUserRequest([0]string{}, elemIsEscaped, w, r)
-					case "POST":
-						s.handlePostUserRequest([0]string{}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "DELETE,GET,PATCH,POST")
+						s.notAllowed(w, r, "DELETE,GET,PATCH")
 					}
 
 					return
@@ -735,15 +733,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						r.name = "PatchUser"
 						r.summary = "Update User Info."
 						r.operationID = "patch-user"
-						r.pathPattern = "/user"
-						r.args = args
-						r.count = 0
-						return r, true
-					case "POST":
-						// Leaf: PostUser
-						r.name = "PostUser"
-						r.summary = "Create New User."
-						r.operationID = "post-user"
 						r.pathPattern = "/user"
 						r.args = args
 						r.count = 0

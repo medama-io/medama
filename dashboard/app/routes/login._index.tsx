@@ -32,12 +32,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const body = await request.formData();
 
-	const email = body.get('email') ? String(body.get('email')) : undefined;
+	const username = body.get('username')
+		? String(body.get('username'))
+		: undefined;
 	const password = body.get('password')
 		? String(body.get('password'))
 		: undefined;
 
-	if (!email || !password) {
+	if (!username || !password) {
 		throw json('Missing email or password', {
 			status: 400,
 		});
@@ -45,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	const { cookie } = await authLogin({
 		body: {
-			email,
+			username,
 			password,
 		},
 	});

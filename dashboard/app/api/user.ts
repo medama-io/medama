@@ -1,12 +1,5 @@
 import { client, type ClientOptions, type DataResponse } from './client';
 
-const userCreate = async (
-	opts: ClientOptions<'UserCreate'>
-): Promise<DataResponse<'UserGet'>> => {
-	const res = await client('/user', { method: 'POST', ...opts });
-	return { data: await res.json(), res };
-};
-
 const userGet = async (
 	opts: ClientOptions
 ): Promise<DataResponse<'UserGet'>> => {
@@ -21,4 +14,4 @@ const userUpdate = async (
 	return { data: await res.json(), res };
 };
 
-export { userCreate, userGet, userUpdate };
+export { userGet, userUpdate };

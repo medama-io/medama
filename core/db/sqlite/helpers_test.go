@@ -46,13 +46,13 @@ func SetupDatabaseWithUsers(t *testing.T) (*assert.Assertions, context.Context, 
 	assert, ctx, client := SetupDatabase(t)
 
 	ids := []string{"test1", "test2", "test3"}
-	emails := []string{"test1@example.com", "test2@example.com", "test3@example.com"}
+	usernames := []string{"username1", "username2", "username3"}
 	passwords := []string{"password1", "password2", "password3"}
 
 	for i, id := range ids {
 		userCreate := model.NewUser(
 			id,
-			emails[i],
+			usernames[i],
 			passwords[i],
 			"en",
 			1,

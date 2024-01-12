@@ -146,12 +146,6 @@ type Handler interface {
 	//
 	// POST /event/hit
 	PostEventHit(ctx context.Context, req *EventHit, params PostEventHitParams) (PostEventHitRes, error)
-	// PostUser implements post-user operation.
-	//
-	// Create a new user.
-	//
-	// POST /user
-	PostUser(ctx context.Context, req *UserCreate) (PostUserRes, error)
 	// PostWebsites implements post-websites operation.
 	//
 	// Add a new website.

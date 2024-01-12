@@ -63,8 +63,6 @@ const client = async (
 		}
 	}
 
-	console.log(url.toString());
-
 	const res = await fetch(url, {
 		method: method ?? 'GET',
 		headers: {

@@ -14,12 +14,10 @@ type AppClient interface {
 	CreateUser(ctx context.Context, user *model.User) error
 	// GetUser retrieves a user from the database by id.
 	GetUser(ctx context.Context, id string) (*model.User, error)
-	// GetUserByEmail retrieves a user from the database by email.
-	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
-	// GetUserCount retrieves the total number of users from the database.
-	GetUserCount(ctx context.Context) (int64, error)
-	// UpdateUserEmail updates a user's email in the database.
-	UpdateUserEmail(ctx context.Context, id string, email string, dateUpdated int64) error
+	// GetUserByUsername retrieves a user from the database by username.
+	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
+	// UpdateUserUsername updates a user's username in the database.
+	UpdateUserUsername(ctx context.Context, id string, username string, dateUpdated int64) error
 	// UpdateUserPassword updates a user's password in the database.
 	UpdateUserPassword(ctx context.Context, id string, password string, dateUpdated int64) error
 	// DeleteUser deletes a user from the database.

@@ -12,13 +12,13 @@ import (
 // Request body for logging in.
 // Ref: #/components/schemas/AuthLogin
 type AuthLogin struct {
-	Email    string `json:"email"`
+	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-// GetEmail returns the value of Email.
-func (s *AuthLogin) GetEmail() string {
-	return s.Email
+// GetUsername returns the value of Username.
+func (s *AuthLogin) GetUsername() string {
+	return s.Username
 }
 
 // GetPassword returns the value of Password.
@@ -26,9 +26,9 @@ func (s *AuthLogin) GetPassword() string {
 	return s.Password
 }
 
-// SetEmail sets the value of Email.
-func (s *AuthLogin) SetEmail(val string) {
-	s.Email = val
+// SetUsername sets the value of Username.
+func (s *AuthLogin) SetUsername(val string) {
+	s.Username = val
 }
 
 // SetPassword sets the value of Password.
@@ -73,7 +73,6 @@ func (*BadRequestError) patchUserRes()             {}
 func (*BadRequestError) patchWebsitesIDRes()       {}
 func (*BadRequestError) postAuthLoginRes()         {}
 func (*BadRequestError) postEventHitRes()          {}
-func (*BadRequestError) postUserRes()              {}
 func (*BadRequestError) postWebsitesRes()          {}
 
 type BadRequestErrorError struct {
@@ -117,7 +116,6 @@ func (s *ConflictError) SetError(val ConflictErrorError) {
 
 func (*ConflictError) deleteUserRes()   {}
 func (*ConflictError) patchUserRes()    {}
-func (*ConflictError) postUserRes()     {}
 func (*ConflictError) postWebsitesRes() {}
 
 type ConflictErrorError struct {
@@ -374,7 +372,6 @@ func (*ForbiddenError) getWebsiteIDOsRes()        {}
 func (*ForbiddenError) getWebsiteIDReferrersRes() {}
 func (*ForbiddenError) getWebsiteIDScreenRes()    {}
 func (*ForbiddenError) getWebsiteIDSourcesRes()   {}
-func (*ForbiddenError) postUserRes()              {}
 
 type ForbiddenErrorError struct {
 	Code    int32  `json:"code"`
@@ -507,7 +504,6 @@ func (*InternalServerError) patchUserRes()             {}
 func (*InternalServerError) patchWebsitesIDRes()       {}
 func (*InternalServerError) postAuthLoginRes()         {}
 func (*InternalServerError) postEventHitRes()          {}
-func (*InternalServerError) postUserRes()              {}
 func (*InternalServerError) postWebsitesRes()          {}
 
 type InternalServerErrorError struct {
@@ -775,52 +771,6 @@ func (o OptString) Get() (v string, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptString) Or(d string) string {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptUserCreateLanguage returns new OptUserCreateLanguage with value set to v.
-func NewOptUserCreateLanguage(v UserCreateLanguage) OptUserCreateLanguage {
-	return OptUserCreateLanguage{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptUserCreateLanguage is optional UserCreateLanguage.
-type OptUserCreateLanguage struct {
-	Value UserCreateLanguage
-	Set   bool
-}
-
-// IsSet returns true if OptUserCreateLanguage was set.
-func (o OptUserCreateLanguage) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptUserCreateLanguage) Reset() {
-	var v UserCreateLanguage
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptUserCreateLanguage) SetTo(v UserCreateLanguage) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptUserCreateLanguage) Get() (v UserCreateLanguage, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptUserCreateLanguage) Or(d UserCreateLanguage) UserCreateLanguage {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1663,7 +1613,6 @@ func (*UnauthorisedError) getWebsitesRes()           {}
 func (*UnauthorisedError) patchUserRes()             {}
 func (*UnauthorisedError) patchWebsitesIDRes()       {}
 func (*UnauthorisedError) postAuthLoginRes()         {}
-func (*UnauthorisedError) postUserRes()              {}
 func (*UnauthorisedError) postWebsitesRes()          {}
 
 type UnauthorisedErrorError struct {
@@ -1691,90 +1640,18 @@ func (s *UnauthorisedErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
-// Request body for creating a user.
-// Ref: #/components/schemas/UserCreate
-type UserCreate struct {
-	Email    string                `json:"email"`
-	Password string                `json:"password"`
-	Language OptUserCreateLanguage `json:"language"`
-}
-
-// GetEmail returns the value of Email.
-func (s *UserCreate) GetEmail() string {
-	return s.Email
-}
-
-// GetPassword returns the value of Password.
-func (s *UserCreate) GetPassword() string {
-	return s.Password
-}
-
-// GetLanguage returns the value of Language.
-func (s *UserCreate) GetLanguage() OptUserCreateLanguage {
-	return s.Language
-}
-
-// SetEmail sets the value of Email.
-func (s *UserCreate) SetEmail(val string) {
-	s.Email = val
-}
-
-// SetPassword sets the value of Password.
-func (s *UserCreate) SetPassword(val string) {
-	s.Password = val
-}
-
-// SetLanguage sets the value of Language.
-func (s *UserCreate) SetLanguage(val OptUserCreateLanguage) {
-	s.Language = val
-}
-
-type UserCreateLanguage string
-
-const (
-	UserCreateLanguageEn UserCreateLanguage = "en"
-)
-
-// AllValues returns all UserCreateLanguage values.
-func (UserCreateLanguage) AllValues() []UserCreateLanguage {
-	return []UserCreateLanguage{
-		UserCreateLanguageEn,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s UserCreateLanguage) MarshalText() ([]byte, error) {
-	switch s {
-	case UserCreateLanguageEn:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UserCreateLanguage) UnmarshalText(data []byte) error {
-	switch UserCreateLanguage(data) {
-	case UserCreateLanguageEn:
-		*s = UserCreateLanguageEn
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
 // Response body for getting a user.
 // Ref: #/components/schemas/UserGet
 type UserGet struct {
-	Email       string          `json:"email"`
+	Username    string          `json:"username"`
 	Language    UserGetLanguage `json:"language"`
 	DateCreated int64           `json:"dateCreated"`
 	DateUpdated int64           `json:"dateUpdated"`
 }
 
-// GetEmail returns the value of Email.
-func (s *UserGet) GetEmail() string {
-	return s.Email
+// GetUsername returns the value of Username.
+func (s *UserGet) GetUsername() string {
+	return s.Username
 }
 
 // GetLanguage returns the value of Language.
@@ -1792,9 +1669,9 @@ func (s *UserGet) GetDateUpdated() int64 {
 	return s.DateUpdated
 }
 
-// SetEmail sets the value of Email.
-func (s *UserGet) SetEmail(val string) {
-	s.Email = val
+// SetUsername sets the value of Username.
+func (s *UserGet) SetUsername(val string) {
+	s.Username = val
 }
 
 // SetLanguage sets the value of Language.
@@ -1814,34 +1691,6 @@ func (s *UserGet) SetDateUpdated(val int64) {
 
 func (*UserGet) getUserRes()   {}
 func (*UserGet) patchUserRes() {}
-
-// UserGetHeaders wraps UserGet with response headers.
-type UserGetHeaders struct {
-	SetCookie string
-	Response  UserGet
-}
-
-// GetSetCookie returns the value of SetCookie.
-func (s *UserGetHeaders) GetSetCookie() string {
-	return s.SetCookie
-}
-
-// GetResponse returns the value of Response.
-func (s *UserGetHeaders) GetResponse() UserGet {
-	return s.Response
-}
-
-// SetSetCookie sets the value of SetCookie.
-func (s *UserGetHeaders) SetSetCookie(val string) {
-	s.SetCookie = val
-}
-
-// SetResponse sets the value of Response.
-func (s *UserGetHeaders) SetResponse(val UserGet) {
-	s.Response = val
-}
-
-func (*UserGetHeaders) postUserRes() {}
 
 type UserGetLanguage string
 
@@ -1880,14 +1729,14 @@ func (s *UserGetLanguage) UnmarshalText(data []byte) error {
 // Request body for updating a user.
 // Ref: #/components/schemas/UserPatch
 type UserPatch struct {
-	Email    OptString            `json:"email"`
+	Username OptString            `json:"username"`
 	Password OptString            `json:"password"`
 	Language OptUserPatchLanguage `json:"language"`
 }
 
-// GetEmail returns the value of Email.
-func (s *UserPatch) GetEmail() OptString {
-	return s.Email
+// GetUsername returns the value of Username.
+func (s *UserPatch) GetUsername() OptString {
+	return s.Username
 }
 
 // GetPassword returns the value of Password.
@@ -1900,9 +1749,9 @@ func (s *UserPatch) GetLanguage() OptUserPatchLanguage {
 	return s.Language
 }
 
-// SetEmail sets the value of Email.
-func (s *UserPatch) SetEmail(val OptString) {
-	s.Email = val
+// SetUsername sets the value of Username.
+func (s *UserPatch) SetUsername(val OptString) {
+	s.Username = val
 }
 
 // SetPassword sets the value of Password.

@@ -1,7 +1,13 @@
 package migrations
 
 import (
+	"context"
+	"time"
+
 	"github.com/medama-io/medama/db/sqlite"
+	"github.com/medama-io/medama/model"
+	"github.com/medama-io/medama/util"
+	"go.jetpack.io/typeid"
 )
 
 func Up0001(c *sqlite.Client) error {
@@ -15,12 +21,12 @@ func Up0001(c *sqlite.Client) error {
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS users (
 		id TEXT PRIMARY KEY,
-		email TEXT NOT NULL,
+		username TEXT NOT NULL,
 		password TEXT NOT NULL,
 		language TEXT NOT NULL,
 		date_created INTEGER NOT NULL,
 		date_updated INTEGER NOT NULL,
-		UNIQUE(email)
+		UNIQUE(username)
 	)`)
 
 	if err != nil {
@@ -54,6 +60,31 @@ func Up0001(c *sqlite.Client) error {
 
 	// Commit transaction
 	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	// Create default admin user
+	// UUIDv7 id generation
+	typeid, err := typeid.WithPrefix("user")
+	if err != nil {
+		return err
+	}
+	id := typeid.String()
+
+	// Hash default password
+	auth, err := util.NewAuthService(context.Background())
+	if err != nil {
+		return err
+	}
+	pwdHash, err := auth.HashPassword("admin")
+	if err != nil {
+		return err
+	}
+
+	dateCreated := time.Now().Unix()
+	dateUpdated := dateCreated
+	err = c.CreateUser(context.Background(), model.NewUser(id, "admin", pwdHash, "en", dateCreated, dateUpdated))
 	if err != nil {
 		return err
 	}

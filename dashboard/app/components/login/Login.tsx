@@ -12,10 +12,10 @@ import {
 import { Form } from '@remix-run/react';
 
 import classes from './Login.module.css';
-import { email$, password$ } from './observables';
+import { password$, username$ } from './observables';
 
 export const Login = () => {
-	const email = email$.use();
+	const username = username$.use();
 	const password = password$.use();
 
 	return (
@@ -27,11 +27,11 @@ export const Login = () => {
 			<Paper withBorder shadow="md" p={30} mt={30} radius="md">
 				<Form method="post">
 					<TextInput
-						name="email"
-						label="Email"
+						name="username"
+						label="Username"
 						required
-						onChange={(e) => email$.set(e.currentTarget.value)}
-						value={email}
+						onChange={(e) => username$.set(e.currentTarget.value)}
+						value={username}
 					/>
 					<PasswordInput
 						name="password"

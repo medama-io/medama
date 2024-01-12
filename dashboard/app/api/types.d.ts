@@ -33,11 +33,6 @@ export interface paths {
      */
     get: operations["get-user"];
     /**
-     * Create New User.
-     * @description Create a new user.
-     */
-    post: operations["post-user"];
-    /**
      * Delete User.
      * @description Delete a user account.
      */
@@ -179,8 +174,7 @@ export interface components {
      * @description Request body for logging in.
      */
     AuthLogin: {
-      /** Format: email */
-      email: string;
+      username: string;
       /** Format: password */
       password: string;
     };
@@ -191,18 +185,24 @@ export interface components {
     EventHit: {
       /** @description UUID generated for each user to link multiple events on the same page together. */
       b: string;
-      /** @description Page URL including query parameters. */
+      /**
+       * Format: uri
+       * @description Page URL including query parameters.
+       */
       u: string;
       /** @description Referrer URL. */
       r?: string;
       /** @description If the user is a unique user or not. */
-      p?: boolean;
-      /** @description Event type consisting of either 'pagehide', 'unload', 'load', 'hidden' or 'visible'. */
-      e: string;
+      p: boolean;
+      /**
+       * @description Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
+       * @enum {string}
+       */
+      e: "pagehide" | "unload" | "load" | "hidden";
       /** @description Title of page. */
       t?: string;
       /** @description Timezone of the user. */
-      d?: string;
+      d: string;
       /** @description Screen width. */
       w?: number;
       /** @description Screen height. */
@@ -211,27 +211,11 @@ export interface components {
       m?: number;
     };
     /**
-     * UserCreate
-     * @description Request body for creating a user.
-     */
-    UserCreate: {
-      /** Format: email */
-      email: string;
-      /** Format: password */
-      password: string;
-      /**
-       * @default en
-       * @enum {string}
-       */
-      language?: "en";
-    };
-    /**
      * UserGet
      * @description Response body for getting a user.
      */
     UserGet: {
-      /** Format: email */
-      email: string;
+      username: string;
       /**
        * @default en
        * @enum {string}
@@ -247,8 +231,7 @@ export interface components {
      * @description Request body for updating a user.
      */
     UserPatch: {
-      /** Format: email */
-      email?: string;
+      username?: string;
       /** Format: password */
       password?: string;
       /**
@@ -564,6 +547,8 @@ export interface components {
     Summary?: boolean;
     /** @description Path of the page. */
     Path?: string;
+    /** @description Referrer name of the page. */
+    Referrer?: string;
     /** @description Start time (seconds) in Unix epoch format. */
     PeriodStart?: string;
     /** @description End time (seconds) in Unix epoch format. */
@@ -629,7 +614,7 @@ export interface operations {
     };
     responses: {
       /** @description OK. */
-      200: {
+      204: {
         content: never;
       };
       400: components["responses"]["BadRequestError"];
@@ -687,35 +672,6 @@ export interface operations {
       400: components["responses"]["BadRequestError"];
       401: components["responses"]["UnauthorisedError"];
       404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Create New User.
-   * @description Create a new user.
-   */
-  "post-user": {
-    /** @description Post the necessary fields for the API to create a new user. */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserCreate"];
-      };
-    };
-    responses: {
-      /** @description User Created */
-      201: {
-        headers: {
-          /** @description Set the cookie for the session. */
-          "Set-Cookie": string;
-        };
-        content: {
-          "application/json": components["schemas"]["UserGet"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      409: components["responses"]["ConflictError"];
       500: components["responses"]["InternalServerError"];
     };
   };
@@ -909,6 +865,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -941,6 +898,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -974,6 +932,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1007,6 +966,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1040,6 +1000,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1073,6 +1034,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1106,6 +1068,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1140,6 +1103,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1173,6 +1137,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1206,6 +1171,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1239,6 +1205,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1272,6 +1239,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1305,6 +1273,7 @@ export interface operations {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
+        referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
       };
       path: {

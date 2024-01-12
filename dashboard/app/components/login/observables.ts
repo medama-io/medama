@@ -1,6 +1,6 @@
 import { observable } from '@legendapp/state';
 
-const email$ = observable('');
+const username$ = observable('');
 const password$ = observable('');
 
-export { email$, password$ };
+export { password$, username$ };

@@ -12,7 +12,7 @@ func TestCreateUser(t *testing.T) {
 
 	userCreate := model.NewUser(
 		"test",
-		"email@example.com",
+		"username",
 		"password",
 		"en",
 		1,
@@ -26,43 +26,10 @@ func TestCreateUser(t *testing.T) {
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("test", user.ID)
-	assert.Equal("email@example.com", user.Email)
+	assert.Equal("username", user.Username)
 	assert.Equal("en", user.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
-}
-
-func TestCreateUserDuplicate(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
-
-	userCreate := &model.User{
-		Password:    "password",
-		Language:    "en",
-		DateCreated: 1,
-		DateUpdated: 2,
-	}
-
-	// Test unique id
-	userCreate.ID = "test"
-	userCreate.Email = "id@example.com"
-	err := client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
-
-	// Should give a duplicate error for id
-	userCreate.Email = "id2@example.com"
-	err = client.CreateUser(ctx, userCreate)
-	assert.ErrorIs(err, model.ErrUserExists)
-
-	// Test unique email
-	userCreate.ID = "test2"
-	userCreate.Email = "email@example.com"
-	err = client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
-
-	// Should give a duplicate error for email
-	userCreate.ID = "test3"
-	err = client.CreateUser(ctx, userCreate)
-	assert.ErrorIs(err, model.ErrUserExists)
 }
 
 func TestGetUser(t *testing.T) {
@@ -72,7 +39,7 @@ func TestGetUser(t *testing.T) {
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
-	assert.Equal("test1@example.com", user.Email)
+	assert.Equal("username1", user.Username)
 	assert.Equal("en", user.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
@@ -86,65 +53,67 @@ func TestGetUserNotFound(t *testing.T) {
 	assert.Nil(user)
 }
 
-func TestGetUserByEmail(t *testing.T) {
+func TestGetUserByUsername(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	user, err := client.GetUserByEmail(ctx, "test1@example.com")
+	user, err := client.GetUserByUsername(ctx, "username1")
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
-	assert.Equal("test1@example.com", user.Email)
+	assert.Equal("username1", user.Username)
 	assert.Equal("en", user.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
 }
 
-func TestGetUserByEmailNotFound(t *testing.T) {
+func TestGetDefaultAdminUser(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	user, err := client.GetUserByEmail(ctx, "doesnotexist@example.com")
+	user, err := client.GetUserByUsername(ctx, "admin")
+	assert.NoError(err)
+	assert.NotNil(user)
+	assert.Equal("admin", user.Username)
+	assert.Equal("en", user.Language)
+}
+
+func TestGetUserByUsernameNotFound(t *testing.T) {
+	assert, ctx, client := SetupDatabase(t)
+
+	user, err := client.GetUserByUsername(ctx, "doesnotexist")
 	assert.ErrorIs(err, model.ErrUserNotFound)
 	assert.Nil(user)
 }
 
-func TestGetUserCount(t *testing.T) {
-	assert, ctx, client := SetupDatabaseWithUsers(t)
-
-	count, err := client.GetUserCount(ctx)
-	assert.NoError(err)
-	assert.Equal(int64(3), count)
-}
-
-func TestUpdateUserEmail(t *testing.T) {
+func TestUpdateUserUsername(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	user, err := client.GetUser(ctx, "test1")
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
-	assert.Equal("test1@example.com", user.Email)
+	assert.Equal("username1", user.Username)
 
-	err = client.UpdateUserEmail(ctx, "test1", "testUpdate1@example.com", 3)
+	err = client.UpdateUserUsername(ctx, "test1", "usernamenew", 3)
 	assert.NoError(err)
 
 	user, err = client.GetUser(ctx, "test1")
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
-	assert.Equal("testUpdate1@example.com", user.Email)
+	assert.Equal("usernamenew", user.Username)
 	assert.Equal(int64(3), user.DateUpdated)
 }
 
-func TestUpdateUserEmailExisting(t *testing.T) {
+func TestUpdateUserUsernameExisting(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	user, err := client.GetUser(ctx, "test1")
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
-	assert.Equal("test1@example.com", user.Email)
+	assert.Equal("username1", user.Username)
 
-	err = client.UpdateUserEmail(ctx, "test1", "test2@example.com", 3)
+	err = client.UpdateUserUsername(ctx, "test1", "username2", 3)
 	assert.ErrorIs(err, model.ErrUserExists)
 }
 

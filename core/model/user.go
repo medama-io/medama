@@ -10,7 +10,7 @@ type GetUser struct {
 
 type User struct {
 	ID       string `json:"id" db:"id"`
-	Email    string `json:"email" db:"email"`
+	Username string `json:"username" db:"username"`
 	Password string `json:"password" db:"password"`
 
 	Language    string `json:"language" db:"language"`
@@ -19,10 +19,10 @@ type User struct {
 }
 
 // NewUser returns a new instance of User with the given values.
-func NewUser(id string, email string, password string, language string, dateCreated int64, dateUpdated int64) *User {
+func NewUser(id string, username string, password string, language string, dateCreated int64, dateUpdated int64) *User {
 	return &User{
 		ID:       id,
-		Email:    email,
+		Username: username,
 		Password: password,
 
 		Language:    language,

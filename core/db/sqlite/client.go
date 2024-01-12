@@ -3,9 +3,8 @@ package sqlite
 import (
 	"fmt"
 
-	"github.com/medama-io/medama/db"
-
 	"github.com/jmoiron/sqlx"
+	"github.com/medama-io/medama/db"
 )
 
 type Client struct {

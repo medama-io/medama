@@ -21,7 +21,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter db.Filter) ([]
 	//
 	// UniquePercentage is the percentage the utm source contributes to the total uniques.
 	query.WriteString(`--sql
-		SELECTs
+		SELECT
 			utm_source AS source,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
