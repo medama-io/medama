@@ -1,0 +1,41 @@
+.header {
+	width: 100vw;
+	margin-top: -80px;
+	margin-left: calc(50% - 50vw);
+
+	color: var(--me-color-text-light);
+	background: var(--me-color-bg-dark);
+}
+
+.inner {
+	width: 100%;
+	max-width: 1440px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 40px 120px 24px 120px;
+}
+
+.data-box {
+	height: 102px;
+	width: 178px;
+
+	border-radius: 8px;
+	padding: 14px 16px;
+
+	&:hover {
+		background: #39414e;
+		cursor: pointer;
+	}
+}
+
+.badge {
+	width: 36px;
+	border-radius: 16px;
+
+	color: var(--me-color-text-dark);
+	font-size: 10px;
+	font-weight: 600;
+	text-align: center;
+
+	line-height: 20px;
+}

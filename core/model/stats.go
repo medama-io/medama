@@ -1,11 +1,21 @@
 package model
 
-type StatsSummary struct {
+const (
+	// DateFormat is the format used for date and time values (YYYY-MM-DD).
+	DateFormat = "2006-01-02"
+)
+
+type StatsSummarySingle struct {
 	Uniques   int `db:"uniques"`
 	Pageviews int `db:"pageviews"`
 	Bounces   int `db:"bounces"`
 	Duration  int `db:"duration"`
 	Active    int `db:"active"`
+}
+
+type StatsSummary struct {
+	Current  StatsSummarySingle
+	Previous StatsSummarySingle
 }
 
 type StatsPagesSummary struct {

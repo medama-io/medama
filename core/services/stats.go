@@ -31,22 +31,58 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		Hostname:         params.Hostname,
 		Pathname:         params.Path.Value,
 		ReferrerHostname: params.Referrer.Value,
+
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get summary
-	summary, err := h.analyticsDB.GetWebsiteSummary(ctx, filter)
+	currentSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filter)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website summary", attributes...)
 		return ErrInternalServerError(err), nil
 	}
+	current := api.StatsSummaryCurrent{
+		Uniques:   currentSummary.Uniques,
+		Pageviews: currentSummary.Pageviews,
+		Bounces:   currentSummary.Bounces,
+		Duration:  currentSummary.Duration,
+		Active:    currentSummary.Active,
+	}
+
+	// Include previous summary if requested
+	if params.Previous.Value && params.Start.IsSet() && params.End.IsSet() {
+		// Update filter periods to get previous summary
+		// Calculate the difference between the start and end dates
+		// and subtract that from the start date to get the previous period.
+		difference := params.End.Value.Sub(params.Start.Value)
+		filter.PeriodStart = params.Start.Value.Add(-difference).Format(model.DateFormat)
+		filter.PeriodEnd = params.Start.Value.Format(model.DateFormat)
+
+		previousSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filter)
+		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get previous website summary", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		return &api.StatsSummary{
+			Current: current,
+			Previous: api.NewOptStatsSummaryPrevious(
+				api.StatsSummaryPrevious{
+					Uniques:   previousSummary.Uniques,
+					Pageviews: previousSummary.Pageviews,
+					Bounces:   previousSummary.Bounces,
+					Duration:  previousSummary.Duration,
+				},
+			),
+		}, nil
+	}
 
 	return &api.StatsSummary{
-		Uniques:   summary.Uniques,
-		Pageviews: summary.Pageviews,
-		Bounces:   summary.Bounces,
-		Duration:  summary.Duration,
-		Active:    api.NewOptInt(summary.Active),
+		Current: current,
 	}, nil
 }
 

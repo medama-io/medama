@@ -9,8 +9,8 @@ import (
 )
 
 // GetWebsiteSummary returns the summary stats for the given website.
-func (c *Client) GetWebsiteSummary(ctx context.Context, filter db.Filter) (*model.StatsSummary, error) {
-	var summary model.StatsSummary
+func (c *Client) GetWebsiteSummary(ctx context.Context, filter db.Filter) (*model.StatsSummarySingle, error) {
+	var summary model.StatsSummarySingle
 	var query strings.Builder
 
 	// Uniques are determined by the number of is_unique values that are true.
@@ -31,7 +31,7 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter db.Filter) (*mode
 			COUNT(*) AS pageviews,
 			COUNT(CASE WHEN is_unique = true AND duration_ms < 5000 THEN 1 END) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
-			COUNT(CASE WHEN is_unique = true AND (date_diff('minute', now(), date_updated) < 5) THEN 1 END) AS active
+			COUNT(CASE WHEN is_unique = true AND (date_diff('minute', now(), date_created) < 5) THEN 1 END) AS active
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())

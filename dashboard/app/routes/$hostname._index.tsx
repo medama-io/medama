@@ -10,6 +10,8 @@ import {
 	useActionData,
 	useLoaderData,
 } from '@remix-run/react';
+import { add, format } from 'date-fns';
+import invariant from 'tiny-invariant';
 
 import {
 	statsBrowsers,
@@ -25,6 +27,11 @@ import {
 	statsSummary,
 	statsTime,
 } from '@/api/stats';
+import { StatsHeader } from '@/components/stats/StatsHeader';
+
+export const meta: MetaFunction = () => {
+	return [{ title: 'Dashboard | Medama' }];
+};
 
 const fetchStats = async (
 	request: Request,
@@ -53,7 +60,10 @@ const fetchStats = async (
 		statsSummary({
 			cookie: request.headers.get('Cookie'),
 			pathKey: params.hostname,
-			query: filters,
+			query: {
+				previous: true,
+				...filters,
+			},
 		}),
 		// Pages
 		statsPages({
@@ -171,16 +181,21 @@ const fetchStats = async (
 };
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-	const stats = await fetchStats(request, params, {});
+	// Current time period truncated to YYYY-MM-DD
+	const currentDate = new Date();
+	const endPeriod = format(add(currentDate, { days: 1 }), 'yyyy-MM-dd');
+	// Start time period is 24 hours before the current time period
+	const startPeriod = format(currentDate, 'yyyy-MM-dd');
+
+	const stats = await fetchStats(request, params, {
+		start: startPeriod,
+		end: endPeriod,
+	});
 
 	return {
 		status: 200,
 		...stats,
 	};
-};
-
-export const meta: MetaFunction = () => {
-	return [{ title: 'Dashboard | Medama' }];
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
@@ -220,26 +235,30 @@ export default function Index() {
 	// Overwrite with action data
 	const actionData = useActionData<typeof action>();
 	if (actionData) {
-		summary = actionData.summary;
-		pages = actionData.pages;
-		pagesSummary = actionData.pagesSummary;
-		time = actionData.time;
-		timeSummary = actionData.timeSummary;
-		referrers = actionData.referrers;
-		referrerSummary = actionData.referrerSummary;
-		sources = actionData.sources;
-		mediums = actionData.mediums;
-		campaigns = actionData.campaigns;
-		browsers = actionData.browsers;
-		browserSummary = actionData.browserSummary;
-		os = actionData.os;
-		devices = actionData.devices;
-		countries = actionData.countries;
-		languages = actionData.languages;
+		summary = actionData.summary ?? summary;
+		pages = actionData.pages ?? pages;
+		pagesSummary = actionData.pagesSummary ?? pagesSummary;
+		time = actionData.time ?? time;
+		timeSummary = actionData.timeSummary ?? timeSummary;
+		referrers = actionData.referrers ?? referrers;
+		referrerSummary = actionData.referrerSummary ?? referrerSummary;
+		sources = actionData.sources ?? sources;
+		mediums = actionData.mediums ?? mediums;
+		campaigns = actionData.campaigns ?? campaigns;
+		browsers = actionData.browsers ?? browsers;
+		browserSummary = actionData.browserSummary ?? browserSummary;
+		os = actionData.os ?? os;
+		devices = actionData.devices ?? devices;
+		countries = actionData.countries ?? countries;
+		languages = actionData.languages ?? languages;
 	}
+
+	// Ensure that the summary data is present
+	invariant(summary, 'Summary data is required');
 
 	return (
 		<div>
+			<StatsHeader current={summary?.current} previous={summary?.previous} />
 			<h1>Filters</h1>
 			<div>
 				<Form method="post">

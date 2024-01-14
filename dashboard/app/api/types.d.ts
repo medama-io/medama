@@ -269,11 +269,19 @@ export interface components {
     };
     /** StatsSummary */
     StatsSummary: {
-      uniques: number;
-      pageviews: number;
-      bounces: number;
-      duration: number;
-      active?: number;
+      current: {
+        uniques: number;
+        pageviews: number;
+        bounces: number;
+        duration: number;
+        active: number;
+      };
+      previous?: {
+        uniques: number;
+        pageviews: number;
+        bounces: number;
+        duration: number;
+      };
     };
     /** StatsPages */
     StatsPages: {
@@ -549,10 +557,12 @@ export interface components {
     Path?: string;
     /** @description Referrer name of the page. */
     Referrer?: string;
-    /** @description Start time (seconds) in Unix epoch format. */
+    /** @description Period start date using full-date notation in RFC3339 format (YYYY-MM-DD). */
     PeriodStart?: string;
-    /** @description End time (seconds) in Unix epoch format. */
+    /** @description Period end date using full-date notation in RFC3339 format (YYYY-MM-DD). */
     PeriodEnd?: string;
+    /** @description Period interval. */
+    PeriodInterval?: "hour" | "day" | "week" | "month" | "year";
     /** @description Limit the number of results. */
     Limit?: number;
   };
@@ -862,8 +872,11 @@ export interface operations {
   "get-website-id-summary": {
     parameters: {
       query?: {
+        /** @description Retrieve the data from the previous period as well. This is useful when comparing data from the previous period to the current period. Requires the start and end period parameters to be set. */
+        previous?: boolean;
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
       };
@@ -897,6 +910,7 @@ export interface operations {
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -931,6 +945,7 @@ export interface operations {
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -965,6 +980,7 @@ export interface operations {
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -999,6 +1015,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1033,6 +1050,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1067,6 +1085,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1102,6 +1121,7 @@ export interface operations {
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1136,6 +1156,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1170,6 +1191,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1204,6 +1226,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1238,6 +1261,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];
@@ -1272,6 +1296,7 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
+        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         limit?: components["parameters"]["Limit"];

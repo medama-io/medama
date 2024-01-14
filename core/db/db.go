@@ -54,7 +54,7 @@ type AnalyticsClient interface {
 	GetWebsiteReferrers(ctx context.Context, filter Filter) ([]*model.StatsReferrers, error)
 	GetWebsiteReferrersSummary(ctx context.Context, filter Filter) ([]*model.StatsReferrerSummary, error)
 	// Summary
-	GetWebsiteSummary(ctx context.Context, filter Filter) (*model.StatsSummary, error)
+	GetWebsiteSummary(ctx context.Context, filter Filter) (*model.StatsSummarySingle, error)
 	// Time
 	GetWebsiteTime(ctx context.Context, filter Filter) ([]*model.StatsTime, error)
 	GetWebsiteTimeSummary(ctx context.Context, filter Filter) ([]*model.StatsTimeSummary, error)

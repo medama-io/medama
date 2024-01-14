@@ -10,6 +10,11 @@ type Filter struct {
 	Hostname         string
 	Pathname         string
 	ReferrerHostname string
+
+	// Time Periods (in RFC3339 format YYYY-MM-DD)
+	PeriodStart    string
+	PeriodEnd      string
+	PeriodInterval string
 }
 
 // String builds the WHERE query string.
@@ -26,6 +31,15 @@ func (f *Filter) String() string {
 
 	if f.ReferrerHostname != "" {
 		query.WriteString(" AND referrer_hostname = ?")
+	}
+
+	// Time period filters
+	if f.PeriodStart != "" {
+		query.WriteString(" AND date_created >= strptime(?, '%Y-%m-%d')")
+	}
+
+	if f.PeriodEnd != "" {
+		query.WriteString(" AND date_created <= strptime(?, '%Y-%m-%d')")
 	}
 
 	return query.String()
@@ -51,6 +65,15 @@ func (f *Filter) Args(startValues ...string) []interface{} {
 
 	if f.ReferrerHostname != "" {
 		args = append(args, f.ReferrerHostname)
+	}
+
+	// Time period filters
+	if f.PeriodStart != "" {
+		args = append(args, f.PeriodStart)
+	}
+
+	if f.PeriodEnd != "" {
+		args = append(args, f.PeriodEnd)
 	}
 
 	return args

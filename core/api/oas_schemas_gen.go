@@ -5,6 +5,7 @@ package api
 import (
 	"io"
 	"net/url"
+	"time"
 
 	"github.com/go-faster/errors"
 )
@@ -463,6 +464,812 @@ func (s *GetEventPingOKHeaders) SetResponse(val GetEventPingOK) {
 
 func (*GetEventPingOKHeaders) getEventPingRes() {}
 
+type GetWebsiteIDBrowsersInterval string
+
+const (
+	GetWebsiteIDBrowsersIntervalHour  GetWebsiteIDBrowsersInterval = "hour"
+	GetWebsiteIDBrowsersIntervalDay   GetWebsiteIDBrowsersInterval = "day"
+	GetWebsiteIDBrowsersIntervalWeek  GetWebsiteIDBrowsersInterval = "week"
+	GetWebsiteIDBrowsersIntervalMonth GetWebsiteIDBrowsersInterval = "month"
+	GetWebsiteIDBrowsersIntervalYear  GetWebsiteIDBrowsersInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDBrowsersInterval values.
+func (GetWebsiteIDBrowsersInterval) AllValues() []GetWebsiteIDBrowsersInterval {
+	return []GetWebsiteIDBrowsersInterval{
+		GetWebsiteIDBrowsersIntervalHour,
+		GetWebsiteIDBrowsersIntervalDay,
+		GetWebsiteIDBrowsersIntervalWeek,
+		GetWebsiteIDBrowsersIntervalMonth,
+		GetWebsiteIDBrowsersIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDBrowsersInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDBrowsersIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDBrowsersIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDBrowsersIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDBrowsersIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDBrowsersIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDBrowsersInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDBrowsersInterval(data) {
+	case GetWebsiteIDBrowsersIntervalHour:
+		*s = GetWebsiteIDBrowsersIntervalHour
+		return nil
+	case GetWebsiteIDBrowsersIntervalDay:
+		*s = GetWebsiteIDBrowsersIntervalDay
+		return nil
+	case GetWebsiteIDBrowsersIntervalWeek:
+		*s = GetWebsiteIDBrowsersIntervalWeek
+		return nil
+	case GetWebsiteIDBrowsersIntervalMonth:
+		*s = GetWebsiteIDBrowsersIntervalMonth
+		return nil
+	case GetWebsiteIDBrowsersIntervalYear:
+		*s = GetWebsiteIDBrowsersIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDCampaignsInterval string
+
+const (
+	GetWebsiteIDCampaignsIntervalHour  GetWebsiteIDCampaignsInterval = "hour"
+	GetWebsiteIDCampaignsIntervalDay   GetWebsiteIDCampaignsInterval = "day"
+	GetWebsiteIDCampaignsIntervalWeek  GetWebsiteIDCampaignsInterval = "week"
+	GetWebsiteIDCampaignsIntervalMonth GetWebsiteIDCampaignsInterval = "month"
+	GetWebsiteIDCampaignsIntervalYear  GetWebsiteIDCampaignsInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDCampaignsInterval values.
+func (GetWebsiteIDCampaignsInterval) AllValues() []GetWebsiteIDCampaignsInterval {
+	return []GetWebsiteIDCampaignsInterval{
+		GetWebsiteIDCampaignsIntervalHour,
+		GetWebsiteIDCampaignsIntervalDay,
+		GetWebsiteIDCampaignsIntervalWeek,
+		GetWebsiteIDCampaignsIntervalMonth,
+		GetWebsiteIDCampaignsIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDCampaignsInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDCampaignsIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDCampaignsIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDCampaignsIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDCampaignsIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDCampaignsIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDCampaignsInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDCampaignsInterval(data) {
+	case GetWebsiteIDCampaignsIntervalHour:
+		*s = GetWebsiteIDCampaignsIntervalHour
+		return nil
+	case GetWebsiteIDCampaignsIntervalDay:
+		*s = GetWebsiteIDCampaignsIntervalDay
+		return nil
+	case GetWebsiteIDCampaignsIntervalWeek:
+		*s = GetWebsiteIDCampaignsIntervalWeek
+		return nil
+	case GetWebsiteIDCampaignsIntervalMonth:
+		*s = GetWebsiteIDCampaignsIntervalMonth
+		return nil
+	case GetWebsiteIDCampaignsIntervalYear:
+		*s = GetWebsiteIDCampaignsIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDCountryInterval string
+
+const (
+	GetWebsiteIDCountryIntervalHour  GetWebsiteIDCountryInterval = "hour"
+	GetWebsiteIDCountryIntervalDay   GetWebsiteIDCountryInterval = "day"
+	GetWebsiteIDCountryIntervalWeek  GetWebsiteIDCountryInterval = "week"
+	GetWebsiteIDCountryIntervalMonth GetWebsiteIDCountryInterval = "month"
+	GetWebsiteIDCountryIntervalYear  GetWebsiteIDCountryInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDCountryInterval values.
+func (GetWebsiteIDCountryInterval) AllValues() []GetWebsiteIDCountryInterval {
+	return []GetWebsiteIDCountryInterval{
+		GetWebsiteIDCountryIntervalHour,
+		GetWebsiteIDCountryIntervalDay,
+		GetWebsiteIDCountryIntervalWeek,
+		GetWebsiteIDCountryIntervalMonth,
+		GetWebsiteIDCountryIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDCountryInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDCountryIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDCountryIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDCountryIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDCountryIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDCountryIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDCountryInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDCountryInterval(data) {
+	case GetWebsiteIDCountryIntervalHour:
+		*s = GetWebsiteIDCountryIntervalHour
+		return nil
+	case GetWebsiteIDCountryIntervalDay:
+		*s = GetWebsiteIDCountryIntervalDay
+		return nil
+	case GetWebsiteIDCountryIntervalWeek:
+		*s = GetWebsiteIDCountryIntervalWeek
+		return nil
+	case GetWebsiteIDCountryIntervalMonth:
+		*s = GetWebsiteIDCountryIntervalMonth
+		return nil
+	case GetWebsiteIDCountryIntervalYear:
+		*s = GetWebsiteIDCountryIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDDeviceInterval string
+
+const (
+	GetWebsiteIDDeviceIntervalHour  GetWebsiteIDDeviceInterval = "hour"
+	GetWebsiteIDDeviceIntervalDay   GetWebsiteIDDeviceInterval = "day"
+	GetWebsiteIDDeviceIntervalWeek  GetWebsiteIDDeviceInterval = "week"
+	GetWebsiteIDDeviceIntervalMonth GetWebsiteIDDeviceInterval = "month"
+	GetWebsiteIDDeviceIntervalYear  GetWebsiteIDDeviceInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDDeviceInterval values.
+func (GetWebsiteIDDeviceInterval) AllValues() []GetWebsiteIDDeviceInterval {
+	return []GetWebsiteIDDeviceInterval{
+		GetWebsiteIDDeviceIntervalHour,
+		GetWebsiteIDDeviceIntervalDay,
+		GetWebsiteIDDeviceIntervalWeek,
+		GetWebsiteIDDeviceIntervalMonth,
+		GetWebsiteIDDeviceIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDDeviceInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDDeviceIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDDeviceIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDDeviceIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDDeviceIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDDeviceIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDDeviceInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDDeviceInterval(data) {
+	case GetWebsiteIDDeviceIntervalHour:
+		*s = GetWebsiteIDDeviceIntervalHour
+		return nil
+	case GetWebsiteIDDeviceIntervalDay:
+		*s = GetWebsiteIDDeviceIntervalDay
+		return nil
+	case GetWebsiteIDDeviceIntervalWeek:
+		*s = GetWebsiteIDDeviceIntervalWeek
+		return nil
+	case GetWebsiteIDDeviceIntervalMonth:
+		*s = GetWebsiteIDDeviceIntervalMonth
+		return nil
+	case GetWebsiteIDDeviceIntervalYear:
+		*s = GetWebsiteIDDeviceIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDLanguageInterval string
+
+const (
+	GetWebsiteIDLanguageIntervalHour  GetWebsiteIDLanguageInterval = "hour"
+	GetWebsiteIDLanguageIntervalDay   GetWebsiteIDLanguageInterval = "day"
+	GetWebsiteIDLanguageIntervalWeek  GetWebsiteIDLanguageInterval = "week"
+	GetWebsiteIDLanguageIntervalMonth GetWebsiteIDLanguageInterval = "month"
+	GetWebsiteIDLanguageIntervalYear  GetWebsiteIDLanguageInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDLanguageInterval values.
+func (GetWebsiteIDLanguageInterval) AllValues() []GetWebsiteIDLanguageInterval {
+	return []GetWebsiteIDLanguageInterval{
+		GetWebsiteIDLanguageIntervalHour,
+		GetWebsiteIDLanguageIntervalDay,
+		GetWebsiteIDLanguageIntervalWeek,
+		GetWebsiteIDLanguageIntervalMonth,
+		GetWebsiteIDLanguageIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDLanguageInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDLanguageIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDLanguageIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDLanguageIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDLanguageIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDLanguageIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDLanguageInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDLanguageInterval(data) {
+	case GetWebsiteIDLanguageIntervalHour:
+		*s = GetWebsiteIDLanguageIntervalHour
+		return nil
+	case GetWebsiteIDLanguageIntervalDay:
+		*s = GetWebsiteIDLanguageIntervalDay
+		return nil
+	case GetWebsiteIDLanguageIntervalWeek:
+		*s = GetWebsiteIDLanguageIntervalWeek
+		return nil
+	case GetWebsiteIDLanguageIntervalMonth:
+		*s = GetWebsiteIDLanguageIntervalMonth
+		return nil
+	case GetWebsiteIDLanguageIntervalYear:
+		*s = GetWebsiteIDLanguageIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDMediumsInterval string
+
+const (
+	GetWebsiteIDMediumsIntervalHour  GetWebsiteIDMediumsInterval = "hour"
+	GetWebsiteIDMediumsIntervalDay   GetWebsiteIDMediumsInterval = "day"
+	GetWebsiteIDMediumsIntervalWeek  GetWebsiteIDMediumsInterval = "week"
+	GetWebsiteIDMediumsIntervalMonth GetWebsiteIDMediumsInterval = "month"
+	GetWebsiteIDMediumsIntervalYear  GetWebsiteIDMediumsInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDMediumsInterval values.
+func (GetWebsiteIDMediumsInterval) AllValues() []GetWebsiteIDMediumsInterval {
+	return []GetWebsiteIDMediumsInterval{
+		GetWebsiteIDMediumsIntervalHour,
+		GetWebsiteIDMediumsIntervalDay,
+		GetWebsiteIDMediumsIntervalWeek,
+		GetWebsiteIDMediumsIntervalMonth,
+		GetWebsiteIDMediumsIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDMediumsInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDMediumsIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDMediumsIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDMediumsIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDMediumsIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDMediumsIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDMediumsInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDMediumsInterval(data) {
+	case GetWebsiteIDMediumsIntervalHour:
+		*s = GetWebsiteIDMediumsIntervalHour
+		return nil
+	case GetWebsiteIDMediumsIntervalDay:
+		*s = GetWebsiteIDMediumsIntervalDay
+		return nil
+	case GetWebsiteIDMediumsIntervalWeek:
+		*s = GetWebsiteIDMediumsIntervalWeek
+		return nil
+	case GetWebsiteIDMediumsIntervalMonth:
+		*s = GetWebsiteIDMediumsIntervalMonth
+		return nil
+	case GetWebsiteIDMediumsIntervalYear:
+		*s = GetWebsiteIDMediumsIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDOsInterval string
+
+const (
+	GetWebsiteIDOsIntervalHour  GetWebsiteIDOsInterval = "hour"
+	GetWebsiteIDOsIntervalDay   GetWebsiteIDOsInterval = "day"
+	GetWebsiteIDOsIntervalWeek  GetWebsiteIDOsInterval = "week"
+	GetWebsiteIDOsIntervalMonth GetWebsiteIDOsInterval = "month"
+	GetWebsiteIDOsIntervalYear  GetWebsiteIDOsInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDOsInterval values.
+func (GetWebsiteIDOsInterval) AllValues() []GetWebsiteIDOsInterval {
+	return []GetWebsiteIDOsInterval{
+		GetWebsiteIDOsIntervalHour,
+		GetWebsiteIDOsIntervalDay,
+		GetWebsiteIDOsIntervalWeek,
+		GetWebsiteIDOsIntervalMonth,
+		GetWebsiteIDOsIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDOsInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDOsIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDOsIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDOsIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDOsIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDOsIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDOsInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDOsInterval(data) {
+	case GetWebsiteIDOsIntervalHour:
+		*s = GetWebsiteIDOsIntervalHour
+		return nil
+	case GetWebsiteIDOsIntervalDay:
+		*s = GetWebsiteIDOsIntervalDay
+		return nil
+	case GetWebsiteIDOsIntervalWeek:
+		*s = GetWebsiteIDOsIntervalWeek
+		return nil
+	case GetWebsiteIDOsIntervalMonth:
+		*s = GetWebsiteIDOsIntervalMonth
+		return nil
+	case GetWebsiteIDOsIntervalYear:
+		*s = GetWebsiteIDOsIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDPagesInterval string
+
+const (
+	GetWebsiteIDPagesIntervalHour  GetWebsiteIDPagesInterval = "hour"
+	GetWebsiteIDPagesIntervalDay   GetWebsiteIDPagesInterval = "day"
+	GetWebsiteIDPagesIntervalWeek  GetWebsiteIDPagesInterval = "week"
+	GetWebsiteIDPagesIntervalMonth GetWebsiteIDPagesInterval = "month"
+	GetWebsiteIDPagesIntervalYear  GetWebsiteIDPagesInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDPagesInterval values.
+func (GetWebsiteIDPagesInterval) AllValues() []GetWebsiteIDPagesInterval {
+	return []GetWebsiteIDPagesInterval{
+		GetWebsiteIDPagesIntervalHour,
+		GetWebsiteIDPagesIntervalDay,
+		GetWebsiteIDPagesIntervalWeek,
+		GetWebsiteIDPagesIntervalMonth,
+		GetWebsiteIDPagesIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDPagesInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDPagesIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDPagesIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDPagesIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDPagesIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDPagesIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDPagesInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDPagesInterval(data) {
+	case GetWebsiteIDPagesIntervalHour:
+		*s = GetWebsiteIDPagesIntervalHour
+		return nil
+	case GetWebsiteIDPagesIntervalDay:
+		*s = GetWebsiteIDPagesIntervalDay
+		return nil
+	case GetWebsiteIDPagesIntervalWeek:
+		*s = GetWebsiteIDPagesIntervalWeek
+		return nil
+	case GetWebsiteIDPagesIntervalMonth:
+		*s = GetWebsiteIDPagesIntervalMonth
+		return nil
+	case GetWebsiteIDPagesIntervalYear:
+		*s = GetWebsiteIDPagesIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDReferrersInterval string
+
+const (
+	GetWebsiteIDReferrersIntervalHour  GetWebsiteIDReferrersInterval = "hour"
+	GetWebsiteIDReferrersIntervalDay   GetWebsiteIDReferrersInterval = "day"
+	GetWebsiteIDReferrersIntervalWeek  GetWebsiteIDReferrersInterval = "week"
+	GetWebsiteIDReferrersIntervalMonth GetWebsiteIDReferrersInterval = "month"
+	GetWebsiteIDReferrersIntervalYear  GetWebsiteIDReferrersInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDReferrersInterval values.
+func (GetWebsiteIDReferrersInterval) AllValues() []GetWebsiteIDReferrersInterval {
+	return []GetWebsiteIDReferrersInterval{
+		GetWebsiteIDReferrersIntervalHour,
+		GetWebsiteIDReferrersIntervalDay,
+		GetWebsiteIDReferrersIntervalWeek,
+		GetWebsiteIDReferrersIntervalMonth,
+		GetWebsiteIDReferrersIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDReferrersInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDReferrersIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDReferrersIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDReferrersIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDReferrersIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDReferrersIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDReferrersInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDReferrersInterval(data) {
+	case GetWebsiteIDReferrersIntervalHour:
+		*s = GetWebsiteIDReferrersIntervalHour
+		return nil
+	case GetWebsiteIDReferrersIntervalDay:
+		*s = GetWebsiteIDReferrersIntervalDay
+		return nil
+	case GetWebsiteIDReferrersIntervalWeek:
+		*s = GetWebsiteIDReferrersIntervalWeek
+		return nil
+	case GetWebsiteIDReferrersIntervalMonth:
+		*s = GetWebsiteIDReferrersIntervalMonth
+		return nil
+	case GetWebsiteIDReferrersIntervalYear:
+		*s = GetWebsiteIDReferrersIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDScreenInterval string
+
+const (
+	GetWebsiteIDScreenIntervalHour  GetWebsiteIDScreenInterval = "hour"
+	GetWebsiteIDScreenIntervalDay   GetWebsiteIDScreenInterval = "day"
+	GetWebsiteIDScreenIntervalWeek  GetWebsiteIDScreenInterval = "week"
+	GetWebsiteIDScreenIntervalMonth GetWebsiteIDScreenInterval = "month"
+	GetWebsiteIDScreenIntervalYear  GetWebsiteIDScreenInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDScreenInterval values.
+func (GetWebsiteIDScreenInterval) AllValues() []GetWebsiteIDScreenInterval {
+	return []GetWebsiteIDScreenInterval{
+		GetWebsiteIDScreenIntervalHour,
+		GetWebsiteIDScreenIntervalDay,
+		GetWebsiteIDScreenIntervalWeek,
+		GetWebsiteIDScreenIntervalMonth,
+		GetWebsiteIDScreenIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDScreenInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDScreenIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDScreenIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDScreenIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDScreenIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDScreenIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDScreenInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDScreenInterval(data) {
+	case GetWebsiteIDScreenIntervalHour:
+		*s = GetWebsiteIDScreenIntervalHour
+		return nil
+	case GetWebsiteIDScreenIntervalDay:
+		*s = GetWebsiteIDScreenIntervalDay
+		return nil
+	case GetWebsiteIDScreenIntervalWeek:
+		*s = GetWebsiteIDScreenIntervalWeek
+		return nil
+	case GetWebsiteIDScreenIntervalMonth:
+		*s = GetWebsiteIDScreenIntervalMonth
+		return nil
+	case GetWebsiteIDScreenIntervalYear:
+		*s = GetWebsiteIDScreenIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDSourcesInterval string
+
+const (
+	GetWebsiteIDSourcesIntervalHour  GetWebsiteIDSourcesInterval = "hour"
+	GetWebsiteIDSourcesIntervalDay   GetWebsiteIDSourcesInterval = "day"
+	GetWebsiteIDSourcesIntervalWeek  GetWebsiteIDSourcesInterval = "week"
+	GetWebsiteIDSourcesIntervalMonth GetWebsiteIDSourcesInterval = "month"
+	GetWebsiteIDSourcesIntervalYear  GetWebsiteIDSourcesInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDSourcesInterval values.
+func (GetWebsiteIDSourcesInterval) AllValues() []GetWebsiteIDSourcesInterval {
+	return []GetWebsiteIDSourcesInterval{
+		GetWebsiteIDSourcesIntervalHour,
+		GetWebsiteIDSourcesIntervalDay,
+		GetWebsiteIDSourcesIntervalWeek,
+		GetWebsiteIDSourcesIntervalMonth,
+		GetWebsiteIDSourcesIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDSourcesInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDSourcesIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDSourcesIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDSourcesIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDSourcesIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDSourcesIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDSourcesInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDSourcesInterval(data) {
+	case GetWebsiteIDSourcesIntervalHour:
+		*s = GetWebsiteIDSourcesIntervalHour
+		return nil
+	case GetWebsiteIDSourcesIntervalDay:
+		*s = GetWebsiteIDSourcesIntervalDay
+		return nil
+	case GetWebsiteIDSourcesIntervalWeek:
+		*s = GetWebsiteIDSourcesIntervalWeek
+		return nil
+	case GetWebsiteIDSourcesIntervalMonth:
+		*s = GetWebsiteIDSourcesIntervalMonth
+		return nil
+	case GetWebsiteIDSourcesIntervalYear:
+		*s = GetWebsiteIDSourcesIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDSummaryInterval string
+
+const (
+	GetWebsiteIDSummaryIntervalHour  GetWebsiteIDSummaryInterval = "hour"
+	GetWebsiteIDSummaryIntervalDay   GetWebsiteIDSummaryInterval = "day"
+	GetWebsiteIDSummaryIntervalWeek  GetWebsiteIDSummaryInterval = "week"
+	GetWebsiteIDSummaryIntervalMonth GetWebsiteIDSummaryInterval = "month"
+	GetWebsiteIDSummaryIntervalYear  GetWebsiteIDSummaryInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDSummaryInterval values.
+func (GetWebsiteIDSummaryInterval) AllValues() []GetWebsiteIDSummaryInterval {
+	return []GetWebsiteIDSummaryInterval{
+		GetWebsiteIDSummaryIntervalHour,
+		GetWebsiteIDSummaryIntervalDay,
+		GetWebsiteIDSummaryIntervalWeek,
+		GetWebsiteIDSummaryIntervalMonth,
+		GetWebsiteIDSummaryIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDSummaryInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDSummaryIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDSummaryIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDSummaryIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDSummaryIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDSummaryIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDSummaryInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDSummaryInterval(data) {
+	case GetWebsiteIDSummaryIntervalHour:
+		*s = GetWebsiteIDSummaryIntervalHour
+		return nil
+	case GetWebsiteIDSummaryIntervalDay:
+		*s = GetWebsiteIDSummaryIntervalDay
+		return nil
+	case GetWebsiteIDSummaryIntervalWeek:
+		*s = GetWebsiteIDSummaryIntervalWeek
+		return nil
+	case GetWebsiteIDSummaryIntervalMonth:
+		*s = GetWebsiteIDSummaryIntervalMonth
+		return nil
+	case GetWebsiteIDSummaryIntervalYear:
+		*s = GetWebsiteIDSummaryIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetWebsiteIDTimeInterval string
+
+const (
+	GetWebsiteIDTimeIntervalHour  GetWebsiteIDTimeInterval = "hour"
+	GetWebsiteIDTimeIntervalDay   GetWebsiteIDTimeInterval = "day"
+	GetWebsiteIDTimeIntervalWeek  GetWebsiteIDTimeInterval = "week"
+	GetWebsiteIDTimeIntervalMonth GetWebsiteIDTimeInterval = "month"
+	GetWebsiteIDTimeIntervalYear  GetWebsiteIDTimeInterval = "year"
+)
+
+// AllValues returns all GetWebsiteIDTimeInterval values.
+func (GetWebsiteIDTimeInterval) AllValues() []GetWebsiteIDTimeInterval {
+	return []GetWebsiteIDTimeInterval{
+		GetWebsiteIDTimeIntervalHour,
+		GetWebsiteIDTimeIntervalDay,
+		GetWebsiteIDTimeIntervalWeek,
+		GetWebsiteIDTimeIntervalMonth,
+		GetWebsiteIDTimeIntervalYear,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDTimeInterval) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDTimeIntervalHour:
+		return []byte(s), nil
+	case GetWebsiteIDTimeIntervalDay:
+		return []byte(s), nil
+	case GetWebsiteIDTimeIntervalWeek:
+		return []byte(s), nil
+	case GetWebsiteIDTimeIntervalMonth:
+		return []byte(s), nil
+	case GetWebsiteIDTimeIntervalYear:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDTimeInterval) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDTimeInterval(data) {
+	case GetWebsiteIDTimeIntervalHour:
+		*s = GetWebsiteIDTimeIntervalHour
+		return nil
+	case GetWebsiteIDTimeIntervalDay:
+		*s = GetWebsiteIDTimeIntervalDay
+		return nil
+	case GetWebsiteIDTimeIntervalWeek:
+		*s = GetWebsiteIDTimeIntervalWeek
+		return nil
+	case GetWebsiteIDTimeIntervalMonth:
+		*s = GetWebsiteIDTimeIntervalMonth
+		return nil
+	case GetWebsiteIDTimeIntervalYear:
+		*s = GetWebsiteIDTimeIntervalYear
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 type GetWebsitesOKApplicationJSON []WebsiteGet
 
 func (*GetWebsitesOKApplicationJSON) getWebsitesRes() {}
@@ -639,6 +1446,650 @@ func (o OptBool) Or(d bool) bool {
 	return d
 }
 
+// NewOptDate returns new OptDate with value set to v.
+func NewOptDate(v time.Time) OptDate {
+	return OptDate{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptDate is optional time.Time.
+type OptDate struct {
+	Value time.Time
+	Set   bool
+}
+
+// IsSet returns true if OptDate was set.
+func (o OptDate) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptDate) Reset() {
+	var v time.Time
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptDate) SetTo(v time.Time) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptDate) Get() (v time.Time, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptDate) Or(d time.Time) time.Time {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDBrowsersInterval returns new OptGetWebsiteIDBrowsersInterval with value set to v.
+func NewOptGetWebsiteIDBrowsersInterval(v GetWebsiteIDBrowsersInterval) OptGetWebsiteIDBrowsersInterval {
+	return OptGetWebsiteIDBrowsersInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDBrowsersInterval is optional GetWebsiteIDBrowsersInterval.
+type OptGetWebsiteIDBrowsersInterval struct {
+	Value GetWebsiteIDBrowsersInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDBrowsersInterval was set.
+func (o OptGetWebsiteIDBrowsersInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDBrowsersInterval) Reset() {
+	var v GetWebsiteIDBrowsersInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDBrowsersInterval) SetTo(v GetWebsiteIDBrowsersInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDBrowsersInterval) Get() (v GetWebsiteIDBrowsersInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDBrowsersInterval) Or(d GetWebsiteIDBrowsersInterval) GetWebsiteIDBrowsersInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDCampaignsInterval returns new OptGetWebsiteIDCampaignsInterval with value set to v.
+func NewOptGetWebsiteIDCampaignsInterval(v GetWebsiteIDCampaignsInterval) OptGetWebsiteIDCampaignsInterval {
+	return OptGetWebsiteIDCampaignsInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDCampaignsInterval is optional GetWebsiteIDCampaignsInterval.
+type OptGetWebsiteIDCampaignsInterval struct {
+	Value GetWebsiteIDCampaignsInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDCampaignsInterval was set.
+func (o OptGetWebsiteIDCampaignsInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDCampaignsInterval) Reset() {
+	var v GetWebsiteIDCampaignsInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDCampaignsInterval) SetTo(v GetWebsiteIDCampaignsInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDCampaignsInterval) Get() (v GetWebsiteIDCampaignsInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDCampaignsInterval) Or(d GetWebsiteIDCampaignsInterval) GetWebsiteIDCampaignsInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDCountryInterval returns new OptGetWebsiteIDCountryInterval with value set to v.
+func NewOptGetWebsiteIDCountryInterval(v GetWebsiteIDCountryInterval) OptGetWebsiteIDCountryInterval {
+	return OptGetWebsiteIDCountryInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDCountryInterval is optional GetWebsiteIDCountryInterval.
+type OptGetWebsiteIDCountryInterval struct {
+	Value GetWebsiteIDCountryInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDCountryInterval was set.
+func (o OptGetWebsiteIDCountryInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDCountryInterval) Reset() {
+	var v GetWebsiteIDCountryInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDCountryInterval) SetTo(v GetWebsiteIDCountryInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDCountryInterval) Get() (v GetWebsiteIDCountryInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDCountryInterval) Or(d GetWebsiteIDCountryInterval) GetWebsiteIDCountryInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDDeviceInterval returns new OptGetWebsiteIDDeviceInterval with value set to v.
+func NewOptGetWebsiteIDDeviceInterval(v GetWebsiteIDDeviceInterval) OptGetWebsiteIDDeviceInterval {
+	return OptGetWebsiteIDDeviceInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDDeviceInterval is optional GetWebsiteIDDeviceInterval.
+type OptGetWebsiteIDDeviceInterval struct {
+	Value GetWebsiteIDDeviceInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDDeviceInterval was set.
+func (o OptGetWebsiteIDDeviceInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDDeviceInterval) Reset() {
+	var v GetWebsiteIDDeviceInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDDeviceInterval) SetTo(v GetWebsiteIDDeviceInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDDeviceInterval) Get() (v GetWebsiteIDDeviceInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDDeviceInterval) Or(d GetWebsiteIDDeviceInterval) GetWebsiteIDDeviceInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDLanguageInterval returns new OptGetWebsiteIDLanguageInterval with value set to v.
+func NewOptGetWebsiteIDLanguageInterval(v GetWebsiteIDLanguageInterval) OptGetWebsiteIDLanguageInterval {
+	return OptGetWebsiteIDLanguageInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDLanguageInterval is optional GetWebsiteIDLanguageInterval.
+type OptGetWebsiteIDLanguageInterval struct {
+	Value GetWebsiteIDLanguageInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDLanguageInterval was set.
+func (o OptGetWebsiteIDLanguageInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDLanguageInterval) Reset() {
+	var v GetWebsiteIDLanguageInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDLanguageInterval) SetTo(v GetWebsiteIDLanguageInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDLanguageInterval) Get() (v GetWebsiteIDLanguageInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDLanguageInterval) Or(d GetWebsiteIDLanguageInterval) GetWebsiteIDLanguageInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDMediumsInterval returns new OptGetWebsiteIDMediumsInterval with value set to v.
+func NewOptGetWebsiteIDMediumsInterval(v GetWebsiteIDMediumsInterval) OptGetWebsiteIDMediumsInterval {
+	return OptGetWebsiteIDMediumsInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDMediumsInterval is optional GetWebsiteIDMediumsInterval.
+type OptGetWebsiteIDMediumsInterval struct {
+	Value GetWebsiteIDMediumsInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDMediumsInterval was set.
+func (o OptGetWebsiteIDMediumsInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDMediumsInterval) Reset() {
+	var v GetWebsiteIDMediumsInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDMediumsInterval) SetTo(v GetWebsiteIDMediumsInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDMediumsInterval) Get() (v GetWebsiteIDMediumsInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDMediumsInterval) Or(d GetWebsiteIDMediumsInterval) GetWebsiteIDMediumsInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDOsInterval returns new OptGetWebsiteIDOsInterval with value set to v.
+func NewOptGetWebsiteIDOsInterval(v GetWebsiteIDOsInterval) OptGetWebsiteIDOsInterval {
+	return OptGetWebsiteIDOsInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDOsInterval is optional GetWebsiteIDOsInterval.
+type OptGetWebsiteIDOsInterval struct {
+	Value GetWebsiteIDOsInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDOsInterval was set.
+func (o OptGetWebsiteIDOsInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDOsInterval) Reset() {
+	var v GetWebsiteIDOsInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDOsInterval) SetTo(v GetWebsiteIDOsInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDOsInterval) Get() (v GetWebsiteIDOsInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDOsInterval) Or(d GetWebsiteIDOsInterval) GetWebsiteIDOsInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDPagesInterval returns new OptGetWebsiteIDPagesInterval with value set to v.
+func NewOptGetWebsiteIDPagesInterval(v GetWebsiteIDPagesInterval) OptGetWebsiteIDPagesInterval {
+	return OptGetWebsiteIDPagesInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDPagesInterval is optional GetWebsiteIDPagesInterval.
+type OptGetWebsiteIDPagesInterval struct {
+	Value GetWebsiteIDPagesInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDPagesInterval was set.
+func (o OptGetWebsiteIDPagesInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDPagesInterval) Reset() {
+	var v GetWebsiteIDPagesInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDPagesInterval) SetTo(v GetWebsiteIDPagesInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDPagesInterval) Get() (v GetWebsiteIDPagesInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDPagesInterval) Or(d GetWebsiteIDPagesInterval) GetWebsiteIDPagesInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDReferrersInterval returns new OptGetWebsiteIDReferrersInterval with value set to v.
+func NewOptGetWebsiteIDReferrersInterval(v GetWebsiteIDReferrersInterval) OptGetWebsiteIDReferrersInterval {
+	return OptGetWebsiteIDReferrersInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDReferrersInterval is optional GetWebsiteIDReferrersInterval.
+type OptGetWebsiteIDReferrersInterval struct {
+	Value GetWebsiteIDReferrersInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDReferrersInterval was set.
+func (o OptGetWebsiteIDReferrersInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDReferrersInterval) Reset() {
+	var v GetWebsiteIDReferrersInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDReferrersInterval) SetTo(v GetWebsiteIDReferrersInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDReferrersInterval) Get() (v GetWebsiteIDReferrersInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDReferrersInterval) Or(d GetWebsiteIDReferrersInterval) GetWebsiteIDReferrersInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDScreenInterval returns new OptGetWebsiteIDScreenInterval with value set to v.
+func NewOptGetWebsiteIDScreenInterval(v GetWebsiteIDScreenInterval) OptGetWebsiteIDScreenInterval {
+	return OptGetWebsiteIDScreenInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDScreenInterval is optional GetWebsiteIDScreenInterval.
+type OptGetWebsiteIDScreenInterval struct {
+	Value GetWebsiteIDScreenInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDScreenInterval was set.
+func (o OptGetWebsiteIDScreenInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDScreenInterval) Reset() {
+	var v GetWebsiteIDScreenInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDScreenInterval) SetTo(v GetWebsiteIDScreenInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDScreenInterval) Get() (v GetWebsiteIDScreenInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDScreenInterval) Or(d GetWebsiteIDScreenInterval) GetWebsiteIDScreenInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDSourcesInterval returns new OptGetWebsiteIDSourcesInterval with value set to v.
+func NewOptGetWebsiteIDSourcesInterval(v GetWebsiteIDSourcesInterval) OptGetWebsiteIDSourcesInterval {
+	return OptGetWebsiteIDSourcesInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDSourcesInterval is optional GetWebsiteIDSourcesInterval.
+type OptGetWebsiteIDSourcesInterval struct {
+	Value GetWebsiteIDSourcesInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDSourcesInterval was set.
+func (o OptGetWebsiteIDSourcesInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDSourcesInterval) Reset() {
+	var v GetWebsiteIDSourcesInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDSourcesInterval) SetTo(v GetWebsiteIDSourcesInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDSourcesInterval) Get() (v GetWebsiteIDSourcesInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDSourcesInterval) Or(d GetWebsiteIDSourcesInterval) GetWebsiteIDSourcesInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDSummaryInterval returns new OptGetWebsiteIDSummaryInterval with value set to v.
+func NewOptGetWebsiteIDSummaryInterval(v GetWebsiteIDSummaryInterval) OptGetWebsiteIDSummaryInterval {
+	return OptGetWebsiteIDSummaryInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDSummaryInterval is optional GetWebsiteIDSummaryInterval.
+type OptGetWebsiteIDSummaryInterval struct {
+	Value GetWebsiteIDSummaryInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDSummaryInterval was set.
+func (o OptGetWebsiteIDSummaryInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDSummaryInterval) Reset() {
+	var v GetWebsiteIDSummaryInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDSummaryInterval) SetTo(v GetWebsiteIDSummaryInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDSummaryInterval) Get() (v GetWebsiteIDSummaryInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDSummaryInterval) Or(d GetWebsiteIDSummaryInterval) GetWebsiteIDSummaryInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDTimeInterval returns new OptGetWebsiteIDTimeInterval with value set to v.
+func NewOptGetWebsiteIDTimeInterval(v GetWebsiteIDTimeInterval) OptGetWebsiteIDTimeInterval {
+	return OptGetWebsiteIDTimeInterval{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDTimeInterval is optional GetWebsiteIDTimeInterval.
+type OptGetWebsiteIDTimeInterval struct {
+	Value GetWebsiteIDTimeInterval
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDTimeInterval was set.
+func (o OptGetWebsiteIDTimeInterval) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDTimeInterval) Reset() {
+	var v GetWebsiteIDTimeInterval
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDTimeInterval) SetTo(v GetWebsiteIDTimeInterval) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDTimeInterval) Get() (v GetWebsiteIDTimeInterval, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDTimeInterval) Or(d GetWebsiteIDTimeInterval) GetWebsiteIDTimeInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptInt returns new OptInt with value set to v.
 func NewOptInt(v int) OptInt {
 	return OptInt{
@@ -725,6 +2176,52 @@ func (o OptInt32) Get() (v int32, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptInt32) Or(d int32) int32 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptStatsSummaryPrevious returns new OptStatsSummaryPrevious with value set to v.
+func NewOptStatsSummaryPrevious(v StatsSummaryPrevious) OptStatsSummaryPrevious {
+	return OptStatsSummaryPrevious{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptStatsSummaryPrevious is optional StatsSummaryPrevious.
+type OptStatsSummaryPrevious struct {
+	Value StatsSummaryPrevious
+	Set   bool
+}
+
+// IsSet returns true if OptStatsSummaryPrevious was set.
+func (o OptStatsSummaryPrevious) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptStatsSummaryPrevious) Reset() {
+	var v StatsSummaryPrevious
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptStatsSummaryPrevious) SetTo(v StatsSummaryPrevious) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptStatsSummaryPrevious) Get() (v StatsSummaryPrevious, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptStatsSummaryPrevious) Or(d StatsSummaryPrevious) StatsSummaryPrevious {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1287,64 +2784,136 @@ func (s *StatsScreensItem) SetUniquePercentage(val float32) {
 
 // Ref: #/components/schemas/StatsSummary
 type StatsSummary struct {
-	Uniques   int    `json:"uniques"`
-	Pageviews int    `json:"pageviews"`
-	Bounces   int    `json:"bounces"`
-	Duration  int    `json:"duration"`
-	Active    OptInt `json:"active"`
+	Current  StatsSummaryCurrent     `json:"current"`
+	Previous OptStatsSummaryPrevious `json:"previous"`
+}
+
+// GetCurrent returns the value of Current.
+func (s *StatsSummary) GetCurrent() StatsSummaryCurrent {
+	return s.Current
+}
+
+// GetPrevious returns the value of Previous.
+func (s *StatsSummary) GetPrevious() OptStatsSummaryPrevious {
+	return s.Previous
+}
+
+// SetCurrent sets the value of Current.
+func (s *StatsSummary) SetCurrent(val StatsSummaryCurrent) {
+	s.Current = val
+}
+
+// SetPrevious sets the value of Previous.
+func (s *StatsSummary) SetPrevious(val OptStatsSummaryPrevious) {
+	s.Previous = val
+}
+
+func (*StatsSummary) getWebsiteIDSummaryRes() {}
+
+type StatsSummaryCurrent struct {
+	Uniques   int `json:"uniques"`
+	Pageviews int `json:"pageviews"`
+	Bounces   int `json:"bounces"`
+	Duration  int `json:"duration"`
+	Active    int `json:"active"`
 }
 
 // GetUniques returns the value of Uniques.
-func (s *StatsSummary) GetUniques() int {
+func (s *StatsSummaryCurrent) GetUniques() int {
 	return s.Uniques
 }
 
 // GetPageviews returns the value of Pageviews.
-func (s *StatsSummary) GetPageviews() int {
+func (s *StatsSummaryCurrent) GetPageviews() int {
 	return s.Pageviews
 }
 
 // GetBounces returns the value of Bounces.
-func (s *StatsSummary) GetBounces() int {
+func (s *StatsSummaryCurrent) GetBounces() int {
 	return s.Bounces
 }
 
 // GetDuration returns the value of Duration.
-func (s *StatsSummary) GetDuration() int {
+func (s *StatsSummaryCurrent) GetDuration() int {
 	return s.Duration
 }
 
 // GetActive returns the value of Active.
-func (s *StatsSummary) GetActive() OptInt {
+func (s *StatsSummaryCurrent) GetActive() int {
 	return s.Active
 }
 
 // SetUniques sets the value of Uniques.
-func (s *StatsSummary) SetUniques(val int) {
+func (s *StatsSummaryCurrent) SetUniques(val int) {
 	s.Uniques = val
 }
 
 // SetPageviews sets the value of Pageviews.
-func (s *StatsSummary) SetPageviews(val int) {
+func (s *StatsSummaryCurrent) SetPageviews(val int) {
 	s.Pageviews = val
 }
 
 // SetBounces sets the value of Bounces.
-func (s *StatsSummary) SetBounces(val int) {
+func (s *StatsSummaryCurrent) SetBounces(val int) {
 	s.Bounces = val
 }
 
 // SetDuration sets the value of Duration.
-func (s *StatsSummary) SetDuration(val int) {
+func (s *StatsSummaryCurrent) SetDuration(val int) {
 	s.Duration = val
 }
 
 // SetActive sets the value of Active.
-func (s *StatsSummary) SetActive(val OptInt) {
+func (s *StatsSummaryCurrent) SetActive(val int) {
 	s.Active = val
 }
 
-func (*StatsSummary) getWebsiteIDSummaryRes() {}
+type StatsSummaryPrevious struct {
+	Uniques   int `json:"uniques"`
+	Pageviews int `json:"pageviews"`
+	Bounces   int `json:"bounces"`
+	Duration  int `json:"duration"`
+}
+
+// GetUniques returns the value of Uniques.
+func (s *StatsSummaryPrevious) GetUniques() int {
+	return s.Uniques
+}
+
+// GetPageviews returns the value of Pageviews.
+func (s *StatsSummaryPrevious) GetPageviews() int {
+	return s.Pageviews
+}
+
+// GetBounces returns the value of Bounces.
+func (s *StatsSummaryPrevious) GetBounces() int {
+	return s.Bounces
+}
+
+// GetDuration returns the value of Duration.
+func (s *StatsSummaryPrevious) GetDuration() int {
+	return s.Duration
+}
+
+// SetUniques sets the value of Uniques.
+func (s *StatsSummaryPrevious) SetUniques(val int) {
+	s.Uniques = val
+}
+
+// SetPageviews sets the value of Pageviews.
+func (s *StatsSummaryPrevious) SetPageviews(val int) {
+	s.Pageviews = val
+}
+
+// SetBounces sets the value of Bounces.
+func (s *StatsSummaryPrevious) SetBounces(val int) {
+	s.Bounces = val
+}
+
+// SetDuration sets the value of Duration.
+func (s *StatsSummaryPrevious) SetDuration(val int) {
+	s.Duration = val
+}
 
 type StatsTime []StatsTimeItem
 

@@ -8,7 +8,7 @@ import (
 
 func (c *Client) AddPageView(ctx context.Context, event *model.PageView) error {
 	exec := `--sql
-	INSERT INTO views (bid, hostname, pathname, is_unique, referrer_hostname, referrer_pathname, title, country_code, language, ua_raw, ua_browser, ua_version, ua_os, ua_device_type, screen_width, screen_height, utm_source, utm_medium, utm_campaign, date_updated)
+	INSERT INTO views (bid, hostname, pathname, is_unique, referrer_hostname, referrer_pathname, title, country_code, language, ua_raw, ua_browser, ua_version, ua_os, ua_device_type, screen_width, screen_height, utm_source, utm_medium, utm_campaign, date_created)
 	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())`
 
 	// Insert the page view into the database
@@ -23,7 +23,7 @@ func (c *Client) AddPageView(ctx context.Context, event *model.PageView) error {
 func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewUpdate) error {
 	// Update the page view into the database
 	_, err := c.DB.ExecContext(ctx, `--sql
-		UPDATE views SET duration_ms = ?, date_updated = now() WHERE bid = ?`,
+		UPDATE views SET duration_ms = ? WHERE bid = ?`,
 		event.DurationMs, event.BID)
 	if err != nil {
 		return err

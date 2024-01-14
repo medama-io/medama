@@ -5,6 +5,7 @@ package api
 import (
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/go-faster/errors"
 
@@ -324,10 +325,12 @@ type GetWebsiteIDBrowsersParams struct {
 	Hostname string
 	// Return a summary of the stats.
 	Summary OptBool
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDBrowsersInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -366,7 +369,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -375,7 +378,16 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDBrowsersInterval)
 		}
 	}
 	{
@@ -562,14 +574,14 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -603,14 +615,14 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -630,6 +642,62 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDBrowsersInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDBrowsersInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -841,10 +909,12 @@ type GetWebsiteIDCampaignsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDCampaignsInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -874,7 +944,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -883,7 +953,16 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDCampaignsInterval)
 		}
 	}
 	{
@@ -1024,14 +1103,14 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -1065,14 +1144,14 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -1092,6 +1171,62 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDCampaignsInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDCampaignsInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -1303,10 +1438,12 @@ type GetWebsiteIDCountryParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDCountryInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -1336,7 +1473,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -1345,7 +1482,16 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDCountryInterval)
 		}
 	}
 	{
@@ -1486,14 +1632,14 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -1527,14 +1673,14 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -1554,6 +1700,62 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDCountryInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDCountryInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -1765,10 +1967,12 @@ type GetWebsiteIDDeviceParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDDeviceInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -1798,7 +2002,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -1807,7 +2011,16 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDDeviceInterval)
 		}
 	}
 	{
@@ -1948,14 +2161,14 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -1989,14 +2202,14 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -2016,6 +2229,62 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDDeviceInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDDeviceInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -2227,10 +2496,12 @@ type GetWebsiteIDLanguageParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDLanguageInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -2260,7 +2531,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -2269,7 +2540,16 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDLanguageInterval)
 		}
 	}
 	{
@@ -2410,14 +2690,14 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -2451,14 +2731,14 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -2478,6 +2758,62 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDLanguageInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDLanguageInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -2689,10 +3025,12 @@ type GetWebsiteIDMediumsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDMediumsInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -2722,7 +3060,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -2731,7 +3069,16 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDMediumsInterval)
 		}
 	}
 	{
@@ -2872,14 +3219,14 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -2913,14 +3260,14 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -2940,6 +3287,62 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDMediumsInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDMediumsInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -3151,10 +3554,12 @@ type GetWebsiteIDOsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDOsInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -3184,7 +3589,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -3193,7 +3598,16 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDOsInterval)
 		}
 	}
 	{
@@ -3334,14 +3748,14 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -3375,14 +3789,14 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -3402,6 +3816,62 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDOsInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDOsInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -3615,10 +4085,12 @@ type GetWebsiteIDPagesParams struct {
 	Hostname string
 	// Return a summary of the stats.
 	Summary OptBool
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDPagesInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -3657,7 +4129,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -3666,7 +4138,16 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDPagesInterval)
 		}
 	}
 	{
@@ -3853,14 +4334,14 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -3894,14 +4375,14 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -3921,6 +4402,62 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDPagesInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDPagesInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -4134,10 +4671,12 @@ type GetWebsiteIDReferrersParams struct {
 	Hostname string
 	// Return a summary of the stats.
 	Summary OptBool
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDReferrersInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -4176,7 +4715,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -4185,7 +4724,16 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDReferrersInterval)
 		}
 	}
 	{
@@ -4372,14 +4920,14 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -4413,14 +4961,14 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -4440,6 +4988,62 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDReferrersInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDReferrersInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -4651,10 +5255,12 @@ type GetWebsiteIDScreenParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDScreenInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -4684,7 +5290,7 @@ func unpackGetWebsiteIDScreenParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -4693,7 +5299,16 @@ func unpackGetWebsiteIDScreenParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDScreenInterval)
 		}
 	}
 	{
@@ -4834,14 +5449,14 @@ func decodeGetWebsiteIDScreenParams(args [1]string, argsEscaped bool, r *http.Re
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -4875,14 +5490,14 @@ func decodeGetWebsiteIDScreenParams(args [1]string, argsEscaped bool, r *http.Re
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -4902,6 +5517,62 @@ func decodeGetWebsiteIDScreenParams(args [1]string, argsEscaped bool, r *http.Re
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDScreenInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDScreenInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -5113,10 +5784,12 @@ type GetWebsiteIDSourcesParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDSourcesInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -5146,7 +5819,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -5155,7 +5828,16 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDSourcesInterval)
 		}
 	}
 	{
@@ -5296,14 +5978,14 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -5337,14 +6019,14 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -5364,6 +6046,62 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDSourcesInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDSourcesInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -5571,14 +6309,19 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 
 // GetWebsiteIDSummaryParams is parameters of get-website-id-summary operation.
 type GetWebsiteIDSummaryParams struct {
+	// Retrieve the data from the previous period as well. This is useful when comparing data from the
+	// previous period to the current period. Requires the start and end period parameters to be set.
+	Previous OptBool
 	// Session token for authentication.
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDSummaryInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -5586,6 +6329,15 @@ type GetWebsiteIDSummaryParams struct {
 }
 
 func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWebsiteIDSummaryParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "previous",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Previous = v.(OptBool)
+		}
+	}
 	{
 		key := middleware.ParameterKey{
 			Name: "_me_sess",
@@ -5606,7 +6358,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -5615,7 +6367,16 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDSummaryInterval)
 		}
 	}
 	{
@@ -5642,6 +6403,52 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDSummaryParams, _ error) {
 	q := uri.NewQueryDecoder(r.URL.Query())
 	c := uri.NewCookieDecoder(r)
+	// Set default value for query: previous.
+	{
+		val := bool(false)
+		params.Previous.SetTo(val)
+	}
+	// Decode query: previous.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "previous",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPreviousVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotPreviousVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Previous.SetTo(paramsDotPreviousVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "previous",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode cookie: _me_sess.
 	if err := func() error {
 		cfg := uri.CookieParameterDecodingConfig{
@@ -5747,14 +6554,14 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -5788,14 +6595,14 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -5815,6 +6622,62 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDSummaryInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDSummaryInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}
@@ -5958,10 +6821,12 @@ type GetWebsiteIDTimeParams struct {
 	Hostname string
 	// Return a summary of the stats.
 	Summary OptBool
-	// Start time (seconds) in Unix epoch format.
-	Start OptString
-	// End time (seconds) in Unix epoch format.
-	End OptString
+	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	Start OptDate
+	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+	End OptDate
+	// Period interval.
+	Interval OptGetWebsiteIDTimeInterval
 	// Path of the page.
 	Path OptString
 	// Referrer name of the page.
@@ -6000,7 +6865,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptString)
+			params.Start = v.(OptDate)
 		}
 	}
 	{
@@ -6009,7 +6874,16 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptString)
+			params.End = v.(OptDate)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "interval",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Interval = v.(OptGetWebsiteIDTimeInterval)
 		}
 	}
 	{
@@ -6196,14 +7070,14 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal string
+				var paramsDotStartVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -6237,14 +7111,14 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal string
+				var paramsDotEndVal time.Time
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToString(val)
+					c, err := conv.ToDate(val)
 					if err != nil {
 						return err
 					}
@@ -6264,6 +7138,62 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "end",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: interval.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "interval",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotIntervalVal GetWebsiteIDTimeInterval
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIntervalVal = GetWebsiteIDTimeInterval(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Interval.SetTo(paramsDotIntervalVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Interval.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "interval",
 			In:   "query",
 			Err:  err,
 		}

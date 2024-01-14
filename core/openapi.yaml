@@ -10,7 +10,7 @@ info:
     url: https://medama.io/contact
   license:
     url: "https://github.com/ayuhito/medama/blob/main/core/LICENSE"
-    name: BUSL 1.1
+    name: Apache License 2.0
 servers:
   - url: "http://localhost:8080"
     description: Local Server
@@ -411,10 +411,17 @@ paths:
       description: Get a summary of the website's stats.
       operationId: get-website-id-summary
       parameters:
+        - in: query
+          name: previous
+          description: Retrieve the data from the previous period as well. This is useful when comparing data from the previous period to the current period. Requires the start and end period parameters to be set.
+          schema:
+            type: boolean
+            default: false
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
       responses:
@@ -450,6 +457,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -486,6 +494,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -522,6 +531,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -556,6 +566,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -590,6 +601,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -624,6 +636,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -659,6 +672,7 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -693,6 +707,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -727,6 +742,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -761,6 +777,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -795,6 +812,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -829,6 +847,7 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
+        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/Limit"
@@ -903,17 +922,32 @@ components:
     PeriodStart:
       name: start
       in: query
-      description: Start time (seconds) in Unix epoch format.
+      description: Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
       required: false
       schema:
         type: string
+        format: date
     PeriodEnd:
       name: end
       in: query
-      description: End time (seconds) in Unix epoch format.
+      description: Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
       required: false
       schema:
         type: string
+        format: date
+    PeriodInterval:
+      name: interval
+      in: query
+      description: Period interval.
+      required: false
+      schema:
+        type: string
+        enum:
+          - hour
+          - day
+          - week
+          - month
+          - year
     Limit:
       name: limit
       in: query
@@ -1218,21 +1252,43 @@ components:
       type: object
       title: StatsSummary
       properties:
-        uniques:
-          type: integer
-        pageviews:
-          type: integer
-        bounces:
-          type: integer
-        duration:
-          type: integer
-        active:
-          type: integer
+        current:
+          type: object
+          properties:
+            uniques:
+              type: integer
+            pageviews:
+              type: integer
+            bounces:
+              type: integer
+            duration:
+              type: integer
+            active:
+              type: integer
+          required:
+            - uniques
+            - pageviews
+            - bounces
+            - duration
+            - active
+        previous:
+          type: object
+          properties:
+            uniques:
+              type: integer
+            pageviews:
+              type: integer
+            bounces:
+              type: integer
+            duration:
+              type: integer
+          required:
+            - uniques
+            - pageviews
+            - bounces
+            - duration
       required:
-        - uniques
-        - pageviews
-        - bounces
-        - duration
+        - current
     StatsPages:
       type: array
       title: StatsPages
