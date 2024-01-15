@@ -1,9 +1,13 @@
 :root {
 	--me-color-text-light: #fcfcfc;
 	--me-color-text-dark: #111111;
+	--me-color-text-disabled: #8e9cb4;
 
 	--me-color-bg-grey: #f3f3f3;
 	--me-color-bg-dark: #111111;
+
+	--me-color-border-grey: #cad4e3;
+	--me-color-border-violet: #9d5def;
 }
 
 body {

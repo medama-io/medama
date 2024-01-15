@@ -1,4 +1,4 @@
-import { Button, TextInput } from '@mantine/core';
+import { Button, SimpleGrid, TextInput } from '@mantine/core';
 import {
 	type ActionFunctionArgs,
 	type LoaderFunctionArgs,
@@ -27,6 +27,8 @@ import {
 	statsSummary,
 	statsTime,
 } from '@/api/stats';
+import { StatsDisplay, type StatsTab } from '@/components/stats/StatsDisplay';
+import StatsDisplayClasses from '@/components/stats/StatsDisplay.module.css';
 import { StatsHeader } from '@/components/stats/StatsHeader';
 
 export const meta: MetaFunction = () => {
@@ -256,6 +258,117 @@ export default function Index() {
 	// Ensure that the summary data is present
 	invariant(summary, 'Summary data is required');
 
+	const pagesData: StatsTab[] = [
+		{
+			label: 'Pages',
+			items:
+				pagesSummary?.map((item) => ({
+					label: item.path,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+		{
+			label: 'Time',
+			items:
+				timeSummary?.map((item) => ({
+					label: item.path,
+					count: item.duration,
+					percentage: item.duration_percentage,
+				})) ?? [],
+		},
+	];
+
+	const referrersData: StatsTab[] = [
+		{
+			label: 'Referrers',
+			items:
+				referrerSummary?.map((item) => ({
+					label: item.referrer_host === '' ? 'Direct/None' : item.referrer_host,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+		{
+			label: 'Sources',
+			items:
+				sources?.map((item) => ({
+					label: item.source,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+		{
+			label: 'Mediums',
+			items:
+				mediums?.map((item) => ({
+					label: item.medium,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+		{
+			label: 'Campaigns',
+			items:
+				campaigns?.map((item) => ({
+					label: item.campaign,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+	];
+
+	const browsersData: StatsTab[] = [
+		{
+			label: 'Browsers',
+			items:
+				browserSummary?.map((item) => ({
+					label: item.browser,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+		{
+			label: 'OS',
+			items:
+				os?.map((item) => ({
+					label: item.os,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+		{
+			label: 'Devices',
+			items:
+				devices?.map((item) => ({
+					label: item.device,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+	];
+
+	const countriesData: StatsTab[] = [
+		{
+			label: 'Countries',
+			items:
+				countries?.map((item) => ({
+					label: item.country,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+		{
+			label: 'Languages',
+			items:
+				languages?.map((item) => ({
+					label: item.language,
+					count: item.uniques,
+					percentage: item.unique_percentage,
+				})) ?? [],
+		},
+	];
+
 	return (
 		<div>
 			<StatsHeader current={summary?.current} previous={summary?.previous} />
@@ -266,6 +379,13 @@ export default function Index() {
 					<Button type="submit">Submit</Button>
 				</Form>
 			</div>
+			<div>Chart</div>
+			<SimpleGrid cols={2} className={StatsDisplayClasses.grid}>
+				<StatsDisplay data={pagesData} />
+				<StatsDisplay data={referrersData} />
+				<StatsDisplay data={browsersData} />
+				<StatsDisplay data={countriesData} />
+			</SimpleGrid>
 			<h1>Summary</h1>
 			{JSON.stringify(summary, undefined, 2)}
 			<h1>Pages</h1>

@@ -2,17 +2,8 @@ import { Box, Flex, Group, Text, Tooltip } from '@mantine/core';
 
 import { type DataResponse } from '@/api/client';
 
+import { countFormatter, formatDuration, percentFormatter } from './formatter';
 import classes from './StatsHeader.module.css';
-
-// Convert a duration in milliseconds to a human readable format
-// such as 1m30s or 30s
-const formatDuration = (durationMs: number) => {
-	const totalSeconds = Math.floor(durationMs / 1000);
-	const minutes = Math.floor(totalSeconds / 60);
-	const seconds = totalSeconds % 60;
-
-	return minutes === 0 ? `${seconds}s` : `${minutes}m${seconds}s`;
-};
 
 interface HeaderDataBoxProps {
 	label: string;
@@ -43,27 +34,13 @@ const HeaderDataBox = ({
 			: Math.round(((value - previousValue) / previousValue) * 100);
 	}
 
-	// Format values into a more readable format
-	// navigator.languages has a readonly property so we need to copy it into a new array
-	const languages =
-		typeof document === 'undefined' ? ['en-US'] : [...navigator.languages];
-
 	let formattedValue: string;
 	if (isDuration) {
 		// Format the duration into a human readable format
 		formattedValue = formatDuration(value);
 	} else {
 		// Rely on Intl.NumberFormat to format the values according to the user's locale
-		const formatter = isBounce
-			? Intl.NumberFormat(languages, {
-					style: 'percent',
-					maximumFractionDigits: 1,
-			  })
-			: Intl.NumberFormat(languages, {
-					notation: 'compact',
-					maximumFractionDigits: 2,
-			  });
-
+		const formatter = isBounce ? percentFormatter : countFormatter;
 		formattedValue = formatter.format(value);
 	}
 
@@ -75,9 +52,16 @@ const HeaderDataBox = ({
 		status = 'negative';
 	}
 
+	let badgeColor: string;
+	if (isBounce) {
+		badgeColor = status === 'positive' ? '#FFD5B7' : '#DFFFB7';
+	} else {
+		badgeColor = status === 'positive' ? '#DFFFB7' : '#FFD5B7';
+	}
+
 	// Generate a tooltip label depending on if the change is positive or negative
 	let tooltipLabel = 'No change since yesterday.';
-	if (previousValue !== undefined) {
+	if (previousValue !== undefined && status !== 'zero') {
 		let changeValue: number | string;
 		if (isBounce) {
 			changeValue = `${Math.round(Math.abs(value - previousValue) * 100)}%`;
@@ -95,7 +79,7 @@ const HeaderDataBox = ({
 	}
 
 	return (
-		<Tooltip label={tooltipLabel} disabled={isLive}>
+		<Tooltip label={tooltipLabel} disabled={isLive} withArrow>
 			<Box
 				className={classes['data-box']}
 				bg={isActive ? '#39414E' : undefined}
@@ -108,14 +92,7 @@ const HeaderDataBox = ({
 						{label}
 					</Text>
 					{change !== undefined && !isLive && (
-						<Box
-							className={classes.badge}
-							bg={
-								status === 'positive' || status === 'zero'
-									? '#DFFFB7'
-									: '#FFD5B7'
-							}
-						>
+						<Box className={classes.badge} bg={badgeColor}>
 							{status === 'positive' ? '+' : undefined}
 							{change}%
 						</Box>
