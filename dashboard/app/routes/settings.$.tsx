@@ -59,5 +59,9 @@ export default function Index() {
 		return;
 	}
 
-	return <Settings user={user} />;
+	return (
+		<main>
+			<Settings user={user} />
+		</main>
+	);
 }

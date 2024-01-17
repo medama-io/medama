@@ -1,8 +1,4 @@
 .header {
-	width: 100vw;
-	margin-top: -80px;
-	margin-left: calc(50% - 50vw);
-
 	color: var(--me-color-text-light);
 	background: var(--me-color-bg-dark);
 }
@@ -29,7 +25,8 @@
 }
 
 .badge {
-	width: 36px;
+	min-width: 36px;
+	padding: 0 2px;
 	border-radius: 16px;
 
 	color: var(--me-color-text-dark);

@@ -16,16 +16,18 @@ body {
 	flex-direction: column;
 	justify-content: flex-start;
 
-	font-size: var(--mantine-font-size-md);
+	font-size: 14px;
 	line-height: 160%;
 }
 
 main {
 	max-width: 1440px;
 	width: 100%;
-	margin-left: auto;
-	margin-right: auto;
+
+	margin: 0 auto;
 	padding: 80px 120px;
 
 	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 }

@@ -48,13 +48,13 @@ export default function Index() {
 	const { websites } = useLoaderData<LoaderData>();
 
 	return (
-		<div>
+		<main>
 			<h1>Websites</h1>
 			{JSON.stringify(websites)}
 			<Button component={NavLink} to="/localhost">
 				localhost
 			</Button>
-		</div>
+		</main>
 	);
 }
 
@@ -63,13 +63,13 @@ export const ErrorBoundary = () => {
 
 	if (isRouteErrorResponse(error) && error.status === 404) {
 		return (
-			<div>
+			<main>
 				<h1>404</h1>
 				<p>No websites found</p>
 				<Button component={NavLink} to="/add">
 					Add Website
 				</Button>
-			</div>
+			</main>
 		);
 	}
 };

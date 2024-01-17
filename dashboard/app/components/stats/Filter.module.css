@@ -1,0 +1,64 @@
+.popover {
+	padding: 16px 16px 12px 16px;
+	gap: 16px;
+
+	border: 1px solid var(--me-color-border-grey);
+	border-radius: 8px;
+}
+
+.select {
+	margin: 16px -16px 0 -16px;
+	padding: 12px 16px 0 16px;
+	border-top: 1px solid var(--me-color-border-grey);
+}
+
+.dropdown-button {
+	width: 120px;
+	height: 40px;
+
+	border-radius: 8px;
+}
+
+.cancel {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 80px;
+	height: 40px;
+
+	font-size: 14px;
+	font-weight: 600;
+
+	border: 1px solid var(--me-color-border-grey);
+	border-radius: 8px;
+}
+
+/* Buttons */
+.add {
+	margin-top: -40px;
+	width: 120px;
+	height: 40px;
+
+	color: var(--me-color-text-light);
+	background-color: #108c6e;
+
+	border-radius: 8px;
+}
+
+.apply {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 80px;
+	height: 40px;
+
+	font-size: 14px;
+	font-weight: 600;
+
+	color: var(--me-color-text-light);
+	background-color: #17cd8c;
+
+	border-radius: 8px;
+}

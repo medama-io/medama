@@ -4,7 +4,7 @@ import { EXPIRE_COOKIE, expireSession } from '@/utils/cookies';
 
 import { type components, type paths } from './types';
 
-const LOCALHOST = 'http://localhost:8080';
+const API_URL = process.env.API_URL ?? 'http://localhost:8080';
 
 const DEFAULT_HEADERS = {
 	'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const client = async (
 	}
 
 	// Add the query to the path
-	const url = new URL(`${LOCALHOST}${newPath ?? path}`);
+	const url = new URL(`${API_URL}${newPath ?? path}`);
 	if (query !== undefined) {
 		for (const [key, value] of Object.entries(query)) {
 			if (value !== undefined) {
@@ -92,4 +92,4 @@ const client = async (
 	return res;
 };
 
-export { client, DEFAULT_HEADERS, LOCALHOST };
+export { client, DEFAULT_HEADERS };

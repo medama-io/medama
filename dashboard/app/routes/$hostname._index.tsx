@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/return-await */
 import { Button, SimpleGrid, TextInput } from '@mantine/core';
 import {
 	type ActionFunctionArgs,
+	defer,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node';
 import {
+	Await,
 	Form,
 	type Params,
 	useActionData,
 	useLoaderData,
 } from '@remix-run/react';
 import { add, format } from 'date-fns';
+import { Suspense } from 'react';
 import invariant from 'tiny-invariant';
 
 import {
@@ -27,7 +31,8 @@ import {
 	statsSummary,
 	statsTime,
 } from '@/api/stats';
-import { StatsDisplay, type StatsTab } from '@/components/stats/StatsDisplay';
+import { Filters } from '@/components/stats/Filter';
+import { StatsDisplay } from '@/components/stats/StatsDisplay';
 import StatsDisplayClasses from '@/components/stats/StatsDisplay.module.css';
 import { StatsHeader } from '@/components/stats/StatsHeader';
 
@@ -35,150 +40,158 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
 };
 
+const datasets = [
+	'summary',
+	'pages',
+	'time',
+	'referrers',
+	'sources',
+	'mediums',
+	'campaigns',
+	'browsers',
+	'os',
+	'devices',
+	'countries',
+	'languages',
+] as const;
+
+type DatasetItem = (typeof datasets)[number];
+type Dataset = readonly DatasetItem[];
+
+const isDataset = (value: readonly string[]): value is Dataset => {
+	// Check if all values are in the dataset
+	for (const item of value) {
+		if (!datasets.includes(item as any)) {
+			return false;
+		}
+	}
+
+	return true;
+};
+
 const fetchStats = async (
 	request: Request,
 	params: Params<string>,
+	dataset: Dataset,
 	filters: Record<string, string | undefined>
 ) => {
-	const [
-		summary,
-		pages,
-		pagesSummary,
-		time,
-		timeSummary,
-		referrers,
-		referrerSummary,
-		sources,
-		mediums,
-		campaigns,
-		browsers,
-		browserSummary,
-		os,
-		devices,
-		countries,
-		languages,
-	] = await Promise.all([
-		// Main summary
-		statsSummary({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: {
-				previous: true,
-				...filters,
-			},
-		}),
-		// Pages
-		statsPages({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsPages({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: {
-				summary: true,
-				...filters,
-			},
-		}),
-		// Time
-		statsTime({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsTime({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: {
-				summary: true,
-				...filters,
-			},
-		}),
-		// Referrers
-		statsReferrers({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsReferrers({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: {
-				summary: true,
-				...filters,
-			},
-		}),
-		// UTM
-		statsSources({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsMediums({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsCampaigns({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		// Types
-		statsBrowsers({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsBrowsers({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: {
-				summary: true,
-				...filters,
-			},
-		}),
-		statsOS({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsDevices({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		// Locale
-		statsCountries({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-		statsLanguages({
-			cookie: request.headers.get('Cookie'),
-			pathKey: params.hostname,
-			query: filters,
-		}),
-	]);
+	const datasetSet = new Set(dataset);
 
+	// Depending on what data is requested, we can make multiple requests in
+	// parallel to speed up the loading time.
 	return {
-		summary: summary.data,
-		pages: pages.data,
-		pagesSummary: pagesSummary.data,
-		time: time.data,
-		timeSummary: timeSummary.data,
-		referrers: referrers.data,
-		referrerSummary: referrerSummary.data,
-		sources: sources.data,
-		mediums: mediums.data,
-		campaigns: campaigns.data,
-		browsers: browsers.data,
-		browserSummary: browserSummary.data,
-		os: os.data,
-		devices: devices.data,
-		countries: countries.data,
-		languages: languages.data,
+		pages: datasetSet.has('pages')
+			? statsPages({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: {
+						summary: true,
+						...filters,
+					},
+			  })
+			: undefined,
+
+		time: datasetSet.has('time')
+			? statsTime({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: {
+						summary: true,
+						...filters,
+					},
+			  })
+			: undefined,
+
+		referrers: datasetSet.has('referrers')
+			? statsReferrers({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: {
+						summary: true,
+						...filters,
+					},
+			  })
+			: undefined,
+
+		sources: datasetSet.has('sources')
+			? statsSources({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: filters,
+			  })
+			: undefined,
+
+		mediums: datasetSet.has('mediums')
+			? statsMediums({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: filters,
+			  })
+			: undefined,
+
+		campaigns: datasetSet.has('campaigns')
+			? statsCampaigns({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: filters,
+			  })
+			: undefined,
+
+		browsers: datasetSet.has('browsers')
+			? statsBrowsers({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: {
+						summary: true,
+						...filters,
+					},
+			  })
+			: undefined,
+
+		os: datasetSet.has('os')
+			? statsOS({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: filters,
+			  })
+			: undefined,
+
+		devices: datasetSet.has('devices')
+			? statsDevices({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: filters,
+			  })
+			: undefined,
+
+		countries: datasetSet.has('countries')
+			? statsCountries({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: filters,
+			  })
+			: undefined,
+
+		languages: datasetSet.has('languages')
+			? statsLanguages({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: filters,
+			  })
+			: undefined,
+
+		// We want to await this request in the loader and ssr since
+		// this data is used in the header
+		summary: datasetSet.has('summary')
+			? await statsSummary({
+					cookie: request.headers.get('Cookie'),
+					pathKey: params.hostname,
+					query: {
+						previous: true,
+						...filters,
+					},
+			  })
+			: undefined,
 	};
 };
 
@@ -189,45 +202,67 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 	// Start time period is 24 hours before the current time period
 	const startPeriod = format(currentDate, 'yyyy-MM-dd');
 
-	const stats = await fetchStats(request, params, {
+	const onloadDatasets = [
+		'summary',
+		'pages',
+		'time',
+		'referrers',
+		'sources',
+		'mediums',
+		'campaigns',
+		'browsers',
+		'os',
+		'devices',
+		'countries',
+		'languages',
+	] as const;
+
+	const stats = await fetchStats(request, params, onloadDatasets, {
 		start: startPeriod,
 		end: endPeriod,
 	});
 
-	return {
+	return defer({
 		status: 200,
 		...stats,
-	};
+	});
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
 	const body = await request.formData();
+	const datasetString = body.get('dataset') as string;
+	const dataset = datasetString.split(',');
+	invariant(isDataset(dataset), 'Invalid dataset');
+
 	const filters = {
-		path: body.get('path') ? String(body.get('path')) : undefined,
+		path: body.get('path') as string,
 	};
 
-	const stats = await fetchStats(request, params, filters);
+	const stats = await fetchStats(request, params, dataset, filters);
 
-	return {
+	// Actions can't be deferred, so we need to await them here
+	const awaited = Object.fromEntries(
+		await Promise.all(
+			Object.entries(stats).map(async ([key, value]) => [key, await value])
+		)
+	);
+
+	return defer({
 		status: 200,
-		...stats,
-	};
+		...awaited,
+	});
 };
 
 export default function Index() {
 	let {
 		summary,
 		pages,
-		pagesSummary,
 		time,
-		timeSummary,
 		referrers,
-		referrerSummary,
 		sources,
 		mediums,
 		campaigns,
 		browsers,
-		browserSummary,
 		os,
 		devices,
 		countries,
@@ -239,190 +274,182 @@ export default function Index() {
 	if (actionData) {
 		summary = actionData.summary ?? summary;
 		pages = actionData.pages ?? pages;
-		pagesSummary = actionData.pagesSummary ?? pagesSummary;
 		time = actionData.time ?? time;
-		timeSummary = actionData.timeSummary ?? timeSummary;
 		referrers = actionData.referrers ?? referrers;
-		referrerSummary = actionData.referrerSummary ?? referrerSummary;
 		sources = actionData.sources ?? sources;
 		mediums = actionData.mediums ?? mediums;
 		campaigns = actionData.campaigns ?? campaigns;
 		browsers = actionData.browsers ?? browsers;
-		browserSummary = actionData.browserSummary ?? browserSummary;
 		os = actionData.os ?? os;
 		devices = actionData.devices ?? devices;
 		countries = actionData.countries ?? countries;
 		languages = actionData.languages ?? languages;
 	}
 
-	// Ensure that the summary data is present
-	invariant(summary, 'Summary data is required');
-
-	const pagesData: StatsTab[] = [
-		{
-			label: 'Pages',
-			items:
-				pagesSummary?.map((item) => ({
-					label: item.path,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-		{
-			label: 'Time',
-			items:
-				timeSummary?.map((item) => ({
-					label: item.path,
-					count: item.duration,
-					percentage: item.duration_percentage,
-				})) ?? [],
-		},
-	];
-
-	const referrersData: StatsTab[] = [
-		{
-			label: 'Referrers',
-			items:
-				referrerSummary?.map((item) => ({
-					label: item.referrer_host === '' ? 'Direct/None' : item.referrer_host,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-		{
-			label: 'Sources',
-			items:
-				sources?.map((item) => ({
-					label: item.source,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-		{
-			label: 'Mediums',
-			items:
-				mediums?.map((item) => ({
-					label: item.medium,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-		{
-			label: 'Campaigns',
-			items:
-				campaigns?.map((item) => ({
-					label: item.campaign,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-	];
-
-	const browsersData: StatsTab[] = [
-		{
-			label: 'Browsers',
-			items:
-				browserSummary?.map((item) => ({
-					label: item.browser,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-		{
-			label: 'OS',
-			items:
-				os?.map((item) => ({
-					label: item.os,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-		{
-			label: 'Devices',
-			items:
-				devices?.map((item) => ({
-					label: item.device,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-	];
-
-	const countriesData: StatsTab[] = [
-		{
-			label: 'Countries',
-			items:
-				countries?.map((item) => ({
-					label: item.country,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-		{
-			label: 'Languages',
-			items:
-				languages?.map((item) => ({
-					label: item.language,
-					count: item.uniques,
-					percentage: item.unique_percentage,
-				})) ?? [],
-		},
-	];
-
+	invariant(summary?.data, 'Summary data is required');
 	return (
-		<div>
-			<StatsHeader current={summary?.current} previous={summary?.previous} />
-			<h1>Filters</h1>
-			<div>
-				<Form method="post">
-					<TextInput name="path" label="Path" />
-					<Button type="submit">Submit</Button>
-				</Form>
-			</div>
-			<div>Chart</div>
-			<SimpleGrid cols={2} className={StatsDisplayClasses.grid}>
-				<StatsDisplay data={pagesData} />
-				<StatsDisplay data={referrersData} />
-				<StatsDisplay data={browsersData} />
-				<StatsDisplay data={countriesData} />
-			</SimpleGrid>
-			<h1>Summary</h1>
-			{JSON.stringify(summary, undefined, 2)}
-			<h1>Pages</h1>
-			<p>Summary</p>
-			{JSON.stringify(pagesSummary, undefined, 2)}
-			<p>Full</p>
-			{JSON.stringify(pages, undefined, 2)}
-			<h1>Time</h1>
-			<p>Summary</p>
-			{JSON.stringify(timeSummary, undefined, 2)}
-			<p>Full</p>
-			{JSON.stringify(time, undefined, 2)}
-			<h1>Referrers</h1>
-			<p>Summary</p>
-			{JSON.stringify(referrerSummary, undefined, 2)}
-			<p>Full</p>
-			{JSON.stringify(referrers, undefined, 2)}
-			<h1>Sources</h1>
-			{JSON.stringify(sources, undefined, 2)}
-			<h1>Mediums</h1>
-			{JSON.stringify(mediums, undefined, 2)}
-			<h1>Campaigns</h1>
-			{JSON.stringify(campaigns, undefined, 2)}
-			<h1>Browsers</h1>
-			<p>Summary</p>
-			{JSON.stringify(browserSummary, undefined, 2)}
-			<p>Full</p>
-			{JSON.stringify(browsers, undefined, 2)}
-			<h1>OS</h1>
-			{JSON.stringify(os, undefined, 2)}
-			<h1>Devices</h1>
-			{JSON.stringify(devices, undefined, 2)}
-			<h1>Countries</h1>
-			{JSON.stringify(countries, undefined, 2)}
-			<h1>Languages</h1>
-			{JSON.stringify(languages, undefined, 2)}
-		</div>
+		<>
+			<StatsHeader
+				current={summary.data.current}
+				previous={summary.data.previous}
+			/>
+			<main>
+				<Filters />
+				<div>
+					<Form method="post">
+						<TextInput name="path" label="Path" />
+						<Button type="submit">Submit</Button>
+					</Form>
+				</div>
+				<div>Chart</div>
+				<SimpleGrid cols={2} className={StatsDisplayClasses.grid}>
+					<Suspense fallback={<div>Loading...</div>}>
+						<Await resolve={Promise.all([pages, time])}>
+							{([pages, time]) => (
+								<StatsDisplay
+									data={[
+										{
+											label: 'Pages',
+											items:
+												pages?.data?.map((item) => ({
+													label: item.path,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+										{
+											label: 'Time',
+											items:
+												time?.data?.map((item) => ({
+													label: item.path,
+													count: item.duration,
+													percentage: item.duration_percentage,
+												})) ?? [],
+										},
+									]}
+								/>
+							)}
+						</Await>
+					</Suspense>
+					<Suspense fallback={<div>Loading...</div>}>
+						<Await
+							resolve={Promise.all([referrers, sources, mediums, campaigns])}
+						>
+							{([referrers, sources, mediums, campaigns]) => (
+								<StatsDisplay
+									data={[
+										{
+											label: 'Referrers',
+											items:
+												referrers?.data?.map((item) => ({
+													label:
+														item.referrer_host === ''
+															? 'Direct/None'
+															: item.referrer_host,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+										{
+											label: 'Sources',
+											items:
+												sources?.data?.map((item) => ({
+													label: item.source,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+										{
+											label: 'Mediums',
+											items:
+												mediums?.data?.map((item) => ({
+													label: item.medium,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+										{
+											label: 'Campaigns',
+											items:
+												campaigns?.data?.map((item) => ({
+													label: item.campaign,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+									]}
+								/>
+							)}
+						</Await>
+					</Suspense>
+					<Suspense fallback={<div>Loading...</div>}>
+						<Await resolve={Promise.all([browsers, os, devices])}>
+							{([browsers, os, devices]) => (
+								<StatsDisplay
+									data={[
+										{
+											label: 'Browsers',
+											items:
+												browsers?.data?.map((item) => ({
+													label: item.browser,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+										{
+											label: 'OS',
+											items:
+												os?.data?.map((item) => ({
+													label: item.os,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+										{
+											label: 'Devices',
+											items:
+												devices?.data?.map((item) => ({
+													label: item.device,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+									]}
+								/>
+							)}
+						</Await>
+					</Suspense>
+					<Suspense fallback={<div>Loading...</div>}>
+						<Await resolve={Promise.all([countries, languages])}>
+							{([countries, languages]) => (
+								<StatsDisplay
+									data={[
+										{
+											label: 'Countries',
+											items:
+												countries?.data?.map((item) => ({
+													label: item.country,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+										{
+											label: 'Languages',
+											items:
+												languages?.data?.map((item) => ({
+													label: item.language,
+													count: item.uniques,
+													percentage: item.unique_percentage,
+												})) ?? [],
+										},
+									]}
+								/>
+							)}
+						</Await>
+					</Suspense>
+				</SimpleGrid>
+			</main>
+		</>
 	);
 }
 

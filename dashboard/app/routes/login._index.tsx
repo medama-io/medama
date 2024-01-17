@@ -66,5 +66,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
-	return <Login />;
+	return (
+		<main>
+			<Login />
+		</main>
+	);
 }

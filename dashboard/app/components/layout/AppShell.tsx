@@ -9,7 +9,7 @@ export const AppShell = ({ children }: AppShellProps) => {
 	return (
 		<>
 			<Header />
-			<main>{children}</main>
+			{children}
 			<Footer />
 		</>
 	);
