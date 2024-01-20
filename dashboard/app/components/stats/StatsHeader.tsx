@@ -122,7 +122,7 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 				<Group>
 					<Group>
 						<HeaderDataBox
-							label="Unique Visitors"
+							label="Visitors"
 							value={current.uniques}
 							previousValue={previous?.uniques}
 							isActive
@@ -133,7 +133,7 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 							previousValue={previous?.pageviews}
 						/>
 						<HeaderDataBox
-							label="Avg. Duration"
+							label="Time Spent"
 							value={current.duration}
 							previousValue={previous?.duration}
 							isDuration
