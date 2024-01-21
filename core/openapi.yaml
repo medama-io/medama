@@ -424,6 +424,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
       responses:
         "200":
           description: OK
@@ -460,6 +461,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -497,6 +499,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -534,6 +537,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -569,6 +573,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -604,6 +609,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -639,6 +645,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -675,6 +682,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -710,6 +718,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -745,6 +754,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -780,6 +790,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -815,6 +826,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -850,6 +862,7 @@ paths:
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -907,18 +920,31 @@ components:
       in: query
       description: Path of the page.
       required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
       schema:
-        type: string
-        minLength: 1
-        maxLength: 2048
+        $ref: "#/components/schemas/FilterString"
     Referrer:
       name: referrer
       in: query
       description: Referrer name of the page.
       required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
       schema:
-        type: string
-        minLength: 1
+        $ref: "#/components/schemas/FilterString"
+    Browser:
+      name: browser
+      in: query
+      description: Browser name.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterFixed"
     PeriodStart:
       name: start
       in: query
@@ -1158,6 +1184,54 @@ components:
         - p
         - e
         - d
+    FilterFixed:
+      type: object
+      properties:
+        eq:
+          type: string
+          description: Equal to.
+        neq:
+          type: string
+          description: Not equal to.
+        in:
+          type: string
+          description: In.
+        not_in:
+          type: string
+          description: Not in.
+    FilterString:
+      type: object
+      properties:
+        eq:
+          type: string
+          description: Equal to.
+        neq:
+          type: string
+          description: Not equal to.
+        contains:
+          type: string
+          description: Contains.
+        not_contains:
+          type: string
+          description: Does not contain.
+        starts_with:
+          type: string
+          description: Starts with.
+        not_starts_with:
+          type: string
+          description: Does not start with.
+        ends_with:
+          type: string
+          description: Ends with.
+        not_ends_with:
+          type: string
+          description: Does not end with.
+        in:
+          type: string
+          description: In.
+        not_in:
+          type: string
+          description: Not in.
     UserGet:
       type: object
       title: UserGet

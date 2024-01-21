@@ -41,6 +41,7 @@ const HeaderDataBox = ({
 	} else {
 		// Rely on Intl.NumberFormat to format the values according to the user's locale
 		const formatter = isBounce ? percentFormatter : countFormatter;
+
 		formattedValue = formatter.format(value);
 	}
 
@@ -107,8 +108,10 @@ type StatsHeaderProps = NonNullable<DataResponse<'StatsSummary'>['data']>;
 
 export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 	// Calculate current bounce rate by dividing the number of bounces to the total number of unique visitors
-	const bounceRate = current.bounces / current.uniques;
-	const previousBounceRate = previous ? previous.bounces / previous.uniques : 0;
+	const bounceRate = current.bounces / current.uniques || 0; // Avoid NaN
+	const previousBounceRate = previous
+		? previous.bounces / previous.uniques || 0
+		: 0;
 
 	return (
 		<div className={classes.header}>

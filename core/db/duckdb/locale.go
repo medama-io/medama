@@ -9,7 +9,7 @@ import (
 )
 
 // GetWebsiteCountries returns the countries for the given hostname.
-func (c *Client) GetWebsiteCountries(ctx context.Context, filter db.Filter) ([]*model.StatsCountries, error) {
+func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([]*model.StatsCountries, error) {
 	var countries []*model.StatsCountries
 	var query strings.Builder
 
@@ -39,7 +39,7 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter db.Filter) ([]*
 }
 
 // GetWebsiteLanguages returns the languages for the given hostname.
-func (c *Client) GetWebsiteLanguages(ctx context.Context, filter db.Filter) ([]*model.StatsLanguages, error) {
+func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([]*model.StatsLanguages, error) {
 	var languages []*model.StatsLanguages
 	var query strings.Builder
 

@@ -579,6 +579,10 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Referrer,
 				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -729,6 +733,10 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 					Name: "referrer",
 					In:   "query",
 				}: params.Referrer,
+				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
 				{
 					Name: "limit",
 					In:   "query",
@@ -881,6 +889,10 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Referrer,
 				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -1031,6 +1043,10 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 					Name: "referrer",
 					In:   "query",
 				}: params.Referrer,
+				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1183,6 +1199,10 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Referrer,
 				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -1334,6 +1354,10 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Referrer,
 				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -1484,6 +1508,10 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 					Name: "referrer",
 					In:   "query",
 				}: params.Referrer,
+				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1640,6 +1668,10 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 					In:   "query",
 				}: params.Referrer,
 				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -1795,6 +1827,10 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Referrer,
 				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -1946,6 +1982,10 @@ func (s *Server) handleGetWebsiteIDScreenRequest(args [1]string, argsEscaped boo
 					In:   "query",
 				}: params.Referrer,
 				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -2096,6 +2136,10 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 					Name: "referrer",
 					In:   "query",
 				}: params.Referrer,
+				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
 				{
 					Name: "limit",
 					In:   "query",
@@ -2251,6 +2295,10 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					Name: "referrer",
 					In:   "query",
 				}: params.Referrer,
+				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
 			},
 			Raw: r,
 		}
@@ -2402,6 +2450,10 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 					Name: "referrer",
 					In:   "query",
 				}: params.Referrer,
+				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
 				{
 					Name: "limit",
 					In:   "query",

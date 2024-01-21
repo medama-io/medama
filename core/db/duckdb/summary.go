@@ -9,7 +9,7 @@ import (
 )
 
 // GetWebsiteSummary returns the summary stats for the given website.
-func (c *Client) GetWebsiteSummary(ctx context.Context, filter db.Filter) (*model.StatsSummarySingle, error) {
+func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*model.StatsSummarySingle, error) {
 	var summary model.StatsSummarySingle
 	var query strings.Builder
 

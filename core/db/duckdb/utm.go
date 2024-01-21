@@ -9,7 +9,7 @@ import (
 )
 
 // GetWebsiteUTMSources returns the utm sources for the given hostname.
-func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter db.Filter) ([]*model.StatsUTMSources, error) {
+func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMSources, error) {
 	var utms []*model.StatsUTMSources
 	var query strings.Builder
 
@@ -39,7 +39,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter db.Filter) ([]
 }
 
 // GetWebsiteUTMMediums returns the utm mediums for the given hostname.
-func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter db.Filter) ([]*model.StatsUTMMediums, error) {
+func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMMediums, error) {
 	var utms []*model.StatsUTMMediums
 	var query strings.Builder
 
@@ -69,7 +69,7 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter db.Filter) ([]
 }
 
 // GetWebsiteUTMCampaigns returns the utm campaigns for the given hostname.
-func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter db.Filter) ([]*model.StatsUTMCampaigns, error) {
+func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMCampaigns, error) {
 	var utms []*model.StatsUTMCampaigns
 	var query strings.Builder
 

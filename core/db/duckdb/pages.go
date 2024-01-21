@@ -9,7 +9,7 @@ import (
 )
 
 // GetWebsitePagesSummary returns a summary of the pages for the given hostname.
-func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter db.Filter) ([]*model.StatsPagesSummary, error) {
+func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsPagesSummary, error) {
 	var pages []*model.StatsPagesSummary
 	var query strings.Builder
 
@@ -42,7 +42,7 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter db.Filter) (
 }
 
 // GetWebsitePages returns the pages statistics for the given hostname.
-func (c *Client) GetWebsitePages(ctx context.Context, filter db.Filter) ([]*model.StatsPages, error) {
+func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*model.StatsPages, error) {
 	var pages []*model.StatsPages
 	var query strings.Builder
 

@@ -27,6 +27,12 @@ var (
 	// ErrRequestContext is returned when a request context is not found.
 	ErrRequestContext = errors.New("failed to get request from context")
 
+	// Filters
+	// ErrInvalidFilterField is returned when a filter field is invalid.
+	ErrInvalidFilterField = errors.New("invalid filter field")
+	// ErrInvalidFilterOperation is returned when a filter operation is invalid.
+	ErrInvalidFilterOperation = errors.New("invalid filter operation")
+
 	// Users
 	// ErrUserExists is returned when a user already exists.
 	ErrUserExists = errors.New("user already exists")

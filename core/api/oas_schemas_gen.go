@@ -349,6 +349,182 @@ func (s *EventHitE) UnmarshalText(data []byte) error {
 	}
 }
 
+// Ref: #/components/schemas/FilterFixed
+type FilterFixed struct {
+	// Equal to.
+	Eq OptString `json:"eq"`
+	// Not equal to.
+	Neq OptString `json:"neq"`
+	// In.
+	In OptString `json:"in"`
+	// Not in.
+	NotIn OptString `json:"not_in"`
+}
+
+// GetEq returns the value of Eq.
+func (s *FilterFixed) GetEq() OptString {
+	return s.Eq
+}
+
+// GetNeq returns the value of Neq.
+func (s *FilterFixed) GetNeq() OptString {
+	return s.Neq
+}
+
+// GetIn returns the value of In.
+func (s *FilterFixed) GetIn() OptString {
+	return s.In
+}
+
+// GetNotIn returns the value of NotIn.
+func (s *FilterFixed) GetNotIn() OptString {
+	return s.NotIn
+}
+
+// SetEq sets the value of Eq.
+func (s *FilterFixed) SetEq(val OptString) {
+	s.Eq = val
+}
+
+// SetNeq sets the value of Neq.
+func (s *FilterFixed) SetNeq(val OptString) {
+	s.Neq = val
+}
+
+// SetIn sets the value of In.
+func (s *FilterFixed) SetIn(val OptString) {
+	s.In = val
+}
+
+// SetNotIn sets the value of NotIn.
+func (s *FilterFixed) SetNotIn(val OptString) {
+	s.NotIn = val
+}
+
+// Ref: #/components/schemas/FilterString
+type FilterString struct {
+	// Equal to.
+	Eq OptString `json:"eq"`
+	// Not equal to.
+	Neq OptString `json:"neq"`
+	// Contains.
+	Contains OptString `json:"contains"`
+	// Does not contain.
+	NotContains OptString `json:"not_contains"`
+	// Starts with.
+	StartsWith OptString `json:"starts_with"`
+	// Does not start with.
+	NotStartsWith OptString `json:"not_starts_with"`
+	// Ends with.
+	EndsWith OptString `json:"ends_with"`
+	// Does not end with.
+	NotEndsWith OptString `json:"not_ends_with"`
+	// In.
+	In OptString `json:"in"`
+	// Not in.
+	NotIn OptString `json:"not_in"`
+}
+
+// GetEq returns the value of Eq.
+func (s *FilterString) GetEq() OptString {
+	return s.Eq
+}
+
+// GetNeq returns the value of Neq.
+func (s *FilterString) GetNeq() OptString {
+	return s.Neq
+}
+
+// GetContains returns the value of Contains.
+func (s *FilterString) GetContains() OptString {
+	return s.Contains
+}
+
+// GetNotContains returns the value of NotContains.
+func (s *FilterString) GetNotContains() OptString {
+	return s.NotContains
+}
+
+// GetStartsWith returns the value of StartsWith.
+func (s *FilterString) GetStartsWith() OptString {
+	return s.StartsWith
+}
+
+// GetNotStartsWith returns the value of NotStartsWith.
+func (s *FilterString) GetNotStartsWith() OptString {
+	return s.NotStartsWith
+}
+
+// GetEndsWith returns the value of EndsWith.
+func (s *FilterString) GetEndsWith() OptString {
+	return s.EndsWith
+}
+
+// GetNotEndsWith returns the value of NotEndsWith.
+func (s *FilterString) GetNotEndsWith() OptString {
+	return s.NotEndsWith
+}
+
+// GetIn returns the value of In.
+func (s *FilterString) GetIn() OptString {
+	return s.In
+}
+
+// GetNotIn returns the value of NotIn.
+func (s *FilterString) GetNotIn() OptString {
+	return s.NotIn
+}
+
+// SetEq sets the value of Eq.
+func (s *FilterString) SetEq(val OptString) {
+	s.Eq = val
+}
+
+// SetNeq sets the value of Neq.
+func (s *FilterString) SetNeq(val OptString) {
+	s.Neq = val
+}
+
+// SetContains sets the value of Contains.
+func (s *FilterString) SetContains(val OptString) {
+	s.Contains = val
+}
+
+// SetNotContains sets the value of NotContains.
+func (s *FilterString) SetNotContains(val OptString) {
+	s.NotContains = val
+}
+
+// SetStartsWith sets the value of StartsWith.
+func (s *FilterString) SetStartsWith(val OptString) {
+	s.StartsWith = val
+}
+
+// SetNotStartsWith sets the value of NotStartsWith.
+func (s *FilterString) SetNotStartsWith(val OptString) {
+	s.NotStartsWith = val
+}
+
+// SetEndsWith sets the value of EndsWith.
+func (s *FilterString) SetEndsWith(val OptString) {
+	s.EndsWith = val
+}
+
+// SetNotEndsWith sets the value of NotEndsWith.
+func (s *FilterString) SetNotEndsWith(val OptString) {
+	s.NotEndsWith = val
+}
+
+// SetIn sets the value of In.
+func (s *FilterString) SetIn(val OptString) {
+	s.In = val
+}
+
+// SetNotIn sets the value of NotIn.
+func (s *FilterString) SetNotIn(val OptString) {
+	s.NotIn = val
+}
+
 type ForbiddenError struct {
 	Error ForbiddenErrorError `json:"error"`
 }
@@ -1486,6 +1662,98 @@ func (o OptDate) Get() (v time.Time, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptDate) Or(d time.Time) time.Time {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptFilterFixed returns new OptFilterFixed with value set to v.
+func NewOptFilterFixed(v FilterFixed) OptFilterFixed {
+	return OptFilterFixed{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptFilterFixed is optional FilterFixed.
+type OptFilterFixed struct {
+	Value FilterFixed
+	Set   bool
+}
+
+// IsSet returns true if OptFilterFixed was set.
+func (o OptFilterFixed) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptFilterFixed) Reset() {
+	var v FilterFixed
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptFilterFixed) SetTo(v FilterFixed) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptFilterFixed) Get() (v FilterFixed, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptFilterFixed) Or(d FilterFixed) FilterFixed {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptFilterString returns new OptFilterString with value set to v.
+func NewOptFilterString(v FilterString) OptFilterString {
+	return OptFilterString{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptFilterString is optional FilterString.
+type OptFilterString struct {
+	Value FilterString
+	Set   bool
+}
+
+// IsSet returns true if OptFilterString was set.
+func (o OptFilterString) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptFilterString) Reset() {
+	var v FilterString
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptFilterString) SetTo(v FilterString) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptFilterString) Get() (v FilterString, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptFilterString) Or(d FilterString) FilterString {
 	if v, ok := o.Get(); ok {
 		return v
 	}

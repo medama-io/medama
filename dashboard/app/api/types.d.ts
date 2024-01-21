@@ -210,6 +210,38 @@ export interface components {
       /** @description Time spent on page. Only sent on unload. */
       m?: number;
     };
+    FilterFixed: {
+      /** @description Equal to. */
+      eq?: string;
+      /** @description Not equal to. */
+      neq?: string;
+      /** @description In. */
+      in?: string;
+      /** @description Not in. */
+      not_in?: string;
+    };
+    FilterString: {
+      /** @description Equal to. */
+      eq?: string;
+      /** @description Not equal to. */
+      neq?: string;
+      /** @description Contains. */
+      contains?: string;
+      /** @description Does not contain. */
+      not_contains?: string;
+      /** @description Starts with. */
+      starts_with?: string;
+      /** @description Does not start with. */
+      not_starts_with?: string;
+      /** @description Ends with. */
+      ends_with?: string;
+      /** @description Does not end with. */
+      not_ends_with?: string;
+      /** @description In. */
+      in?: string;
+      /** @description Not in. */
+      not_in?: string;
+    };
     /**
      * UserGet
      * @description Response body for getting a user.
@@ -554,9 +586,11 @@ export interface components {
     /** @description Return a summary of the stats. */
     Summary?: boolean;
     /** @description Path of the page. */
-    Path?: string;
+    Path?: components["schemas"]["FilterString"];
     /** @description Referrer name of the page. */
-    Referrer?: string;
+    Referrer?: components["schemas"]["FilterString"];
+    /** @description Browser name. */
+    Browser?: components["schemas"]["FilterFixed"];
     /** @description Period start date using full-date notation in RFC3339 format (YYYY-MM-DD). */
     PeriodStart?: string;
     /** @description Period end date using full-date notation in RFC3339 format (YYYY-MM-DD). */

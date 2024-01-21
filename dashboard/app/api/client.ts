@@ -62,6 +62,7 @@ const client = async (
 			}
 		}
 	}
+	console.log(url);
 
 	const res = await fetch(url, {
 		method: method ?? 'GET',

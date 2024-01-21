@@ -45,26 +45,26 @@ type AnalyticsClient interface {
 	AddPageView(ctx context.Context, event *model.PageView) error
 	UpdatePageView(ctx context.Context, event *model.PageViewUpdate) error
 	// Pages
-	GetWebsitePages(ctx context.Context, filter Filter) ([]*model.StatsPages, error)
-	GetWebsitePagesSummary(ctx context.Context, filter Filter) ([]*model.StatsPagesSummary, error)
+	GetWebsitePages(ctx context.Context, filter *Filters) ([]*model.StatsPages, error)
+	GetWebsitePagesSummary(ctx context.Context, filter *Filters) ([]*model.StatsPagesSummary, error)
 	// Locales
-	GetWebsiteCountries(ctx context.Context, filter Filter) ([]*model.StatsCountries, error)
-	GetWebsiteLanguages(ctx context.Context, filter Filter) ([]*model.StatsLanguages, error)
+	GetWebsiteCountries(ctx context.Context, filter *Filters) ([]*model.StatsCountries, error)
+	GetWebsiteLanguages(ctx context.Context, filter *Filters) ([]*model.StatsLanguages, error)
 	// Referrers
-	GetWebsiteReferrers(ctx context.Context, filter Filter) ([]*model.StatsReferrers, error)
-	GetWebsiteReferrersSummary(ctx context.Context, filter Filter) ([]*model.StatsReferrerSummary, error)
+	GetWebsiteReferrers(ctx context.Context, filter *Filters) ([]*model.StatsReferrers, error)
+	GetWebsiteReferrersSummary(ctx context.Context, filter *Filters) ([]*model.StatsReferrerSummary, error)
 	// Summary
-	GetWebsiteSummary(ctx context.Context, filter Filter) (*model.StatsSummarySingle, error)
+	GetWebsiteSummary(ctx context.Context, filter *Filters) (*model.StatsSummarySingle, error)
 	// Time
-	GetWebsiteTime(ctx context.Context, filter Filter) ([]*model.StatsTime, error)
-	GetWebsiteTimeSummary(ctx context.Context, filter Filter) ([]*model.StatsTimeSummary, error)
+	GetWebsiteTime(ctx context.Context, filter *Filters) ([]*model.StatsTime, error)
+	GetWebsiteTimeSummary(ctx context.Context, filter *Filters) ([]*model.StatsTimeSummary, error)
 	// Types
-	GetWebsiteBrowsers(ctx context.Context, filter Filter) ([]*model.StatsBrowsers, error)
-	GetWebsiteBrowsersSummary(ctx context.Context, filter Filter) ([]*model.StatsBrowserSummary, error)
-	GetWebsiteOS(ctx context.Context, filter Filter) ([]*model.StatsOS, error)
-	GetWebsiteDevices(ctx context.Context, filter Filter) ([]*model.StatsDevices, error)
+	GetWebsiteBrowsers(ctx context.Context, filter *Filters) ([]*model.StatsBrowsers, error)
+	GetWebsiteBrowsersSummary(ctx context.Context, filter *Filters) ([]*model.StatsBrowserSummary, error)
+	GetWebsiteOS(ctx context.Context, filter *Filters) ([]*model.StatsOS, error)
+	GetWebsiteDevices(ctx context.Context, filter *Filters) ([]*model.StatsDevices, error)
 	// UTM
-	GetWebsiteUTMSources(ctx context.Context, filter Filter) ([]*model.StatsUTMSources, error)
-	GetWebsiteUTMMediums(ctx context.Context, filter Filter) ([]*model.StatsUTMMediums, error)
-	GetWebsiteUTMCampaigns(ctx context.Context, filter Filter) ([]*model.StatsUTMCampaigns, error)
+	GetWebsiteUTMSources(ctx context.Context, filter *Filters) ([]*model.StatsUTMSources, error)
+	GetWebsiteUTMMediums(ctx context.Context, filter *Filters) ([]*model.StatsUTMMediums, error)
+	GetWebsiteUTMCampaigns(ctx context.Context, filter *Filters) ([]*model.StatsUTMCampaigns, error)
 }

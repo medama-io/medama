@@ -12,7 +12,6 @@ import (
 func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (api.GetWebsiteIDSummaryRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -27,18 +26,19 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
 
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get summary
-	currentSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filter)
+	currentSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website summary", attributes...)
@@ -58,10 +58,10 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		// Calculate the difference between the start and end dates
 		// and subtract that from the start date to get the previous period.
 		difference := params.End.Value.Sub(params.Start.Value)
-		filter.PeriodStart = params.Start.Value.Add(-difference).Format(model.DateFormat)
-		filter.PeriodEnd = params.Start.Value.Format(model.DateFormat)
+		filters.PeriodStart = params.Start.Value.Add(-difference).Format(model.DateFormat)
+		filters.PeriodEnd = params.Start.Value.Format(model.DateFormat)
 
-		previousSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filter)
+		previousSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get previous website summary", attributes...)
@@ -89,7 +89,6 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteIDPagesParams) (api.GetWebsiteIDPagesRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -104,17 +103,22 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, filter)
+		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages summary", attributes...)
@@ -134,7 +138,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		return &res, nil
 	case false:
 		// Get pages
-		pages, err := h.analyticsDB.GetWebsitePages(ctx, filter)
+		pages, err := h.analyticsDB.GetWebsitePages(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages", attributes...)
@@ -164,7 +168,6 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -179,17 +182,22 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		times, err := h.analyticsDB.GetWebsiteTimeSummary(ctx, filter)
+		times, err := h.analyticsDB.GetWebsiteTimeSummary(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time summary", attributes...)
@@ -209,7 +217,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		return &res, nil
 	case false:
 		// Get time
-		times, err := h.analyticsDB.GetWebsiteTime(ctx, filter)
+		times, err := h.analyticsDB.GetWebsiteTime(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time", attributes...)
@@ -240,7 +248,6 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -256,17 +263,22 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, filter)
+		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers summary", attributes...)
@@ -286,7 +298,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		return &res, nil
 	case false:
 		// Get referrers
-		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, filter)
+		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers", attributes...)
@@ -315,7 +327,6 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -331,14 +342,19 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get sources
-	sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, filter)
+	sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm sources", attributes...)
@@ -361,7 +377,6 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -377,14 +392,19 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get mediums
-	mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, filter)
+	mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm mediums", attributes...)
@@ -407,7 +427,6 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -423,14 +442,19 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get campaigns
-	campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, filter)
+	campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm campaigns", attributes...)
@@ -453,7 +477,6 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -469,17 +492,22 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, filter)
+		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers summary", attributes...)
@@ -499,7 +527,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		return &res, nil
 	case false:
 		// Get browsers
-		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filter)
+		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers", attributes...)
@@ -526,7 +554,6 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -542,14 +569,19 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get OS
-	os, err := h.analyticsDB.GetWebsiteOS(ctx, filter)
+	os, err := h.analyticsDB.GetWebsiteOS(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website os", attributes...)
@@ -572,7 +604,6 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -588,14 +619,19 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get devices
-	devices, err := h.analyticsDB.GetWebsiteDevices(ctx, filter)
+	devices, err := h.analyticsDB.GetWebsiteDevices(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website devices", attributes...)
@@ -622,7 +658,6 @@ func (h *Handler) GetWebsiteIDScreen(ctx context.Context, params api.GetWebsiteI
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -638,14 +673,19 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get languages
-	languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, filter)
+	languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website languages", attributes...)
@@ -668,7 +708,6 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
 	attributes := []slog.Attr{
 		slog.String("hostname", params.Hostname),
-		slog.String("path", params.Path.Value),
 	}
 
 	// Check if website exists
@@ -684,14 +723,19 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filter := db.Filter{
-		Hostname:         params.Hostname,
-		Pathname:         params.Path.Value,
-		ReferrerHostname: params.Referrer.Value,
+	filters := &db.Filters{
+		Hostname: params.Hostname,
+
+		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		// YYYY-MM-DD
+		PeriodStart: params.Start.Value.Format(model.DateFormat),
+		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
 	// Get countries
-	countries, err := h.analyticsDB.GetWebsiteCountries(ctx, filter)
+	countries, err := h.analyticsDB.GetWebsiteCountries(ctx, filters)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website countries", attributes...)

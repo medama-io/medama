@@ -9,7 +9,7 @@ import (
 )
 
 // GetWebsiteBrowserSummary returns a summary of the browsers for the given hostname.
-func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter db.Filter) ([]*model.StatsBrowserSummary, error) {
+func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsBrowserSummary, error) {
 	var browsers []*model.StatsBrowserSummary
 	var query strings.Builder
 
@@ -39,7 +39,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter db.Filter
 }
 
 // GetWebsiteBrowser returns the browsers for the given hostname.
-func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter db.Filter) ([]*model.StatsBrowsers, error) {
+func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]*model.StatsBrowsers, error) {
 	var browsers []*model.StatsBrowsers
 	var query strings.Builder
 
@@ -72,7 +72,7 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter db.Filter) ([]*m
 }
 
 // GetWebsiteOS returns the operating systems for the given hostname.
-func (c *Client) GetWebsiteOS(ctx context.Context, filter db.Filter) ([]*model.StatsOS, error) {
+func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model.StatsOS, error) {
 	var os []*model.StatsOS
 	var query strings.Builder
 
@@ -102,7 +102,7 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter db.Filter) ([]*model.S
 }
 
 // GetWebsiteDevices returns the devices for the given hostname.
-func (c *Client) GetWebsiteDevices(ctx context.Context, filter db.Filter) ([]*model.StatsDevices, error) {
+func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*model.StatsDevices, error) {
 	var devices []*model.StatsDevices
 	var query strings.Builder
 
