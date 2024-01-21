@@ -65,7 +65,7 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 				<Tabs.Panel key={tab.label} value={tab.label}>
 					{tab.items.map((item) => (
 						<StatsItem
-							key={item.count}
+							key={item.label}
 							isTime={tab.label === 'Time'}
 							{...item}
 						/>

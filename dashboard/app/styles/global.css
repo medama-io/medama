@@ -2,9 +2,12 @@
 	--me-color-text-light: #fcfcfc;
 	--me-color-text-dark: #111111;
 	--me-color-text-disabled: #8e9cb4;
+	--me-color-text-grey: #39414e;
 
 	--me-color-bg-grey: #f3f3f3;
 	--me-color-bg-dark: #111111;
+
+	--me-color-selected-grey: #e8e7e7;
 
 	--me-color-border-grey: #cad4e3;
 	--me-color-border-violet: #9d5def;

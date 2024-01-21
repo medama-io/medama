@@ -1,4 +1,5 @@
 import {
+	CloseButton,
 	Combobox,
 	Group,
 	InputBase,
@@ -17,66 +18,76 @@ import { IconPlus } from '@/components/icons/plus';
 
 import classes from './Filter.module.css';
 
-const filterTypes = {
-	string: [
-		{ label: 'equals', value: 'eq' },
-		{ label: 'does not equal', value: 'neq' },
-		{ label: 'contains', value: 'contains' },
-		{ label: 'does not contain', value: 'not_contains' },
-		{ label: 'starts with', value: 'starts_with' },
-		{ label: 'does not start with', value: 'not_starts_with' },
-		{ label: 'ends with', value: 'ends_with' },
-		{ label: 'does not end with', value: 'not_ends_with' },
-		{ label: 'is in', value: 'in' },
-		{ label: 'is not in', value: 'not_in' },
-	] as const,
-	fixed: [
-		{ label: 'equals', value: 'eq' },
-		{ label: 'does not equal', value: 'neq' },
-		{ label: 'is in', value: 'in' },
-		{ label: 'is not in', value: 'not_in' },
-	] as const,
-};
+type FilterType = Record<string, { label: string; value: string }>;
+interface FilterTypes {
+	string: FilterType;
+	fixed: FilterType;
+}
 
 interface FilterChoicesString {
 	label: string;
-	value: string;
 	type: 'string';
 	placeholder?: string;
 }
 
 interface FilterChoicesFixed {
 	label: string;
-	value: string;
 	type: 'fixed';
-	choices: string[];
+	choices: FilterType;
 }
 
-type FilterOptions = Array<FilterChoicesString | FilterChoicesFixed>;
+type FilterOptions = Record<string, FilterChoicesString | FilterChoicesFixed>;
 
-const filterOptions: FilterOptions = [
-	{
+const filterTypes: FilterTypes = {
+	string: {
+		eq: { label: 'equals', value: 'eq' },
+		neq: { label: 'does not equal', value: 'neq' },
+		contains: { label: 'contains', value: 'contains' },
+		not_contains: { label: 'does not contain', value: 'not_contains' },
+		starts_with: { label: 'starts with', value: 'starts_with' },
+		not_starts_with: {
+			label: 'does not start with',
+			value: 'not_starts_with',
+		},
+		ends_with: { label: 'ends with', value: 'ends_with' },
+		not_ends_with: { label: 'does not end with', value: 'not_ends_with' },
+		in: { label: 'is in', value: 'in' },
+		not_in: { label: 'is not in', value: 'not_in' },
+	},
+	fixed: {
+		eq: { label: 'equals', value: 'eq' },
+		neq: { label: 'does not equal', value: 'neq' },
+		in: { label: 'is in', value: 'in' },
+		not_in: { label: 'is not in', value: 'not_in' },
+	},
+};
+
+const filterOptions: FilterOptions = {
+	path: {
 		label: 'Path',
-		value: 'path',
 		type: 'string',
 		placeholder: 'e.g. /blog',
 	},
-	{
+	referrer: {
 		label: 'Referrer',
-		value: 'referrer',
 		type: 'string',
 		placeholder: 'e.g. /blog',
 	},
-	{
+	browser: {
 		label: 'Browser',
-		value: 'browser',
 		type: 'fixed',
-		choices: ['Chrome', 'Firefox', 'Safari', 'Edge', 'Internet Explorer'],
+		choices: {
+			Chrome: { label: 'Chrome', value: 'Chrome' },
+			Edge: { label: 'Edge', value: 'Edge' },
+			Firefox: { label: 'Firefox', value: 'Firefox' },
+			Opera: { label: 'Opera', value: 'Opera' },
+			Safari: { label: 'Safari', value: 'Safari' },
+		},
 	},
-];
+};
 
 interface FilterDropdownProps {
-	choices: ReadonlyArray<{ label: string; value: string }>;
+	choices: FilterOptions | FilterType;
 	value: string;
 	setValue: (value: string) => void;
 }
@@ -95,12 +106,8 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 		},
 	});
 
-	const options = choices.map((filter) => (
-		<Combobox.Option
-			key={filter.value}
-			value={filter.label}
-			active={filter.value === value}
-		>
+	const options = Object.entries(choices).map(([key, filter]) => (
+		<Combobox.Option key={key} value={key} active={key === value}>
 			{filter.label}
 		</Combobox.Option>
 	));
@@ -120,14 +127,16 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 					component="button"
 					type="button"
 					pointer
-					className={classes['dropdown-button']}
+					className={classes.dropdown}
 					rightSection={<IconChevronDown />}
 					rightSectionPointerEvents="none"
 					onClick={() => {
 						combobox.toggleDropdown();
 					}}
 				>
-					{value}
+					<span className={classes['dropdown-label']}>
+						{choices?.[value]?.label ?? value}
+					</span>
 				</InputBase>
 			</Combobox.Target>
 
@@ -145,133 +154,174 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 export const Filters = () => {
 	const [opened, setOpened] = useState(false);
 
-	const [filter, setFilter] = useState('Path');
-	const [type, setType] = useState('equals');
+	const [filter, setFilter] = useState('path');
+	const [type, setType] = useState('eq');
 	const [value, setValue] = useState('');
 
-	const filterList = filterOptions.map((item) => ({
-		label: item.label,
-		value: item.value,
-	}));
-	const chosenFilter = filterOptions.find((item) => item.label === filter);
+	const chosenFilter = filterOptions[filter];
 
 	// If the filter changes, reset the type
 	// We only reset the value if there is a change in filter type
 	useEffect(() => {
-		setType('equals');
+		setType('eq');
 		// If the filter is a string, reset the value
 		// Otherwise, reset the value to the first choice
 		chosenFilter?.type === 'string'
 			? setValue(value)
-			: setValue(chosenFilter?.choices[0] ?? '');
+			: setValue(Object.keys(chosenFilter?.choices ?? {})[0] ?? 'Unknown');
+		console.log(value);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filter]);
 
 	const [searchParams, setSearchParams] = useSearchParams();
+	// Convert the search params to an array of label-type-value tuples
+	// This is used to render the current filters.
+	const paramsArr: Array<[string, string, string]> = [
+		...searchParams.entries(),
+	].map(([key, value]) => {
+		// Convert the key to a label
+		const [filter, type] = key.split('['); // e.g. path[eq]
+		if (!filter) {
+			return ['N/A', '', ''];
+		}
+
+		const { label = 'N/A' } = filterOptions[filter] ?? {};
+		return [label, type?.replace(']', '') ?? 'Unknown', value];
+	});
+
+	// Apply the filters to the search params and close the popover
+	// This should trigger a reload of data on the page with new
+	// data from the server.
+	const applyFilters = () => {
+		const params = new URLSearchParams(searchParams);
+		params.append(`${filter}[${type}]`, value);
+		setSearchParams(params, {
+			preventScrollReset: true,
+		});
+		setOpened(false);
+	};
 
 	return (
-		<Popover
-			width={442}
-			trapFocus
-			position="bottom-start"
-			opened={opened}
-			onChange={setOpened}
-		>
-			<Popover.Target>
-				<UnstyledButton
-					className={classes.add}
-					onClick={() => {
-						// Reset all filters on open
-						if (!opened) {
-							setFilter('Path');
-							setType('equals');
-							setValue('');
-						}
-						setOpened(!opened);
-					}}
-				>
-					<Group gap="xs" justify="center">
-						<IconPlus />
-						<Text fz={14} fw={600}>
-							Add filter
-						</Text>
-					</Group>
-				</UnstyledButton>
-			</Popover.Target>
-			<Popover.Dropdown className={classes.popover}>
-				<Text fz={16} fw={600} pb="sm">
-					New filter
-				</Text>
-				<Group grow>
-					<FilterDropdown
-						choices={filterList}
-						value={filter}
-						setValue={setFilter}
-					/>
-					<FilterDropdown
-						choices={
-							chosenFilter?.type === 'string'
-								? filterTypes.string
-								: filterTypes.fixed
-						}
-						value={type}
-						setValue={setType}
-					/>
-					{chosenFilter?.type === 'string' ? (
-						<TextInput
-							h={40}
-							value={value}
-							onChange={(event) => {
-								setValue(event.currentTarget.value);
-							}}
-							placeholder={chosenFilter.placeholder}
+		<Group mt={-40}>
+			<Popover
+				width={442}
+				trapFocus
+				position="bottom-start"
+				opened={opened}
+				onChange={setOpened}
+			>
+				<Popover.Target>
+					<UnstyledButton
+						className={classes.add}
+						onClick={() => {
+							// Reset all filters on open
+							if (!opened) {
+								setFilter('path');
+								setType('eq');
+								setValue('');
+							}
+							setOpened(!opened);
+						}}
+					>
+						<Group gap="xs" justify="center">
+							<IconPlus />
+							<Text fz={14} fw={600}>
+								Add filter
+							</Text>
+						</Group>
+					</UnstyledButton>
+				</Popover.Target>
+				<Popover.Dropdown className={classes.popover}>
+					<Text fz={16} fw={600} pb="sm">
+						New filter
+					</Text>
+					<Group grow>
+						<FilterDropdown
+							choices={filterOptions}
+							value={filter}
+							setValue={setFilter}
 						/>
-					) : (
 						<FilterDropdown
 							choices={
-								chosenFilter?.choices.map((item) => ({
-									label: item,
-									value: item.toLowerCase(),
-								})) ?? []
+								chosenFilter?.type === 'string'
+									? filterTypes.string
+									: filterTypes.fixed
 							}
-							value={value === '' ? chosenFilter?.choices[0] ?? '' : value}
-							setValue={setValue}
+							value={type}
+							setValue={setType}
 						/>
-					)}
-				</Group>
-				<Group justify="flex-end" className={classes.select}>
-					<UnstyledButton
-						className={classes.cancel}
-						onClick={() => {
-							setOpened(false);
-						}}
+						{chosenFilter?.type === 'string' ? (
+							<TextInput
+								h={40}
+								value={value}
+								onChange={(event) => {
+									setValue(event.currentTarget.value);
+								}}
+								onKeyDown={(event) => {
+									if (event.key === 'Enter' && value !== '') {
+										applyFilters();
+									}
+								}}
+								placeholder={chosenFilter.placeholder}
+							/>
+						) : (
+							<FilterDropdown
+								choices={chosenFilter?.choices ?? {}}
+								value={
+									value === ''
+										? Object.keys(chosenFilter?.choices ?? {})[0] ?? 'Unknown'
+										: value
+								}
+								setValue={setValue}
+							/>
+						)}
+					</Group>
+					<Group justify="flex-end" className={classes.select}>
+						<UnstyledButton
+							className={classes.cancel}
+							onClick={() => {
+								setOpened(false);
+							}}
+						>
+							Cancel
+						</UnstyledButton>
+						<UnstyledButton
+							className={classes.apply}
+							type="submit"
+							onClick={() => {
+								applyFilters();
+							}}
+							disabled={value === ''}
+						>
+							Apply
+						</UnstyledButton>
+					</Group>
+				</Popover.Dropdown>
+			</Popover>
+			{paramsArr.map(([label, type, value]) => {
+				return (
+					<Group
+						key={label + type + value}
+						className={classes['filter-item']}
+						gap={0}
 					>
-						Cancel
-					</UnstyledButton>
-					<UnstyledButton
-						className={classes.apply}
-						type="submit"
-						onClick={() => {
-							const params = new URLSearchParams(searchParams);
-							// The state values are just labels which need to be converted
-							const filterKey =
-								filterOptions.find((item) => item.label === filter)?.value ??
-								'';
-							const filterType =
-								filterTypes.string.find((item) => item.label === type)?.value ??
-								'';
-							params.append(`${filterKey}[${filterType}]`, value);
-							setSearchParams(params, {
-								preventScrollReset: true,
-							});
-							setOpened(false);
-						}}
-						disabled={value === ''}
-					>
-						Apply
-					</UnstyledButton>
-				</Group>
-			</Popover.Dropdown>
-		</Popover>
+						<Text fz={14}>{label}&nbsp;</Text>
+						<Text fz={14} fw={700}>
+							{filterTypes.string[type]?.label ?? 'Unknown'}&nbsp;
+						</Text>
+						<Text fz={14}>{value}</Text>
+						<CloseButton
+							onClick={() => {
+								const params = new URLSearchParams(searchParams);
+								params.delete(`${label.toLowerCase()}[${type}]`, value);
+								setSearchParams(params, {
+									preventScrollReset: true,
+								});
+							}}
+						/>
+					</Group>
+				);
+			})}
+		</Group>
 	);
 };

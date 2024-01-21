@@ -1,11 +1,10 @@
 import { SimpleGrid } from '@mantine/core';
 import {
-	type ActionFunctionArgs,
 	json,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node';
-import { type Params, useActionData, useLoaderData } from '@remix-run/react';
+import { type Params, useLoaderData } from '@remix-run/react';
 import { add, format } from 'date-fns';
 import invariant from 'tiny-invariant';
 
@@ -49,23 +48,6 @@ const datasets = [
 
 type DatasetItem = (typeof datasets)[number];
 type Dataset = readonly DatasetItem[];
-
-const isDatasetOrUndefined = (
-	value: readonly string[] | undefined
-): value is Dataset => {
-	if (!value) {
-		return true;
-	}
-
-	// Check if all values are in the dataset
-	for (const item of value) {
-		if (!datasets.includes(item as any)) {
-			return false;
-		}
-	}
-
-	return true;
-};
 
 interface FetchStatsOptions {
 	dataset?: Dataset;
@@ -255,30 +237,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 	});
 };
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-	const body = await request.formData();
-	const datasetString = body.get('dataset') as string | undefined;
-	const dataset = datasetString?.split(',');
-	invariant(isDatasetOrUndefined(dataset), 'Invalid dataset');
-
-	const filters = {
-		path: body.get('path') as string | undefined,
-		browser: body.get('browser') as string | undefined,
-	};
-
-	const stats = await fetchStats(request, params, {
-		dataset,
-		filters,
-	});
-
-	return {
-		status: 200,
-		...stats,
-	};
-};
-
 export default function Index() {
-	let {
+	const {
 		summary,
 		pages,
 		time,
@@ -292,23 +252,6 @@ export default function Index() {
 		countries,
 		languages,
 	} = useLoaderData<typeof loader>();
-
-	// Overwrite with action data
-	const actionData = useActionData<typeof action>();
-	if (actionData) {
-		summary = actionData.summary ?? summary;
-		pages = actionData.pages ?? pages;
-		time = actionData.time ?? time;
-		referrers = actionData.referrers ?? referrers;
-		sources = actionData.sources ?? sources;
-		mediums = actionData.mediums ?? mediums;
-		campaigns = actionData.campaigns ?? campaigns;
-		browsers = actionData.browsers ?? browsers;
-		os = actionData.os ?? os;
-		devices = actionData.devices ?? devices;
-		countries = actionData.countries ?? countries;
-		languages = actionData.languages ?? languages;
-	}
 
 	invariant(summary, 'Summary data is required');
 	return (
@@ -441,7 +384,3 @@ export default function Index() {
 		</>
 	);
 }
-
-// We don't want to revalidate this page, as we want to always replace the loader
-// data with the action data.
-export const shouldRevalidate = () => false;

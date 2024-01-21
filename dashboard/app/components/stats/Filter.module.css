@@ -12,10 +12,17 @@
 	border-top: 1px solid var(--me-color-border-grey);
 }
 
-.dropdown-button {
+.dropdown {
 	width: 120px;
 	height: 40px;
 	border-radius: 8px;
+}
+
+.dropdown-label {
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: clip;
 }
 
 .cancel {
@@ -33,9 +40,20 @@
 	border-radius: 8px;
 }
 
+.filter-item {
+	height: 40px;
+	padding: 0 8px 0 16px;
+
+	color: var(--me-color-text-grey);
+	background-color: var(--me-color-selected-grey);
+
+	border-radius: 8px;
+
+	cursor: default;
+}
+
 /* Buttons */
 .add {
-	margin-top: -40px;
 	width: 120px;
 	height: 40px;
 
