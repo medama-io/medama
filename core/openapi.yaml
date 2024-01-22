@@ -423,8 +423,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
       responses:
         "200":
           description: OK
@@ -460,8 +469,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -498,8 +516,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -536,8 +563,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -572,8 +608,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -608,8 +653,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -644,8 +698,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -681,8 +744,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -717,8 +789,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -753,8 +834,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -789,8 +879,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -825,8 +924,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -861,8 +969,17 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/Referrer"
+        - $ref: "#/components/parameters/ReferrerHost"
+        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/UTMSource"
+        - $ref: "#/components/parameters/UTMMedium"
+        - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
+        - $ref: "#/components/parameters/BrowserVersion"
+        - $ref: "#/components/parameters/OS"
+        - $ref: "#/components/parameters/Device"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
       responses:
         "200":
@@ -889,6 +1006,7 @@ components:
       type: apiKey
       description: Session token for authentication.
   parameters:
+    # Authentication
     SessionAuth:
       name: _me_sess
       in: cookie
@@ -915,6 +1033,7 @@ components:
       schema:
         type: boolean
         default: false
+    # Filters
     Path:
       name: path
       in: query
@@ -925,10 +1044,50 @@ components:
       allowReserved: true
       schema:
         $ref: "#/components/schemas/FilterString"
-    Referrer:
-      name: referrer
+    ReferrerHost:
+      name: referrer_host
       in: query
-      description: Referrer name of the page.
+      description: Referrer hostname of the page hit.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterString"
+    ReferrerPath:
+      name: referrer_path
+      in: query
+      description: Referrer path of the page hit.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterString"
+    UTMSource:
+      name: utm_source
+      in: query
+      description: UTM source of the page hit.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterString"
+    UTMMedium:
+      name: utm_medium
+      in: query
+      description: UTM medium of the page hit.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterString"
+    UTMCampaign:
+      name: utm_campaign
+      in: query
+      description: UTM campaign of the page hit.
       required: false
       style: deepObject
       explode: true
@@ -939,6 +1098,56 @@ components:
       name: browser
       in: query
       description: Browser name.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterFixed"
+    BrowserVersion:
+      name: browser_version
+      in: query
+      description: Browser version.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterString"
+    OS:
+      name: os
+      in: query
+      description: Operating system name.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterFixed"
+    Device:
+      name: device
+      in: query
+      description: Device type.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterFixed"
+    CountryCode:
+      name: country
+      in: query
+      description: Country code.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterFixed"
+    Language:
+      name: language
+      in: query
+      description: Language code.
       required: false
       style: deepObject
       explode: true

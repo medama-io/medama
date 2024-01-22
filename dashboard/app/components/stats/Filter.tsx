@@ -73,6 +73,21 @@ const filterOptions: FilterOptions = {
 		type: 'string',
 		placeholder: 'e.g. /blog',
 	},
+	utm_source: {
+		label: 'UTM Source',
+		type: 'string',
+		placeholder: 'e.g. google',
+	},
+	utm_medium: {
+		label: 'UTM Medium',
+		type: 'string',
+		placeholder: 'e.g. cpc',
+	},
+	utm_campaign: {
+		label: 'UTM Campaign',
+		type: 'string',
+		placeholder: 'e.g. summer_sale',
+	},
 	browser: {
 		label: 'Browser',
 		type: 'fixed',
@@ -83,6 +98,41 @@ const filterOptions: FilterOptions = {
 			Opera: { label: 'Opera', value: 'Opera' },
 			Safari: { label: 'Safari', value: 'Safari' },
 		},
+	},
+	browser_version: {
+		label: 'Browser Version',
+		type: 'string',
+		placeholder: 'e.g. 92',
+	},
+	os: {
+		label: 'OS',
+		type: 'fixed',
+		choices: {
+			Windows: { label: 'Windows', value: 'Windows' },
+			'Mac OS': { label: 'Mac OS', value: 'Mac OS' },
+			Linux: { label: 'Linux', value: 'Linux' },
+			iOS: { label: 'iOS', value: 'iOS' },
+			Android: { label: 'Android', value: 'Android' },
+		},
+	},
+	device: {
+		label: 'Device',
+		type: 'fixed',
+		choices: {
+			Desktop: { label: 'Desktop', value: 'Desktop' },
+			Mobile: { label: 'Mobile', value: 'Mobile' },
+			Tablet: { label: 'Tablet', value: 'Tablet' },
+		},
+	},
+	country: {
+		label: 'Country',
+		type: 'string',
+		placeholder: 'e.g. United States',
+	},
+	language: {
+		label: 'Language',
+		type: 'string',
+		placeholder: 'e.g. English',
 	},
 };
 

@@ -575,13 +575,49 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -730,13 +766,49 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -885,13 +957,49 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1040,13 +1148,49 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1195,13 +1339,49 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1350,13 +1530,49 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1505,13 +1721,49 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1664,13 +1916,49 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1823,13 +2111,49 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1978,13 +2302,49 @@ func (s *Server) handleGetWebsiteIDScreenRequest(args [1]string, argsEscaped boo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -2133,13 +2493,49 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",
@@ -2292,13 +2688,49 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 			},
 			Raw: r,
 		}
@@ -2447,13 +2879,49 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer",
+					Name: "referrer_host",
 					In:   "query",
-				}: params.Referrer,
+				}: params.ReferrerHost,
+				{
+					Name: "referrer_path",
+					In:   "query",
+				}: params.ReferrerPath,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
 				{
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
+				{
+					Name: "browser_version",
+					In:   "query",
+				}: params.BrowserVersion,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
 				{
 					Name: "limit",
 					In:   "query",

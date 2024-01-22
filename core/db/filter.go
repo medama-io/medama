@@ -8,12 +8,22 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
+// FilterField represents a mapping of the filter field to the database column.
 type FilterField string
 
 const (
 	FilterPathname         FilterField = "pathname"
 	FilterReferrerHostname FilterField = "referrer_hostname"
+	FilterReferrerPathname FilterField = "referrer_pathname"
+	FilterUTMSource        FilterField = "utm_source"
+	FilterUTMMedium        FilterField = "utm_medium"
+	FilterUTMCampaign      FilterField = "utm_campaign"
 	FilterBrowser          FilterField = "ua_browser"
+	FilterBrowserVersion   FilterField = "ua_version"
+	FilterOS               FilterField = "ua_os"
+	FilterDevice           FilterField = "ua_device_type"
+	FilterCountry          FilterField = "country_code"
+	FilterLanguage         FilterField = "language"
 )
 
 // FilterOperation represents the possible filter operations.
@@ -94,10 +104,14 @@ func NewFilter(field FilterField, param interface{}) *Filter {
 			value, operation = FilterFixedToValues(v.Value)
 
 			// Convert value to an enum integer if needed (e.g. browser name)
-			switch field {
+			switch field { //nolint:exhaustive // We don't need to verify all fields.
 			case FilterBrowser:
 				{
 					value = strconv.Itoa(int(model.NewBrowserName(value)))
+				}
+			case FilterOS:
+				{
+					value = strconv.Itoa(int(model.NewOSName(value)))
 				}
 			}
 		} else {
@@ -150,7 +164,16 @@ type Filters struct {
 	Hostname         string
 	Pathname         *Filter
 	ReferrerHostname *Filter
+	ReferrerPathname *Filter
+	UTMSource        *Filter
+	UTMMedium        *Filter
+	UTMCampaign      *Filter
 	Browser          *Filter
+	BrowserVersion   *Filter
+	OS               *Filter
+	Device           *Filter
+	Country          *Filter
+	Language         *Filter
 
 	// Time Periods (in RFC3339 format YYYY-MM-DD)
 	PeriodStart    string
@@ -175,8 +198,44 @@ func (f *Filters) String() string {
 		query.WriteString(" AND " + f.ReferrerHostname.String())
 	}
 
+	if f.ReferrerPathname != nil {
+		query.WriteString(" AND " + f.ReferrerPathname.String())
+	}
+
+	if f.UTMSource != nil {
+		query.WriteString(" AND " + f.UTMSource.String())
+	}
+
+	if f.UTMMedium != nil {
+		query.WriteString(" AND " + f.UTMMedium.String())
+	}
+
+	if f.UTMCampaign != nil {
+		query.WriteString(" AND " + f.UTMCampaign.String())
+	}
+
 	if f.Browser != nil {
 		query.WriteString(" AND " + f.Browser.String())
+	}
+
+	if f.BrowserVersion != nil {
+		query.WriteString(" AND " + f.BrowserVersion.String())
+	}
+
+	if f.OS != nil {
+		query.WriteString(" AND " + f.OS.String())
+	}
+
+	if f.Device != nil {
+		query.WriteString(" AND " + f.Device.String())
+	}
+
+	if f.Country != nil {
+		query.WriteString(" AND " + f.Country.String())
+	}
+
+	if f.Language != nil {
+		query.WriteString(" AND " + f.Language.String())
 	}
 
 	// Time period filters
@@ -213,8 +272,44 @@ func (f *Filters) Args(startValues ...string) []interface{} {
 		args = append(args, f.ReferrerHostname.Value)
 	}
 
+	if f.ReferrerPathname != nil {
+		args = append(args, f.ReferrerPathname.Value)
+	}
+
+	if f.UTMSource != nil {
+		args = append(args, f.UTMSource.Value)
+	}
+
+	if f.UTMMedium != nil {
+		args = append(args, f.UTMMedium.Value)
+	}
+
+	if f.UTMCampaign != nil {
+		args = append(args, f.UTMCampaign.Value)
+	}
+
 	if f.Browser != nil {
 		args = append(args, f.Browser.Value)
+	}
+
+	if f.BrowserVersion != nil {
+		args = append(args, f.BrowserVersion.Value)
+	}
+
+	if f.OS != nil {
+		args = append(args, f.OS.Value)
+	}
+
+	if f.Device != nil {
+		args = append(args, f.Device.Value)
+	}
+
+	if f.Country != nil {
+		args = append(args, f.Country.Value)
+	}
+
+	if f.Language != nil {
+		args = append(args, f.Language.Value)
 	}
 
 	// Time period filters

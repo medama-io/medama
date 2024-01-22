@@ -30,8 +30,18 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -107,8 +117,18 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -186,8 +206,18 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -267,8 +297,18 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -346,8 +386,18 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -396,8 +446,18 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -446,8 +506,18 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -496,8 +566,18 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -573,8 +653,18 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -623,8 +713,18 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -677,8 +777,18 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
@@ -727,8 +837,18 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		Hostname: params.Hostname,
 
 		Pathname:         db.NewFilter(db.FilterPathname, params.Path),
-		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.Referrer),
+		ReferrerHostname: db.NewFilter(db.FilterReferrerHostname, params.ReferrerHost),
+		ReferrerPathname: db.NewFilter(db.FilterReferrerPathname, params.ReferrerPath),
+		UTMSource:        db.NewFilter(db.FilterUTMSource, params.UtmSource),
+		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
+		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
+		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
+		OS:               db.NewFilter(db.FilterOS, params.Os),
+		Device:           db.NewFilter(db.FilterDevice, params.Device),
+		Country:          db.NewFilter(db.FilterCountry, params.Country),
+		Language:         db.NewFilter(db.FilterLanguage, params.Language),
+
 		// YYYY-MM-DD
 		PeriodStart: params.Start.Value.Format(model.DateFormat),
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
