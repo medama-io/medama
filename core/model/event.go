@@ -1,9 +1,5 @@
 package model
 
-import (
-	ua "github.com/medama-io/go-useragent"
-)
-
 type RequestKey string
 
 const (
@@ -11,174 +7,57 @@ const (
 	RequestKeyBody RequestKey = "request"
 )
 
-// BrowserName - The name of the user's browser, stored as an integer to save
-// space in the database.
-type BrowserName uint8
+// BrowserName - The name of the user's browser.
+type BrowserName string
 
-const (
-	Chrome    BrowserName = 1
-	Edge      BrowserName = 2
-	Firefox   BrowserName = 3
-	IE        BrowserName = 4
-	Opera     BrowserName = 5
-	OperaMini BrowserName = 6
-	Safari    BrowserName = 7
-	Vivaldi   BrowserName = 8
-	Samsung   BrowserName = 9
-	Nintendo  BrowserName = 10
-)
+// OSName - The name of the user's operating system.
+type OSName string
 
-// NewBrowserName converts the browser name to a BrowserName integer.
-func NewBrowserName(browser string) BrowserName {
-	switch browser {
-	case ua.Chrome:
-		return Chrome
-	case ua.Edge:
-		return Edge
-	case ua.Firefox:
-		return Firefox
-	case ua.IE:
-		return IE
-	case ua.Opera:
-		return Opera
-	case ua.OperaMini:
-		return OperaMini
-	case ua.Safari:
-		return Safari
-	case ua.Vivaldi:
-		return Vivaldi
-	case ua.Samsung:
-		return Samsung
-	case ua.Nintendo:
-		return Nintendo
-	default:
-		return 0
-	}
-}
+// DeviceType - The type of device the user is using.
+type DeviceType string
 
-// String converts the browser name to a string.
-func (b BrowserName) String() string {
-	switch b {
-	case Chrome:
-		return ua.Chrome
-	case Edge:
-		return ua.Edge
-	case Firefox:
-		return ua.Firefox
-	case IE:
-		return ua.IE
-	case Opera:
-		return ua.Opera
-	case OperaMini:
-		return ua.OperaMini
-	case Safari:
-		return ua.Safari
-	case Vivaldi:
-		return ua.Vivaldi
-	case Samsung:
-		return ua.Samsung
-	case Nintendo:
-		return ua.Nintendo
-	default:
-		return ""
-	}
-}
-
-// OSName - The name of the user's operating system, stored as an integer to
-// save space in the database.
-type OSName uint8
-
-const (
-	Android  OSName = 1
-	ChromeOS OSName = 2
-	IOS      OSName = 3
-	Linux    OSName = 4
-	MacOS    OSName = 5
-	Windows  OSName = 6
-)
-
-// NewOSName converts the OS name to a OSName integer.
-func NewOSName(os string) OSName {
-	switch os {
-	case ua.Android:
-		return Android
-	case ua.ChromeOS:
-		return ChromeOS
-	case ua.IOS:
-		return IOS
-	case ua.Linux:
-		return Linux
-	case ua.MacOS:
-		return MacOS
-	case ua.Windows:
-		return Windows
-	default:
-		return 0
-	}
-}
-
-// String converts the OS name to a string.
-func (o OSName) String() string {
-	switch o {
-	case Android:
-		return ua.Android
-	case ChromeOS:
-		return ua.ChromeOS
-	case IOS:
-		return ua.IOS
-	case Linux:
-		return ua.Linux
-	case MacOS:
-		return ua.MacOS
-	case Windows:
-		return ua.Windows
-	default:
-		return ""
-	}
-}
-
-// DeviceType - The type of device the user is using, stored as an integer to
-// save space in the database.
-type DeviceType uint8
-
-const (
-	IsDesktop DeviceType = 1
-	IsMobile  DeviceType = 2
-	IsTablet  DeviceType = 3
-	IsTV      DeviceType = 4
-)
-
-// NewDeviceType converts the device type to a DeviceType integer.
 func NewDeviceType(desktop bool, mobile bool, tablet bool, tv bool) DeviceType {
 	switch {
 	case desktop:
-		return IsDesktop
+		return DesktopDevice
 	case mobile:
-		return IsMobile
+		return MobileDevice
 	case tablet:
-		return IsTablet
+		return TabletDevice
 	case tv:
-		return IsTV
+		return TVDevice
 	default:
-		return 0
+		return UnknownDevice
 	}
 }
 
-// String converts the device type to a string.
-func (d DeviceType) String() string {
-	switch d {
-	case IsDesktop:
-		return ua.Desktop
-	case IsMobile:
-		return ua.Mobile
-	case IsTablet:
-		return ua.Tablet
-	case IsTV:
-		return ua.TV
-	default:
-		return ""
-	}
-}
+const (
+	UnknownBrowser          BrowserName = "Unknown"
+	ChromeBrowser           BrowserName = "Chrome"
+	EdgeBrowser             BrowserName = "Edge"
+	FirefoxBrowser          BrowserName = "Firefox"
+	InternetExplorerBrowser BrowserName = "Internet Explorer"
+	OperaBrowser            BrowserName = "Opera"
+	OperaMiniBrowser        BrowserName = "Opera Mini"
+	SafariBrowser           BrowserName = "Safari"
+	VivaldiBrowser          BrowserName = "Vivaldi"
+	SamsungBrowser          BrowserName = "Samsung Browser"
+	NintendoBrowser         BrowserName = "Nintendo Browser"
+
+	UnknownOS OSName = "Unknown"
+	AndroidOS OSName = "Android"
+	ChromeOS  OSName = "Chrome OS"
+	IOS       OSName = "iOS"
+	LinuxOS   OSName = "Linux"
+	MacOS     OSName = "Mac OS"
+	WindowsOS OSName = "Windows"
+
+	UnknownDevice DeviceType = "Unknown"
+	DesktopDevice DeviceType = "Desktop"
+	MobileDevice  DeviceType = "Mobile"
+	TabletDevice  DeviceType = "Tablet"
+	TVDevice      DeviceType = "TV"
+)
 
 type PageView struct {
 	// Beacon ID - Used to determine if multiple event types are
@@ -195,8 +74,6 @@ type PageView struct {
 	ReferrerHostname string `db:"referrer_hostname"`
 	// ReferrerPathname - The pathname of the referrer of the page view.
 	ReferrerPathname string `db:"referrer_pathname"`
-	// Title - The page title of the page view.
-	Title string `db:"title"`
 	// CountryCode - The country code associated with the user's timezone.
 	CountryCode string `db:"country_code"`
 	// Language - The language associated with the user's browser.
@@ -204,20 +81,10 @@ type PageView struct {
 
 	// BrowserName - The name of the user's browser.
 	BrowserName BrowserName `db:"ua_browser"`
-	// BrowserVersion - The version of the user's browser.
-	BrowserVersion string `db:"ua_version"`
 	// OS - The operating system the user is using.
 	OS OSName `db:"ua_os"`
 	// DeviceType - The type of device the user is using.
 	DeviceType DeviceType `db:"ua_device_type"`
-	// RawUserAgent - The user agent of the user's browser. Only included if the
-	// user agent was unable to be parsed.
-	RawUserAgent string `db:"ua_raw"`
-
-	// ScreenWidth - The width of the user's screen.
-	ScreenWidth uint16 `json:"screen_width" db:"screen_width"`
-	// ScreenHeight - The height of the user's screen.
-	ScreenHeight uint16 `json:"screen_height" db:"screen_height"`
 
 	// UTMSource - The UTM source of the page view.
 	UTMSource string `db:"utm_source"`

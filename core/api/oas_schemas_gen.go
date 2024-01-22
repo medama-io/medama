@@ -64,7 +64,6 @@ func (*BadRequestError) getWebsiteIDMediumsRes()   {}
 func (*BadRequestError) getWebsiteIDOsRes()        {}
 func (*BadRequestError) getWebsiteIDPagesRes()     {}
 func (*BadRequestError) getWebsiteIDReferrersRes() {}
-func (*BadRequestError) getWebsiteIDScreenRes()    {}
 func (*BadRequestError) getWebsiteIDSourcesRes()   {}
 func (*BadRequestError) getWebsiteIDSummaryRes()   {}
 func (*BadRequestError) getWebsiteIDTimeRes()      {}
@@ -181,14 +180,8 @@ type EventHit struct {
 	P bool `json:"p"`
 	// Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
 	E EventHitE `json:"e"`
-	// Title of page.
-	T OptString `json:"t"`
 	// Timezone of the user.
 	D string `json:"d"`
-	// Screen width.
-	W OptInt `json:"w"`
-	// Screen height.
-	H OptInt `json:"h"`
 	// Time spent on page. Only sent on unload.
 	M OptInt `json:"m"`
 }
@@ -218,24 +211,9 @@ func (s *EventHit) GetE() EventHitE {
 	return s.E
 }
 
-// GetT returns the value of T.
-func (s *EventHit) GetT() OptString {
-	return s.T
-}
-
 // GetD returns the value of D.
 func (s *EventHit) GetD() string {
 	return s.D
-}
-
-// GetW returns the value of W.
-func (s *EventHit) GetW() OptInt {
-	return s.W
-}
-
-// GetH returns the value of H.
-func (s *EventHit) GetH() OptInt {
-	return s.H
 }
 
 // GetM returns the value of M.
@@ -268,24 +246,9 @@ func (s *EventHit) SetE(val EventHitE) {
 	s.E = val
 }
 
-// SetT sets the value of T.
-func (s *EventHit) SetT(val OptString) {
-	s.T = val
-}
-
 // SetD sets the value of D.
 func (s *EventHit) SetD(val string) {
 	s.D = val
-}
-
-// SetW sets the value of W.
-func (s *EventHit) SetW(val OptInt) {
-	s.W = val
-}
-
-// SetH sets the value of H.
-func (s *EventHit) SetH(val OptInt) {
-	s.H = val
 }
 
 // SetM sets the value of M.
@@ -547,7 +510,6 @@ func (*ForbiddenError) getWebsiteIDLanguageRes()  {}
 func (*ForbiddenError) getWebsiteIDMediumsRes()   {}
 func (*ForbiddenError) getWebsiteIDOsRes()        {}
 func (*ForbiddenError) getWebsiteIDReferrersRes() {}
-func (*ForbiddenError) getWebsiteIDScreenRes()    {}
 func (*ForbiddenError) getWebsiteIDSourcesRes()   {}
 
 type ForbiddenErrorError struct {
@@ -1198,68 +1160,6 @@ func (s *GetWebsiteIDReferrersInterval) UnmarshalText(data []byte) error {
 	}
 }
 
-type GetWebsiteIDScreenInterval string
-
-const (
-	GetWebsiteIDScreenIntervalHour  GetWebsiteIDScreenInterval = "hour"
-	GetWebsiteIDScreenIntervalDay   GetWebsiteIDScreenInterval = "day"
-	GetWebsiteIDScreenIntervalWeek  GetWebsiteIDScreenInterval = "week"
-	GetWebsiteIDScreenIntervalMonth GetWebsiteIDScreenInterval = "month"
-	GetWebsiteIDScreenIntervalYear  GetWebsiteIDScreenInterval = "year"
-)
-
-// AllValues returns all GetWebsiteIDScreenInterval values.
-func (GetWebsiteIDScreenInterval) AllValues() []GetWebsiteIDScreenInterval {
-	return []GetWebsiteIDScreenInterval{
-		GetWebsiteIDScreenIntervalHour,
-		GetWebsiteIDScreenIntervalDay,
-		GetWebsiteIDScreenIntervalWeek,
-		GetWebsiteIDScreenIntervalMonth,
-		GetWebsiteIDScreenIntervalYear,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s GetWebsiteIDScreenInterval) MarshalText() ([]byte, error) {
-	switch s {
-	case GetWebsiteIDScreenIntervalHour:
-		return []byte(s), nil
-	case GetWebsiteIDScreenIntervalDay:
-		return []byte(s), nil
-	case GetWebsiteIDScreenIntervalWeek:
-		return []byte(s), nil
-	case GetWebsiteIDScreenIntervalMonth:
-		return []byte(s), nil
-	case GetWebsiteIDScreenIntervalYear:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *GetWebsiteIDScreenInterval) UnmarshalText(data []byte) error {
-	switch GetWebsiteIDScreenInterval(data) {
-	case GetWebsiteIDScreenIntervalHour:
-		*s = GetWebsiteIDScreenIntervalHour
-		return nil
-	case GetWebsiteIDScreenIntervalDay:
-		*s = GetWebsiteIDScreenIntervalDay
-		return nil
-	case GetWebsiteIDScreenIntervalWeek:
-		*s = GetWebsiteIDScreenIntervalWeek
-		return nil
-	case GetWebsiteIDScreenIntervalMonth:
-		*s = GetWebsiteIDScreenIntervalMonth
-		return nil
-	case GetWebsiteIDScreenIntervalYear:
-		*s = GetWebsiteIDScreenIntervalYear
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
 type GetWebsiteIDSourcesInterval string
 
 const (
@@ -1477,7 +1377,6 @@ func (*InternalServerError) getWebsiteIDMediumsRes()   {}
 func (*InternalServerError) getWebsiteIDOsRes()        {}
 func (*InternalServerError) getWebsiteIDPagesRes()     {}
 func (*InternalServerError) getWebsiteIDReferrersRes() {}
-func (*InternalServerError) getWebsiteIDScreenRes()    {}
 func (*InternalServerError) getWebsiteIDSourcesRes()   {}
 func (*InternalServerError) getWebsiteIDSummaryRes()   {}
 func (*InternalServerError) getWebsiteIDTimeRes()      {}
@@ -1540,7 +1439,6 @@ func (*NotFoundError) getWebsiteIDMediumsRes()   {}
 func (*NotFoundError) getWebsiteIDOsRes()        {}
 func (*NotFoundError) getWebsiteIDPagesRes()     {}
 func (*NotFoundError) getWebsiteIDReferrersRes() {}
-func (*NotFoundError) getWebsiteIDScreenRes()    {}
 func (*NotFoundError) getWebsiteIDSourcesRes()   {}
 func (*NotFoundError) getWebsiteIDSummaryRes()   {}
 func (*NotFoundError) getWebsiteIDTimeRes()      {}
@@ -2174,52 +2072,6 @@ func (o OptGetWebsiteIDReferrersInterval) Or(d GetWebsiteIDReferrersInterval) Ge
 	return d
 }
 
-// NewOptGetWebsiteIDScreenInterval returns new OptGetWebsiteIDScreenInterval with value set to v.
-func NewOptGetWebsiteIDScreenInterval(v GetWebsiteIDScreenInterval) OptGetWebsiteIDScreenInterval {
-	return OptGetWebsiteIDScreenInterval{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptGetWebsiteIDScreenInterval is optional GetWebsiteIDScreenInterval.
-type OptGetWebsiteIDScreenInterval struct {
-	Value GetWebsiteIDScreenInterval
-	Set   bool
-}
-
-// IsSet returns true if OptGetWebsiteIDScreenInterval was set.
-func (o OptGetWebsiteIDScreenInterval) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptGetWebsiteIDScreenInterval) Reset() {
-	var v GetWebsiteIDScreenInterval
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptGetWebsiteIDScreenInterval) SetTo(v GetWebsiteIDScreenInterval) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptGetWebsiteIDScreenInterval) Get() (v GetWebsiteIDScreenInterval, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptGetWebsiteIDScreenInterval) Or(d GetWebsiteIDScreenInterval) GetWebsiteIDScreenInterval {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptGetWebsiteIDSourcesInterval returns new OptGetWebsiteIDSourcesInterval with value set to v.
 func NewOptGetWebsiteIDSourcesInterval(v GetWebsiteIDSourcesInterval) OptGetWebsiteIDSourcesInterval {
 	return OptGetWebsiteIDSourcesInterval{
@@ -2621,8 +2473,6 @@ type StatsBrowsersItem struct {
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from browser.
 	UniquePercentage float32 `json:"unique_percentage"`
-	// Browser version.
-	Version OptString `json:"version"`
 }
 
 // GetBrowser returns the value of Browser.
@@ -2640,11 +2490,6 @@ func (s *StatsBrowsersItem) GetUniquePercentage() float32 {
 	return s.UniquePercentage
 }
 
-// GetVersion returns the value of Version.
-func (s *StatsBrowsersItem) GetVersion() OptString {
-	return s.Version
-}
-
 // SetBrowser sets the value of Browser.
 func (s *StatsBrowsersItem) SetBrowser(val string) {
 	s.Browser = val
@@ -2658,11 +2503,6 @@ func (s *StatsBrowsersItem) SetUniques(val int) {
 // SetUniquePercentage sets the value of UniquePercentage.
 func (s *StatsBrowsersItem) SetUniquePercentage(val float32) {
 	s.UniquePercentage = val
-}
-
-// SetVersion sets the value of Version.
-func (s *StatsBrowsersItem) SetVersion(val OptString) {
-	s.Version = val
 }
 
 type StatsCountries []StatsCountriesItem
@@ -2844,8 +2684,6 @@ func (*StatsPages) getWebsiteIDPagesRes() {}
 type StatsPagesItem struct {
 	// Pathname of the page.
 	Path string `json:"path"`
-	// Title of the page.
-	Title OptString `json:"title"`
 	// Number of unique users.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users.
@@ -2861,11 +2699,6 @@ type StatsPagesItem struct {
 // GetPath returns the value of Path.
 func (s *StatsPagesItem) GetPath() string {
 	return s.Path
-}
-
-// GetTitle returns the value of Title.
-func (s *StatsPagesItem) GetTitle() OptString {
-	return s.Title
 }
 
 // GetUniques returns the value of Uniques.
@@ -2896,11 +2729,6 @@ func (s *StatsPagesItem) GetDuration() OptInt {
 // SetPath sets the value of Path.
 func (s *StatsPagesItem) SetPath(val string) {
 	s.Path = val
-}
-
-// SetTitle sets the value of Title.
-func (s *StatsPagesItem) SetTitle(val OptString) {
-	s.Title = val
 }
 
 // SetUniques sets the value of Uniques.
@@ -3005,49 +2833,6 @@ func (s *StatsReferrersItem) SetBounces(val OptInt) {
 // SetDuration sets the value of Duration.
 func (s *StatsReferrersItem) SetDuration(val OptInt) {
 	s.Duration = val
-}
-
-type StatsScreens []StatsScreensItem
-
-func (*StatsScreens) getWebsiteIDScreenRes() {}
-
-type StatsScreensItem struct {
-	// Screen size.
-	Screen string `json:"screen"`
-	// Number of unique users from screen size.
-	Uniques int `json:"uniques"`
-	// Percentage of unique users from screen size.
-	UniquePercentage float32 `json:"unique_percentage"`
-}
-
-// GetScreen returns the value of Screen.
-func (s *StatsScreensItem) GetScreen() string {
-	return s.Screen
-}
-
-// GetUniques returns the value of Uniques.
-func (s *StatsScreensItem) GetUniques() int {
-	return s.Uniques
-}
-
-// GetUniquePercentage returns the value of UniquePercentage.
-func (s *StatsScreensItem) GetUniquePercentage() float32 {
-	return s.UniquePercentage
-}
-
-// SetScreen sets the value of Screen.
-func (s *StatsScreensItem) SetScreen(val string) {
-	s.Screen = val
-}
-
-// SetUniques sets the value of Uniques.
-func (s *StatsScreensItem) SetUniques(val int) {
-	s.Uniques = val
-}
-
-// SetUniquePercentage sets the value of UniquePercentage.
-func (s *StatsScreensItem) SetUniquePercentage(val float32) {
-	s.UniquePercentage = val
 }
 
 // Ref: #/components/schemas/StatsSummary
@@ -3190,8 +2975,6 @@ func (*StatsTime) getWebsiteIDTimeRes() {}
 type StatsTimeItem struct {
 	// Pathname of the page.
 	Path string `json:"path"`
-	// Title of the page.
-	Title OptString `json:"title"`
 	// Median time spent on page in milliseconds.
 	Duration int `json:"duration"`
 	// Total time spent on page in milliseconds for the upper quartile (75%).
@@ -3209,11 +2992,6 @@ type StatsTimeItem struct {
 // GetPath returns the value of Path.
 func (s *StatsTimeItem) GetPath() string {
 	return s.Path
-}
-
-// GetTitle returns the value of Title.
-func (s *StatsTimeItem) GetTitle() OptString {
-	return s.Title
 }
 
 // GetDuration returns the value of Duration.
@@ -3249,11 +3027,6 @@ func (s *StatsTimeItem) GetBounces() OptInt {
 // SetPath sets the value of Path.
 func (s *StatsTimeItem) SetPath(val string) {
 	s.Path = val
-}
-
-// SetTitle sets the value of Title.
-func (s *StatsTimeItem) SetTitle(val OptString) {
-	s.Title = val
 }
 
 // SetDuration sets the value of Duration.
@@ -3441,7 +3214,6 @@ func (*UnauthorisedError) getWebsiteIDMediumsRes()   {}
 func (*UnauthorisedError) getWebsiteIDOsRes()        {}
 func (*UnauthorisedError) getWebsiteIDPagesRes()     {}
 func (*UnauthorisedError) getWebsiteIDReferrersRes() {}
-func (*UnauthorisedError) getWebsiteIDScreenRes()    {}
 func (*UnauthorisedError) getWebsiteIDSourcesRes()   {}
 func (*UnauthorisedError) getWebsiteIDSummaryRes()   {}
 func (*UnauthorisedError) getWebsiteIDTimeRes()      {}

@@ -116,8 +116,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 	case api.EventHitELoad:
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
-		referrerHostname := ""
-		referrerPathname := ""
+		var referrerHostname, referrerPathname string
 		if req.R.Value != "" {
 			referrer, err := url.Parse(req.R.Value)
 			if err != nil {
@@ -130,8 +129,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			// If the referrer hostname is the same as the current hostname, we
 			// want to remove it.
 			if referrerHostname == hostname {
-				referrerHostname = ""
-				referrerPathname = ""
+				referrerHostname, referrerPathname = "", ""
 			}
 		}
 
@@ -159,26 +157,9 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		rawUserAgent := reqBody.Header.Get("User-Agent")
 		ua := h.useragent.Parse(rawUserAgent)
 
-		uaBrowser := model.NewBrowserName(ua.Browser)
-		uaVersion := ua.GetMajorVersion()
-		uaOS := model.NewOSName(ua.OS)
+		uaBrowser := model.BrowserName(ua.Browser)
+		uaOS := model.OSName(ua.OS)
 		uaDeviceType := model.NewDeviceType(ua.Desktop, ua.Mobile, ua.Tablet, ua.TV)
-		isUnknownUA := false
-		// If there are unfilled fields, we want to mark this as an unknown user agent
-		// and store the raw user agent string.
-		if uaBrowser == 0 || uaOS == 0 || uaDeviceType == 0 || uaVersion == "" {
-			isUnknownUA = true
-		}
-
-		// Verify screen height and width for overflow as we store them as uint16
-		// in the database.
-		screenHeight := uint16(req.H.Value)
-		screenWidth := uint16(req.W.Value)
-		if screenHeight > 65535 || screenWidth > 65535 {
-			attributes = append(attributes, slog.Int("screen_height", req.H.Value), slog.Int("screen_width", req.W.Value))
-			slog.LogAttrs(ctx, slog.LevelDebug, "screen height or width is too large", attributes...)
-			return ErrBadRequest(model.ErrInvalidScreenSize), nil
-		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
 		queries := req.U.Query()
@@ -195,26 +176,15 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			IsUnique:         req.P,
 			ReferrerHostname: referrerHostname,
 			ReferrerPathname: referrerPathname,
-			Title:            req.T.Value,
 			CountryCode:      countryCode,
 			Language:         acceptLanguage,
 			BrowserName:      uaBrowser,
-			BrowserVersion:   uaVersion,
 			OS:               uaOS,
 			DeviceType:       uaDeviceType,
-
-			ScreenWidth:  screenWidth,
-			ScreenHeight: screenHeight,
 
 			UTMSource:   utmSource,
 			UTMMedium:   utmMedium,
 			UTMCampaign: utmCampaign,
-		}
-
-		// If the user agent was unable to be parsed, store the raw user agent
-		// string.
-		if isUnknownUA {
-			event.RawUserAgent = rawUserAgent
 		}
 
 		attributes = append(attributes,
@@ -225,16 +195,11 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 			slog.Bool("is_unique", event.IsUnique),
 			slog.String("referrer_hostname", event.ReferrerHostname),
 			slog.String("referrer_pathname", event.ReferrerPathname),
-			slog.String("title", event.Title),
 			slog.String("country_code", countryCode),
 			slog.String("language", event.Language),
-			slog.String("browser_name", event.BrowserName.String()),
-			slog.String("browser_version", event.BrowserVersion),
-			slog.String("os", event.OS.String()),
-			slog.String("device_type", event.DeviceType.String()),
-			slog.String("raw_user_agent", event.RawUserAgent),
-			slog.Int("screen_width", int(event.ScreenWidth)),
-			slog.Int("screen_height", int(event.ScreenHeight)),
+			slog.String("browser_name", string(event.BrowserName)),
+			slog.String("os", string(event.OS)),
+			slog.String("device_type", string(event.DeviceType)),
 		)
 
 		err = h.analyticsDB.AddPageView(ctx, event)
@@ -246,6 +211,8 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		// Log success
 		slog.LogAttrs(ctx, slog.LevelDebug, "added page view", attributes...)
+
+	// Update page view
 	case api.EventHitEPagehide, api.EventHitEUnload, api.EventHitEHidden:
 		event := &model.PageViewUpdate{
 			BID:        req.B,

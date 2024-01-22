@@ -23,10 +23,7 @@ const EventType = {
  * @property {string} r Referrer URL.
  * @property {EventType} e Event type.
  * @property {boolean=} p If the user is unique or not.
- * @property {string=} t Title of the page.
  * @property {string=} d Timezone of the user.
- * @property {number=} w Screen width.
- * @property {number=} h Screen height.
  * @property {number=} m Time spent on page. Only sent on unload.
  */
 var Payload;
@@ -141,9 +138,6 @@ var Payload;
 			 */
 			"d": Intl.DateTimeFormat().resolvedOptions().timeZone,
 			"p": isUnique,
-			"t": document.title,
-			"w": self.screen.width,
-			"h": self.screen.height,
 			"e": eventType,
 			"m":
 				eventType === EventType.PAGEHIDE ||

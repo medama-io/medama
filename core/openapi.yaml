@@ -429,7 +429,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -475,7 +474,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -522,7 +520,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -569,7 +566,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -614,7 +610,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -659,7 +654,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -704,7 +698,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -739,7 +732,6 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
-        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
@@ -750,7 +742,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -795,7 +786,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -840,7 +830,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -853,51 +842,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatsDevices"
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorisedError"
-        "403":
-          $ref: "#/components/responses/ForbiddenError"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-  "/website/{hostname}/screens":
-    "get":
-      tags:
-        - stats
-      security:
-        - CookieAuth: []
-      summary: Get Screen Stats.
-      description: Get a list of screen sizes and their stats.
-      operationId: get-website-id-screen
-      parameters:
-        - $ref: "#/components/parameters/SessionAuth"
-        - $ref: "#/components/parameters/Hostname"
-        - $ref: "#/components/parameters/PeriodStart"
-        - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
-        - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
-        - $ref: "#/components/parameters/UTMSource"
-        - $ref: "#/components/parameters/UTMMedium"
-        - $ref: "#/components/parameters/UTMCampaign"
-        - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
-        - $ref: "#/components/parameters/OS"
-        - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
-        - $ref: "#/components/parameters/Language"
-        - $ref: "#/components/parameters/Limit"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StatsScreens"
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -930,7 +874,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -975,7 +918,6 @@ paths:
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
         - $ref: "#/components/parameters/Browser"
-        - $ref: "#/components/parameters/BrowserVersion"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/CountryCode"
@@ -1104,16 +1046,6 @@ components:
       allowReserved: true
       schema:
         $ref: "#/components/schemas/FilterFixed"
-    BrowserVersion:
-      name: browser_version
-      in: query
-      description: Browser version.
-      required: false
-      style: deepObject
-      explode: true
-      allowReserved: true
-      schema:
-        $ref: "#/components/schemas/FilterString"
     OS:
       name: os
       in: query
@@ -1372,18 +1304,9 @@ components:
             - unload
             - load
             - hidden
-        t:
-          type: string
-          description: Title of page.
         d:
           type: string
           description: Timezone of the user.
-        w:
-          type: integer
-          description: Screen width.
-        h:
-          type: integer
-          description: Screen height.
         m:
           type: integer
           description: Time spent on page. Only sent on unload.
@@ -1581,9 +1504,6 @@ components:
           path:
             type: string
             description: Pathname of the page.
-          title:
-            type: string
-            description: Title of the page.
           uniques:
             type: integer
             description: Number of unique users.
@@ -1613,9 +1533,6 @@ components:
           path:
             type: string
             description: Pathname of the page.
-          title:
-            type: string
-            description: Title of the page.
           duration:
             type: integer
             description: Median time spent on page in milliseconds.
@@ -1744,9 +1661,6 @@ components:
             type: number
             description: Percentage of unique users from browser.
             format: float
-          version:
-            type: string
-            description: Browser version.
         required:
           - browser
           - uniques
@@ -1789,26 +1703,6 @@ components:
             format: float
         required:
           - device
-          - uniques
-          - unique_percentage
-    StatsScreens:
-      type: array
-      title: StatsScreens
-      items:
-        type: object
-        properties:
-          screen:
-            type: string
-            description: Screen size.
-          uniques:
-            type: integer
-            description: Number of unique users from screen size.
-          unique_percentage:
-            type: number
-            description: Percentage of unique users from screen size.
-            format: float
-        required:
-          - screen
           - uniques
           - unique_percentage
     StatsCountries:

@@ -36,7 +36,6 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -123,7 +122,6 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -172,7 +170,6 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 				Path:             page.Pathname,
 				Uniques:          page.Uniques,
 				UniquePercentage: page.UniquePercentage,
-				Title:            api.NewOptString(page.Title),
 				Pageviews:        api.NewOptInt(page.Pageviews),
 				Bounces:          api.NewOptInt(page.Bounces),
 				Duration:         api.NewOptInt(page.Duration),
@@ -212,7 +209,6 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -263,7 +259,6 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 				DurationPercentage:    page.DurationPercentage,
 				DurationUpperQuartile: api.NewOptInt(page.DurationUpperQuartile),
 				DurationLowerQuartile: api.NewOptInt(page.DurationLowerQuartile),
-				Title:                 api.NewOptString(page.Title),
 				Bounces:               api.NewOptInt(page.Bounces),
 				Uniques:               api.NewOptInt(page.Uniques),
 			})
@@ -303,7 +298,6 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -392,7 +386,6 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -452,7 +445,6 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -512,7 +504,6 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -572,7 +563,6 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -583,52 +573,25 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
-	// Check parameter if it is asking for summary
-	switch params.Summary.Value {
-	case true:
-		// Get summary
-		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, filters)
-		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers summary", attributes...)
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsBrowsers{}
-		for _, page := range browsers {
-			res = append(res, api.StatsBrowsersItem{
-				Browser:          page.Browser.String(),
-				Uniques:          page.Uniques,
-				UniquePercentage: page.UniquePercentage,
-			})
-		}
-
-		return &res, nil
-	case false:
-		// Get browsers
-		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filters)
-		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers", attributes...)
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsBrowsers{}
-		for _, page := range browsers {
-			res = append(res, api.StatsBrowsersItem{
-				Browser:          page.Browser.String(),
-				Uniques:          page.Uniques,
-				UniquePercentage: page.UniquePercentage,
-				Version:          api.NewOptString(page.Version),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+	// Get browsers
+	browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filters)
+	if err != nil {
+		attributes = append(attributes, slog.String("error", err.Error()))
+		slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers", attributes...)
+		return ErrInternalServerError(err), nil
 	}
+
+	// Create API response
+	res := api.StatsBrowsers{}
+	for _, page := range browsers {
+		res = append(res, api.StatsBrowsersItem{
+			Browser:          string(page.Browser),
+			Uniques:          page.Uniques,
+			UniquePercentage: page.UniquePercentage,
+		})
+	}
+
+	return &res, nil
 }
 
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
@@ -659,7 +622,6 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -682,7 +644,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	res := api.StatsOS{}
 	for _, page := range os {
 		res = append(res, api.StatsOSItem{
-			Os:               page.OS.String(),
+			Os:               string(page.OS),
 			Uniques:          page.Uniques,
 			UniquePercentage: page.UniquePercentage,
 		})
@@ -719,7 +681,6 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -742,17 +703,13 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	res := api.StatsDevices{}
 	for _, page := range devices {
 		res = append(res, api.StatsDevicesItem{
-			Device:           page.Device.String(),
+			Device:           string(page.Device),
 			Uniques:          page.Uniques,
 			UniquePercentage: page.UniquePercentage,
 		})
 	}
 
 	return &res, nil
-}
-
-func (h *Handler) GetWebsiteIDScreen(ctx context.Context, params api.GetWebsiteIDScreenParams) (api.GetWebsiteIDScreenRes, error) {
-	return nil, nil
 }
 
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
@@ -783,7 +740,6 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),
@@ -843,7 +799,6 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		UTMMedium:        db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
 		UTMCampaign:      db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
 		Browser:          db.NewFilter(db.FilterBrowser, params.Browser),
-		BrowserVersion:   db.NewFilter(db.FilterBrowserVersion, params.BrowserVersion),
 		OS:               db.NewFilter(db.FilterOS, params.Os),
 		Device:           db.NewFilter(db.FilterDevice, params.Device),
 		Country:          db.NewFilter(db.FilterCountry, params.Country),

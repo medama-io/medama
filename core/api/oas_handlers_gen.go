@@ -555,10 +555,6 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					In:   "path",
 				}: params.Hostname,
 				{
-					Name: "summary",
-					In:   "query",
-				}: params.Summary,
-				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,
@@ -598,10 +594,6 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
-				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
 				{
 					Name: "os",
 					In:   "query",
@@ -790,10 +782,6 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Browser,
 				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
-				{
 					Name: "os",
 					In:   "query",
 				}: params.Os,
@@ -980,10 +968,6 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
-				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
 				{
 					Name: "os",
 					In:   "query",
@@ -1172,10 +1156,6 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 					In:   "query",
 				}: params.Browser,
 				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
-				{
 					Name: "os",
 					In:   "query",
 				}: params.Os,
@@ -1362,10 +1342,6 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
-				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
 				{
 					Name: "os",
 					In:   "query",
@@ -1554,10 +1530,6 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Browser,
 				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
-				{
 					Name: "os",
 					In:   "query",
 				}: params.Os,
@@ -1744,10 +1716,6 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
-				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
 				{
 					Name: "os",
 					In:   "query",
@@ -1940,10 +1908,6 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 					In:   "query",
 				}: params.Browser,
 				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
-				{
 					Name: "os",
 					In:   "query",
 				}: params.Os,
@@ -2135,10 +2099,6 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Browser,
 				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
-				{
 					Name: "os",
 					In:   "query",
 				}: params.Os,
@@ -2190,197 +2150,6 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 	}
 
 	if err := encodeGetWebsiteIDReferrersResponse(response, w); err != nil {
-		recordError("EncodeResponse", err)
-		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-		}
-		return
-	}
-}
-
-// handleGetWebsiteIDScreenRequest handles get-website-id-screen operation.
-//
-// Get a list of screen sizes and their stats.
-//
-// GET /website/{hostname}/screens
-func (s *Server) handleGetWebsiteIDScreenRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	var (
-		err          error
-		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDScreen",
-			ID:   "get-website-id-screen",
-		}
-	)
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDScreen", r)
-			if err != nil {
-				err = &ogenerrors.SecurityError{
-					OperationContext: opErrContext,
-					Security:         "CookieAuth",
-					Err:              err,
-				}
-				recordError("Security:CookieAuth", err)
-				s.cfg.ErrorHandler(ctx, w, r, err)
-				return
-			}
-			if ok {
-				satisfied[0] |= 1 << 0
-				ctx = sctx
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			err = &ogenerrors.SecurityError{
-				OperationContext: opErrContext,
-				Err:              ogenerrors.ErrSecurityRequirementIsNotSatisfied,
-			}
-			recordError("Security", err)
-			s.cfg.ErrorHandler(ctx, w, r, err)
-			return
-		}
-	}
-	params, err := decodeGetWebsiteIDScreenParams(args, argsEscaped, r)
-	if err != nil {
-		err = &ogenerrors.DecodeParamsError{
-			OperationContext: opErrContext,
-			Err:              err,
-		}
-		recordError("DecodeParams", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-
-	var response GetWebsiteIDScreenRes
-	if m := s.cfg.Middleware; m != nil {
-		mreq := middleware.Request{
-			Context:          ctx,
-			OperationName:    "GetWebsiteIDScreen",
-			OperationSummary: "Get Screen Stats.",
-			OperationID:      "get-website-id-screen",
-			Body:             nil,
-			Params: middleware.Parameters{
-				{
-					Name: "_me_sess",
-					In:   "cookie",
-				}: params.MeSess,
-				{
-					Name: "hostname",
-					In:   "path",
-				}: params.Hostname,
-				{
-					Name: "start",
-					In:   "query",
-				}: params.Start,
-				{
-					Name: "end",
-					In:   "query",
-				}: params.End,
-				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
-					Name: "path",
-					In:   "query",
-				}: params.Path,
-				{
-					Name: "referrer_host",
-					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
-				{
-					Name: "utm_source",
-					In:   "query",
-				}: params.UtmSource,
-				{
-					Name: "utm_medium",
-					In:   "query",
-				}: params.UtmMedium,
-				{
-					Name: "utm_campaign",
-					In:   "query",
-				}: params.UtmCampaign,
-				{
-					Name: "browser",
-					In:   "query",
-				}: params.Browser,
-				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
-				{
-					Name: "os",
-					In:   "query",
-				}: params.Os,
-				{
-					Name: "device",
-					In:   "query",
-				}: params.Device,
-				{
-					Name: "country",
-					In:   "query",
-				}: params.Country,
-				{
-					Name: "language",
-					In:   "query",
-				}: params.Language,
-				{
-					Name: "limit",
-					In:   "query",
-				}: params.Limit,
-			},
-			Raw: r,
-		}
-
-		type (
-			Request  = struct{}
-			Params   = GetWebsiteIDScreenParams
-			Response = GetWebsiteIDScreenRes
-		)
-		response, err = middleware.HookMiddleware[
-			Request,
-			Params,
-			Response,
-		](
-			m,
-			mreq,
-			unpackGetWebsiteIDScreenParams,
-			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.GetWebsiteIDScreen(ctx, params)
-				return response, err
-			},
-		)
-	} else {
-		response, err = s.h.GetWebsiteIDScreen(ctx, params)
-	}
-	if err != nil {
-		recordError("Internal", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-
-	if err := encodeGetWebsiteIDScreenResponse(response, w); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -2516,10 +2285,6 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
-				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
 				{
 					Name: "os",
 					In:   "query",
@@ -2712,10 +2477,6 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Browser,
 				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
-				{
 					Name: "os",
 					In:   "query",
 				}: params.Os,
@@ -2902,10 +2663,6 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 					Name: "browser",
 					In:   "query",
 				}: params.Browser,
-				{
-					Name: "browser_version",
-					In:   "query",
-				}: params.BrowserVersion,
 				{
 					Name: "os",
 					In:   "query",

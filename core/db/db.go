@@ -60,7 +60,6 @@ type AnalyticsClient interface {
 	GetWebsiteTimeSummary(ctx context.Context, filter *Filters) ([]*model.StatsTimeSummary, error)
 	// Types
 	GetWebsiteBrowsers(ctx context.Context, filter *Filters) ([]*model.StatsBrowsers, error)
-	GetWebsiteBrowsersSummary(ctx context.Context, filter *Filters) ([]*model.StatsBrowserSummary, error)
 	GetWebsiteOS(ctx context.Context, filter *Filters) ([]*model.StatsOS, error)
 	GetWebsiteDevices(ctx context.Context, filter *Filters) ([]*model.StatsDevices, error)
 	// UTM

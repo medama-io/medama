@@ -86,12 +86,6 @@ type Handler interface {
 	//
 	// GET /website/{hostname}/referrers
 	GetWebsiteIDReferrers(ctx context.Context, params GetWebsiteIDReferrersParams) (GetWebsiteIDReferrersRes, error)
-	// GetWebsiteIDScreen implements get-website-id-screen operation.
-	//
-	// Get a list of screen sizes and their stats.
-	//
-	// GET /website/{hostname}/screens
-	GetWebsiteIDScreen(ctx context.Context, params GetWebsiteIDScreenParams) (GetWebsiteIDScreenRes, error)
 	// GetWebsiteIDSources implements get-website-id-sources operation.
 	//
 	// Get a list of UTM sources and their stats.

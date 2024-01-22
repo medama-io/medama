@@ -1,11 +1,9 @@
 package db
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/medama-io/medama/api"
-	"github.com/medama-io/medama/model"
 )
 
 // FilterField represents a mapping of the filter field to the database column.
@@ -19,7 +17,6 @@ const (
 	FilterUTMMedium        FilterField = "utm_medium"
 	FilterUTMCampaign      FilterField = "utm_campaign"
 	FilterBrowser          FilterField = "ua_browser"
-	FilterBrowserVersion   FilterField = "ua_version"
 	FilterOS               FilterField = "ua_os"
 	FilterDevice           FilterField = "ua_device_type"
 	FilterCountry          FilterField = "country_code"
@@ -102,18 +99,6 @@ func NewFilter(field FilterField, param interface{}) *Filter {
 	case api.OptFilterFixed:
 		if v.IsSet() {
 			value, operation = FilterFixedToValues(v.Value)
-
-			// Convert value to an enum integer if needed (e.g. browser name)
-			switch field { //nolint:exhaustive // We don't need to verify all fields.
-			case FilterBrowser:
-				{
-					value = strconv.Itoa(int(model.NewBrowserName(value)))
-				}
-			case FilterOS:
-				{
-					value = strconv.Itoa(int(model.NewOSName(value)))
-				}
-			}
 		} else {
 			return nil
 		}

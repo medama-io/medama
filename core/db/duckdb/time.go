@@ -55,8 +55,6 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 	//
 	// DurationPercentage is the percentage the pathname contributes to the total duration.
 	//
-	// Title is the title of the page.
-	//
 	// Bounces is the total number of bounces for the page.
 	//
 	// Uniques is the total number of uniques for the page.

@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const gzipSize = require('gzip-size');
+const brotliSize = require('brotli-size');
 
 // Print file size of dist files into console
 
@@ -18,6 +19,10 @@ distJsFiles.forEach(async (file) => {
 	// gzip
 	const gzip = await gzipSize(fs.readFileSync(filepath));
 
+	// brotli
+	const brotli = await brotliSize.sync(fs.readFileSync(filepath));
+
 	console.log(`${file}: ${size} bytes (${kb.toFixed(2)} KB)`);
 	console.log(`gzipped: ${gzip} bytes (${(gzip / 1024).toFixed(2)} KB)`);
+	console.log(`brotli: ${brotli} bytes (${(brotli / 1024).toFixed(2)} KB)`);
 });

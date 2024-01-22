@@ -443,29 +443,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 								break
 							}
 							switch elem[0] {
-							case 'c': // Prefix: "creens"
-								origElem := elem
-								if l := len("creens"); len(elem) >= l && elem[0:l] == "creens" {
-									elem = elem[l:]
-								} else {
-									break
-								}
-
-								if len(elem) == 0 {
-									// Leaf node.
-									switch r.Method {
-									case "GET":
-										s.handleGetWebsiteIDScreenRequest([1]string{
-											args[0],
-										}, elemIsEscaped, w, r)
-									default:
-										s.notAllowed(w, r, "GET")
-									}
-
-									return
-								}
-
-								elem = origElem
 							case 'o': // Prefix: "ources"
 								origElem := elem
 								if l := len("ources"); len(elem) >= l && elem[0:l] == "ources" {
@@ -1132,31 +1109,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								break
 							}
 							switch elem[0] {
-							case 'c': // Prefix: "creens"
-								origElem := elem
-								if l := len("creens"); len(elem) >= l && elem[0:l] == "creens" {
-									elem = elem[l:]
-								} else {
-									break
-								}
-
-								if len(elem) == 0 {
-									switch method {
-									case "GET":
-										// Leaf: GetWebsiteIDScreen
-										r.name = "GetWebsiteIDScreen"
-										r.summary = "Get Screen Stats."
-										r.operationID = "get-website-id-screen"
-										r.pathPattern = "/website/{hostname}/screens"
-										r.args = args
-										r.count = 1
-										return r, true
-									default:
-										return
-									}
-								}
-
-								elem = origElem
 							case 'o': // Prefix: "ources"
 								origElem := elem
 								if l := len("ources"); len(elem) >= l && elem[0:l] == "ources" {

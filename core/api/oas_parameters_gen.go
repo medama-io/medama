@@ -323,8 +323,6 @@ type GetWebsiteIDBrowsersParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Return a summary of the stats.
-	Summary OptBool
 	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
 	Start OptDate
 	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
@@ -345,8 +343,6 @@ type GetWebsiteIDBrowsersParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -373,15 +369,6 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "summary",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Summary = v.(OptBool)
-		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -471,15 +458,6 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -625,52 +603,6 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
-			Err:  err,
-		}
-	}
-	// Set default value for query: summary.
-	{
-		val := bool(false)
-		params.Summary.SetTo(val)
-	}
-	// Decode query: summary.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "summary",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotSummaryVal bool
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToBool(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotSummaryVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Summary.SetTo(paramsDotSummaryVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "summary",
-			In:   "query",
 			Err:  err,
 		}
 	}
@@ -1029,37 +961,6 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -1283,8 +1184,6 @@ type GetWebsiteIDCampaignsParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -1400,15 +1299,6 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -1912,37 +1802,6 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -2166,8 +2025,6 @@ type GetWebsiteIDCountryParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -2283,15 +2140,6 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -2795,37 +2643,6 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -3049,8 +2866,6 @@ type GetWebsiteIDDeviceParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -3166,15 +2981,6 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -3678,37 +3484,6 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -3932,8 +3707,6 @@ type GetWebsiteIDLanguageParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -4049,15 +3822,6 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -4561,37 +4325,6 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -4815,8 +4548,6 @@ type GetWebsiteIDMediumsParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -4932,15 +4663,6 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -5444,37 +5166,6 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -5698,8 +5389,6 @@ type GetWebsiteIDOsParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -5815,15 +5504,6 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -6327,37 +6007,6 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -6583,8 +6232,6 @@ type GetWebsiteIDPagesParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -6709,15 +6356,6 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -7267,37 +6905,6 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -7523,8 +7130,6 @@ type GetWebsiteIDReferrersParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -7649,15 +7254,6 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -8207,920 +7803,6 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: os.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "os",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
-				if err := func() error {
-					return paramsDotOsVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.Os.SetTo(paramsDotOsVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "os",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: device.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "device",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
-				if err := func() error {
-					return paramsDotDeviceVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.Device.SetTo(paramsDotDeviceVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "device",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: country.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "country",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
-				if err := func() error {
-					return paramsDotCountryVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.Country.SetTo(paramsDotCountryVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "country",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: language.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "language",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
-				if err := func() error {
-					return paramsDotLanguageVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.Language.SetTo(paramsDotLanguageVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "language",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Set default value for query: limit.
-	{
-		val := int32(5)
-		params.Limit.SetTo(val)
-	}
-	// Decode query: limit.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "limit",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt32(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotLimitVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Limit.SetTo(paramsDotLimitVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-			if err := func() error {
-				if value, ok := params.Limit.Get(); ok {
-					if err := func() error {
-						if err := (validate.Int{
-							MinSet:        true,
-							Min:           1,
-							MaxSet:        true,
-							Max:           500,
-							MinExclusive:  false,
-							MaxExclusive:  false,
-							MultipleOfSet: false,
-							MultipleOf:    0,
-						}).Validate(int64(value)); err != nil {
-							return errors.Wrap(err, "int")
-						}
-						return nil
-					}(); err != nil {
-						return err
-					}
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "limit",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// GetWebsiteIDScreenParams is parameters of get-website-id-screen operation.
-type GetWebsiteIDScreenParams struct {
-	// Session token for authentication.
-	MeSess string
-	// Hostname for the website.
-	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
-	// Period interval.
-	Interval OptGetWebsiteIDScreenInterval
-	// Path of the page.
-	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
-	// UTM source of the page hit.
-	UtmSource OptFilterString
-	// UTM medium of the page hit.
-	UtmMedium OptFilterString
-	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
-	// Browser name.
-	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
-	// Operating system name.
-	Os OptFilterFixed
-	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
-	// Language code.
-	Language OptFilterFixed
-	// Limit the number of results.
-	Limit OptInt32
-}
-
-func unpackGetWebsiteIDScreenParams(packed middleware.Parameters) (params GetWebsiteIDScreenParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "_me_sess",
-			In:   "cookie",
-		}
-		params.MeSess = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "hostname",
-			In:   "path",
-		}
-		params.Hostname = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "start",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "end",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "interval",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Interval = v.(OptGetWebsiteIDScreenInterval)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Path = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_host",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "utm_source",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.UtmSource = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "utm_medium",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.UtmMedium = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "utm_campaign",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.UtmCampaign = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "os",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "device",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "country",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "language",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "limit",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
-		}
-	}
-	return params
-}
-
-func decodeGetWebsiteIDScreenParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDScreenParams, _ error) {
-	q := uri.NewQueryDecoder(r.URL.Query())
-	c := uri.NewCookieDecoder(r)
-	// Decode cookie: _me_sess.
-	if err := func() error {
-		cfg := uri.CookieParameterDecodingConfig{
-			Name:    "_me_sess",
-			Explode: true,
-		}
-		if err := c.HasParam(cfg); err == nil {
-			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.MeSess = c
-				return nil
-			}); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "_me_sess",
-			In:   "cookie",
-			Err:  err,
-		}
-	}
-	// Decode path: hostname.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "hostname",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.Hostname = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-			if err := func() error {
-				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
-				}).Validate(string(params.Hostname)); err != nil {
-					return errors.Wrap(err, "string")
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "hostname",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	// Decode query: start.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "start",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStartVal time.Time
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToDate(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotStartVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Start.SetTo(paramsDotStartVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "start",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: end.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "end",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotEndVal time.Time
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToDate(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotEndVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.End.SetTo(paramsDotEndVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "end",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: interval.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "interval",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotIntervalVal GetWebsiteIDScreenInterval
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotIntervalVal = GetWebsiteIDScreenInterval(c)
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Interval.SetTo(paramsDotIntervalVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-			if err := func() error {
-				if value, ok := params.Interval.Get(); ok {
-					if err := func() error {
-						if err := value.Validate(); err != nil {
-							return err
-						}
-						return nil
-					}(); err != nil {
-						return err
-					}
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "interval",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotPathVal FilterString
-				if err := func() error {
-					return paramsDotPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.Path.SetTo(paramsDotPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "path",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_host.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
-				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: utm_source.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "utm_source",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotUtmSourceVal FilterString
-				if err := func() error {
-					return paramsDotUtmSourceVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.UtmSource.SetTo(paramsDotUtmSourceVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "utm_source",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: utm_medium.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "utm_medium",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotUtmMediumVal FilterString
-				if err := func() error {
-					return paramsDotUtmMediumVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.UtmMedium.SetTo(paramsDotUtmMediumVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "utm_medium",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: utm_campaign.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "utm_campaign",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotUtmCampaignVal FilterString
-				if err := func() error {
-					return paramsDotUtmCampaignVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.UtmCampaign.SetTo(paramsDotUtmCampaignVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "utm_campaign",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: browser.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
-				if err := func() error {
-					return paramsDotBrowserVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.Browser.SetTo(paramsDotBrowserVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -9344,8 +8026,6 @@ type GetWebsiteIDSourcesParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -9461,15 +8141,6 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -9973,37 +8644,6 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -10230,8 +8870,6 @@ type GetWebsiteIDSummaryParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -10354,15 +8992,6 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -10903,37 +9532,6 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
-			In:   "query",
-			Err:  err,
-		}
-	}
 	// Decode query: os.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -11089,8 +9687,6 @@ type GetWebsiteIDTimeParams struct {
 	UtmCampaign OptFilterString
 	// Browser name.
 	Browser OptFilterFixed
-	// Browser version.
-	BrowserVersion OptFilterString
 	// Operating system name.
 	Os OptFilterFixed
 	// Device type.
@@ -11215,15 +9811,6 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 		}
 		if v, ok := packed[key]; ok {
 			params.Browser = v.(OptFilterFixed)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "browser_version",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.BrowserVersion = v.(OptFilterString)
 		}
 	}
 	{
@@ -11769,37 +10356,6 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "browser",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: browser_version.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "browser_version",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVersionVal FilterString
-				if err := func() error {
-					return paramsDotBrowserVersionVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.BrowserVersion.SetTo(paramsDotBrowserVersionVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "browser_version",
 			In:   "query",
 			Err:  err,
 		}

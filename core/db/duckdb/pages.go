@@ -50,8 +50,6 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	//
 	// Pathname is the path of the page. If it is empty, it is the homepage and defaults to "/".
 	//
-	// Title is the title of the page.
-	//
 	// Uniques is the number of unique visitors that match the pathname.
 	//
 	// UniquePercentage is the percentage of unique visitors that match the pathname
@@ -68,7 +66,6 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	query.WriteString(`--sql
 		SELECT
 			pathname,
-			title,
 			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
 			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage,
 			COUNT(*) AS pageviews,
@@ -77,7 +74,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY pathname, title ORDER BY uniques DESC`)
+	query.WriteString(` GROUP BY pathname ORDER BY uniques DESC`)
 
 	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

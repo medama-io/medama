@@ -21,9 +21,6 @@
 					r: document.referrer,
 					d: Intl.DateTimeFormat().resolvedOptions().timeZone,
 					p: d,
-					t: document.title,
-					w: self.screen.width,
-					h: self.screen.height,
 					e: c,
 					m:
 						'pagehide' === c || 'hidden' === c || 'unload' === c

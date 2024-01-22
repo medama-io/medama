@@ -53,10 +53,6 @@ type GetWebsiteIDReferrersRes interface {
 	getWebsiteIDReferrersRes()
 }
 
-type GetWebsiteIDScreenRes interface {
-	getWebsiteIDScreenRes()
-}
-
 type GetWebsiteIDSourcesRes interface {
 	getWebsiteIDSourcesRes()
 }

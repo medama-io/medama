@@ -574,26 +574,8 @@ func (s *EventHit) encodeFields(e *jx.Encoder) {
 		s.E.Encode(e)
 	}
 	{
-		if s.T.Set {
-			e.FieldStart("t")
-			s.T.Encode(e)
-		}
-	}
-	{
 		e.FieldStart("d")
 		e.Str(s.D)
-	}
-	{
-		if s.W.Set {
-			e.FieldStart("w")
-			s.W.Encode(e)
-		}
-	}
-	{
-		if s.H.Set {
-			e.FieldStart("h")
-			s.H.Encode(e)
-		}
 	}
 	{
 		if s.M.Set {
@@ -603,17 +585,14 @@ func (s *EventHit) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfEventHit = [10]string{
+var jsonFieldsNameOfEventHit = [7]string{
 	0: "b",
 	1: "u",
 	2: "r",
 	3: "p",
 	4: "e",
-	5: "t",
-	6: "d",
-	7: "w",
-	8: "h",
-	9: "m",
+	5: "d",
+	6: "m",
 }
 
 // Decode decodes EventHit from json.
@@ -621,7 +600,7 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode EventHit to nil")
 	}
-	var requiredBitSet [2]uint8
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -681,18 +660,8 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"e\"")
 			}
-		case "t":
-			if err := func() error {
-				s.T.Reset()
-				if err := s.T.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"t\"")
-			}
 		case "d":
-			requiredBitSet[0] |= 1 << 6
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				v, err := d.Str()
 				s.D = string(v)
@@ -702,26 +671,6 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"d\"")
-			}
-		case "w":
-			if err := func() error {
-				s.W.Reset()
-				if err := s.W.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"w\"")
-			}
-		case "h":
-			if err := func() error {
-				s.H.Reset()
-				if err := s.H.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"h\"")
 			}
 		case "m":
 			if err := func() error {
@@ -742,9 +691,8 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
-	for i, mask := range [2]uint8{
-		0b01011011,
-		0b00000000,
+	for i, mask := range [1]uint8{
+		0b00111011,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -1715,19 +1663,12 @@ func (s *StatsBrowsersItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("unique_percentage")
 		e.Float32(s.UniquePercentage)
 	}
-	{
-		if s.Version.Set {
-			e.FieldStart("version")
-			s.Version.Encode(e)
-		}
-	}
 }
 
-var jsonFieldsNameOfStatsBrowsersItem = [4]string{
+var jsonFieldsNameOfStatsBrowsersItem = [3]string{
 	0: "browser",
 	1: "uniques",
 	2: "unique_percentage",
-	3: "version",
 }
 
 // Decode decodes StatsBrowsersItem from json.
@@ -1774,16 +1715,6 @@ func (s *StatsBrowsersItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"unique_percentage\"")
-			}
-		case "version":
-			if err := func() error {
-				s.Version.Reset()
-				if err := s.Version.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"version\"")
 			}
 		default:
 			return d.Skip()
@@ -2625,12 +2556,6 @@ func (s *StatsPagesItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Path)
 	}
 	{
-		if s.Title.Set {
-			e.FieldStart("title")
-			s.Title.Encode(e)
-		}
-	}
-	{
 		e.FieldStart("uniques")
 		e.Int(s.Uniques)
 	}
@@ -2658,14 +2583,13 @@ func (s *StatsPagesItem) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfStatsPagesItem = [7]string{
+var jsonFieldsNameOfStatsPagesItem = [6]string{
 	0: "path",
-	1: "title",
-	2: "uniques",
-	3: "unique_percentage",
-	4: "pageviews",
-	5: "bounces",
-	6: "duration",
+	1: "uniques",
+	2: "unique_percentage",
+	3: "pageviews",
+	4: "bounces",
+	5: "duration",
 }
 
 // Decode decodes StatsPagesItem from json.
@@ -2689,18 +2613,8 @@ func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"path\"")
 			}
-		case "title":
-			if err := func() error {
-				s.Title.Reset()
-				if err := s.Title.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"title\"")
-			}
 		case "uniques":
-			requiredBitSet[0] |= 1 << 2
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
 				s.Uniques = int(v)
@@ -2712,7 +2626,7 @@ func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
 		case "unique_percentage":
-			requiredBitSet[0] |= 1 << 3
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
 				s.UniquePercentage = float32(v)
@@ -2763,7 +2677,7 @@ func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00001101,
+		0b00000111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -3036,186 +2950,6 @@ func (s *StatsReferrersItem) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *StatsReferrersItem) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes StatsScreens as json.
-func (s StatsScreens) Encode(e *jx.Encoder) {
-	unwrapped := []StatsScreensItem(s)
-
-	e.ArrStart()
-	for _, elem := range unwrapped {
-		elem.Encode(e)
-	}
-	e.ArrEnd()
-}
-
-// Decode decodes StatsScreens from json.
-func (s *StatsScreens) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode StatsScreens to nil")
-	}
-	var unwrapped []StatsScreensItem
-	if err := func() error {
-		unwrapped = make([]StatsScreensItem, 0)
-		if err := d.Arr(func(d *jx.Decoder) error {
-			var elem StatsScreensItem
-			if err := elem.Decode(d); err != nil {
-				return err
-			}
-			unwrapped = append(unwrapped, elem)
-			return nil
-		}); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		return errors.Wrap(err, "alias")
-	}
-	*s = StatsScreens(unwrapped)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s StatsScreens) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *StatsScreens) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s *StatsScreensItem) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields encodes fields.
-func (s *StatsScreensItem) encodeFields(e *jx.Encoder) {
-	{
-		e.FieldStart("screen")
-		e.Str(s.Screen)
-	}
-	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
-	}
-	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
-	}
-}
-
-var jsonFieldsNameOfStatsScreensItem = [3]string{
-	0: "screen",
-	1: "uniques",
-	2: "unique_percentage",
-}
-
-// Decode decodes StatsScreensItem from json.
-func (s *StatsScreensItem) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode StatsScreensItem to nil")
-	}
-	var requiredBitSet [1]uint8
-
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		case "screen":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Screen = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"screen\"")
-			}
-		case "uniques":
-			requiredBitSet[0] |= 1 << 1
-			if err := func() error {
-				v, err := d.Int()
-				s.Uniques = int(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
-			}
-		case "unique_percentage":
-			requiredBitSet[0] |= 1 << 2
-			if err := func() error {
-				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
-			}
-		default:
-			return d.Skip()
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode StatsScreensItem")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [1]uint8{
-		0b00000111,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(jsonFieldsNameOfStatsScreensItem) {
-					name = jsonFieldsNameOfStatsScreensItem[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s *StatsScreensItem) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *StatsScreensItem) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -3706,12 +3440,6 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Path)
 	}
 	{
-		if s.Title.Set {
-			e.FieldStart("title")
-			s.Title.Encode(e)
-		}
-	}
-	{
 		e.FieldStart("duration")
 		e.Int(s.Duration)
 	}
@@ -3745,15 +3473,14 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfStatsTimeItem = [8]string{
+var jsonFieldsNameOfStatsTimeItem = [7]string{
 	0: "path",
-	1: "title",
-	2: "duration",
-	3: "duration_upper_quartile",
-	4: "duration_lower_quartile",
-	5: "duration_percentage",
-	6: "uniques",
-	7: "bounces",
+	1: "duration",
+	2: "duration_upper_quartile",
+	3: "duration_lower_quartile",
+	4: "duration_percentage",
+	5: "uniques",
+	6: "bounces",
 }
 
 // Decode decodes StatsTimeItem from json.
@@ -3777,18 +3504,8 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"path\"")
 			}
-		case "title":
-			if err := func() error {
-				s.Title.Reset()
-				if err := s.Title.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"title\"")
-			}
 		case "duration":
-			requiredBitSet[0] |= 1 << 2
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
 				s.Duration = int(v)
@@ -3820,7 +3537,7 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"duration_lower_quartile\"")
 			}
 		case "duration_percentage":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
 				v, err := d.Float32()
 				s.DurationPercentage = float32(v)
@@ -3861,7 +3578,7 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00100101,
+		0b00010011,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
