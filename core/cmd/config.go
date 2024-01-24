@@ -2,11 +2,13 @@ package main
 
 import (
 	"time"
+
+	"github.com/caarlos0/env/v10"
 )
 
 type ServerConfig struct {
-	AppEnv string `env:"APP_ENV,default=development"`
-	Port   int64  `env:"PORT,default=8080"`
+	AppEnv string `env:"APP_ENV"`
+	Port   int64  `env:"PORT"`
 
 	// Cache settings
 	CacheCleanupInterval time.Duration
@@ -18,11 +20,11 @@ type ServerConfig struct {
 }
 
 type AppDBConfig struct {
-	Host string `env:"DATABASE_HOST,default=./sqlite.dev.db"`
+	Host string `env:"APP_DATABASE_HOST"`
 }
 
 type AnalyticsDBConfig struct {
-	Host string `env:"DATABASE_HOST,default=./duckdb.dev.db"`
+	Host string `env:"ANALYTICS_DATABASE_HOST"`
 }
 
 const (
@@ -43,3 +45,50 @@ const (
 	DefaultSQLiteHost = "./sqlite.dev.db"
 	DefaultDuckDBHost = "./duckdb.dev.db"
 )
+
+// NewServerConfig creates a new server config.
+func NewServerConfig() (*ServerConfig, error) {
+	config := &ServerConfig{
+		AppEnv:               AppEnvDevelopment,
+		Port:                 DefaultPort,
+		CacheCleanupInterval: DefaultCacheCleanupInterval,
+		TimeoutRead:          DefaultTimeoutRead,
+		TimeoutWrite:         DefaultTimeoutWrite,
+		TimeoutIdle:          DefaultTimeoutIdle,
+	}
+
+	// Load config from environment variables.
+	if err := env.Parse(config); err != nil {
+		return nil, err
+	}
+
+	return config, nil
+}
+
+// NewAppDBConfig creates a new app database config.
+func NewAppDBConfig() (*AppDBConfig, error) {
+	config := &AppDBConfig{
+		Host: DefaultSQLiteHost,
+	}
+
+	// Load config from environment variables.
+	if err := env.Parse(config); err != nil {
+		return nil, err
+	}
+
+	return config, nil
+}
+
+// NewAnalyticsDBConfig creates a new analytics database config.
+func NewAnalyticsDBConfig() (*AnalyticsDBConfig, error) {
+	config := &AnalyticsDBConfig{
+		Host: DefaultDuckDBHost,
+	}
+
+	// Load config from environment variables.
+	if err := env.Parse(config); err != nil {
+		return nil, err
+	}
+
+	return config, nil
+}

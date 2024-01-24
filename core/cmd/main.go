@@ -30,6 +30,7 @@ func main() {
 	err := run(context.Background(), os.Args[1:])
 
 	if errors.Is(err, flag.ErrHelp) {
+		fmt.Fprintln(os.Stderr, "Usage: medama <command> [flags]")
 		os.Exit(exitCodeInvalidShell)
 	}
 
@@ -49,7 +50,12 @@ func run(ctx context.Context, args []string) error {
 
 	switch cmd {
 	case "start":
-		s := NewStartCommand()
+		s, err := NewStartCommand()
+		if err != nil {
+			return err
+		}
+
+		// Parse flags
 		if err := s.ParseFlags(args); err != nil {
 			return err
 		}

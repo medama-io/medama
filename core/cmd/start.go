@@ -30,22 +30,27 @@ type StartCommand struct {
 }
 
 // NewStartCommand creates a new start command.
-func NewStartCommand() *StartCommand {
-	return &StartCommand{
-		Server: ServerConfig{
-			AppEnv:               AppEnvDevelopment,
-			CacheCleanupInterval: DefaultCacheCleanupInterval,
-			TimeoutRead:          DefaultTimeoutRead,
-			TimeoutWrite:         DefaultTimeoutWrite,
-			TimeoutIdle:          DefaultTimeoutIdle,
-		},
-		AppDB: AppDBConfig{
-			Host: DefaultSQLiteHost,
-		},
-		AnalyticsDB: AnalyticsDBConfig{
-			Host: DefaultDuckDBHost,
-		},
+func NewStartCommand() (*StartCommand, error) {
+	serverConfig, err := NewServerConfig()
+	if err != nil {
+		return nil, err
 	}
+
+	appConfig, err := NewAppDBConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	analyticsConfig, err := NewAnalyticsDBConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	return &StartCommand{
+		Server:      *serverConfig,
+		AppDB:       *appConfig,
+		AnalyticsDB: *analyticsConfig,
+	}, nil
 }
 
 // ParseFlags parses the command line flags for the start command.
