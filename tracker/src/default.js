@@ -142,7 +142,7 @@ var Payload;
 				eventType === EventType.PAGEHIDE ||
 				eventType === EventType.HIDDEN ||
 				eventType === EventType.UNLOAD
-					? self.performance.now() - hiddenTimeMs
+					? Math.round(self.performance.now() - hiddenTimeMs)
 					: undefined,
 		};
 

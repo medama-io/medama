@@ -24,7 +24,7 @@
 					e: c,
 					m:
 						'pagehide' === c || 'hidden' === c || 'unload' === c
-							? self.performance.now() - e
+							? Math.round(self.performance.now() - e)
 							: void 0,
 				};
 				navigator.sendBeacon(h + '/event/hit', JSON.stringify(p));
