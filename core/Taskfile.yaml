@@ -17,6 +17,11 @@ tasks:
       CGO_ENABLED: "1"
       GOEXPERIMENT: loopvar
 
+  start:
+    deps: [build]
+    cmds:
+      - ./bin/main {{.CLI_ARGS}}
+
   release:
     deps: [generate]
     cmds:

@@ -51,8 +51,7 @@ var Payload;
 	/**
 	 * Get API URL from data-host in script tag with the correct protocol.
 	 */
-	const host =
-		document.location.protocol + '//' + currentScript.getAttribute('data-api');
+	const host = 'https://' + currentScript.getAttribute('data-api');
 
 	/**
 	 * Generate a unique ID for linking multiple beacon events together for the same user.

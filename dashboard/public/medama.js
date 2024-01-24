@@ -1,7 +1,7 @@
 (function () {
 	if (document) {
 		var g = document.currentScript,
-			h = document.location.protocol + '//' + g.getAttribute('data-api'),
+			h = 'https://' + g.getAttribute('data-api'),
 			k = Date.now().toString(36) + Math.random().toString(36).substr(2),
 			d = !0,
 			e = 0,
