@@ -5,6 +5,32 @@ type RequestKey string
 const (
 	// RequestKeyBody is the key used to store the request in the context.
 	RequestKeyBody RequestKey = "request"
+
+	UnknownBrowser          BrowserName = "Unknown"
+	ChromeBrowser           BrowserName = "Chrome"
+	EdgeBrowser             BrowserName = "Edge"
+	FirefoxBrowser          BrowserName = "Firefox"
+	InternetExplorerBrowser BrowserName = "InternetExplorer"
+	OperaBrowser            BrowserName = "Opera"
+	OperaMiniBrowser        BrowserName = "OperaMini"
+	SafariBrowser           BrowserName = "Safari"
+	VivaldiBrowser          BrowserName = "Vivaldi"
+	SamsungBrowser          BrowserName = "SamsungBrowser"
+	NintendoBrowser         BrowserName = "NintendoBrowser"
+
+	UnknownOS OSName = "Unknown"
+	AndroidOS OSName = "Android"
+	ChromeOS  OSName = "ChromeOS"
+	IOS       OSName = "iOS"
+	LinuxOS   OSName = "Linux"
+	MacOS     OSName = "MacOS"
+	WindowsOS OSName = "Windows"
+
+	UnknownDevice DeviceType = "Unknown"
+	DesktopDevice DeviceType = "Desktop"
+	MobileDevice  DeviceType = "Mobile"
+	TabletDevice  DeviceType = "Tablet"
+	TVDevice      DeviceType = "TV"
 )
 
 // BrowserName - The name of the user's browser.
@@ -30,34 +56,6 @@ func NewDeviceType(desktop bool, mobile bool, tablet bool, tv bool) DeviceType {
 		return UnknownDevice
 	}
 }
-
-const (
-	UnknownBrowser          BrowserName = "Unknown"
-	ChromeBrowser           BrowserName = "Chrome"
-	EdgeBrowser             BrowserName = "Edge"
-	FirefoxBrowser          BrowserName = "Firefox"
-	InternetExplorerBrowser BrowserName = "Internet Explorer"
-	OperaBrowser            BrowserName = "Opera"
-	OperaMiniBrowser        BrowserName = "Opera Mini"
-	SafariBrowser           BrowserName = "Safari"
-	VivaldiBrowser          BrowserName = "Vivaldi"
-	SamsungBrowser          BrowserName = "Samsung Browser"
-	NintendoBrowser         BrowserName = "Nintendo Browser"
-
-	UnknownOS OSName = "Unknown"
-	AndroidOS OSName = "Android"
-	ChromeOS  OSName = "Chrome OS"
-	IOS       OSName = "iOS"
-	LinuxOS   OSName = "Linux"
-	MacOS     OSName = "Mac OS"
-	WindowsOS OSName = "Windows"
-
-	UnknownDevice DeviceType = "Unknown"
-	DesktopDevice DeviceType = "Desktop"
-	MobileDevice  DeviceType = "Mobile"
-	TabletDevice  DeviceType = "Tablet"
-	TVDevice      DeviceType = "TV"
-)
 
 type PageView struct {
 	// Beacon ID - Used to determine if multiple event types are

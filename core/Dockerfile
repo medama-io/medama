@@ -1,19 +1,26 @@
 # syntax = docker/dockerfile:1
 
 # Setup Go builder
-FROM golang:1.21 AS backend
+FROM golang:1.21 AS builder
 
 # Install Taskfile
 RUN go install github.com/go-task/task/v3/cmd/task@latest
 
-COPY . /core
-WORKDIR /core
+# Copy go.mod and go.sum and download dependencies
+WORKDIR /app
+COPY go.mod go.sum ./
 
-# Build the core
-RUN go mod download
+# Copy the rest of the source code and build
+COPY . .
 RUN task build
 
-EXPOSE 8080
+# Setup lightweight container
+FROM alpine:latest
 
-CMD ["/core/bin/main", "start", "-debug"]
+# Copy the binary from the builder stage
+COPY --from=builder /app/bin/main /app/main
+
+# Run the binary
+EXPOSE 8080
+CMD ["/app/main", "start", "-debug"]
 
