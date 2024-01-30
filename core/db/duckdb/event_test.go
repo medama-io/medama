@@ -9,20 +9,19 @@ import (
 func TestAddPageView(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	event := &model.PageView{
-		BID:              "test_bid",
-		Hostname:         "medama-test.io",
-		Pathname:         "/",
-		ReferrerHostname: "medama.io",
-		ReferrerPathname: "/test",
-		CountryCode:      "GB",
-		Language:         "en",
-		BrowserName:      "Firefox",
-		OS:               "Windows",
-		DeviceType:       "Desktop",
-		UTMSource:        "test_source",
-		UTMMedium:        "test_medium",
-		UTMCampaign:      "test_campaign",
+	event := &model.PageViewHit{
+		BID:         "test_bid",
+		Hostname:    "medama-test.io",
+		Pathname:    "/",
+		Referrer:    "medama.io",
+		CountryCode: "GB",
+		Language:    "en",
+		BrowserName: model.FirefoxBrowser,
+		OS:          model.WindowsOS,
+		DeviceType:  model.DesktopDevice,
+		UTMSource:   "test_source",
+		UTMMedium:   "test_medium",
+		UTMCampaign: "test_campaign",
 	}
 
 	err := client.AddPageView(ctx, event)
@@ -32,26 +31,25 @@ func TestAddPageView(t *testing.T) {
 func TestUpdatePageView(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	event := &model.PageView{
-		BID:              "test_updated_bid",
-		Hostname:         "medama-test.io",
-		Pathname:         "/",
-		ReferrerHostname: "medama.io",
-		ReferrerPathname: "/test",
-		CountryCode:      "GB",
-		Language:         "en",
-		BrowserName:      "Firefox", // "Firefox
-		OS:               "Windows",
-		DeviceType:       "Desktop",
-		UTMSource:        "test_source",
-		UTMMedium:        "test_medium",
-		UTMCampaign:      "test_campaign",
+	event := &model.PageViewHit{
+		BID:         "test_updated_bid",
+		Hostname:    "medama-test.io",
+		Pathname:    "/",
+		Referrer:    "medama.io",
+		CountryCode: "GB",
+		Language:    "en",
+		BrowserName: model.FirefoxBrowser,
+		OS:          model.WindowsOS,
+		DeviceType:  model.DesktopDevice,
+		UTMSource:   "test_source",
+		UTMMedium:   "test_medium",
+		UTMCampaign: "test_campaign",
 	}
 
 	err := client.AddPageView(ctx, event)
 	assert.NoError(err)
 
-	event2 := &model.PageViewUpdate{
+	event2 := &model.PageViewDuration{
 		BID:        "test_update_bid",
 		DurationMs: 100,
 	}

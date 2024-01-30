@@ -202,6 +202,8 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 type GetEventPingParams struct {
 	// If this exists, then user exists in cache and is not a unique user.
 	IfModifiedSince OptString
+	// Optional query parameter that is the current host and pathname of the page.
+	U OptString
 }
 
 func unpackGetEventPingParams(packed middleware.Parameters) (params GetEventPingParams) {
@@ -214,10 +216,20 @@ func unpackGetEventPingParams(packed middleware.Parameters) (params GetEventPing
 			params.IfModifiedSince = v.(OptString)
 		}
 	}
+	{
+		key := middleware.ParameterKey{
+			Name: "u",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.U = v.(OptString)
+		}
+	}
 	return params
 }
 
 func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request) (params GetEventPingParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
 	h := uri.NewHeaderDecoder(r.Header)
 	// Decode header: If-Modified-Since.
 	if err := func() error {
@@ -255,6 +267,47 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 		return params, &ogenerrors.DecodeParamError{
 			Name: "If-Modified-Since",
 			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode query: u.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "u",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotUVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotUVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.U.SetTo(paramsDotUVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "u",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -331,10 +384,8 @@ type GetWebsiteIDBrowsersParams struct {
 	Interval OptGetWebsiteIDBrowsersInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -408,20 +459,11 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -775,10 +817,10 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -786,13 +828,13 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -801,38 +843,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -1172,10 +1183,8 @@ type GetWebsiteIDCampaignsParams struct {
 	Interval OptGetWebsiteIDCampaignsInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -1249,20 +1258,11 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -1616,10 +1616,10 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -1627,13 +1627,13 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -1642,38 +1642,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -2013,10 +1982,8 @@ type GetWebsiteIDCountryParams struct {
 	Interval OptGetWebsiteIDCountryInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -2090,20 +2057,11 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -2457,10 +2415,10 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -2468,13 +2426,13 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -2483,38 +2441,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -2854,10 +2781,8 @@ type GetWebsiteIDDeviceParams struct {
 	Interval OptGetWebsiteIDDeviceInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -2931,20 +2856,11 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -3298,10 +3214,10 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -3309,13 +3225,13 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -3324,38 +3240,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -3695,10 +3580,8 @@ type GetWebsiteIDLanguageParams struct {
 	Interval OptGetWebsiteIDLanguageInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -3772,20 +3655,11 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -4139,10 +4013,10 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -4150,13 +4024,13 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -4165,38 +4039,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -4536,10 +4379,8 @@ type GetWebsiteIDMediumsParams struct {
 	Interval OptGetWebsiteIDMediumsInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -4613,20 +4454,11 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -4980,10 +4812,10 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -4991,13 +4823,13 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -5006,38 +4838,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -5377,10 +5178,8 @@ type GetWebsiteIDOsParams struct {
 	Interval OptGetWebsiteIDOsInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -5454,20 +5253,11 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -5821,10 +5611,10 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -5832,13 +5622,13 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -5847,38 +5637,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -6220,10 +5979,8 @@ type GetWebsiteIDPagesParams struct {
 	Interval OptGetWebsiteIDPagesInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -6306,20 +6063,11 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -6719,10 +6467,10 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -6730,13 +6478,13 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -6745,38 +6493,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -7118,10 +6835,8 @@ type GetWebsiteIDReferrersParams struct {
 	Interval OptGetWebsiteIDReferrersInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -7204,20 +6919,11 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -7617,10 +7323,10 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -7628,13 +7334,13 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -7643,38 +7349,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -8014,10 +7689,8 @@ type GetWebsiteIDSourcesParams struct {
 	Interval OptGetWebsiteIDSourcesInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -8091,20 +7764,11 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -8458,10 +8122,10 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -8469,13 +8133,13 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -8484,38 +8148,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -8858,10 +8491,8 @@ type GetWebsiteIDSummaryParams struct {
 	Interval OptGetWebsiteIDSummaryInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -8942,20 +8573,11 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -9346,10 +8968,10 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -9357,13 +8979,13 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -9372,38 +8994,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}
@@ -9675,10 +9266,8 @@ type GetWebsiteIDTimeParams struct {
 	Interval OptGetWebsiteIDTimeInterval
 	// Path of the page.
 	Path OptFilterString
-	// Referrer hostname of the page hit.
-	ReferrerHost OptFilterString
-	// Referrer path of the page hit.
-	ReferrerPath OptFilterString
+	// Referrer URL of the page hit.
+	Referrer OptFilterString
 	// UTM source of the page hit.
 	UtmSource OptFilterString
 	// UTM medium of the page hit.
@@ -9761,20 +9350,11 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "referrer_host",
+			Name: "referrer",
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.ReferrerHost = v.(OptFilterString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "referrer_path",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ReferrerPath = v.(OptFilterString)
+			params.Referrer = v.(OptFilterString)
 		}
 	}
 	{
@@ -10174,10 +9754,10 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Err:  err,
 		}
 	}
-	// Decode query: referrer_host.
+	// Decode query: referrer.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_host",
+			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
 			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
@@ -10185,13 +9765,13 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerHostVal FilterString
+				var paramsDotReferrerVal FilterString
 				if err := func() error {
-					return paramsDotReferrerHostVal.DecodeURI(d)
+					return paramsDotReferrerVal.DecodeURI(d)
 				}(); err != nil {
 					return err
 				}
-				params.ReferrerHost.SetTo(paramsDotReferrerHostVal)
+				params.Referrer.SetTo(paramsDotReferrerVal)
 				return nil
 			}); err != nil {
 				return err
@@ -10200,38 +9780,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_host",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: referrer_path.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "referrer_path",
-			Style:   uri.QueryStyleDeepObject,
-			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotReferrerPathVal FilterString
-				if err := func() error {
-					return paramsDotReferrerPathVal.DecodeURI(d)
-				}(); err != nil {
-					return err
-				}
-				params.ReferrerPath.SetTo(paramsDotReferrerPathVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "referrer_path",
+			Name: "referrer",
 			In:   "query",
 			Err:  err,
 		}

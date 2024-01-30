@@ -304,6 +304,10 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 					Name: "If-Modified-Since",
 					In:   "header",
 				}: params.IfModifiedSince,
+				{
+					Name: "u",
+					In:   "query",
+				}: params.U,
 			},
 			Raw: r,
 		}
@@ -571,13 +575,9 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -758,13 +758,9 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -945,13 +941,9 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -1132,13 +1124,9 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -1319,13 +1307,9 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -1506,13 +1490,9 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -1693,13 +1673,9 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -1884,13 +1860,9 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -2075,13 +2047,9 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -2262,13 +2230,9 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -2453,13 +2417,9 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -2640,13 +2600,9 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 					In:   "query",
 				}: params.Path,
 				{
-					Name: "referrer_host",
+					Name: "referrer",
 					In:   "query",
-				}: params.ReferrerHost,
-				{
-					Name: "referrer_path",
-					In:   "query",
-				}: params.ReferrerPath,
+				}: params.Referrer,
 				{
 					Name: "utm_source",
 					In:   "query",
@@ -3395,7 +3351,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		}
 
 		type (
-			Request  = *EventHit
+			Request  = EventHit
 			Params   = PostEventHitParams
 			Response = PostEventHitRes
 		)

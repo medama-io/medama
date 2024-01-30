@@ -67,7 +67,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 			ifnull(ROUND(SUM(duration_ms) * 100.0 / (SELECT SUM(duration_ms) FROM views WHERE hostname = ?), 2), 0) AS duration_percentage,
 			title,
 			COUNT(CASE WHEN duration_ms < 5000 THEN 1 END) AS bounces,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())

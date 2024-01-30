@@ -26,10 +26,9 @@ type StatsPagesSummary struct {
 
 type StatsPages struct {
 	StatsPagesSummary
-	Title     string `db:"title"`
-	Pageviews int    `db:"pageviews"`
-	Bounces   int    `db:"bounces"`
-	Duration  int    `db:"duration"`
+	Pageviews int `db:"pageviews"`
+	Bounces   int `db:"bounces"`
+	Duration  int `db:"duration"`
 }
 
 type StatsTimeSummary struct {
@@ -40,25 +39,23 @@ type StatsTimeSummary struct {
 
 type StatsTime struct {
 	StatsTimeSummary
-	DurationUpperQuartile int    `db:"duration_upper_quartile"`
-	DurationLowerQuartile int    `db:"duration_lower_quartile"`
-	Title                 string `db:"title"`
-	Pageviews             int    `db:"pageviews"`
-	Bounces               int    `db:"bounces"`
-	Uniques               int    `db:"uniques"`
+	DurationUpperQuartile int `db:"duration_upper_quartile"`
+	DurationLowerQuartile int `db:"duration_lower_quartile"`
+	Pageviews             int `db:"pageviews"`
+	Bounces               int `db:"bounces"`
+	Uniques               int `db:"uniques"`
 }
 
 type StatsReferrerSummary struct {
-	ReferrerHostname string  `db:"referrer_hostname"`
+	Referrer         string  `db:"referrer"`
 	Uniques          int     `db:"uniques"`
 	UniquePercentage float32 `db:"unique_percentage"`
 }
 
 type StatsReferrers struct {
 	StatsReferrerSummary
-	ReferrerPathname string `db:"referrer_pathname"`
-	Bounces          int    `db:"bounces"`
-	Duration         int    `db:"duration"`
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
 }
 
 type StatsUTMSources struct {
@@ -100,12 +97,6 @@ type StatsDevices struct {
 	Device           DeviceType `db:"device"`
 	Uniques          int        `db:"uniques"`
 	UniquePercentage float32    `db:"unique_percentage"`
-}
-
-type StatsScreens struct {
-	Screen           string  `db:"screen"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
 }
 
 type StatsCountries struct {

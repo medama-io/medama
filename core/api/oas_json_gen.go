@@ -542,15 +542,133 @@ func (s *ConflictErrorError) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes EventHit as json.
+func (s EventHit) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case EventHit0EventHit:
+		s.EventHit0.Encode(e)
+	case EventHit1EventHit:
+		s.EventHit1.Encode(e)
+	}
+}
+
+func (s EventHit) encodeFields(e *jx.Encoder) {
+	switch s.Type {
+	case EventHit0EventHit:
+		s.EventHit0.encodeFields(e)
+	case EventHit1EventHit:
+		s.EventHit1.encodeFields(e)
+	}
+}
+
+// Decode decodes EventHit from json.
+func (s *EventHit) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode EventHit to nil")
+	}
+	// Sum type fields.
+	if typ := d.Next(); typ != jx.Object {
+		return errors.Errorf("unexpected json type %q", typ)
+	}
+
+	var found bool
+	if err := d.Capture(func(d *jx.Decoder) error {
+		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
+			switch string(key) {
+			case "u":
+				match := EventHit0EventHit
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "r":
+				match := EventHit0EventHit
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "p":
+				match := EventHit0EventHit
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "q":
+				match := EventHit0EventHit
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "t":
+				match := EventHit0EventHit
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "m":
+				match := EventHit1EventHit
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			}
+			return d.Skip()
+		})
+	}); err != nil {
+		return errors.Wrap(err, "capture")
+	}
+	if !found {
+		return errors.New("unable to detect sum type variant")
+	}
+	switch s.Type {
+	case EventHit0EventHit:
+		if err := s.EventHit0.Decode(d); err != nil {
+			return err
+		}
+	case EventHit1EventHit:
+		if err := s.EventHit1.Decode(d); err != nil {
+			return err
+		}
+	default:
+		return errors.Errorf("inferred invalid type: %s", s.Type)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s EventHit) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *EventHit) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode implements json.Marshaler.
-func (s *EventHit) Encode(e *jx.Encoder) {
+func (s *EventHit0) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *EventHit) encodeFields(e *jx.Encoder) {
+func (s *EventHit0) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("b")
 		e.Str(s.B)
@@ -570,35 +688,30 @@ func (s *EventHit) encodeFields(e *jx.Encoder) {
 		e.Bool(s.P)
 	}
 	{
-		e.FieldStart("e")
-		s.E.Encode(e)
+		e.FieldStart("q")
+		e.Bool(s.Q)
 	}
 	{
-		e.FieldStart("d")
-		e.Str(s.D)
-	}
-	{
-		if s.M.Set {
-			e.FieldStart("m")
-			s.M.Encode(e)
+		if s.T.Set {
+			e.FieldStart("t")
+			s.T.Encode(e)
 		}
 	}
 }
 
-var jsonFieldsNameOfEventHit = [7]string{
+var jsonFieldsNameOfEventHit0 = [6]string{
 	0: "b",
 	1: "u",
 	2: "r",
 	3: "p",
-	4: "e",
-	5: "d",
-	6: "m",
+	4: "q",
+	5: "t",
 }
 
-// Decode decodes EventHit from json.
-func (s *EventHit) Decode(d *jx.Decoder) error {
+// Decode decodes EventHit0 from json.
+func (s *EventHit0) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode EventHit to nil")
+		return errors.New("invalid: unable to decode EventHit0 to nil")
 	}
 	var requiredBitSet [1]uint8
 
@@ -650,49 +763,39 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"p\"")
 			}
-		case "e":
+		case "q":
 			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
-				if err := s.E.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"e\"")
-			}
-		case "d":
-			requiredBitSet[0] |= 1 << 5
-			if err := func() error {
-				v, err := d.Str()
-				s.D = string(v)
+				v, err := d.Bool()
+				s.Q = bool(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"d\"")
+				return errors.Wrap(err, "decode field \"q\"")
 			}
-		case "m":
+		case "t":
 			if err := func() error {
-				s.M.Reset()
-				if err := s.M.Decode(d); err != nil {
+				s.T.Reset()
+				if err := s.T.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"m\"")
+				return errors.Wrap(err, "decode field \"t\"")
 			}
 		default:
 			return d.Skip()
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode EventHit")
+		return errors.Wrap(err, "decode EventHit0")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111011,
+		0b00011011,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -704,8 +807,8 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfEventHit) {
-					name = jsonFieldsNameOfEventHit[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfEventHit0) {
+					name = jsonFieldsNameOfEventHit0[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -726,58 +829,127 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *EventHit) MarshalJSON() ([]byte, error) {
+func (s *EventHit0) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *EventHit) UnmarshalJSON(data []byte) error {
+func (s *EventHit0) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
-// Encode encodes EventHitE as json.
-func (s EventHitE) Encode(e *jx.Encoder) {
-	e.Str(string(s))
+// Encode implements json.Marshaler.
+func (s *EventHit1) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
 }
 
-// Decode decodes EventHitE from json.
-func (s *EventHitE) Decode(d *jx.Decoder) error {
+// encodeFields encodes fields.
+func (s *EventHit1) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("b")
+		e.Str(s.B)
+	}
+	{
+		e.FieldStart("m")
+		e.Int(s.M)
+	}
+}
+
+var jsonFieldsNameOfEventHit1 = [2]string{
+	0: "b",
+	1: "m",
+}
+
+// Decode decodes EventHit1 from json.
+func (s *EventHit1) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode EventHitE to nil")
+		return errors.New("invalid: unable to decode EventHit1 to nil")
 	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "b":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.B = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"b\"")
+			}
+		case "m":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Int()
+				s.M = int(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"m\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode EventHit1")
 	}
-	// Try to use constant string.
-	switch EventHitE(v) {
-	case EventHitEPagehide:
-		*s = EventHitEPagehide
-	case EventHitEUnload:
-		*s = EventHitEUnload
-	case EventHitELoad:
-		*s = EventHitELoad
-	case EventHitEHidden:
-		*s = EventHitEHidden
-	default:
-		*s = EventHitE(v)
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfEventHit1) {
+					name = jsonFieldsNameOfEventHit1[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s EventHitE) MarshalJSON() ([]byte, error) {
+func (s *EventHit1) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *EventHitE) UnmarshalJSON(data []byte) error {
+func (s *EventHit1) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -2783,14 +2955,8 @@ func (s *StatsReferrersItem) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *StatsReferrersItem) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("referrer_host")
-		e.Str(s.ReferrerHost)
-	}
-	{
-		if s.ReferrerPath.Set {
-			e.FieldStart("referrer_path")
-			s.ReferrerPath.Encode(e)
-		}
+		e.FieldStart("referrer")
+		e.Str(s.Referrer)
 	}
 	{
 		e.FieldStart("uniques")
@@ -2814,13 +2980,12 @@ func (s *StatsReferrersItem) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfStatsReferrersItem = [6]string{
-	0: "referrer_host",
-	1: "referrer_path",
-	2: "uniques",
-	3: "unique_percentage",
-	4: "bounces",
-	5: "duration",
+var jsonFieldsNameOfStatsReferrersItem = [5]string{
+	0: "referrer",
+	1: "uniques",
+	2: "unique_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsReferrersItem from json.
@@ -2832,30 +2997,20 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "referrer_host":
+		case "referrer":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
-				s.ReferrerHost = string(v)
+				s.Referrer = string(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"referrer_host\"")
-			}
-		case "referrer_path":
-			if err := func() error {
-				s.ReferrerPath.Reset()
-				if err := s.ReferrerPath.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"referrer_path\"")
+				return errors.Wrap(err, "decode field \"referrer\"")
 			}
 		case "uniques":
-			requiredBitSet[0] |= 1 << 2
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
 				s.Uniques = int(v)
@@ -2867,7 +3022,7 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"uniques\"")
 			}
 		case "unique_percentage":
-			requiredBitSet[0] |= 1 << 3
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
 				s.UniquePercentage = float32(v)
@@ -2908,7 +3063,7 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00001101,
+		0b00000111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

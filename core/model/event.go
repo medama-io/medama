@@ -2,45 +2,148 @@ package model
 
 type RequestKey string
 
+// BrowserName - The name of the user's browser.
+type BrowserName uint8
+
+// OSName - The name of the user's operating system.
+type OSName uint8
+
+// DeviceType - The type of device the user is using.
+type DeviceType uint8
+
+/**
+ * These values are synced with go-useragent: https://github.com/medama-io/go-useragent/blob/main/match.go
+ */
+
 const (
 	// RequestKeyBody is the key used to store the request in the context.
 	RequestKeyBody RequestKey = "request"
 
-	UnknownBrowser          BrowserName = "Unknown"
-	ChromeBrowser           BrowserName = "Chrome"
-	EdgeBrowser             BrowserName = "Edge"
-	FirefoxBrowser          BrowserName = "Firefox"
-	InternetExplorerBrowser BrowserName = "InternetExplorer"
-	OperaBrowser            BrowserName = "Opera"
-	OperaMiniBrowser        BrowserName = "OperaMini"
-	SafariBrowser           BrowserName = "Safari"
-	VivaldiBrowser          BrowserName = "Vivaldi"
-	SamsungBrowser          BrowserName = "SamsungBrowser"
-	NintendoBrowser         BrowserName = "NintendoBrowser"
+	unknown = "Unknown"
+	na      = "N/A"
 
-	UnknownOS OSName = "Unknown"
-	AndroidOS OSName = "Android"
-	ChromeOS  OSName = "ChromeOS"
-	IOS       OSName = "iOS"
-	LinuxOS   OSName = "Linux"
-	MacOS     OSName = "MacOS"
-	WindowsOS OSName = "Windows"
+	UnknownBrowser          BrowserName = 0
+	ChromeBrowser           BrowserName = 1
+	EdgeBrowser             BrowserName = 2
+	FirefoxBrowser          BrowserName = 3
+	InternetExplorerBrowser BrowserName = 4
+	OperaBrowser            BrowserName = 5
+	OperaMiniBrowser        BrowserName = 6
+	SafariBrowser           BrowserName = 7
+	VivaldiBrowser          BrowserName = 8
+	SamsungBrowser          BrowserName = 9
+	NintendoBrowser         BrowserName = 10
 
-	UnknownDevice DeviceType = "Unknown"
-	DesktopDevice DeviceType = "Desktop"
-	MobileDevice  DeviceType = "Mobile"
-	TabletDevice  DeviceType = "Tablet"
-	TVDevice      DeviceType = "TV"
+	UnknownOS OSName = 0
+	AndroidOS OSName = 1
+	ChromeOS  OSName = 2
+	IOS       OSName = 3
+	LinuxOS   OSName = 4
+	MacOS     OSName = 5
+	WindowsOS OSName = 6
+
+	UnknownDevice DeviceType = 0
+	DesktopDevice DeviceType = 1
+	MobileDevice  DeviceType = 2
+	TabletDevice  DeviceType = 3
+	TVDevice      DeviceType = 4
 )
 
-// BrowserName - The name of the user's browser.
-type BrowserName string
+func NewBrowserName(name string) BrowserName {
+	switch name {
+	case "Chrome":
+		return ChromeBrowser
+	case "Edge":
+		return EdgeBrowser
+	case "Firefox":
+		return FirefoxBrowser
+	case "InternetExplorer":
+		return InternetExplorerBrowser
+	case "Opera":
+		return OperaBrowser
+	case "OperaMini":
+		return OperaMiniBrowser
+	case "Safari":
+		return SafariBrowser
+	case "Vivaldi":
+		return VivaldiBrowser
+	case "SamsungBrowser":
+		return SamsungBrowser
+	case "NintendoBrowser":
+		return NintendoBrowser
+	default:
+		return UnknownBrowser
+	}
+}
 
-// OSName - The name of the user's operating system.
-type OSName string
+func (b BrowserName) String() string {
+	switch b {
+	case ChromeBrowser:
+		return "Chrome"
+	case EdgeBrowser:
+		return "Edge"
+	case FirefoxBrowser:
+		return "Firefox"
+	case InternetExplorerBrowser:
+		return "Internet Explorer"
+	case OperaBrowser:
+		return "Opera"
+	case OperaMiniBrowser:
+		return "Opera Mini"
+	case SafariBrowser:
+		return "Safari"
+	case VivaldiBrowser:
+		return "Vivaldi"
+	case SamsungBrowser:
+		return "Samsung Browser"
+	case NintendoBrowser:
+		return "Nintendo Browser"
+	case UnknownBrowser:
+		return unknown
+	default:
+		return na
+	}
+}
 
-// DeviceType - The type of device the user is using.
-type DeviceType string
+func NewOSName(name string) OSName {
+	switch name {
+	case "Android":
+		return AndroidOS
+	case "ChromeOS":
+		return ChromeOS
+	case "iOS":
+		return IOS
+	case "Linux":
+		return LinuxOS
+	case "MacOS":
+		return MacOS
+	case "Windows":
+		return WindowsOS
+	default:
+		return UnknownOS
+	}
+}
+
+func (o OSName) String() string {
+	switch o {
+	case AndroidOS:
+		return "Android"
+	case ChromeOS:
+		return "ChromeOS"
+	case IOS:
+		return "iOS"
+	case LinuxOS:
+		return "Linux"
+	case MacOS:
+		return "MacOS"
+	case WindowsOS:
+		return "Windows"
+	case UnknownOS:
+		return unknown
+	default:
+		return na
+	}
+}
 
 func NewDeviceType(desktop bool, mobile bool, tablet bool, tv bool) DeviceType {
 	switch {
@@ -57,21 +160,39 @@ func NewDeviceType(desktop bool, mobile bool, tablet bool, tv bool) DeviceType {
 	}
 }
 
-type PageView struct {
+func (d DeviceType) String() string {
+	switch d {
+	case DesktopDevice:
+		return "Desktop"
+	case MobileDevice:
+		return "Mobile"
+	case TabletDevice:
+		return "Tablet"
+	case TVDevice:
+		return "TV"
+	case UnknownDevice:
+		return unknown
+	default:
+		return na
+	}
+}
+
+type PageViewHit struct {
 	// Beacon ID - Used to determine if multiple event types are
 	// associated with a single page view.
 	BID string `db:"bid"`
+
 	// Hostname - The hostname of the page view.
 	Hostname string `db:"hostname"`
 	// Pathname - The pathname of the associated URL linked to the page view.
 	Pathname string `db:"pathname"`
 
-	// IsUnique - Whether or not the page view is unique.
-	IsUnique bool `db:"is_unique"`
-	// ReferrerHostname - The hostname of the referrer of the page view.
-	ReferrerHostname string `db:"referrer_hostname"`
-	// ReferrerPathname - The pathname of the referrer of the page view.
-	ReferrerPathname string `db:"referrer_pathname"`
+	// IsUniqueUser - Whether or not the page view is from a unique user.
+	IsUniqueUser bool `db:"is_unique_user"`
+	// IsUniquePage - Whether or not the user has visited the page before.
+	IsUniquePage bool `db:"is_unique_page"`
+	// Referrer - The referrer URL of the page view.
+	Referrer string `db:"referrer"`
 	// CountryCode - The country code associated with the user's timezone.
 	CountryCode string `db:"country_code"`
 	// Language - The language associated with the user's browser.
@@ -92,10 +213,10 @@ type PageView struct {
 	UTMCampaign string `db:"utm_campaign"`
 }
 
-type PageViewUpdate struct {
+type PageViewDuration struct {
 	// Beacon ID - Used to determine if multiple event types are
 	// associated with a single page view.
-	BID string `json:"bid" db:"bid"`
+	BID string `db:"bid"`
 	// DurationMs - How long the user has been on the page in milliseconds.
-	DurationMs int `json:"duration_ms" db:"duration_ms"`
+	DurationMs int `db:"duration_ms"`
 }

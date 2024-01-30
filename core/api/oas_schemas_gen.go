@@ -169,8 +169,72 @@ func (*DeleteWebsitesIDOK) deleteWebsitesIDRes() {}
 
 // Website hit event.
 // Ref: #/components/schemas/EventHit
+// EventHit represents sum type.
 type EventHit struct {
-	// UUID generated for each user to link multiple events on the same page together.
+	Type      EventHitType // switch on this field
+	EventHit0 EventHit0
+	EventHit1 EventHit1
+}
+
+// EventHitType is oneOf type of EventHit.
+type EventHitType string
+
+// Possible values for EventHitType.
+const (
+	EventHit0EventHit EventHitType = "EventHit0"
+	EventHit1EventHit EventHitType = "EventHit1"
+)
+
+// IsEventHit0 reports whether EventHit is EventHit0.
+func (s EventHit) IsEventHit0() bool { return s.Type == EventHit0EventHit }
+
+// IsEventHit1 reports whether EventHit is EventHit1.
+func (s EventHit) IsEventHit1() bool { return s.Type == EventHit1EventHit }
+
+// SetEventHit0 sets EventHit to EventHit0.
+func (s *EventHit) SetEventHit0(v EventHit0) {
+	s.Type = EventHit0EventHit
+	s.EventHit0 = v
+}
+
+// GetEventHit0 returns EventHit0 and true boolean if EventHit is EventHit0.
+func (s EventHit) GetEventHit0() (v EventHit0, ok bool) {
+	if !s.IsEventHit0() {
+		return v, false
+	}
+	return s.EventHit0, true
+}
+
+// NewEventHit0EventHit returns new EventHit from EventHit0.
+func NewEventHit0EventHit(v EventHit0) EventHit {
+	var s EventHit
+	s.SetEventHit0(v)
+	return s
+}
+
+// SetEventHit1 sets EventHit to EventHit1.
+func (s *EventHit) SetEventHit1(v EventHit1) {
+	s.Type = EventHit1EventHit
+	s.EventHit1 = v
+}
+
+// GetEventHit1 returns EventHit1 and true boolean if EventHit is EventHit1.
+func (s EventHit) GetEventHit1() (v EventHit1, ok bool) {
+	if !s.IsEventHit1() {
+		return v, false
+	}
+	return s.EventHit1, true
+}
+
+// NewEventHit1EventHit returns new EventHit from EventHit1.
+func NewEventHit1EventHit(v EventHit1) EventHit {
+	var s EventHit
+	s.SetEventHit1(v)
+	return s
+}
+
+type EventHit0 struct {
+	// Beacon ID generated for each user to link multiple events on the same page together.
 	B string `json:"b"`
 	// Page URL including query parameters.
 	U url.URL `json:"u"`
@@ -178,138 +242,97 @@ type EventHit struct {
 	R OptString `json:"r"`
 	// If the user is a unique user or not.
 	P bool `json:"p"`
-	// Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
-	E EventHitE `json:"e"`
+	// If the user has visited this page before or not.
+	Q bool `json:"q"`
 	// Timezone of the user.
-	D string `json:"d"`
-	// Time spent on page. Only sent on unload.
-	M OptInt `json:"m"`
+	T OptString `json:"t"`
 }
 
 // GetB returns the value of B.
-func (s *EventHit) GetB() string {
+func (s *EventHit0) GetB() string {
 	return s.B
 }
 
 // GetU returns the value of U.
-func (s *EventHit) GetU() url.URL {
+func (s *EventHit0) GetU() url.URL {
 	return s.U
 }
 
 // GetR returns the value of R.
-func (s *EventHit) GetR() OptString {
+func (s *EventHit0) GetR() OptString {
 	return s.R
 }
 
 // GetP returns the value of P.
-func (s *EventHit) GetP() bool {
+func (s *EventHit0) GetP() bool {
 	return s.P
 }
 
-// GetE returns the value of E.
-func (s *EventHit) GetE() EventHitE {
-	return s.E
+// GetQ returns the value of Q.
+func (s *EventHit0) GetQ() bool {
+	return s.Q
 }
 
-// GetD returns the value of D.
-func (s *EventHit) GetD() string {
-	return s.D
-}
-
-// GetM returns the value of M.
-func (s *EventHit) GetM() OptInt {
-	return s.M
+// GetT returns the value of T.
+func (s *EventHit0) GetT() OptString {
+	return s.T
 }
 
 // SetB sets the value of B.
-func (s *EventHit) SetB(val string) {
+func (s *EventHit0) SetB(val string) {
 	s.B = val
 }
 
 // SetU sets the value of U.
-func (s *EventHit) SetU(val url.URL) {
+func (s *EventHit0) SetU(val url.URL) {
 	s.U = val
 }
 
 // SetR sets the value of R.
-func (s *EventHit) SetR(val OptString) {
+func (s *EventHit0) SetR(val OptString) {
 	s.R = val
 }
 
 // SetP sets the value of P.
-func (s *EventHit) SetP(val bool) {
+func (s *EventHit0) SetP(val bool) {
 	s.P = val
 }
 
-// SetE sets the value of E.
-func (s *EventHit) SetE(val EventHitE) {
-	s.E = val
+// SetQ sets the value of Q.
+func (s *EventHit0) SetQ(val bool) {
+	s.Q = val
 }
 
-// SetD sets the value of D.
-func (s *EventHit) SetD(val string) {
-	s.D = val
+// SetT sets the value of T.
+func (s *EventHit0) SetT(val OptString) {
+	s.T = val
+}
+
+type EventHit1 struct {
+	// Beacon ID generated for each user to link multiple events on the same page together.
+	B string `json:"b"`
+	// Time spent on page in milliseconds.
+	M int `json:"m"`
+}
+
+// GetB returns the value of B.
+func (s *EventHit1) GetB() string {
+	return s.B
+}
+
+// GetM returns the value of M.
+func (s *EventHit1) GetM() int {
+	return s.M
+}
+
+// SetB sets the value of B.
+func (s *EventHit1) SetB(val string) {
+	s.B = val
 }
 
 // SetM sets the value of M.
-func (s *EventHit) SetM(val OptInt) {
+func (s *EventHit1) SetM(val int) {
 	s.M = val
-}
-
-// Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
-type EventHitE string
-
-const (
-	EventHitEPagehide EventHitE = "pagehide"
-	EventHitEUnload   EventHitE = "unload"
-	EventHitELoad     EventHitE = "load"
-	EventHitEHidden   EventHitE = "hidden"
-)
-
-// AllValues returns all EventHitE values.
-func (EventHitE) AllValues() []EventHitE {
-	return []EventHitE{
-		EventHitEPagehide,
-		EventHitEUnload,
-		EventHitELoad,
-		EventHitEHidden,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s EventHitE) MarshalText() ([]byte, error) {
-	switch s {
-	case EventHitEPagehide:
-		return []byte(s), nil
-	case EventHitEUnload:
-		return []byte(s), nil
-	case EventHitELoad:
-		return []byte(s), nil
-	case EventHitEHidden:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *EventHitE) UnmarshalText(data []byte) error {
-	switch EventHitE(data) {
-	case EventHitEPagehide:
-		*s = EventHitEPagehide
-		return nil
-	case EventHitEUnload:
-		*s = EventHitEUnload
-		return nil
-	case EventHitELoad:
-		*s = EventHitELoad
-		return nil
-	case EventHitEHidden:
-		*s = EventHitEHidden
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
 }
 
 // Ref: #/components/schemas/FilterFixed
@@ -554,10 +577,22 @@ func (s GetEventPingOK) Read(p []byte) (n int, err error) {
 
 // GetEventPingOKHeaders wraps GetEventPingOK with response headers.
 type GetEventPingOKHeaders struct {
-	AccessControlAllowOrigin string
-	CacheControl             string
-	LastModified             string
-	Response                 GetEventPingOK
+	AccessControlAllowHeaders string
+	AccessControlAllowMethods string
+	AccessControlAllowOrigin  string
+	CacheControl              string
+	LastModified              string
+	Response                  GetEventPingOK
+}
+
+// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
+func (s *GetEventPingOKHeaders) GetAccessControlAllowHeaders() string {
+	return s.AccessControlAllowHeaders
+}
+
+// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
+func (s *GetEventPingOKHeaders) GetAccessControlAllowMethods() string {
+	return s.AccessControlAllowMethods
 }
 
 // GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
@@ -578,6 +613,16 @@ func (s *GetEventPingOKHeaders) GetLastModified() string {
 // GetResponse returns the value of Response.
 func (s *GetEventPingOKHeaders) GetResponse() GetEventPingOK {
 	return s.Response
+}
+
+// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
+func (s *GetEventPingOKHeaders) SetAccessControlAllowHeaders(val string) {
+	s.AccessControlAllowHeaders = val
+}
+
+// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
+func (s *GetEventPingOKHeaders) SetAccessControlAllowMethods(val string) {
+	s.AccessControlAllowMethods = val
 }
 
 // SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
@@ -2761,10 +2806,8 @@ type StatsReferrers []StatsReferrersItem
 func (*StatsReferrers) getWebsiteIDReferrersRes() {}
 
 type StatsReferrersItem struct {
-	// Referrer hostname.
-	ReferrerHost string `json:"referrer_host"`
-	// Referrer pathname.
-	ReferrerPath OptString `json:"referrer_path"`
+	// Referrer URL.
+	Referrer string `json:"referrer"`
 	// Number of unique users from referrer.
 	Uniques int `json:"uniques"`
 	// Percentage of unique users from referrer.
@@ -2775,14 +2818,9 @@ type StatsReferrersItem struct {
 	Duration OptInt `json:"duration"`
 }
 
-// GetReferrerHost returns the value of ReferrerHost.
-func (s *StatsReferrersItem) GetReferrerHost() string {
-	return s.ReferrerHost
-}
-
-// GetReferrerPath returns the value of ReferrerPath.
-func (s *StatsReferrersItem) GetReferrerPath() OptString {
-	return s.ReferrerPath
+// GetReferrer returns the value of Referrer.
+func (s *StatsReferrersItem) GetReferrer() string {
+	return s.Referrer
 }
 
 // GetUniques returns the value of Uniques.
@@ -2805,14 +2843,9 @@ func (s *StatsReferrersItem) GetDuration() OptInt {
 	return s.Duration
 }
 
-// SetReferrerHost sets the value of ReferrerHost.
-func (s *StatsReferrersItem) SetReferrerHost(val string) {
-	s.ReferrerHost = val
-}
-
-// SetReferrerPath sets the value of ReferrerPath.
-func (s *StatsReferrersItem) SetReferrerPath(val OptString) {
-	s.ReferrerPath = val
+// SetReferrer sets the value of Referrer.
+func (s *StatsReferrersItem) SetReferrer(val string) {
+	s.Referrer = val
 }
 
 // SetUniques sets the value of Uniques.

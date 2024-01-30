@@ -23,8 +23,8 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 	query.WriteString(`--sql
 		SELECT
 			ua_browser AS browser,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
@@ -53,8 +53,8 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 	query.WriteString(`--sql
 		SELECT
 			ua_os AS os,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
@@ -83,8 +83,8 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 	query.WriteString(`--sql
 		SELECT
 			ua_device_type AS device,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())

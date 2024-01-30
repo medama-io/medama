@@ -4,6 +4,11 @@
  */
 
 
+/** OneOf type helpers */
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
+
 export interface paths {
   "/auth/login": {
     /**
@@ -142,13 +147,6 @@ export interface paths {
      */
     get: operations["get-website-id-device"];
   };
-  "/website/{hostname}/screens": {
-    /**
-     * Get Screen Stats.
-     * @description Get a list of screen sizes and their stats.
-     */
-    get: operations["get-website-id-screen"];
-  };
   "/website/{hostname}/countries": {
     /**
      * Get Country Stats.
@@ -182,8 +180,8 @@ export interface components {
      * EventHit
      * @description Website hit event.
      */
-    EventHit: {
-      /** @description UUID generated for each user to link multiple events on the same page together. */
+    EventHit: OneOf<[{
+      /** @description Beacon ID generated for each user to link multiple events on the same page together. */
       b: string;
       /**
        * Format: uri
@@ -194,22 +192,16 @@ export interface components {
       r?: string;
       /** @description If the user is a unique user or not. */
       p: boolean;
-      /**
-       * @description Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'.
-       * @enum {string}
-       */
-      e: "pagehide" | "unload" | "load" | "hidden";
-      /** @description Title of page. */
-      t?: string;
+      /** @description If the user has visited this page before or not. */
+      q: boolean;
       /** @description Timezone of the user. */
-      d: string;
-      /** @description Screen width. */
-      w?: number;
-      /** @description Screen height. */
-      h?: number;
-      /** @description Time spent on page. Only sent on unload. */
-      m?: number;
-    };
+      t?: string;
+    }, {
+      /** @description Beacon ID generated for each user to link multiple events on the same page together. */
+      b: string;
+      /** @description Time spent on page in milliseconds. */
+      m: number;
+    }]>;
     FilterFixed: {
       /** @description Equal to. */
       eq?: string;
@@ -319,8 +311,6 @@ export interface components {
     StatsPages: {
         /** @description Pathname of the page. */
         path: string;
-        /** @description Title of the page. */
-        title?: string;
         /** @description Number of unique users. */
         uniques: number;
         /**
@@ -339,8 +329,6 @@ export interface components {
     StatsTime: {
         /** @description Pathname of the page. */
         path: string;
-        /** @description Title of the page. */
-        title?: string;
         /** @description Median time spent on page in milliseconds. */
         duration: number;
         /** @description Total time spent on page in milliseconds for the upper quartile (75%). */
@@ -359,10 +347,8 @@ export interface components {
       }[];
     /** StatsReferrers */
     StatsReferrers: {
-        /** @description Referrer hostname. */
-        referrer_host: string;
-        /** @description Referrer pathname. */
-        referrer_path?: string;
+        /** @description Referrer URL. */
+        referrer: string;
         /** @description Number of unique users from referrer. */
         uniques: number;
         /**
@@ -422,8 +408,6 @@ export interface components {
          * @description Percentage of unique users from browser.
          */
         unique_percentage: number;
-        /** @description Browser version. */
-        version?: string;
       }[];
     /** StatsOS */
     StatsOS: {
@@ -446,18 +430,6 @@ export interface components {
         /**
          * Format: float
          * @description Percentage of unique users from device.
-         */
-        unique_percentage: number;
-      }[];
-    /** StatsScreens */
-    StatsScreens: {
-        /** @description Screen size. */
-        screen: string;
-        /** @description Number of unique users from screen size. */
-        uniques: number;
-        /**
-         * Format: float
-         * @description Percentage of unique users from screen size.
          */
         unique_percentage: number;
       }[];
@@ -587,10 +559,24 @@ export interface components {
     Summary?: boolean;
     /** @description Path of the page. */
     Path?: components["schemas"]["FilterString"];
-    /** @description Referrer name of the page. */
+    /** @description Referrer URL of the page hit. */
     Referrer?: components["schemas"]["FilterString"];
+    /** @description UTM source of the page hit. */
+    UTMSource?: components["schemas"]["FilterString"];
+    /** @description UTM medium of the page hit. */
+    UTMMedium?: components["schemas"]["FilterString"];
+    /** @description UTM campaign of the page hit. */
+    UTMCampaign?: components["schemas"]["FilterString"];
     /** @description Browser name. */
     Browser?: components["schemas"]["FilterFixed"];
+    /** @description Operating system name. */
+    OS?: components["schemas"]["FilterFixed"];
+    /** @description Device type. */
+    Device?: components["schemas"]["FilterFixed"];
+    /** @description Country code. */
+    CountryCode?: components["schemas"]["FilterFixed"];
+    /** @description Language code. */
+    Language?: components["schemas"]["FilterFixed"];
     /** @description Period start date using full-date notation in RFC3339 format (YYYY-MM-DD). */
     PeriodStart?: string;
     /** @description Period end date using full-date notation in RFC3339 format (YYYY-MM-DD). */
@@ -672,6 +658,10 @@ export interface operations {
    */
   "get-event-ping": {
     parameters: {
+      query?: {
+        /** @description Optional query parameter that is the current host and pathname of the page. */
+        u?: string;
+      };
       header?: {
         /** @description If this exists, then user exists in cache and is not a unique user. */
         "If-Modified-Since"?: string;
@@ -687,6 +677,10 @@ export interface operations {
           "Cache-Control": string;
           /** @description This is set to allow all origins to access this endpoint. */
           "Access-Control-Allow-Origin": string;
+          /** @description This is set to allow GET methods to access this endpoint. */
+          "Access-Control-Allow-Methods": string;
+          /** @description This is set to allow If-Modified-Since headers and Content-Type headers to access this endpoint. */
+          "Access-Control-Allow-Headers": string;
         };
         content: {
           "text/plain": string;
@@ -913,6 +907,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -947,6 +949,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -982,6 +992,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1017,6 +1035,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1052,6 +1078,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1087,6 +1121,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1122,6 +1164,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1152,12 +1202,19 @@ export interface operations {
   "get-website-id-browsers": {
     parameters: {
       query?: {
-        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1193,6 +1250,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1228,6 +1293,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1252,41 +1325,6 @@ export interface operations {
     };
   };
   /**
-   * Get Screen Stats.
-   * @description Get a list of screen sizes and their stats.
-   */
-  "get-website-id-screen": {
-    parameters: {
-      query?: {
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        limit?: components["parameters"]["Limit"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsScreens"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
    * Get Country Stats.
    * @description Get a list of countries and their stats.
    */
@@ -1298,6 +1336,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {
@@ -1333,6 +1379,14 @@ export interface operations {
         interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
+        utm_source?: components["parameters"]["UTMSource"];
+        utm_medium?: components["parameters"]["UTMMedium"];
+        utm_campaign?: components["parameters"]["UTMCampaign"];
+        browser?: components["parameters"]["Browser"];
+        os?: components["parameters"]["OS"];
+        device?: components["parameters"]["Device"];
+        country?: components["parameters"]["CountryCode"];
+        language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
       };
       path: {

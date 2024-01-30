@@ -10,17 +10,16 @@ import (
 type FilterField string
 
 const (
-	FilterPathname         FilterField = "pathname"
-	FilterReferrerHostname FilterField = "referrer_hostname"
-	FilterReferrerPathname FilterField = "referrer_pathname"
-	FilterUTMSource        FilterField = "utm_source"
-	FilterUTMMedium        FilterField = "utm_medium"
-	FilterUTMCampaign      FilterField = "utm_campaign"
-	FilterBrowser          FilterField = "ua_browser"
-	FilterOS               FilterField = "ua_os"
-	FilterDevice           FilterField = "ua_device_type"
-	FilterCountry          FilterField = "country_code"
-	FilterLanguage         FilterField = "language"
+	FilterPathname    FilterField = "pathname"
+	FilterReferrer    FilterField = "referrer"
+	FilterUTMSource   FilterField = "utm_source"
+	FilterUTMMedium   FilterField = "utm_medium"
+	FilterUTMCampaign FilterField = "utm_campaign"
+	FilterBrowser     FilterField = "ua_browser"
+	FilterOS          FilterField = "ua_os"
+	FilterDevice      FilterField = "ua_device_type"
+	FilterCountry     FilterField = "country_code"
+	FilterLanguage    FilterField = "language"
 )
 
 // FilterOperation represents the possible filter operations.
@@ -146,19 +145,18 @@ func (f *Filter) String() string {
 
 // Filters is a struct that contains all the possible filters that can be applied to a query.
 type Filters struct {
-	Hostname         string
-	Pathname         *Filter
-	ReferrerHostname *Filter
-	ReferrerPathname *Filter
-	UTMSource        *Filter
-	UTMMedium        *Filter
-	UTMCampaign      *Filter
-	Browser          *Filter
-	BrowserVersion   *Filter
-	OS               *Filter
-	Device           *Filter
-	Country          *Filter
-	Language         *Filter
+	Hostname       string
+	Pathname       *Filter
+	Referrer       *Filter
+	UTMSource      *Filter
+	UTMMedium      *Filter
+	UTMCampaign    *Filter
+	Browser        *Filter
+	BrowserVersion *Filter
+	OS             *Filter
+	Device         *Filter
+	Country        *Filter
+	Language       *Filter
 
 	// Time Periods (in RFC3339 format YYYY-MM-DD)
 	PeriodStart    string
@@ -179,12 +177,8 @@ func (f *Filters) String() string {
 		query.WriteString(" AND " + f.Pathname.String())
 	}
 
-	if f.ReferrerHostname != nil {
-		query.WriteString(" AND " + f.ReferrerHostname.String())
-	}
-
-	if f.ReferrerPathname != nil {
-		query.WriteString(" AND " + f.ReferrerPathname.String())
+	if f.Referrer != nil {
+		query.WriteString(" AND " + f.Referrer.String())
 	}
 
 	if f.UTMSource != nil {
@@ -253,12 +247,8 @@ func (f *Filters) Args(startValues ...string) []interface{} {
 		args = append(args, f.Pathname.Value)
 	}
 
-	if f.ReferrerHostname != nil {
-		args = append(args, f.ReferrerHostname.Value)
-	}
-
-	if f.ReferrerPathname != nil {
-		args = append(args, f.ReferrerPathname.Value)
+	if f.Referrer != nil {
+		args = append(args, f.Referrer.Value)
 	}
 
 	if f.UTMSource != nil {

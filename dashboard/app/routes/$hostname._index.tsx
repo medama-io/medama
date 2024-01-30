@@ -289,10 +289,7 @@ export default function Index() {
 								label: 'Referrers',
 								items:
 									referrers?.map((item) => ({
-										label:
-											item.referrer_host === ''
-												? 'Direct/None'
-												: item.referrer_host,
+										label: item.referrer === '' ? 'Direct/None' : item.referrer,
 										count: item.uniques,
 										percentage: item.unique_percentage,
 									})) ?? [],

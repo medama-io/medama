@@ -15,6 +15,10 @@ import (
 const (
 	// CorsOrigin is the origin to allow for CORS.
 	CorsOrigin = "*"
+	// CorsMethods is the methods to allow for CORS.
+	CorsMethods = "GET"
+	// CorsHeaders is the headers to allow for CORS.
+	CorsHeaders = "If-Modified-Since, Content-Type"
 	// OneDay is the duration of one day.
 	OneDay = 24 * time.Hour
 	// Set to no-cache to disable caching.
@@ -83,64 +87,65 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	// Return not modified if the last modified time is today (not unique user).
 	slog.LogAttrs(ctx, slog.LevelDebug, "last modified header set", attributes...)
 	return &api.GetEventPingOKHeaders{
-		AccessControlAllowOrigin: CorsOrigin,
-		LastModified:             ifModified,
-		CacheControl:             CacheControl,
+		AccessControlAllowOrigin:  CorsOrigin,
+		AccessControlAllowMethods: CorsMethods,
+		AccessControlAllowHeaders: CorsHeaders,
+		LastModified:              ifModified,
+		CacheControl:              CacheControl,
 		Response: api.GetEventPingOK{
 			Data: body,
 		},
 	}, nil
 }
 
-func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
+func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
 	attributes := []slog.Attr{}
 
-	hostname := req.U.Hostname()
-	pathname := req.U.Path
+	switch req.Type {
+	case api.EventHit0EventHit:
+		hostname := req.EventHit0.U.Hostname()
+		pathname := req.EventHit0.U.Path
 
-	// Verify hostname exists
-	exists, err := h.db.WebsiteExists(ctx, hostname)
-	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
-		return ErrInternalServerError(err), nil
-	}
-	if !exists {
-		attributes = append(attributes, slog.String("hostname", hostname))
-		slog.LogAttrs(ctx, slog.LevelWarn, "website not found", attributes...)
-		return ErrNotFound(model.ErrWebsiteNotFound), nil
-	}
+		// Verify hostname exists
+		exists, err := h.db.WebsiteExists(ctx, hostname)
+		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+		if !exists {
+			attributes = append(attributes, slog.String("hostname", hostname))
+			slog.LogAttrs(ctx, slog.LevelWarn, "website not found", attributes...)
+			return ErrNotFound(model.ErrWebsiteNotFound), nil
+		}
 
-	// Add to database
-	switch req.E {
-	case api.EventHitELoad:
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
-		var referrerHostname, referrerPathname string
-		if req.R.Value != "" {
-			referrer, err := url.Parse(req.R.Value)
+		var referrerHost string
+		if req.EventHit0.R.Value != "" {
+			referrer, err := url.Parse(req.EventHit0.R.Value)
 			if err != nil {
 				attributes = append(attributes, slog.String("error", err.Error()))
 				slog.LogAttrs(ctx, slog.LevelError, "failed to parse referrer URL", attributes...)
 				return ErrBadRequest(err), nil
 			}
-			referrerHostname = referrer.Hostname()
-			referrerPathname = referrer.Path
+
 			// If the referrer hostname is the same as the current hostname, we
 			// want to remove it.
-			if referrerHostname == hostname {
-				referrerHostname, referrerPathname = "", ""
+			referrerHost = referrer.Hostname()
+			if referrerHost == hostname {
+				referrerHost = ""
 			}
 		}
 
 		// Get country code from user's timezone. This is used as a best effort
 		// to determine the country of the user's location without compromising
 		// their privacy using IP addresses.
-		countryCode, err := h.timezoneMap.GetCode(req.D)
+		countryCode, err := h.timezoneMap.GetCode(req.EventHit0.T.Value)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get country code from timezone", attributes...)
-			return ErrInternalServerError(model.ErrInvalidTimezone), nil
+			slog.LogAttrs(ctx, slog.LevelDebug, "failed to get country code from timezone", attributes...)
+			countryCode = ""
 		}
 
 		// Get request from context
@@ -157,30 +162,31 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 		rawUserAgent := reqBody.Header.Get("User-Agent")
 		ua := h.useragent.Parse(rawUserAgent)
 
-		uaBrowser := model.BrowserName(ua.Browser)
-		uaOS := model.OSName(ua.OS)
+		uaBrowser := model.NewBrowserName(ua.Browser)
+		uaOS := model.NewOSName(ua.OS)
 		uaDeviceType := model.NewDeviceType(ua.Desktop, ua.Mobile, ua.Tablet, ua.TV)
 
 		// Get utm source, medium, and campaigm from URL query parameters.
-		queries := req.U.Query()
+		queries := req.EventHit0.U.Query()
 		utmSource := queries.Get("utm_source")
 		utmMedium := queries.Get("utm_medium")
 		utmCampaign := queries.Get("utm_campaign")
 
-		event := &model.PageView{
+		event := &model.PageViewHit{
 			// Required
-			BID:      req.B,
-			Hostname: hostname,
-			Pathname: pathname,
+			BID:          req.EventHit0.B,
+			Hostname:     hostname,
+			Pathname:     pathname,
+			IsUniqueUser: req.EventHit0.P,
+			IsUniquePage: req.EventHit0.Q,
 			// Optional
-			IsUnique:         req.P,
-			ReferrerHostname: referrerHostname,
-			ReferrerPathname: referrerPathname,
-			CountryCode:      countryCode,
-			Language:         acceptLanguage,
-			BrowserName:      uaBrowser,
-			OS:               uaOS,
-			DeviceType:       uaDeviceType,
+			Referrer:    referrerHost,
+			CountryCode: countryCode,
+			Language:    acceptLanguage,
+
+			BrowserName: uaBrowser,
+			OS:          uaOS,
+			DeviceType:  uaDeviceType,
 
 			UTMSource:   utmSource,
 			UTMMedium:   utmMedium,
@@ -189,18 +195,23 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		attributes = append(attributes,
 			slog.String("bid", event.BID),
-			slog.String("event_type", string(req.E)),
+			slog.String("event_type", string(req.Type)),
 			slog.String("hostname", event.Hostname),
 			slog.String("pathname", event.Pathname),
-			slog.Bool("is_unique", event.IsUnique),
-			slog.String("referrer_hostname", event.ReferrerHostname),
-			slog.String("referrer_pathname", event.ReferrerPathname),
+			slog.Bool("is_unique_user", event.IsUniqueUser),
+			slog.Bool("is_unique_page", event.IsUniquePage),
+			slog.String("referrer", event.Referrer),
 			slog.String("country_code", countryCode),
 			slog.String("language", event.Language),
 			slog.String("browser_name", string(event.BrowserName)),
 			slog.String("os", string(event.OS)),
 			slog.String("device_type", string(event.DeviceType)),
 		)
+
+		// TODO: Remove temporary raw user agent logging for debugging
+		if event.BrowserName == model.UnknownBrowser || event.OS == model.UnknownOS || event.DeviceType == model.UnknownDevice {
+			attributes = append(attributes, slog.String("user_agent", rawUserAgent))
+		}
 
 		err = h.analyticsDB.AddPageView(ctx, event)
 		if err != nil {
@@ -211,21 +222,19 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		// Log success
 		slog.LogAttrs(ctx, slog.LevelDebug, "added page view", attributes...)
-
-	// Update page view
-	case api.EventHitEPagehide, api.EventHitEUnload, api.EventHitEHidden:
-		event := &model.PageViewUpdate{
-			BID:        req.B,
-			DurationMs: req.M.Value,
+	case api.EventHit1EventHit:
+		event := &model.PageViewDuration{
+			BID:        req.EventHit1.B,
+			DurationMs: req.EventHit1.M,
 		}
 
 		attributes = append(attributes,
 			slog.String("bid", event.BID),
-			slog.String("event_type", string(req.E)),
+			slog.String("event_type", string(req.Type)),
 			slog.Int("duration_ms", event.DurationMs),
 		)
 
-		err = h.analyticsDB.UpdatePageView(ctx, event)
+		err := h.analyticsDB.UpdatePageView(ctx, event)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to update page view", attributes...)
@@ -234,9 +243,10 @@ func (h *Handler) PostEventHit(ctx context.Context, req *api.EventHit, params ap
 
 		// Log success
 		slog.LogAttrs(ctx, slog.LevelDebug, "updated page view", attributes...)
+
 	default:
-		attributes = append(attributes, slog.String("event_type", string(req.E)))
-		slog.LogAttrs(ctx, slog.LevelError, "invalid event type", attributes...)
+		attributes = append(attributes, slog.String("type", string(req.Type)))
+		slog.LogAttrs(ctx, slog.LevelError, "invalid event hit type", attributes...)
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 	}
 

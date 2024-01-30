@@ -26,8 +26,8 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 	query.WriteString(`--sql
 		SELECT
 			pathname,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
@@ -66,8 +66,8 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	query.WriteString(`--sql
 		SELECT
 			pathname,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage,
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			ifnull(ROUND((uniques * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?)), 2), 0) AS unique_percentage,
 			COUNT(*) AS pageviews,
 			COUNT(CASE WHEN duration_ms < 5000 THEN 1 END) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration

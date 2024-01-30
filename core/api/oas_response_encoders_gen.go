@@ -152,6 +152,30 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					return e.EncodeValue(conv.StringToString(response.AccessControlAllowHeaders))
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					return e.EncodeValue(conv.StringToString(response.AccessControlAllowMethods))
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
 			// Encode "Access-Control-Allow-Origin" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{

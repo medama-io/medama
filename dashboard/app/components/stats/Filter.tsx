@@ -99,17 +99,12 @@ const filterOptions: FilterOptions = {
 			Safari: { label: 'Safari', value: 'Safari' },
 		},
 	},
-	browser_version: {
-		label: 'Browser Version',
-		type: 'string',
-		placeholder: 'e.g. 92',
-	},
 	os: {
 		label: 'OS',
 		type: 'fixed',
 		choices: {
 			Windows: { label: 'Windows', value: 'Windows' },
-			'Mac OS': { label: 'Mac OS', value: 'Mac OS' },
+			'Mac OS': { label: 'Mac OS', value: 'MacOS' },
 			Linux: { label: 'Linux', value: 'Linux' },
 			iOS: { label: 'iOS', value: 'iOS' },
 			Android: { label: 'Android', value: 'Android' },
@@ -219,7 +214,6 @@ export const Filters = () => {
 		chosenFilter?.type === 'string'
 			? setValue(value)
 			: setValue(Object.keys(chosenFilter?.choices ?? {})[0] ?? 'Unknown');
-		console.log(value);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filter]);
 

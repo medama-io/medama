@@ -60,44 +60,6 @@ func (s *AuthLogin) Validate() error {
 	return nil
 }
 
-func (s *EventHit) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if err := s.E.Validate(); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "e",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s EventHitE) Validate() error {
-	switch s {
-	case "pagehide":
-		return nil
-	case "unload":
-		return nil
-	case "load":
-		return nil
-	case "hidden":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
 func (s GetWebsiteIDBrowsersInterval) Validate() error {
 	switch s {
 	case "hour":

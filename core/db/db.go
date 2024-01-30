@@ -42,8 +42,8 @@ type AppClient interface {
 // to analytics and events.
 type AnalyticsClient interface {
 	// Events
-	AddPageView(ctx context.Context, event *model.PageView) error
-	UpdatePageView(ctx context.Context, event *model.PageViewUpdate) error
+	AddPageView(ctx context.Context, event *model.PageViewHit) error
+	UpdatePageView(ctx context.Context, event *model.PageViewDuration) error
 	// Pages
 	GetWebsitePages(ctx context.Context, filter *Filters) ([]*model.StatsPages, error)
 	GetWebsitePagesSummary(ctx context.Context, filter *Filters) ([]*model.StatsPagesSummary, error)

@@ -139,7 +139,7 @@ type Handler interface {
 	// Send a hit event to register a user view.
 	//
 	// POST /event/hit
-	PostEventHit(ctx context.Context, req *EventHit, params PostEventHitParams) (PostEventHitRes, error)
+	PostEventHit(ctx context.Context, req EventHit, params PostEventHitParams) (PostEventHitRes, error)
 	// PostWebsites implements post-websites operation.
 	//
 	// Add a new website.

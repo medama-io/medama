@@ -23,8 +23,8 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(`--sql
 		SELECT
 			country_code AS country,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
@@ -53,8 +53,8 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(`--sql
 		SELECT
 			language,
-			COUNT(CASE WHEN is_unique = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
+			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())

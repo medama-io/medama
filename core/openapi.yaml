@@ -110,6 +110,11 @@ paths:
           description: If this exists, then user exists in cache and is not a unique user.
           schema:
             type: string
+        - name: u
+          in: query
+          description: Optional query parameter that is the current host and pathname of the page.
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -128,6 +133,16 @@ paths:
               schema:
                 type: string
               description: This is set to allow all origins to access this endpoint.
+              required: true
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+              description: This is set to allow GET methods to access this endpoint.
+              required: true
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+              description: This is set to allow If-Modified-Since headers and Content-Type headers to access this endpoint.
               required: true
           content:
             text/plain:
@@ -423,8 +438,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -468,8 +482,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -514,8 +527,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -560,8 +572,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -604,8 +615,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -648,8 +658,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -692,8 +701,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -736,8 +744,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -780,8 +787,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -824,8 +830,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -868,8 +873,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -912,8 +916,7 @@ paths:
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
-        - $ref: "#/components/parameters/ReferrerHost"
-        - $ref: "#/components/parameters/ReferrerPath"
+        - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
         - $ref: "#/components/parameters/UTMMedium"
         - $ref: "#/components/parameters/UTMCampaign"
@@ -986,20 +989,10 @@ components:
       allowReserved: true
       schema:
         $ref: "#/components/schemas/FilterString"
-    ReferrerHost:
-      name: referrer_host
+    Referrer:
+      name: referrer
       in: query
-      description: Referrer hostname of the page hit.
-      required: false
-      style: deepObject
-      explode: true
-      allowReserved: true
-      schema:
-        $ref: "#/components/schemas/FilterString"
-    ReferrerPath:
-      name: referrer_path
-      in: query
-      description: Referrer path of the page hit.
+      description: Referrer URL of the page hit.
       required: false
       style: deepObject
       explode: true
@@ -1279,43 +1272,46 @@ components:
         - username
         - password
     EventHit:
-      type: object
       title: EventHit
       description: Website hit event.
-      properties:
-        b:
-          type: string
-          description: UUID generated for each user to link multiple events on the same page together.
-        u:
-          type: string
-          description: Page URL including query parameters.
-          format: uri
-        r:
-          type: string
-          description: Referrer URL.
-        p:
-          type: boolean
-          description: If the user is a unique user or not.
-        e:
-          type: string
-          description: "Event type consisting of either 'pagehide', 'unload', 'load' or 'hidden'."
-          enum:
-            - pagehide
-            - unload
-            - load
-            - hidden
-        d:
-          type: string
-          description: Timezone of the user.
-        m:
-          type: integer
-          description: Time spent on page. Only sent on unload.
-      required:
-        - b
-        - u
-        - p
-        - e
-        - d
+      oneOf:
+        - type: object
+          properties:
+            b:
+              type: string
+              description: Beacon ID generated for each user to link multiple events on the same page together.
+            u:
+              type: string
+              description: Page URL including query parameters.
+              format: uri
+            r:
+              type: string
+              description: Referrer URL.
+            p:
+              type: boolean
+              description: If the user is a unique user or not.
+            q:
+              type: boolean
+              description: If the user has visited this page before or not.
+            t:
+              type: string
+              description: Timezone of the user.
+          required:
+            - b
+            - u
+            - p
+            - q
+        - type: object
+          properties:
+            b:
+              type: string
+              description: Beacon ID generated for each user to link multiple events on the same page together.
+            m:
+              type: integer
+              description: Time spent on page in milliseconds.
+          required:
+            - b
+            - m
     FilterFixed:
       type: object
       properties:
@@ -1562,12 +1558,9 @@ components:
       items:
         type: object
         properties:
-          referrer_host:
+          referrer:
             type: string
-            description: Referrer hostname.
-          referrer_path:
-            type: string
-            description: Referrer pathname.
+            description: Referrer URL.
           uniques:
             type: integer
             description: Number of unique users from referrer.
@@ -1582,7 +1575,7 @@ components:
             type: integer
             description: Total time spent on page from referrer in milliseconds.
         required:
-          - referrer_host
+          - referrer
           - uniques
           - unique_percentage
     StatsUTMSources:
