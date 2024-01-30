@@ -268,8 +268,8 @@ export default function Index() {
 								items:
 									pages?.map((item) => ({
 										label: item.path,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 							{
@@ -290,8 +290,8 @@ export default function Index() {
 								items:
 									referrers?.map((item) => ({
 										label: item.referrer === '' ? 'Direct/None' : item.referrer,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 							{
@@ -299,8 +299,8 @@ export default function Index() {
 								items:
 									sources?.map((item) => ({
 										label: item.source,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 							{
@@ -308,8 +308,8 @@ export default function Index() {
 								items:
 									mediums?.map((item) => ({
 										label: item.medium,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 							{
@@ -317,8 +317,8 @@ export default function Index() {
 								items:
 									campaigns?.map((item) => ({
 										label: item.campaign,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 						]}
@@ -330,8 +330,8 @@ export default function Index() {
 								items:
 									browsers?.map((item) => ({
 										label: item.browser,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 							{
@@ -339,8 +339,8 @@ export default function Index() {
 								items:
 									os?.map((item) => ({
 										label: item.os,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 							{
@@ -348,8 +348,8 @@ export default function Index() {
 								items:
 									devices?.map((item) => ({
 										label: item.device,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 						]}
@@ -361,8 +361,8 @@ export default function Index() {
 								items:
 									countries?.map((item) => ({
 										label: item.country,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 							{
@@ -370,8 +370,8 @@ export default function Index() {
 								items:
 									languages?.map((item) => ({
 										label: item.language,
-										count: item.uniques,
-										percentage: item.unique_percentage,
+										count: item.visitors,
+										percentage: item.visitors_percentage,
 									})) ?? [],
 							},
 						]}

@@ -55,9 +55,9 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 	//
 	// DurationPercentage is the percentage the pathname contributes to the total duration.
 	//
-	// Bounces is the total number of bounces for the page.
+	// Visitors is the total number of unique visitors for the page.
 	//
-	// Uniques is the total number of uniques for the page.
+	// Bounces is the total number of bounces for the page.
 	query.WriteString(`--sql
 		SELECT
 			pathname,
@@ -65,13 +65,12 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 			CAST(ifnull(quantile_cont(duration_ms, 0.75), 0) AS INTEGER) AS duration_upper_quartile,
 			CAST(ifnull(quantile_cont(duration_ms, 0.25), 0) AS INTEGER) AS duration_lower_quartile,
 			ifnull(ROUND(SUM(duration_ms) * 100.0 / (SELECT SUM(duration_ms) FROM views WHERE hostname = ?), 2), 0) AS duration_percentage,
-			title,
-			COUNT(CASE WHEN duration_ms < 5000 THEN 1 END) AS bounces,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY pathname, title ORDER BY duration DESC;`)
+	query.WriteString(` GROUP BY pathname ORDER BY duration DESC;`)
 
 	err := c.SelectContext(ctx, &times, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

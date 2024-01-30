@@ -53,7 +53,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		return ErrInternalServerError(err), nil
 	}
 	current := api.StatsSummaryCurrent{
-		Uniques:   currentSummary.Uniques,
+		Visitors:  currentSummary.Visitors,
 		Pageviews: currentSummary.Pageviews,
 		Bounces:   currentSummary.Bounces,
 		Duration:  currentSummary.Duration,
@@ -80,7 +80,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 			Current: current,
 			Previous: api.NewOptStatsSummaryPrevious(
 				api.StatsSummaryPrevious{
-					Uniques:   previousSummary.Uniques,
+					Visitors:  previousSummary.Visitors,
 					Pageviews: previousSummary.Pageviews,
 					Bounces:   previousSummary.Bounces,
 					Duration:  previousSummary.Duration,
@@ -145,9 +145,9 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		res := api.StatsPages{}
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
-				Path:             page.Pathname,
-				Uniques:          page.Uniques,
-				UniquePercentage: page.UniquePercentage,
+				Path:               page.Pathname,
+				Visitors:           page.Visitors,
+				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
@@ -165,12 +165,12 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		res := api.StatsPages{}
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
-				Path:             page.Pathname,
-				Uniques:          page.Uniques,
-				UniquePercentage: page.UniquePercentage,
-				Pageviews:        api.NewOptInt(page.Pageviews),
-				Bounces:          api.NewOptInt(page.Bounces),
-				Duration:         api.NewOptInt(page.Duration),
+				Path:               page.Pathname,
+				Visitors:           page.Visitors,
+				VisitorsPercentage: page.VisitorsPercentage,
+				Pageviews:          api.NewOptInt(page.Pageviews),
+				Bounces:            api.NewOptInt(page.Bounces),
+				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
 
@@ -257,7 +257,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 				DurationUpperQuartile: api.NewOptInt(page.DurationUpperQuartile),
 				DurationLowerQuartile: api.NewOptInt(page.DurationLowerQuartile),
 				Bounces:               api.NewOptInt(page.Bounces),
-				Uniques:               api.NewOptInt(page.Uniques),
+				Visitors:              api.NewOptInt(page.Visitors),
 			})
 		}
 
@@ -319,9 +319,9 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		res := api.StatsReferrers{}
 		for _, page := range referrers {
 			res = append(res, api.StatsReferrersItem{
-				Referrer:         page.Referrer,
-				Uniques:          page.Uniques,
-				UniquePercentage: page.UniquePercentage,
+				Referrer:           page.Referrer,
+				Visitors:           page.Visitors,
+				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
@@ -339,11 +339,11 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		res := api.StatsReferrers{}
 		for _, page := range referrers {
 			res = append(res, api.StatsReferrersItem{
-				Referrer:         page.Referrer,
-				Uniques:          page.Uniques,
-				UniquePercentage: page.UniquePercentage,
-				Bounces:          api.NewOptInt(page.Bounces),
-				Duration:         api.NewOptInt(page.Duration),
+				Referrer:           page.Referrer,
+				Visitors:           page.Visitors,
+				VisitorsPercentage: page.VisitorsPercentage,
+				Bounces:            api.NewOptInt(page.Bounces),
+				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
 
@@ -402,9 +402,9 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	res := api.StatsUTMSources{}
 	for _, page := range sources {
 		res = append(res, api.StatsUTMSourcesItem{
-			Source:           page.Source,
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Source:             page.Source,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 
@@ -460,9 +460,9 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	res := api.StatsUTMMediums{}
 	for _, page := range mediums {
 		res = append(res, api.StatsUTMMediumsItem{
-			Medium:           page.Medium,
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Medium:             page.Medium,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 
@@ -518,9 +518,9 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	res := api.StatsUTMCampaigns{}
 	for _, page := range campaigns {
 		res = append(res, api.StatsUTMCampaignsItem{
-			Campaign:         page.Campaign,
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Campaign:           page.Campaign,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 
@@ -576,9 +576,9 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	res := api.StatsBrowsers{}
 	for _, page := range browsers {
 		res = append(res, api.StatsBrowsersItem{
-			Browser:          page.Browser.String(),
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Browser:            page.Browser.String(),
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 
@@ -634,9 +634,9 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	res := api.StatsOS{}
 	for _, page := range os {
 		res = append(res, api.StatsOSItem{
-			Os:               page.OS.String(),
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Os:                 page.OS.String(),
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 
@@ -692,9 +692,9 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	res := api.StatsDevices{}
 	for _, page := range devices {
 		res = append(res, api.StatsDevicesItem{
-			Device:           page.Device.String(),
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Device:             page.Device.String(),
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 
@@ -750,9 +750,9 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	res := api.StatsLanguages{}
 	for _, page := range languages {
 		res = append(res, api.StatsLanguagesItem{
-			Language:         page.Language,
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Language:           page.Language,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 
@@ -816,9 +816,9 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		}
 
 		res = append(res, api.StatsCountriesItem{
-			Country:          country,
-			Uniques:          page.Uniques,
-			UniquePercentage: page.UniquePercentage,
+			Country:            country,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
 		})
 	}
 

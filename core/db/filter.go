@@ -232,6 +232,8 @@ func (f *Filters) String() string {
 // Args returns the arguments for the WHERE query string.
 // We need this function to pass filter values into the parameters
 // of the query to prevent SQL injection.
+//
+// The startValues are the values that are passed in addition to the filters.
 func (f *Filters) Args(startValues ...string) []interface{} {
 	// Initialize the args with the start values
 	args := []interface{}{}

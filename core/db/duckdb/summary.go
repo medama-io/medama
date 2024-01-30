@@ -13,9 +13,9 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 	var summary model.StatsSummarySingle
 	var query strings.Builder
 
-	// Uniques are determined by the number of is_unique_user values that are true.
+	// Visitors are determined by the number of is_unique_user values that are true.
 	//
-	// Pageviews are determined by the number of rows.
+	// Pageviews are determined by the total count of page views that match the hostname.
 	//
 	// Bounces are determined by any pageview with a duration of less than 5 seconds
 	// as well as if they are unique. The percentage is calculated client side as
@@ -27,11 +27,11 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 	// Active is the number of unique visitors that have visited the website in the last 5 minutes.
 	query.WriteString(`--sql
 		SELECT
-			COUNT(CASE WHEN is_unique_user = true THEN 1 END) AS uniques,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			COUNT(*) AS pageviews,
-			COUNT(CASE WHEN is_unique_user = true AND duration_ms < 5000 THEN 1 END) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
-			COUNT(CASE WHEN is_unique_user = true AND (date_diff('minute', now(), date_created) < 5) THEN 1 END) AS active
+			COUNT(*) FILTER (WHERE is_unique_user = true AND (date_diff('minute', now(), date_created) < 5)) AS active
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())

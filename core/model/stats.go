@@ -6,7 +6,7 @@ const (
 )
 
 type StatsSummarySingle struct {
-	Uniques   int `db:"uniques"`
+	Visitors  int `db:"visitors"`
 	Pageviews int `db:"pageviews"`
 	Bounces   int `db:"bounces"`
 	Duration  int `db:"duration"`
@@ -19,16 +19,17 @@ type StatsSummary struct {
 }
 
 type StatsPagesSummary struct {
-	Pathname         string  `db:"pathname"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Pathname           string  `db:"pathname"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsPages struct {
 	StatsPagesSummary
-	Pageviews int `db:"pageviews"`
-	Bounces   int `db:"bounces"`
-	Duration  int `db:"duration"`
+	Pageviews           int     `db:"pageviews"`
+	PageviewsPercentage float32 `db:"pageviews_percentage"`
+	Bounces             int     `db:"bounces"`
+	Duration            int     `db:"duration"`
 }
 
 type StatsTimeSummary struct {
@@ -42,14 +43,14 @@ type StatsTime struct {
 	DurationUpperQuartile int `db:"duration_upper_quartile"`
 	DurationLowerQuartile int `db:"duration_lower_quartile"`
 	Pageviews             int `db:"pageviews"`
+	Visitors              int `db:"visitors"`
 	Bounces               int `db:"bounces"`
-	Uniques               int `db:"uniques"`
 }
 
 type StatsReferrerSummary struct {
-	Referrer         string  `db:"referrer"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Referrer           string  `db:"referrer"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsReferrers struct {
@@ -59,54 +60,48 @@ type StatsReferrers struct {
 }
 
 type StatsUTMSources struct {
-	Source           string  `db:"source"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Source             string  `db:"source"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsUTMMediums struct {
-	Medium           string  `db:"medium"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Medium             string  `db:"medium"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsUTMCampaigns struct {
-	Campaign         string  `db:"campaign"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Campaign           string  `db:"campaign"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
-
-type StatsBrowserSummary struct {
-	Browser          BrowserName `db:"browser"`
-	Uniques          int         `db:"uniques"`
-	UniquePercentage float32     `db:"unique_percentage"`
-}
-
 type StatsBrowsers struct {
-	StatsBrowserSummary
-	Version string `db:"version"`
+	Browser            BrowserName `db:"browser"`
+	Visitors           int         `db:"visitors"`
+	VisitorsPercentage float32     `db:"visitors_percentage"`
 }
 
 type StatsOS struct {
-	OS               OSName  `db:"os"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	OS                 OSName  `db:"os"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsDevices struct {
-	Device           DeviceType `db:"device"`
-	Uniques          int        `db:"uniques"`
-	UniquePercentage float32    `db:"unique_percentage"`
+	Device             DeviceType `db:"device"`
+	Visitors           int        `db:"visitors"`
+	VisitorsPercentage float32    `db:"visitors_percentage"`
 }
 
 type StatsCountries struct {
-	Country          string  `db:"country"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Country            string  `db:"country"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsLanguages struct {
-	Language         string  `db:"language"`
-	Uniques          int     `db:"uniques"`
-	UniquePercentage float32 `db:"unique_percentage"`
+	Language           string  `db:"language"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }

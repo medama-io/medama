@@ -321,13 +321,13 @@ func (s *StatsBrowsersItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -369,13 +369,13 @@ func (s *StatsCountriesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -417,13 +417,13 @@ func (s *StatsDevicesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -465,13 +465,13 @@ func (s *StatsLanguagesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -513,13 +513,13 @@ func (s *StatsOSItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -561,13 +561,31 @@ func (s *StatsPagesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PageviewsPercentage.Get(); ok {
+			if err := func() error {
+				if err := (validate.Float{}).Validate(float64(value)); err != nil {
+					return errors.Wrap(err, "float")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pageviews_percentage",
 			Error: err,
 		})
 	}
@@ -609,13 +627,13 @@ func (s *StatsReferrersItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -705,13 +723,13 @@ func (s *StatsUTMCampaignsItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -753,13 +771,13 @@ func (s *StatsUTMMediumsItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}
@@ -801,13 +819,13 @@ func (s *StatsUTMSourcesItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Float{}).Validate(float64(s.UniquePercentage)); err != nil {
+		if err := (validate.Float{}).Validate(float64(s.VisitorsPercentage)); err != nil {
 			return errors.Wrap(err, "float")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "unique_percentage",
+			Name:  "visitors_percentage",
 			Error: err,
 		})
 	}

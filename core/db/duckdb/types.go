@@ -17,18 +17,18 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 	//
 	// Browser is the browser name associated with the page.
 	//
-	// Uniques is the number of uniques for the browser.
+	// Visitors is the number of unique visitors for the browser.
 	//
-	// UniquePercentage is the percentage the browser contributes to the total uniques.
+	// VisitorsPercentage is the percentage the browser contributes to the total visitors.
 	query.WriteString(`--sql
 		SELECT
 			ua_browser AS browser,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY browser ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY browser ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &browsers, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -47,18 +47,18 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 	//
 	// OS is the operating system associated with the page.
 	//
-	// Uniques is the number of uniques for the operating system.
+	// Visitors is the number of unique visitors for the operating system.
 	//
-	// UniquePercentage is the percentage the operating system contributes to the total uniques.
+	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
 	query.WriteString(`--sql
 		SELECT
 			ua_os AS os,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY os ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY os ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &os, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -77,18 +77,18 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 	//
 	// Device is the device type associated with the page.
 	//
-	// Uniques is the number of uniques for the device.
+	// Visitors is the number of unique visitors for the device.
 	//
-	// UniquePercentage is the percentage the device contributes to the total uniques.
+	// VisitorsPercentage is the percentage the device contributes to the total visitors.
 	query.WriteString(`--sql
 		SELECT
 			ua_device_type AS device,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY device ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY device ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &devices, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

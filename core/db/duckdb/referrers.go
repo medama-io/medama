@@ -17,18 +17,18 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 	//
 	// Referrer is the hostname of the referrer.
 	//
-	// Uniques is the number of uniques for the referrer.
+	// Visitors is the number of unique visitors for the referrer.
 	//
-	// UniquePercentage is the percentage the referrer contributes to the total uniques.
+	// VisitorsPercentage is the percentage the referrer contributes to the total visitors.
 	query.WriteString(`--sql
 		SELECT
 			referrer,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY referrer ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &referrers, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -47,9 +47,9 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 	//
 	// Referrer is the referrer URL.
 	//
-	// Uniques is the number of uniques for the referrer.
+	// Visitors is the number of unique visitors for the referrer.
 	//
-	// UniquePercentage is the percentage the referrer contributes to the total uniques.
+	// VisitorsPercentage is the percentage the referrer contributes to the total visitors.
 	//
 	// Bounces is the number of bounces for the referrer.
 	//
@@ -57,14 +57,14 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(`--sql
 		SELECT
 			referrer,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
-			COUNT(CASE WHEN is_unique_page = true AND duration_ms < 5000 THEN 1 END) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage,
+			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY referrer, ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &referrers, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

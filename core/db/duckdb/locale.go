@@ -15,20 +15,20 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 
 	// Array of countries
 	//
-	// Country is the country of the visitor.
+	// Country is the country code of the visitor.
 	//
-	// Uniques is the number of uniques for the country.
+	// Visitors is the number of unique visitors from the country.
 	//
-	// UniquePercentage is the percentage the country contributes to the total uniques.
+	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
 	query.WriteString(`--sql
 		SELECT
 			country_code AS country,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY country ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY country ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &countries, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -47,18 +47,18 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 	//
 	// Language is the language of the visitor.
 	//
-	// Uniques is the number of uniques for the language.
+	// Visitors is the number of unique visitors for the language.
 	//
-	// UniquePercentage is the percentage the language contributes to the total uniques.
+	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
 	query.WriteString(`--sql
 		SELECT
 			language,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage,
+			COUNT(*) FILTER (is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY language ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY language ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &languages, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

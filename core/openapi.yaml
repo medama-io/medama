@@ -1457,7 +1457,7 @@ components:
         current:
           type: object
           properties:
-            uniques:
+            visitors:
               type: integer
             pageviews:
               type: integer
@@ -1468,7 +1468,7 @@ components:
             active:
               type: integer
           required:
-            - uniques
+            - visitors
             - pageviews
             - bounces
             - duration
@@ -1476,7 +1476,7 @@ components:
         previous:
           type: object
           properties:
-            uniques:
+            visitors:
               type: integer
             pageviews:
               type: integer
@@ -1485,7 +1485,7 @@ components:
             duration:
               type: integer
           required:
-            - uniques
+            - visitors
             - pageviews
             - bounces
             - duration
@@ -1500,16 +1500,20 @@ components:
           path:
             type: string
             description: Pathname of the page.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users.
-          unique_percentage:
+            description: Number of unique visitors for given page.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users.
+            description: Percentage of unique visitors for given page.
             format: float
           pageviews:
             type: integer
             description: Number of page views.
+          pageviews_percentage:
+            type: number
+            description: Percentage of page views.
+            format: float
           bounces:
             type: integer
             description: Number of bounces.
@@ -1518,8 +1522,8 @@ components:
             description: Total time spent on page in milliseconds.
         required:
           - path
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsTime:
       type: array
       title: StatsTime
@@ -1542,9 +1546,9 @@ components:
             type: number
             description: Percentage of time contributing to the total time spent on the website.
             format: float
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users.
+            description: Number of unique visitors for given page.
           bounces:
             type: integer
             description: Number of bounces.
@@ -1561,12 +1565,12 @@ components:
           referrer:
             type: string
             description: Referrer URL.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from referrer.
-          unique_percentage:
+            description: Number of unique visitors from referrer.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from referrer.
+            description: Percentage of unique visitors from referrer.
             format: float
           bounces:
             type: integer
@@ -1576,8 +1580,8 @@ components:
             description: Total time spent on page from referrer in milliseconds.
         required:
           - referrer
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsUTMSources:
       type: array
       title: StatsUTMSources
@@ -1587,17 +1591,17 @@ components:
           source:
             type: string
             description: UTM source.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from UTM source.
-          unique_percentage:
+            description: Number of unique visitors from UTM source.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from UTM source.
+            description: Percentage of unique visitors from UTM source.
             format: float
         required:
           - source
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsUTMMediums:
       type: array
       title: StatsUTMMediums
@@ -1607,17 +1611,17 @@ components:
           medium:
             type: string
             description: UTM medium.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from UTM medium.
-          unique_percentage:
+            description: Number of unique visitors from UTM medium.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from UTM medium.
+            description: Percentage of unique visitors from UTM medium.
             format: float
         required:
           - medium
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsUTMCampaigns:
       type: array
       title: StatsUTMCampaigns
@@ -1627,17 +1631,17 @@ components:
           campaign:
             type: string
             description: UTM campaign.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from UTM campaign.
-          unique_percentage:
+            description: Number of unique visitors from UTM campaign.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from UTM campaign.
+            description: Percentage of unique visitors from UTM campaign.
             format: float
         required:
           - campaign
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsBrowsers:
       type: array
       title: StatsBrowsers
@@ -1647,17 +1651,17 @@ components:
           browser:
             type: string
             description: Browser name.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from browser.
-          unique_percentage:
+            description: Number of unique visitors from browser.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from browser.
+            description: Percentage of unique visitors from browser.
             format: float
         required:
           - browser
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsOS:
       type: array
       title: StatsOS
@@ -1667,17 +1671,17 @@ components:
           os:
             type: string
             description: OS name.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from OS.
-          unique_percentage:
+            description: Number of unique visitors from OS.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from OS.
+            description: Percentage of unique visitors from OS.
             format: float
         required:
           - os
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsDevices:
       type: array
       title: StatsDevices
@@ -1687,17 +1691,17 @@ components:
           device:
             type: string
             description: Device name.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from device.
-          unique_percentage:
+            description: Number of unique visitors from device.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from device.
+            description: Percentage of unique visitors from device.
             format: float
         required:
           - device
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsCountries:
       type: array
       title: StatsCountries
@@ -1707,17 +1711,17 @@ components:
           country:
             type: string
             description: Country name.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from country.
-          unique_percentage:
+            description: Number of unique visitors from country.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from country.
+            description: Percentage of unique visitors from country.
             format: float
         required:
           - country
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage
     StatsLanguages:
       type: array
       title: StatsLanguages
@@ -1727,14 +1731,14 @@ components:
           language:
             type: string
             description: Language name.
-          uniques:
+          visitors:
             type: integer
-            description: Number of unique users from language.
-          unique_percentage:
+            description: Number of unique visitors for language.
+          visitors_percentage:
             type: number
-            description: Percentage of unique users from language.
+            description: Percentage of unique visitors for language.
             format: float
         required:
           - language
-          - uniques
-          - unique_percentage
+          - visitors
+          - visitors_percentage

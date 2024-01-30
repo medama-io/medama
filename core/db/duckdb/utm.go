@@ -17,18 +17,18 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 	//
 	// Source is the utm source. Ignore if empty.
 	//
-	// Uniques is the number of uniques for the utm source.
+	// Visitors is the number of unique visitors for the utm source.
 	//
-	// UniquePercentage is the percentage the utm source contributes to the total uniques.
+	// VisitorsPercentage is the percentage the utm source contributes to the total unique visitors.
 	query.WriteString(`--sql
 		SELECT
 			utm_source AS source,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY utm_source ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY utm_source ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -47,18 +47,18 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 	//
 	// Medium is the utm medium.
 	//
-	// Uniques is the number of uniques for the utm medium.
+	// Visitors is the number of unique visitors for the utm medium.
 	//
-	// UniquePercentage is the percentage the utm medium contributes to the total uniques.
+	// VisitorsPercentage is the percentage the utm medium contributes to the total unique visitors.
 	query.WriteString(`--sql
 		SELECT
 			utm_medium AS medium,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY utm_medium ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY utm_medium ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -77,18 +77,18 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 	//
 	// Campaign is the utm campaign.
 	//
-	// Uniques is the number of uniques for the utm campaign.
+	// Visitors is the number of unique visitors for the utm campaign.
 	//
-	// UniquePercentage is the percentage the utm campaign contributes to the total uniques.
+	// VisitorsPercentage is the percentage the utm campaign contributes to the total unique visitors.
 	query.WriteString(`--sql
 		SELECT
 			utm_campaign AS campaign,
-			COUNT(CASE WHEN is_unique_page = true THEN 1 END) AS uniques,
-			ifnull(ROUND(COUNT(CASE WHEN is_unique_page = true THEN 1 END) * 100.0 / (SELECT COUNT(CASE WHEN is_unique_page = true THEN 1 END) FROM views WHERE hostname = ?), 2), 0) AS unique_percentage
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY utm_campaign ORDER BY uniques DESC;`)
+	query.WriteString(` GROUP BY utm_campaign ORDER BY visitors DESC;`)
 
 	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

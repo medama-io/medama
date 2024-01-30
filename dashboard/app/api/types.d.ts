@@ -294,14 +294,14 @@ export interface components {
     /** StatsSummary */
     StatsSummary: {
       current: {
-        uniques: number;
+        visitors: number;
         pageviews: number;
         bounces: number;
         duration: number;
         active: number;
       };
       previous?: {
-        uniques: number;
+        visitors: number;
         pageviews: number;
         bounces: number;
         duration: number;
@@ -311,15 +311,20 @@ export interface components {
     StatsPages: {
         /** @description Pathname of the page. */
         path: string;
-        /** @description Number of unique users. */
-        uniques: number;
+        /** @description Number of unique visitors for given page. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users.
+         * @description Percentage of unique visitors for given page.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
         /** @description Number of page views. */
         pageviews?: number;
+        /**
+         * Format: float
+         * @description Percentage of page views.
+         */
+        pageviews_percentage?: number;
         /** @description Number of bounces. */
         bounces?: number;
         /** @description Total time spent on page in milliseconds. */
@@ -340,8 +345,8 @@ export interface components {
          * @description Percentage of time contributing to the total time spent on the website.
          */
         duration_percentage: number;
-        /** @description Number of unique users. */
-        uniques?: number;
+        /** @description Number of unique visitors for given page. */
+        visitors?: number;
         /** @description Number of bounces. */
         bounces?: number;
       }[];
@@ -349,13 +354,13 @@ export interface components {
     StatsReferrers: {
         /** @description Referrer URL. */
         referrer: string;
-        /** @description Number of unique users from referrer. */
-        uniques: number;
+        /** @description Number of unique visitors from referrer. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from referrer.
+         * @description Percentage of unique visitors from referrer.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
         /** @description Number of bounces from referrer. */
         bounces?: number;
         /** @description Total time spent on page from referrer in milliseconds. */
@@ -365,97 +370,97 @@ export interface components {
     StatsUTMSources: {
         /** @description UTM source. */
         source: string;
-        /** @description Number of unique users from UTM source. */
-        uniques: number;
+        /** @description Number of unique visitors from UTM source. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from UTM source.
+         * @description Percentage of unique visitors from UTM source.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
     /** StatsUTMMediums */
     StatsUTMMediums: {
         /** @description UTM medium. */
         medium: string;
-        /** @description Number of unique users from UTM medium. */
-        uniques: number;
+        /** @description Number of unique visitors from UTM medium. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from UTM medium.
+         * @description Percentage of unique visitors from UTM medium.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
     /** StatsUTMCampaigns */
     StatsUTMCampaigns: {
         /** @description UTM campaign. */
         campaign: string;
-        /** @description Number of unique users from UTM campaign. */
-        uniques: number;
+        /** @description Number of unique visitors from UTM campaign. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from UTM campaign.
+         * @description Percentage of unique visitors from UTM campaign.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
     /** StatsBrowsers */
     StatsBrowsers: {
         /** @description Browser name. */
         browser: string;
-        /** @description Number of unique users from browser. */
-        uniques: number;
+        /** @description Number of unique visitors from browser. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from browser.
+         * @description Percentage of unique visitors from browser.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
     /** StatsOS */
     StatsOS: {
         /** @description OS name. */
         os: string;
-        /** @description Number of unique users from OS. */
-        uniques: number;
+        /** @description Number of unique visitors from OS. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from OS.
+         * @description Percentage of unique visitors from OS.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
     /** StatsDevices */
     StatsDevices: {
         /** @description Device name. */
         device: string;
-        /** @description Number of unique users from device. */
-        uniques: number;
+        /** @description Number of unique visitors from device. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from device.
+         * @description Percentage of unique visitors from device.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
     /** StatsCountries */
     StatsCountries: {
         /** @description Country name. */
         country: string;
-        /** @description Number of unique users from country. */
-        uniques: number;
+        /** @description Number of unique visitors from country. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from country.
+         * @description Percentage of unique visitors from country.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
     /** StatsLanguages */
     StatsLanguages: {
         /** @description Language name. */
         language: string;
-        /** @description Number of unique users from language. */
-        uniques: number;
+        /** @description Number of unique visitors for language. */
+        visitors: number;
         /**
          * Format: float
-         * @description Percentage of unique users from language.
+         * @description Percentage of unique visitors for language.
          */
-        unique_percentage: number;
+        visitors_percentage: number;
       }[];
   };
   responses: {

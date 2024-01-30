@@ -1628,6 +1628,41 @@ func (s *NotFoundErrorError) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes float32 as json.
+func (o OptFloat32) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Float32(float32(o.Value))
+}
+
+// Decode decodes float32 from json.
+func (o *OptFloat32) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptFloat32 to nil")
+	}
+	o.Set = true
+	v, err := d.Float32()
+	if err != nil {
+		return err
+	}
+	o.Value = float32(v)
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptFloat32) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptFloat32) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes int as json.
 func (o OptInt) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -1828,19 +1863,19 @@ func (s *StatsBrowsersItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Browser)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsBrowsersItem = [3]string{
 	0: "browser",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsBrowsersItem from json.
@@ -1864,29 +1899,29 @@ func (s *StatsBrowsersItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"browser\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -2008,19 +2043,19 @@ func (s *StatsCountriesItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Country)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsCountriesItem = [3]string{
 	0: "country",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsCountriesItem from json.
@@ -2044,29 +2079,29 @@ func (s *StatsCountriesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"country\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -2188,19 +2223,19 @@ func (s *StatsDevicesItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Device)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsDevicesItem = [3]string{
 	0: "device",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsDevicesItem from json.
@@ -2224,29 +2259,29 @@ func (s *StatsDevicesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"device\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -2368,19 +2403,19 @@ func (s *StatsLanguagesItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Language)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsLanguagesItem = [3]string{
 	0: "language",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsLanguagesItem from json.
@@ -2404,29 +2439,29 @@ func (s *StatsLanguagesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"language\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -2548,19 +2583,19 @@ func (s *StatsOSItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Os)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsOSItem = [3]string{
 	0: "os",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsOSItem from json.
@@ -2584,29 +2619,29 @@ func (s *StatsOSItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"os\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -2728,17 +2763,23 @@ func (s *StatsPagesItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Path)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 	{
 		if s.Pageviews.Set {
 			e.FieldStart("pageviews")
 			s.Pageviews.Encode(e)
+		}
+	}
+	{
+		if s.PageviewsPercentage.Set {
+			e.FieldStart("pageviews_percentage")
+			s.PageviewsPercentage.Encode(e)
 		}
 	}
 	{
@@ -2755,13 +2796,14 @@ func (s *StatsPagesItem) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfStatsPagesItem = [6]string{
+var jsonFieldsNameOfStatsPagesItem = [7]string{
 	0: "path",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 	3: "pageviews",
-	4: "bounces",
-	5: "duration",
+	4: "pageviews_percentage",
+	5: "bounces",
+	6: "duration",
 }
 
 // Decode decodes StatsPagesItem from json.
@@ -2785,29 +2827,29 @@ func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"path\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		case "pageviews":
 			if err := func() error {
@@ -2818,6 +2860,16 @@ func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pageviews\"")
+			}
+		case "pageviews_percentage":
+			if err := func() error {
+				s.PageviewsPercentage.Reset()
+				if err := s.PageviewsPercentage.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pageviews_percentage\"")
 			}
 		case "bounces":
 			if err := func() error {
@@ -2959,12 +3011,12 @@ func (s *StatsReferrersItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Referrer)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 	{
 		if s.Bounces.Set {
@@ -2982,8 +3034,8 @@ func (s *StatsReferrersItem) encodeFields(e *jx.Encoder) {
 
 var jsonFieldsNameOfStatsReferrersItem = [5]string{
 	0: "referrer",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 	3: "bounces",
 	4: "duration",
 }
@@ -3009,29 +3061,29 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"referrer\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		case "bounces":
 			if err := func() error {
@@ -3230,8 +3282,8 @@ func (s *StatsSummaryCurrent) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *StatsSummaryCurrent) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
 		e.FieldStart("pageviews")
@@ -3252,7 +3304,7 @@ func (s *StatsSummaryCurrent) encodeFields(e *jx.Encoder) {
 }
 
 var jsonFieldsNameOfStatsSummaryCurrent = [5]string{
-	0: "uniques",
+	0: "visitors",
 	1: "pageviews",
 	2: "bounces",
 	3: "duration",
@@ -3268,17 +3320,17 @@ func (s *StatsSummaryCurrent) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
 		case "pageviews":
 			requiredBitSet[0] |= 1 << 1
@@ -3394,8 +3446,8 @@ func (s *StatsSummaryPrevious) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *StatsSummaryPrevious) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
 		e.FieldStart("pageviews")
@@ -3412,7 +3464,7 @@ func (s *StatsSummaryPrevious) encodeFields(e *jx.Encoder) {
 }
 
 var jsonFieldsNameOfStatsSummaryPrevious = [4]string{
-	0: "uniques",
+	0: "visitors",
 	1: "pageviews",
 	2: "bounces",
 	3: "duration",
@@ -3427,17 +3479,17 @@ func (s *StatsSummaryPrevious) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
 		case "pageviews":
 			requiredBitSet[0] |= 1 << 1
@@ -3615,9 +3667,9 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.DurationPercentage)
 	}
 	{
-		if s.Uniques.Set {
-			e.FieldStart("uniques")
-			s.Uniques.Encode(e)
+		if s.Visitors.Set {
+			e.FieldStart("visitors")
+			s.Visitors.Encode(e)
 		}
 	}
 	{
@@ -3634,7 +3686,7 @@ var jsonFieldsNameOfStatsTimeItem = [7]string{
 	2: "duration_upper_quartile",
 	3: "duration_lower_quartile",
 	4: "duration_percentage",
-	5: "uniques",
+	5: "visitors",
 	6: "bounces",
 }
 
@@ -3703,15 +3755,15 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"duration_percentage\"")
 			}
-		case "uniques":
+		case "visitors":
 			if err := func() error {
-				s.Uniques.Reset()
-				if err := s.Uniques.Decode(d); err != nil {
+				s.Visitors.Reset()
+				if err := s.Visitors.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
 		case "bounces":
 			if err := func() error {
@@ -3843,19 +3895,19 @@ func (s *StatsUTMCampaignsItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Campaign)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsUTMCampaignsItem = [3]string{
 	0: "campaign",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsUTMCampaignsItem from json.
@@ -3879,29 +3931,29 @@ func (s *StatsUTMCampaignsItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"campaign\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -4023,19 +4075,19 @@ func (s *StatsUTMMediumsItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Medium)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsUTMMediumsItem = [3]string{
 	0: "medium",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsUTMMediumsItem from json.
@@ -4059,29 +4111,29 @@ func (s *StatsUTMMediumsItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"medium\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()
@@ -4203,19 +4255,19 @@ func (s *StatsUTMSourcesItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Source)
 	}
 	{
-		e.FieldStart("uniques")
-		e.Int(s.Uniques)
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
 	}
 	{
-		e.FieldStart("unique_percentage")
-		e.Float32(s.UniquePercentage)
+		e.FieldStart("visitors_percentage")
+		e.Float32(s.VisitorsPercentage)
 	}
 }
 
 var jsonFieldsNameOfStatsUTMSourcesItem = [3]string{
 	0: "source",
-	1: "uniques",
-	2: "unique_percentage",
+	1: "visitors",
+	2: "visitors_percentage",
 }
 
 // Decode decodes StatsUTMSourcesItem from json.
@@ -4239,29 +4291,29 @@ func (s *StatsUTMSourcesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"source\"")
 			}
-		case "uniques":
+		case "visitors":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Int()
-				s.Uniques = int(v)
+				s.Visitors = int(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"uniques\"")
+				return errors.Wrap(err, "decode field \"visitors\"")
 			}
-		case "unique_percentage":
+		case "visitors_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Float32()
-				s.UniquePercentage = float32(v)
+				s.VisitorsPercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"unique_percentage\"")
+				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
 		default:
 			return d.Skip()

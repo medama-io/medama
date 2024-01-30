@@ -108,9 +108,9 @@ type StatsHeaderProps = NonNullable<DataResponse<'StatsSummary'>['data']>;
 
 export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 	// Calculate current bounce rate by dividing the number of bounces to the total number of unique visitors
-	const bounceRate = current.bounces / current.uniques || 0; // Avoid NaN
+	const bounceRate = current.bounces / current.visitors || 0; // Avoid NaN
 	const previousBounceRate = previous
-		? previous.bounces / previous.uniques || 0
+		? previous.bounces / previous.visitors || 0
 		: 0;
 
 	return (
@@ -126,8 +126,8 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 					<Group>
 						<HeaderDataBox
 							label="Visitors"
-							value={current.uniques}
-							previousValue={previous?.uniques}
+							value={current.visitors}
+							previousValue={previous?.visitors}
 							isActive
 						/>
 						<HeaderDataBox
