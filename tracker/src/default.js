@@ -20,18 +20,6 @@ const EventType = {
 };
 
 /**
- * Event types for beacon function calls.
- *
- * @remark We use a different enum for beacon types to reduce the bundle size
- * since numbers are smaller than strings.
- * @enum {number}
- */
-const BeaconType = {
-	UNLOAD: 0,
-	LOAD: 1,
-};
-
-/**
  * @typedef {Object} HitPayload
  * @property {string} b Beacon ID.
  * @property {string} u Page URL.
@@ -169,74 +157,77 @@ var DurationPayload;
 	};
 
 	/**
-	 * Send a beacon event to the server.
-	 *
-	 * @param {BeaconType} beaconType Load or unload event type.
+	 * Send a load beacon event to the server when the page is loaded.
 	 * @returns {void}
 	 */
-	const sendBeacon = (beaconType) => {
-		if (beaconType == BeaconType.LOAD) {
-			// Returns true if it is the user's first visit to page, false if not.
-			// The u query parameter is a cache busting parameter which is the page host and path
-			// without protocol or query parameters.
-			pingCache(
-				host +
-					'/event/ping?u=' +
-					encodeURIComponent(location.host + location.pathname)
-			).then((response) => {
-				isFirstVisit = response;
-			});
-		}
+	const sendLoadBeacon = () => {
+		// Returns true if it is the user's first visit to page, false if not.
+		// The u query parameter is a cache busting parameter which is the page host and path
+		// without protocol or query parameters.
+		pingCache(
+			host +
+				'/event/ping?u=' +
+				encodeURIComponent(location.host + location.pathname)
+		).then((response) => {
+			isFirstVisit = response;
 
+			navigator.sendBeacon(
+				host + '/event/hit',
+				JSON.stringify(
+					// prettier-ignore
+					/**
+					 * Payload to send to the server.
+					 * @type {HitPayload}
+					 * @remarks We use string literals for the keys to tell Closure Compiler
+					 * to not rename them.
+					 */ ({
+						"b": uid,
+						"u": location.href,
+						"r": document.referrer,
+						"e": EventType.LOAD,
+						"p": isUnique,
+						"q": isFirstVisit,
+						/**
+						 * Get timezone for country detection.
+						 *
+						 * @suppress {checkTypes} Compiler throws an error because we don't call
+						 * "new" for this even though it is unnecessary.
+						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
+						 */
+						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
+					})
+				)
+			);
+		});
+	};
+
+	/**
+	 * Send an unload beacon event to the server when the page is unloaded.
+	 * @returns {void}
+	 */
+	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
 			navigator.sendBeacon(
 				host + '/event/hit',
 				JSON.stringify(
-					beaconType == BeaconType.LOAD
-						? // prettier-ignore
-						  /**
-						   * Payload to send to the server.
-						   * @type {HitPayload}
-						   * @remarks We use string literals for the keys to tell Closure Compiler
-						   * to not rename them.
-						   */ ({
-								"b": uid,
-								"u": location.href,
-								"r": document.referrer,
-								"e": EventType.LOAD,
-								"p": isUnique,
-								"q": isFirstVisit,
-								/**
-								 * Get timezone for country detection.
-								 *
-								 * @suppress {checkTypes} Compiler throws an error because we don't call
-								 * "new" for this even though it is unnecessary.
-								 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
-								 */
-								"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
-						  })
-						: // prettier-ignore
-						  /**
-						   * Payload to send to the server.
-						   * @type {DurationPayload}
-						   * @remarks We use string literals for the keys to tell Closure Compiler
-						   * to not rename them.
-						   */
-						  ({
-								"b": uid,
-								"e": EventType.UNLOAD,
-								"m": Math.round(
-									performance.now() - hiddenStartTime - hiddenTotalTime
-								),
-						  })
+					// prettier-ignore
+					/**
+					 * Payload to send to the server.
+					 * @type {DurationPayload}
+					 * @remarks We use string literals for the keys to tell Closure Compiler
+					 * to not rename them.
+					 */
+					({
+						"b": uid,
+						"e": EventType.UNLOAD,
+						"m": Math.round(performance.now() - hiddenStartTime - hiddenTotalTime),
+					})
 				)
 			);
 		}
 
-		if (beaconType == BeaconType.UNLOAD) {
-			// Ensure unload is only called once.
-			isUnloadCalled = true;
-		}
+		// Ensure unload is only called once.
+		isUnloadCalled = true;
 	};
 
 	// Prefer pagehide if available because it's more reliable than unload.
@@ -248,7 +239,7 @@ var DurationPayload;
 		document.addEventListener(
 			EventType.PAGEHIDE,
 			() => {
-				sendBeacon(BeaconType.UNLOAD);
+				sendUnloadBeacon();
 			},
 			{ capture: true }
 		);
@@ -259,14 +250,14 @@ var DurationPayload;
 		document.addEventListener(
 			EventType.BEFOREUNLOAD,
 			() => {
-				sendBeacon(BeaconType.UNLOAD);
+				sendUnloadBeacon();
 			},
 			{ capture: true }
 		);
 		document.addEventListener(
 			EventType.UNLOAD,
 			() => {
-				sendBeacon(BeaconType.UNLOAD);
+				sendUnloadBeacon();
 			},
 			{ capture: true }
 		);
@@ -294,7 +285,7 @@ var DurationPayload;
 		isUnique = response;
 
 		// Send the first beacon event to the server.
-		sendBeacon(BeaconType.LOAD);
+		sendLoadBeacon();
 
 		// Check if hash mode is enabled. If it is, then we need to send a beacon event
 		// when the hash changes. If disabled, it is safe to override the History API.
@@ -303,7 +294,7 @@ var DurationPayload;
 			document.addEventListener(
 				'hashchange',
 				() => {
-					sendBeacon(BeaconType.LOAD);
+					sendLoadBeacon();
 				},
 				{
 					capture: true,
@@ -313,21 +304,21 @@ var DurationPayload;
 			// Add pushState event listeners to track navigation changes with
 			// router libraries that use the History API.
 			history.pushState = function () {
-				sendBeacon(BeaconType.UNLOAD);
+				sendUnloadBeacon();
 				// If the event is a history change, then we need to reset the id and timers
 				// because the page is not actually reloading the script.
 				cleanup();
 				historyPush.apply(history, arguments);
-				sendBeacon(BeaconType.LOAD);
+				sendLoadBeacon();
 			};
 
 			// replaceState is used by some router libraries to replace the current
 			// history state instead of pushing a new one.
 			history.replaceState = function () {
-				sendBeacon(BeaconType.UNLOAD);
+				sendUnloadBeacon();
 				cleanup();
 				historyReplace.apply(history, arguments);
-				sendBeacon(BeaconType.LOAD);
+				sendLoadBeacon();
 			};
 
 			// popstate is fired when the back or forward button is pressed.
@@ -339,7 +330,7 @@ var DurationPayload;
 					// Unfortunately, we can't use unload here because we can't call it before
 					// the history change, so cleanup any temporary variables here.
 					cleanup();
-					sendBeacon(BeaconType.LOAD);
+					sendLoadBeacon();
 				},
 				{
 					capture: true,

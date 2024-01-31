@@ -1,83 +1,84 @@
 (function () {
 	if (document) {
 		var n = document.currentScript,
-			e = document.location.protocol + '//' + n.getAttribute('data-api'),
+			f = document.location.protocol + '//' + n.getAttribute('data-api'),
 			p = () => Date.now().toString(36) + Math.random().toString(36).substr(2),
-			f = p(),
-			g = !0,
+			g = p(),
+			h = !0,
 			q = !0,
-			c = 0,
-			h = 0,
-			k = !1,
+			a = 0,
+			k = 0,
+			l = !1,
 			t = history.pushState,
 			u = history.replaceState,
 			r = (b) =>
-				new Promise((l) => {
-					const d = new XMLHttpRequest();
-					d.onload = () => {
-						l(0 == d.responseText);
+				new Promise((v) => {
+					const c = new XMLHttpRequest();
+					c.onload = () => {
+						v(0 == c.responseText);
 					};
-					d.open('GET', b);
-					d.setRequestHeader('Content-Type', 'text/plain');
-					d.send();
+					c.open('GET', b);
+					c.setRequestHeader('Content-Type', 'text/plain');
+					c.send();
 				}),
 			m = () => {
-				g = !1;
-				f = p();
-				h = c = 0;
-				k = !1;
+				h = !1;
+				g = p();
+				k = a = 0;
+				l = !1;
 			},
-			a = (b) => {
-				1 == b &&
-					r(
-						e +
-							'/event/ping?u=' +
-							encodeURIComponent(location.host + location.pathname)
-					).then((l) => {
-						q = l;
-					});
-				k ||
+			d = () => {
+				r(
+					f +
+						'/event/ping?u=' +
+						encodeURIComponent(location.host + location.pathname)
+				).then((b) => {
+					q = b;
 					navigator.sendBeacon(
-						e + '/event/hit',
-						JSON.stringify(
-							1 == b
-								? {
-										b: f,
-										u: location.href,
-										r: document.referrer,
-										e: 'load',
-										p: g,
-										q,
-										t: Intl.DateTimeFormat().resolvedOptions().timeZone,
-								  }
-								: {
-										b: f,
-										e: 'unload',
-										m: Math.round(performance.now() - c - h),
-								  }
-						)
+						f + '/event/hit',
+						JSON.stringify({
+							b: g,
+							u: location.href,
+							r: document.referrer,
+							e: 'load',
+							p: h,
+							q,
+							t: Intl.DateTimeFormat().resolvedOptions().timeZone,
+						})
 					);
-				0 == b && (k = !0);
+				});
+			},
+			e = () => {
+				l ||
+					navigator.sendBeacon(
+						f + '/event/hit',
+						JSON.stringify({
+							b: g,
+							e: 'unload',
+							m: Math.round(performance.now() - a - k),
+						})
+					);
+				l = !0;
 			};
 		'onpagehide' in self
 			? document.addEventListener(
 					'pagehide',
 					() => {
-						a(0);
+						e();
 					},
 					{ capture: !0 }
 			  )
 			: (document.addEventListener(
 					'beforeunload',
 					() => {
-						a(0);
+						e();
 					},
 					{ capture: !0 }
 			  ),
 			  document.addEventListener(
 					'unload',
 					() => {
-						a(0);
+						e();
 					},
 					{ capture: !0 }
 			  ));
@@ -85,39 +86,39 @@
 			'visibilitychange',
 			() => {
 				'hidden' == document.visibilityState
-					? (c = performance.now())
-					: ((h += performance.now() - c), (c = 0));
+					? (a = performance.now())
+					: ((k += performance.now() - a), (a = 0));
 			},
 			{ capture: !0 }
 		);
-		r(e + '/event/ping').then((b) => {
-			g = b;
-			a(1);
+		r(f + '/event/ping').then((b) => {
+			h = b;
+			d();
 			n.getAttribute('data-hash')
 				? document.addEventListener(
 						'hashchange',
 						() => {
-							a(1);
+							d();
 						},
 						{ capture: !0 }
 				  )
 				: ((history.pushState = function () {
-						a(0);
+						e();
 						m();
 						t.apply(history, arguments);
-						a(1);
+						d();
 				  }),
 				  (history.replaceState = function () {
-						a(0);
+						e();
 						m();
 						u.apply(history, arguments);
-						a(1);
+						d();
 				  }),
 				  window.addEventListener(
 						'popstate',
 						() => {
 							m();
-							a(1);
+							d();
 						},
 						{ capture: !0 }
 				  ));
