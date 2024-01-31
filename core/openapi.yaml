@@ -1271,47 +1271,60 @@ components:
       required:
         - username
         - password
+    EventLoad:
+      title: EventLoad
+      description: Page view load event.
+      type: object
+      properties:
+        b:
+          type: string
+          description: Beacon ID generated for each user to link multiple events on the same page together.
+        u:
+          type: string
+          description: Page URL including query parameters.
+          format: uri
+        r:
+          type: string
+          description: Referrer URL.
+        p:
+          type: boolean
+          description: If the user is a unique user or not.
+        q:
+          type: boolean
+          description: If the user has visited this page before or not.
+        t:
+          type: string
+          description: Timezone of the user.
+      required:
+        - b
+        - u
+        - p
+        - q
+    EventUnload:
+      title: EventUnload
+      description: Page view unload event.
+      type: object
+      properties:
+        b:
+          type: string
+          description: Beacon ID generated for each user to link multiple events on the same page together.
+        m:
+          type: integer
+          description: Time spent on page in milliseconds.
+      required:
+        - b
+        - m
     EventHit:
       title: EventHit
       description: Website hit event.
       oneOf:
-        - type: object
-          properties:
-            b:
-              type: string
-              description: Beacon ID generated for each user to link multiple events on the same page together.
-            u:
-              type: string
-              description: Page URL including query parameters.
-              format: uri
-            r:
-              type: string
-              description: Referrer URL.
-            p:
-              type: boolean
-              description: If the user is a unique user or not.
-            q:
-              type: boolean
-              description: If the user has visited this page before or not.
-            t:
-              type: string
-              description: Timezone of the user.
-          required:
-            - b
-            - u
-            - p
-            - q
-        - type: object
-          properties:
-            b:
-              type: string
-              description: Beacon ID generated for each user to link multiple events on the same page together.
-            m:
-              type: integer
-              description: Time spent on page in milliseconds.
-          required:
-            - b
-            - m
+        - $ref: "#/components/schemas/EventLoad"
+        - $ref: "#/components/schemas/EventUnload"
+      discriminator:
+        propertyName: e
+        mapping:
+          load: "#/components/schemas/EventLoad"
+          unload: "#/components/schemas/EventUnload"
     FilterFixed:
       type: object
       properties:

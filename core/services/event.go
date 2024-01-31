@@ -102,9 +102,9 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 	attributes := []slog.Attr{}
 
 	switch req.Type {
-	case api.EventHit0EventHit:
-		hostname := req.EventHit0.U.Hostname()
-		pathname := req.EventHit0.U.Path
+	case api.EventLoadEventHit:
+		hostname := req.EventLoad.U.Hostname()
+		pathname := req.EventLoad.U.Path
 
 		// Verify hostname exists
 		exists, err := h.db.WebsiteExists(ctx, hostname)
@@ -122,8 +122,8 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
 		var referrerHost string
-		if req.EventHit0.R.Value != "" {
-			referrer, err := url.Parse(req.EventHit0.R.Value)
+		if req.EventLoad.R.Value != "" {
+			referrer, err := url.Parse(req.EventLoad.R.Value)
 			if err != nil {
 				attributes = append(attributes, slog.String("error", err.Error()))
 				slog.LogAttrs(ctx, slog.LevelError, "failed to parse referrer URL", attributes...)
@@ -141,7 +141,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		// Get country code from user's timezone. This is used as a best effort
 		// to determine the country of the user's location without compromising
 		// their privacy using IP addresses.
-		countryCode, err := h.timezoneMap.GetCode(req.EventHit0.T.Value)
+		countryCode, err := h.timezoneMap.GetCode(req.EventLoad.T.Value)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelDebug, "failed to get country code from timezone", attributes...)
@@ -167,18 +167,18 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		uaDeviceType := model.NewDeviceType(ua.Desktop, ua.Mobile, ua.Tablet, ua.TV)
 
 		// Get utm source, medium, and campaigm from URL query parameters.
-		queries := req.EventHit0.U.Query()
+		queries := req.EventLoad.U.Query()
 		utmSource := queries.Get("utm_source")
 		utmMedium := queries.Get("utm_medium")
 		utmCampaign := queries.Get("utm_campaign")
 
 		event := &model.PageViewHit{
 			// Required
-			BID:          req.EventHit0.B,
+			BID:          req.EventLoad.B,
 			Hostname:     hostname,
 			Pathname:     pathname,
-			IsUniqueUser: req.EventHit0.P,
-			IsUniquePage: req.EventHit0.Q,
+			IsUniqueUser: req.EventLoad.P,
+			IsUniquePage: req.EventLoad.Q,
 			// Optional
 			Referrer:    referrerHost,
 			CountryCode: countryCode,
@@ -203,9 +203,9 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			slog.String("referrer", event.Referrer),
 			slog.String("country_code", countryCode),
 			slog.String("language", event.Language),
-			slog.String("browser_name", string(event.BrowserName)),
-			slog.String("os", string(event.OS)),
-			slog.String("device_type", string(event.DeviceType)),
+			slog.String("browser_name", event.BrowserName.String()),
+			slog.String("os", event.OS.String()),
+			slog.String("device_type", event.DeviceType.String()),
 		)
 
 		// TODO: Remove temporary raw user agent logging for debugging
@@ -222,10 +222,10 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 
 		// Log success
 		slog.LogAttrs(ctx, slog.LevelDebug, "added page view", attributes...)
-	case api.EventHit1EventHit:
+	case api.EventUnloadEventHit:
 		event := &model.PageViewDuration{
-			BID:        req.EventHit1.B,
-			DurationMs: req.EventHit1.M,
+			BID:        req.EventUnload.B,
+			DurationMs: req.EventUnload.M,
 		}
 
 		attributes = append(attributes,

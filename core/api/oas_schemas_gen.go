@@ -171,9 +171,9 @@ func (*DeleteWebsitesIDOK) deleteWebsitesIDRes() {}
 // Ref: #/components/schemas/EventHit
 // EventHit represents sum type.
 type EventHit struct {
-	Type      EventHitType // switch on this field
-	EventHit0 EventHit0
-	EventHit1 EventHit1
+	Type        EventHitType // switch on this field
+	EventLoad   EventLoad
+	EventUnload EventUnload
 }
 
 // EventHitType is oneOf type of EventHit.
@@ -181,59 +181,61 @@ type EventHitType string
 
 // Possible values for EventHitType.
 const (
-	EventHit0EventHit EventHitType = "EventHit0"
-	EventHit1EventHit EventHitType = "EventHit1"
+	EventLoadEventHit   EventHitType = "load"
+	EventUnloadEventHit EventHitType = "unload"
 )
 
-// IsEventHit0 reports whether EventHit is EventHit0.
-func (s EventHit) IsEventHit0() bool { return s.Type == EventHit0EventHit }
+// IsEventLoad reports whether EventHit is EventLoad.
+func (s EventHit) IsEventLoad() bool { return s.Type == EventLoadEventHit }
 
-// IsEventHit1 reports whether EventHit is EventHit1.
-func (s EventHit) IsEventHit1() bool { return s.Type == EventHit1EventHit }
+// IsEventUnload reports whether EventHit is EventUnload.
+func (s EventHit) IsEventUnload() bool { return s.Type == EventUnloadEventHit }
 
-// SetEventHit0 sets EventHit to EventHit0.
-func (s *EventHit) SetEventHit0(v EventHit0) {
-	s.Type = EventHit0EventHit
-	s.EventHit0 = v
+// SetEventLoad sets EventHit to EventLoad.
+func (s *EventHit) SetEventLoad(v EventLoad) {
+	s.Type = EventLoadEventHit
+	s.EventLoad = v
 }
 
-// GetEventHit0 returns EventHit0 and true boolean if EventHit is EventHit0.
-func (s EventHit) GetEventHit0() (v EventHit0, ok bool) {
-	if !s.IsEventHit0() {
+// GetEventLoad returns EventLoad and true boolean if EventHit is EventLoad.
+func (s EventHit) GetEventLoad() (v EventLoad, ok bool) {
+	if !s.IsEventLoad() {
 		return v, false
 	}
-	return s.EventHit0, true
+	return s.EventLoad, true
 }
 
-// NewEventHit0EventHit returns new EventHit from EventHit0.
-func NewEventHit0EventHit(v EventHit0) EventHit {
+// NewEventLoadEventHit returns new EventHit from EventLoad.
+func NewEventLoadEventHit(v EventLoad) EventHit {
 	var s EventHit
-	s.SetEventHit0(v)
+	s.SetEventLoad(v)
 	return s
 }
 
-// SetEventHit1 sets EventHit to EventHit1.
-func (s *EventHit) SetEventHit1(v EventHit1) {
-	s.Type = EventHit1EventHit
-	s.EventHit1 = v
+// SetEventUnload sets EventHit to EventUnload.
+func (s *EventHit) SetEventUnload(v EventUnload) {
+	s.Type = EventUnloadEventHit
+	s.EventUnload = v
 }
 
-// GetEventHit1 returns EventHit1 and true boolean if EventHit is EventHit1.
-func (s EventHit) GetEventHit1() (v EventHit1, ok bool) {
-	if !s.IsEventHit1() {
+// GetEventUnload returns EventUnload and true boolean if EventHit is EventUnload.
+func (s EventHit) GetEventUnload() (v EventUnload, ok bool) {
+	if !s.IsEventUnload() {
 		return v, false
 	}
-	return s.EventHit1, true
+	return s.EventUnload, true
 }
 
-// NewEventHit1EventHit returns new EventHit from EventHit1.
-func NewEventHit1EventHit(v EventHit1) EventHit {
+// NewEventUnloadEventHit returns new EventHit from EventUnload.
+func NewEventUnloadEventHit(v EventUnload) EventHit {
 	var s EventHit
-	s.SetEventHit1(v)
+	s.SetEventUnload(v)
 	return s
 }
 
-type EventHit0 struct {
+// Page view load event.
+// Ref: #/components/schemas/EventLoad
+type EventLoad struct {
 	// Beacon ID generated for each user to link multiple events on the same page together.
 	B string `json:"b"`
 	// Page URL including query parameters.
@@ -249,66 +251,68 @@ type EventHit0 struct {
 }
 
 // GetB returns the value of B.
-func (s *EventHit0) GetB() string {
+func (s *EventLoad) GetB() string {
 	return s.B
 }
 
 // GetU returns the value of U.
-func (s *EventHit0) GetU() url.URL {
+func (s *EventLoad) GetU() url.URL {
 	return s.U
 }
 
 // GetR returns the value of R.
-func (s *EventHit0) GetR() OptString {
+func (s *EventLoad) GetR() OptString {
 	return s.R
 }
 
 // GetP returns the value of P.
-func (s *EventHit0) GetP() bool {
+func (s *EventLoad) GetP() bool {
 	return s.P
 }
 
 // GetQ returns the value of Q.
-func (s *EventHit0) GetQ() bool {
+func (s *EventLoad) GetQ() bool {
 	return s.Q
 }
 
 // GetT returns the value of T.
-func (s *EventHit0) GetT() OptString {
+func (s *EventLoad) GetT() OptString {
 	return s.T
 }
 
 // SetB sets the value of B.
-func (s *EventHit0) SetB(val string) {
+func (s *EventLoad) SetB(val string) {
 	s.B = val
 }
 
 // SetU sets the value of U.
-func (s *EventHit0) SetU(val url.URL) {
+func (s *EventLoad) SetU(val url.URL) {
 	s.U = val
 }
 
 // SetR sets the value of R.
-func (s *EventHit0) SetR(val OptString) {
+func (s *EventLoad) SetR(val OptString) {
 	s.R = val
 }
 
 // SetP sets the value of P.
-func (s *EventHit0) SetP(val bool) {
+func (s *EventLoad) SetP(val bool) {
 	s.P = val
 }
 
 // SetQ sets the value of Q.
-func (s *EventHit0) SetQ(val bool) {
+func (s *EventLoad) SetQ(val bool) {
 	s.Q = val
 }
 
 // SetT sets the value of T.
-func (s *EventHit0) SetT(val OptString) {
+func (s *EventLoad) SetT(val OptString) {
 	s.T = val
 }
 
-type EventHit1 struct {
+// Page view unload event.
+// Ref: #/components/schemas/EventUnload
+type EventUnload struct {
 	// Beacon ID generated for each user to link multiple events on the same page together.
 	B string `json:"b"`
 	// Time spent on page in milliseconds.
@@ -316,22 +320,22 @@ type EventHit1 struct {
 }
 
 // GetB returns the value of B.
-func (s *EventHit1) GetB() string {
+func (s *EventUnload) GetB() string {
 	return s.B
 }
 
 // GetM returns the value of M.
-func (s *EventHit1) GetM() int {
+func (s *EventUnload) GetM() int {
 	return s.M
 }
 
 // SetB sets the value of B.
-func (s *EventHit1) SetB(val string) {
+func (s *EventUnload) SetB(val string) {
 	s.B = val
 }
 
 // SetM sets the value of M.
-func (s *EventHit1) SetM(val int) {
+func (s *EventUnload) SetM(val int) {
 	s.M = val
 }
 

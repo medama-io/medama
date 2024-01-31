@@ -60,11 +60,11 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		Active:    currentSummary.Active,
 	}
 
-	// Include previous summary if requested
+	// Include previous summary if requested.
 	if params.Previous.Value && params.Start.IsSet() && params.End.IsSet() {
-		// Update filter periods to get previous summary
-		// Calculate the difference between the start and end dates
-		// and subtract that from the start date to get the previous period.
+		// Update filter periods to get previous summary.
+		// Calculate the difference between the start and end dates and
+		// subtract that from the start date to get the previous period.
 		difference := params.End.Value.Sub(params.Start.Value)
 		filters.PeriodStart = params.Start.Value.Add(-difference).Format(model.DateFormat)
 		filters.PeriodEnd = params.Start.Value.Format(model.DateFormat)
@@ -99,7 +99,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		slog.String("hostname", params.Hostname),
 	}
 
-	// Check if website exists
+	// Check if website exists.
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
@@ -110,7 +110,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
-	// Create filter for database query
+	// Create filter for database query.
 	filters := &db.Filters{
 		Hostname: params.Hostname,
 
@@ -130,10 +130,10 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 	}
 
-	// Check parameter if it is asking for summary
+	// Check parameter if it is asking for summary.
 	switch params.Summary.Value {
 	case true:
-		// Get summary
+		// Get summary.
 		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, filters)
 		if err != nil {
 			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
@@ -141,7 +141,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
+		// Create API response.
 		res := api.StatsPages{}
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
@@ -807,6 +807,16 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	// Create API response
 	res := api.StatsCountries{}
 	for _, page := range countries {
+		// Check if country code is not null
+		if page.Country == "" {
+			res = append(res, api.StatsCountriesItem{
+				Country:            "Unknown",
+				Visitors:           page.Visitors,
+				VisitorsPercentage: page.VisitorsPercentage,
+			})
+			continue
+		}
+
 		// Convert country code to country name
 		country, err := h.codeCountryMap.GetCountry(page.Country)
 		if err != nil {

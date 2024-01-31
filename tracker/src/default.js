@@ -8,7 +8,7 @@
 const EventType = {
 	UNLOAD: 'unload',
 	LOAD: 'load',
-	// These events are must still be sent with the unload event when calling
+	// These events must still be sent with the unload event when calling
 	// sendBeacon to ensure there are no duplicate events.
 	PAGEHIDE: 'pagehide',
 	BEFOREUNLOAD: 'beforeunload',
@@ -36,6 +36,7 @@ const BeaconType = {
  * @property {string} b Beacon ID.
  * @property {string} u Page URL.
  * @property {string} r Referrer URL.
+ * @property {EventType} e Event type.
  * @property {boolean} p If the user is unique or not.
  * @property {boolean} q If this is the first time the user has visited this specific page.
  * @property {string} t Timezone of the user.
@@ -45,6 +46,7 @@ var HitPayload;
 /**
  * @typedef {Object} DurationPayload
  * @property {string} b Beacon ID.
+ * @property {EventType} e Event type.
  * @property {number} m Time spent on page.
  */
 
@@ -96,12 +98,12 @@ var DurationPayload;
 	 * Whether the user is unique or not.
 	 * This is updated when the server checks the ping cache on page load.
 	 */
-	let isUnique = false;
+	let isUnique = true;
 
 	/**
 	 * Whether the user is visiting this page for the first time.
 	 */
-	let isFirstVisit = false;
+	let isFirstVisit = true;
 
 	/**
 	 * A temporary variable to store the start time of the page when it is hidden.
@@ -173,8 +175,7 @@ var DurationPayload;
 	 * @returns {void}
 	 */
 	const sendBeacon = (beaconType) => {
-		// If the user is unique, then isFirstVisit is already set to true.
-		if (beaconType == BeaconType.LOAD && !isUnique) {
+		if (beaconType == BeaconType.LOAD) {
 			// Returns true if it is the user's first visit to page, false if not.
 			// The u query parameter is a cache busting parameter which is the page host and path
 			// without protocol or query parameters.
@@ -202,6 +203,7 @@ var DurationPayload;
 								"b": uid,
 								"u": location.href,
 								"r": document.referrer,
+								"e": EventType.LOAD,
 								"p": isUnique,
 								"q": isFirstVisit,
 								/**
@@ -222,6 +224,7 @@ var DurationPayload;
 						   */
 						  ({
 								"b": uid,
+								"e": EventType.UNLOAD,
 								"m": Math.round(
 									performance.now() - hiddenStartTime - hiddenTotalTime
 								),
@@ -289,8 +292,6 @@ var DurationPayload;
 	pingCache(host + '/event/ping').then((response) => {
 		// The response is a boolean indicating if the user is unique or not.
 		isUnique = response;
-		// Technically, if the user is unique, then it is their first visit to the page.
-		isFirstVisit = response;
 
 		// Send the first beacon event to the server.
 		sendBeacon(BeaconType.LOAD);

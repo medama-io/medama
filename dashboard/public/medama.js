@@ -1,59 +1,63 @@
 (function () {
 	if (document) {
-		var p = document.currentScript,
-			f = document.location.protocol + '//' + p.getAttribute('data-api'),
-			q = () => Date.now().toString(36) + Math.random().toString(36).substr(2),
-			g = q(),
-			e = !1,
-			h = !1,
+		var n = document.currentScript,
+			e = document.location.protocol + '//' + n.getAttribute('data-api'),
+			p = () => Date.now().toString(36) + Math.random().toString(36).substr(2),
+			f = p(),
+			g = !0,
+			q = !0,
 			c = 0,
-			k = 0,
-			l = !1,
+			h = 0,
+			k = !1,
 			t = history.pushState,
 			u = history.replaceState,
 			r = (b) =>
-				new Promise((m) => {
+				new Promise((l) => {
 					const d = new XMLHttpRequest();
 					d.onload = () => {
-						m(0 == d.responseText);
+						l(0 == d.responseText);
 					};
 					d.open('GET', b);
 					d.setRequestHeader('Content-Type', 'text/plain');
 					d.send();
 				}),
-			n = () => {
-				e = !1;
-				g = q();
-				k = c = 0;
-				l = !1;
+			m = () => {
+				g = !1;
+				f = p();
+				h = c = 0;
+				k = !1;
 			},
 			a = (b) => {
-				1 != b ||
-					e ||
+				1 == b &&
 					r(
-						f +
+						e +
 							'/event/ping?u=' +
 							encodeURIComponent(location.host + location.pathname)
-					).then((m) => {
-						h = m;
+					).then((l) => {
+						q = l;
 					});
-				l ||
+				k ||
 					navigator.sendBeacon(
-						f + '/event/hit',
+						e + '/event/hit',
 						JSON.stringify(
 							1 == b
 								? {
-										b: g,
+										b: f,
 										u: location.href,
 										r: document.referrer,
-										p: e,
-										q: h,
+										e: 'load',
+										p: g,
+										q,
 										t: Intl.DateTimeFormat().resolvedOptions().timeZone,
 								  }
-								: { b: g, m: Math.round(performance.now() - c - k) }
+								: {
+										b: f,
+										e: 'unload',
+										m: Math.round(performance.now() - c - h),
+								  }
 						)
 					);
-				0 == b && (l = !0);
+				0 == b && (k = !0);
 			};
 		'onpagehide' in self
 			? document.addEventListener(
@@ -82,14 +86,14 @@
 			() => {
 				'hidden' == document.visibilityState
 					? (c = performance.now())
-					: ((k += performance.now() - c), (c = 0));
+					: ((h += performance.now() - c), (c = 0));
 			},
 			{ capture: !0 }
 		);
-		r(f + '/event/ping').then((b) => {
-			h = e = b;
+		r(e + '/event/ping').then((b) => {
+			g = b;
 			a(1);
-			p.getAttribute('data-hash')
+			n.getAttribute('data-hash')
 				? document.addEventListener(
 						'hashchange',
 						() => {
@@ -99,20 +103,20 @@
 				  )
 				: ((history.pushState = function () {
 						a(0);
-						n();
+						m();
 						t.apply(history, arguments);
 						a(1);
 				  }),
 				  (history.replaceState = function () {
 						a(0);
-						n();
+						m();
 						u.apply(history, arguments);
 						a(1);
 				  }),
 				  window.addEventListener(
 						'popstate',
 						() => {
-							n();
+							m();
 							a(1);
 						},
 						{ capture: !0 }
