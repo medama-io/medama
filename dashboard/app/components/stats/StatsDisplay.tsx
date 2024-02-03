@@ -1,4 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { Link } from '@remix-run/react';
 
 import { IconDots } from '@/components/icons/dots';
 
@@ -70,11 +71,18 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 							{...item}
 						/>
 					))}
+					<div className={classes['button-wrapper']}>
+						<UnstyledButton
+							component={Link}
+							to={`./${tab.label.toLowerCase()}`}
+							prefetch="intent"
+							className={classes.button}
+						>
+							Load More
+						</UnstyledButton>
+					</div>
 				</Tabs.Panel>
 			))}
-			<div className={classes['button-wrapper']}>
-				<UnstyledButton className={classes.button}>Load More</UnstyledButton>
-			</div>
 		</Tabs>
 	);
 };

@@ -45,7 +45,7 @@ export interface ClientOptions<
 
 const client = async (
 	path: keyof paths,
-	{ cookie, body, method, noRedirect, pathKey, query }: ClientOptions
+	{ cookie, body, method = 'GET', noRedirect, pathKey, query }: ClientOptions
 ): Promise<Response> => {
 	let newPath;
 	// Replace any path closed in curly braces with the pathKey

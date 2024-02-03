@@ -80,6 +80,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY pathname HAVING duration > 0 ORDER BY duration DESC`)
 	query.WriteString(filter.PaginationString())
+	query.WriteString(`)`)
 	query.WriteString(`--sql
 		SELECT
 			pathname,

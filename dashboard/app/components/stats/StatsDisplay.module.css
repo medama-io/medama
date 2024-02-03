@@ -58,6 +58,9 @@
 .button {
 	width: 100%;
 	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	border: 1px solid var(--me-color-border-grey);
 	border-radius: 8px;
