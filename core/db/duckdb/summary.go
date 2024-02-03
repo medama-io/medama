@@ -34,8 +34,7 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 			COUNT(*) FILTER (WHERE is_unique_user = true AND (date_diff('minute', now(), date_created) < 5)) AS active
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
-
+	query.WriteString(filter.WhereString())
 	err := c.GetContext(ctx, &summary, query.String(), filter.Args()...)
 	if err != nil {
 		return nil, err

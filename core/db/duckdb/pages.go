@@ -30,8 +30,9 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
+	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC`)
+	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -77,8 +78,9 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
+	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC`)
+	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname, filter.Hostname)...)
 	if err != nil {

@@ -403,7 +403,7 @@ type GetWebsiteIDBrowsersParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetWebsiteIDBrowsersParams) {
@@ -544,7 +544,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -1098,7 +1098,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -1111,14 +1111,14 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -1202,7 +1202,7 @@ type GetWebsiteIDCampaignsParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params GetWebsiteIDCampaignsParams) {
@@ -1343,7 +1343,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -1897,7 +1897,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -1910,14 +1910,14 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -2001,7 +2001,7 @@ type GetWebsiteIDCountryParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWebsiteIDCountryParams) {
@@ -2142,7 +2142,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -2696,7 +2696,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -2709,14 +2709,14 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -2800,7 +2800,7 @@ type GetWebsiteIDDeviceParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWebsiteIDDeviceParams) {
@@ -2941,7 +2941,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -3495,7 +3495,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -3508,14 +3508,14 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -3599,7 +3599,7 @@ type GetWebsiteIDLanguageParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetWebsiteIDLanguageParams) {
@@ -3740,7 +3740,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -4294,7 +4294,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -4307,14 +4307,14 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -4398,7 +4398,7 @@ type GetWebsiteIDMediumsParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWebsiteIDMediumsParams) {
@@ -4539,7 +4539,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -5093,7 +5093,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -5106,14 +5106,14 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -5197,7 +5197,7 @@ type GetWebsiteIDOsParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsiteIDOsParams) {
@@ -5338,7 +5338,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -5892,7 +5892,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -5905,14 +5905,14 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -5998,7 +5998,7 @@ type GetWebsiteIDPagesParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebsiteIDPagesParams) {
@@ -6148,7 +6148,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -6748,7 +6748,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -6761,14 +6761,14 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -6854,7 +6854,7 @@ type GetWebsiteIDReferrersParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params GetWebsiteIDReferrersParams) {
@@ -7004,7 +7004,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -7604,7 +7604,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -7617,14 +7617,14 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -7708,7 +7708,7 @@ type GetWebsiteIDSourcesParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWebsiteIDSourcesParams) {
@@ -7849,7 +7849,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -8403,7 +8403,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -8416,14 +8416,14 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}
@@ -9285,7 +9285,7 @@ type GetWebsiteIDTimeParams struct {
 	// Language code.
 	Language OptFilterFixed
 	// Limit the number of results.
-	Limit OptInt32
+	Limit OptInt
 }
 
 func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsiteIDTimeParams) {
@@ -9435,7 +9435,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt32)
+			params.Limit = v.(OptInt)
 		}
 	}
 	return params
@@ -10035,7 +10035,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 	}
 	// Set default value for query: limit.
 	{
-		val := int32(5)
+		val := int(5)
 		params.Limit.SetTo(val)
 	}
 	// Decode query: limit.
@@ -10048,14 +10048,14 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int32
+				var paramsDotLimitVal int
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
 						return err
 					}
 
-					c, err := conv.ToInt32(val)
+					c, err := conv.ToInt(val)
 					if err != nil {
 						return err
 					}

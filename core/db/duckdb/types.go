@@ -27,8 +27,9 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY browser ORDER BY visitors DESC;`)
+	query.WriteString(filter.WhereString())
+	query.WriteString(` GROUP BY browser ORDER BY visitors DESC`)
+	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &browsers, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -57,8 +58,9 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY os ORDER BY visitors DESC;`)
+	query.WriteString(filter.WhereString())
+	query.WriteString(` GROUP BY os ORDER BY visitors DESC`)
+	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &os, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -87,8 +89,9 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY device ORDER BY visitors DESC;`)
+	query.WriteString(filter.WhereString())
+	query.WriteString(` GROUP BY device ORDER BY visitors DESC`)
+	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &devices, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

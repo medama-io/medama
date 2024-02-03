@@ -51,9 +51,15 @@ export default function Index() {
 		<main>
 			<h1>Websites</h1>
 			{JSON.stringify(websites)}
-			<Button component={NavLink} to="/localhost">
-				localhost
-			</Button>
+			{websites.map((website) => (
+				<Button
+					key={website.hostname}
+					component={NavLink}
+					to={`/${website.hostname}`}
+				>
+					{website.name}
+				</Button>
+			))}
 		</main>
 	);
 }

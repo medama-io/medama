@@ -298,7 +298,7 @@ export default function Index() {
 								label: 'Sources',
 								items:
 									sources?.map((item) => ({
-										label: item.source,
+										label: item.source === '' ? 'Direct/None' : item.source,
 										count: item.visitors,
 										percentage: item.visitors_percentage,
 									})) ?? [],
@@ -307,7 +307,7 @@ export default function Index() {
 								label: 'Mediums',
 								items:
 									mediums?.map((item) => ({
-										label: item.medium,
+										label: item.medium === '' ? 'Direct/None' : item.medium,
 										count: item.visitors,
 										percentage: item.visitors_percentage,
 									})) ?? [],
@@ -316,7 +316,7 @@ export default function Index() {
 								label: 'Campaigns',
 								items:
 									campaigns?.map((item) => ({
-										label: item.campaign,
+										label: item.campaign === '' ? 'Direct/None' : item.campaign,
 										count: item.visitors,
 										percentage: item.visitors_percentage,
 									})) ?? [],

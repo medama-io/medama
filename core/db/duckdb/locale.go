@@ -27,8 +27,9 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY country ORDER BY visitors DESC;`)
+	query.WriteString(filter.WhereString())
+	query.WriteString(` GROUP BY country ORDER BY visitors DESC`)
+	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &countries, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {
@@ -57,8 +58,9 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 			ifnull(ROUND(visitors * 100.0 / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 2), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
-	query.WriteString(filter.String())
-	query.WriteString(` GROUP BY language ORDER BY visitors DESC;`)
+	query.WriteString(filter.WhereString())
+	query.WriteString(` GROUP BY language ORDER BY visitors DESC`)
+	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &languages, query.String(), filter.Args(filter.Hostname)...)
 	if err != nil {

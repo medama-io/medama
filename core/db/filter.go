@@ -162,10 +162,13 @@ type Filters struct {
 	PeriodStart    string
 	PeriodEnd      string
 	PeriodInterval string
+
+	// Pagination
+	Limit int
 }
 
 // String builds the WHERE query string.
-func (f *Filters) String() string {
+func (f *Filters) WhereString() string {
 	var query strings.Builder
 
 	// Build the query string
@@ -227,6 +230,14 @@ func (f *Filters) String() string {
 	}
 
 	return query.String()
+}
+
+func (f *Filters) PaginationString() string {
+	if f.Limit > 0 {
+		return " LIMIT ?"
+	}
+
+	return ""
 }
 
 // Args returns the arguments for the WHERE query string.
@@ -296,6 +307,10 @@ func (f *Filters) Args(startValues ...string) []interface{} {
 
 	if f.PeriodEnd != "" {
 		args = append(args, f.PeriodEnd)
+	}
+
+	if f.Limit > 0 {
+		args = append(args, f.Limit)
 	}
 
 	return args
