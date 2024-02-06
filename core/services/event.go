@@ -10,6 +10,8 @@ import (
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
+	"golang.org/x/text/language"
+	"golang.org/x/text/language/display"
 )
 
 const (
@@ -156,7 +158,16 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		}
 
 		// Get users language from Accept-Language header
-		acceptLanguage := reqBody.Header.Get("Accept-Language")
+		languages, _, err := language.ParseAcceptLanguage(reqBody.Header.Get("Accept-Language"))
+		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelDebug, "failed to parse accept language header", attributes...)
+		}
+		// Get the first language from the list which is the most preferred and convert it to a language name
+		language := "Unknown"
+		if len(languages) > 0 {
+			language = display.English.Tags().Name(languages[0])
+		}
 
 		// Parse user agent
 		rawUserAgent := reqBody.Header.Get("User-Agent")
@@ -182,7 +193,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			// Optional
 			Referrer:    referrerHost,
 			CountryCode: countryCode,
-			Language:    acceptLanguage,
+			Language:    language,
 
 			BrowserName: uaBrowser,
 			OS:          uaOS,
