@@ -28,7 +28,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_source ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY utm_source ORDER BY visitors DESC, source ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
@@ -59,7 +59,7 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_medium ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY utm_medium ORDER BY visitors DESC, medium ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
@@ -90,7 +90,7 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_campaign ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY utm_campaign ORDER BY visitors DESC, campaign ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)

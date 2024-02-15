@@ -130,7 +130,8 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Check parameter if it is asking for summary.
@@ -219,7 +220,8 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Check parameter if it is asking for summary
@@ -310,7 +312,8 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Check parameter if it is asking for summary
@@ -399,7 +402,8 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get sources
@@ -460,7 +464,8 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get mediums
@@ -521,7 +526,8 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get campaigns
@@ -582,7 +588,8 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get browsers
@@ -643,7 +650,8 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get OS
@@ -704,7 +712,8 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get devices
@@ -765,7 +774,8 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get languages
@@ -826,7 +836,8 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		PeriodEnd:   params.End.Value.Format(model.DateFormat),
 
 		// Pagination
-		Limit: params.Limit.Value,
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
 	}
 
 	// Get countries

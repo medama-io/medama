@@ -3,7 +3,7 @@ import { Link } from '@remix-run/react';
 
 import { IconDots } from '@/components/icons/dots';
 
-import { countFormatter, formatDuration } from './formatter';
+import { formatCount, formatDuration } from './formatter';
 import classes from './StatsDisplay.module.css';
 
 interface StatsItemProps {
@@ -14,9 +14,7 @@ interface StatsItemProps {
 }
 
 const StatsItem = ({ label, count, percentage, isTime }: StatsItemProps) => {
-	const formattedValue = isTime
-		? formatDuration(count ?? 0)
-		: countFormatter.format(count ?? 0);
+	const formattedValue = isTime ? formatDuration(count) : formatCount(count);
 	return (
 		<div className={classes['stat-item']}>
 			<Group justify="space-between" pb={6}>

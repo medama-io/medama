@@ -31,7 +31,7 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC, pathname ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname)...)
@@ -79,7 +79,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC, pageviews DESC, pathname ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname, filter.Hostname)...)

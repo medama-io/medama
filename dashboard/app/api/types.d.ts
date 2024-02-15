@@ -4,11 +4,6 @@
  */
 
 
-/** OneOf type helpers */
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
-type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
-
 export interface paths {
   "/auth/login": {
     /**
@@ -177,10 +172,10 @@ export interface components {
       password: string;
     };
     /**
-     * EventHit
-     * @description Website hit event.
+     * EventLoad
+     * @description Page view load event.
      */
-    EventHit: OneOf<[{
+    EventLoad: {
       /** @description Beacon ID generated for each user to link multiple events on the same page together. */
       b: string;
       /**
@@ -196,12 +191,22 @@ export interface components {
       q: boolean;
       /** @description Timezone of the user. */
       t?: string;
-    }, {
+    };
+    /**
+     * EventUnload
+     * @description Page view unload event.
+     */
+    EventUnload: {
       /** @description Beacon ID generated for each user to link multiple events on the same page together. */
       b: string;
       /** @description Time spent on page in milliseconds. */
       m: number;
-    }]>;
+    };
+    /**
+     * EventHit
+     * @description Website hit event.
+     */
+    EventHit: components["schemas"]["EventLoad"] | components["schemas"]["EventUnload"];
     FilterFixed: {
       /** @description Equal to. */
       eq?: string;
@@ -590,6 +595,8 @@ export interface components {
     PeriodInterval?: "hour" | "day" | "week" | "month" | "year";
     /** @description Limit the number of results. */
     Limit?: number;
+    /** @description Offset the results paired with the limit parameter. */
+    Offset?: number;
   };
   requestBodies: never;
   headers: never;
@@ -963,6 +970,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1006,6 +1014,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1049,6 +1058,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1092,6 +1102,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1135,6 +1146,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1178,6 +1190,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1221,6 +1234,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1264,6 +1278,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1307,6 +1322,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1350,6 +1366,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];
@@ -1393,6 +1410,7 @@ export interface operations {
         country?: components["parameters"]["CountryCode"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
+        offset?: components["parameters"]["Offset"];
       };
       path: {
         hostname: components["parameters"]["Hostname"];

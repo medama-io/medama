@@ -1,6 +1,7 @@
-import '@mantine/core/styles.css';
-import '@/styles/global.css';
+import '@mantine/core/styles.layer.css';
+import 'mantine-datatable/styles.layer.css';
 import '@fontsource-variable/inter/wght.css';
+import '@/styles/global.css';
 
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';

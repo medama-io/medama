@@ -28,7 +28,7 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING duration > 0 ORDER BY duration DESC`)
+	query.WriteString(` GROUP BY pathname HAVING duration > 0 ORDER BY duration DESC, pathname ASC`)
 	query.WriteString(filter.PaginationString())
 	query.WriteString(`)`)
 	query.WriteString(`--sql
@@ -78,7 +78,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING duration > 0 ORDER BY duration DESC`)
+	query.WriteString(` GROUP BY pathname HAVING duration > 0 ORDER BY duration DESC, pathname ASC`)
 	query.WriteString(filter.PaginationString())
 	query.WriteString(`)`)
 	query.WriteString(`--sql

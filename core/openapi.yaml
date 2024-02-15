@@ -492,6 +492,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -537,6 +538,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -582,6 +584,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -625,6 +628,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -668,6 +672,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -711,6 +716,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -754,6 +760,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -797,6 +804,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -840,6 +848,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -883,6 +892,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -926,6 +936,7 @@ paths:
         - $ref: "#/components/parameters/CountryCode"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
         "200":
           description: OK
@@ -1116,6 +1127,15 @@ components:
         type: integer
         default: 5
         minimum: 1
+        maximum: 500
+    Offset:
+      name: offset
+      in: query
+      description: Offset the results paired with the limit parameter.
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
         maximum: 500
   responses:
     BadRequestError:

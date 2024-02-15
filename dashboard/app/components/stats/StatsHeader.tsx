@@ -2,7 +2,7 @@ import { Box, Flex, Group, Text, Tooltip } from '@mantine/core';
 
 import { type DataResponse } from '@/api/client';
 
-import { countFormatter, formatDuration, percentFormatter } from './formatter';
+import { formatCount, formatDuration, formatPercentage } from './formatter';
 import classes from './StatsHeader.module.css';
 
 interface HeaderDataBoxProps {
@@ -40,9 +40,7 @@ const HeaderDataBox = ({
 		formattedValue = formatDuration(value);
 	} else {
 		// Rely on Intl.NumberFormat to format the values according to the user's locale
-		const formatter = isBounce ? percentFormatter : countFormatter;
-
-		formattedValue = formatter.format(value);
+		formattedValue = isBounce ? formatPercentage(value) : formatCount(value);
 	}
 
 	// Determine if the change is positive or negative

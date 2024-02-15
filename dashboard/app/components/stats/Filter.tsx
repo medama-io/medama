@@ -51,14 +51,14 @@ const filterTypes: FilterTypes = {
 		},
 		ends_with: { label: 'ends with', value: 'ends_with' },
 		not_ends_with: { label: 'does not end with', value: 'not_ends_with' },
-		in: { label: 'is in', value: 'in' },
-		not_in: { label: 'is not in', value: 'not_in' },
+		// in: { label: 'is in', value: 'in' },
+		// not_in: { label: 'is not in', value: 'not_in' },
 	},
 	fixed: {
 		eq: { label: 'equals', value: 'eq' },
 		neq: { label: 'does not equal', value: 'neq' },
-		in: { label: 'is in', value: 'in' },
-		not_in: { label: 'is not in', value: 'not_in' },
+		// in: { label: 'is in', value: 'in' },
+		// not_in: { label: 'is not in', value: 'not_in' },
 	},
 };
 
@@ -212,7 +212,7 @@ export const Filters = () => {
 		// If the filter is a string, reset the value
 		// Otherwise, reset the value to the first choice
 		chosenFilter?.type === 'string'
-			? setValue(value)
+			? setValue('')
 			: setValue(Object.keys(chosenFilter?.choices ?? {})[0] ?? 'Unknown');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filter]);
@@ -220,18 +220,17 @@ export const Filters = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	// Convert the search params to an array of label-type-value tuples
 	// This is used to render the current filters.
-	const paramsArr: Array<[string, string, string]> = [
-		...searchParams.entries(),
-	].map(([key, value]) => {
-		// Convert the key to a label
+	const paramsArr: Array<[string, string, string]> = [];
+	for (const [key, value] of searchParams.entries()) {
 		const [filter, type] = key.split('['); // e.g. path[eq]
-		if (!filter) {
-			return ['N/A', '', ''];
+		// If the filter is not in the filter options, don't render it
+		if (!filter || !filterOptions[filter]) {
+			continue;
 		}
 
 		const { label = 'N/A' } = filterOptions[filter] ?? {};
-		return [label, type?.replace(']', '') ?? 'Unknown', value];
-	});
+		paramsArr.push([label, type?.replace(']', '') ?? 'Unknown', value]);
+	}
 
 	// Apply the filters to the search params and close the popover
 	// This should trigger a reload of data on the page with new

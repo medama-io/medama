@@ -164,7 +164,8 @@ type Filters struct {
 	PeriodInterval string
 
 	// Pagination
-	Limit int
+	Limit  int
+	Offset int
 }
 
 // String builds the WHERE query string.
@@ -233,11 +234,16 @@ func (f *Filters) WhereString() string {
 }
 
 func (f *Filters) PaginationString() string {
+	var query strings.Builder
 	if f.Limit > 0 {
-		return " LIMIT ?"
+		query.WriteString(" LIMIT ?")
 	}
 
-	return ""
+	if f.Offset > 0 {
+		query.WriteString(" OFFSET ?")
+	}
+
+	return query.String()
 }
 
 // Args returns the arguments for the WHERE query string.
@@ -311,6 +317,10 @@ func (f *Filters) Args(startValues ...string) []interface{} {
 
 	if f.Limit > 0 {
 		args = append(args, f.Limit)
+	}
+
+	if f.Offset > 0 {
+		args = append(args, f.Offset)
 	}
 
 	return args

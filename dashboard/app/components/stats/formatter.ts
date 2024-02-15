@@ -3,19 +3,19 @@
 export const languages =
 	typeof document === 'undefined' ? ['en-US'] : [...navigator.languages];
 
-export const countFormatter = Intl.NumberFormat(languages, {
+const countFormatter = Intl.NumberFormat(languages, {
 	notation: 'compact',
 	maximumFractionDigits: 2,
 });
 
-export const percentFormatter = Intl.NumberFormat(languages, {
+const percentFormatter = Intl.NumberFormat(languages, {
 	style: 'percent',
 	maximumFractionDigits: 1,
 });
 
 // Convert a duration in milliseconds to a human readable format
 // such as 2h1m30s, 1m30s or 30s
-export const formatDuration = (durationMs: number) => {
+export const formatDuration = (durationMs = 0) => {
 	const totalSeconds = Math.floor(durationMs / 1000);
 	const hours = Math.floor(totalSeconds / 3600);
 	const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -26,4 +26,12 @@ export const formatDuration = (durationMs: number) => {
 	}
 
 	return minutes === 0 ? `${seconds}s` : `${minutes}m${seconds}s`;
+};
+
+export const formatPercentage = (value = 0) => {
+	return percentFormatter.format(value);
+};
+
+export const formatCount = (value = 0) => {
+	return countFormatter.format(value);
 };

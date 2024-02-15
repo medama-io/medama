@@ -28,7 +28,7 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY country ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY country ORDER BY visitors DESC, country ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &countries, query.String(), filter.Args(filter.Hostname)...)
@@ -59,7 +59,7 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY language ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY language ORDER BY visitors DESC, language ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &languages, query.String(), filter.Args(filter.Hostname)...)

@@ -28,7 +28,7 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC, referrer ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &referrers, query.String(), filter.Args(filter.Hostname)...)
@@ -65,7 +65,7 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC`)
+	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC, referrer ASC`)
 	query.WriteString(filter.PaginationString())
 
 	err := c.SelectContext(ctx, &referrers, query.String(), filter.Args(filter.Hostname)...)

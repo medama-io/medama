@@ -50,6 +50,9 @@ importers:
       isbot:
         specifier: ^4.4.0
         version: 4.4.0
+      mantine-datatable:
+        specifier: ^7.5.0
+        version: 7.5.0(@mantine/core@7.4.2)(@mantine/hooks@7.4.2)(clsx@2.1.0)(react@18.3.0-canary-8039e6d0b-20231026)
       react:
         specifier: 18.3.0-canary-8039e6d0b-20231026
         version: 18.3.0-canary-8039e6d0b-20231026
@@ -5250,6 +5253,20 @@ packages:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
+
+  /mantine-datatable@7.5.0(@mantine/core@7.4.2)(@mantine/hooks@7.4.2)(clsx@2.1.0)(react@18.3.0-canary-8039e6d0b-20231026):
+    resolution: {integrity: sha512-MjJGm8LYROp4Bb0fW7D3RjS9Ezm4n4q9dwCWAb/c43usUZkEvx9knHNTRC0On+mrhwNaVhvQrrAKpW4o+nrUBw==}
+    peerDependencies:
+      '@mantine/core': '>=7'
+      '@mantine/hooks': '>=7'
+      clsx: '>=2'
+      react: '>=18.2'
+    dependencies:
+      '@mantine/core': 7.4.2(@mantine/hooks@7.4.2)(@types/react@18.2.48)(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026)
+      '@mantine/hooks': 7.4.2(react@18.3.0-canary-8039e6d0b-20231026)
+      clsx: 2.1.0
+      react: 18.3.0-canary-8039e6d0b-20231026
+    dev: false
 
   /map-obj@1.0.1:
     resolution: {integrity: sha512-7N/q3lyZ+LVCp7PzuxrJr4KMbBE2hW7BT7YNia330OFxIf4d3r5zVpicP2650l7CPN6RM9zOJRl3NGpqSiw3Eg==}
