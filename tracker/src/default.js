@@ -152,7 +152,10 @@ var DurationPayload;
 		isUnique = false;
 		uid = generateUid();
 		hiddenStartTime = 0;
-		hiddenTotalTime = 0;
+		// This is a weird fix where History API doesn't reset performance.now(). Thus, we need to
+		// subtract the total previous page view time from the current page view time when calling
+		// unload.
+		hiddenTotalTime = performance.now();
 		isUnloadCalled = false;
 	};
 
