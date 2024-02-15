@@ -1496,14 +1496,11 @@ components:
               type: integer
             duration:
               type: integer
-            active:
-              type: integer
           required:
             - visitors
             - pageviews
             - bounces
             - duration
-            - active
         previous:
           type: object
           properties:

@@ -97,7 +97,8 @@ const duration: DataTableColumn = {
 const durationPercentage: DataTableColumn = {
 	accessor: 'duration_percentage',
 	title: 'Duration %',
-	render: (record: DataRow) => formatPercentage(record.duration_percentage),
+	render: (record: DataRow) =>
+		formatPercentage((record.duration_percentage ?? 0) / 100),
 };
 
 const PAGE_SIZES = [10, 25, 50, 100];
@@ -313,7 +314,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 							onClick={() => {
 								handlePageSizeChange(size);
 							}}
-							disabled={data.length < size}
+							disabled={data.length < pageSize}
 							data-active={size === pageSize}
 						>
 							{size}

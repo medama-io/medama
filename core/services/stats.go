@@ -57,7 +57,6 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		Pageviews: currentSummary.Pageviews,
 		Bounces:   currentSummary.Bounces,
 		Duration:  currentSummary.Duration,
-		Active:    currentSummary.Active,
 	}
 
 	// Include previous summary if requested.

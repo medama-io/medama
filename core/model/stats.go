@@ -10,7 +10,6 @@ type StatsSummarySingle struct {
 	Pageviews int `db:"pageviews"`
 	Bounces   int `db:"bounces"`
 	Duration  int `db:"duration"`
-	Active    int `db:"active"`
 }
 
 type StatsSummary struct {

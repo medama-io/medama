@@ -30,8 +30,7 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			COUNT(*) AS pageviews,
 			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND (date_diff('minute', now(), date_created) < 5)) AS active
+			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())

@@ -3273,18 +3273,13 @@ func (s *StatsSummaryCurrent) encodeFields(e *jx.Encoder) {
 		e.FieldStart("duration")
 		e.Int(s.Duration)
 	}
-	{
-		e.FieldStart("active")
-		e.Int(s.Active)
-	}
 }
 
-var jsonFieldsNameOfStatsSummaryCurrent = [5]string{
+var jsonFieldsNameOfStatsSummaryCurrent = [4]string{
 	0: "visitors",
 	1: "pageviews",
 	2: "bounces",
 	3: "duration",
-	4: "active",
 }
 
 // Decode decodes StatsSummaryCurrent from json.
@@ -3344,18 +3339,6 @@ func (s *StatsSummaryCurrent) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"duration\"")
 			}
-		case "active":
-			requiredBitSet[0] |= 1 << 4
-			if err := func() error {
-				v, err := d.Int()
-				s.Active = int(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"active\"")
-			}
 		default:
 			return d.Skip()
 		}
@@ -3366,7 +3349,7 @@ func (s *StatsSummaryCurrent) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00011111,
+		0b00001111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

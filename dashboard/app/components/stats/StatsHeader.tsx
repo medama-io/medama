@@ -11,7 +11,6 @@ interface HeaderDataBoxProps {
 	previousValue?: number;
 	isBounce?: boolean;
 	isDuration?: boolean;
-	isLive?: boolean;
 	isActive?: boolean;
 }
 
@@ -21,7 +20,6 @@ const HeaderDataBox = ({
 	previousValue,
 	isBounce,
 	isDuration,
-	isLive,
 	isActive,
 }: HeaderDataBoxProps) => {
 	// Calculate percentage change if previous value is available
@@ -78,7 +76,7 @@ const HeaderDataBox = ({
 	}
 
 	return (
-		<Tooltip label={tooltipLabel} disabled={isLive} withArrow>
+		<Tooltip label={tooltipLabel} withArrow>
 			<Box
 				className={classes['data-box']}
 				bg={isActive ? '#39414E' : undefined}
@@ -90,7 +88,7 @@ const HeaderDataBox = ({
 					<Text fz={14} span>
 						{label}
 					</Text>
-					{change !== undefined && !isLive && (
+					{change !== undefined && (
 						<Box className={classes.badge} bg={badgeColor}>
 							{status === 'positive' ? '+' : undefined}
 							{change}%
@@ -145,7 +143,6 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 							previousValue={previousBounceRate}
 							isBounce
 						/>
-						<HeaderDataBox label="Active" value={current.active} isLive />
 					</Group>
 					<div>Switch Chart</div>
 				</Group>

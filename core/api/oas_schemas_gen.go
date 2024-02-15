@@ -2917,7 +2917,6 @@ type StatsSummaryCurrent struct {
 	Pageviews int `json:"pageviews"`
 	Bounces   int `json:"bounces"`
 	Duration  int `json:"duration"`
-	Active    int `json:"active"`
 }
 
 // GetVisitors returns the value of Visitors.
@@ -2940,11 +2939,6 @@ func (s *StatsSummaryCurrent) GetDuration() int {
 	return s.Duration
 }
 
-// GetActive returns the value of Active.
-func (s *StatsSummaryCurrent) GetActive() int {
-	return s.Active
-}
-
 // SetVisitors sets the value of Visitors.
 func (s *StatsSummaryCurrent) SetVisitors(val int) {
 	s.Visitors = val
@@ -2963,11 +2957,6 @@ func (s *StatsSummaryCurrent) SetBounces(val int) {
 // SetDuration sets the value of Duration.
 func (s *StatsSummaryCurrent) SetDuration(val int) {
 	s.Duration = val
-}
-
-// SetActive sets the value of Active.
-func (s *StatsSummaryCurrent) SetActive(val int) {
-	s.Active = val
 }
 
 type StatsSummaryPrevious struct {
