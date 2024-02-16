@@ -1,4 +1,11 @@
-import { add, format, sub } from 'date-fns';
+import {
+	endOfToday,
+	endOfYesterday,
+	formatRFC3339,
+	startOfToday,
+	startOfYesterday,
+	sub,
+} from 'date-fns';
 
 interface FilterOptions {
 	start?: string;
@@ -7,45 +14,19 @@ interface FilterOptions {
 }
 
 const generatePeriods = (period: string) => {
-	// TODO: More granular periods
 	const currentDate = new Date();
 	let startPeriod: Date;
 	let endPeriod: Date;
 
 	switch (period) {
 		case 'today': {
-			startPeriod = currentDate;
-			endPeriod = add(currentDate, { days: 1 });
+			startPeriod = startOfToday();
+			endPeriod = endOfToday();
 			break;
 		}
 		case 'yesterday': {
-			startPeriod = sub(currentDate, { days: 1 });
-			endPeriod = currentDate;
-			break;
-		}
-		case '24h': {
-			startPeriod = sub(currentDate, { hours: 24 });
-			endPeriod = currentDate;
-			break;
-		}
-		case '72h': {
-			startPeriod = sub(currentDate, { hours: 72 });
-			endPeriod = currentDate;
-			break;
-		}
-		case '7d': {
-			startPeriod = sub(currentDate, { days: 7 });
-			endPeriod = currentDate;
-			break;
-		}
-		case '14d': {
-			startPeriod = sub(currentDate, { days: 14 });
-			endPeriod = currentDate;
-			break;
-		}
-		case '30d': {
-			startPeriod = sub(currentDate, { days: 30 });
-			endPeriod = currentDate;
+			startPeriod = startOfYesterday();
+			endPeriod = endOfYesterday();
 			break;
 		}
 		case 'quarter': {
@@ -69,13 +50,24 @@ const generatePeriods = (period: string) => {
 			break;
 		}
 		default: {
-			throw new Error('Invalid period');
+			// Manually parse periods like 24h, 14d, 30d, etc
+			if (period.endsWith('d')) {
+				const days = Number.parseInt(period, 10);
+				startPeriod = sub(currentDate, { days });
+				endPeriod = currentDate;
+			} else if (period.endsWith('h')) {
+				const hours = Number.parseInt(period, 10);
+				startPeriod = sub(currentDate, { hours });
+				endPeriod = currentDate;
+			} else {
+				throw new Error(`Invalid period: ${period}`);
+			}
 		}
 	}
 
 	return {
-		start: format(startPeriod, 'yyyy-MM-dd'),
-		end: format(endPeriod, 'yyyy-MM-dd'),
+		start: formatRFC3339(startPeriod),
+		end: formatRFC3339(endPeriod),
 	};
 };
 

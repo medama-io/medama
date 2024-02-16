@@ -368,6 +368,17 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 		}));
 	}
 
+	const handleNavigation = (value: string) => {
+		// Remove offset from search params to reset pagination
+		searchParams.delete('offset');
+
+		navigate({
+			pathname: `../${value}`,
+			// Preserve search params when switching tabs
+			search: '?' + searchParams.toString(),
+		});
+	};
+
 	return (
 		<Tabs
 			variant="unstyled"
@@ -379,11 +390,7 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 			}}
 			orientation="vertical"
 			onChange={(value) => {
-				navigate({
-					pathname: `../${value}`,
-					// Preserve search params when switching tabs
-					search: '?' + searchParams.toString(),
-				});
+				if (value) handleNavigation(value);
 			}}
 		>
 			<Tabs.List>

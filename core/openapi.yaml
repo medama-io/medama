@@ -1093,19 +1093,19 @@ components:
     PeriodStart:
       name: start
       in: query
-      description: Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
+      description: Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
       required: false
       schema:
         type: string
-        format: date
+        format: date-time
     PeriodEnd:
       name: end
       in: query
-      description: Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
+      description: Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
       required: false
       schema:
         type: string
-        format: date
+        format: date-time
     PeriodInterval:
       name: interval
       in: query

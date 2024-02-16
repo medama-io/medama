@@ -1569,38 +1569,38 @@ func (o OptBool) Or(d bool) bool {
 	return d
 }
 
-// NewOptDate returns new OptDate with value set to v.
-func NewOptDate(v time.Time) OptDate {
-	return OptDate{
+// NewOptDateTime returns new OptDateTime with value set to v.
+func NewOptDateTime(v time.Time) OptDateTime {
+	return OptDateTime{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptDate is optional time.Time.
-type OptDate struct {
+// OptDateTime is optional time.Time.
+type OptDateTime struct {
 	Value time.Time
 	Set   bool
 }
 
-// IsSet returns true if OptDate was set.
-func (o OptDate) IsSet() bool { return o.Set }
+// IsSet returns true if OptDateTime was set.
+func (o OptDateTime) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptDate) Reset() {
+func (o *OptDateTime) Reset() {
 	var v time.Time
 	o.Value = v
 	o.Set = false
 }
 
 // SetTo sets value to v.
-func (o *OptDate) SetTo(v time.Time) {
+func (o *OptDateTime) SetTo(v time.Time) {
 	o.Set = true
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptDate) Get() (v time.Time, ok bool) {
+func (o OptDateTime) Get() (v time.Time, ok bool) {
 	if !o.Set {
 		return v, false
 	}
@@ -1608,7 +1608,7 @@ func (o OptDate) Get() (v time.Time, ok bool) {
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptDate) Or(d time.Time) time.Time {
+func (o OptDateTime) Or(d time.Time) time.Time {
 	if v, ok := o.Get(); ok {
 		return v
 	}

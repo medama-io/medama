@@ -376,10 +376,10 @@ type GetWebsiteIDBrowsersParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDBrowsersInterval
 	// Path of the page.
@@ -429,7 +429,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -438,7 +438,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -676,7 +676,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -717,7 +717,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -1256,10 +1256,10 @@ type GetWebsiteIDCampaignsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDCampaignsInterval
 	// Path of the page.
@@ -1309,7 +1309,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -1318,7 +1318,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -1556,7 +1556,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -1597,7 +1597,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -2136,10 +2136,10 @@ type GetWebsiteIDCountryParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDCountryInterval
 	// Path of the page.
@@ -2189,7 +2189,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -2198,7 +2198,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -2436,7 +2436,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -2477,7 +2477,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -3016,10 +3016,10 @@ type GetWebsiteIDDeviceParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDDeviceInterval
 	// Path of the page.
@@ -3069,7 +3069,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -3078,7 +3078,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -3316,7 +3316,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -3357,7 +3357,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -3896,10 +3896,10 @@ type GetWebsiteIDLanguageParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDLanguageInterval
 	// Path of the page.
@@ -3949,7 +3949,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -3958,7 +3958,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -4196,7 +4196,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -4237,7 +4237,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -4776,10 +4776,10 @@ type GetWebsiteIDMediumsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDMediumsInterval
 	// Path of the page.
@@ -4829,7 +4829,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -4838,7 +4838,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -5076,7 +5076,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -5117,7 +5117,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -5656,10 +5656,10 @@ type GetWebsiteIDOsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDOsInterval
 	// Path of the page.
@@ -5709,7 +5709,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -5718,7 +5718,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -5956,7 +5956,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -5997,7 +5997,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -6538,10 +6538,10 @@ type GetWebsiteIDPagesParams struct {
 	Hostname string
 	// Return a summary of the stats.
 	Summary OptBool
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDPagesInterval
 	// Path of the page.
@@ -6600,7 +6600,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -6609,7 +6609,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -6893,7 +6893,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -6934,7 +6934,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -7475,10 +7475,10 @@ type GetWebsiteIDReferrersParams struct {
 	Hostname string
 	// Return a summary of the stats.
 	Summary OptBool
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDReferrersInterval
 	// Path of the page.
@@ -7537,7 +7537,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -7546,7 +7546,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -7830,7 +7830,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -7871,7 +7871,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -8410,10 +8410,10 @@ type GetWebsiteIDSourcesParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDSourcesInterval
 	// Path of the page.
@@ -8463,7 +8463,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -8472,7 +8472,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -8710,7 +8710,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -8751,7 +8751,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -9293,10 +9293,10 @@ type GetWebsiteIDSummaryParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDSummaryInterval
 	// Path of the page.
@@ -9351,7 +9351,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -9360,7 +9360,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -9626,7 +9626,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -9667,7 +9667,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -10068,10 +10068,10 @@ type GetWebsiteIDTimeParams struct {
 	Hostname string
 	// Return a summary of the stats.
 	Summary OptBool
-	// Period start date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	Start OptDate
-	// Period end date using full-date notation in RFC3339 format (YYYY-MM-DD).
-	End OptDate
+	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	Start OptDateTime
+	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
+	End OptDateTime
 	// Period interval.
 	Interval OptGetWebsiteIDTimeInterval
 	// Path of the page.
@@ -10130,7 +10130,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Start = v.(OptDate)
+			params.Start = v.(OptDateTime)
 		}
 	}
 	{
@@ -10139,7 +10139,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.End = v.(OptDate)
+			params.End = v.(OptDateTime)
 		}
 	}
 	{
@@ -10423,7 +10423,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}
@@ -10464,7 +10464,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 						return err
 					}
 
-					c, err := conv.ToDate(val)
+					c, err := conv.ToDateTime(val)
 					if err != nil {
 						return err
 					}

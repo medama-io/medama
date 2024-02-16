@@ -158,7 +158,7 @@ type Filters struct {
 	Country        *Filter
 	Language       *Filter
 
-	// Time Periods (in RFC3339 format YYYY-MM-DD)
+	// Time Periods (in RFC3339 format 2017-07-21T17:32:28Z)
 	PeriodStart    string
 	PeriodEnd      string
 	PeriodInterval string
@@ -223,11 +223,11 @@ func (f *Filters) WhereString() string {
 
 	// Time period filters
 	if f.PeriodStart != "" {
-		query.WriteString(" AND date_created >= strptime(?, '%Y-%m-%d')")
+		query.WriteString(" AND date_created >= strptime(?, '%Y-%m-%dT%H:%M:%SZ')")
 	}
 
 	if f.PeriodEnd != "" {
-		query.WriteString(" AND date_created <= strptime(?, '%Y-%m-%d')")
+		query.WriteString(" AND date_created <= strptime(?, '%Y-%m-%dT%H:%M:%SZ')")
 	}
 
 	return query.String()

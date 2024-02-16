@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 const presets = {
 	today: 'Today',
 	yesterday: 'Yesterday',
+	'12h': 'Previous 12 hours',
 	'24h': 'Previous 24 hours',
 	'72h': 'Previous 72 hours',
 	'7d': 'Previous 7 days',
@@ -35,7 +36,7 @@ export const DateComboBox = () => {
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [preset, setPreset] = useState<keyof typeof presets>(
-		isPreset(String(searchParams.get('period')))
+		searchParams.get('period')
 			? (searchParams.get('period') as keyof typeof presets)
 			: 'today'
 	);
@@ -73,7 +74,7 @@ export const DateComboBox = () => {
 					}}
 					w={200}
 				>
-					{presets[preset]}
+					{isPreset(preset) ? presets[preset] : 'Custom range'}
 				</InputBase>
 			</Combobox.Target>
 			<Combobox.Dropdown>
