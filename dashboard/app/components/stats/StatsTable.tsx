@@ -314,7 +314,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 							onClick={() => {
 								handlePageSizeChange(size);
 							}}
-							disabled={data.length < pageSize}
+							disabled={data.length < size && data.length !== pageSize}
 							data-active={size === pageSize}
 						>
 							{size}

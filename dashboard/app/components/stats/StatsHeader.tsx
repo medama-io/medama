@@ -1,7 +1,9 @@
 import { Box, Flex, Group, Text, Tooltip } from '@mantine/core';
+import { useSearchParams } from '@remix-run/react';
 
 import { type DataResponse } from '@/api/client';
 
+import { DateComboBox } from './DateSelector';
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import classes from './StatsHeader.module.css';
 
@@ -12,6 +14,7 @@ interface HeaderDataBoxProps {
 	isBounce?: boolean;
 	isDuration?: boolean;
 	isActive?: boolean;
+	hideBadge?: boolean;
 }
 
 const HeaderDataBox = ({
@@ -21,6 +24,7 @@ const HeaderDataBox = ({
 	isBounce,
 	isDuration,
 	isActive,
+	hideBadge,
 }: HeaderDataBoxProps) => {
 	// Calculate percentage change if previous value is available
 	let change = 0;
@@ -88,7 +92,7 @@ const HeaderDataBox = ({
 					<Text fz={14} span>
 						{label}
 					</Text>
-					{change !== undefined && (
+					{!hideBadge && (
 						<Box className={classes.badge} bg={badgeColor}>
 							{status === 'positive' ? '+' : undefined}
 							{change}%
@@ -109,6 +113,9 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 		? previous.bounces / previous.visitors || 0
 		: 0;
 
+	const [searchParams] = useSearchParams();
+	const isAllTime = searchParams.get('period') === 'all';
+
 	return (
 		<div className={classes.header}>
 			<div className={classes.inner}>
@@ -116,7 +123,7 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 					<Text fw={500} fz={32} pb="xl">
 						Dashboard
 					</Text>
-					<Flex>Selector</Flex>
+					<DateComboBox />
 				</Flex>
 				<Group>
 					<Group>
@@ -124,23 +131,27 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 							label="Visitors"
 							value={current.visitors}
 							previousValue={previous?.visitors}
+							hideBadge={isAllTime}
 							isActive
 						/>
 						<HeaderDataBox
 							label="Page Views"
 							value={current.pageviews}
 							previousValue={previous?.pageviews}
+							hideBadge={isAllTime}
 						/>
 						<HeaderDataBox
 							label="Time Spent"
 							value={current.duration}
 							previousValue={previous?.duration}
+							hideBadge={isAllTime}
 							isDuration
 						/>
 						<HeaderDataBox
 							label="Bounce Rate"
 							value={bounceRate}
 							previousValue={previousBounceRate}
+							hideBadge={isAllTime}
 							isBounce
 						/>
 					</Group>
