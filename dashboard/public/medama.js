@@ -1,85 +1,82 @@
 (function () {
 	if (document) {
 		var n = document.currentScript,
-			f = document.location.protocol + '//' + n.getAttribute('data-api'),
+			e = document.location.protocol + '//' + n.getAttribute('data-api'),
 			p = () => Date.now().toString(36) + Math.random().toString(36).substr(2),
-			g = p(),
-			h = !0,
+			h = p(),
+			k = !0,
 			q = !0,
-			a = 0,
-			k = 0,
+			f = 0,
+			g = Date.now(),
 			l = !1,
 			t = history.pushState,
 			u = history.replaceState,
-			r = (b) =>
+			r = (a) =>
 				new Promise((v) => {
-					const c = new XMLHttpRequest();
-					c.onload = () => {
-						v(0 == c.responseText);
+					const b = new XMLHttpRequest();
+					b.onload = () => {
+						v(0 == b.responseText);
 					};
-					c.open('GET', b);
-					c.setRequestHeader('Content-Type', 'text/plain');
-					c.send();
+					b.open('GET', a);
+					b.setRequestHeader('Content-Type', 'text/plain');
+					b.send();
 				}),
 			m = () => {
-				h = !1;
-				g = p();
-				a = 0;
-				k = performance.now();
+				k = !1;
+				h = p();
+				f = 0;
+				g = Date.now();
 				l = !1;
 			},
-			d = () => {
+			c = () => {
 				r(
-					f +
+					e +
 						'/event/ping?u=' +
 						encodeURIComponent(location.host + location.pathname)
-				).then((b) => {
-					q = b;
+				).then((a) => {
+					q = a;
 					navigator.sendBeacon(
-						f + '/event/hit',
+						e + '/event/hit',
 						JSON.stringify({
-							b: g,
+							b: h,
 							u: location.href,
 							r: document.referrer,
 							e: 'load',
-							p: h,
+							p: k,
 							q,
 							t: Intl.DateTimeFormat().resolvedOptions().timeZone,
 						})
 					);
 				});
 			},
-			e = () => {
+			d = () => {
 				l ||
-					navigator.sendBeacon(
-						f + '/event/hit',
-						JSON.stringify({
-							b: g,
-							e: 'unload',
-							m: Math.round(performance.now() - a - k),
-						})
-					);
+					(navigator.sendBeacon(
+						e + '/event/hit',
+						JSON.stringify({ b: h, e: 'unload', m: Date.now() - g })
+					),
+					console.log(Date.now() - g));
 				l = !0;
 			};
 		'onpagehide' in self
 			? document.addEventListener(
 					'pagehide',
 					() => {
-						e();
+						d();
 					},
 					{ capture: !0 }
 			  )
 			: (document.addEventListener(
 					'beforeunload',
 					() => {
-						e();
+						d();
 					},
 					{ capture: !0 }
 			  ),
 			  document.addEventListener(
 					'unload',
 					() => {
-						e();
+						d();
 					},
 					{ capture: !0 }
 			  ));
@@ -87,39 +84,39 @@
 			'visibilitychange',
 			() => {
 				'hidden' == document.visibilityState
-					? (a = performance.now())
-					: ((k += performance.now() - a), (a = 0));
+					? (f = Date.now())
+					: ((g += Date.now() - f), (f = 0));
 			},
 			{ capture: !0 }
 		);
-		r(f + '/event/ping').then((b) => {
-			h = b;
-			d();
+		r(e + '/event/ping').then((a) => {
+			k = a;
+			c();
 			n.getAttribute('data-hash')
 				? document.addEventListener(
 						'hashchange',
 						() => {
-							d();
+							c();
 						},
 						{ capture: !0 }
 				  )
 				: ((history.pushState = function () {
-						e();
+						d();
 						m();
 						t.apply(history, arguments);
-						d();
+						c();
 				  }),
 				  (history.replaceState = function () {
-						e();
+						d();
 						m();
 						u.apply(history, arguments);
-						d();
+						c();
 				  }),
 				  window.addEventListener(
 						'popstate',
 						() => {
 							m();
-							d();
+							c();
 						},
 						{ capture: !0 }
 				  ));

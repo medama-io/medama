@@ -100,8 +100,9 @@ var DurationPayload;
 
 	/**
 	 * The total time the user has had the page hidden.
+	 * It also signifies the start epoch time of the page.
 	 */
-	let hiddenTotalTime = 0;
+	let hiddenTotalTime = Date.now();
 
 	/**
 	 * Ensure only the unload beacon is called once.
@@ -152,10 +153,7 @@ var DurationPayload;
 		isUnique = false;
 		uid = generateUid();
 		hiddenStartTime = 0;
-		// This is a weird fix where History API doesn't reset performance.now(). Thus, we need to
-		// subtract the total previous page view time from the current page view time when calling
-		// unload.
-		hiddenTotalTime = performance.now();
+		hiddenTotalTime = Date.now();
 		isUnloadCalled = false;
 	};
 
@@ -223,7 +221,7 @@ var DurationPayload;
 					({
 						"b": uid,
 						"e": EventType.UNLOAD,
-						"m": Math.round(performance.now() - hiddenStartTime - hiddenTotalTime),
+						"m": Date.now() - hiddenTotalTime,
 					})
 				)
 			);
@@ -273,10 +271,10 @@ var DurationPayload;
 		() => {
 			if (document.visibilityState == EventType.HIDDEN) {
 				// Page is hidden, record the current time.
-				hiddenStartTime = performance.now();
+				hiddenStartTime = Date.now();
 			} else {
 				// Page is visible, subtract the hidden time to calculate the total time hidden.
-				hiddenTotalTime += performance.now() - hiddenStartTime;
+				hiddenTotalTime += Date.now() - hiddenStartTime;
 				hiddenStartTime = 0;
 			}
 		},
