@@ -29,8 +29,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 			'countries',
 			'languages',
 		],
-
 		isSummary: true,
+		limit: 5, // Summaries should only show 5 items max
 	});
 
 	return json(

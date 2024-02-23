@@ -38,13 +38,13 @@ func (s *Server) securityCookieAuth(ctx context.Context, operationName string, r
 	var t CookieAuth
 	const parameterName = "_me_sess"
 	var value string
-	switch cookie, err := req.Cookie(parameterName); err {
-	case nil:
+	switch cookie, err := req.Cookie(parameterName); {
+	case err == nil: // if NO error
 		value = cookie.Value
-	case http.ErrNoCookie:
+	case errors.Is(err, http.ErrNoCookie):
 		return ctx, false, nil
 	default:
-		return nil, false, err
+		return nil, false, errors.Wrap(err, "get cookie value")
 	}
 	t.APIKey = value
 	rctx, err := s.sec.HandleCookieAuth(ctx, operationName, t)

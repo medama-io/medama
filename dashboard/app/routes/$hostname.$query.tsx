@@ -22,7 +22,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
 	const stats = await fetchStats(request, params, {
 		dataset: [query],
-		limit: 10,
 	});
 
 	return json(stats, {

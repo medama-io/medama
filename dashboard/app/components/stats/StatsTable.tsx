@@ -105,42 +105,32 @@ const PAGE_SIZES = [10, 25, 50, 100];
 
 const QueryTable = ({ query, data }: QueryTableProps) => {
 	// Pagination
+	const [pageSize, setPageSize] = useState(10);
 	const [page, setPage] = useState(1);
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [records, setRecords] = useState(data.slice(0, pageSize));
 
-	const [pageSize, setPageSize] = useState(
-		searchParams.get('limit') ? Number(searchParams.get('limit')) : 10
-	);
 	useEffect(() => {
 		setPage(1);
 	}, [pageSize]);
 
 	const handlePageChange = (newPage: number) => {
 		// Prevent negative pages
-		if (newPage < 1) {
+		if (newPage < 1 || newPage > Math.ceil(data.length / pageSize)) {
 			return;
 		}
 
-		// If new page is 1, remove offset from search params
-		if (newPage === 1) {
-			searchParams.delete('offset');
-		} else {
-			searchParams.set('offset', String(newPage * pageSize - pageSize));
-		}
-
 		setPage(newPage);
-		setSearchParams(searchParams, {
-			preventScrollReset: true,
-		});
 	};
 
 	const handlePageSizeChange = (newSize: number) => {
 		setPageSize(newSize);
-		searchParams.set('limit', String(newSize));
-		setSearchParams(searchParams, {
-			preventScrollReset: true,
-		});
 	};
+
+	useEffect(() => {
+		const from = (page - 1) * pageSize;
+		const to = from + pageSize;
+		setRecords(data.slice(from, to));
+	}, [data, page, pageSize]);
 
 	// Define columns based on query
 	const columns: DataTableColumn[] = [];
@@ -300,7 +290,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				withRowBorders={false}
 				// Have to type assert here as technically we have Record<string | undefined, unknown>[]
 				// but we don't know the exact shape of the data
-				records={data as Array<Record<string, unknown>>}
+				records={records as Array<Record<string, unknown>>}
 				columns={columns}
 			/>
 			<Group justify="space-between" px="lg" py="sm">
@@ -314,7 +304,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 							onClick={() => {
 								handlePageSizeChange(size);
 							}}
-							disabled={data.length < size && data.length !== pageSize}
+							disabled={size === pageSize || data.length <= size}
 							data-active={size === pageSize}
 						>
 							{size}
@@ -328,18 +318,20 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 						onClick={() => {
 							handlePageChange(page - 1);
 						}}
-						disabled={page === 1}
+						disabled={page <= 1}
 					>
 						<IconChevronLeft />
 					</ActionIcon>
-					<span>Page {page}</span>
+					<span>
+						Page {page} of {Math.ceil(data.length / pageSize)}
+					</span>
 					<ActionIcon
 						variant="transparent"
 						className={classes['page-arrow']}
 						onClick={() => {
 							handlePageChange(page + 1);
 						}}
-						disabled={data.length < pageSize}
+						disabled={page >= Math.ceil(data.length / pageSize)}
 					>
 						<IconChevronRight />
 					</ActionIcon>
@@ -368,17 +360,6 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 		}));
 	}
 
-	const handleNavigation = (value: string) => {
-		// Remove offset from search params to reset pagination
-		searchParams.delete('offset');
-
-		navigate({
-			pathname: `../${value}`,
-			// Preserve search params when switching tabs
-			search: '?' + searchParams.toString(),
-		});
-	};
-
 	return (
 		<Tabs
 			variant="unstyled"
@@ -390,7 +371,11 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 			}}
 			orientation="vertical"
 			onChange={(value) => {
-				if (value) handleNavigation(value);
+				navigate({
+					pathname: `../${value}`,
+					// Preserve search params when switching tabs
+					search: '?' + searchParams.toString(),
+				});
 			}}
 		>
 			<Tabs.List>

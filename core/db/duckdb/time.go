@@ -24,11 +24,12 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 		WITH durations AS MATERIALIZED (
 		SELECT
 			pathname,
-			CAST(ifnull(AVG(duration_ms), 0) AS INTEGER) AS duration
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING duration > 0 ORDER BY duration DESC, pathname ASC`)
+	query.WriteString(` GROUP BY pathname HAVING duration > 0`)
 	query.WriteString(filter.PaginationString())
 	query.WriteString(`)`)
 	query.WriteString(`--sql
@@ -37,7 +38,7 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 			duration,
 			ifnull(ROUND(duration * 100.0 / (SELECT SUM(duration) FROM durations), 2), 0) AS duration_percentage
 		FROM durations
-		ORDER BY duration DESC`)
+		ORDER BY visitors DESC, duration DESC, pathname ASC`)
 	err := c.SelectContext(ctx, &times, query.String(), filter.Args()...)
 	if err != nil {
 		return nil, err
@@ -70,7 +71,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 		WITH durations AS MATERIALIZED (
 		SELECT
 			pathname,
-			CAST(ifnull(AVG(duration_ms), 0) AS INTEGER) AS duration,
+			CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration,
 			CAST(ifnull(quantile_cont(duration_ms, 0.75), 0) AS INTEGER) AS duration_upper_quartile,
 			CAST(ifnull(quantile_cont(duration_ms, 0.25), 0) AS INTEGER) AS duration_lower_quartile,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
@@ -78,7 +79,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING duration > 0 ORDER BY duration DESC, pathname ASC`)
+	query.WriteString(` GROUP BY pathname HAVING duration > 0`)
 	query.WriteString(filter.PaginationString())
 	query.WriteString(`)`)
 	query.WriteString(`--sql
@@ -91,7 +92,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 			visitors,
 			bounces
 		FROM durations
-		ORDER BY duration DESC`)
+		ORDER BY visitors DESC, duration DESC, pathname ASC`)
 	err := c.SelectContext(ctx, &times, query.String(), filter.Args()...)
 	if err != nil {
 		return nil, err

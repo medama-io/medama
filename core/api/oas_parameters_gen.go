@@ -1107,11 +1107,6 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -1151,7 +1146,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -1176,11 +1171,6 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -1221,7 +1211,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -1987,11 +1977,6 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -2031,7 +2016,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -2056,11 +2041,6 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -2101,7 +2081,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -2867,11 +2847,6 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -2911,7 +2886,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -2936,11 +2911,6 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -2981,7 +2951,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -3747,11 +3717,6 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -3791,7 +3756,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -3816,11 +3781,6 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -3861,7 +3821,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -4627,11 +4587,6 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -4671,7 +4626,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -4696,11 +4651,6 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -4741,7 +4691,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -5507,11 +5457,6 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -5551,7 +5496,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -5576,11 +5521,6 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -5621,7 +5561,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -6387,11 +6327,6 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -6431,7 +6366,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -6456,11 +6391,6 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -6501,7 +6431,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -7324,11 +7254,6 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -7368,7 +7293,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -7393,11 +7318,6 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -7438,7 +7358,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -8261,11 +8181,6 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -8305,7 +8220,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -8330,11 +8245,6 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -8375,7 +8285,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -9141,11 +9051,6 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -9185,7 +9090,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -9210,11 +9115,6 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -9255,7 +9155,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -10854,11 +10754,6 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Err:  err,
 		}
 	}
-	// Set default value for query: limit.
-	{
-		val := int(5)
-		params.Limit.SetTo(val)
-	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -10898,7 +10793,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 							MinSet:        true,
 							Min:           1,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,
@@ -10923,11 +10818,6 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			In:   "query",
 			Err:  err,
 		}
-	}
-	// Set default value for query: offset.
-	{
-		val := int(0)
-		params.Offset.SetTo(val)
 	}
 	// Decode query: offset.
 	if err := func() error {
@@ -10968,7 +10858,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 							MinSet:        true,
 							Min:           0,
 							MaxSet:        true,
-							Max:           500,
+							Max:           5000,
 							MinExclusive:  false,
 							MaxExclusive:  false,
 							MultipleOfSet: false,

@@ -1125,18 +1125,16 @@ components:
       description: Limit the number of results.
       schema:
         type: integer
-        default: 5
         minimum: 1
-        maximum: 500
+        maximum: 5000
     Offset:
       name: offset
       in: query
       description: Offset the results paired with the limit parameter.
       schema:
         type: integer
-        default: 0
         minimum: 0
-        maximum: 500
+        maximum: 5000
   responses:
     BadRequestError:
       description: 400 Bad Request.
