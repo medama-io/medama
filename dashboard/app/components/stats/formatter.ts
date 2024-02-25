@@ -16,6 +16,10 @@ const percentFormatter = Intl.NumberFormat(languages, {
 // Convert a duration in milliseconds to a human readable format
 // such as 2h1m30s, 1m30s or 30s
 export const formatDuration = (durationMs = 0) => {
+	if (durationMs === 0) {
+		return 'N/A';
+	}
+
 	const totalSeconds = Math.floor(durationMs / 1000);
 	const hours = Math.floor(totalSeconds / 3600);
 	const minutes = Math.floor((totalSeconds % 3600) / 60);

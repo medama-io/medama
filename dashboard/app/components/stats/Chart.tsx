@@ -1,8 +1,9 @@
+import { Flex } from '@mantine/core';
 import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	Legend,
+	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
@@ -18,24 +19,22 @@ interface StackedBarChartProps {
 
 export const StackedBarChart = ({ data }: StackedBarChartProps) => {
 	return (
-		<BarChart
-			width={1000}
-			height={500}
-			data={data}
-			margin={{
-				top: 20,
-				right: 30,
-				left: 20,
-				bottom: 5,
-			}}
-		>
-			<CartesianGrid strokeDasharray="3 3" />
-			<XAxis dataKey="label" />
-			<YAxis />
-			<Tooltip />
-			<Legend />
-			<Bar dataKey="value" name="Visitors" stackId="a" fill="#8884d8" />
-			<Bar dataKey="stackValue" name="Page Views" stackId="a" fill="#82ca9d" />
-		</BarChart>
+		<Flex h={400} my="lg">
+			<ResponsiveContainer>
+				<BarChart data={data}>
+					<CartesianGrid />
+					<XAxis dataKey="label" />
+					<YAxis />
+					<Tooltip />
+					<Bar dataKey="value" name="Visitors" stackId="a" fill="#7D44C7" />
+					<Bar
+						dataKey="stackValue"
+						name="Page Views"
+						stackId="a"
+						fill="#9D5DEF"
+					/>
+				</BarChart>
+			</ResponsiveContainer>
+		</Flex>
 	);
 };

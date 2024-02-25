@@ -155,7 +155,6 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 							isBounce
 						/>
 					</Group>
-					<div>Switch Chart</div>
 				</Group>
 			</div>
 		</div>
