@@ -83,6 +83,11 @@ var DurationPayload;
 	let uid = generateUid();
 
 	/**
+	 * The current page URL excluding the protocol and query parameters.
+	 */
+	let path = location.origin + location.pathname;
+
+	/**
 	 * Whether the user is unique or not.
 	 * This is updated when the server checks the ping cache on page load.
 	 */
@@ -155,6 +160,7 @@ var DurationPayload;
 		hiddenStartTime = 0;
 		hiddenTotalTime = Date.now();
 		isUnloadCalled = false;
+		path = location.host + location.pathname;
 	};
 
 	/**
@@ -183,7 +189,7 @@ var DurationPayload;
 					 * to not rename them.
 					 */ ({
 						"b": uid,
-						"u": location.href,
+						"u": path,
 						"r": document.referrer,
 						"e": EventType.LOAD,
 						"p": isUnique,
@@ -302,24 +308,36 @@ var DurationPayload;
 				}
 			);
 		} else {
+			// We need to ensure we're not sending a beacon event when the search params
+			// change. Only if the path changes.
+			const hasChanged = path !== location.origin + location.pathname;
+
 			// Add pushState event listeners to track navigation changes with
 			// router libraries that use the History API.
 			history.pushState = function () {
-				sendUnloadBeacon();
-				// If the event is a history change, then we need to reset the id and timers
-				// because the page is not actually reloading the script.
-				cleanup();
-				historyPush.apply(history, arguments);
-				sendLoadBeacon();
+				if (hasChanged) {
+					sendUnloadBeacon();
+					// If the event is a history change, then we need to reset the id and timers
+					// because the page is not actually reloading the script.
+					cleanup();
+					historyPush.apply(history, arguments);
+					sendLoadBeacon();
+				} else {
+					historyPush.apply(history, arguments);
+				}
 			};
 
 			// replaceState is used by some router libraries to replace the current
 			// history state instead of pushing a new one.
 			history.replaceState = function () {
-				sendUnloadBeacon();
-				cleanup();
-				historyReplace.apply(history, arguments);
-				sendLoadBeacon();
+				if (hasChanged) {
+					sendUnloadBeacon();
+					cleanup();
+					historyReplace.apply(history, arguments);
+					sendLoadBeacon();
+				} else {
+					historyReplace.apply(history, arguments);
+				}
 			};
 
 			// popstate is fired when the back or forward button is pressed.
