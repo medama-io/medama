@@ -143,8 +143,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				pageviews,
 				pageviewsPercentage,
 				bounceRate,
-				duration,
-				durationPercentage
+				duration
 			);
 			break;
 		}

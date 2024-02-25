@@ -51,7 +51,7 @@ const fetchStats = async (
 ) => {
 	const { dataset = datasets, isSummary = false, limit } = options;
 	const set = new Set(dataset);
-	const filters = generateFilters(request.url, { limit });
+	const [filters, interval] = generateFilters(request.url, { limit });
 
 	// Depending on what data is requested, we can make multiple requests in
 	// parallel to speed up the loading time.
@@ -75,6 +75,7 @@ const fetchStats = async (
 					pathKey: params.hostname,
 					query: {
 						previous: true,
+						interval,
 						...filters,
 					},
 			  })

@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 
+	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
 )
 
@@ -55,6 +56,7 @@ type AnalyticsClient interface {
 	GetWebsiteReferrersSummary(ctx context.Context, filter *Filters) ([]*model.StatsReferrerSummary, error)
 	// Summary
 	GetWebsiteSummary(ctx context.Context, filter *Filters) (*model.StatsSummarySingle, error)
+	GetWebsiteIntervals(ctx context.Context, filter *Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error)
 	// Time
 	GetWebsiteTime(ctx context.Context, filter *Filters) ([]*model.StatsTime, error)
 	GetWebsiteTimeSummary(ctx context.Context, filter *Filters) ([]*model.StatsTimeSummary, error)

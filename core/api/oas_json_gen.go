@@ -3156,11 +3156,22 @@ func (s *StatsSummary) encodeFields(e *jx.Encoder) {
 			s.Previous.Encode(e)
 		}
 	}
+	{
+		if s.Interval != nil {
+			e.FieldStart("interval")
+			e.ArrStart()
+			for _, elem := range s.Interval {
+				elem.Encode(e)
+			}
+			e.ArrEnd()
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsSummary = [2]string{
+var jsonFieldsNameOfStatsSummary = [3]string{
 	0: "current",
 	1: "previous",
+	2: "interval",
 }
 
 // Decode decodes StatsSummary from json.
@@ -3191,6 +3202,23 @@ func (s *StatsSummary) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"previous\"")
+			}
+		case "interval":
+			if err := func() error {
+				s.Interval = make([]StatsSummaryIntervalItem, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem StatsSummaryIntervalItem
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.Interval = append(s.Interval, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"interval\"")
 			}
 		default:
 			return d.Skip()
@@ -3391,6 +3419,136 @@ func (s *StatsSummaryCurrent) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *StatsSummaryCurrent) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *StatsSummaryIntervalItem) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *StatsSummaryIntervalItem) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("date")
+		e.Str(s.Date)
+	}
+	{
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
+	}
+	{
+		if s.Pageviews.Set {
+			e.FieldStart("pageviews")
+			s.Pageviews.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfStatsSummaryIntervalItem = [3]string{
+	0: "date",
+	1: "visitors",
+	2: "pageviews",
+}
+
+// Decode decodes StatsSummaryIntervalItem from json.
+func (s *StatsSummaryIntervalItem) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode StatsSummaryIntervalItem to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "date":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.Date = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"date\"")
+			}
+		case "visitors":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Int()
+				s.Visitors = int(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"visitors\"")
+			}
+		case "pageviews":
+			if err := func() error {
+				s.Pageviews.Reset()
+				if err := s.Pageviews.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pageviews\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode StatsSummaryIntervalItem")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfStatsSummaryIntervalItem) {
+					name = jsonFieldsNameOfStatsSummaryIntervalItem[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *StatsSummaryIntervalItem) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *StatsSummaryIntervalItem) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

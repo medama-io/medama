@@ -6,6 +6,7 @@ import {
 import { Outlet, useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 
+import { StackedBarChart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
 import { StatsHeader } from '@/components/stats/StatsHeader';
 import { fetchStats } from '@/utils/stats';
@@ -19,17 +20,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		dataset: ['summary'],
 	});
 
-	return json(
-		{
-			status: 200,
-			...stats,
-		},
-		{
-			headers: {
-				'Cache-Control': 'private, max-age=10',
-			},
-		}
-	);
+	return json(stats);
 };
 
 export default function Index() {
@@ -41,7 +32,15 @@ export default function Index() {
 			<StatsHeader current={summary.current} previous={summary.previous} />
 			<main>
 				<Filters />
-				<div>Chart</div>
+				{summary.interval && (
+					<StackedBarChart
+						data={summary.interval.map((item) => ({
+							label: item.date,
+							value: item.visitors,
+							stackValue: item.pageviews,
+						}))}
+					/>
+				)}
 				<Outlet />
 			</main>
 		</>

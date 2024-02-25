@@ -52,11 +52,14 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website summary", attributes...)
 		return ErrInternalServerError(err), nil
 	}
-	current := api.StatsSummaryCurrent{
-		Visitors:  currentSummary.Visitors,
-		Pageviews: currentSummary.Pageviews,
-		Bounces:   currentSummary.Bounces,
-		Duration:  currentSummary.Duration,
+
+	resp := &api.StatsSummary{
+		Current: api.StatsSummaryCurrent{
+			Visitors:  currentSummary.Visitors,
+			Pageviews: currentSummary.Pageviews,
+			Bounces:   currentSummary.Bounces,
+			Duration:  currentSummary.Duration,
+		},
 	}
 
 	// Include previous summary if requested.
@@ -75,22 +78,36 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		return &api.StatsSummary{
-			Current: current,
-			Previous: api.NewOptStatsSummaryPrevious(
-				api.StatsSummaryPrevious{
-					Visitors:  previousSummary.Visitors,
-					Pageviews: previousSummary.Pageviews,
-					Bounces:   previousSummary.Bounces,
-					Duration:  previousSummary.Duration,
-				},
-			),
-		}, nil
+		resp.Previous = api.NewOptStatsSummaryPrevious(
+			api.StatsSummaryPrevious{
+				Visitors:  previousSummary.Visitors,
+				Pageviews: previousSummary.Pageviews,
+				Bounces:   previousSummary.Bounces,
+				Duration:  previousSummary.Duration,
+			},
+		)
 	}
 
-	return &api.StatsSummary{
-		Current: current,
-	}, nil
+	// Return bucketed interval values if requested.
+	if params.Interval.Value != "" {
+		interval, err := h.analyticsDB.GetWebsiteIntervals(ctx, filters, params.Interval.Value)
+		if err != nil {
+			attributes = append(attributes, slog.String("error", err.Error()))
+			slog.LogAttrs(ctx, slog.LevelError, "failed to get website intervals", attributes...)
+			return ErrInternalServerError(err), nil
+		}
+
+		resp.Interval = []api.StatsSummaryIntervalItem{}
+		for _, i := range interval {
+			resp.Interval = append(resp.Interval, api.StatsSummaryIntervalItem{
+				Date:      i.Interval,
+				Visitors:  i.Visitors,
+				Pageviews: api.NewOptInt(i.Pageviews),
+			})
+		}
+	}
+
+	return resp, nil
 }
 
 func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteIDPagesParams) (api.GetWebsiteIDPagesRes, error) {

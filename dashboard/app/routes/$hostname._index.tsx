@@ -33,17 +33,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		limit: 5, // Summaries should only show 5 items max
 	});
 
-	return json(
-		{
-			status: 200,
-			...stats,
-		},
-		{
-			headers: {
-				'Cache-Control': 'private, max-age=10',
-			},
-		}
-	);
+	return json(stats);
 };
 
 export default function Index() {

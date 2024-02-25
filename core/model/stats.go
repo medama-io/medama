@@ -17,6 +17,12 @@ type StatsSummary struct {
 	Previous StatsSummarySingle
 }
 
+type StatsIntervals struct {
+	Interval  string `db:"interval"`
+	Visitors  int    `db:"visitors"`
+	Pageviews int    `db:"pageviews"`
+}
+
 type StatsPagesSummary struct {
 	Pathname           string  `db:"pathname"`
 	Visitors           int     `db:"visitors"`

@@ -303,7 +303,6 @@ export interface components {
         pageviews: number;
         bounces: number;
         duration: number;
-        active: number;
       };
       previous?: {
         visitors: number;
@@ -311,6 +310,11 @@ export interface components {
         bounces: number;
         duration: number;
       };
+      interval?: {
+          date: string;
+          visitors: number;
+          pageviews?: number;
+        }[];
     };
     /** StatsPages */
     StatsPages: {
@@ -587,12 +591,10 @@ export interface components {
     CountryCode?: components["schemas"]["FilterFixed"];
     /** @description Language code. */
     Language?: components["schemas"]["FilterFixed"];
-    /** @description Period start date using full-date notation in RFC3339 format (YYYY-MM-DD). */
+    /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
     PeriodStart?: string;
-    /** @description Period end date using full-date notation in RFC3339 format (YYYY-MM-DD). */
+    /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
     PeriodEnd?: string;
-    /** @description Period interval. */
-    PeriodInterval?: "hour" | "day" | "week" | "month" | "year";
     /** @description Limit the number of results. */
     Limit?: number;
     /** @description Offset the results paired with the limit parameter. */
@@ -914,9 +916,10 @@ export interface operations {
       query?: {
         /** @description Retrieve the data from the previous period as well. This is useful when comparing data from the previous period to the current period. Requires the start and end period parameters to be set. */
         previous?: boolean;
+        /** @description The interval to group the data by. This can be set to minute, hour, day, week or month. This will return an interval property if set. */
+        interval?: "minute" | "hour" | "day" | "week" | "month";
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -958,7 +961,6 @@ export interface operations {
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1002,7 +1004,6 @@ export interface operations {
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1046,7 +1047,6 @@ export interface operations {
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1090,7 +1090,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1134,7 +1133,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1178,7 +1176,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1222,7 +1219,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1266,7 +1262,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1310,7 +1305,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1354,7 +1348,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];
@@ -1398,7 +1391,6 @@ export interface operations {
       query?: {
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
-        interval?: components["parameters"]["PeriodInterval"];
         path?: components["parameters"]["Path"];
         referrer?: components["parameters"]["Referrer"];
         utm_source?: components["parameters"]["UTMSource"];

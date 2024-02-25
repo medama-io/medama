@@ -24,11 +24,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 		dataset: [query],
 	});
 
-	return json(stats, {
-		headers: {
-			'Cache-Control': 'private, max-age=10',
-		},
-	});
+	return json(stats);
 };
 
 export default function Index() {

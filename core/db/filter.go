@@ -119,7 +119,7 @@ func NewFilter(field FilterField, param interface{}) *Filter {
 }
 
 // String returns the string representation of the filter combined with the operation.
-func (f *Filter) String() string {
+func (f Filter) String() string {
 	switch f.Operation {
 	case FilterEquals:
 		return string(f.Field) + " = ?"
@@ -159,9 +159,8 @@ type Filters struct {
 	Language       *Filter
 
 	// Time Periods (in RFC3339 format 2017-07-21T17:32:28Z)
-	PeriodStart    string
-	PeriodEnd      string
-	PeriodInterval string
+	PeriodStart string
+	PeriodEnd   string
 
 	// Pagination
 	Limit  int
@@ -169,7 +168,7 @@ type Filters struct {
 }
 
 // String builds the WHERE query string.
-func (f *Filters) WhereString() string {
+func (f Filters) WhereString() string {
 	var query strings.Builder
 
 	// Build the query string
@@ -233,7 +232,7 @@ func (f *Filters) WhereString() string {
 	return query.String()
 }
 
-func (f *Filters) PaginationString() string {
+func (f Filters) PaginationString() string {
 	var query strings.Builder
 	if f.Limit > 0 {
 		query.WriteString(" LIMIT ?")
@@ -251,7 +250,7 @@ func (f *Filters) PaginationString() string {
 // of the query to prevent SQL injection.
 //
 // The startValues are the values that are passed in addition to the filters.
-func (f *Filters) Args(startValues ...string) []interface{} {
+func (f Filters) Args(startValues ...string) []interface{} {
 	// Initialize the args with the start values
 	args := []interface{}{}
 	for _, v := range startValues {

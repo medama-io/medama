@@ -567,10 +567,6 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.End,
 				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
 					Name: "path",
 					In:   "query",
 				}: params.Path,
@@ -753,10 +749,6 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 					Name: "end",
 					In:   "query",
 				}: params.End,
-				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
 				{
 					Name: "path",
 					In:   "query",
@@ -941,10 +933,6 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.End,
 				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
 					Name: "path",
 					In:   "query",
 				}: params.Path,
@@ -1127,10 +1115,6 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 					Name: "end",
 					In:   "query",
 				}: params.End,
-				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
 				{
 					Name: "path",
 					In:   "query",
@@ -1315,10 +1299,6 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.End,
 				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
 					Name: "path",
 					In:   "query",
 				}: params.Path,
@@ -1502,10 +1482,6 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.End,
 				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
 					Name: "path",
 					In:   "query",
 				}: params.Path,
@@ -1688,10 +1664,6 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 					Name: "end",
 					In:   "query",
 				}: params.End,
-				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
 				{
 					Name: "path",
 					In:   "query",
@@ -1880,10 +1852,6 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 					In:   "query",
 				}: params.End,
 				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
 					Name: "path",
 					In:   "query",
 				}: params.Path,
@@ -2071,10 +2039,6 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.End,
 				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
 					Name: "path",
 					In:   "query",
 				}: params.Path,
@@ -2258,10 +2222,6 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.End,
 				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
-				{
 					Name: "path",
 					In:   "query",
 				}: params.Path,
@@ -2433,6 +2393,10 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Previous,
 				{
+					Name: "interval",
+					In:   "query",
+				}: params.Interval,
+				{
 					Name: "_me_sess",
 					In:   "cookie",
 				}: params.MeSess,
@@ -2448,10 +2412,6 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					Name: "end",
 					In:   "query",
 				}: params.End,
-				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
 				{
 					Name: "path",
 					In:   "query",
@@ -2631,10 +2591,6 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 					Name: "end",
 					In:   "query",
 				}: params.End,
-				{
-					Name: "interval",
-					In:   "query",
-				}: params.Interval,
 				{
 					Name: "path",
 					In:   "query",

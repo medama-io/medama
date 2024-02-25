@@ -74,13 +74,16 @@ const generatePeriods = (period: string) => {
 export const generateFilters = (
 	url: string,
 	opts?: FilterOptions
-): Record<string, string | number | undefined> => {
+): [Record<string, string | number | undefined>, string | undefined] => {
 	// Convert search params to filters
 	const searchParams = new URL(url).searchParams;
 
 	// Convert period param to start and end
 	const period = searchParams.get('period');
 	const { start, end } = generatePeriods(period ?? 'today');
+
+	// Get interval param
+	const interval = searchParams.get('interval') ?? 'hour';
 
 	const filters: Record<string, string> = {};
 	for (const [key, value] of searchParams) {
@@ -89,5 +92,5 @@ export const generateFilters = (
 		}
 	}
 
-	return { start, end, limit: opts?.limit, ...filters };
+	return [{ start, end, limit: opts?.limit, ...filters }, interval];
 };

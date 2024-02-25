@@ -432,11 +432,21 @@ paths:
           schema:
             type: boolean
             default: false
+        - in: query
+          name: interval
+          description: The interval to group the data by. This can be set to minute, hour, day, week or month. This will return an interval property if set.
+          schema:
+            type: string
+            enum:
+              - minute
+              - hour
+              - day
+              - week
+              - month
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -480,7 +490,6 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -526,7 +535,6 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -572,7 +580,6 @@ paths:
         - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -616,7 +623,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -660,7 +666,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -704,7 +709,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -748,7 +752,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -792,7 +795,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -836,7 +838,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -880,7 +881,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -924,7 +924,6 @@ paths:
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
-        - $ref: "#/components/parameters/PeriodInterval"
         - $ref: "#/components/parameters/Path"
         - $ref: "#/components/parameters/Referrer"
         - $ref: "#/components/parameters/UTMSource"
@@ -1106,19 +1105,6 @@ components:
       schema:
         type: string
         format: date-time
-    PeriodInterval:
-      name: interval
-      in: query
-      description: Period interval.
-      required: false
-      schema:
-        type: string
-        enum:
-          - hour
-          - day
-          - week
-          - month
-          - year
     Limit:
       name: limit
       in: query
@@ -1515,6 +1501,20 @@ components:
             - pageviews
             - bounces
             - duration
+        interval:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+              visitors:
+                type: integer
+              pageviews:
+                type: integer
+            required:
+              - date
+              - visitors
       required:
         - current
     StatsPages:
