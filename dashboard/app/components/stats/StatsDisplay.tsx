@@ -74,6 +74,7 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 							component={Link}
 							to={`./${tab.label.toLowerCase()}`}
 							prefetch="intent"
+							preventScrollReset
 							className={classes.button}
 						>
 							Load More

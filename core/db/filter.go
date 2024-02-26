@@ -222,11 +222,11 @@ func (f Filters) WhereString() string {
 
 	// Time period filters
 	if f.PeriodStart != "" {
-		query.WriteString(" AND date_created >= strptime(?, '%Y-%m-%dT%H:%M:%SZ')::TIMESTAMPTZ")
+		query.WriteString(" AND date_created >= ?::TIMESTAMPTZ")
 	}
 
 	if f.PeriodEnd != "" {
-		query.WriteString(" AND date_created <= strptime(?, '%Y-%m-%dT%H:%M:%SZ')::TIMESTAMPTZ")
+		query.WriteString(" AND date_created <= ?::TIMESTAMPTZ")
 	}
 
 	return query.String()

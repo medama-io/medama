@@ -1,11 +1,11 @@
 import {
+	endOfDay,
 	endOfHour,
-	endOfToday,
-	endOfYesterday,
 	formatRFC3339,
+	startOfDay,
 	startOfHour,
-	startOfToday,
-	startOfYesterday,
+	startOfMonth,
+	startOfWeek,
 	sub,
 } from 'date-fns';
 
@@ -23,36 +23,36 @@ const generatePeriods = (period: string) => {
 
 	switch (period) {
 		case 'today': {
-			startPeriod = startOfToday();
-			endPeriod = endOfToday();
+			startPeriod = startOfDay(currentDate);
+			endPeriod = endOfDay(currentDate);
 			break;
 		}
 		case 'yesterday': {
-			startPeriod = startOfYesterday();
-			endPeriod = endOfYesterday();
+			startPeriod = startOfDay(sub(currentDate, { days: 1 }));
+			endPeriod = endOfDay(sub(currentDate, { days: 1 }));
 			break;
 		}
 		case 'quarter': {
-			startPeriod = sub(currentDate, { months: 3 });
-			endPeriod = currentDate;
-			interval = 'month';
+			startPeriod = startOfWeek(sub(currentDate, { months: 3 }));
+			endPeriod = endOfDay(currentDate);
+			interval = 'week';
 			break;
 		}
 		case 'half': {
-			startPeriod = sub(currentDate, { months: 6 });
-			endPeriod = currentDate;
+			startPeriod = startOfMonth(sub(currentDate, { months: 6 }));
+			endPeriod = endOfDay(currentDate);
 			interval = 'month';
 			break;
 		}
 		case 'year': {
-			startPeriod = sub(currentDate, { years: 1 });
-			endPeriod = currentDate;
+			startPeriod = startOfMonth(sub(currentDate, { years: 1 }));
+			endPeriod = endOfDay(currentDate);
 			interval = 'month';
 			break;
 		}
 		case 'all': {
-			startPeriod = new Date(0);
-			endPeriod = currentDate;
+			startPeriod = new Date(2024, 0);
+			endPeriod = endOfDay(currentDate);
 			interval = 'month';
 			break;
 		}
@@ -60,12 +60,12 @@ const generatePeriods = (period: string) => {
 			// Manually parse periods like 24h, 14d, 30d, etc
 			if (period.endsWith('d')) {
 				const days = Number.parseInt(period, 10);
-				startPeriod = sub(startOfHour(currentDate), { days });
+				startPeriod = startOfDay(sub(currentDate, { days }));
 				endPeriod = endOfHour(currentDate);
 				interval = 'day';
 			} else if (period.endsWith('h')) {
 				const hours = Number.parseInt(period, 10);
-				startPeriod = sub(startOfHour(currentDate), { hours });
+				startPeriod = startOfHour(sub(currentDate, { hours }));
 				endPeriod = endOfHour(currentDate);
 			} else {
 				throw new Error(`Invalid period: ${period}`);

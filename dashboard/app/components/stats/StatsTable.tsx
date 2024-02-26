@@ -370,11 +370,14 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 			}}
 			orientation="vertical"
 			onChange={(value) => {
-				navigate({
-					pathname: `../${value}`,
-					// Preserve search params when switching tabs
-					search: '?' + searchParams.toString(),
-				});
+				navigate(
+					{
+						pathname: `../${value}`,
+						// Preserve search params when switching tabs
+						search: '?' + searchParams.toString(),
+					},
+					{ preventScrollReset: true }
+				);
 			}}
 		>
 			<Tabs.List>

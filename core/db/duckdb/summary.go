@@ -63,26 +63,43 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 	case api.GetWebsiteIDSummaryIntervalDay:
 		intervalQuery = "1 DAY"
 	case api.GetWebsiteIDSummaryIntervalWeek:
-		intervalQuery = "1 WEEK"
+		intervalQuery = "7 DAYS"
 	case api.GetWebsiteIDSummaryIntervalMonth:
 		intervalQuery = "1 MONTH"
 	}
 
 	// Intervals are determined by the number of pageviews that match the hostname
 	// and are grouped by the interval.
+	//
+	// We use the WITH clause to generate a series of intervals with empty visitor and pageview counts.
+	// We then JOIN the intervals with the actual pageview counts to fill in the gaps.
+	// This is done to ensure that we have a row for every interval even if there are no pageviews.
 	query.WriteString(`--sql
-		SELECT
-			time_bucket(INTERVAL ` + intervalQuery + `, date_created, strptime(?, '%Y-%m-%dT%H:%M:%SZ')::TIMESTAMPTZ)::VARCHAR AS interval,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			COUNT(*) AS pageviews,
-		FROM views
-		WHERE `)
+		WITH intervals AS MATERIALIZED (
+			SELECT
+				generate_series as interval
+			FROM
+				generate_series(?::TIMESTAMPTZ, ?::TIMESTAMPTZ, ?::INTERVAL)
+		),
+		stats AS MATERIALIZED (
+			SELECT
+				time_bucket(?::INTERVAL, date_created, ?::TIMESTAMPTZ) AS interval,
+				COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
+				COUNT(*) AS pageviews
+			FROM views
+			WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(`--sql
-		GROUP BY interval
+			GROUP BY interval
+		)
+		SELECT
+			intervals.interval::VARCHAR AS interval,
+			COALESCE(stats.visitors, 0) AS visitors,
+			COALESCE(stats.pageviews, 0) AS pageviews
+		FROM intervals LEFT JOIN stats USING (interval)
 		ORDER BY interval ASC`)
 
-	err := c.SelectContext(ctx, &resp, query.String(), filter.Args(endPeriod)...)
+	err := c.SelectContext(ctx, &resp, query.String(), filter.Args(filter.PeriodStart, endPeriod, intervalQuery, intervalQuery, filter.PeriodStart)...)
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}

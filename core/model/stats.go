@@ -1,8 +1,10 @@
 package model
 
+import "time"
+
 const (
 	// DateFormat is the format used for date and time values (YYYY-MM-DD).
-	DateFormat = "2006-01-02T15:04:05Z"
+	DateFormat = time.RFC3339
 )
 
 type StatsSummarySingle struct {

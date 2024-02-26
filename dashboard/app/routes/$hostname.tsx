@@ -41,10 +41,14 @@ export default function Index() {
 			dateFormatter = (date: Date) => format(date, 'HH:mm');
 			break;
 		}
-		case '7d':
+		case '7d': {
+			dateFormatter = (date: Date) => format(date, 'EEEEEE, MMM d');
+			break;
+		}
 		case '14d':
-		case '30d': {
-			dateFormatter = (date: Date) => format(date, 'EEEEEE MMM d');
+		case '30d':
+		case 'quarter': {
+			dateFormatter = (date: Date) => format(date, 'MMM d');
 			break;
 		}
 	}

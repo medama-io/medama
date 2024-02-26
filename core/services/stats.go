@@ -64,6 +64,8 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 
 	// Include previous summary if requested.
 	if params.Previous.Value && params.Start.IsSet() && params.End.IsSet() {
+		// Make a copy of filters to avoid modifying the original.
+		filters := *filters
 		// Update filter periods to get previous summary.
 		// Calculate the difference between the start and end dates and
 		// subtract that from the start date to get the previous period.
@@ -71,7 +73,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		filters.PeriodStart = params.Start.Value.Add(-difference).Format(model.DateFormat)
 		filters.PeriodEnd = params.Start.Value.Format(model.DateFormat)
 
-		previousSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filters)
+		previousSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, &filters)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to get previous website summary", attributes...)
