@@ -1,63 +1,61 @@
 (function () {
 	if (document) {
-		var q = document.currentScript,
-			e = document.location.protocol + '//' + q.getAttribute('data-api'),
-			r = () => Date.now().toString(36) + Math.random().toString(36).substr(2),
-			h = r(),
-			k = location.origin + location.pathname,
-			l = !0,
-			t = !0,
+		var n = document.currentScript,
+			e = document.location.protocol + '//' + n.getAttribute('data-api'),
+			p = () => Date.now().toString(36) + Math.random().toString(36).substr(2),
+			g = p(),
+			h = !0,
+			q = !0,
 			f = 0,
-			m = Date.now(),
-			n = !1,
-			u = history.pushState,
-			v = history.replaceState,
-			w = (a) =>
-				new Promise((g) => {
+			k = Date.now(),
+			l = !1,
+			t = history.pushState,
+			u = history.replaceState,
+			r = (a) =>
+				new Promise((v) => {
 					const b = new XMLHttpRequest();
 					b.onload = () => {
-						g(0 == b.responseText);
+						v(0 == b.responseText);
 					};
 					b.open('GET', a);
 					b.setRequestHeader('Content-Type', 'text/plain');
 					b.send();
 				}),
-			p = () => {
-				l = !1;
-				h = r();
+			m = () => {
+				h = !1;
+				g = p();
 				f = 0;
-				m = Date.now();
-				n = !1;
-				k = location.host + location.pathname;
+				k = Date.now();
+				l = !1;
 			},
 			c = () => {
-				w(
+				r(
 					e +
 						'/event/ping?u=' +
 						encodeURIComponent(location.host + location.pathname)
 				).then((a) => {
-					t = a;
+					q = a;
 					navigator.sendBeacon(
 						e + '/event/hit',
 						JSON.stringify({
-							b: h,
-							u: k,
+							b: g,
+							u: location.href,
 							r: document.referrer,
 							e: 'load',
-							p: l,
-							q: t,
+							p: h,
+							q,
 							t: Intl.DateTimeFormat().resolvedOptions().timeZone,
 						})
 					);
 				});
 			},
 			d = () => {
-				n ||
+				l ||
 					navigator.sendBeacon(
 						e + '/event/hit',
-						JSON.stringify({ b: h, e: 'unload', m: Date.now() - m })
+						JSON.stringify({ b: g, e: 'unload', m: Date.now() - k })
 					);
-				n = !0;
+				l = !0;
 			};
 		'onpagehide' in self
 			? document.addEventListener(
@@ -86,42 +84,41 @@
 			() => {
 				'hidden' == document.visibilityState
 					? (f = Date.now())
-					: ((m += Date.now() - f), (f = 0));
+					: ((k += Date.now() - f), (f = 0));
 			},
 			{ capture: !0 }
 		);
-		w(e + '/event/ping').then((a) => {
-			l = a;
+		r(e + '/event/ping').then((a) => {
+			h = a;
 			c();
-			if (q.getAttribute('data-hash'))
-				document.addEventListener(
-					'hashchange',
-					() => {
+			n.getAttribute('data-hash')
+				? document.addEventListener(
+						'hashchange',
+						() => {
+							c();
+						},
+						{ capture: !0 }
+				  )
+				: ((history.pushState = function () {
+						d();
+						m();
+						t.apply(history, arguments);
 						c();
-					},
-					{ capture: !0 }
-				);
-			else {
-				const g = k !== location.origin + location.pathname;
-				history.pushState = function () {
-					g
-						? (d(), p(), u.apply(history, arguments), c())
-						: u.apply(history, arguments);
-				};
-				history.replaceState = function () {
-					g
-						? (d(), p(), v.apply(history, arguments), c())
-						: v.apply(history, arguments);
-				};
-				window.addEventListener(
-					'popstate',
-					() => {
-						p();
+				  }),
+				  (history.replaceState = function () {
+						d();
+						m();
+						u.apply(history, arguments);
 						c();
-					},
-					{ capture: !0 }
-				);
-			}
+				  }),
+				  window.addEventListener(
+						'popstate',
+						() => {
+							m();
+							c();
+						},
+						{ capture: !0 }
+				  ));
 		});
 	}
 })();
