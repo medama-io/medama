@@ -22,10 +22,17 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 	//
 	// VisitorsPercentage is the percentage the referrer contributes to the total visitors.
 	query.WriteString(`--sql
+		WITH total AS MATERIALIZED (
+			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			FROM views
+			WHERE `)
+	query.WriteString(filter.WhereString())
+	query.WriteString(`--sql
+		)
 		SELECT
 			referrer,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
@@ -67,10 +74,17 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 	//
 	// Duration is the median duration the user spent on the page in milliseconds.
 	query.WriteString(`--sql
+		WITH total AS MATERIALIZED (
+			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			FROM views
+			WHERE `)
+	query.WriteString(filter.WhereString())
+	query.WriteString(`--sql
+		)
 		SELECT
 			referrer,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage,
+			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views

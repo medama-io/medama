@@ -25,10 +25,17 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 	//
 	// This is ordered by the number of unique visitors in descending order.
 	query.WriteString(`--sql
+		WITH total AS MATERIALIZED (
+			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			FROM views
+			WHERE `)
+	query.WriteString(filter.WhereString())
+	query.WriteString(`--sql
+		)
 		SELECT
 			pathname,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
@@ -79,12 +86,21 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	//
 	// This is ordered by the number of unique visitors in descending order.
 	query.WriteString(`--sql
+		WITH total AS MATERIALIZED (
+			SELECT
+				COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors,
+				COUNT(*) AS total_pageviews
+			FROM views
+			WHERE `)
+	query.WriteString(filter.WhereString())
+	query.WriteString(`--sql
+		)
 		SELECT
 			pathname,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage,
+			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) AS pageviews,
-			ifnull(ROUND(pageviews / (SELECT COUNT(*) FROM views WHERE hostname = :hostname), 4), 0) AS pageviews_percentage,
+			ifnull(ROUND(pageviews / (SELECT total_pageviews FROM total), 4), 0) AS pageviews_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views

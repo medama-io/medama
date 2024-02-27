@@ -621,6 +621,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -664,6 +665,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -707,6 +709,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -750,6 +753,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -793,6 +797,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -836,6 +841,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -879,6 +885,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -922,6 +929,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
+        - $ref: "#/components/parameters/Summary"
         - $ref: "#/components/parameters/PeriodStart"
         - $ref: "#/components/parameters/PeriodEnd"
         - $ref: "#/components/parameters/Path"
@@ -1624,6 +1632,12 @@ components:
             type: number
             description: Percentage of unique visitors from UTM source.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - source
           - visitors
@@ -1644,6 +1658,12 @@ components:
             type: number
             description: Percentage of unique visitors from UTM medium.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - medium
           - visitors
@@ -1664,6 +1684,12 @@ components:
             type: number
             description: Percentage of unique visitors from UTM campaign.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - campaign
           - visitors
@@ -1684,6 +1710,12 @@ components:
             type: number
             description: Percentage of unique visitors from browser.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - browser
           - visitors
@@ -1704,6 +1736,12 @@ components:
             type: number
             description: Percentage of unique visitors from OS.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - os
           - visitors
@@ -1724,6 +1762,12 @@ components:
             type: number
             description: Percentage of unique visitors from device.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - device
           - visitors
@@ -1744,6 +1788,12 @@ components:
             type: number
             description: Percentage of unique visitors from country.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - country
           - visitors
@@ -1764,6 +1814,12 @@ components:
             type: number
             description: Percentage of unique visitors for language.
             format: float
+          bounces:
+            type: integer
+            description: Number of bounces from referrer.
+          duration:
+            type: integer
+            description: Total time spent on page from referrer in milliseconds.
         required:
           - language
           - visitors

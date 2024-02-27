@@ -559,6 +559,10 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					In:   "path",
 				}: params.Hostname,
 				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
+				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,
@@ -741,6 +745,10 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 					Name: "hostname",
 					In:   "path",
 				}: params.Hostname,
+				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
 				{
 					Name: "start",
 					In:   "query",
@@ -925,6 +933,10 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 					In:   "path",
 				}: params.Hostname,
 				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
+				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,
@@ -1107,6 +1119,10 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 					Name: "hostname",
 					In:   "path",
 				}: params.Hostname,
+				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
 				{
 					Name: "start",
 					In:   "query",
@@ -1291,6 +1307,10 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 					In:   "path",
 				}: params.Hostname,
 				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
+				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,
@@ -1474,6 +1494,10 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 					In:   "path",
 				}: params.Hostname,
 				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
+				{
 					Name: "start",
 					In:   "query",
 				}: params.Start,
@@ -1656,6 +1680,10 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 					Name: "hostname",
 					In:   "path",
 				}: params.Hostname,
+				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
 				{
 					Name: "start",
 					In:   "query",
@@ -2213,6 +2241,10 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 					Name: "hostname",
 					In:   "path",
 				}: params.Hostname,
+				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
 				{
 					Name: "start",
 					In:   "query",

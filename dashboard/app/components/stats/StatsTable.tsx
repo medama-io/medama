@@ -86,7 +86,8 @@ const pageviewsPercentage: DataTableColumn = {
 const bounceRate: DataTableColumn = {
 	accessor: 'bounce_rate',
 	title: 'Bounce Rate %',
-	render: (record: DataRow) => formatPercentage(record.bounce_rate),
+	render: (record: DataRow) =>
+		formatPercentage((record.bounces ?? 0) / (record.visitors ?? 0)),
 };
 const duration: DataTableColumn = {
 	accessor: 'duration',
@@ -153,13 +154,13 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				duration,
 				{
 					accessor: 'duration_lower_quartile',
-					title: 'Lower Quartile (25%)',
+					title: 'Q1 (25%)',
 					render: (record: DataRow) =>
 						formatDuration(record.duration_lower_quartile),
 				},
 				{
 					accessor: 'duration_upper_quartile',
-					title: 'Upper Quartile (75%)',
+					title: 'Q3 (75%)',
 					render: (record: DataRow) =>
 						formatDuration(record.duration_upper_quartile),
 				},
@@ -194,7 +195,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 						record.source === '' ? 'Direct/None' : record.source,
 				},
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -208,7 +211,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 						record.medium === '' ? 'Direct/None' : record.medium,
 				},
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -222,7 +227,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 						record.campaign === '' ? 'Direct/None' : record.campaign,
 				},
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -230,7 +237,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 			columns.push(
 				{ accessor: 'browser', title: 'Browser', width: '100%' },
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -238,7 +247,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 			columns.push(
 				{ accessor: 'os', title: 'Operating System', width: '100%' },
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -246,7 +257,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 			columns.push(
 				{ accessor: 'device', title: 'Device', width: '100%' },
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -254,7 +267,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 			columns.push(
 				{ accessor: 'country', title: 'Country', width: '100%' },
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -262,7 +277,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 			columns.push(
 				{ accessor: 'language', title: 'Language', width: '100%' },
 				visitors,
-				visitorsPercentage
+				visitorsPercentage,
+				bounceRate,
+				duration
 			);
 			break;
 		}
@@ -348,16 +365,6 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
-	// If data has bounces, then we need to calculate the bounce rate
-	let tableData: DataRow[] = data;
-	const hasBounces = data.some((item) => item.bounces !== undefined);
-	if (hasBounces) {
-		tableData = data.map((item) => ({
-			...item,
-			bounce_rate: (item.bounces ?? 0) / (item.visitors ?? 0),
-		}));
-	}
-
 	return (
 		<Tabs
 			variant="unstyled"
@@ -394,8 +401,7 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 			</Tabs.List>
 
 			<Tabs.Panel key={query} value={query}>
-				<QueryTable query={query} data={tableData} />
-				{JSON.stringify(tableData)}
+				<QueryTable query={query} data={data} />
 			</Tabs.Panel>
 		</Tabs>
 	);

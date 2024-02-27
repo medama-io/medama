@@ -66,49 +66,98 @@ type StatsReferrers struct {
 	Duration int `db:"duration"`
 }
 
-type StatsUTMSources struct {
+type StatsUTMSourcesSummary struct {
 	Source             string  `db:"source"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
-type StatsUTMMediums struct {
+type StatsUTMSources struct {
+	StatsUTMSourcesSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
+}
+
+type StatsUTMMediumsSummary struct {
 	Medium             string  `db:"medium"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
-type StatsUTMCampaigns struct {
+type StatsUTMMediums struct {
+	StatsUTMMediumsSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
+}
+
+type StatsUTMCampaignsSummary struct {
 	Campaign           string  `db:"campaign"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
-type StatsBrowsers struct {
+
+type StatsUTMCampaigns struct {
+	StatsUTMCampaignsSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
+}
+
+type StatsBrowsersSummary struct {
 	Browser            BrowserName `db:"browser"`
 	Visitors           int         `db:"visitors"`
 	VisitorsPercentage float32     `db:"visitors_percentage"`
 }
 
-type StatsOS struct {
+type StatsBrowsers struct {
+	StatsBrowsersSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
+}
+
+type StatsOSSummary struct {
 	OS                 OSName  `db:"os"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
-type StatsDevices struct {
+type StatsOS struct {
+	StatsOSSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
+}
+
+type StatsDevicesSummary struct {
 	Device             DeviceType `db:"device"`
 	Visitors           int        `db:"visitors"`
 	VisitorsPercentage float32    `db:"visitors_percentage"`
 }
 
-type StatsCountries struct {
+type StatsDevices struct {
+	StatsDevicesSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
+}
+
+type StatsCountriesSummary struct {
 	Country            string  `db:"country"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
-type StatsLanguages struct {
+type StatsCountries struct {
+	StatsCountriesSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
+}
+
+type StatsLanguagesSummary struct {
 	Language           string  `db:"language"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
+}
+
+type StatsLanguages struct {
+	StatsLanguagesSummary
+	Bounces  int `db:"bounces"`
+	Duration int `db:"duration"`
 }

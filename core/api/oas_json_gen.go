@@ -1846,12 +1846,26 @@ func (s *StatsBrowsersItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsBrowsersItem = [3]string{
+var jsonFieldsNameOfStatsBrowsersItem = [5]string{
 	0: "browser",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsBrowsersItem from json.
@@ -1898,6 +1912,26 @@ func (s *StatsBrowsersItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
@@ -2026,12 +2060,26 @@ func (s *StatsCountriesItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsCountriesItem = [3]string{
+var jsonFieldsNameOfStatsCountriesItem = [5]string{
 	0: "country",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsCountriesItem from json.
@@ -2078,6 +2126,26 @@ func (s *StatsCountriesItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
@@ -2206,12 +2274,26 @@ func (s *StatsDevicesItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsDevicesItem = [3]string{
+var jsonFieldsNameOfStatsDevicesItem = [5]string{
 	0: "device",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsDevicesItem from json.
@@ -2258,6 +2340,26 @@ func (s *StatsDevicesItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
@@ -2386,12 +2488,26 @@ func (s *StatsLanguagesItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsLanguagesItem = [3]string{
+var jsonFieldsNameOfStatsLanguagesItem = [5]string{
 	0: "language",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsLanguagesItem from json.
@@ -2438,6 +2554,26 @@ func (s *StatsLanguagesItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
@@ -2566,12 +2702,26 @@ func (s *StatsOSItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsOSItem = [3]string{
+var jsonFieldsNameOfStatsOSItem = [5]string{
 	0: "os",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsOSItem from json.
@@ -2618,6 +2768,26 @@ func (s *StatsOSItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
@@ -4019,12 +4189,26 @@ func (s *StatsUTMCampaignsItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsUTMCampaignsItem = [3]string{
+var jsonFieldsNameOfStatsUTMCampaignsItem = [5]string{
 	0: "campaign",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsUTMCampaignsItem from json.
@@ -4071,6 +4255,26 @@ func (s *StatsUTMCampaignsItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
@@ -4199,12 +4403,26 @@ func (s *StatsUTMMediumsItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsUTMMediumsItem = [3]string{
+var jsonFieldsNameOfStatsUTMMediumsItem = [5]string{
 	0: "medium",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsUTMMediumsItem from json.
@@ -4251,6 +4469,26 @@ func (s *StatsUTMMediumsItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()
@@ -4379,12 +4617,26 @@ func (s *StatsUTMSourcesItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("visitors_percentage")
 		e.Float32(s.VisitorsPercentage)
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsUTMSourcesItem = [3]string{
+var jsonFieldsNameOfStatsUTMSourcesItem = [5]string{
 	0: "source",
 	1: "visitors",
 	2: "visitors_percentage",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsUTMSourcesItem from json.
@@ -4431,6 +4683,26 @@ func (s *StatsUTMSourcesItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
+			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
 			}
 		default:
 			return d.Skip()

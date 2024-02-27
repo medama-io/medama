@@ -376,6 +376,8 @@ type GetWebsiteIDBrowsersParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -420,6 +422,15 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -645,6 +656,52 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -1179,6 +1236,8 @@ type GetWebsiteIDCampaignsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -1223,6 +1282,15 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -1448,6 +1516,52 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -1982,6 +2096,8 @@ type GetWebsiteIDCountryParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -2026,6 +2142,15 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -2251,6 +2376,52 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -2785,6 +2956,8 @@ type GetWebsiteIDDeviceParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -2829,6 +3002,15 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3054,6 +3236,52 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -3588,6 +3816,8 @@ type GetWebsiteIDLanguageParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -3632,6 +3862,15 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3857,6 +4096,52 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -4391,6 +4676,8 @@ type GetWebsiteIDMediumsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -4435,6 +4722,15 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -4660,6 +4956,52 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -5194,6 +5536,8 @@ type GetWebsiteIDOsParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -5238,6 +5582,15 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -5463,6 +5816,52 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -7717,6 +8116,8 @@ type GetWebsiteIDSourcesParams struct {
 	MeSess string
 	// Hostname for the website.
 	Hostname string
+	// Return a summary of the stats.
+	Summary OptBool
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
 	Start OptDateTime
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
@@ -7761,6 +8162,15 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "path",
 		}
 		params.Hostname = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
 	}
 	{
 		key := middleware.ParameterKey{
@@ -7986,6 +8396,52 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}

@@ -118,7 +118,10 @@ const fetchStats = async (
 			? statsSources({
 					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
-					query: filters,
+					query: {
+						summary: isSummary,
+						...filters,
+					},
 			  })
 			: undefined,
 
@@ -126,7 +129,10 @@ const fetchStats = async (
 			? statsMediums({
 					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
-					query: filters,
+					query: {
+						summary: isSummary,
+						...filters,
+					},
 			  })
 			: undefined,
 
@@ -134,7 +140,10 @@ const fetchStats = async (
 			? statsCampaigns({
 					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
-					query: filters,
+					query: {
+						summary: isSummary,
+						...filters,
+					},
 			  })
 			: undefined,
 
@@ -153,7 +162,10 @@ const fetchStats = async (
 			? statsOS({
 					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
-					query: filters,
+					query: {
+						summary: isSummary,
+						...filters,
+					},
 			  })
 			: undefined,
 
@@ -169,7 +181,10 @@ const fetchStats = async (
 			? statsCountries({
 					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
-					query: filters,
+					query: {
+						summary: isSummary,
+						...filters,
+					},
 			  })
 			: undefined,
 
@@ -177,7 +192,10 @@ const fetchStats = async (
 			? statsLanguages({
 					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
-					query: filters,
+					query: {
+						summary: isSummary,
+						...filters,
+					},
 			  })
 			: undefined,
 	]);
