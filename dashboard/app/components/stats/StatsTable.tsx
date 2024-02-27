@@ -1,11 +1,14 @@
-import { ActionIcon, Box, Group, Tabs } from '@mantine/core';
+import { ActionIcon, Box, Group, Tabs, Text } from '@mantine/core';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
-import { DataTable, type DataTableColumn } from 'mantine-datatable';
+import {
+	DataTable,
+	type DataTableColumn,
+	type DataTableSortStatus,
+} from 'mantine-datatable';
 import { useEffect, useState } from 'react';
 
 import { IconChevronLeft } from '@/components/icons/chevronleft';
 import { IconChevronRight } from '@/components/icons/chevronright';
-import { IconDots } from '@/components/icons/dots';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import classes from './StatsTable.module.css';
@@ -67,7 +70,11 @@ interface QueryTableProps {
 
 // Preset columns
 const path = { accessor: 'path', title: 'Path', width: '100%' };
-const visitors: DataTableColumn = { accessor: 'visitors', title: 'Visitors' };
+const visitors: DataTableColumn = {
+	accessor: 'visitors',
+	title: 'Visitors',
+	sortable: true,
+};
 const visitorsPercentage: DataTableColumn = {
 	accessor: 'visitors_percentage',
 	title: 'Visitors %',
@@ -76,6 +83,7 @@ const visitorsPercentage: DataTableColumn = {
 const pageviews: DataTableColumn = {
 	accessor: 'pageviews',
 	title: 'Views',
+	sortable: true,
 	render: (record: DataRow) => formatCount(record.pageviews),
 };
 const pageviewsPercentage: DataTableColumn = {
@@ -92,16 +100,15 @@ const bounceRate: DataTableColumn = {
 const duration: DataTableColumn = {
 	accessor: 'duration',
 	title: 'Duration',
+	sortable: true,
 	render: (record: DataRow) => formatDuration(record.duration),
-};
-const durationPercentage: DataTableColumn = {
-	accessor: 'duration_percentage',
-	title: 'Duration %',
-	render: (record: DataRow) =>
-		formatPercentage((record.duration_percentage ?? 0) / 100),
 };
 
 const PAGE_SIZES = [10, 25, 50, 100];
+
+const sortBy = (key: any) => {
+	return (a: any, b: any) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0);
+};
 
 const QueryTable = ({ query, data }: QueryTableProps) => {
 	// Pagination
@@ -132,6 +139,17 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 		setRecords(data.slice(from, to));
 	}, [data, page, pageSize]);
 
+	// Sorting
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<DataRow>>({
+		columnAccessor: 'visitors',
+		direction: 'desc',
+	});
+
+	useEffect(() => {
+		const temp = [...data].sort(sortBy(sortStatus.columnAccessor));
+		setRecords(sortStatus.direction === 'desc' ? temp.reverse() : temp);
+	}, [sortStatus, data]);
+
 	// Define columns based on query
 	const columns: DataTableColumn[] = [];
 	switch (query) {
@@ -155,16 +173,24 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				{
 					accessor: 'duration_lower_quartile',
 					title: 'Q1 (25%)',
+					sortable: true,
 					render: (record: DataRow) =>
 						formatDuration(record.duration_lower_quartile),
 				},
 				{
 					accessor: 'duration_upper_quartile',
 					title: 'Q3 (75%)',
+					sortable: true,
 					render: (record: DataRow) =>
 						formatDuration(record.duration_upper_quartile),
 				},
-				durationPercentage,
+				{
+					accessor: 'duration_percentage',
+					title: 'Duration %',
+					sortable: true,
+					render: (record: DataRow) =>
+						formatPercentage((record.duration_percentage ?? 0) / 100),
+				},
 				bounceRate
 			);
 			break;
@@ -291,13 +317,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 	return (
 		<div className={classes['table-wrapper']}>
 			<div className={classes['table-header']}>
-				<span>{labelMap[query] ?? 'N/A'}</span>
-				<Group>
-					<ActionIcon variant="transparent">
-						<IconDots />
-					</ActionIcon>
-					<span>More</span>
-				</Group>
+				<Text fz={14} fw={600} py={3}>
+					{labelMap[query] ?? 'N/A'}
+				</Text>
 			</div>
 			<DataTable
 				minHeight={300}
@@ -306,7 +328,9 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				// Have to type assert here as technically we have Record<string | undefined, unknown>[]
 				// but we don't know the exact shape of the data
 				records={records as Array<Record<string, unknown>>}
-				columns={columns}
+				columns={columns as any}
+				sortStatus={sortStatus}
+				onSortStatusChange={setSortStatus}
 			/>
 			<Group justify="space-between" px="lg" py="sm">
 				<Group>
@@ -388,7 +412,14 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 		>
 			<Tabs.List>
 				<div className={classes['list-wrapper']}>
-					<Box component={Link} to=".." className={classes.back}>
+					<Box
+						component={Link}
+						to={{
+							pathname: '../',
+							search: '?' + searchParams.toString(),
+						}}
+						className={classes.back}
+					>
 						<IconChevronLeft />
 						<span>Go back</span>
 					</Box>

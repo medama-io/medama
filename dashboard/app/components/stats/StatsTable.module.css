@@ -48,10 +48,15 @@
 	width: 100%;
 	padding: 4px 12px 12px 12px;
 
+	color: var(--me-color-text-dark);
 	font-size: 14px;
+	text-decoration: none;
 
 	border-bottom: 1px solid var(--me-color-border-grey);
-	text-decoration: none;
+
+	&:visited {
+		color: var(--me-color-text-dark);
+	}
 }
 
 /* Pagination */
@@ -59,6 +64,7 @@
 	font-size: 12px;
 	color: var(--me-color-text-whale);
 }
+
 .page-size {
 	display: flex;
 	align-items: center;
