@@ -3,8 +3,7 @@ import {
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node';
-import { Outlet, useLoaderData, useSearchParams } from '@remix-run/react';
-import { format, parseISO } from 'date-fns';
+import { Outlet, useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 
 import { StackedBarChart } from '@/components/stats/Chart';
@@ -26,33 +25,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
 export default function Index() {
 	const { summary } = useLoaderData<typeof loader>();
-	const [searchParams] = useSearchParams();
-
 	invariant(summary, 'Summary data is required');
-
-	// eslint-disable-next-line unicorn/consistent-function-scoping
-	let dateFormatter = (date: Date) => format(date, 'MMM, yyyy');
-	switch (searchParams.get('period')) {
-		case undefined:
-		case 'today':
-		case 'yesterday':
-		case '12h':
-		case '24h':
-		case '72h': {
-			dateFormatter = (date: Date) => format(date, 'HH:mm');
-			break;
-		}
-		case '7d': {
-			dateFormatter = (date: Date) => format(date, 'EEEEEE, MMM d');
-			break;
-		}
-		case '14d':
-		case '30d':
-		case 'quarter': {
-			dateFormatter = (date: Date) => format(date, 'MMM d');
-			break;
-		}
-	}
 
 	return (
 		<>
@@ -62,7 +35,7 @@ export default function Index() {
 				{summary.interval && (
 					<StackedBarChart
 						data={summary.interval.map((item) => ({
-							label: dateFormatter(parseISO(item.date)),
+							date: item.date,
 							value: item.visitors,
 							stackValue: item.pageviews,
 						}))}
