@@ -24,16 +24,26 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 		SELECT
 			utm_source AS source,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY utm_source ORDER BY visitors DESC, source ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
 		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var utm model.StatsUTMSources
+		err := rows.StructScan(&utm)
+		if err != nil {
+			return nil, err
+		}
+		utms = append(utms, &utm)
 	}
 
 	return utms, nil
@@ -55,16 +65,26 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 		SELECT
 			utm_medium AS medium,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY utm_medium ORDER BY visitors DESC, medium ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
 		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var utm model.StatsUTMMediums
+		err := rows.StructScan(&utm)
+		if err != nil {
+			return nil, err
+		}
+		utms = append(utms, &utm)
 	}
 
 	return utms, nil
@@ -86,16 +106,26 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 		SELECT
 			utm_campaign AS campaign,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY utm_campaign ORDER BY visitors DESC, campaign ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &utms, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
 		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var utm model.StatsUTMCampaigns
+		err := rows.StructScan(&utm)
+		if err != nil {
+			return nil, err
+		}
+		utms = append(utms, &utm)
 	}
 
 	return utms, nil

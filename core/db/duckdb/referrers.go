@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
@@ -24,16 +25,26 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 		SELECT
 			referrer,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC, referrer ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &referrers, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var referrer model.StatsReferrerSummary
+		err := rows.StructScan(&referrer)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		referrers = append(referrers, &referrer)
 	}
 
 	return referrers, nil
@@ -59,7 +70,7 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 		SELECT
 			referrer,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage,
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
@@ -68,9 +79,19 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC, referrer ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &referrers, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var referrer model.StatsReferrers
+		err := rows.StructScan(&referrer)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		referrers = append(referrers, &referrer)
 	}
 
 	return referrers, nil

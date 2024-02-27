@@ -10,6 +10,7 @@ import (
 type FilterField string
 
 const (
+	FilterHostname    FilterField = "hostname"
 	FilterPathname    FilterField = "pathname"
 	FilterReferrer    FilterField = "referrer"
 	FilterUTMSource   FilterField = "utm_source"
@@ -20,6 +21,13 @@ const (
 	FilterDevice      FilterField = "ua_device_type"
 	FilterCountry     FilterField = "country_code"
 	FilterLanguage    FilterField = "language"
+
+	// Custom operations not used in the filtering API
+	// but used in named queries.
+	FilterPeriodStart FilterField = "start_period"
+	FilterPeriodEnd   FilterField = "end_period"
+	FilterLimit       FilterField = "limit"
+	FilterOffset      FilterField = "offset"
 )
 
 // FilterOperation represents the possible filter operations.
@@ -122,21 +130,21 @@ func NewFilter(field FilterField, param interface{}) *Filter {
 func (f Filter) String() string {
 	switch f.Operation {
 	case FilterEquals:
-		return string(f.Field) + " = ?"
+		return string(f.Field) + " = :" + string(f.Field)
 	case FilterNotEquals:
-		return string(f.Field) + " != ?"
+		return string(f.Field) + " != :" + string(f.Field)
 	case FilterContains:
-		return "contains(" + string(f.Field) + ", ?)"
+		return "contains(" + string(f.Field) + ", :" + string(f.Field) + ")"
 	case FilterNotContains:
-		return "NOT contains(" + string(f.Field) + ", ?)"
+		return "NOT contains(" + string(f.Field) + ", :" + string(f.Field) + ")"
 	case FilterStartsWith:
-		return "starts_with(" + string(f.Field) + ", ?)"
+		return "starts_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
 	case FilterNotStartsWith:
-		return "NOT starts_with(" + string(f.Field) + ", ?)"
+		return "NOT starts_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
 	case FilterEndsWith:
-		return "ends_with(" + string(f.Field) + ", ?)"
+		return "ends_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
 	case FilterNotEndsWith:
-		return "NOT ends_with(" + string(f.Field) + ", ?)"
+		return "NOT ends_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
 	// TODO: Implement IN and NOT IN
 	default:
 		return ""
@@ -145,18 +153,17 @@ func (f Filter) String() string {
 
 // Filters is a struct that contains all the possible filters that can be applied to a query.
 type Filters struct {
-	Hostname       string
-	Pathname       *Filter
-	Referrer       *Filter
-	UTMSource      *Filter
-	UTMMedium      *Filter
-	UTMCampaign    *Filter
-	Browser        *Filter
-	BrowserVersion *Filter
-	OS             *Filter
-	Device         *Filter
-	Country        *Filter
-	Language       *Filter
+	Hostname    string
+	Pathname    *Filter
+	Referrer    *Filter
+	UTMSource   *Filter
+	UTMMedium   *Filter
+	UTMCampaign *Filter
+	Browser     *Filter
+	OS          *Filter
+	Device      *Filter
+	Country     *Filter
+	Language    *Filter
 
 	// Time Periods (in RFC3339 format 2017-07-21T17:32:28Z)
 	PeriodStart string
@@ -172,9 +179,7 @@ func (f Filters) WhereString() string {
 	var query strings.Builder
 
 	// Build the query string
-	if f.Hostname != "" {
-		query.WriteString("hostname = ?")
-	}
+	query.WriteString("hostname = :hostname")
 
 	if f.Pathname != nil {
 		query.WriteString(" AND " + f.Pathname.String())
@@ -200,10 +205,6 @@ func (f Filters) WhereString() string {
 		query.WriteString(" AND " + f.Browser.String())
 	}
 
-	if f.BrowserVersion != nil {
-		query.WriteString(" AND " + f.BrowserVersion.String())
-	}
-
 	if f.OS != nil {
 		query.WriteString(" AND " + f.OS.String())
 	}
@@ -222,11 +223,11 @@ func (f Filters) WhereString() string {
 
 	// Time period filters
 	if f.PeriodStart != "" {
-		query.WriteString(" AND date_created >= ?::TIMESTAMPTZ")
+		query.WriteString(" AND date_created >= CAST(:start_period AS TIMESTAMPTZ)")
 	}
 
 	if f.PeriodEnd != "" {
-		query.WriteString(" AND date_created <= ?::TIMESTAMPTZ")
+		query.WriteString(" AND date_created <= CAST(:end_period AS TIMESTAMPTZ)")
 	}
 
 	return query.String()
@@ -235,11 +236,11 @@ func (f Filters) WhereString() string {
 func (f Filters) PaginationString() string {
 	var query strings.Builder
 	if f.Limit > 0 {
-		query.WriteString(" LIMIT ?")
+		query.WriteString(" LIMIT :limit")
 	}
 
 	if f.Offset > 0 {
-		query.WriteString(" OFFSET ?")
+		query.WriteString(" OFFSET :offset")
 	}
 
 	return query.String()
@@ -250,76 +251,73 @@ func (f Filters) PaginationString() string {
 // of the query to prevent SQL injection.
 //
 // The startValues are the values that are passed in addition to the filters.
-func (f Filters) Args(startValues ...string) []interface{} {
-	// Initialize the args with the start values
-	args := []interface{}{}
-	for _, v := range startValues {
-		args = append(args, v)
+func (f Filters) Args(customMap *map[string]interface{}) map[string]interface{} {
+	// Initialize the args with the start map
+	if customMap == nil {
+		customMap = &map[string]interface{}{}
 	}
+	args := *customMap
 
+	// Add the filters to the args
 	if f.Hostname != "" {
-		args = append(args, f.Hostname)
+		args[string(FilterHostname)] = f.Hostname
 	}
 
 	if f.Pathname != nil {
-		args = append(args, f.Pathname.Value)
+		args[string(FilterPathname)] = f.Pathname.Value
 	}
 
 	if f.Referrer != nil {
-		args = append(args, f.Referrer.Value)
+		args[string(FilterReferrer)] = f.Referrer.Value
 	}
 
 	if f.UTMSource != nil {
-		args = append(args, f.UTMSource.Value)
+		args[string(FilterUTMSource)] = f.UTMSource.Value
 	}
 
 	if f.UTMMedium != nil {
-		args = append(args, f.UTMMedium.Value)
+		args[string(FilterUTMMedium)] = f.UTMMedium.Value
 	}
 
 	if f.UTMCampaign != nil {
-		args = append(args, f.UTMCampaign.Value)
+		args[string(FilterUTMCampaign)] = f.UTMCampaign.Value
 	}
 
 	if f.Browser != nil {
-		args = append(args, f.Browser.Value)
-	}
-
-	if f.BrowserVersion != nil {
-		args = append(args, f.BrowserVersion.Value)
+		args[string(FilterBrowser)] = f.Browser.Value
 	}
 
 	if f.OS != nil {
-		args = append(args, f.OS.Value)
+		args[string(FilterOS)] = f.OS.Value
 	}
 
 	if f.Device != nil {
-		args = append(args, f.Device.Value)
+		args[string(FilterDevice)] = f.Device.Value
 	}
 
 	if f.Country != nil {
-		args = append(args, f.Country.Value)
+		args[string(FilterCountry)] = f.Country.Value
 	}
 
 	if f.Language != nil {
-		args = append(args, f.Language.Value)
+		args[string(FilterLanguage)] = f.Language.Value
 	}
 
 	// Time period filters
 	if f.PeriodStart != "" {
-		args = append(args, f.PeriodStart)
+		args[string(FilterPeriodStart)] = f.PeriodStart
 	}
 
 	if f.PeriodEnd != "" {
-		args = append(args, f.PeriodEnd)
+		args[string(FilterPeriodEnd)] = f.PeriodEnd
 	}
 
 	if f.Limit > 0 {
-		args = append(args, f.Limit)
+		args[string(FilterLimit)] = f.Limit
 	}
 
 	if f.Offset > 0 {
-		args = append(args, f.Offset)
+		args[string(FilterOffset)] = f.Offset
 	}
 
 	return args

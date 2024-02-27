@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
@@ -24,16 +25,26 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 		SELECT
 			country_code AS country,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY country ORDER BY visitors DESC, country ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &countries, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var country model.StatsCountries
+		err := rows.StructScan(&country)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		countries = append(countries, &country)
 	}
 
 	return countries, nil
@@ -55,16 +66,26 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 		SELECT
 			language,
 			COUNT(*) FILTER (is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY language ORDER BY visitors DESC, language ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &languages, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var language model.StatsLanguages
+		err := rows.StructScan(&language)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		languages = append(languages, &language)
 	}
 
 	return languages, nil

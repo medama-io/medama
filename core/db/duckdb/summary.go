@@ -36,9 +36,18 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	err := c.GetContext(ctx, &summary, query.String(), filter.Args()...)
+
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		err := rows.StructScan(&summary)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
 	}
 
 	return &summary, nil
@@ -48,11 +57,6 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error) {
 	var resp []*model.StatsIntervals
 	var query strings.Builder
-
-	// Delete period from filter argument as we are using time_bucket to group
-	// by intervals and therefore filter.WhereString() will generate eroneus SQL.
-	endPeriod := filter.PeriodEnd
-	filter.PeriodEnd = ""
 
 	var intervalQuery string
 	switch interval {
@@ -79,11 +83,11 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 			SELECT
 				generate_series as interval
 			FROM
-				generate_series(?::TIMESTAMPTZ, ?::TIMESTAMPTZ, ?::INTERVAL)
+				generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))
 		),
 		stats AS MATERIALIZED (
 			SELECT
-				time_bucket(?::INTERVAL, date_created, ?::TIMESTAMPTZ) AS interval,
+				time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval,
 				COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 				COUNT(*) AS pageviews
 			FROM views
@@ -93,15 +97,28 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 			GROUP BY interval
 		)
 		SELECT
-			intervals.interval::VARCHAR AS interval,
+			CAST(intervals.interval AS VARCHAR) AS interval,
 			COALESCE(stats.visitors, 0) AS visitors,
 			COALESCE(stats.pageviews, 0) AS pageviews
 		FROM intervals LEFT JOIN stats USING (interval)
 		ORDER BY interval ASC`)
 
-	err := c.SelectContext(ctx, &resp, query.String(), filter.Args(filter.PeriodStart, endPeriod, intervalQuery, intervalQuery, filter.PeriodStart)...)
+	filterMap := map[string]interface{}{
+		"interval_query": intervalQuery,
+	}
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(&filterMap))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var interval model.StatsIntervals
+		err := rows.StructScan(&interval)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		resp = append(resp, &interval)
 	}
 
 	return resp, nil

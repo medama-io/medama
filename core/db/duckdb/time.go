@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
@@ -39,9 +40,20 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 			ifnull(ROUND(duration / (SELECT SUM(duration) FROM durations), 4), 0) AS duration_percentage
 		FROM durations
 		ORDER BY visitors DESC, duration DESC, pathname ASC`)
-	err := c.SelectContext(ctx, &times, query.String(), filter.Args()...)
+
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var time model.StatsTimeSummary
+		err := rows.StructScan(&time)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		times = append(times, &time)
 	}
 
 	return times, nil
@@ -93,9 +105,20 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 			bounces
 		FROM durations
 		ORDER BY visitors DESC, duration DESC, pathname ASC`)
-	err := c.SelectContext(ctx, &times, query.String(), filter.Args()...)
+
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var time model.StatsTime
+		err := rows.StructScan(&time)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		times = append(times, &time)
 	}
 
 	return times, nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
@@ -27,16 +28,26 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 		SELECT
 			pathname,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC, pathname ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var page model.StatsPagesSummary
+		err := rows.StructScan(&page)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		pages = append(pages, &page)
 	}
 
 	return pages, nil
@@ -71,9 +82,9 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 		SELECT
 			pathname,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = ?), 4), 0) AS visitors_percentage,
+			ifnull(ROUND(visitors / (SELECT COUNT(*) FILTER (WHERE is_unique_page = true) FROM views WHERE hostname = :hostname), 4), 0) AS visitors_percentage,
 			COUNT(*) AS pageviews,
-			ifnull(ROUND(pageviews / (SELECT COUNT(*) FROM views WHERE hostname = ?), 4), 0) AS pageviews_percentage,
+			ifnull(ROUND(pageviews / (SELECT COUNT(*) FROM views WHERE hostname = :hostname), 4), 0) AS pageviews_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
@@ -82,9 +93,19 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC, pageviews DESC, pathname ASC`)
 	query.WriteString(filter.PaginationString())
 
-	err := c.SelectContext(ctx, &pages, query.String(), filter.Args(filter.Hostname, filter.Hostname)...)
+	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var page model.StatsPages
+		err := rows.StructScan(&page)
+		if err != nil {
+			return nil, errors.Wrap(err, "db")
+		}
+		pages = append(pages, &page)
 	}
 
 	return pages, nil
