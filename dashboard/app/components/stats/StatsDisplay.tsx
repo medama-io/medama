@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
-import { Link } from '@remix-run/react';
+import { Link, useSearchParams } from '@remix-run/react';
 
 import { IconDots } from '@/components/icons/dots';
 
@@ -23,7 +23,10 @@ const StatsItem = ({ label, count, percentage, isTime }: StatsItemProps) => {
 					{formattedValue}
 				</Text>
 			</Group>
-			<div className={classes.bar} style={{ width: `${percentage}%` }} />
+			<div
+				className={classes.bar}
+				style={{ width: `${(percentage ?? 0) * 100}%` }}
+			/>
 		</div>
 	);
 };
@@ -38,6 +41,7 @@ interface StatsDisplayProps {
 }
 
 export const StatsDisplay = ({ data }: StatsDisplayProps) => {
+	const [searchParams] = useSearchParams();
 	return (
 		<Tabs
 			variant="unstyled"
@@ -72,7 +76,10 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 					<div className={classes['button-wrapper']}>
 						<UnstyledButton
 							component={Link}
-							to={`./${tab.label.toLowerCase()}`}
+							to={{
+								pathname: `./${tab.label.toLowerCase()}`,
+								search: `?${searchParams.toString()}`,
+							}}
 							prefetch="intent"
 							preventScrollReset
 							className={classes.button}

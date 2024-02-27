@@ -71,8 +71,7 @@ const visitors: DataTableColumn = { accessor: 'visitors', title: 'Visitors' };
 const visitorsPercentage: DataTableColumn = {
 	accessor: 'visitors_percentage',
 	title: 'Visitors %',
-	render: (record: DataRow) =>
-		formatPercentage((record.visitors_percentage ?? 0) / 100),
+	render: (record: DataRow) => formatPercentage(record.visitors_percentage),
 };
 const pageviews: DataTableColumn = {
 	accessor: 'pageviews',

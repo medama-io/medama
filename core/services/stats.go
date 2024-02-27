@@ -187,12 +187,13 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		res := api.StatsPages{}
 		for _, page := range pages {
 			res = append(res, api.StatsPagesItem{
-				Path:               page.Pathname,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				Pageviews:          api.NewOptInt(page.Pageviews),
-				Bounces:            api.NewOptInt(page.Bounces),
-				Duration:           api.NewOptInt(page.Duration),
+				Path:                page.Pathname,
+				Visitors:            page.Visitors,
+				VisitorsPercentage:  page.VisitorsPercentage,
+				Pageviews:           api.NewOptInt(page.Pageviews),
+				PageviewsPercentage: api.NewOptFloat32(page.PageviewsPercentage),
+				Bounces:             api.NewOptInt(page.Bounces),
+				Duration:            api.NewOptInt(page.Duration),
 			})
 		}
 

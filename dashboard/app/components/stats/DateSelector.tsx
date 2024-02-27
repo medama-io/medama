@@ -1,6 +1,7 @@
 import { Combobox, InputBase, useCombobox } from '@mantine/core';
+import { useDidUpdate } from '@mantine/hooks';
 import { useSearchParams } from '@remix-run/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const presets = {
 	today: 'Today',
@@ -42,9 +43,10 @@ export const DateComboBox = () => {
 	);
 
 	// Update search params when preset changes
-	useEffect(() => {
+	useDidUpdate(() => {
 		searchParams.set('period', preset);
 		setSearchParams(searchParams);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [preset]);
 

@@ -113,7 +113,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 	}
 
 	if rowsAffected == 0 {
-		slog.DebugContext(ctx, "website not found", slog.String("hostname", website.Hostname))
+		slog.DebugContext(ctx, "update: website not found", slog.String("hostname", website.Hostname))
 		return model.ErrWebsiteNotFound
 	}
 
@@ -129,7 +129,7 @@ func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Websit
 	err := c.QueryRowxContext(ctx, query, hostname).StructScan(&website)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			slog.DebugContext(ctx, "website not found", slog.String("hostname", hostname))
+			slog.DebugContext(ctx, "get: website not found", slog.String("hostname", hostname))
 			return nil, model.ErrWebsiteNotFound
 		}
 
@@ -175,7 +175,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 	}
 
 	if rowsAffected == 0 {
-		slog.DebugContext(ctx, "website not found", slog.String("hostname", hostname))
+		slog.DebugContext(ctx, "delete: website not found", slog.String("hostname", hostname))
 		return model.ErrWebsiteNotFound
 	}
 

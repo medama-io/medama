@@ -44,7 +44,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 		lastModified := currentDay.Format(http.TimeFormat)
 
 		attributes = append(attributes, slog.String("last_modified", lastModified))
-		slog.LogAttrs(ctx, slog.LevelDebug, "last modified header not set", attributes...)
+		slog.LogAttrs(ctx, slog.LevelDebug, "ping: last modified header not set", attributes...)
 
 		return &api.GetEventPingOKHeaders{
 			AccessControlAllowOrigin: CorsOrigin,
@@ -58,7 +58,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	lastModifiedTime, err := time.Parse(http.TimeFormat, ifModified)
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to parse if modified since header", attributes...)
+		slog.LogAttrs(ctx, slog.LevelError, "ping: failed to parse if modified since header", attributes...)
 		return ErrBadRequest(err), nil
 	}
 
@@ -73,7 +73,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 		lastModified := lastModifiedTime.Format(http.TimeFormat)
 
 		attributes = append(attributes, slog.String("last_modified", lastModified))
-		slog.LogAttrs(ctx, slog.LevelDebug, "last modified header set", attributes...)
+		slog.LogAttrs(ctx, slog.LevelDebug, "ping: last modified header set", attributes...)
 
 		return &api.GetEventPingOKHeaders{
 			AccessControlAllowOrigin: CorsOrigin,
@@ -87,7 +87,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	body := strings.NewReader("1")
 
 	// Return not modified if the last modified time is today (not unique user).
-	slog.LogAttrs(ctx, slog.LevelDebug, "last modified header set", attributes...)
+	slog.LogAttrs(ctx, slog.LevelDebug, "ping: last modified header set", attributes...)
 	return &api.GetEventPingOKHeaders{
 		AccessControlAllowOrigin:  CorsOrigin,
 		AccessControlAllowMethods: CorsMethods,
@@ -112,12 +112,12 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		exists, err := h.db.WebsiteExists(ctx, hostname)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to check if website exists", attributes...)
 			return ErrInternalServerError(err), nil
 		}
 		if !exists {
-			attributes = append(attributes, slog.String("hostname", hostname))
-			slog.LogAttrs(ctx, slog.LevelWarn, "website not found", attributes...)
+			attributes = append(attributes, slog.String("hostname", hostname), slog.String("pathname", pathname))
+			slog.LogAttrs(ctx, slog.LevelWarn, "hit: website not found", attributes...)
 			return ErrNotFound(model.ErrWebsiteNotFound), nil
 		}
 
@@ -128,7 +128,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			referrer, err := url.Parse(req.EventLoad.R.Value)
 			if err != nil {
 				attributes = append(attributes, slog.String("error", err.Error()))
-				slog.LogAttrs(ctx, slog.LevelError, "failed to parse referrer URL", attributes...)
+				slog.LogAttrs(ctx, slog.LevelError, "hit: failed to parse referrer URL", attributes...)
 				return ErrBadRequest(err), nil
 			}
 
@@ -146,14 +146,14 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		countryCode, err := h.timezoneMap.GetCode(req.EventLoad.T.Value)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelDebug, "failed to get country code from timezone", attributes...)
+			slog.LogAttrs(ctx, slog.LevelDebug, "hit: failed to get country code from timezone", attributes...)
 			countryCode = ""
 		}
 
 		// Get request from context
 		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
 		if !ok {
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get request from context", attributes...)
+			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to get request from context", attributes...)
 			return ErrInternalServerError(model.ErrRequestContext), nil
 		}
 
@@ -161,7 +161,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		languages, _, err := language.ParseAcceptLanguage(reqBody.Header.Get("Accept-Language"))
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelDebug, "failed to parse accept language header", attributes...)
+			slog.LogAttrs(ctx, slog.LevelDebug, "hit: failed to parse accept language header", attributes...)
 		}
 		// Get the first language from the list which is the most preferred and convert it to a language name
 		language := "Unknown"
@@ -227,12 +227,12 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		err = h.analyticsDB.AddPageView(ctx, event)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to add page view", attributes...)
+			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to add page view", attributes...)
 			return ErrInternalServerError(err), nil
 		}
 
 		// Log success
-		slog.LogAttrs(ctx, slog.LevelDebug, "added page view", attributes...)
+		slog.LogAttrs(ctx, slog.LevelDebug, "hit: added page view", attributes...)
 	case api.EventUnloadEventHit:
 		event := &model.PageViewDuration{
 			BID:        req.EventUnload.B,
@@ -248,16 +248,16 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		err := h.analyticsDB.UpdatePageView(ctx, event)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to update page view", attributes...)
+			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to update page view", attributes...)
 			return ErrInternalServerError(err), nil
 		}
 
 		// Log success
-		slog.LogAttrs(ctx, slog.LevelDebug, "updated page view", attributes...)
+		slog.LogAttrs(ctx, slog.LevelDebug, "hit: updated page view", attributes...)
 
 	default:
 		attributes = append(attributes, slog.String("type", string(req.Type)))
-		slog.LogAttrs(ctx, slog.LevelError, "invalid event hit type", attributes...)
+		slog.LogAttrs(ctx, slog.LevelError, "hit: invalid event hit type", attributes...)
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 	}
 

@@ -33,6 +33,7 @@ export default function Index() {
 	// eslint-disable-next-line unicorn/consistent-function-scoping
 	let dateFormatter = (date: Date) => format(date, 'MMM, yyyy');
 	switch (searchParams.get('period')) {
+		case undefined:
 		case 'today':
 		case 'yesterday':
 		case '12h':
