@@ -1,9 +1,11 @@
 package db
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/model"
 )
 
 // FilterField represents a mapping of the filter field to the database column.
@@ -106,6 +108,20 @@ func NewFilter(field FilterField, param interface{}) *Filter {
 	case api.OptFilterFixed:
 		if v.IsSet() {
 			value, operation = FilterFixedToValues(v.Value)
+
+			// Convert the value to the enum integer for the database
+			//nolint:exhaustive // No other fields use uint8 enums
+			switch field {
+			case FilterBrowser:
+				value = strconv.Itoa(int(model.NewBrowserName(value)))
+			case FilterOS:
+				value = strconv.Itoa(int(model.NewOSName(value)))
+			case FilterDevice:
+				value = strconv.Itoa(int(model.NewDeviceTypeString(value)))
+			default:
+				// Do nothing
+			}
+
 		} else {
 			return nil
 		}

@@ -97,6 +97,7 @@ const filterOptions: FilterOptions = {
 			Firefox: { label: 'Firefox', value: 'Firefox' },
 			Opera: { label: 'Opera', value: 'Opera' },
 			Safari: { label: 'Safari', value: 'Safari' },
+			Unknown: { label: 'Unknown', value: 'Unknown' },
 		},
 	},
 	os: {
@@ -104,10 +105,12 @@ const filterOptions: FilterOptions = {
 		type: 'fixed',
 		choices: {
 			Windows: { label: 'Windows', value: 'Windows' },
-			'Mac OS': { label: 'Mac OS', value: 'MacOS' },
+			MacOS: { label: 'MacOS', value: 'MacOS' },
 			Linux: { label: 'Linux', value: 'Linux' },
 			iOS: { label: 'iOS', value: 'iOS' },
 			Android: { label: 'Android', value: 'Android' },
+			ChromeOS: { label: 'ChromeOS', value: 'ChromeOS' },
+			Unknown: { label: 'Unknown', value: 'Unknown' },
 		},
 	},
 	device: {
@@ -117,6 +120,8 @@ const filterOptions: FilterOptions = {
 			Desktop: { label: 'Desktop', value: 'Desktop' },
 			Mobile: { label: 'Mobile', value: 'Mobile' },
 			Tablet: { label: 'Tablet', value: 'Tablet' },
+			TV: { label: 'TV', value: 'TV' },
+			Unknown: { label: 'Unknown', value: 'Unknown' },
 		},
 	},
 	country: {

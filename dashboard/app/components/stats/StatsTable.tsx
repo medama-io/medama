@@ -93,7 +93,7 @@ const pageviewsPercentage: DataTableColumn = {
 };
 const bounceRate: DataTableColumn = {
 	accessor: 'bounce_rate',
-	title: 'Bounce Rate %',
+	title: 'Bounce %',
 	render: (record: DataRow) =>
 		formatPercentage((record.bounces ?? 0) / (record.visitors ?? 0)),
 };
@@ -133,12 +133,6 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 		setPageSize(newSize);
 	};
 
-	useEffect(() => {
-		const from = (page - 1) * pageSize;
-		const to = from + pageSize;
-		setRecords(data.slice(from, to));
-	}, [data, page, pageSize]);
-
 	// Sorting
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<DataRow>>({
 		columnAccessor: 'visitors',
@@ -146,9 +140,18 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 	});
 
 	useEffect(() => {
+		// Calculate the range of records to display
+		const from = (page - 1) * pageSize;
+		const to = from + pageSize;
+
+		// Sort and slice the data to page size
 		const temp = [...data].sort(sortBy(sortStatus.columnAccessor));
-		setRecords(sortStatus.direction === 'desc' ? temp.reverse() : temp);
-	}, [sortStatus, data]);
+		setRecords(
+			sortStatus.direction === 'desc'
+				? temp.reverse().slice(from, to)
+				: temp.slice(from, to)
+		);
+	}, [sortStatus, data, page, pageSize]);
 
 	// Define columns based on query
 	const columns: DataTableColumn[] = [];

@@ -160,6 +160,21 @@ func NewDeviceType(desktop bool, mobile bool, tablet bool, tv bool) DeviceType {
 	}
 }
 
+func NewDeviceTypeString(name string) DeviceType {
+	switch name {
+	case "Desktop":
+		return DesktopDevice
+	case "Mobile":
+		return MobileDevice
+	case "Tablet":
+		return TabletDevice
+	case "TV":
+		return TVDevice
+	default:
+		return UnknownDevice
+	}
+}
+
 func (d DeviceType) String() string {
 	switch d {
 	case DesktopDevice:
