@@ -1,0 +1,41 @@
+name: Tests
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "core/**"
+
+  push:
+    branches: [main]
+    paths:
+      - "core/**"
+
+jobs:
+  packager:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: core
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Task
+        uses: arduino/setup-task@v2
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          cache-dependency-path: go.sum
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build
+        run: task build
+
+      - name: Lint
+        run: task lint
+
+      - name: Test
+        run: task test
