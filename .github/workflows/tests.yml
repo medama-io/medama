@@ -11,8 +11,30 @@ on:
     paths:
       - "core/**"
 
+permissions:
+  contents: read
+
 jobs:
-  packager:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Task
+        uses: arduino/setup-task@v2
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: core/go.mod
+          cache: false
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v4
+        with:
+          version: latest
+          working-directory: core
+  test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,17 +48,14 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version-file: "core/go.mod"
-          cache-dependency-path: "core/go.sum"
+          go-version-file: core/go.mod
+          cache-dependency-path: core/go.sum
 
       - name: Install dependencies
         run: go mod download
 
       - name: Build
         run: task build
-
-      - name: Lint
-        run: task lint
 
       - name: Test
         run: task test
