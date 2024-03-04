@@ -121,7 +121,6 @@ func NewFilter(field FilterField, param interface{}) *Filter {
 			default:
 				// Do nothing
 			}
-
 		} else {
 			return nil
 		}
@@ -142,26 +141,28 @@ func NewFilter(field FilterField, param interface{}) *Filter {
 	}
 }
 
+// filterOperationMap maps FilterOperation to their string representations.
+//
+//nolint:exhaustive,gochecknoglobals // TODO: Implement IN and NOT IN
+var filterOperationMap = map[FilterOperation]string{
+	FilterEquals:        "=",
+	FilterNotEquals:     "!=",
+	FilterContains:      "contains",
+	FilterNotContains:   "NOT contains",
+	FilterStartsWith:    "starts_with",
+	FilterNotStartsWith: "NOT starts_with",
+	FilterEndsWith:      "ends_with",
+	FilterNotEndsWith:   "NOT ends_with",
+}
+
 // String returns the string representation of the filter combined with the operation.
 func (f Filter) String() string {
+	//nolint:exhaustive // TODO: Implement IN and NOT IN
 	switch f.Operation {
-	case FilterEquals:
-		return string(f.Field) + " = :" + string(f.Field)
-	case FilterNotEquals:
-		return string(f.Field) + " != :" + string(f.Field)
-	case FilterContains:
-		return "contains(" + string(f.Field) + ", :" + string(f.Field) + ")"
-	case FilterNotContains:
-		return "NOT contains(" + string(f.Field) + ", :" + string(f.Field) + ")"
-	case FilterStartsWith:
-		return "starts_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
-	case FilterNotStartsWith:
-		return "NOT starts_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
-	case FilterEndsWith:
-		return "ends_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
-	case FilterNotEndsWith:
-		return "NOT ends_with(" + string(f.Field) + ", :" + string(f.Field) + ")"
-	// TODO: Implement IN and NOT IN
+	case FilterEquals, FilterNotEquals:
+		return string(f.Field) + " " + filterOperationMap[f.Operation] + " :" + string(f.Field)
+	case FilterContains, FilterNotContains, FilterStartsWith, FilterNotStartsWith, FilterEndsWith, FilterNotEndsWith:
+		return filterOperationMap[f.Operation] + "(" + string(f.Field) + ", :" + string(f.Field) + ")"
 	default:
 		return ""
 	}
@@ -190,61 +191,33 @@ type Filters struct {
 	Offset int
 }
 
+// addCondition appends a condition to the query if the filter has a non-empty value.
+func addCondition(query *strings.Builder, condition string, value string) {
+	if value != "" {
+		query.WriteString(" AND " + condition)
+	}
+}
+
 // String builds the WHERE query string.
 func (f Filters) WhereString() string {
 	var query strings.Builder
 
 	// Build the query string
 	query.WriteString("hostname = :hostname")
-
-	if f.Pathname != nil {
-		query.WriteString(" AND " + f.Pathname.String())
-	}
-
-	if f.Referrer != nil {
-		query.WriteString(" AND " + f.Referrer.String())
-	}
-
-	if f.UTMSource != nil {
-		query.WriteString(" AND " + f.UTMSource.String())
-	}
-
-	if f.UTMMedium != nil {
-		query.WriteString(" AND " + f.UTMMedium.String())
-	}
-
-	if f.UTMCampaign != nil {
-		query.WriteString(" AND " + f.UTMCampaign.String())
-	}
-
-	if f.Browser != nil {
-		query.WriteString(" AND " + f.Browser.String())
-	}
-
-	if f.OS != nil {
-		query.WriteString(" AND " + f.OS.String())
-	}
-
-	if f.Device != nil {
-		query.WriteString(" AND " + f.Device.String())
-	}
-
-	if f.Country != nil {
-		query.WriteString(" AND " + f.Country.String())
-	}
-
-	if f.Language != nil {
-		query.WriteString(" AND " + f.Language.String())
-	}
+	addCondition(&query, f.Pathname.String(), f.Pathname.Value)
+	addCondition(&query, f.Referrer.String(), f.Referrer.Value)
+	addCondition(&query, f.UTMSource.String(), f.UTMSource.Value)
+	addCondition(&query, f.UTMMedium.String(), f.UTMMedium.Value)
+	addCondition(&query, f.UTMCampaign.String(), f.UTMCampaign.Value)
+	addCondition(&query, f.Browser.String(), f.Browser.Value)
+	addCondition(&query, f.OS.String(), f.OS.Value)
+	addCondition(&query, f.Device.String(), f.Device.Value)
+	addCondition(&query, f.Country.String(), f.Country.Value)
+	addCondition(&query, f.Language.String(), f.Language.Value)
 
 	// Time period filters
-	if f.PeriodStart != "" {
-		query.WriteString(" AND date_created >= CAST(:start_period AS TIMESTAMPTZ)")
-	}
-
-	if f.PeriodEnd != "" {
-		query.WriteString(" AND date_created <= CAST(:end_period AS TIMESTAMPTZ)")
-	}
+	addCondition(&query, "date_created >= CAST(:start_period AS TIMESTAMPTZ)", f.PeriodStart)
+	addCondition(&query, "date_created <= CAST(:end_period AS TIMESTAMPTZ)", f.PeriodEnd)
 
 	return query.String()
 }
@@ -274,66 +247,29 @@ func (f Filters) Args(customMap *map[string]interface{}) map[string]interface{} 
 	}
 	args := *customMap
 
-	// Add the filters to the args
-	if f.Hostname != "" {
-		args[string(FilterHostname)] = f.Hostname
+	filterValues := map[FilterField]interface{}{
+		FilterHostname:    f.Hostname,
+		FilterPathname:    f.Pathname.Value,
+		FilterReferrer:    f.Referrer.Value,
+		FilterUTMSource:   f.UTMSource.Value,
+		FilterUTMMedium:   f.UTMMedium.Value,
+		FilterUTMCampaign: f.UTMCampaign.Value,
+		FilterBrowser:     f.Browser.Value,
+		FilterOS:          f.OS.Value,
+		FilterDevice:      f.Device.Value,
+		FilterCountry:     f.Country.Value,
+		FilterLanguage:    f.Language.Value,
+		FilterPeriodStart: f.PeriodStart,
+		FilterPeriodEnd:   f.PeriodEnd,
+		FilterLimit:       f.Limit,
+		FilterOffset:      f.Offset,
 	}
 
-	if f.Pathname != nil {
-		args[string(FilterPathname)] = f.Pathname.Value
-	}
-
-	if f.Referrer != nil {
-		args[string(FilterReferrer)] = f.Referrer.Value
-	}
-
-	if f.UTMSource != nil {
-		args[string(FilterUTMSource)] = f.UTMSource.Value
-	}
-
-	if f.UTMMedium != nil {
-		args[string(FilterUTMMedium)] = f.UTMMedium.Value
-	}
-
-	if f.UTMCampaign != nil {
-		args[string(FilterUTMCampaign)] = f.UTMCampaign.Value
-	}
-
-	if f.Browser != nil {
-		args[string(FilterBrowser)] = f.Browser.Value
-	}
-
-	if f.OS != nil {
-		args[string(FilterOS)] = f.OS.Value
-	}
-
-	if f.Device != nil {
-		args[string(FilterDevice)] = f.Device.Value
-	}
-
-	if f.Country != nil {
-		args[string(FilterCountry)] = f.Country.Value
-	}
-
-	if f.Language != nil {
-		args[string(FilterLanguage)] = f.Language.Value
-	}
-
-	// Time period filters
-	if f.PeriodStart != "" {
-		args[string(FilterPeriodStart)] = f.PeriodStart
-	}
-
-	if f.PeriodEnd != "" {
-		args[string(FilterPeriodEnd)] = f.PeriodEnd
-	}
-
-	if f.Limit > 0 {
-		args[string(FilterLimit)] = f.Limit
-	}
-
-	if f.Offset > 0 {
-		args[string(FilterOffset)] = f.Offset
+	// Add non-empty filter values to args
+	for field, value := range filterValues {
+		if value != "" {
+			args[string(field)] = value
+		}
 	}
 
 	return args
