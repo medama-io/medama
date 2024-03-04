@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/caarlos0/env/v10"
+	"github.com/go-faster/errors"
 )
 
 type ServerConfig struct {
@@ -59,7 +60,7 @@ func NewServerConfig() (*ServerConfig, error) {
 
 	// Load config from environment variables.
 	if err := env.Parse(config); err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "config")
 	}
 
 	return config, nil
@@ -73,7 +74,7 @@ func NewAppDBConfig() (*AppDBConfig, error) {
 
 	// Load config from environment variables.
 	if err := env.Parse(config); err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "config")
 	}
 
 	return config, nil
@@ -87,7 +88,7 @@ func NewAnalyticsDBConfig() (*AnalyticsDBConfig, error) {
 
 	// Load config from environment variables.
 	if err := env.Parse(config); err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "config")
 	}
 
 	return config, nil

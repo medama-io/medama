@@ -2,10 +2,10 @@ package services
 
 import (
 	"context"
-	"errors"
 	"log/slog"
 	"time"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
 )
@@ -31,7 +31,7 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 		}
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	return &api.UserGet{
@@ -64,7 +64,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		}
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	// Update values
@@ -86,7 +86,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to update user email", attributes...)
-			return nil, err
+			return nil, errors.Wrap(err, "services")
 		}
 	}
 
@@ -96,14 +96,14 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to hash password", attributes...)
-			return nil, err
+			return nil, errors.Wrap(err, "services")
 		}
 
 		err = h.db.UpdateUserPassword(ctx, user.ID, pwdHash, dateUpdated)
 		if err != nil {
 			attributes = append(attributes, slog.String("error", err.Error()))
 			slog.LogAttrs(ctx, slog.LevelError, "failed to update user password", attributes...)
-			return nil, err
+			return nil, errors.Wrap(err, "services")
 		}
 	}
 
@@ -137,7 +137,7 @@ func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (
 		}
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	attributes = append(attributes,
@@ -152,7 +152,7 @@ func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (
 	if err != nil {
 		attributes = append(attributes, slog.String("error", err.Error()))
 		slog.LogAttrs(ctx, slog.LevelError, "failed to delete user", attributes...)
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	return &api.DeleteUserOK{}, nil

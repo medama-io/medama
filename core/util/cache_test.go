@@ -9,18 +9,20 @@ import (
 
 	"github.com/medama-io/medama/util"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func SetupCacheTest(t *testing.T) (*assert.Assertions, context.Context) {
+func SetupCacheTest(t *testing.T) (*assert.Assertions, *require.Assertions, context.Context) {
 	t.Helper()
 	assert := assert.New(t)
+	require := require.New(t)
 	ctx := context.Background()
 	log.SetOutput(io.Discard)
-	return assert, ctx
+	return assert, require, ctx
 }
 
 func TestGetSet(t *testing.T) {
-	assert, ctx := SetupCacheTest(t)
+	_, require, ctx := SetupCacheTest(t)
 
 	cycle := 100 * time.Millisecond
 	c := util.NewCache(ctx, cycle)
@@ -29,7 +31,7 @@ func TestGetSet(t *testing.T) {
 	c.Set("sticky", "forever", cycle*2)
 	c.Set("hello", "Hello", cycle/2)
 	hello, err := c.Get(ctx, "hello")
-	assert.NoError(err, "Cache miss")
+	require.NoError(err, "Cache miss")
 
 	if hello.(string) != "Hello" {
 		t.Log("Cache value mismatch")
@@ -39,46 +41,46 @@ func TestGetSet(t *testing.T) {
 	time.Sleep(cycle / 2)
 
 	_, err = c.Get(ctx, "hello")
-	assert.Error(err, "Cache value not expired")
+	require.Error(err, "Cache value not expired")
 
 	time.Sleep(cycle)
 
 	_, err = c.Get(ctx, "404")
-	assert.Error(err, "Cache value not expired")
+	require.Error(err, "Cache value not expired")
 
 	_, err = c.Get(ctx, "sticky")
-	assert.NoError(err, "Cache value not found")
+	require.NoError(err, "Cache value not found")
 }
 
 func TestHas(t *testing.T) {
-	assert, ctx := SetupCacheTest(t)
+	assert, require, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 
 	c.Set("hello", "Hello", time.Hour)
 	ok, err := c.Has(ctx, "hello")
 	assert.True(ok, "Cache miss")
-	assert.NoError(err, "Cache error")
+	require.NoError(err, "Cache error")
 
 	ok, err = c.Has(ctx, "404")
 	assert.False(ok, "Cache hit")
-	assert.NoError(err, "Cache error")
+	require.NoError(err, "Cache error")
 }
 
 func TestDelete(t *testing.T) {
-	assert, ctx := SetupCacheTest(t)
+	_, require, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 	c.Set("hello", "Hello", time.Hour)
 	_, err := c.Get(ctx, "hello")
-	assert.NoError(err, "Cache miss")
+	require.NoError(err, "Cache miss")
 
 	c.Delete("hello")
 
 	_, err = c.Get(ctx, "hello")
-	assert.Error(err, "Cache value not deleted")
+	require.Error(err, "Cache value not deleted")
 }
 
 func TestRange(t *testing.T) {
-	assert, ctx := SetupCacheTest(t)
+	assert, _, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 	c.Set("hello", "Hello", time.Hour)
 	c.Set("world", "World", time.Hour)
@@ -93,7 +95,7 @@ func TestRange(t *testing.T) {
 }
 
 func TestRangeTimer(t *testing.T) {
-	_, ctx := SetupCacheTest(t)
+	_, _, ctx := SetupCacheTest(t)
 	c := util.NewCache(ctx, time.Minute)
 	c.Set("message", "Hello", time.Nanosecond)
 	c.Set("world", "World", time.Nanosecond)

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/go-faster/errors"
 	tz "github.com/medama-io/go-timezone-country"
 	"github.com/medama-io/go-useragent"
 	"github.com/medama-io/medama/db/duckdb"
@@ -21,12 +22,12 @@ type Handler struct {
 func NewService(auth *util.AuthService, sqlite *sqlite.Client, duckdb *duckdb.Client) (*Handler, error) {
 	tzMap, err := tz.NewTimezoneCodeMap()
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	codeCountryMap, err := tz.NewCodeCountryMap()
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	return &Handler{

@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
@@ -39,7 +40,7 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -47,7 +48,7 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 		var utm model.StatsUTMSourcesSummary
 		err := rows.StructScan(&utm)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		utms = append(utms, &utm)
 	}
@@ -89,7 +90,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -97,7 +98,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 		var utm model.StatsUTMSources
 		err := rows.StructScan(&utm)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		utms = append(utms, &utm)
 	}
@@ -136,7 +137,7 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -144,7 +145,7 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 		var utm model.StatsUTMMediumsSummary
 		err := rows.StructScan(&utm)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		utms = append(utms, &utm)
 	}
@@ -186,7 +187,7 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -194,7 +195,7 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 		var utm model.StatsUTMMediums
 		err := rows.StructScan(&utm)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		utms = append(utms, &utm)
 	}
@@ -233,7 +234,7 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -241,7 +242,7 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 		var utm model.StatsUTMCampaignsSummary
 		err := rows.StructScan(&utm)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		utms = append(utms, &utm)
 	}
@@ -283,7 +284,7 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -291,7 +292,7 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 		var utm model.StatsUTMCampaigns
 		err := rows.StructScan(&utm)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		utms = append(utms, &utm)
 	}

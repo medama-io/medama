@@ -3,6 +3,7 @@ package duckdb
 import (
 	"context"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
 )
 
@@ -14,7 +15,7 @@ func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) erro
 
 	_, err := c.DB.ExecContext(ctx, exec, event.BID, event.Hostname, event.Pathname, event.IsUniqueUser, event.IsUniquePage, event.Referrer, event.CountryCode, event.Language, event.BrowserName, event.OS, event.DeviceType, event.UTMSource, event.UTMMedium, event.UTMCampaign)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	return nil
@@ -26,7 +27,7 @@ func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDurati
 		UPDATE views SET bid = NULL, duration_ms = ? WHERE bid = ?`,
 		event.DurationMs, event.BID)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	return nil

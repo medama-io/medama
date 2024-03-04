@@ -14,29 +14,31 @@ import (
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/model"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.Client) {
 	t.Helper()
 	assert := assert.New(t)
+	require := require.New(t)
 	ctx := context.Background()
 	// Disable logging
 	log.SetOutput(io.Discard)
 
 	// Generate new memory db per test
 	client, err := sqlite.NewClient(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name()))
-	assert.NoError(err)
+	require.NoError(err)
 	assert.NotNil(client)
 
 	// In memory duckdb client
 	duckdbClient, err := duckdb.NewClient("")
-	assert.NoError(err)
+	require.NoError(err)
 	assert.NotNil(duckdbClient)
 
 	// Run migrations
 	m := migrations.NewMigrationsService(ctx, client, duckdbClient)
 	err = m.AutoMigrate(ctx)
-	assert.NoError(err)
+	require.NoError(err)
 
 	// Create test user
 	userCreate := model.NewUser(
@@ -48,7 +50,7 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.C
 		2,                    // dateUpdated
 	)
 	err = client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
+	require.NoError(err)
 
 	// Create test website
 	websiteCreate := model.NewWebsite(
@@ -59,7 +61,7 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.C
 		2,                // dateUpdated
 	)
 	err = client.CreateWebsite(ctx, websiteCreate)
-	assert.NoError(err)
+	require.NoError(err)
 
 	return assert, ctx, duckdbClient
 }

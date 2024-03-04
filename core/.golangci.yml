@@ -15,10 +15,6 @@ linters-settings:
     # The maximal code complexity to report.
     # Default: 10
     max-complexity: 30
-    # The maximal average package complexity.
-    # If it's higher than 0.0 (float) the check is enabled
-    # Default: 0.0
-    package-average: 10.0
 
   errcheck:
     # Report about not checking of errors in type assertions: `a := b.(MyStruct)`.
@@ -104,6 +100,9 @@ linters-settings:
     # Otherwise, only methods that take `*testing.T`, `*testing.B`, and `testing.TB` as arguments are checked.
     # Default: false
     all: true
+  wrapcheck:
+    ignorePackageGlobs:
+      - services
 
 linters:
   disable-all: true
@@ -121,6 +120,8 @@ linters:
     - asciicheck # checks that your code does not contain non-ASCII identifiers
     - bidichk # checks for dangerous unicode character sequences
     - bodyclose # checks whether HTTP response body is closed successfully
+    - containedctx # checks for context.Context contained in a struct
+    - contextcheck # checks for common mistakes using context
     - cyclop # checks function and package cyclomatic complexity
     # - dupl # tool for code clone detection
     - durationcheck # checks for two durations multiplied together
@@ -131,6 +132,7 @@ linters:
     - exportloopref # checks for pointers to enclosing loop variables
     - forbidigo # forbids identifiers
     # - funlen # tool for detection of long functions # disabled because of routers and handlers in one function
+    - gci # controls golang package import order and makes it always deterministic
     - gocheckcompilerdirectives # validates go compiler directive comments (//go:)
     - gochecknoglobals # checks that no global variables exist
     - gochecknoinits # checks that no init functions are present in Go code
@@ -138,6 +140,7 @@ linters:
     - goconst # finds repeated strings that could be replaced by a constant
     - gocritic # provides diagnostics that check for bugs, performance and style issues
     - gocyclo # computes and checks the cyclomatic complexity of functions
+    - gofumpt # checks if the code is formatted with gofumpt
     - godot # checks if comments end in a period
     - goimports # in addition to fixing imports, goimports also formats your code in the same style as gofmt
     - gomnd # detects magic numbers
@@ -157,24 +160,27 @@ linters:
     - nolintlint # reports ill-formed or insufficient nolint directives
     - nonamedreturns # reports all named returns
     - nosprintfhostport # checks for misuse of Sprintf to construct a host with port in a URL
+    - prealloc # finds slice declarations that could potentially be preallocated
     - predeclared # finds code that shadows one of Go's predeclared identifiers
     - promlinter # checks Prometheus metrics naming via promlint
     - reassign # checks that package variables are not reassigned
     - revive # fast, configurable, extensible, flexible, and beautiful linter for Go, drop-in replacement of golint
     - rowserrcheck # checks whether Err of rows is checked successfully
-    - sqlclosecheck # checks that sql.Rows and sql.Stmt are closed
+    - sloglint # ensure consistent logging style
+    # - sqlclosecheck # Disabled until https://github.com/ryanrolds/sqlclosecheck/issues/35 is resolved
     - stylecheck # is a replacement for golint
     - tenv # detects using os.Setenv instead of t.Setenv since Go1.17
     - testableexamples # checks if examples are testable (have an expected output)
+    - testifylint # checks for common mistakes using the testify package
     - testpackage # makes you use a separate _test package
+    - thelper # checks that the helper functions are not used in the test
     - tparallel # detects inappropriate usage of t.Parallel() method in your Go test codes
     - unconvert # removes unnecessary type conversions
     - unparam # reports unused function parameters
     - usestdlibvars # detects the possibility to use variables/constants from the Go standard library
     - wastedassign # finds wasted assignment statements
     - whitespace # detects leading and trailing whitespace
-    - gci # controls golang package import order and makes it always deterministic
-    - godox # detects FIXME, TODO and other comment keywords
+    - wrapcheck # checks that the code does not use the wrapping of errors
 
 issues:
   # Maximum count of issues with the same text.

@@ -3,9 +3,9 @@ package sqlite
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"log/slog"
 
+	"github.com/go-faster/errors"
 	"github.com/mattn/go-sqlite3"
 	"github.com/medama-io/medama/model"
 )
@@ -39,7 +39,7 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to create website", attributes...)
 
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	return nil
@@ -60,7 +60,7 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to list websites", attributes...)
 
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 
 	if len(websites) == 0 {
@@ -95,7 +95,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to update website", attributes...)
 
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	rowsAffected, err := res.RowsAffected()
@@ -109,7 +109,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get rows affected", attributes...)
 
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	if rowsAffected == 0 {
@@ -140,7 +140,7 @@ func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Websit
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get website", attributes...)
 
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 
 	return &website, nil
@@ -159,7 +159,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to delete website", attributes...)
 
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	rowsAffected, err := res.RowsAffected()
@@ -171,7 +171,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to get rows affected", attributes...)
 
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	if rowsAffected == 0 {
@@ -197,7 +197,7 @@ func (c *Client) WebsiteExists(ctx context.Context, hostname string) (bool, erro
 
 		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
 
-		return false, err
+		return false, errors.Wrap(err, "db")
 	}
 
 	return exists, nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
@@ -40,7 +41,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -48,7 +49,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 		var browser model.StatsBrowsersSummary
 		err := rows.StructScan(&browser)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		browsers = append(browsers, &browser)
 	}
@@ -93,7 +94,7 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -101,7 +102,7 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 		var browser model.StatsBrowsers
 		err := rows.StructScan(&browser)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		browsers = append(browsers, &browser)
 	}
@@ -140,7 +141,7 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -148,7 +149,7 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 		var o model.StatsOSSummary
 		err := rows.StructScan(&o)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		os = append(os, &o)
 	}
@@ -190,7 +191,7 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -198,7 +199,7 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 		var o model.StatsOS
 		err := rows.StructScan(&o)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		os = append(os, &o)
 	}
@@ -237,7 +238,7 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -245,7 +246,7 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 		var device model.StatsDevicesSummary
 		err := rows.StructScan(&device)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		devices = append(devices, &device)
 	}
@@ -287,7 +288,7 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 	defer rows.Close()
 
@@ -295,7 +296,7 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 		var device model.StatsDevices
 		err := rows.StructScan(&device)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 		devices = append(devices, &device)
 	}

@@ -1,6 +1,7 @@
 package duckdb
 
 import (
+	"github.com/go-faster/errors"
 	"github.com/jmoiron/sqlx"
 	"github.com/medama-io/medama/db"
 )
@@ -18,21 +19,21 @@ var (
 func NewClient(host string) (*Client, error) {
 	db, err := sqlx.Connect("duckdb", host)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "duckdb")
 	}
 
 	// Enable ICU extension
 	_, err = db.Exec(`--sql
 		INSTALL icu;`)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "duckdb")
 	}
 
 	// Load ICU extension
 	_, err = db.Exec(`--sql
 		LOAD icu;`)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "duckdb")
 	}
 
 	return &Client{

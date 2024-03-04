@@ -2,9 +2,9 @@ package services
 
 import (
 	"context"
-	"errors"
 	"time"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
 )
@@ -22,7 +22,7 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 			return ErrNotFound(err), nil
 		}
 
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	var website *model.Website
@@ -44,7 +44,7 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 			return ErrNotFound(err), nil
 		}
 
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	// Delete all views associated with website
@@ -54,7 +54,7 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 			return ErrNotFound(err), nil
 		}
 
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	return &api.DeleteWebsitesIDOK{}, nil
@@ -72,7 +72,7 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 		if errors.Is(err, model.ErrWebsiteNotFound) {
 			return ErrNotFound(err), nil
 		}
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	// Map to API response
@@ -100,7 +100,7 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 			return ErrNotFound(err), nil
 		}
 
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	if website.UserID != userId {
@@ -126,7 +126,7 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 			return ErrNotFound(err), nil
 		}
 
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	if website.UserID != userId {
@@ -151,7 +151,7 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 			return ErrNotFound(err), nil
 		}
 
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	return &api.WebsiteGet{
@@ -179,7 +179,7 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 
 	err := h.db.CreateWebsite(ctx, websiteCreate)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "services")
 	}
 
 	return &api.WebsiteGet{

@@ -14,23 +14,25 @@ import (
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/model"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.Client) {
 	t.Helper()
 	assert := assert.New(t)
+	require := require.New(t)
 	ctx := context.Background()
 	// Disable logging
 	log.SetOutput(io.Discard)
 
 	// Generate new memory db per test
 	client, err := sqlite.NewClient(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name()))
-	assert.NoError(err)
+	require.NoError(err)
 	assert.NotNil(client)
 
 	// Empty duckdb client not used in tests
 	duckdbClient, err := duckdb.NewClient("")
-	assert.NoError(err)
+	require.NoError(err)
 	assert.NotNil(duckdbClient)
 
 	// Run migrations

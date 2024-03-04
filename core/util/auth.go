@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/alexedwards/argon2id"
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
 	"go.jetpack.io/typeid"
 )
@@ -38,7 +39,7 @@ func NewAuthService(ctx context.Context) (*AuthService, error) {
 	key := make([]byte, DefaultCipherKeySize)
 	_, err := rand.Read(key)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to generate cipher key")
 	}
 
 	return &AuthService{
@@ -51,7 +52,7 @@ func NewAuthService(ctx context.Context) (*AuthService, error) {
 func (a *AuthService) HashPassword(password string) (string, error) {
 	hash, err := argon2id.CreateHash(password, argon2id.DefaultParams)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "failed to hash password")
 	}
 
 	return hash, nil
@@ -61,7 +62,7 @@ func (a *AuthService) HashPassword(password string) (string, error) {
 func (a *AuthService) ComparePasswords(suppliedPassword string, storedHash string) (bool, error) {
 	match, err := argon2id.ComparePasswordAndHash(suppliedPassword, storedHash)
 	if err != nil {
-		return false, err
+		return false, errors.Wrap(err, "failed to compare passwords")
 	}
 
 	return match, nil
@@ -72,20 +73,20 @@ func (a *AuthService) EncryptSession(ctx context.Context, sessionId string, dura
 	// Create a new AES cipher block.
 	block, err := aes.NewCipher(a.aes32Key)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "auth: encrypt")
 	}
 
 	// Wrap the block in a GCM cipher.
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "auth: encrypt")
 	}
 
 	// Create a random 12 byte nonce.
 	nonce := make([]byte, aesgcm.NonceSize())
 	_, err = io.ReadFull(rand.Reader, nonce)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "auth: encrypt")
 	}
 
 	// Authenticate cookie name and value with {name:value} format.
@@ -103,13 +104,13 @@ func (a *AuthService) DecryptSession(ctx context.Context, session string) (strin
 	// Create a new AES cipher block.
 	block, err := aes.NewCipher(a.aes32Key)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "auth: decrypt")
 	}
 
 	// Wrap the block in a GCM cipher.
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "auth: decrypt")
 	}
 
 	// Check for potential index out of range error.
@@ -147,7 +148,7 @@ func (a *AuthService) CreateSession(ctx context.Context, userId string) (*http.C
 	// Generate session token.
 	sessionIdType, err := typeid.WithPrefix("sess")
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "auth: session")
 	}
 	sessionId := sessionIdType.String()
 
@@ -185,7 +186,7 @@ func (a *AuthService) ReadSession(ctx context.Context, session string) (string, 
 	// Decrypt session token.
 	sessionId, err := a.DecryptSession(ctx, string(encryptedSession))
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "session")
 	}
 
 	// Check if session exists.

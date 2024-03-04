@@ -3,8 +3,8 @@ package sqlite
 import (
 	"context"
 	"database/sql"
-	"errors"
 
+	"github.com/go-faster/errors"
 	"github.com/mattn/go-sqlite3"
 	"github.com/medama-io/medama/model"
 )
@@ -22,7 +22,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 			}
 		}
 
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	return nil
@@ -38,7 +38,7 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 			return nil, model.ErrUserNotFound
 		}
 
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 
 	defer res.Close()
@@ -48,7 +48,7 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 
 		err := res.StructScan(user)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 
 		return user, nil
@@ -63,7 +63,7 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 
 	res, err := c.DB.QueryxContext(ctx, query, username)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "db")
 	}
 
 	defer res.Close()
@@ -73,7 +73,7 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 
 		err := res.StructScan(user)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "db")
 		}
 
 		return user, nil
@@ -98,7 +98,7 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 		if errors.Is(err, sql.ErrNoRows) {
 			return model.ErrUserNotFound
 		}
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	return nil
@@ -114,7 +114,7 @@ func (c *Client) UpdateUserPassword(ctx context.Context, id string, password str
 			return model.ErrUserNotFound
 		}
 
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	return nil
@@ -126,13 +126,13 @@ func (c *Client) DeleteUser(ctx context.Context, id string) error {
 
 	res, err := c.DB.ExecContext(ctx, exec, id)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	// Delete statement will silently succeed if the user does not exist.
 	count, err := res.RowsAffected()
 	if err != nil {
-		return err
+		return errors.Wrap(err, "db")
 	}
 
 	if count == 0 {

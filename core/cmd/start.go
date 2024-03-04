@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"syscall"
 
+	"github.com/go-faster/errors"
 	generate "github.com/medama-io/medama"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db/duckdb"
@@ -33,17 +34,17 @@ type StartCommand struct {
 func NewStartCommand() (*StartCommand, error) {
 	serverConfig, err := NewServerConfig()
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to create server config")
 	}
 
 	appConfig, err := NewAppDBConfig()
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to create app db config")
 	}
 
 	analyticsConfig, err := NewAnalyticsDBConfig()
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to create analytics db config")
 	}
 
 	return &StartCommand{
@@ -60,7 +61,12 @@ func (s *StartCommand) ParseFlags(args []string) error {
 	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on")
 
 	// Parse flags
-	return fs.Parse(args)
+	err := fs.Parse(args)
+	if err != nil {
+		return errors.Wrap(err, "failed to parse flags")
+	}
+
+	return nil
 }
 
 // Run executes the start command.
@@ -71,36 +77,34 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	// Setup database
 	sqlite, err := sqlite.NewClient(s.AppDB.Host)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to create sqlite client")
 	}
 
 	duckdb, err := duckdb.NewClient(s.AnalyticsDB.Host)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to create duckdb client")
 	}
 
 	// Run migrations
 	m := migrations.NewMigrationsService(ctx, sqlite, duckdb)
 	if m == nil {
-		slog.Error("Could not create migrations service")
-		return err
+		return errors.New("could not create migrations service")
 	}
 	err = m.AutoMigrate(ctx)
 	if err != nil {
-		slog.Error("Could not run migrations", "error", err)
-		return err
+		return errors.Wrap(err, "could not run migrations")
 	}
 
 	// Setup auth service
 	auth, err := util.NewAuthService(ctx)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to create auth service")
 	}
 
 	// Setup handlers
 	service, err := services.NewService(auth, sqlite, duckdb)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to create handlers")
 	}
 
 	authMiddleware := middlewares.NewAuthHandler(auth)
@@ -116,7 +120,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		api.WithNotFound(middlewares.NotFound()),
 	)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to create server")
 	}
 
 	// We need to add additional static routes for the web app.
