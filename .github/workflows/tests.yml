@@ -34,8 +34,6 @@ jobs:
         with:
           version: latest
           working-directory: core
-          # Disable godox linter to hide TODO warnings
-          args: --disable godox
   test:
     runs-on: ubuntu-latest
     defaults:
