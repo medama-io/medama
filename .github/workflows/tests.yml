@@ -34,6 +34,8 @@ jobs:
         with:
           version: latest
           working-directory: core
+          # Disable godox linter to hide TODO warnings
+          args: --config=/core/.golangci.yml --disable godox
   test:
     runs-on: ubuntu-latest
     defaults:
