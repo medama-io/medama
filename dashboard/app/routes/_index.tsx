@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core';
+import { Divider, Paper, Text } from '@mantine/core';
 import {
 	json,
 	type LoaderFunctionArgs,
@@ -7,7 +7,7 @@ import {
 } from '@remix-run/node';
 import {
 	isRouteErrorResponse,
-	NavLink,
+	Link,
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
@@ -50,15 +50,23 @@ export default function Index() {
 	return (
 		<main>
 			<h1>Websites</h1>
-			{JSON.stringify(websites)}
+			<Divider mb={30} />
 			{websites.map((website) => (
-				<Button
+				<Paper
 					key={website.hostname}
-					component={NavLink}
+					withBorder
+					w={300}
+					p={8}
+					radius={8}
+					component={Link}
 					to={`/${website.hostname}`}
+					prefetch="intent"
 				>
-					{website.name}
-				</Button>
+					<Text>{website.name}</Text>
+					<Text size="xs" c="gray">
+						{website.hostname}
+					</Text>
+				</Paper>
 			))}
 		</main>
 	);
@@ -72,9 +80,17 @@ export const ErrorBoundary = () => {
 			<main>
 				<h1>404</h1>
 				<p>No websites found</p>
-				<Button component={NavLink} to="/add">
+				<Paper
+					withBorder
+					w={300}
+					p={8}
+					radius={8}
+					component={Link}
+					to="/add"
+					prefetch="intent"
+				>
 					Add Website
-				</Button>
+				</Paper>
 			</main>
 		);
 	}
