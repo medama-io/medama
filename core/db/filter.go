@@ -192,9 +192,9 @@ type Filters struct {
 }
 
 // addCondition appends a condition to the query if the filter has a non-empty value.
-func addCondition(query *strings.Builder, condition string, value string) {
-	if value != "" {
-		query.WriteString(" AND " + condition)
+func addCondition(query *strings.Builder, filter *Filter) {
+	if filter != nil {
+		query.WriteString(" AND " + filter.String())
 	}
 }
 
@@ -204,20 +204,24 @@ func (f Filters) WhereString() string {
 
 	// Build the query string
 	query.WriteString("hostname = :hostname")
-	addCondition(&query, f.Pathname.String(), f.Pathname.Value)
-	addCondition(&query, f.Referrer.String(), f.Referrer.Value)
-	addCondition(&query, f.UTMSource.String(), f.UTMSource.Value)
-	addCondition(&query, f.UTMMedium.String(), f.UTMMedium.Value)
-	addCondition(&query, f.UTMCampaign.String(), f.UTMCampaign.Value)
-	addCondition(&query, f.Browser.String(), f.Browser.Value)
-	addCondition(&query, f.OS.String(), f.OS.Value)
-	addCondition(&query, f.Device.String(), f.Device.Value)
-	addCondition(&query, f.Country.String(), f.Country.Value)
-	addCondition(&query, f.Language.String(), f.Language.Value)
+	addCondition(&query, f.Pathname)
+	addCondition(&query, f.Referrer)
+	addCondition(&query, f.UTMSource)
+	addCondition(&query, f.UTMMedium)
+	addCondition(&query, f.UTMCampaign)
+	addCondition(&query, f.Browser)
+	addCondition(&query, f.OS)
+	addCondition(&query, f.Device)
+	addCondition(&query, f.Country)
+	addCondition(&query, f.Language)
 
 	// Time period filters
-	addCondition(&query, "date_created >= CAST(:start_period AS TIMESTAMPTZ)", f.PeriodStart)
-	addCondition(&query, "date_created <= CAST(:end_period AS TIMESTAMPTZ)", f.PeriodEnd)
+	if f.PeriodStart != "" {
+		query.WriteString(" AND date_created >= CAST(:start_period AS TIMESTAMPTZ)")
+	}
+	if f.PeriodEnd != "" {
+		query.WriteString(" AND date_created <= CAST(:end_period AS TIMESTAMPTZ)")
+	}
 
 	return query.String()
 }
@@ -247,28 +251,30 @@ func (f Filters) Args(customMap *map[string]interface{}) map[string]interface{} 
 	}
 	args := *customMap
 
-	filterValues := map[FilterField]interface{}{
-		FilterHostname:    f.Hostname,
-		FilterPathname:    f.Pathname.Value,
-		FilterReferrer:    f.Referrer.Value,
-		FilterUTMSource:   f.UTMSource.Value,
-		FilterUTMMedium:   f.UTMMedium.Value,
-		FilterUTMCampaign: f.UTMCampaign.Value,
-		FilterBrowser:     f.Browser.Value,
-		FilterOS:          f.OS.Value,
-		FilterDevice:      f.Device.Value,
-		FilterCountry:     f.Country.Value,
-		FilterLanguage:    f.Language.Value,
-		FilterPeriodStart: f.PeriodStart,
-		FilterPeriodEnd:   f.PeriodEnd,
-		FilterLimit:       f.Limit,
-		FilterOffset:      f.Offset,
+	args[string(FilterHostname)] = f.Hostname
+	args[string(FilterPeriodStart)] = f.PeriodStart
+	args[string(FilterPeriodEnd)] = f.PeriodEnd
+	args[string(FilterLimit)] = f.Limit
+	args[string(FilterOffset)] = f.Offset
+
+	//nolint:exhaustive // No other fields use filter structs
+	filterValues := map[FilterField]*Filter{
+		FilterPathname:    f.Pathname,
+		FilterReferrer:    f.Referrer,
+		FilterUTMSource:   f.UTMSource,
+		FilterUTMMedium:   f.UTMMedium,
+		FilterUTMCampaign: f.UTMCampaign,
+		FilterBrowser:     f.Browser,
+		FilterOS:          f.OS,
+		FilterDevice:      f.Device,
+		FilterCountry:     f.Country,
+		FilterLanguage:    f.Language,
 	}
 
 	// Add non-empty filter values to args
-	for field, value := range filterValues {
-		if value != "" {
-			args[string(field)] = value
+	for field, filter := range filterValues {
+		if filter != nil {
+			args[string(field)] = filter.Value
 		}
 	}
 
