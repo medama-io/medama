@@ -8,7 +8,7 @@ import (
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util"
-	"go.jetpack.io/typeid"
+	"go.jetify.com/typeid"
 )
 
 func Up0001(c *sqlite.Client) error {

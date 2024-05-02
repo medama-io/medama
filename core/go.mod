@@ -15,7 +15,7 @@ require (
 	github.com/ogen-go/ogen v1.1.0
 	github.com/rs/zerolog v1.32.0
 	github.com/stretchr/testify v1.9.0
-	go.jetpack.io/typeid v1.0.0
+	go.jetify.com/typeid v1.1.0
 	go.uber.org/multierr v1.11.0
 	golang.org/x/text v0.14.0
 )

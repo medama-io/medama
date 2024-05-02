@@ -15,7 +15,7 @@ import (
 	"github.com/alexedwards/argon2id"
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
-	"go.jetpack.io/typeid"
+	"go.jetify.com/typeid"
 )
 
 const (
