@@ -3,7 +3,6 @@ package sqlite_test
 import (
 	"testing"
 
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/medama-io/medama/model"
 )
 

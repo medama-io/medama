@@ -6,8 +6,8 @@ import (
 	"log/slog"
 
 	"github.com/go-faster/errors"
-	"github.com/mattn/go-sqlite3"
 	"github.com/medama-io/medama/model"
+	"github.com/ncruces/go-sqlite3"
 )
 
 func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) error {
@@ -16,17 +16,11 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 
 	_, err := c.DB.ExecContext(ctx, exec, website.UserID, website.Hostname, website.Name, website.DateCreated, website.DateUpdated)
 	if err != nil {
-		var sqliteError sqlite3.Error
-		if errors.As(err, &sqliteError) {
-			switch sqliteError.ExtendedCode {
-			// Check for unique hostname constraint
-			case sqlite3.ErrConstraintPrimaryKey:
-				return model.ErrWebsiteExists
-
-				// Check for foreign key constraint
-			case sqlite3.ErrConstraintForeignKey:
-				return model.ErrUserNotFound
-			}
+		switch {
+		case errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY):
+			return model.ErrWebsiteExists
+		case errors.Is(err, sqlite3.CONSTRAINT_FOREIGNKEY):
+			return model.ErrUserNotFound
 		}
 
 		attributes := []slog.Attr{
@@ -78,12 +72,8 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 	res, err := c.DB.ExecContext(ctx, exec, website.Hostname, website.Name, website.DateUpdated, website.Hostname)
 	if err != nil {
-		var sqliteError sqlite3.Error
-		if errors.As(err, &sqliteError) {
-			// Check for unique hostname constraint
-			if sqliteError.ExtendedCode == sqlite3.ErrConstraintPrimaryKey {
-				return model.ErrWebsiteExists
-			}
+		if errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
+			return model.ErrWebsiteExists
 		}
 
 		attributes := []slog.Attr{

@@ -8,11 +8,13 @@ import (
 	"testing"
 
 	_ "github.com/marcboeker/go-duckdb"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/model"
+	_ "github.com/ncruces/go-sqlite3/driver"
+	_ "github.com/ncruces/go-sqlite3/embed"
+	"github.com/ncruces/go-sqlite3/vfs/memdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +28,9 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.C
 	log.SetOutput(io.Discard)
 
 	// Generate new memory db per test
-	client, err := sqlite.NewClient(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name()))
+	name := fmt.Sprintf("file:/%s.db?vfs=memdb", t.Name())
+	memdb.Create(name, []byte{})
+	client, err := sqlite.NewClient(name)
 	require.NoError(err)
 	assert.NotNil(client)
 

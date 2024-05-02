@@ -5,8 +5,8 @@ import (
 	"database/sql"
 
 	"github.com/go-faster/errors"
-	"github.com/mattn/go-sqlite3"
 	"github.com/medama-io/medama/model"
+	"github.com/ncruces/go-sqlite3"
 )
 
 func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
@@ -15,11 +15,8 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 
 	_, err := c.DB.ExecContext(ctx, exec, user.ID, user.Username, user.Password, user.Language, user.DateCreated, user.DateUpdated)
 	if err != nil {
-		var sqliteError sqlite3.Error
-		if errors.As(err, &sqliteError) {
-			if errors.Is(sqliteError.Code, sqlite3.ErrConstraint) {
-				return model.ErrUserExists
-			}
+		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) || errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
+			return model.ErrUserExists
 		}
 
 		return errors.Wrap(err, "db")
@@ -88,14 +85,11 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 
 	_, err := c.DB.ExecContext(ctx, exec, username, dateUpdated, id)
 	if err != nil {
-		var sqliteError sqlite3.Error
-		if errors.As(err, &sqliteError) {
-			if errors.Is(sqliteError.Code, sqlite3.ErrConstraint) {
-				return model.ErrUserExists
-			}
-		}
-
-		if errors.Is(err, sql.ErrNoRows) {
+		switch {
+		case errors.Is(err, sqlite3.CONSTRAINT_UNIQUE),
+			errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY):
+			return model.ErrUserExists
+		case errors.Is(err, sql.ErrNoRows):
 			return model.ErrUserNotFound
 		}
 		return errors.Wrap(err, "db")
