@@ -1,10 +1,10 @@
 package middlewares
 
 import (
-	"log/slog"
 	"net/http"
 
 	"github.com/go-faster/jx"
+	"github.com/rs/zerolog"
 )
 
 const errMessage = "api path not found"
@@ -27,14 +27,13 @@ func NotFound() func(w http.ResponseWriter, req *http.Request) {
 
 		_, _ = w.Write(e.Bytes())
 
-		attributes := []slog.Attr{
-			slog.String("path", req.URL.Path),
-			slog.String("method", req.Method),
-			slog.Int("status_code", http.StatusNotFound),
-			slog.String("message", errMessage),
-			slog.String("User-Agent", req.Header.Get("User-Agent")),
-		}
-
-		slog.LogAttrs(req.Context(), slog.LevelInfo, "Not Found", attributes...)
+		zerolog.Ctx(req.Context()).
+			Info().
+			Str("path", req.URL.Path).
+			Str("method", req.Method).
+			Int("status_code", http.StatusNotFound).
+			Str("message", errMessage).
+			Str("User-Agent", req.Header.Get("User-Agent")).
+			Msg("Not Found")
 	}
 }

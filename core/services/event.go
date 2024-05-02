@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"log/slog"
 	"net/http"
 	"net/url"
 	"strings"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
+	"github.com/rs/zerolog"
 	"golang.org/x/text/language"
 	"golang.org/x/text/language/display"
 )
@@ -28,10 +28,8 @@ const (
 )
 
 func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
-	attributes := []slog.Attr{}
 	// Check if if-modified-since header is set
 	ifModified := params.IfModifiedSince.Value
-	attributes = append(attributes, slog.String("if_modified", ifModified))
 
 	// Get current day but reset the time to 00:00:00
 	currentDay := time.Now().Truncate(OneDay)
@@ -42,9 +40,6 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 		body := strings.NewReader("0")
 
 		lastModified := currentDay.Format(http.TimeFormat)
-
-		attributes = append(attributes, slog.String("last_modified", lastModified))
-		slog.LogAttrs(ctx, slog.LevelDebug, "ping: last modified header not set", attributes...)
 
 		return &api.GetEventPingOKHeaders{
 			AccessControlAllowOrigin: CorsOrigin,
@@ -57,8 +52,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	// Parse the if-modified-since header and check if it is older than a day.
 	lastModifiedTime, err := time.Parse(http.TimeFormat, ifModified)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "ping: failed to parse if modified since header", attributes...)
+		zerolog.Ctx(ctx).Error().Err(err).Msg("failed to parse if-modified-since header")
 		return ErrBadRequest(err), nil
 	}
 
@@ -72,9 +66,6 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 
 		lastModified := lastModifiedTime.Format(http.TimeFormat)
 
-		attributes = append(attributes, slog.String("last_modified", lastModified))
-		slog.LogAttrs(ctx, slog.LevelDebug, "ping: last modified header set", attributes...)
-
 		return &api.GetEventPingOKHeaders{
 			AccessControlAllowOrigin: CorsOrigin,
 			LastModified:             lastModified,
@@ -87,7 +78,6 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	body := strings.NewReader("1")
 
 	// Return not modified if the last modified time is today (not unique user).
-	slog.LogAttrs(ctx, slog.LevelDebug, "ping: last modified header set", attributes...)
 	return &api.GetEventPingOKHeaders{
 		AccessControlAllowOrigin:  CorsOrigin,
 		AccessControlAllowMethods: CorsMethods,
@@ -101,23 +91,20 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 }
 
 func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
-	attributes := []slog.Attr{}
-
 	switch req.Type {
 	case api.EventLoadEventHit:
 		hostname := req.EventLoad.U.Hostname()
 		pathname := req.EventLoad.U.Path
+		log := zerolog.Ctx(ctx).With().Str("hostname", hostname).Logger()
 
 		// Verify hostname exists
 		exists, err := h.db.WebsiteExists(ctx, hostname)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to check if website exists", attributes...)
+			log.Error().Err(err).Msg("hit: failed to check if website exists")
 			return ErrInternalServerError(err), nil
 		}
 		if !exists {
-			attributes = append(attributes, slog.String("hostname", hostname), slog.String("pathname", pathname))
-			slog.LogAttrs(ctx, slog.LevelWarn, "hit: website not found", attributes...)
+			log.Warn().Msg("hit: website not found")
 			return ErrNotFound(model.ErrWebsiteNotFound), nil
 		}
 
@@ -127,8 +114,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		if req.EventLoad.R.Value != "" {
 			referrer, err := url.Parse(req.EventLoad.R.Value)
 			if err != nil {
-				attributes = append(attributes, slog.String("error", err.Error()))
-				slog.LogAttrs(ctx, slog.LevelError, "hit: failed to parse referrer URL", attributes...)
+				log.Warn().Err(err).Msg("hit: failed to parse referrer URL")
 				return ErrBadRequest(err), nil
 			}
 
@@ -145,23 +131,21 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		// their privacy using IP addresses.
 		countryCode, err := h.timezoneMap.GetCode(req.EventLoad.T.Value)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelDebug, "hit: failed to get country code from timezone", attributes...)
+			log.Debug().Err(err).Msg("hit: failed to get country code from timezone")
 			countryCode = ""
 		}
 
 		// Get request from context
 		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
 		if !ok {
-			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to get request from context", attributes...)
+			log.Error().Msg("hit: failed to get request key from context")
 			return ErrInternalServerError(model.ErrRequestContext), nil
 		}
 
 		// Get users language from Accept-Language header
 		languages, _, err := language.ParseAcceptLanguage(reqBody.Header.Get("Accept-Language"))
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelDebug, "hit: failed to parse accept language header", attributes...)
+			log.Debug().Err(err).Msg("hit: failed to parse accept language header")
 		}
 		// Get the first language from the list which is the most preferred and convert it to a language name
 		language := "Unknown"
@@ -204,60 +188,56 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			UTMCampaign: utmCampaign,
 		}
 
-		attributes = append(attributes,
-			slog.String("bid", event.BID),
-			slog.String("event_type", string(req.Type)),
-			slog.String("hostname", event.Hostname),
-			slog.String("pathname", event.Pathname),
-			slog.Bool("is_unique_user", event.IsUniqueUser),
-			slog.Bool("is_unique_page", event.IsUniquePage),
-			slog.String("referrer", event.Referrer),
-			slog.String("country_code", countryCode),
-			slog.String("language", event.Language),
-			slog.String("browser_name", event.BrowserName.String()),
-			slog.String("os", event.OS.String()),
-			slog.String("device_type", event.DeviceType.String()),
-		)
+		log = log.With().
+			Str("bid", event.BID).
+			Str("event_type", string(req.Type)).
+			Str("pathname", event.Pathname).
+			Bool("is_unique_user", event.IsUniqueUser).
+			Bool("is_unique_page", event.IsUniquePage).
+			Str("referrer", event.Referrer).
+			Str("country_code", countryCode).
+			Str("language", event.Language).
+			Str("browser_name", event.BrowserName.String()).
+			Str("os", event.OS.String()).
+			Str("device_type", event.DeviceType.String()).
+			Logger()
 
 		// TODO: Remove temporary raw user agent logging for debugging
 		if event.BrowserName == model.UnknownBrowser || event.OS == model.UnknownOS || event.DeviceType == model.UnknownDevice {
-			attributes = append(attributes, slog.String("user_agent", rawUserAgent))
+			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: unknown user agent")
 		}
 
 		err = h.analyticsDB.AddPageView(ctx, event)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to add page view", attributes...)
+			log.Error().Err(err).Msg("hit: failed to add page view")
 			return ErrInternalServerError(err), nil
 		}
 
 		// Log success
-		slog.LogAttrs(ctx, slog.LevelDebug, "hit: added page view", attributes...)
+		log.Debug().Msg("hit: added page view")
 	case api.EventUnloadEventHit:
 		event := &model.PageViewDuration{
 			BID:        req.EventUnload.B,
 			DurationMs: req.EventUnload.M,
 		}
 
-		attributes = append(attributes,
-			slog.String("bid", event.BID),
-			slog.String("event_type", string(req.Type)),
-			slog.Int("duration_ms", event.DurationMs),
-		)
+		log := zerolog.Ctx(ctx).With().
+			Str("bid", event.BID).
+			Str("event_type", string(req.Type)).
+			Int("duration_ms", event.DurationMs).
+			Logger()
 
 		err := h.analyticsDB.UpdatePageView(ctx, event)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "hit: failed to update page view", attributes...)
+			log.Error().Err(err).Msg("hit: failed to update page view")
 			return ErrInternalServerError(err), nil
 		}
 
 		// Log success
-		slog.LogAttrs(ctx, slog.LevelDebug, "hit: updated page view", attributes...)
+		log.Debug().Msg("hit: updated page view")
 
 	default:
-		attributes = append(attributes, slog.String("type", string(req.Type)))
-		slog.LogAttrs(ctx, slog.LevelError, "hit: invalid event hit type", attributes...)
+		zerolog.Ctx(ctx).Error().Str("type", string(req.Type)).Msg("hit: invalid event hit type")
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 	}
 

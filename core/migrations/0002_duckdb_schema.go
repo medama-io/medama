@@ -1,3 +1,4 @@
+// nolint: wrapcheck
 package migrations
 
 import (
@@ -63,7 +64,6 @@ func Up0002(c *duckdb.Client) error {
 		duration_ms UINTEGER,
 		date_created TIMESTAMPTZ NOT NULL
 	)`)
-
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {

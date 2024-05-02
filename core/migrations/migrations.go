@@ -3,11 +3,11 @@ package migrations
 import (
 	"context"
 	"database/sql"
-	"errors"
-	"log/slog"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
+	"github.com/rs/zerolog"
 )
 
 type MigrationType string
@@ -38,7 +38,7 @@ func CreateMigrationsTable(c *sqlite.Client) error {
 	CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY, name TEXT NOT NULL, type TEXT NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`
 	_, err := c.Exec(exec)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "migration")
 	}
 
 	return nil
@@ -55,12 +55,13 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 		{ID: 2, Name: "0002_duckdb_schema.go", Type: DuckDB, Up: Up0002, Down: Down0002},
 	}
 
+	log := zerolog.Ctx(ctx)
 	err := CreateMigrationsTable(sqliteC)
 	if err != nil {
-		slog.ErrorContext(ctx, "failed to create migrations table", "error", err)
+		log.Error().Err(err).Msg("failed to create migrations table")
 		return nil
 	}
-	slog.DebugContext(ctx, "migrations table found")
+	log.Debug().Msg("migrations table found")
 
 	return &Service{
 		duckdb:           duckdbC,
@@ -77,22 +78,25 @@ func runMigrator[Client sqlite.Client | duckdb.Client](ctx context.Context, sqli
 		var id int
 		err := sqlite.GetContext(ctx, &id, "SELECT id FROM migrations WHERE id = ?", migration.ID)
 
-		attributes := []slog.Attr{
-			slog.Int("id", migration.ID),
-			slog.String("name", migration.Name),
-			slog.String("type", string(migration.Type)),
-		}
+		log := zerolog.Ctx(ctx).With().
+			Int("id", migration.ID).
+			Str("name", migration.Name).
+			Str("type", string(migration.Type)).
+			Logger()
+
 		switch {
 		// Run migration if it does not exist in migrations table
 		case errors.Is(err, sql.ErrNoRows):
-			slog.LogAttrs(ctx, slog.LevelWarn, "running migration, do not close the application", attributes...)
+			log.Warn().
+				Msg("running migration, do not close the application")
 
 			// Run migration
 			err = migration.Up(client)
-
 			if err != nil {
-				attributes = append(attributes, slog.String("error", err.Error()))
-				slog.LogAttrs(ctx, slog.LevelError, "failed to run migration", attributes...)
+				log.Error().
+					Err(err).
+					Msg("failed to run migration")
+
 				return err
 			}
 
@@ -101,21 +105,24 @@ func runMigrator[Client sqlite.Client | duckdb.Client](ctx context.Context, sqli
 			INSERT INTO migrations (id, name, type) VALUES (?, ?, ?)`
 			_, err = sqlite.ExecContext(ctx, exec, migration.ID, migration.Name, migration.Type)
 			if err != nil {
-				attributes = append(attributes, slog.String("error", err.Error()))
-				slog.LogAttrs(ctx, slog.LevelError, "failed to insert migration into migrations table", attributes...)
-				return err
+				log.Error().
+					Err(err).
+					Msg("failed to insert migration into migrations table")
+
+				return errors.Wrap(err, "migration")
 			}
 
-			slog.LogAttrs(ctx, slog.LevelInfo, "migrated", attributes...)
+			log.Info().Msg("migrated")
 
 		case err == nil: // Migration already exists, skip
-			slog.LogAttrs(ctx, slog.LevelDebug, "migration already exists", attributes...)
+			log.Debug().Msg("migration already exists")
 			continue
 
 		default:
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to check if migration exists", attributes...)
-			return err
+			log.Error().
+				Err(err).
+				Msg("failed to check if migration exists")
+			return errors.Wrap(err, "migration")
 		}
 	}
 

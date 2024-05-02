@@ -2,8 +2,6 @@ package util_test
 
 import (
 	"context"
-	"io"
-	"log"
 	"testing"
 	"time"
 
@@ -17,7 +15,6 @@ func SetupCacheTest(t *testing.T) (*assert.Assertions, *require.Assertions, cont
 	assert := assert.New(t)
 	require := require.New(t)
 	ctx := context.Background()
-	log.SetOutput(io.Discard)
 	return assert, require, ctx
 }
 

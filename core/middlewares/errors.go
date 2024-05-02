@@ -3,12 +3,12 @@ package middlewares
 import (
 	"context"
 	"errors"
-	"log/slog"
 	"net/http"
 	"strings"
 
 	"github.com/go-faster/jx"
 	"github.com/ogen-go/ogen/ogenerrors"
+	"github.com/rs/zerolog"
 )
 
 // ErrorHandler is a middleware that handles any unhandled errors by ogen.
@@ -16,17 +16,17 @@ func ErrorHandler(ctx context.Context, w http.ResponseWriter, req *http.Request,
 	code := ogenerrors.ErrorCode(err)
 	errMessage := strings.ReplaceAll(err.Error(), "\"", "'")
 
-	attributes := []slog.Attr{
-		slog.String("path", req.URL.Path),
-		slog.String("method", req.Method),
-		slog.Int("status_code", code),
-		slog.String("message", errMessage),
-		slog.String("Connection", req.Header.Get("Connection")),
-		slog.String("Content-Type", req.Header.Get("Content-Type")),
-		slog.String("Content-Length", req.Header.Get("Content-Length")),
-		slog.String("User-Agent", req.Header.Get("User-Agent")),
-	}
-	slog.LogAttrs(ctx, slog.LevelError, "error", attributes...)
+	zerolog.Ctx(ctx).
+		Error().
+		Str("path", req.URL.Path).
+		Str("method", req.Method).
+		Int("status_code", code).
+		Str("message", errMessage).
+		Str("Connection", req.Header.Get("Connection")).
+		Str("Content-Type", req.Header.Get("Content-Type")).
+		Str("Content-Length", req.Header.Get("Content-Length")).
+		Str("User-Agent", req.Header.Get("User-Agent")).
+		Msg("Error 500")
 
 	if errors.Is(err, ogenerrors.ErrSecurityRequirementIsNotSatisfied) {
 		errMessage = "missing security token or cookie"

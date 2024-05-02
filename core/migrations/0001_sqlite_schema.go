@@ -1,3 +1,4 @@
+// nolint: wrapcheck
 package migrations
 
 import (
@@ -28,7 +29,6 @@ func Up0001(c *sqlite.Client) error {
 		date_updated INTEGER NOT NULL,
 		UNIQUE(username)
 	)`)
-
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {
@@ -48,7 +48,6 @@ func Up0001(c *sqlite.Client) error {
 		date_updated INTEGER NOT NULL,
 		FOREIGN KEY(user_id) REFERENCES users(id)
 	)`)
-
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {

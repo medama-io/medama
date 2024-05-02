@@ -3,8 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
-	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -21,6 +19,7 @@ import (
 	"github.com/medama-io/medama/services"
 	"github.com/medama-io/medama/util"
 	"github.com/ogen-go/ogen/middleware"
+	"github.com/rs/zerolog"
 )
 
 type StartCommand struct {
@@ -58,6 +57,7 @@ func NewStartCommand() (*StartCommand, error) {
 func (s *StartCommand) ParseFlags(args []string) error {
 	fs := flag.NewFlagSet("start", flag.ContinueOnError)
 	fs.BoolVar(&s.Debug, "debug", false, "Enable verbose debug logging")
+	fs.StringVar(&s.Server.Logger, "logger", DefaultLogger, "Logger format (json, pretty)")
 	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on")
 
 	// Parse flags
@@ -71,19 +71,22 @@ func (s *StartCommand) ParseFlags(args []string) error {
 
 // Run executes the start command.
 func (s *StartCommand) Run(ctx context.Context) error {
-	util.SetupLogger(os.Stdout, s.Debug)
-	slog.Info(GetVersion())
+	ctx = util.SetupLogger(ctx, s.Debug, s.Server.Logger)
+	log := zerolog.Ctx(ctx)
+	log.Info().Msg(GetVersion())
 
 	// Setup database
 	sqlite, err := sqlite.NewClient(s.AppDB.Host)
 	if err != nil {
 		return errors.Wrap(err, "failed to create sqlite client")
 	}
+	defer sqlite.Close()
 
 	duckdb, err := duckdb.NewClient(s.AnalyticsDB.Host)
 	if err != nil {
 		return errors.Wrap(err, "failed to create duckdb client")
 	}
+	defer duckdb.Close()
 
 	// Run migrations
 	m := migrations.NewMigrationsService(ctx, sqlite, duckdb)
@@ -143,21 +146,21 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		signal.Notify(sigint, os.Interrupt, syscall.SIGTERM)
 		<-sigint
 
-		slog.Info("Shutting down server...")
+		log.Info().Msg("Shutting down server...")
 
 		ctx, cancel := context.WithTimeout(ctx, s.Server.TimeoutIdle)
 		defer cancel()
 
 		if err := srv.Shutdown(ctx); err != nil {
-			slog.Error("Could not gracefully shutdown the server", "error", err)
+			log.Error().Err(err).Msg("Could not gracefully shutdown the server")
 		}
 
 		close(closed)
 	}()
 
-	slog.Info(fmt.Sprintf("Starting server at http://localhost:%d", s.Server.Port))
+	log.Info().Msgf("Starting server at http://localhost:%d", s.Server.Port)
 	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
-		slog.Error("Could not listen on", "port", s.Server.Port, "error", err)
+		log.Panic().Err(err).Msgf("Could not listen on port: %d", s.Server.Port)
 	}
 
 	<-closed

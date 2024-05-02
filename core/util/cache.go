@@ -3,7 +3,6 @@ package util
 import (
 	"context"
 	"errors"
-	"log/slog"
 	"sync"
 	"time"
 )
@@ -48,7 +47,6 @@ func NewCache(ctx context.Context, cleaningInterval time.Duration) *Cache {
 				cache.items.Range(func(key, value interface{}) bool {
 					item, ok := value.(item)
 					if !ok {
-						slog.ErrorContext(ctx, "error casting cache item", slog.String("error", ErrInvalidCast.Error()))
 						return false
 					}
 
@@ -73,18 +71,15 @@ func (c *Cache) Get(ctx context.Context, key interface{}) (interface{}, error) {
 	obj, exists := c.items.Load(key)
 
 	if !exists {
-		slog.DebugContext(ctx, "cache miss", slog.String("error", ErrCacheMiss.Error()))
 		return nil, ErrCacheMiss
 	}
 
 	item, ok := obj.(item)
 	if !ok {
-		slog.DebugContext(ctx, "error casting cache item", slog.String("error", ErrInvalidCast.Error()))
 		return nil, ErrInvalidCast
 	}
 
 	if item.expires > 0 && time.Now().UnixNano() > item.expires {
-		slog.DebugContext(ctx, "cache expired", slog.String("error", ErrCacheExpire.Error()))
 		return nil, ErrCacheExpire
 	}
 
@@ -122,7 +117,6 @@ func (c *Cache) Range(ctx context.Context, f func(key, value interface{}) bool) 
 	fn := func(key, value interface{}) bool {
 		item, ok := value.(item)
 		if !ok {
-			slog.ErrorContext(ctx, "error casting cache item", slog.String("error", ErrInvalidCast.Error()))
 			return false
 		}
 

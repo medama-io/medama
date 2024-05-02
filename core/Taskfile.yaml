@@ -5,9 +5,9 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - go run ./cmd/ {{.CLI_ARGS}} -debug
+      - go run ./cmd/ {{.CLI_ARGS}} -debug -logger=pretty
     env:
-      GOEXPERIMENT: loopvar
+      CGO_ENABLED: "1"
 
   build:
     deps: [generate]
@@ -15,7 +15,6 @@ tasks:
       - go build -o ./bin/main ./cmd/
     env:
       CGO_ENABLED: "1"
-      GOEXPERIMENT: loopvar
 
   start:
     deps: [build]
@@ -28,7 +27,6 @@ tasks:
       - go build -o ./bin/main -ldflags "-s -w" ./cmd/
     env:
       CGO_ENABLED: "1"
-      GOEXPERIMENT: loopvar
 
   generate:
     aliases: [gen]
@@ -67,4 +65,3 @@ tasks:
       - go test -v ./...
     env:
       CGO_ENABLED: "1"
-      GOEXPERIMENT: loopvar

@@ -3,11 +3,11 @@ package sqlite
 import (
 	"context"
 	"database/sql"
-	"log/slog"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
 	"github.com/ncruces/go-sqlite3"
+	"github.com/rs/zerolog"
 )
 
 func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) error {
@@ -23,15 +23,13 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 			return model.ErrUserNotFound
 		}
 
-		attributes := []slog.Attr{
-			slog.String("user_id", website.UserID),
-			slog.String("hostname", website.Hostname),
-			slog.Int64("date_created", website.DateCreated),
-			slog.Int64("date_updated", website.DateUpdated),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to create website", attributes...)
+		zerolog.Ctx(ctx).
+			Error().
+			Str("user_id", website.UserID).
+			Str("hostname", website.Hostname).
+			Int64("date_created", website.DateCreated).
+			Int64("date_updated", website.DateUpdated).Err(err).
+			Msg("failed to create website")
 
 		return errors.Wrap(err, "db")
 	}
@@ -47,18 +45,17 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 
 	err := c.SelectContext(ctx, &websites, query, userID)
 	if err != nil {
-		attributes := []slog.Attr{
-			slog.String("user_id", userID),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to list websites", attributes...)
+		zerolog.Ctx(ctx).
+			Error().
+			Str("user_id", userID).
+			Err(err).
+			Msg("failed to list websites")
 
 		return nil, errors.Wrap(err, "db")
 	}
 
 	if len(websites) == 0 {
-		slog.DebugContext(ctx, "no websites found", slog.String("user_id", userID))
+		zerolog.Ctx(ctx).Debug().Str("user_id", userID).Msg("no websites found")
 		return nil, model.ErrWebsiteNotFound
 	}
 
@@ -76,34 +73,32 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 			return model.ErrWebsiteExists
 		}
 
-		attributes := []slog.Attr{
-			slog.String("hostname", website.Hostname),
-			slog.String("name", website.Name),
-			slog.Int64("date_updated", website.DateUpdated),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to update website", attributes...)
+		zerolog.Ctx(ctx).
+			Error().
+			Str("hostname", website.Hostname).
+			Str("name", website.Name).
+			Int64("date_updated", website.DateUpdated).
+			Err(err).
+			Msg("failed to update website")
 
 		return errors.Wrap(err, "db")
 	}
 
 	rowsAffected, err := res.RowsAffected()
 	if err != nil {
-		attributes := []slog.Attr{
-			slog.String("hostname", website.Hostname),
-			slog.String("name", website.Name),
-			slog.Int64("date_updated", website.DateUpdated),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get rows affected", attributes...)
+		zerolog.Ctx(ctx).
+			Error().
+			Str("hostname", website.Hostname).
+			Str("name", website.Name).
+			Int64("date_updated", website.DateUpdated).
+			Err(err).
+			Msg("failed to get rows affected")
 
 		return errors.Wrap(err, "db")
 	}
 
 	if rowsAffected == 0 {
-		slog.DebugContext(ctx, "update: website not found", slog.String("hostname", website.Hostname))
+		zerolog.Ctx(ctx).Debug().Str("hostname", website.Hostname).Msg("website not found")
 		return model.ErrWebsiteNotFound
 	}
 
@@ -118,17 +113,13 @@ func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Websit
 
 	err := c.QueryRowxContext(ctx, query, hostname).StructScan(&website)
 	if err != nil {
+		log := zerolog.Ctx(ctx)
 		if errors.Is(err, sql.ErrNoRows) {
-			slog.DebugContext(ctx, "get: website not found", slog.String("hostname", hostname))
+			log.Debug().Str("hostname", hostname).Msg("website not found")
 			return nil, model.ErrWebsiteNotFound
 		}
 
-		attributes := []slog.Attr{
-			slog.String("hostname", hostname),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get website", attributes...)
+		log.Error().Str("hostname", hostname).Err(err).Msg("failed to get website")
 
 		return nil, errors.Wrap(err, "db")
 	}
@@ -142,30 +133,28 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 
 	res, err := c.DB.ExecContext(ctx, exec, hostname)
 	if err != nil {
-		attributes := []slog.Attr{
-			slog.String("hostname", hostname),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to delete website", attributes...)
+		zerolog.Ctx(ctx).
+			Error().
+			Str("hostname", hostname).
+			Err(err).
+			Msg("failed to delete website")
 
 		return errors.Wrap(err, "db")
 	}
 
 	rowsAffected, err := res.RowsAffected()
 	if err != nil {
-		attributes := []slog.Attr{
-			slog.String("hostname", hostname),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get rows affected", attributes...)
+		zerolog.Ctx(ctx).
+			Error().
+			Str("hostname", hostname).
+			Err(err).
+			Msg("failed to get rows affected")
 
 		return errors.Wrap(err, "db")
 	}
 
 	if rowsAffected == 0 {
-		slog.DebugContext(ctx, "delete: website not found", slog.String("hostname", hostname))
+		zerolog.Ctx(ctx).Debug().Str("hostname", hostname).Msg("website not found")
 		return model.ErrWebsiteNotFound
 	}
 
@@ -180,12 +169,11 @@ func (c *Client) WebsiteExists(ctx context.Context, hostname string) (bool, erro
 
 	err := c.GetContext(ctx, &exists, query, hostname)
 	if err != nil {
-		attributes := []slog.Attr{
-			slog.String("hostname", hostname),
-			slog.String("error", err.Error()),
-		}
-
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		zerolog.Ctx(ctx).
+			Error().
+			Str("hostname", hostname).
+			Err(err).
+			Msg("failed to check if website exists")
 
 		return false, errors.Wrap(err, "db")
 	}

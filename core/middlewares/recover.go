@@ -2,11 +2,11 @@ package middlewares
 
 import (
 	"errors"
-	"log/slog"
 	"net/http"
-	"runtime/debug"
 
 	"github.com/ogen-go/ogen/middleware"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/pkgerrors"
 )
 
 // Recovery is a middleware that recovers from panics.
@@ -23,7 +23,15 @@ func Recovery() middleware.Middleware {
 					panic(rvr)
 				}
 
-				slog.Log(req.Context, slog.LevelError, "panic recovery error", "error", rvr, "stack", string(debug.Stack()))
+				zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
+				zerolog.Ctx(req.Context).
+					Error().
+					Str("path", req.Raw.URL.Path).
+					Str("method", req.Raw.Method).
+					Str("User-Agent", req.Raw.Header.Get("User-Agent")).
+					Stack().
+					Err(rvr.(error)).
+					Msg("panic recovery error")
 
 				req.Raw.Header.Add("Connection", "close")
 

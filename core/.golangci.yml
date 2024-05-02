@@ -3,11 +3,6 @@ run:
   # Default: 1m
   timeout: 3m
 
-  # Skip auto-generated folders.
-  skip-dirs:
-    - api
-    - migrations
-
 # This file contains only configs which differ from defaults.
 # All possible options can be found here https://github.com/golangci/golangci-lint/blob/master/.golangci.reference.yml
 linters-settings:
@@ -166,7 +161,6 @@ linters:
     - reassign # checks that package variables are not reassigned
     - revive # fast, configurable, extensible, flexible, and beautiful linter for Go, drop-in replacement of golint
     - rowserrcheck # checks whether Err of rows is checked successfully
-    - sloglint # ensure consistent logging style
     # - sqlclosecheck # Disabled until https://github.com/ryanrolds/sqlclosecheck/issues/35 is resolved
     - stylecheck # is a replacement for golint
     - tenv # detects using os.Setenv instead of t.Setenv since Go1.17
@@ -202,3 +196,8 @@ issues:
         - gosec
         - noctx
         - wrapcheck
+
+  # Skip auto-generated folders.
+  exclude-dirs:
+    - api
+    - migrations

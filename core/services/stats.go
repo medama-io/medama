@@ -2,26 +2,23 @@ package services
 
 import (
 	"context"
-	"log/slog"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
+	"github.com/rs/zerolog"
 )
 
 func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (api.GetWebsiteIDSummaryRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	} else if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -48,8 +45,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	// Get summary
 	currentSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filters)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get website summary", attributes...)
+		log.Error().Err(err).Msg("failed to get website summary")
 		return ErrInternalServerError(err), nil
 	}
 
@@ -75,8 +71,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 
 		previousSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, &filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get previous website summary", attributes...)
+			log.Error().Err(err).Msg("failed to get previous website summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -94,8 +89,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	if params.Interval.Value != "" {
 		interval, err := h.analyticsDB.GetWebsiteIntervals(ctx, filters, params.Interval.Value)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website intervals", attributes...)
+			log.Error().Err(err).Msg("failed to get website intervals")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -113,18 +107,15 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 }
 
 func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteIDPagesParams) (api.GetWebsiteIDPagesRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists.
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	} else if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -158,8 +149,10 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		// Get summary.
 		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website pages summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -178,8 +171,10 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		// Get pages
 		pages, err := h.analyticsDB.GetWebsitePages(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website pages", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website pages")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -204,18 +199,15 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 }
 
 func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	} else if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -249,8 +241,10 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		// Get summary
 		times, err := h.analyticsDB.GetWebsiteTimeSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website time summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -269,8 +263,10 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		// Get time
 		times, err := h.analyticsDB.GetWebsiteTime(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website time", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website time")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -295,19 +291,16 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 }
 
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -341,8 +334,10 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		// Get summary
 		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website referrers summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -361,8 +356,10 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		// Get referrers
 		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website referrers", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website referrers")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -385,19 +382,16 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 }
 
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -430,8 +424,10 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 		// Get summary
 		sources, err := h.analyticsDB.GetWebsiteUTMSourcesSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website sources summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website sources summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -450,8 +446,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 		// Get sources
 		sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm sources", attributes...)
+			log.Error().Err(err).Msg("failed to get website utm sources")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -474,19 +469,16 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 }
 
 func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -519,8 +511,10 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 		// Get summary
 		mediums, err := h.analyticsDB.GetWebsiteUTMMediumsSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website mediums summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website mediums summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -539,8 +533,10 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 		// Get mediums
 		mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm mediums", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website utm mediums")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -563,19 +559,16 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 }
 
 func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -608,8 +601,10 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 		// Get summary
 		campaigns, err := h.analyticsDB.GetWebsiteUTMCampaignsSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm campaigns summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website utm campaigns summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -628,8 +623,10 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 		// Get campaigns
 		campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website utm campaigns", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website utm campaigns")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -652,19 +649,16 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 }
 
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -697,8 +691,10 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		// Get summary
 		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website browsers summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -717,8 +713,10 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		// Get browsers
 		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website browsers", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website browsers")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -741,19 +739,16 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 }
 
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -786,8 +781,10 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		// Get summary
 		os, err := h.analyticsDB.GetWebsiteOSSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website os summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website os summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -806,8 +803,10 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		// Get OS
 		os, err := h.analyticsDB.GetWebsiteOS(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website os", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website os")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -830,19 +829,16 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 }
 
 func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -875,8 +871,10 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		// Get summary
 		devices, err := h.analyticsDB.GetWebsiteDevicesSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website devices summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website devices summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -895,8 +893,10 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		// Get devices
 		devices, err := h.analyticsDB.GetWebsiteDevices(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website devices", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website devices")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -919,19 +919,16 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 }
 
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -964,8 +961,10 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		// Get summary
 		languages, err := h.analyticsDB.GetWebsiteLanguagesSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website languages summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website languages summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -984,8 +983,10 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		// Get languages
 		languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website languages", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website languages")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -1008,19 +1009,16 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 }
 
 func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
-	attributes := []slog.Attr{
-		slog.String("hostname", params.Hostname),
-	}
+	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to check if website exists", attributes...)
+		log.Error().Err(err).Msg("failed to check if website exists")
 		return ErrInternalServerError(err), nil
 	}
 	if !exists {
-		slog.LogAttrs(ctx, slog.LevelDebug, "website not found", attributes...)
+		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
@@ -1053,8 +1051,10 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		// Get summary
 		countries, err := h.analyticsDB.GetWebsiteCountriesSummary(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.Bool("summary", params.Summary.Value), slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website countries summary", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website countries summary")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -1074,8 +1074,10 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 			// Convert country code to country name
 			country, err := h.codeCountryMap.GetCountry(page.Country)
 			if err != nil {
-				attributes = append(attributes, slog.String("error", err.Error()))
-				slog.LogAttrs(ctx, slog.LevelError, "failed to get country name", attributes...)
+				log.Error().
+					Err(err).
+					Str("country", page.Country).
+					Msg("failed to get country name")
 				return ErrInternalServerError(err), nil
 			}
 
@@ -1091,8 +1093,10 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		// Get countries
 		countries, err := h.analyticsDB.GetWebsiteCountries(ctx, filters)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to get website countries", attributes...)
+			log.Error().
+				Err(err).
+				Bool("summary", params.Summary.Value).
+				Msg("failed to get website countries")
 			return ErrInternalServerError(err), nil
 		}
 
@@ -1112,8 +1116,10 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 			// Convert country code to country name
 			country, err := h.codeCountryMap.GetCountry(page.Country)
 			if err != nil {
-				attributes = append(attributes, slog.String("error", err.Error()))
-				slog.LogAttrs(ctx, slog.LevelError, "failed to get country name", attributes...)
+				log.Error().
+					Err(err).
+					Str("country", page.Country).
+					Msg("failed to get country name")
 				return ErrInternalServerError(err), nil
 			}
 

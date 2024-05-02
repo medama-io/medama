@@ -2,12 +2,12 @@ package services
 
 import (
 	"context"
-	"log/slog"
 	"time"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
+	"github.com/rs/zerolog"
 )
 
 func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.GetUserRes, error) {
@@ -16,21 +16,17 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
-	attributes := []slog.Attr{
-		slog.String("id", userId),
-	}
-	slog.LogAttrs(ctx, slog.LevelDebug, "getting user...", attributes...)
 
 	user, err := h.db.GetUser(ctx, userId)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
+		log := zerolog.Ctx(ctx).With().Err(err).Logger()
 
 		if errors.Is(err, model.ErrUserNotFound) {
-			slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
+			log.Debug().Msg("user not found")
 			return ErrNotFound(err), nil
 		}
 
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
+		log.Error().Msg("failed to get user")
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -49,21 +45,16 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
-	attributes := []slog.Attr{
-		slog.String("id", userId),
-	}
-	slog.LogAttrs(ctx, slog.LevelDebug, "getting user...", attributes...)
-
 	user, err := h.db.GetUser(ctx, userId)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
+		log := zerolog.Ctx(ctx).With().Err(err).Logger()
 
 		if errors.Is(err, model.ErrUserNotFound) {
-			slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
+			log.Debug().Msg("user not found")
 			return ErrNotFound(err), nil
 		}
 
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
+		log.Error().Msg("failed to get user")
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -74,18 +65,19 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		user.Username = username
 		err = h.db.UpdateUserUsername(ctx, user.ID, username, dateUpdated)
 		if err != nil {
+			log := zerolog.Ctx(ctx).With().Str("username", username).Err(err).Logger()
+
 			if errors.Is(err, model.ErrUserExists) {
-				slog.LogAttrs(ctx, slog.LevelDebug, "email to patch already exists", attributes...)
+				log.Debug().Msg("username already exists")
 				return ErrConflict(err), nil
 			}
 
 			if errors.Is(err, model.ErrUserNotFound) {
-				slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
+				log.Debug().Msg("user not found")
 				return ErrNotFound(err), nil
 			}
 
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to update user email", attributes...)
+			log.Error().Msg("failed to update user email")
 			return nil, errors.Wrap(err, "services")
 		}
 	}
@@ -94,15 +86,13 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 	if password != "" {
 		pwdHash, err := h.auth.HashPassword(password)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to hash password", attributes...)
+			zerolog.Ctx(ctx).Error().Err(err).Msg("failed to hash password")
 			return nil, errors.Wrap(err, "services")
 		}
 
 		err = h.db.UpdateUserPassword(ctx, user.ID, pwdHash, dateUpdated)
 		if err != nil {
-			attributes = append(attributes, slog.String("error", err.Error()))
-			slog.LogAttrs(ctx, slog.LevelError, "failed to update user password", attributes...)
+			zerolog.Ctx(ctx).Error().Err(err).Msg("failed to update user password")
 			return nil, errors.Wrap(err, "services")
 		}
 	}
@@ -122,36 +112,28 @@ func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
-	attributes := []slog.Attr{
-		slog.String("id", userId),
-	}
-	slog.LogAttrs(ctx, slog.LevelDebug, "getting user...", attributes...)
-
 	user, err := h.db.GetUser(ctx, userId)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
+		log := zerolog.Ctx(ctx).With().Err(err).Logger()
 
 		if errors.Is(err, model.ErrUserNotFound) {
-			slog.LogAttrs(ctx, slog.LevelDebug, "user not found", attributes...)
+			log.Debug().Msg("user not found")
 			return ErrNotFound(err), nil
 		}
 
-		slog.LogAttrs(ctx, slog.LevelError, "failed to get user", attributes...)
+		log.Error().Msg("failed to get user")
 		return nil, errors.Wrap(err, "services")
 	}
 
-	attributes = append(attributes,
-		slog.String("email", user.Username),
-		slog.String("language", user.Language),
-		slog.Int64("date_created", user.DateCreated),
-		slog.Int64("date_updated", user.DateUpdated),
-	)
-	slog.LogAttrs(ctx, slog.LevelDebug, "deleting user", attributes...)
-
 	err = h.db.DeleteUser(ctx, user.ID)
 	if err != nil {
-		attributes = append(attributes, slog.String("error", err.Error()))
-		slog.LogAttrs(ctx, slog.LevelError, "failed to delete user", attributes...)
+		zerolog.Ctx(ctx).Error().
+			Str("username", user.Username).
+			Str("language", user.Language).
+			Int64("date_created", user.DateCreated).
+			Int64("date_updated", user.DateUpdated).
+			Err(err).
+			Msg("failed to delete user")
 		return nil, errors.Wrap(err, "services")
 	}
 

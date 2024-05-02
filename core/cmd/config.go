@@ -8,11 +8,13 @@ import (
 )
 
 type ServerConfig struct {
-	AppEnv string `env:"APP_ENV"`
-	Port   int64  `env:"PORT"`
+	Port int64 `env:"PORT"`
 
 	// Cache settings
 	CacheCleanupInterval time.Duration
+
+	// Logging settings
+	Logger string `env:"LOGGER"`
 
 	// Timeout settings
 	TimeoutRead  time.Duration
@@ -29,10 +31,8 @@ type AnalyticsDBConfig struct {
 }
 
 const (
-	// App Environments.
-	AppEnvDevelopment = "development"
-	AppEnvProduction  = "production"
-	DefaultPort       = 8080
+	// General constants.
+	DefaultPort = 8080
 
 	// Cache constants.
 	DefaultCacheCleanupInterval = 5 * time.Minute
@@ -45,14 +45,17 @@ const (
 	// Database constants.
 	DefaultSQLiteHost = "./sqlite.dev.db"
 	DefaultDuckDBHost = "./duckdb.dev.db"
+
+	// Logging constants.
+	DefaultLogger = "json"
 )
 
 // NewServerConfig creates a new server config.
 func NewServerConfig() (*ServerConfig, error) {
 	config := &ServerConfig{
-		AppEnv:               AppEnvDevelopment,
 		Port:                 DefaultPort,
 		CacheCleanupInterval: DefaultCacheCleanupInterval,
+		Logger:               DefaultLogger,
 		TimeoutRead:          DefaultTimeoutRead,
 		TimeoutWrite:         DefaultTimeoutWrite,
 		TimeoutIdle:          DefaultTimeoutIdle,

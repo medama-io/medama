@@ -1,12 +1,12 @@
 package middlewares
 
 import (
-	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/medama-io/medama/api"
 	"github.com/ogen-go/ogen/middleware"
+	"github.com/rs/zerolog"
 )
 
 // getCode returns the http status code from the error type.
@@ -45,19 +45,18 @@ func RequestLogger() middleware.Middleware {
 		duration := time.Since(startTime)
 
 		if err == nil {
-			attributes := []slog.Attr{
-				slog.String("operation", req.OperationName),
-				slog.String("operationId", req.OperationID),
-				slog.String("method", req.Raw.Method),
-				slog.String("path", req.Raw.URL.Path),
-				slog.String("duration", duration.String()),
-			}
+			log := zerolog.Ctx(req.Context).With().
+				Str("operation", req.OperationName).
+				Str("operationId", req.OperationID).
+				Str("method", req.Raw.Method).
+				Str("path", req.Raw.URL.Path).
+				Dur("duration", duration).
+				Logger()
 
-			level := slog.LevelInfo
 			msg := "success"
 			code := getCode(resp.Type)
 			if code != 0 {
-				attributes = append(attributes, slog.Int("status_code", code))
+				log = log.With().Int("status_code", code).Logger()
 
 				switch code {
 				case http.StatusOK:
@@ -80,11 +79,12 @@ func RequestLogger() middleware.Middleware {
 
 				case http.StatusInternalServerError:
 					msg = "500 internal server error"
-					level = slog.LevelError
+					log.Error().Err(err).Msg(msg)
+					return resp, err
 				}
 			}
 
-			slog.LogAttrs(req.Context, level, msg, attributes...)
+			log.Info().Msg(msg)
 		}
 		return resp, err
 	}
