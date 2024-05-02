@@ -757,8 +757,6 @@ func (s *EventLoad) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"t\"")
 			}
-		case "e":
-			return d.Skip()
 		default:
 			return d.Skip()
 		}
@@ -872,8 +870,6 @@ func (s *EventUnload) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"m\"")
 			}
-		case "e":
-			return d.Skip()
 		default:
 			return d.Skip()
 		}

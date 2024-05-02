@@ -793,7 +793,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -824,7 +824,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -855,7 +855,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -886,7 +886,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -917,7 +917,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -948,7 +948,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -979,7 +979,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1010,7 +1010,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1041,7 +1041,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1072,7 +1072,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1653,7 +1653,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1684,7 +1684,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1715,7 +1715,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1746,7 +1746,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1777,7 +1777,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1808,7 +1808,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1839,7 +1839,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1870,7 +1870,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1901,7 +1901,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -1932,7 +1932,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2513,7 +2513,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2544,7 +2544,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2575,7 +2575,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2606,7 +2606,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2637,7 +2637,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2668,7 +2668,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2699,7 +2699,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2730,7 +2730,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2761,7 +2761,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -2792,7 +2792,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3373,7 +3373,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3404,7 +3404,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3435,7 +3435,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3466,7 +3466,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3497,7 +3497,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3528,7 +3528,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3559,7 +3559,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3590,7 +3590,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3621,7 +3621,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -3652,7 +3652,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4233,7 +4233,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4264,7 +4264,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4295,7 +4295,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4326,7 +4326,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4357,7 +4357,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4388,7 +4388,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4419,7 +4419,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4450,7 +4450,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4481,7 +4481,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -4512,7 +4512,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5093,7 +5093,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5124,7 +5124,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5155,7 +5155,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5186,7 +5186,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5217,7 +5217,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5248,7 +5248,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5279,7 +5279,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5310,7 +5310,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5341,7 +5341,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5372,7 +5372,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5953,7 +5953,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -5984,7 +5984,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6015,7 +6015,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6046,7 +6046,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6077,7 +6077,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6108,7 +6108,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6139,7 +6139,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6170,7 +6170,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6201,7 +6201,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6232,7 +6232,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6813,7 +6813,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6844,7 +6844,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6875,7 +6875,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6906,7 +6906,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6937,7 +6937,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6968,7 +6968,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -6999,7 +6999,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7030,7 +7030,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7061,7 +7061,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7092,7 +7092,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7673,7 +7673,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7704,7 +7704,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7735,7 +7735,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7766,7 +7766,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7797,7 +7797,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7828,7 +7828,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7859,7 +7859,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7890,7 +7890,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7921,7 +7921,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -7952,7 +7952,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8533,7 +8533,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8564,7 +8564,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8595,7 +8595,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8626,7 +8626,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8657,7 +8657,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8688,7 +8688,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8719,7 +8719,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8750,7 +8750,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8781,7 +8781,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -8812,7 +8812,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9440,7 +9440,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9471,7 +9471,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9502,7 +9502,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9533,7 +9533,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9564,7 +9564,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9595,7 +9595,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9626,7 +9626,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9657,7 +9657,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9688,7 +9688,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -9719,7 +9719,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10170,7 +10170,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "path",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10201,7 +10201,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "referrer",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10232,7 +10232,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "utm_source",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10263,7 +10263,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "utm_medium",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10294,7 +10294,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "utm_campaign",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"contains", false}, {"not_contains", false}, {"starts_with", false}, {"not_starts_with", false}, {"ends_with", false}, {"not_ends_with", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10325,7 +10325,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10356,7 +10356,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10387,7 +10387,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10418,7 +10418,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
@@ -10449,7 +10449,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{"eq", false}, {"neq", false}, {"in", false}, {"not_in", false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
