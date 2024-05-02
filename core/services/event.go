@@ -98,11 +98,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		log := zerolog.Ctx(ctx).With().Str("hostname", hostname).Logger()
 
 		// Verify hostname exists
-		exists, err := h.db.WebsiteExists(ctx, hostname)
-		if err != nil {
-			log.Error().Err(err).Msg("hit: failed to check if website exists")
-			return ErrInternalServerError(err), nil
-		}
+		exists := h.hostnames.Has(hostname)
 		if !exists {
 			log.Warn().Msg("hit: website not found")
 			return ErrNotFound(model.ErrWebsiteNotFound), nil

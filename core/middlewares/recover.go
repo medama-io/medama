@@ -23,6 +23,7 @@ func Recovery() middleware.Middleware {
 					panic(rvr)
 				}
 
+				//nolint: reassign // We need to reassign the stack marshaler.
 				zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 				zerolog.Ctx(req.Context).
 					Error().

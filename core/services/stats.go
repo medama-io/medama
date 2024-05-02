@@ -13,11 +13,8 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	} else if !exists {
+	exists := h.hostnames.Has(params.Hostname)
+	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
@@ -110,11 +107,8 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists.
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	} else if !exists {
+	exists := h.hostnames.Has(params.Hostname)
+	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
@@ -202,11 +196,8 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	} else if !exists {
+	exists := h.hostnames.Has(params.Hostname)
+	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
@@ -294,11 +285,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -385,11 +372,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -472,11 +455,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -562,11 +541,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -652,11 +627,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -742,11 +713,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -832,11 +799,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -922,11 +885,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
@@ -1012,11 +971,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
-	exists, err := h.db.WebsiteExists(ctx, params.Hostname)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if website exists")
-		return ErrInternalServerError(err), nil
-	}
+	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
 		log.Debug().Msg("website not found")
 		return ErrNotFound(model.ErrWebsiteNotFound), nil

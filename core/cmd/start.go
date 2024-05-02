@@ -105,7 +105,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}
 
 	// Setup handlers
-	service, err := services.NewService(auth, sqlite, duckdb)
+	service, err := services.NewService(ctx, auth, sqlite, duckdb)
 	if err != nil {
 		return errors.Wrap(err, "failed to create handlers")
 	}

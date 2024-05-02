@@ -107,20 +107,14 @@ func TestGetWebsiteNotFound(t *testing.T) {
 	assert.Nil(website)
 }
 
-func TestWebsiteExists(t *testing.T) {
+func TestListAllHostnames(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithWebsites(t)
 
-	exists, err := client.WebsiteExists(ctx, "website1-test1.com")
+	hostnames, err := client.ListAllHostnames(ctx)
 	assert.NoError(err)
-	assert.True(exists)
-}
-
-func TestWebsiteExistsNotFound(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
-
-	exists, err := client.WebsiteExists(ctx, "doesnotexist.com")
-	assert.NoError(err)
-	assert.False(exists)
+	assert.NotNil(hostnames)
+	// 3 websites each for 3 users
+	assert.Len(hostnames, 9)
 }
 
 func TestDeleteWebsite(t *testing.T) {

@@ -62,6 +62,20 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 	return websites, nil
 }
 
+func (c *Client) ListAllHostnames(ctx context.Context) ([]string, error) {
+	query := `--sql
+	SELECT hostname FROM websites`
+
+	var hostnames []string
+	err := c.SelectContext(ctx, &hostnames, query)
+	if err != nil {
+		zerolog.Ctx(ctx).Error().Err(err).Msg("failed to list all hostnames")
+		return nil, errors.Wrap(err, "db")
+	}
+
+	return hostnames, nil
+}
+
 func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) error {
 	// Update all values except user_id
 	exec := `--sql
@@ -159,24 +173,4 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 	}
 
 	return nil
-}
-
-func (c *Client) WebsiteExists(ctx context.Context, hostname string) (bool, error) {
-	var exists bool
-
-	query := `--sql
-	SELECT EXISTS(SELECT 1 FROM websites WHERE hostname = ?)`
-
-	err := c.GetContext(ctx, &exists, query, hostname)
-	if err != nil {
-		zerolog.Ctx(ctx).
-			Error().
-			Str("hostname", hostname).
-			Err(err).
-			Msg("failed to check if website exists")
-
-		return false, errors.Wrap(err, "db")
-	}
-
-	return exists, nil
 }
