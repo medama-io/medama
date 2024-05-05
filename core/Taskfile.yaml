@@ -24,9 +24,10 @@ tasks:
   release:
     deps: [generate]
     cmds:
-      - go build -o ./bin/main -ldflags "-s -w" ./cmd/
+      - go build -o ./bin/main -ldflags "-s -w" -trimpath ./cmd/
     env:
       CGO_ENABLED: "1"
+      GOEXPERIMENT: "newinliner"
 
   generate:
     aliases: [gen]
@@ -37,6 +38,8 @@ tasks:
       - ./.ogen.yml
       - ./generate.go
       - ./generate.sh
+      - ./go.mod
+      - ./go.sum
     generates:
       - ./api/**/*.go
 

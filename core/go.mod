@@ -1,6 +1,6 @@
 module github.com/medama-io/medama
 
-go 1.21.4
+go 1.22.2
 
 require (
 	github.com/alexedwards/argon2id v1.0.0
@@ -17,7 +17,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	go.jetify.com/typeid v1.1.0
 	go.uber.org/multierr v1.11.0
-	golang.org/x/text v0.14.0
+	golang.org/x/text v0.15.0
 )
 
 require (
@@ -50,7 +50,7 @@ require (
 	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.19.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/tools v0.20.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
