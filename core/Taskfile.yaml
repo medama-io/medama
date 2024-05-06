@@ -5,7 +5,7 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - go run ./cmd/ {{.CLI_ARGS}} -debug -logger=pretty
+      - go run ./cmd/ {{.CLI_ARGS}} -logger=pretty -level=debug
     env:
       CGO_ENABLED: "1"
 

@@ -15,6 +15,7 @@ type ServerConfig struct {
 
 	// Logging settings
 	Logger string `env:"LOGGER"`
+	Level  string `env:"LOGGER_LEVEL"`
 
 	// Timeout settings
 	TimeoutRead  time.Duration
@@ -47,7 +48,8 @@ const (
 	DefaultDuckDBHost = "./duckdb.dev.db"
 
 	// Logging constants.
-	DefaultLogger = "json"
+	DefaultLogger      = "json"
+	DefaultLoggerLevel = "info"
 )
 
 // NewServerConfig creates a new server config.
@@ -56,6 +58,7 @@ func NewServerConfig() (*ServerConfig, error) {
 		Port:                 DefaultPort,
 		CacheCleanupInterval: DefaultCacheCleanupInterval,
 		Logger:               DefaultLogger,
+		Level:                DefaultLoggerLevel,
 		TimeoutRead:          DefaultTimeoutRead,
 		TimeoutWrite:         DefaultTimeoutWrite,
 		TimeoutIdle:          DefaultTimeoutIdle,

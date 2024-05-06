@@ -23,7 +23,6 @@ import (
 )
 
 type StartCommand struct {
-	Debug       bool
 	Server      ServerConfig
 	AppDB       AppDBConfig
 	AnalyticsDB AnalyticsDBConfig
@@ -55,9 +54,9 @@ func NewStartCommand() (*StartCommand, error) {
 
 // ParseFlags parses the command line flags for the start command.
 func (s *StartCommand) ParseFlags(args []string) error {
-	fs := flag.NewFlagSet("start", flag.ContinueOnError)
-	fs.BoolVar(&s.Debug, "debug", false, "Enable verbose debug logging")
+	fs := flag.NewFlagSet("start", flag.ExitOnError)
 	fs.StringVar(&s.Server.Logger, "logger", DefaultLogger, "Logger format (json, pretty)")
+	fs.StringVar(&s.Server.Level, "level", DefaultLoggerLevel, "Logger level (debug, info, warn, error)")
 	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on")
 
 	// Parse flags
@@ -71,7 +70,10 @@ func (s *StartCommand) ParseFlags(args []string) error {
 
 // Run executes the start command.
 func (s *StartCommand) Run(ctx context.Context) error {
-	ctx = util.SetupLogger(ctx, s.Debug, s.Server.Logger)
+	ctx, err := util.SetupLogger(ctx, s.Server.Logger, s.Server.Level)
+	if err != nil {
+		return errors.Wrap(err, "failed to setup logger")
+	}
 	log := zerolog.Ctx(ctx)
 	log.Info().Msg(GetVersion())
 
