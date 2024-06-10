@@ -1,6 +1,17 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+includes:
+  dashboard:
+    dir: ../dashboard
+    taskfile: ../dashboard/Taskfile.yaml
+    internal: true
+
+  tracker:
+    dir: ../tracker
+    taskfile: ../tracker/Taskfile.yaml
+    internal: true
+
 tasks:
   dev:
     deps: [generate]
@@ -29,8 +40,7 @@ tasks:
       CGO_ENABLED: "1"
       GOEXPERIMENT: "newinliner"
 
-  generate:
-    aliases: [gen]
+  generate:go:
     cmds:
       - go generate ./...
     sources:
@@ -42,6 +52,9 @@ tasks:
       - ./go.sum
     generates:
       - ./api/**/*.go
+
+  generate:
+    deps: [generate:go, dashboard:embed, tracker:embed]
 
   update:
     aliases: [upgrade]

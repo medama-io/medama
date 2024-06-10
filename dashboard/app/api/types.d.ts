@@ -386,6 +386,10 @@ export interface components {
          * @description Percentage of unique visitors from UTM source.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsUTMMediums */
     StatsUTMMediums: {
@@ -398,6 +402,10 @@ export interface components {
          * @description Percentage of unique visitors from UTM medium.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsUTMCampaigns */
     StatsUTMCampaigns: {
@@ -410,6 +418,10 @@ export interface components {
          * @description Percentage of unique visitors from UTM campaign.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsBrowsers */
     StatsBrowsers: {
@@ -422,6 +434,10 @@ export interface components {
          * @description Percentage of unique visitors from browser.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsOS */
     StatsOS: {
@@ -434,6 +450,10 @@ export interface components {
          * @description Percentage of unique visitors from OS.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsDevices */
     StatsDevices: {
@@ -446,6 +466,10 @@ export interface components {
          * @description Percentage of unique visitors from device.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsCountries */
     StatsCountries: {
@@ -458,6 +482,10 @@ export interface components {
          * @description Percentage of unique visitors from country.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsLanguages */
     StatsLanguages: {
@@ -470,6 +498,10 @@ export interface components {
          * @description Percentage of unique visitors for language.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
   };
   responses: {
@@ -1088,6 +1120,7 @@ export interface operations {
   "get-website-id-sources": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1131,6 +1164,7 @@ export interface operations {
   "get-website-id-mediums": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1174,6 +1208,7 @@ export interface operations {
   "get-website-id-campaigns": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1217,6 +1252,7 @@ export interface operations {
   "get-website-id-browsers": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1260,6 +1296,7 @@ export interface operations {
   "get-website-id-os": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1303,6 +1340,7 @@ export interface operations {
   "get-website-id-device": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1346,6 +1384,7 @@ export interface operations {
   "get-website-id-country": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1389,6 +1428,7 @@ export interface operations {
   "get-website-id-language": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
