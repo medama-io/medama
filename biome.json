@@ -1,7 +1,10 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.8.1/schema.json",
 	"files": {
-		"ignore": ["public/**/*", "app/api/types.d.ts"]
+		"ignore": [
+			"types.d.ts",
+			"*.js"
+		]
 	},
 	"organizeImports": {
 		"enabled": true
