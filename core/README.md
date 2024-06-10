@@ -16,4 +16,4 @@ The backend API service for Medama written in Golang.
 
 ## License
 
-[Business Source License 1.1](LICENSE)
+[Apache License 2.0](LICENSE)
