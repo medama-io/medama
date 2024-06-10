@@ -22,3 +22,31 @@ else
 	# Linux
 	sed -i '256 c \\ \tcase ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
 fi
+
+# Generate and copy SPA client files from ../dashboard/build --> ./core/client/. These files are then embedded into the binary through generate.go.
+cd ../dashboard || {
+	echo "Dashboard directory not found"
+	exit 1
+}
+
+if ! bun run build; then
+	echo "Build failed"
+	exit 1
+fi
+
+SOURCE_DIR="./build/client"
+TARGET_DIR="../core/client"
+
+# Check if the source directory exists
+if [ ! -d "$SOURCE_DIR" ]; then
+	echo "Source directory $SOURCE_DIR not found"
+	exit 1
+fi
+
+# Create the target directory if it does not exist
+mkdir -p "$TARGET_DIR"
+
+# Copy the built files to the target directory
+cp -r "$SOURCE_DIR"/* "$TARGET_DIR/"
+
+echo "SPA build files successfully copied to $TARGET_DIR"

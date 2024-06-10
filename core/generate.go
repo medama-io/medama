@@ -1,6 +1,9 @@
 package generate
 
-import "embed"
+import (
+	"embed"
+	"io/fs"
+)
 
 // OpenAPI Codegen
 //
@@ -10,3 +13,13 @@ import "embed"
 //
 //go:embed openapi.yaml
 var OpenAPIDocument embed.FS
+
+// Embed SPA client
+//
+//go:embed all:client
+var spaClient embed.FS
+
+// SPA Client
+func SPAClient() (fs.FS, error) {
+	return fs.Sub(spaClient, "client")
+}

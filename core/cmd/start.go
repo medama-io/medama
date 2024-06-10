@@ -3,10 +3,13 @@ package main
 import (
 	"context"
 	"flag"
+	"io"
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
 	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/go-faster/errors"
@@ -118,7 +121,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		middlewares.RequestContext(),
 		middlewares.Recovery(),
 	}
-	h, err := api.NewServer(service,
+	apiHandler, err := api.NewServer(service,
 		authMiddleware,
 		api.WithMiddleware(mw...),
 		api.WithErrorHandler(middlewares.ErrorHandler),
@@ -131,7 +134,42 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	// We need to add additional static routes for the web app.
 	mux := http.NewServeMux()
 	mux.Handle("/openapi.yaml", http.FileServer(http.FS(generate.OpenAPIDocument)))
-	mux.Handle("/", h)
+	mux.Handle("/api/", http.StripPrefix("/api/", apiHandler))
+
+	// SPA client. We need to serve index.html to all routes that are not /api.
+	client, err := generate.SPAClient()
+	if err != nil {
+		return errors.Wrap(err, "failed to create spa client")
+	}
+	clientServer := http.FileServer(http.FS(client))
+
+	// Read index.html once during initialisation.
+	indexFile, err := client.Open("index.html")
+	if err != nil {
+		return errors.Wrap(err, "could not open index.html")
+	}
+
+	indexData, err := io.ReadAll(indexFile)
+	if err != nil {
+		return errors.Wrap(err, "could not read index.html")
+	}
+	// Release early after reading.
+	indexFile.Close()
+
+	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		uPath := path.Clean(r.URL.Path)
+		if strings.HasPrefix(uPath, "/assets/") || strings.HasPrefix(uPath, "/favicon.ico") || strings.HasPrefix(uPath, "/manifest") {
+			clientServer.ServeHTTP(w, r)
+			return
+		}
+
+		// Serve index.html for any other path
+		w.Header().Set("Content-Type", "text/html")
+		_, err := w.Write(indexData)
+		if err != nil {
+			http.Error(w, "could not serve index.html", http.StatusInternalServerError)
+		}
+	}))
 
 	srv := &http.Server{
 		Addr:         ":" + strconv.FormatInt(s.Server.Port, 10),

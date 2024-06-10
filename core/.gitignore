@@ -41,6 +41,7 @@ pids
 # Generated binaries
 main
 bin/
+client/
 
 # Schemathesis cache
 .hypothesis
