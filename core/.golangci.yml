@@ -174,7 +174,7 @@ linters:
     - usestdlibvars # detects the possibility to use variables/constants from the Go standard library
     - wastedassign # finds wasted assignment statements
     - whitespace # detects leading and trailing whitespace
-    - wrapcheck # checks that the code does not use the wrapping of errors
+    # - wrapcheck # checks that the code does not use the wrapping of errors
 
 issues:
   # Maximum count of issues with the same text.

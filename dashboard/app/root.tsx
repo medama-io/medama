@@ -46,7 +46,7 @@ export const Document = ({ children }: DocumentProps) => {
 				<Meta />
 				<Links />
 				<ColorSchemeScript />
-				<script defer data-api="localhost:8080" src="/medama.js" />
+				<script defer data-api="localhost:8080" src="/script.js" />
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>

@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"io"
+	"io/fs"
 	"net/http"
 	"os"
 	"os/signal"
@@ -143,18 +144,15 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}
 	clientServer := http.FileServer(http.FS(client))
 
-	// Read index.html once during initialisation.
-	indexFile, err := client.Open("index.html")
-	if err != nil {
-		return errors.Wrap(err, "could not open index.html")
-	}
-
-	indexData, err := io.ReadAll(indexFile)
+	// Read index.html and tracker script once during initialisation.
+	indexFile, err := readFile(client, "index.html")
 	if err != nil {
 		return errors.Wrap(err, "could not read index.html")
 	}
-	// Release early after reading.
-	indexFile.Close()
+	trackerFile, err := readFile(client, "medama.js")
+	if err != nil {
+		return errors.Wrap(err, "could not read medama.js")
+	}
 
 	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		uPath := path.Clean(r.URL.Path)
@@ -163,9 +161,19 @@ func (s *StartCommand) Run(ctx context.Context) error {
 			return
 		}
 
+		// Serve tracker script
+		if uPath == "/script.js" {
+			w.Header().Set("Content-Type", "application/javascript")
+			_, err := w.Write(trackerFile)
+			if err != nil {
+				http.Error(w, "could not serve tracker script", http.StatusInternalServerError)
+			}
+			return
+		}
+
 		// Serve index.html for any other path
 		w.Header().Set("Content-Type", "text/html")
-		_, err := w.Write(indexData)
+		_, err := w.Write(indexFile)
 		if err != nil {
 			http.Error(w, "could not serve index.html", http.StatusInternalServerError)
 		}
@@ -205,4 +213,14 @@ func (s *StartCommand) Run(ctx context.Context) error {
 
 	<-closed
 	return nil
+}
+
+func readFile(filesystem fs.FS, file string) ([]byte, error) {
+	f, err := filesystem.Open(file)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	return io.ReadAll(f)
 }
