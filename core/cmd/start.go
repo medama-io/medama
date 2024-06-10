@@ -23,6 +23,7 @@ import (
 	"github.com/medama-io/medama/services"
 	"github.com/medama-io/medama/util"
 	"github.com/ogen-go/ogen/middleware"
+	"github.com/rs/cors"
 	"github.com/rs/zerolog"
 )
 
@@ -135,7 +136,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	// We need to add additional static routes for the web app.
 	mux := http.NewServeMux()
 	mux.Handle("/openapi.yaml", http.FileServer(http.FS(generate.OpenAPIDocument)))
-	mux.Handle("/api/", http.StripPrefix("/api/", apiHandler))
+	mux.Handle("/api/", http.StripPrefix("/api", apiHandler))
 
 	// SPA client. We need to serve index.html to all routes that are not /api.
 	client, err := generate.SPAClient()
@@ -179,9 +180,12 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		}
 	}))
 
+	// Apply CORS headers.
+	handler := cors.Default().Handler(mux)
+
 	srv := &http.Server{
 		Addr:         ":" + strconv.FormatInt(s.Server.Port, 10),
-		Handler:      mux,
+		Handler:      handler,
 		ReadTimeout:  s.Server.TimeoutRead,
 		WriteTimeout: s.Server.TimeoutWrite,
 		IdleTimeout:  s.Server.TimeoutIdle,

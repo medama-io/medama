@@ -15,12 +15,6 @@ import (
 )
 
 const (
-	// CorsOrigin is the origin to allow for CORS.
-	CorsOrigin = "*"
-	// CorsMethods is the methods to allow for CORS.
-	CorsMethods = "GET"
-	// CorsHeaders is the headers to allow for CORS.
-	CorsHeaders = "If-Modified-Since, Content-Type"
 	// OneDay is the duration of one day.
 	OneDay = 24 * time.Hour
 	// Set to no-cache to disable caching.
@@ -42,10 +36,9 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 		lastModified := currentDay.Format(http.TimeFormat)
 
 		return &api.GetEventPingOKHeaders{
-			AccessControlAllowOrigin: CorsOrigin,
-			LastModified:             lastModified,
-			CacheControl:             CacheControl,
-			Response:                 api.GetEventPingOK{Data: body},
+			LastModified: lastModified,
+			CacheControl: CacheControl,
+			Response:     api.GetEventPingOK{Data: body},
 		}, nil
 	}
 
@@ -67,10 +60,9 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 		lastModified := lastModifiedTime.Format(http.TimeFormat)
 
 		return &api.GetEventPingOKHeaders{
-			AccessControlAllowOrigin: CorsOrigin,
-			LastModified:             lastModified,
-			CacheControl:             CacheControl,
-			Response:                 api.GetEventPingOK{Data: body},
+			LastModified: lastModified,
+			CacheControl: CacheControl,
+			Response:     api.GetEventPingOK{Data: body},
 		}, nil
 	}
 
@@ -79,11 +71,8 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 
 	// Return not modified if the last modified time is today (not unique user).
 	return &api.GetEventPingOKHeaders{
-		AccessControlAllowOrigin:  CorsOrigin,
-		AccessControlAllowMethods: CorsMethods,
-		AccessControlAllowHeaders: CorsHeaders,
-		LastModified:              ifModified,
-		CacheControl:              CacheControl,
+		LastModified: ifModified,
+		CacheControl: CacheControl,
 		Response: api.GetEventPingOK{
 			Data: body,
 		},

@@ -581,27 +581,9 @@ func (s GetEventPingOK) Read(p []byte) (n int, err error) {
 
 // GetEventPingOKHeaders wraps GetEventPingOK with response headers.
 type GetEventPingOKHeaders struct {
-	AccessControlAllowHeaders string
-	AccessControlAllowMethods string
-	AccessControlAllowOrigin  string
-	CacheControl              string
-	LastModified              string
-	Response                  GetEventPingOK
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *GetEventPingOKHeaders) GetAccessControlAllowHeaders() string {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *GetEventPingOKHeaders) GetAccessControlAllowMethods() string {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *GetEventPingOKHeaders) GetAccessControlAllowOrigin() string {
-	return s.AccessControlAllowOrigin
+	CacheControl string
+	LastModified string
+	Response     GetEventPingOK
 }
 
 // GetCacheControl returns the value of CacheControl.
@@ -617,21 +599,6 @@ func (s *GetEventPingOKHeaders) GetLastModified() string {
 // GetResponse returns the value of Response.
 func (s *GetEventPingOKHeaders) GetResponse() GetEventPingOK {
 	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *GetEventPingOKHeaders) SetAccessControlAllowHeaders(val string) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *GetEventPingOKHeaders) SetAccessControlAllowMethods(val string) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *GetEventPingOKHeaders) SetAccessControlAllowOrigin(val string) {
-	s.AccessControlAllowOrigin = val
 }
 
 // SetCacheControl sets the value of CacheControl.

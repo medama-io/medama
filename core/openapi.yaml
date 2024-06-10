@@ -129,21 +129,6 @@ paths:
                 type: string
               description: This is set to 1 day to prevent the user from being counted as a unique user again.
               required: true
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-              description: This is set to allow all origins to access this endpoint.
-              required: true
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-              description: This is set to allow GET methods to access this endpoint.
-              required: true
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-              description: This is set to allow If-Modified-Since headers and Content-Type headers to access this endpoint.
-              required: true
           content:
             text/plain:
               schema:

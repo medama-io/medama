@@ -721,12 +721,6 @@ export interface operations {
           "Last-Modified": string;
           /** @description This is set to 1 day to prevent the user from being counted as a unique user again. */
           "Cache-Control": string;
-          /** @description This is set to allow all origins to access this endpoint. */
-          "Access-Control-Allow-Origin": string;
-          /** @description This is set to allow GET methods to access this endpoint. */
-          "Access-Control-Allow-Methods": string;
-          /** @description This is set to allow If-Modified-Since headers and Content-Type headers to access this endpoint. */
-          "Access-Control-Allow-Headers": string;
         };
         content: {
           "text/plain": string;

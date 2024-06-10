@@ -4,7 +4,7 @@ import { EXPIRE_COOKIE, expireSession } from '@/utils/cookies';
 
 import type { components, paths } from './types';
 
-const API_URL = process.env.API_URL ?? 'http://localhost:8080';
+const API_URL = 'http://localhost:8080/api';
 
 const DEFAULT_HEADERS = {
 	'Content-Type': 'application/json',
