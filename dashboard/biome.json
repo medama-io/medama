@@ -1,0 +1,25 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.1/schema.json",
+	"files": {
+		"ignore": ["public/**/*", "app/api/types.d.ts"]
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true
+		}
+	},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	}
+}

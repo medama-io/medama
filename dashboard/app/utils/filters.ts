@@ -82,7 +82,7 @@ const generatePeriods = (period: string) => {
 
 export const generateFilters = (
 	url: string,
-	opts?: FilterOptions
+	opts?: FilterOptions,
 ): [Record<string, string | number | undefined>, string | undefined] => {
 	// Convert search params to filters
 	const searchParams = new URL(url).searchParams;

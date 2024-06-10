@@ -7,6 +7,7 @@ export const IconChevronRight = () => {
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+			<title>Icon Chevron Right</title>
 			<path
 				d="M6 4L10 8L6 12"
 				stroke="#111111"

@@ -1,6 +1,6 @@
 import { Button, Grid, Group, Stack, Text, TextInput } from '@mantine/core';
 
-import { type components } from '@/api/types';
+import type { components } from '@/api/types';
 
 import classes from './Settings.module.css';
 import { Sidebar } from './Sidebar';

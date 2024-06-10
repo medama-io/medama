@@ -12,7 +12,7 @@ import {
 	useRouteError,
 } from '@remix-run/react';
 
-import { type components } from '@/api/types';
+import type { components } from '@/api/types';
 import { websiteList } from '@/api/websites';
 import { hasSession } from '@/utils/cookies';
 

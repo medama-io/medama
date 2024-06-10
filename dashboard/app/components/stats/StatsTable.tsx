@@ -106,7 +106,9 @@ const duration: DataTableColumn = {
 
 const PAGE_SIZES = [10, 25, 50, 100];
 
+// biome-ignore lint/suspicious/noExplicitAny: Generic function
 const sortBy = (key: any) => {
+	// biome-ignore lint/suspicious/noExplicitAny: Generic function
 	return (a: any, b: any) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0);
 };
 
@@ -115,10 +117,6 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 	const [pageSize, setPageSize] = useState(10);
 	const [page, setPage] = useState(1);
 	const [records, setRecords] = useState(data.slice(0, pageSize));
-
-	useEffect(() => {
-		setPage(1);
-	}, [pageSize]);
 
 	const handlePageChange = (newPage: number) => {
 		// Prevent negative pages
@@ -131,6 +129,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 
 	const handlePageSizeChange = (newSize: number) => {
 		setPageSize(newSize);
+		setPage(1);
 	};
 
 	// Sorting
@@ -149,7 +148,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 		setRecords(
 			sortStatus.direction === 'desc'
 				? temp.reverse().slice(from, to)
-				: temp.slice(from, to)
+				: temp.slice(from, to),
 		);
 	}, [sortStatus, data, page, pageSize]);
 
@@ -164,7 +163,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				pageviews,
 				pageviewsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -194,7 +193,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 					render: (record: DataRow) =>
 						formatPercentage((record.duration_percentage ?? 0) / 100),
 				},
-				bounceRate
+				bounceRate,
 			);
 			break;
 		}
@@ -210,7 +209,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -226,7 +225,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -242,7 +241,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -258,7 +257,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -268,7 +267,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -278,7 +277,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -288,7 +287,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -298,7 +297,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -308,7 +307,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				visitors,
 				visitorsPercentage,
 				bounceRate,
-				duration
+				duration,
 			);
 			break;
 		}
@@ -331,6 +330,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				// Have to type assert here as technically we have Record<string | undefined, unknown>[]
 				// but we don't know the exact shape of the data
 				records={records as Array<Record<string, unknown>>}
+				// biome-ignore lint/suspicious/noExplicitAny: Does not handle generic types very well
 				columns={columns as any}
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
@@ -407,9 +407,9 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 					{
 						pathname: `../${value}`,
 						// Preserve search params when switching tabs
-						search: '?' + searchParams.toString(),
+						search: `?${searchParams.toString()}`,
 					},
-					{ preventScrollReset: true }
+					{ preventScrollReset: true },
 				);
 			}}
 		>
@@ -419,7 +419,7 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 						component={Link}
 						to={{
 							pathname: '../',
-							search: '?' + searchParams.toString(),
+							search: `?${searchParams.toString()}`,
 						}}
 						className={classes.back}
 					>

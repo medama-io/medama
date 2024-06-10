@@ -1,4 +1,4 @@
-import { type Params } from '@remix-run/react';
+import type { Params } from '@remix-run/react';
 
 import {
 	statsBrowsers,
@@ -47,7 +47,7 @@ const isDatasetItem = (value: string): value is DatasetItem =>
 const fetchStats = async (
 	request: Request,
 	params: Params<string>,
-	options: FetchStatsOptions
+	options: FetchStatsOptions,
 ) => {
 	const { dataset = datasets, isSummary = false, limit } = options;
 	const set = new Set(dataset);
@@ -78,7 +78,7 @@ const fetchStats = async (
 						interval,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('pages')
@@ -89,7 +89,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('time')
@@ -100,7 +100,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('referrers')
@@ -111,7 +111,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('sources')
@@ -122,7 +122,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('mediums')
@@ -133,7 +133,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('campaigns')
@@ -144,7 +144,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('browsers')
@@ -155,7 +155,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('os')
@@ -166,7 +166,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('devices')
@@ -174,7 +174,7 @@ const fetchStats = async (
 					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: filters,
-			  })
+				})
 			: undefined,
 
 		set.has('countries')
@@ -185,7 +185,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 
 		set.has('languages')
@@ -196,7 +196,7 @@ const fetchStats = async (
 						summary: isSummary,
 						...filters,
 					},
-			  })
+				})
 			: undefined,
 	]);
 

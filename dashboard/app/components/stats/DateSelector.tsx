@@ -39,7 +39,7 @@ export const DateComboBox = () => {
 	const [preset, setPreset] = useState<keyof typeof presets>(
 		searchParams.get('period')
 			? (searchParams.get('period') as keyof typeof presets)
-			: 'today'
+			: 'today',
 	);
 
 	// Update search params when preset changes

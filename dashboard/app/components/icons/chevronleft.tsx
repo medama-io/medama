@@ -7,6 +7,7 @@ export const IconChevronLeft = () => {
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+			<title>Icon Chevron Left</title>
 			<path
 				fillRule="evenodd"
 				clipRule="evenodd"

@@ -7,6 +7,7 @@ export const IconPlus = () => {
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+			<title>Icon Plus</title>
 			<path
 				fillRule="evenodd"
 				clipRule="evenodd"

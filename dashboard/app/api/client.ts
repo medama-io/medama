@@ -2,7 +2,7 @@ import { json } from '@remix-run/node';
 
 import { EXPIRE_COOKIE, expireSession } from '@/utils/cookies';
 
-import { type components, type paths } from './types';
+import type { components, paths } from './types';
 
 const API_URL = process.env.API_URL ?? 'http://localhost:8080';
 
@@ -13,7 +13,7 @@ const DEFAULT_HEADERS = {
 export type ComponentSchema = keyof components['schemas'];
 
 export interface DataResponse<
-	T extends ComponentSchema | undefined = ComponentSchema
+	T extends ComponentSchema | undefined = ComponentSchema,
 > {
 	cookie?: string;
 	data?: T extends ComponentSchema ? components['schemas'][T] : undefined;
@@ -22,7 +22,7 @@ export interface DataResponse<
 
 // We also need to consider that some endpoints return an array of objects instead of a single object
 export interface DataResponseArray<
-	T extends ComponentSchema | undefined = ComponentSchema
+	T extends ComponentSchema | undefined = ComponentSchema,
 > {
 	cookie?: string;
 	data?: T extends ComponentSchema
@@ -32,7 +32,7 @@ export interface DataResponseArray<
 }
 
 export interface ClientOptions<
-	Body extends ComponentSchema | undefined = ComponentSchema
+	Body extends ComponentSchema | undefined = ComponentSchema,
 > {
 	body?: Body extends ComponentSchema ? components['schemas'][Body] : undefined;
 	query?: Record<string, string | number | boolean | undefined>;
@@ -45,9 +45,9 @@ export interface ClientOptions<
 
 const client = async (
 	path: keyof paths,
-	{ cookie, body, method = 'GET', noRedirect, pathKey, query }: ClientOptions
+	{ cookie, body, method = 'GET', noRedirect, pathKey, query }: ClientOptions,
 ): Promise<Response> => {
-	let newPath;
+	let newPath: string | undefined;
 	// Replace any path closed in curly braces with the pathKey
 	if (pathKey !== undefined) {
 		newPath = path.replace(/{.*}/, pathKey);

@@ -1,6 +1,7 @@
 {
 	"include": ["**/*.ts", "**/*.tsx"],
 	"compilerOptions": {
+		"target": "ESNext",
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"jsx": "react-jsx",

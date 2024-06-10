@@ -220,7 +220,7 @@ export const Filters = () => {
 			? setValue('')
 			: setValue(Object.keys(chosenFilter?.choices ?? {})[0] ?? 'Unknown');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [filter]);
+	}, [chosenFilter]);
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	// Convert the search params to an array of label-type-value tuples

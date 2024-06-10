@@ -1,7 +1,7 @@
 import { Box, Flex, Group, Text, Tooltip } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 
-import { type DataResponse } from '@/api/client';
+import type { DataResponse } from '@/api/client';
 
 import { DateComboBox } from './DateSelector';
 import { formatCount, formatDuration, formatPercentage } from './formatter';

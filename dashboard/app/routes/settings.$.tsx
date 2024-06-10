@@ -6,7 +6,7 @@ import {
 } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
-import { type components } from '@/api/types';
+import type { components } from '@/api/types';
 import { userGet } from '@/api/user';
 import { Settings } from '@/components/settings/Settings';
 import { hasSession } from '@/utils/cookies';

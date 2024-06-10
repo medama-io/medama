@@ -3,7 +3,7 @@ import { json } from '@remix-run/node';
 import { client, type ClientOptions, type DataResponse } from './client';
 
 const authLogin = async (
-	opts: ClientOptions<'AuthLogin'>
+	opts: ClientOptions<'AuthLogin'>,
 ): Promise<DataResponse> => {
 	const res = await client('/auth/login', { method: 'POST', ...opts });
 	const cookie = res.headers.get('Set-Cookie');
