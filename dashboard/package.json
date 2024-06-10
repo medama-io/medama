@@ -4,9 +4,9 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
-		"build": "remix build",
-		"dev": "remix dev --manual",
-		"start": "remix-serve ./build/index.js",
+		"dev": "remix vite:dev",
+    "build": "remix vite:build",
+    "start": "remix-serve ./build/server/index.js",
 		"generate": "openapi-typescript ../core/openapi.yaml -o ./app/api/types.d.ts",
 		"lint": "eslint . --fix",
 		"typecheck": "tsc"
@@ -16,7 +16,6 @@
 		"@legendapp/state": "^2.1.7",
 		"@mantine/core": "^7.5.3",
 		"@mantine/hooks": "^7.5.3",
-		"@remix-run/css-bundle": "^2.7.2",
 		"@remix-run/node": "^2.7.2",
 		"@remix-run/react": "^2.7.2",
 		"@remix-run/serve": "^2.7.2",
@@ -41,7 +40,9 @@
 		"postcss": "^8.4.35",
 		"postcss-preset-mantine": "^1.13.0",
 		"postcss-simple-vars": "^7.0.1",
-		"typescript": "^5.3.3"
+		"typescript": "^5.3.3",
+		"vite": "^5.2.13",
+		"vite-tsconfig-paths": "^4.3.2"
 	},
 	"engines": {
 		"node": ">=18.0.0"

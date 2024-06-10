@@ -5,16 +5,10 @@ import '@/styles/global.css';
 
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { cssBundleHref } from '@remix-run/css-bundle';
-import {
-	json,
-	type LinksFunction,
-	type LoaderFunctionArgs,
-} from '@remix-run/node';
+import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import {
 	isRouteErrorResponse,
 	Links,
-	LiveReload,
 	Meta,
 	Outlet,
 	Scripts,
@@ -35,10 +29,6 @@ interface LoaderData {
 interface DocumentProps {
 	children: React.ReactNode;
 }
-
-export const links: LinksFunction = () => [
-	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
-];
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
 	const session = hasSession(request);
@@ -62,7 +52,6 @@ export const Document = ({ children }: DocumentProps) => {
 					<AppShell>{children}</AppShell>
 					<ScrollRestoration />
 					<Scripts />
-					<LiveReload />
 				</MantineProvider>
 			</body>
 		</html>
