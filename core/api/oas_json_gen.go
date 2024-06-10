@@ -554,11 +554,51 @@ func (s EventHit) encodeFields(e *jx.Encoder) {
 	case EventLoadEventHit:
 		e.FieldStart("e")
 		e.Str("load")
-		s.EventLoad.encodeFields(e)
+		{
+			s := s.EventLoad
+			{
+				e.FieldStart("b")
+				e.Str(s.B)
+			}
+			{
+				e.FieldStart("u")
+				json.EncodeURI(e, s.U)
+			}
+			{
+				if s.R.Set {
+					e.FieldStart("r")
+					s.R.Encode(e)
+				}
+			}
+			{
+				e.FieldStart("p")
+				e.Bool(s.P)
+			}
+			{
+				e.FieldStart("q")
+				e.Bool(s.Q)
+			}
+			{
+				if s.T.Set {
+					e.FieldStart("t")
+					s.T.Encode(e)
+				}
+			}
+		}
 	case EventUnloadEventHit:
 		e.FieldStart("e")
 		e.Str("unload")
-		s.EventUnload.encodeFields(e)
+		{
+			s := s.EventUnload
+			{
+				e.FieldStart("b")
+				e.Str(s.B)
+			}
+			{
+				e.FieldStart("m")
+				e.Int(s.M)
+			}
+		}
 	}
 }
 

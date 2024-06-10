@@ -5,14 +5,14 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - go run ./cmd/ {{.CLI_ARGS}} -logger=pretty -level=debug
+      - go run -tags "no_duckdb_arrow" ./cmd/ {{.CLI_ARGS}} -logger=pretty -level=debug
     env:
       CGO_ENABLED: "1"
 
   build:
     deps: [generate]
     cmds:
-      - go build -o ./bin/main ./cmd/
+      - go build -o ./bin/main -tags "no_duckdb_arrow" ./cmd/
     env:
       CGO_ENABLED: "1"
 
@@ -24,7 +24,7 @@ tasks:
   release:
     deps: [generate]
     cmds:
-      - go build -o ./bin/main -ldflags "-s -w" -trimpath ./cmd/
+      - go build -o ./bin/main -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
     env:
       CGO_ENABLED: "1"
       GOEXPERIMENT: "newinliner"
