@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Generate handlers from the OpenAPI specification using ogen-go.
 go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml
@@ -11,5 +11,14 @@ go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml
 # This runs sed and replaces a line number with a new line.
 # This should be verified after each update to the OpenAPI specification or ogen-go
 # in case the line number changes.
+#
+# sed also runs differently on macOS and Linux, so we need to check the OS before running it.
 # Line 256
-sed -i '256 c \\ \tcase ct == "application/json", ct == "text/plain":' api/oas_request_decoders_gen.go
+OS=$(uname)
+if [ "$OS" = "Darwin" ]; then
+	# macOS
+	sed -i '' '256 c \\ \tcase ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
+else
+	# Linux
+	sed -i '256 c \\ \tcase ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
+fi
