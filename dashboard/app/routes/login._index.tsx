@@ -1,15 +1,14 @@
-import {
-	type ActionFunctionArgs,
-	json,
-	type LoaderFunctionArgs,
-	type MetaFunction,
-	redirect,
-} from '@remix-run/node';
-
 import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';
 import { Login } from '@/components/login/Login';
 import { hasSession } from '@/utils/cookies';
+import {
+	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
+	json,
+	type MetaFunction,
+	redirect,
+} from '@remix-run/react';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -18,7 +17,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 	// If the user is already logged in, redirect them to the dashboard.
 	if (hasSession(request)) {
 		// Check if session hasn't been revoked
@@ -29,7 +28,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	return { status: 200 };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	const body = await request.formData();
 
 	const username = body.get('username')

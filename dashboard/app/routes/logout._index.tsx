@@ -1,13 +1,11 @@
 import {
-	json,
-	type LoaderFunctionArgs,
-	type MetaFunction,
-} from '@remix-run/node';
-import {
+	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	useLoaderData,
 	useRevalidator,
 	useRouteError,
+	json,
+	type MetaFunction,
 } from '@remix-run/react';
 import { useEffect } from 'react';
 
@@ -20,7 +18,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
 	// If the user is already logged in, expire session cookie with success message.
 	if (hasSession(request)) {
 		return json('You have been sucessfully logged out.', {

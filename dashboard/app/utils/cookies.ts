@@ -1,4 +1,4 @@
-import { redirect } from '@remix-run/node';
+import { redirect } from '@remix-run/react';
 
 const SESSION_NAME = '_me_sess';
 

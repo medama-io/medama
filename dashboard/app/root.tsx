@@ -5,8 +5,9 @@ import '@/styles/global.css';
 
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import {
+	json,
+	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	Links,
 	Meta,
@@ -30,7 +31,7 @@ interface DocumentProps {
 	children: React.ReactNode;
 }
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
 	const session = hasSession(request);
 
 	return json<LoaderData>({ isLoggedIn: Boolean(session) });

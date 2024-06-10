@@ -1,10 +1,10 @@
 import {
+	type ClientLoaderFunctionArgs,
+	useLoaderData,
 	json,
-	type LoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
-} from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+} from '@remix-run/react';
 
 import type { components } from '@/api/types';
 import { userGet } from '@/api/user';
@@ -24,7 +24,7 @@ export const meta: MetaFunction = () => {
 
 const ACCEPTED_SETTINGS = new Set(['account', 'advanced']);
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 	// If pathname does not match accepted settings pages, 404
 	const url = new URL(request.url);
 	const pathname = url.pathname.replace('/settings', '');

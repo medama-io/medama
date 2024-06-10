@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "remix vite:dev",
 		"build": "remix vite:build",
-		"start": "remix-serve ./build/server/index.js",
+		"preview": "vite preview",
 		"generate": "openapi-typescript ../core/openapi.yaml -o ./app/api/types.d.ts",
 		"format": "biome format --write .",
 		"lint": "biome lint --write .",
@@ -17,7 +17,6 @@
 		"@legendapp/state": "^2.1.14",
 		"@mantine/core": "^7.10.1",
 		"@mantine/hooks": "^7.10.1",
-		"@remix-run/node": "^2.9.2",
 		"@remix-run/react": "^2.9.2",
 		"@remix-run/serve": "^2.9.2",
 		"clsx": "^2.1.1",

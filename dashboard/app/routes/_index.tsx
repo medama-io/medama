@@ -1,11 +1,9 @@
 import { Divider, Paper, Text } from '@mantine/core';
 import {
 	json,
-	type LoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
-} from '@remix-run/node';
-import {
+	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	Link,
 	useLoaderData,
@@ -27,7 +25,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 	// Check for session cookie and redirect to login if missing
 	if (!hasSession(request)) {
 		throw redirect('/login');

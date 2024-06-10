@@ -1,9 +1,10 @@
 import {
 	json,
-	type LoaderFunctionArgs,
 	type MetaFunction,
-} from '@remix-run/node';
-import { useLoaderData, useParams } from '@remix-run/react';
+	type ClientLoaderFunctionArgs,
+	useLoaderData,
+	useParams,
+} from '@remix-run/react';
 import invariant from 'tiny-invariant';
 
 import { StatsTable } from '@/components/stats/StatsTable';
@@ -13,11 +14,14 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
 };
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const clientLoader = async ({
+	request,
+	params,
+}: ClientLoaderFunctionArgs) => {
 	const query = params.query as DatasetItem;
 	invariant(
 		!query || (isDatasetItem(query) && params.query !== 'summary'),
-		'Invalid dataset item',
+		'Invalid dataset item'
 	);
 
 	const stats = await fetchStats(request, params, {
@@ -29,7 +33,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
 export default function Index() {
 	const params = useParams();
-	const data = useLoaderData<Omit<typeof loader, 'summary'>>();
+	const data = useLoaderData<Omit<typeof clientLoader, 'summary'>>();
 
 	// We can safely assume that the dataset items are present as the loader function
 	// has already validated the query parameter
