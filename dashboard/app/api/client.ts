@@ -4,7 +4,16 @@ import { expireSession } from '@/utils/cookies';
 
 import type { components, paths } from './types';
 
-const API_URL = 'http://localhost:8080/api';
+// Determine if we are running on the server (during SSR or pre-rendering) or in the browser.
+const isServer = typeof window === 'undefined';
+const LOCAL_API = 'http://localhost:8080/api';
+const API_BASE = isServer ? 'localhost' : window.location.hostname;
+
+// If we are running locally (development), use 'http://localhost:8080'. Otherwise, use the current origin.
+const API_URL =
+	isServer || API_BASE === 'localhost'
+		? LOCAL_API
+		: `${window.location.origin}/api`;
 
 const DEFAULT_HEADERS = {
 	'Content-Type': 'application/json',
