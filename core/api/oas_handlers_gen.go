@@ -3320,6 +3320,85 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 	}
 }
 
+// handlePostAuthLogoutRequest handles post-auth-logout operation.
+//
+// Logout of the service and destroy the session token.
+//
+// POST /auth/logout
+func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var (
+		err          error
+		opErrContext = ogenerrors.OperationContext{
+			Name: "PostAuthLogout",
+			ID:   "post-auth-logout",
+		}
+	)
+	params, err := decodePostAuthLogoutParams(args, argsEscaped, r)
+	if err != nil {
+		err = &ogenerrors.DecodeParamsError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		defer recordError("DecodeParams", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	var response PostAuthLogoutRes
+	if m := s.cfg.Middleware; m != nil {
+		mreq := middleware.Request{
+			Context:          ctx,
+			OperationName:    "PostAuthLogout",
+			OperationSummary: "Session Token Logout.",
+			OperationID:      "post-auth-logout",
+			Body:             nil,
+			Params: middleware.Parameters{
+				{
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+			},
+			Raw: r,
+		}
+
+		type (
+			Request  = struct{}
+			Params   = PostAuthLogoutParams
+			Response = PostAuthLogoutRes
+		)
+		response, err = middleware.HookMiddleware[
+			Request,
+			Params,
+			Response,
+		](
+			m,
+			mreq,
+			unpackPostAuthLogoutParams,
+			func(ctx context.Context, request Request, params Params) (response Response, err error) {
+				response, err = s.h.PostAuthLogout(ctx, params)
+				return response, err
+			},
+		)
+	} else {
+		response, err = s.h.PostAuthLogout(ctx, params)
+	}
+	if err != nil {
+		defer recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	if err := encodePostAuthLogoutResponse(response, w); err != nil {
+		defer recordError("EncodeResponse", err)
+		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
+			s.cfg.ErrorHandler(ctx, w, r, err)
+		}
+		return
+	}
+}
+
 // handlePostEventHitRequest handles post-event-hit operation.
 //
 // Send a hit event to register a user view.

@@ -12,6 +12,13 @@ export interface paths {
      */
     post: operations["post-auth-login"];
   };
+  "/auth/logout": {
+    /**
+     * Session Token Logout.
+     * @description Logout of the service and destroy the session token.
+     */
+    post: operations["post-auth-logout"];
+  };
   "/event/hit": {
     /**
      * Send Hit Event.
@@ -666,6 +673,29 @@ export interface operations {
       400: components["responses"]["BadRequestError"];
       401: components["responses"]["UnauthorisedError"];
       404: components["responses"]["NotFoundError"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  /**
+   * Session Token Logout.
+   * @description Logout of the service and destroy the session token.
+   */
+  "post-auth-logout": {
+    parameters: {
+      cookie: {
+        _me_sess: components["parameters"]["SessionAuth"];
+      };
+    };
+    responses: {
+      /** @description Success */
+      204: {
+        headers: {
+          /** @description Destroy the cookie for the session. */
+          "Set-Cookie": string;
+        };
+        content: never;
+      };
+      401: components["responses"]["UnauthorisedError"];
       500: components["responses"]["InternalServerError"];
     };
   };

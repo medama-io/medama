@@ -4,8 +4,8 @@
 	"dependencies": {
 		"@biomejs/biome": "^1.8.1",
 		"@changesets/changelog-github": "^0.4.8",
-		"@changesets/cli": "^2.26.2"
+		"@changesets/cli": "^2.27.5"
 	},
 	"workspaces": ["dashboard", "tracker"],
-	"trustedDependencies": ["@biomejs/biome"]
+	"trustedDependencies": ["@biomejs/biome", "esbuild"]
 }

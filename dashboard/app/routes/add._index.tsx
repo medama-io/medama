@@ -1,10 +1,8 @@
-import { userGet } from '@/api/user';
+import { userLoggedIn } from '@/api/user';
 import { websiteCreate } from '@/api/websites';
 import { Add } from '@/components/add/Add';
-import { hasSession } from '@/utils/cookies';
 import {
 	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
 	json,
 	type MetaFunction,
 	redirect,
@@ -17,17 +15,9 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
-	// If the user is already logged in, redirect them to the dashboard.
-	if (hasSession()) {
-		// Check if session hasn't been revoked
-		await userGet();
-	} else {
-		// Otherwise, redirect them to the login page.
-		return redirect('/login');
-	}
-
-	return { status: 200 };
+export const clientLoader = async () => {
+	await userLoggedIn();
+	return null;
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {

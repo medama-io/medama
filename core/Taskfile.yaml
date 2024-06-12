@@ -14,9 +14,7 @@ includes:
 
 tasks:
   dev:
-    # We do not need to embed the dashboard as we run a separate process in development
-    # mode.
-    deps: [generate:go, tracker:embed]
+    deps: [generate]
     cmds:
       - go run -tags "no_duckdb_arrow" ./cmd/ {{.CLI_ARGS}} -logger=pretty -level=debug
     env:

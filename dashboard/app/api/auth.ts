@@ -6,4 +6,8 @@ const authLogin = async (
 	return { res: await client('/auth/login', { method: 'POST', ...opts }) };
 };
 
-export { authLogin };
+const authLogout = async (): Promise<DataResponse> => {
+	return { res: await client('/auth/logout', { method: 'POST' }) };
+};
+
+export { authLogin, authLogout };

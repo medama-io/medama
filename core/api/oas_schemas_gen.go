@@ -719,6 +719,7 @@ func (*InternalServerError) getWebsitesRes()           {}
 func (*InternalServerError) patchUserRes()             {}
 func (*InternalServerError) patchWebsitesIDRes()       {}
 func (*InternalServerError) postAuthLoginRes()         {}
+func (*InternalServerError) postAuthLogoutRes()        {}
 func (*InternalServerError) postEventHitRes()          {}
 func (*InternalServerError) postWebsitesRes()          {}
 
@@ -1284,6 +1285,23 @@ func (s *PostAuthLoginOK) SetSetCookie(val string) {
 }
 
 func (*PostAuthLoginOK) postAuthLoginRes() {}
+
+// PostAuthLogoutNoContent is response for PostAuthLogout operation.
+type PostAuthLogoutNoContent struct {
+	SetCookie string
+}
+
+// GetSetCookie returns the value of SetCookie.
+func (s *PostAuthLogoutNoContent) GetSetCookie() string {
+	return s.SetCookie
+}
+
+// SetSetCookie sets the value of SetCookie.
+func (s *PostAuthLogoutNoContent) SetSetCookie(val string) {
+	s.SetCookie = val
+}
+
+func (*PostAuthLogoutNoContent) postAuthLogoutRes() {}
 
 // PostEventHitNoContent is response for PostEventHit operation.
 type PostEventHitNoContent struct{}
@@ -2278,6 +2296,7 @@ func (*UnauthorisedError) getWebsitesRes()           {}
 func (*UnauthorisedError) patchUserRes()             {}
 func (*UnauthorisedError) patchWebsitesIDRes()       {}
 func (*UnauthorisedError) postAuthLoginRes()         {}
+func (*UnauthorisedError) postAuthLogoutRes()        {}
 func (*UnauthorisedError) postWebsitesRes()          {}
 
 type UnauthorisedErrorError struct {

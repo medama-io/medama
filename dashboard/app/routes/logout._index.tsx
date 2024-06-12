@@ -9,6 +9,7 @@ import {
 import { useEffect } from 'react';
 
 import { expireSession, hasSession } from '@/utils/cookies';
+import { authLogout } from '@/api/auth';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -17,9 +18,13 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = () => {
+export const clientLoader = async () => {
 	// If the user is already logged in, expire session cookie with success message.
 	if (hasSession()) {
+		const { res } = await authLogout();
+		if (!res.ok) {
+			throw new Error('Failed to logout.');
+		}
 		expireSession(true);
 		return json('You have been sucessfully logged out.');
 	}

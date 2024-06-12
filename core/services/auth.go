@@ -3,6 +3,8 @@ package services
 import (
 	"context"
 	"errors"
+	"net/http"
+	"time"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
@@ -35,6 +37,24 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.Po
 	}
 
 	return &api.PostAuthLoginOK{
+		SetCookie: cookie.String(),
+	}, nil
+}
+
+func (h *Handler) PostAuthLogout(ctx context.Context, params api.PostAuthLogoutParams) (api.PostAuthLogoutRes, error) {
+	h.auth.RevokeSession(ctx, params.MeSess)
+
+	// Expire cookie.
+	cookie := &http.Cookie{
+		Name:     model.SessionCookieName,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+		Expires:  time.Unix(0, 0),
+	}
+
+	return &api.PostAuthLogoutNoContent{
 		SetCookie: cookie.String(),
 	}, nil
 }

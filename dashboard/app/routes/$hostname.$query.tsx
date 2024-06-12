@@ -5,10 +5,10 @@ import {
 	useLoaderData,
 	useParams,
 } from '@remix-run/react';
-import invariant from 'tiny-invariant';
 
 import { StatsTable } from '@/components/stats/StatsTable';
 import { type DatasetItem, fetchStats, isDatasetItem } from '@/utils/stats';
+import invariant from 'tiny-invariant';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
