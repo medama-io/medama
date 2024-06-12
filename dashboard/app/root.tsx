@@ -31,10 +31,8 @@ interface DocumentProps {
 	children: React.ReactNode;
 }
 
-export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
-	const session = hasSession(request);
-
-	return json<LoaderData>({ isLoggedIn: Boolean(session) });
+export const clientLoader = () => {
+	return json<LoaderData>({ isLoggedIn: Boolean(hasSession()) });
 };
 
 export const Document = ({ children }: DocumentProps) => {

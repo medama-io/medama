@@ -1,5 +1,4 @@
 import {
-	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	useLoaderData,
 	useRevalidator,
@@ -9,7 +8,7 @@ import {
 } from '@remix-run/react';
 import { useEffect } from 'react';
 
-import { EXPIRE_COOKIE, hasSession } from '@/utils/cookies';
+import { expireSession, hasSession } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -18,15 +17,11 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
+export const clientLoader = () => {
 	// If the user is already logged in, expire session cookie with success message.
-	if (hasSession(request)) {
-		return json('You have been sucessfully logged out.', {
-			status: 200,
-			headers: {
-				'Set-Cookie': EXPIRE_COOKIE,
-			},
-		});
+	if (hasSession()) {
+		expireSession(true);
+		return json('You have been sucessfully logged out.');
 	}
 
 	throw json('You are not logged in.', {

@@ -181,7 +181,14 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}))
 
 	// Apply CORS headers.
-	handler := cors.Default().Handler(mux)
+	cors := cors.New(cors.Options{
+		// TODO: Allow for configurable allowed origins. Typically this won't be needed
+		// as the client will be served from the same domain. But it is useful for development
+		// and external dashboards.
+		AllowedOrigins:   []string{"http://localhost:8080", "http://localhost:5173"},
+		AllowCredentials: true,
+	})
+	handler := cors.Handler(mux)
 
 	srv := &http.Server{
 		Addr:         ":" + strconv.FormatInt(s.Server.Port, 10),

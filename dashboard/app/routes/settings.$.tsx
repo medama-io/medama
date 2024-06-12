@@ -35,11 +35,11 @@ export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 	}
 
 	// Check for session cookie and redirect to login if missing
-	if (!hasSession(request)) {
+	if (!hasSession()) {
 		throw redirect('/login');
 	}
 
-	const { data } = await userGet({ cookie: request.headers.get('Cookie') });
+	const { data } = await userGet();
 
 	if (!data) {
 		throw json('Failed to get user.', {

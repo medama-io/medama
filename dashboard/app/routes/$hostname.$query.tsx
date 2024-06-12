@@ -21,7 +21,7 @@ export const clientLoader = async ({
 	const query = params.query as DatasetItem;
 	invariant(
 		!query || (isDatasetItem(query) && params.query !== 'summary'),
-		'Invalid dataset item'
+		'Invalid dataset item',
 	);
 
 	const stats = await fetchStats(request, params, {

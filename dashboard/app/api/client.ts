@@ -1,6 +1,6 @@
 import { json } from '@remix-run/react';
 
-import { EXPIRE_COOKIE, expireSession } from '@/utils/cookies';
+import { expireSession } from '@/utils/cookies';
 
 import type { components, paths } from './types';
 
@@ -13,39 +13,35 @@ const DEFAULT_HEADERS = {
 export type ComponentSchema = keyof components['schemas'];
 
 export interface DataResponse<
-	T extends ComponentSchema | undefined = ComponentSchema
+	T extends ComponentSchema | undefined = ComponentSchema,
 > {
-	cookie?: string;
 	data?: T extends ComponentSchema ? components['schemas'][T] : undefined;
 	res: Response;
 }
 
 // We also need to consider that some endpoints return an array of objects instead of a single object
 export interface DataResponseArray<
-	T extends ComponentSchema | undefined = ComponentSchema
+	T extends ComponentSchema | undefined = ComponentSchema,
 > {
-	cookie?: string;
 	data?: T extends ComponentSchema
 		? Array<components['schemas'][T]>
 		: undefined;
 	res: Response;
 }
 
-export interface ClientOptions<
-	Body extends ComponentSchema | undefined = ComponentSchema
-> {
-	body?: Body extends ComponentSchema ? components['schemas'][Body] : undefined;
-	query?: Record<string, string | number | boolean | undefined>;
-	cookie?: string | null;
-	method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
-	noRedirect?: boolean;
-	// This is used to replace any variables in the path
-	pathKey?: string;
-}
+export type ClientOptions<
+	Body extends ComponentSchema | undefined = ComponentSchema,
+> = Partial<{
+	body: Body extends ComponentSchema ? components['schemas'][Body] : undefined;
+	query: Record<string, string | number | boolean | undefined>;
+	method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+	noRedirect: boolean;
+	pathKey: string;
+}>;
 
 const client = async (
 	path: keyof paths,
-	{ cookie, body, method = 'GET', noRedirect, pathKey, query }: ClientOptions
+	{ body, method = 'GET', noRedirect, pathKey, query }: ClientOptions,
 ): Promise<Response> => {
 	let newPath: string | undefined;
 	// Replace any path closed in curly braces with the pathKey
@@ -64,23 +60,23 @@ const client = async (
 	}
 
 	const res = await fetch(url, {
-		method: method ?? 'GET',
+		method,
 		headers: {
 			...DEFAULT_HEADERS,
-			...(cookie !== undefined && cookie !== null && { Cookie: cookie }),
 		},
+		credentials: 'include',
 		...(body !== undefined && { body: JSON.stringify(body) }),
 	});
 
 	if (!res.ok) {
 		// If the user is not logged in, redirect to the login page
 		if (res.status === 401 && !noRedirect) {
-			throw expireSession();
+			throw expireSession(noRedirect);
 		}
 
 		// If it is 401 and noRedirect is true, do not throw anything but expire the invalid session
 		if (res.status === 401 && noRedirect) {
-			res.headers.set('Set-Cookie', EXPIRE_COOKIE);
+			expireSession(noRedirect);
 			return res;
 		}
 

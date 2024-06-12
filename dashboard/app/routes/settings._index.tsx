@@ -1,9 +1,5 @@
 import { hasSession } from '@/utils/cookies';
-import {
-	type ClientLoaderFunctionArgs,
-	type MetaFunction,
-	redirect,
-} from '@remix-run/react';
+import { type MetaFunction, redirect } from '@remix-run/react';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -12,9 +8,9 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
+export const clientLoader = () => {
 	// Check for session cookie and redirect to login if missing
-	if (!hasSession(request)) {
+	if (!hasSession()) {
 		throw redirect('/login');
 	}
 

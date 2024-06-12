@@ -19,9 +19,9 @@ export const meta: MetaFunction = () => {
 
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 	// If the user is already logged in, redirect them to the dashboard.
-	if (hasSession(request)) {
+	if (hasSession()) {
 		// Check if session hasn't been revoked
-		await userGet({ cookie: request.headers.get('Cookie') });
+		await userGet();
 	} else {
 		// Otherwise, redirect them to the login page.
 		return redirect('/login');
@@ -45,7 +45,6 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	}
 
 	const { data, res } = await websiteCreate({
-		cookie: request.headers.get('Cookie'),
 		body: {
 			name,
 			hostname,

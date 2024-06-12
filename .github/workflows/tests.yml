@@ -29,6 +29,10 @@ jobs:
           go-version-file: core/go.mod
           cache: false
 
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
       - name: Lint
         uses: golangci/golangci-lint-action@v4
         with:
@@ -50,6 +54,10 @@ jobs:
         with:
           go-version-file: core/go.mod
           cache-dependency-path: core/go.sum
+
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       - name: Install dependencies
         run: go mod download
