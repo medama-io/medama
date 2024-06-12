@@ -71,10 +71,6 @@ tasks:
       - go-acc ./... -o coverage.out
       - go tool cover -html=coverage.out
 
-  e2e:
-    cmds:
-      - docker compose -f compose-test.yaml up --abort-on-container-exit --build
-
   test:
     deps: [generate]
     cmds:

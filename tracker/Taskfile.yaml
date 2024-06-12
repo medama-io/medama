@@ -4,12 +4,12 @@ version: "3"
 tasks:
   build:
     cmds:
-      - bun run build:default
+      - npm run build:default
       - bun run build:size
 
   build:default:
     cmds:
-      - bun run build:default
+      - npm run build:default
     sources:
       - ./src/default.js
     generates:
