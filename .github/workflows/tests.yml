@@ -33,8 +33,11 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Generate embeds
+        run: task core:generate
+
       - name: Lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v6
         with:
           version: latest
           working-directory: core
@@ -59,8 +62,11 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install dependencies
+      - name: Install Go dependencies
         run: go mod download
+
+      - name: Install dashboard dependencies
+        run: bun install --frozen-lockfile
 
       - name: Build
         run: task build
