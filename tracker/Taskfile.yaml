@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  build:
+    cmds:
+      - bun run build:default
+      - bun run build:size
+
+  build:default:
+    cmds:
+      - bun run build:default
+    sources:
+      - ./src/default.js
+    generates:
+      - ./dist/default.js
+
+  embed:
+    deps: [build:default]
+    cmds:
+      - mkdir -p ../core/client
+      - cp ./dist/default.js ../core/client/medama.js
+    sources:
+      - ./dist/default.js
+    generates:
+      - ../core/client/medama.js

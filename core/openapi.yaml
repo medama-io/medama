@@ -60,6 +60,31 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: Session Token Logout.
+      description: Logout of the service and destroy the session token.
+      operationId: post-auth-logout
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      responses:
+        "204":
+          description: Success
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Destroy the cookie for the session.
+              required: true
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080"
+          description: Local Server
   /event/hit:
     post:
       tags:
@@ -128,21 +153,6 @@ paths:
               schema:
                 type: string
               description: This is set to 1 day to prevent the user from being counted as a unique user again.
-              required: true
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-              description: This is set to allow all origins to access this endpoint.
-              required: true
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-              description: This is set to allow GET methods to access this endpoint.
-              required: true
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-              description: This is set to allow If-Modified-Since headers and Content-Type headers to access this endpoint.
               required: true
           content:
             text/plain:
@@ -977,7 +987,7 @@ components:
       required: true
       schema:
         type: string
-        example: _me_sess=token; Path=/; HttpOnly; Secure; SameSite=Strict
+        example: _me_sess=token; Path=/; HttpOnly; SameSite=Lax; Secure
     Hostname:
       name: hostname
       in: path

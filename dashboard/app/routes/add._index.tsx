@@ -1,15 +1,12 @@
-import {
-	type ActionFunctionArgs,
-	json,
-	type LoaderFunctionArgs,
-	type MetaFunction,
-	redirect,
-} from '@remix-run/node';
-
-import { userGet } from '@/api/user';
+import { userLoggedIn } from '@/api/user';
 import { websiteCreate } from '@/api/websites';
 import { Add } from '@/components/add/Add';
-import { hasSession } from '@/utils/cookies';
+import {
+	type ClientActionFunctionArgs,
+	json,
+	type MetaFunction,
+	redirect,
+} from '@remix-run/react';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -18,20 +15,12 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-	// If the user is already logged in, redirect them to the dashboard.
-	if (hasSession(request)) {
-		// Check if session hasn't been revoked
-		await userGet({ cookie: request.headers.get('Cookie') });
-	} else {
-		// Otherwise, redirect them to the login page.
-		return redirect('/login');
-	}
-
-	return { status: 200 };
+export const clientLoader = async () => {
+	await userLoggedIn();
+	return null;
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	const body = await request.formData();
 
 	const hostname = body.get('hostname')
@@ -46,7 +35,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	const { data, res } = await websiteCreate({
-		cookie: request.headers.get('Cookie'),
 		body: {
 			name,
 			hostname,

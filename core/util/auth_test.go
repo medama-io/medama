@@ -37,7 +37,7 @@ func TestAuthCreateAndRead(t *testing.T) {
 	assert.Equal("/", cookie.Path)
 	assert.True(cookie.HttpOnly)
 	assert.True(cookie.Secure)
-	assert.Equal(http.SameSiteStrictMode, cookie.SameSite)
+	assert.Equal(http.SameSiteLaxMode, cookie.SameSite)
 
 	// Decrypt cookie
 	userId, err := auth.ReadSession(ctx, cookie.Value)

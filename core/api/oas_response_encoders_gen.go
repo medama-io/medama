@@ -152,42 +152,6 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "Access-Control-Allow-Headers" header.
-			{
-				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "Access-Control-Allow-Headers",
-					Explode: false,
-				}
-				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-					return e.EncodeValue(conv.StringToString(response.AccessControlAllowHeaders))
-				}); err != nil {
-					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
-				}
-			}
-			// Encode "Access-Control-Allow-Methods" header.
-			{
-				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "Access-Control-Allow-Methods",
-					Explode: false,
-				}
-				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-					return e.EncodeValue(conv.StringToString(response.AccessControlAllowMethods))
-				}); err != nil {
-					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
-				}
-			}
-			// Encode "Access-Control-Allow-Origin" header.
-			{
-				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "Access-Control-Allow-Origin",
-					Explode: false,
-				}
-				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-					return e.EncodeValue(conv.StringToString(response.AccessControlAllowOrigin))
-				}); err != nil {
-					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
-				}
-			}
 			// Encode "Cache-Control" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
@@ -1688,6 +1652,58 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 	case *NotFoundError:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(404)
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *InternalServerError:
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(500)
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	default:
+		return errors.Errorf("unexpected response type: %T", response)
+	}
+}
+
+func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWriter) error {
+	switch response := response.(type) {
+	case *PostAuthLogoutNoContent:
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Set-Cookie" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Set-Cookie",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					return e.EncodeValue(conv.StringToString(response.SetCookie))
+				}); err != nil {
+					return errors.Wrap(err, "encode Set-Cookie header")
+				}
+			}
+		}
+		w.WriteHeader(204)
+
+		return nil
+
+	case *UnauthorisedError:
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
 		response.Encode(e)

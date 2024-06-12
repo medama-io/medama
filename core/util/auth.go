@@ -158,7 +158,7 @@ func (a *AuthService) CreateSession(ctx context.Context, userId string) (*http.C
 		Path:     "/",
 		HttpOnly: true,
 		Secure:   true,
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteLaxMode,
 	}
 
 	// Encrypt session token.

@@ -5,8 +5,9 @@ import '@/styles/global.css';
 
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import {
+	json,
+	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	Links,
 	Meta,
@@ -30,10 +31,8 @@ interface DocumentProps {
 	children: React.ReactNode;
 }
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
-	const session = hasSession(request);
-
-	return json<LoaderData>({ isLoggedIn: Boolean(session) });
+export const clientLoader = () => {
+	return json<LoaderData>({ isLoggedIn: Boolean(hasSession()) });
 };
 
 export const Document = ({ children }: DocumentProps) => {
@@ -45,7 +44,7 @@ export const Document = ({ children }: DocumentProps) => {
 				<Meta />
 				<Links />
 				<ColorSchemeScript />
-				<script defer data-api="localhost:8080" src="/medama.js" />
+				<script defer data-api="localhost:8080" src="/script.js" />
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>

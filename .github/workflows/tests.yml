@@ -29,8 +29,18 @@ jobs:
           go-version-file: core/go.mod
           cache: false
 
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dashboard dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate embeds
+        run: task core:generate
+
       - name: Lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v6
         with:
           version: latest
           working-directory: core
@@ -51,8 +61,15 @@ jobs:
           go-version-file: core/go.mod
           cache-dependency-path: core/go.sum
 
-      - name: Install dependencies
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install Go dependencies
         run: go mod download
+
+      - name: Install dashboard dependencies
+        run: bun install --frozen-lockfile
 
       - name: Build
         run: task build

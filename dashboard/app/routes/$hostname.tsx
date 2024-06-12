@@ -1,21 +1,27 @@
 import {
 	json,
-	type LoaderFunctionArgs,
 	type MetaFunction,
-} from '@remix-run/node';
-import { Outlet, useLoaderData } from '@remix-run/react';
+	type ClientLoaderFunctionArgs,
+	Outlet,
+	useLoaderData,
+} from '@remix-run/react';
 import invariant from 'tiny-invariant';
 
 import { StackedBarChart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
 import { StatsHeader } from '@/components/stats/StatsHeader';
 import { fetchStats } from '@/utils/stats';
+import { userLoggedIn } from '@/api/user';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
 };
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const clientLoader = async ({
+	request,
+	params,
+}: ClientLoaderFunctionArgs) => {
+	await userLoggedIn();
 	const stats = await fetchStats(request, params, {
 		dataset: ['summary'],
 	});
@@ -24,7 +30,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-	const { summary } = useLoaderData<typeof loader>();
+	const { summary } = useLoaderData<typeof clientLoader>();
 	invariant(summary, 'Summary data is required');
 
 	return (

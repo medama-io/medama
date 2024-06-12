@@ -134,6 +134,12 @@ type Handler interface {
 	//
 	// POST /auth/login
 	PostAuthLogin(ctx context.Context, req *AuthLogin) (PostAuthLoginRes, error)
+	// PostAuthLogout implements post-auth-logout operation.
+	//
+	// Logout of the service and destroy the session token.
+	//
+	// POST /auth/logout
+	PostAuthLogout(ctx context.Context, params PostAuthLogoutParams) (PostAuthLogoutRes, error)
 	// PostEventHit implements post-event-hit operation.
 	//
 	// Send a hit event to register a user view.

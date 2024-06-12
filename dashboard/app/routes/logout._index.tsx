@@ -1,17 +1,15 @@
 import {
-	json,
-	type LoaderFunctionArgs,
-	type MetaFunction,
-} from '@remix-run/node';
-import {
 	isRouteErrorResponse,
 	useLoaderData,
 	useRevalidator,
 	useRouteError,
+	json,
+	type MetaFunction,
 } from '@remix-run/react';
 import { useEffect } from 'react';
 
-import { EXPIRE_COOKIE, hasSession } from '@/utils/cookies';
+import { expireSession, hasSession } from '@/utils/cookies';
+import { authLogout } from '@/api/auth';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -20,15 +18,15 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	// If the user is already logged in, expire session cookie with success message.
-	if (hasSession(request)) {
-		return json('You have been sucessfully logged out.', {
-			status: 200,
-			headers: {
-				'Set-Cookie': EXPIRE_COOKIE,
-			},
-		});
+	if (hasSession()) {
+		const { res } = await authLogout();
+		if (!res.ok) {
+			throw new Error('Failed to logout.');
+		}
+		expireSession(true);
+		return json('You have been sucessfully logged out.');
 	}
 
 	throw json('You are not logged in.', {

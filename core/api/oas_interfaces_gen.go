@@ -85,6 +85,10 @@ type PostAuthLoginRes interface {
 	postAuthLoginRes()
 }
 
+type PostAuthLogoutRes interface {
+	postAuthLogoutRes()
+}
+
 type PostEventHitRes interface {
 	postEventHitRes()
 }

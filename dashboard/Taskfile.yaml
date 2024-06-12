@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  dev:
+    deps: [generate]
+    cmds:
+      - bun run dev
+
+  build:
+    deps: [generate]
+    cmds:
+      - bun run build
+    sources:
+      - "**/*.ts"
+      - "**/*.tsx"
+      - ./package.json
+      - ./public/**/*
+    generates:
+      - ./build/**/*
+
+  generate:
+    cmds:
+      - bun run generate
+    sources:
+      - ../core/openapi.yaml
+    generates:
+      - ./app/api/types.d.ts
+
+  embed:
+    deps: [build]
+    cmds:
+      - mkdir -p ../core/client
+      - cp -r ./build/client/* ../core/client/
+    sources:
+      - ./build/client/**/*
+    generates:
+      - ../core/client/**/*
+
+  lint:
+    cmds:
+      - bun run lint

@@ -10971,6 +10971,62 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 	return params, nil
 }
 
+// PostAuthLogoutParams is parameters of post-auth-logout operation.
+type PostAuthLogoutParams struct {
+	// Session token for authentication.
+	MeSess string
+}
+
+func unpackPostAuthLogoutParams(packed middleware.Parameters) (params PostAuthLogoutParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		params.MeSess = packed[key].(string)
+	}
+	return params
+}
+
+func decodePostAuthLogoutParams(args [0]string, argsEscaped bool, r *http.Request) (params PostAuthLogoutParams, _ error) {
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // PostEventHitParams is parameters of post-event-hit operation.
 type PostEventHitParams struct {
 	// Used to infer user browser, OS and device.

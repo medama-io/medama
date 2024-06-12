@@ -1,12 +1,15 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
 includes:
   core:
     dir: ./core
-    taskfile: ./core/Taskfile.yml
+    taskfile: ./core/Taskfile.yaml
 
-tasks:
-  default:
-    aliases: [dev]
-    cmds:
-      - task: core:dev
+  dashboard:
+    dir: ./dashboard
+    taskfile: ./dashboard/Taskfile.yaml
+
+  tracker:
+    dir: ./tracker
+    taskfile: ./tracker/Taskfile.yaml

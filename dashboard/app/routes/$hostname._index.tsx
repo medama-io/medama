@@ -1,10 +1,10 @@
 import { SimpleGrid } from '@mantine/core';
 import {
+	useLoaderData,
+	type ClientLoaderFunctionArgs,
 	json,
-	type LoaderFunctionArgs,
 	type MetaFunction,
-} from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+} from '@remix-run/react';
 
 import { StatsDisplay } from '@/components/stats/StatsDisplay';
 import StatsDisplayClasses from '@/components/stats/StatsDisplay.module.css';
@@ -14,7 +14,10 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
 };
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const clientLoader = async ({
+	request,
+	params,
+}: ClientLoaderFunctionArgs) => {
 	const stats = await fetchStats(request, params, {
 		dataset: [
 			'pages',
@@ -49,7 +52,7 @@ export default function Index() {
 		devices,
 		countries,
 		languages,
-	} = useLoaderData<typeof loader>();
+	} = useLoaderData<typeof clientLoader>();
 
 	return (
 		<SimpleGrid cols={2} className={StatsDisplayClasses.grid}>

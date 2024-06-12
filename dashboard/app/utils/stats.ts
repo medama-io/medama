@@ -71,7 +71,6 @@ const fetchStats = async (
 	] = await Promise.all([
 		set.has('summary')
 			? statsSummary({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						previous: true,
@@ -83,7 +82,6 @@ const fetchStats = async (
 
 		set.has('pages')
 			? statsPages({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -94,7 +92,6 @@ const fetchStats = async (
 
 		set.has('time')
 			? statsTime({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -105,7 +102,6 @@ const fetchStats = async (
 
 		set.has('referrers')
 			? statsReferrers({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -116,7 +112,6 @@ const fetchStats = async (
 
 		set.has('sources')
 			? statsSources({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -127,7 +122,6 @@ const fetchStats = async (
 
 		set.has('mediums')
 			? statsMediums({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -138,7 +132,6 @@ const fetchStats = async (
 
 		set.has('campaigns')
 			? statsCampaigns({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -149,7 +142,6 @@ const fetchStats = async (
 
 		set.has('browsers')
 			? statsBrowsers({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -160,7 +152,6 @@ const fetchStats = async (
 
 		set.has('os')
 			? statsOS({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -171,7 +162,6 @@ const fetchStats = async (
 
 		set.has('devices')
 			? statsDevices({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: filters,
 				})
@@ -179,7 +169,6 @@ const fetchStats = async (
 
 		set.has('countries')
 			? statsCountries({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
@@ -190,7 +179,6 @@ const fetchStats = async (
 
 		set.has('languages')
 			? statsLanguages({
-					cookie: request.headers.get('Cookie'),
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,

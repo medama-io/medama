@@ -12,6 +12,13 @@ export interface paths {
      */
     post: operations["post-auth-login"];
   };
+  "/auth/logout": {
+    /**
+     * Session Token Logout.
+     * @description Logout of the service and destroy the session token.
+     */
+    post: operations["post-auth-logout"];
+  };
   "/event/hit": {
     /**
      * Send Hit Event.
@@ -386,6 +393,10 @@ export interface components {
          * @description Percentage of unique visitors from UTM source.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsUTMMediums */
     StatsUTMMediums: {
@@ -398,6 +409,10 @@ export interface components {
          * @description Percentage of unique visitors from UTM medium.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsUTMCampaigns */
     StatsUTMCampaigns: {
@@ -410,6 +425,10 @@ export interface components {
          * @description Percentage of unique visitors from UTM campaign.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsBrowsers */
     StatsBrowsers: {
@@ -422,6 +441,10 @@ export interface components {
          * @description Percentage of unique visitors from browser.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsOS */
     StatsOS: {
@@ -434,6 +457,10 @@ export interface components {
          * @description Percentage of unique visitors from OS.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsDevices */
     StatsDevices: {
@@ -446,6 +473,10 @@ export interface components {
          * @description Percentage of unique visitors from device.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsCountries */
     StatsCountries: {
@@ -458,6 +489,10 @@ export interface components {
          * @description Percentage of unique visitors from country.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
     /** StatsLanguages */
     StatsLanguages: {
@@ -470,6 +505,10 @@ export interface components {
          * @description Percentage of unique visitors for language.
          */
         visitors_percentage: number;
+        /** @description Number of bounces from referrer. */
+        bounces?: number;
+        /** @description Total time spent on page from referrer in milliseconds. */
+        duration?: number;
       }[];
   };
   responses: {
@@ -638,6 +677,29 @@ export interface operations {
     };
   };
   /**
+   * Session Token Logout.
+   * @description Logout of the service and destroy the session token.
+   */
+  "post-auth-logout": {
+    parameters: {
+      cookie: {
+        _me_sess: components["parameters"]["SessionAuth"];
+      };
+    };
+    responses: {
+      /** @description Success */
+      204: {
+        headers: {
+          /** @description Destroy the cookie for the session. */
+          "Set-Cookie": string;
+        };
+        content: never;
+      };
+      401: components["responses"]["UnauthorisedError"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  /**
    * Send Hit Event.
    * @description Send a hit event to register a user view.
    */
@@ -689,12 +751,6 @@ export interface operations {
           "Last-Modified": string;
           /** @description This is set to 1 day to prevent the user from being counted as a unique user again. */
           "Cache-Control": string;
-          /** @description This is set to allow all origins to access this endpoint. */
-          "Access-Control-Allow-Origin": string;
-          /** @description This is set to allow GET methods to access this endpoint. */
-          "Access-Control-Allow-Methods": string;
-          /** @description This is set to allow If-Modified-Since headers and Content-Type headers to access this endpoint. */
-          "Access-Control-Allow-Headers": string;
         };
         content: {
           "text/plain": string;
@@ -1088,6 +1144,7 @@ export interface operations {
   "get-website-id-sources": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1131,6 +1188,7 @@ export interface operations {
   "get-website-id-mediums": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1174,6 +1232,7 @@ export interface operations {
   "get-website-id-campaigns": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1217,6 +1276,7 @@ export interface operations {
   "get-website-id-browsers": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1260,6 +1320,7 @@ export interface operations {
   "get-website-id-os": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1303,6 +1364,7 @@ export interface operations {
   "get-website-id-device": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1346,6 +1408,7 @@ export interface operations {
   "get-website-id-country": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
@@ -1389,6 +1452,7 @@ export interface operations {
   "get-website-id-language": {
     parameters: {
       query?: {
+        summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];
