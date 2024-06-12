@@ -33,6 +33,9 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install dashboard dependencies
+        run: bun install --frozen-lockfile
+
       - name: Generate embeds
         run: task core:generate
 
