@@ -4,9 +4,8 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/medama-io/medama/util/logger"
 	"github.com/ogen-go/ogen/middleware"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/pkgerrors"
 )
 
 // Recovery is a middleware that recovers from panics.
@@ -23,10 +22,8 @@ func Recovery() middleware.Middleware {
 					panic(rvr)
 				}
 
-				//nolint: reassign // We need to reassign the stack marshaler.
-				zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
-				zerolog.Ctx(req.Context).
-					Error().
+				log := logger.Get()
+				log.Error().
 					Str("path", req.Raw.URL.Path).
 					Str("method", req.Raw.Method).
 					Str("User-Agent", req.Raw.Header.Get("User-Agent")).

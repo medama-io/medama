@@ -6,11 +6,11 @@ import (
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
-	"github.com/rs/zerolog"
+	"github.com/medama-io/medama/util/logger"
 )
 
 func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (api.GetWebsiteIDSummaryRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -104,7 +104,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 }
 
 func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteIDPagesParams) (api.GetWebsiteIDPagesRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists.
 	exists := h.hostnames.Has(params.Hostname)
@@ -193,7 +193,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 }
 
 func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -282,7 +282,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 }
 
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -369,7 +369,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 }
 
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -452,7 +452,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 }
 
 func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -538,7 +538,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 }
 
 func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -624,7 +624,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 }
 
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -710,7 +710,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 }
 
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -796,7 +796,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 }
 
 func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -882,7 +882,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 }
 
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -968,7 +968,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 }
 
 func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
-	log := zerolog.Ctx(ctx).With().Str("hostname", params.Hostname).Logger()
+	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)

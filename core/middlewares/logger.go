@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/util/logger"
 	"github.com/ogen-go/ogen/middleware"
-	"github.com/rs/zerolog"
 )
 
 // getCode returns the http status code from the error type.
@@ -40,12 +40,15 @@ func RequestLogger() middleware.Middleware {
 		req middleware.Request,
 		next func(req middleware.Request) (middleware.Response, error),
 	) (middleware.Response, error) {
+		// Add the logger to request context
+		log := logger.Get()
+
 		startTime := time.Now()
 		resp, err := next(req)
 		duration := time.Since(startTime)
 
 		if err == nil {
-			log := zerolog.Ctx(req.Context).With().
+			log = log.With().
 				Str("operation", req.OperationName).
 				Str("operationId", req.OperationID).
 				Str("method", req.Raw.Method).
