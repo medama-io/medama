@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-faster/jx"
-	"github.com/rs/zerolog"
+	"github.com/medama-io/medama/util/logger"
 )
 
 const errMessage = "api path not found"
@@ -27,8 +27,9 @@ func NotFound() func(w http.ResponseWriter, req *http.Request) {
 
 		_, _ = w.Write(e.Bytes())
 
-		zerolog.Ctx(req.Context()).
-			Info().
+		log := logger.Get()
+
+		log.Info().
 			Str("path", req.URL.Path).
 			Str("method", req.Method).
 			Int("status_code", http.StatusNotFound).

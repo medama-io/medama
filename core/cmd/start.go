@@ -22,9 +22,9 @@ import (
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/services"
 	"github.com/medama-io/medama/util"
+	"github.com/medama-io/medama/util/logger"
 	"github.com/ogen-go/ogen/middleware"
 	"github.com/rs/cors"
-	"github.com/rs/zerolog"
 )
 
 type StartCommand struct {
@@ -75,11 +75,10 @@ func (s *StartCommand) ParseFlags(args []string) error {
 
 // Run executes the start command.
 func (s *StartCommand) Run(ctx context.Context) error {
-	ctx, err := util.SetupLogger(ctx, s.Server.Logger, s.Server.Level)
+	log, err := logger.Init(s.Server.Logger, s.Server.Level)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup logger")
 	}
-	log := zerolog.Ctx(ctx)
 	log.Info().Msg(GetVersion())
 
 	// Setup database
@@ -117,14 +116,13 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return errors.Wrap(err, "failed to create handlers")
 	}
 
-	authMiddleware := middlewares.NewAuthHandler(auth)
 	mw := []middleware.Middleware{
 		middlewares.RequestLogger(),
 		middlewares.RequestContext(),
 		middlewares.Recovery(),
 	}
 	apiHandler, err := api.NewServer(service,
-		authMiddleware,
+		middlewares.NewAuthHandler(auth),
 		api.WithMiddleware(mw...),
 		api.WithErrorHandler(middlewares.ErrorHandler),
 		api.WithNotFound(middlewares.NotFound()),

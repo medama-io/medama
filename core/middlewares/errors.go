@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/go-faster/jx"
+	"github.com/medama-io/medama/util/logger"
 	"github.com/ogen-go/ogen/ogenerrors"
-	"github.com/rs/zerolog"
 )
 
 // ErrorHandler is a middleware that handles any unhandled errors by ogen.
@@ -16,8 +16,8 @@ func ErrorHandler(ctx context.Context, w http.ResponseWriter, req *http.Request,
 	code := ogenerrors.ErrorCode(err)
 	errMessage := strings.ReplaceAll(err.Error(), "\"", "'")
 
-	zerolog.Ctx(ctx).
-		Error().
+	log := logger.Get()
+	log.Error().
 		Str("path", req.URL.Path).
 		Str("method", req.Method).
 		Int("status_code", code).
@@ -26,7 +26,7 @@ func ErrorHandler(ctx context.Context, w http.ResponseWriter, req *http.Request,
 		Str("Content-Type", req.Header.Get("Content-Type")).
 		Str("Content-Length", req.Header.Get("Content-Length")).
 		Str("User-Agent", req.Header.Get("User-Agent")).
-		Msg("Error 500")
+		Msg("error 500")
 
 	if errors.Is(err, ogenerrors.ErrSecurityRequirementIsNotSatisfied) {
 		errMessage = "missing security token or cookie"

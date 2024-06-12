@@ -7,7 +7,7 @@ import (
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
-	"github.com/rs/zerolog"
+	"github.com/medama-io/medama/util/logger"
 )
 
 type MigrationType string
@@ -55,7 +55,7 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 		{ID: 2, Name: "0002_duckdb_schema.go", Type: DuckDB, Up: Up0002, Down: Down0002},
 	}
 
-	log := zerolog.Ctx(ctx)
+	log := logger.Get()
 	err := CreateMigrationsTable(sqliteC)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to create migrations table")
@@ -78,7 +78,7 @@ func runMigrator[Client sqlite.Client | duckdb.Client](ctx context.Context, sqli
 		var id int
 		err := sqlite.GetContext(ctx, &id, "SELECT id FROM migrations WHERE id = ?", migration.ID)
 
-		log := zerolog.Ctx(ctx).With().
+		log := logger.Get().With().
 			Int("id", migration.ID).
 			Str("name", migration.Name).
 			Str("type", string(migration.Type)).

@@ -9,7 +9,7 @@ import (
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
-	"github.com/rs/zerolog"
+	"github.com/medama-io/medama/util/logger"
 	"golang.org/x/text/language"
 	"golang.org/x/text/language/display"
 )
@@ -45,7 +45,8 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	// Parse the if-modified-since header and check if it is older than a day.
 	lastModifiedTime, err := time.Parse(http.TimeFormat, ifModified)
 	if err != nil {
-		zerolog.Ctx(ctx).Error().Err(err).Msg("failed to parse if-modified-since header")
+		log := logger.Get()
+		log.Error().Err(err).Msg("failed to parse if-modified-since header")
 		return ErrBadRequest(err), nil
 	}
 
@@ -80,11 +81,12 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 }
 
 func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
+	log := logger.Get()
 	switch req.Type {
 	case api.EventLoadEventHit:
 		hostname := req.EventLoad.U.Hostname()
 		pathname := req.EventLoad.U.Path
-		log := zerolog.Ctx(ctx).With().Str("hostname", hostname).Logger()
+		log = log.With().Str("hostname", hostname).Logger()
 
 		// Verify hostname exists
 		exists := h.hostnames.Has(hostname)
@@ -206,7 +208,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			DurationMs: req.EventUnload.M,
 		}
 
-		log := zerolog.Ctx(ctx).With().
+		log = log.With().
 			Str("bid", event.BID).
 			Str("event_type", string(req.Type)).
 			Int("duration_ms", event.DurationMs).
@@ -222,7 +224,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		log.Debug().Msg("hit: updated page view")
 
 	default:
-		zerolog.Ctx(ctx).Error().Str("type", string(req.Type)).Msg("hit: invalid event hit type")
+		log.Error().Str("type", string(req.Type)).Msg("hit: invalid event hit type")
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 	}
 

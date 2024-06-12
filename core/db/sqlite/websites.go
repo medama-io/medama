@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
+	"github.com/medama-io/medama/util/logger"
 	"github.com/ncruces/go-sqlite3"
-	"github.com/rs/zerolog"
 )
 
 func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) error {
@@ -23,8 +23,8 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 			return model.ErrUserNotFound
 		}
 
-		zerolog.Ctx(ctx).
-			Error().
+		log := logger.Get()
+		log.Error().
 			Str("user_id", website.UserID).
 			Str("hostname", website.Hostname).
 			Int64("date_created", website.DateCreated).
@@ -39,14 +39,14 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 
 func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Website, error) {
 	var websites []*model.Website
+	log := logger.Get()
 
 	query := `--sql
 	SELECT user_id, hostname, name, date_created, date_updated FROM websites WHERE user_id = ?`
 
 	err := c.SelectContext(ctx, &websites, query, userID)
 	if err != nil {
-		zerolog.Ctx(ctx).
-			Error().
+		log.Error().
 			Str("user_id", userID).
 			Err(err).
 			Msg("failed to list websites")
@@ -55,7 +55,7 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 	}
 
 	if len(websites) == 0 {
-		zerolog.Ctx(ctx).Debug().Str("user_id", userID).Msg("no websites found")
+		log.Debug().Str("user_id", userID).Msg("no websites found")
 		return nil, model.ErrWebsiteNotFound
 	}
 
@@ -69,7 +69,8 @@ func (c *Client) ListAllHostnames(ctx context.Context) ([]string, error) {
 	var hostnames []string
 	err := c.SelectContext(ctx, &hostnames, query)
 	if err != nil {
-		zerolog.Ctx(ctx).Error().Err(err).Msg("failed to list all hostnames")
+		log := logger.Get()
+		log.Error().Err(err).Msg("failed to list all hostnames")
 		return nil, errors.Wrap(err, "db")
 	}
 
@@ -77,6 +78,7 @@ func (c *Client) ListAllHostnames(ctx context.Context) ([]string, error) {
 }
 
 func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) error {
+	log := logger.Get()
 	// Update all values except user_id
 	exec := `--sql
 	UPDATE websites SET hostname = ?, name = ?, date_updated = ? WHERE hostname = ?`
@@ -87,8 +89,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 			return model.ErrWebsiteExists
 		}
 
-		zerolog.Ctx(ctx).
-			Error().
+		log.Error().
 			Str("hostname", website.Hostname).
 			Str("name", website.Name).
 			Int64("date_updated", website.DateUpdated).
@@ -100,8 +101,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 	rowsAffected, err := res.RowsAffected()
 	if err != nil {
-		zerolog.Ctx(ctx).
-			Error().
+		log.Error().
 			Str("hostname", website.Hostname).
 			Str("name", website.Name).
 			Int64("date_updated", website.DateUpdated).
@@ -112,7 +112,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 	}
 
 	if rowsAffected == 0 {
-		zerolog.Ctx(ctx).Debug().Str("hostname", website.Hostname).Msg("website not found")
+		log.Debug().Str("hostname", website.Hostname).Msg("website not found")
 		return model.ErrWebsiteNotFound
 	}
 
@@ -121,13 +121,13 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Website, error) {
 	var website model.Website
+	log := logger.Get()
 
 	query := `--sql
 	SELECT user_id, hostname, name, date_created, date_updated FROM websites WHERE hostname = ?`
 
 	err := c.QueryRowxContext(ctx, query, hostname).StructScan(&website)
 	if err != nil {
-		log := zerolog.Ctx(ctx)
 		if errors.Is(err, sql.ErrNoRows) {
 			log.Debug().Str("hostname", hostname).Msg("website not found")
 			return nil, model.ErrWebsiteNotFound
@@ -142,13 +142,13 @@ func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Websit
 }
 
 func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
+	log := logger.Get()
 	exec := `--sql
 	DELETE FROM websites WHERE hostname = ?`
 
 	res, err := c.DB.ExecContext(ctx, exec, hostname)
 	if err != nil {
-		zerolog.Ctx(ctx).
-			Error().
+		log.Error().
 			Str("hostname", hostname).
 			Err(err).
 			Msg("failed to delete website")
@@ -158,8 +158,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 
 	rowsAffected, err := res.RowsAffected()
 	if err != nil {
-		zerolog.Ctx(ctx).
-			Error().
+		log.Error().
 			Str("hostname", hostname).
 			Err(err).
 			Msg("failed to get rows affected")
@@ -168,7 +167,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 	}
 
 	if rowsAffected == 0 {
-		zerolog.Ctx(ctx).Debug().Str("hostname", hostname).Msg("website not found")
+		log.Debug().Str("hostname", hostname).Msg("website not found")
 		return model.ErrWebsiteNotFound
 	}
 
