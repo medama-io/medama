@@ -15,7 +15,6 @@
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.0.18",
 		"@legendapp/state": "^2.1.14",
-		"@mantine/charts": "^7.10.2",
 		"@mantine/core": "^7.10.2",
 		"@mantine/hooks": "^7.10.2",
 		"@remix-run/react": "^2.9.2",
@@ -30,10 +29,8 @@
 	},
 	"devDependencies": {
 		"@remix-run/dev": "^2.9.2",
-		"@types/node": "^20.14.2",
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
-		"autoprefixer": "^10.4.19",
 		"openapi-typescript": "^6.7.6",
 		"postcss": "^8.4.38",
 		"postcss-lightningcss": "^1.0.0",
