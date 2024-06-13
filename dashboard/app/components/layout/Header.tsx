@@ -1,7 +1,8 @@
-import { Box, Button, Group, SimpleGrid, Text } from '@mantine/core';
+import { Box, Button, Flex, Group, SimpleGrid, Text } from '@mantine/core';
 import { NavLink, useLocation, useRouteLoaderData } from '@remix-run/react';
 
 import classes from './Header.module.css';
+import { BannerLogo } from '@/components/icons/banner-transparent';
 
 interface HeaderNavLinkProps {
 	label: string;
@@ -38,7 +39,9 @@ export const Header = () => {
 	return (
 		<Box component="header" className={classes.header}>
 			<SimpleGrid cols={isLoggedIn ? 3 : 2} className={classes.inner}>
-				<Group className={classes.text}>Medama</Group>
+				<Flex align="center">
+					<BannerLogo />
+				</Flex>
 				{isLoggedIn && (
 					<Group justify="center">
 						<HeaderNavLink label="Dashboard" to="/" />
