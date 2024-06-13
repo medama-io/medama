@@ -8,7 +8,6 @@ import {
 
 import { StatsTable } from '@/components/stats/StatsTable';
 import { type DatasetItem, fetchStats, isDatasetItem } from '@/utils/stats';
-import invariant from 'tiny-invariant';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
@@ -19,10 +18,9 @@ export const clientLoader = async ({
 	params,
 }: ClientLoaderFunctionArgs) => {
 	const query = params.query as DatasetItem;
-	invariant(
-		!query || (isDatasetItem(query) && params.query !== 'summary'),
-		'Invalid dataset item',
-	);
+	if (!query || (isDatasetItem(query) && params.query !== 'summary')) {
+		throw new Error('Invalid dataset item');
+	}
 
 	const stats = await fetchStats(request, params, {
 		dataset: [query],
