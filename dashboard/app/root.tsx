@@ -20,6 +20,7 @@ import {
 import { AppShell } from '@/components/layout/AppShell';
 import theme from '@/styles/theme';
 import { hasSession } from '@/utils/cookies';
+import { API_BASE } from '@/api/client';
 
 enableReactUse();
 
@@ -36,6 +37,15 @@ export const clientLoader = () => {
 };
 
 export const Document = ({ children }: DocumentProps) => {
+	// While end users will have their API servers at a fixed domain, development mode will have the API server
+	// running on localhost.
+	let isLocalhost = false;
+	let scriptSrc = '/script.js';
+	if (API_BASE === 'localhost') {
+		isLocalhost = true;
+		scriptSrc = 'http://localhost:8080/script.js';
+	}
+
 	return (
 		<html lang="en">
 			<head>
@@ -44,7 +54,7 @@ export const Document = ({ children }: DocumentProps) => {
 				<Meta />
 				<Links />
 				<ColorSchemeScript />
-				<script defer data-api="localhost:8080" src="/script.js" />
+				{isLocalhost && <script defer src={scriptSrc} />}
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>
@@ -64,6 +74,14 @@ export default function App() {
 		</Document>
 	);
 }
+
+export const HydrateFallback = () => {
+	return (
+		<Document>
+			<p>Loading...</p>
+		</Document>
+	);
+};
 
 export const ErrorBoundary = () => {
 	const error = useRouteError();

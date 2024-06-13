@@ -1,16 +1,14 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.8.1/schema.json",
 	"files": {
-		"ignore": [
-			"types.d.ts",
-			"*.js"
-		]
+		"ignore": ["types.d.ts", "**/dist"]
 	},
 	"organizeImports": {
 		"enabled": true
 	},
 	"linter": {
 		"enabled": true,
+		"ignore": ["types.d.ts", "*.js"],
 		"rules": {
 			"recommended": true
 		}

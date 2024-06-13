@@ -6,7 +6,8 @@
 	"scripts": {
 		"build": "npm run build:default && npm run build:size",
 		"build:default": "google-closure-compiler -O ADVANCED src/default.js --js_output_file dist/default.js --language_out ECMASCRIPT_2015",
-		"build:size": "node ./scripts/size.js"
+		"build:size": "node ./scripts/size.js",
+		"format": "biome format --write ."
 	},
 	"author": "Ayuhito",
 	"license": "MIT",
