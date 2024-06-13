@@ -1,13 +1,44 @@
-import '@mantine/core/styles.layer.css';
-import 'mantine-datatable/styles.layer.css';
 import '@fontsource-variable/inter/wght.css';
+// Comman
+import '@mantine/core/styles/global.css';
+import '@mantine/core/styles/ScrollArea.css';
+import '@mantine/core/styles/UnstyledButton.css';
+import '@mantine/core/styles/VisuallyHidden.css';
+import '@mantine/core/styles/Paper.css';
+import '@mantine/core/styles/Popover.css';
+import '@mantine/core/styles/Group.css';
+import '@mantine/core/styles/Input.css';
+import '@mantine/core/styles/Flex.css';
+import '@mantine/core/styles/InlineInput.css';
+// Layout
+import '@mantine/core/styles/SimpleGrid.css';
+import '@mantine/core/styles/Container.css';
+import '@mantine/core/styles/Stack.css';
+// Buttons
+import '@mantine/core/styles/ActionIcon.css';
+import '@mantine/core/styles/Button.css';
+import '@mantine/core/styles/CloseButton.css';
+// Inputs
+import '@mantine/core/styles/Checkbox.css';
+import '@mantine/core/styles/Combobox.css';
+import '@mantine/core/styles/PasswordInput.css';
+// Navigation
+import '@mantine/core/styles/Burger.css';
+import '@mantine/core/styles/NavLink.css';
+import '@mantine/core/styles/Tabs.css';
+// Feedback
+import '@mantine/core/styles/Skeleton.css';
+// Misc
+import '@mantine/core/styles/Text.css';
+import '@mantine/core/styles/Anchor.css';
+import '@mantine/core/styles/Title.css';
 import '@/styles/global.css';
+import 'mantine-datatable/styles.css';
 
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import {
 	json,
-	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	Links,
 	Meta,

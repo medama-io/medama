@@ -5,7 +5,6 @@ import {
 	Outlet,
 	useLoaderData,
 } from '@remix-run/react';
-import invariant from 'tiny-invariant';
 
 import { StackedBarChart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
@@ -31,7 +30,7 @@ export const clientLoader = async ({
 
 export default function Index() {
 	const { summary } = useLoaderData<typeof clientLoader>();
-	invariant(summary, 'Summary data is required');
+	if (!summary) throw new Error('Summary data is required');
 
 	return (
 		<>
