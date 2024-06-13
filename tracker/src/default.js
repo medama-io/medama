@@ -22,6 +22,7 @@ const EventType = {
 /**
  * @typedef {Object} HitPayload
  * @property {string} b Beacon ID.
+ * @property {EventType} e Event type.
  * @property {string} u Page URL.
  * @property {string} r Referrer URL.
  * @property {boolean} p If the user is unique or not.
@@ -33,6 +34,7 @@ var HitPayload;
 /**
  * @typedef {Object} DurationPayload
  * @property {string} b Beacon ID.
+ * @property {EventType} e Event type.
  * @property {number} m Time spent on page.
  */
 var DurationPayload;
@@ -45,7 +47,8 @@ var DurationPayload;
  * @see https://github.com/google/closure-compiler/wiki/FAQ#closure-compiler-inlined-all-my-strings-which-made-my-code-size-bigger-why-did-it-do-that
  */
 (function () {
-	// If server-side rendering, bail out.
+	// If server-side rendering, bail out. We use document instead of window here as Deno does have
+	// a window object even on the server.
 	if (!document) {
 		return;
 	}
@@ -59,9 +62,13 @@ var DurationPayload;
 
 	/**
 	 * Get API URL from data-host in script tag with the correct protocol.
+	 * If the data-host attribute is not set, then we use the current script's
+	 * src attribute to determine the host.
 	 */
-	const host =
-		document.location.protocol + '//' + currentScript.getAttribute('data-api');
+	const host = currentScript.getAttribute('data-api')
+	? `${document.location.protocol}//${currentScript.getAttribute('data-api')}`
+	// @ts-ignore - We know this won't be an SVGScriptElement.
+	: currentScript.src.replace(/[^\/]+$/, 'api/');
 
 	/**
 	 * Generate a unique ID for linking multiple beacon events together for the same page
@@ -164,22 +171,21 @@ var DurationPayload;
 		// without protocol or query parameters.
 		pingCache(
 			host +
-				'/event/ping?u=' +
-				encodeURIComponent(location.host + location.pathname)
+				'event/ping?u=' +
+				encodeURIComponent(location.host + location.pathname),
 		).then((response) => {
 			isFirstVisit = response;
 
 			navigator.sendBeacon(
-				host + '/event/hit',
+				host + 'event/hit',
 				JSON.stringify(
-					// prettier-ignore
+					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
 					/**
 					 * Payload to send to the server.
 					 * @type {HitPayload}
-					 * @remarks We use string literals for the keys to tell Closure Compiler
-					 * to not rename them.
 					 */ ({
 						"b": uid,
+						"e": EventType.LOAD,
 						"u": location.href,
 						"r": document.referrer,
 						"p": isUnique,
@@ -192,8 +198,8 @@ var DurationPayload;
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
-					})
-				)
+					}),
+				),
 			);
 		});
 	};
@@ -205,20 +211,19 @@ var DurationPayload;
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
 			navigator.sendBeacon(
-				host + '/event/hit',
+				host + 'event/hit',
 				JSON.stringify(
-					// prettier-ignore
+					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
 					/**
 					 * Payload to send to the server.
 					 * @type {DurationPayload}
-					 * @remarks We use string literals for the keys to tell Closure Compiler
-					 * to not rename them.
 					 */
 					({
 						"b": uid,
+						"e": EventType.UNLOAD,
 						"m": Date.now() - hiddenTotalTime,
-					})
-				)
+					}),
+				),
 			);
 		}
 
@@ -237,7 +242,7 @@ var DurationPayload;
 			() => {
 				sendUnloadBeacon();
 			},
-			{ capture: true }
+			{ capture: true },
 		);
 	} else {
 		// Otherwise, use unload and beforeunload. Using both is significantly more
@@ -248,14 +253,14 @@ var DurationPayload;
 			() => {
 				sendUnloadBeacon();
 			},
-			{ capture: true }
+			{ capture: true },
 		);
 		document.addEventListener(
 			EventType.UNLOAD,
 			() => {
 				sendUnloadBeacon();
 			},
-			{ capture: true }
+			{ capture: true },
 		);
 	}
 
@@ -273,10 +278,10 @@ var DurationPayload;
 				hiddenStartTime = 0;
 			}
 		},
-		{ capture: true }
+		{ capture: true },
 	);
 
-	pingCache(host + '/event/ping').then((response) => {
+	pingCache(host + 'event/ping').then((response) => {
 		// The response is a boolean indicating if the user is unique or not.
 		isUnique = response;
 
@@ -294,7 +299,7 @@ var DurationPayload;
 				},
 				{
 					capture: true,
-				}
+				},
 			);
 		} else {
 			// Add pushState event listeners to track navigation changes with
@@ -330,7 +335,7 @@ var DurationPayload;
 				},
 				{
 					capture: true,
-				}
+				},
 			);
 		}
 	});
