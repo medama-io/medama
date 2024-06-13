@@ -14,10 +14,22 @@
 	padding: 0 120px;
 }
 
-.text {
-	font-size: rem(24px);
-	font-weight: 600;
+.button {
+	display: flex;
+	padding: 0 16px;
+	height: 40px;
+
 	color: var(--me-color-text-light);
+	font-size: 14px;
+
+	align-items: center;
+	border: 1px solid var(--me-color-border-nav-grey);
+	border-radius: 8px;
+
+	&:hover {
+		background-color: var(--me-color-border-nav-grey);
+		transition: background-color 0.05s;
+	}
 }
 
 .link {

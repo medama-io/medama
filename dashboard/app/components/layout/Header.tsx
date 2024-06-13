@@ -1,12 +1,25 @@
-import { Box, Button, Flex, Group, SimpleGrid, Text } from '@mantine/core';
+import {
+	Box,
+	Button,
+	Flex,
+	Group,
+	SimpleGrid,
+	Text,
+	UnstyledButton,
+} from '@mantine/core';
 import { NavLink, useLocation, useRouteLoaderData } from '@remix-run/react';
 
 import classes from './Header.module.css';
 import { BannerLogo } from '@/components/icons/banner-transparent';
+import { IconSettings } from '@/components/icons/settings';
 
 interface HeaderNavLinkProps {
 	label: string;
 	to: string;
+}
+
+interface LoginButtonProps {
+	isLoggedIn: boolean;
 }
 
 interface RootLoaderData {
@@ -32,6 +45,29 @@ const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 	);
 };
 
+const LoginButton = ({ isLoggedIn }: LoginButtonProps) => {
+	if (isLoggedIn) {
+		return (
+			<UnstyledButton
+				className={classes.button}
+				component={NavLink}
+				to="/logout"
+			>
+				<Group gap="xs">
+					<IconSettings />
+					Log Out
+				</Group>
+			</UnstyledButton>
+		);
+	}
+
+	return (
+		<UnstyledButton className={classes.button} component={NavLink} to="/login">
+			Log In
+		</UnstyledButton>
+	);
+};
+
 export const Header = () => {
 	const data = useRouteLoaderData<RootLoaderData>('root');
 	const isLoggedIn = Boolean(data?.isLoggedIn);
@@ -49,26 +85,7 @@ export const Header = () => {
 					</Group>
 				)}
 				<Group justify="flex-end">
-					{isLoggedIn ? (
-						<Button
-							component={NavLink}
-							to="/logout"
-							color="gray"
-							variant="light"
-						>
-							Logout
-						</Button>
-					) : (
-						<Button
-							component={NavLink}
-							reloadDocument
-							to="/login"
-							color="gray"
-							variant="light"
-						>
-							Login
-						</Button>
-					)}
+					<LoginButton isLoggedIn={isLoggedIn} />
 				</Group>
 			</SimpleGrid>
 		</Box>
