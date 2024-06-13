@@ -13,6 +13,9 @@ type ServerConfig struct {
 	// Cache settings
 	CacheCleanupInterval time.Duration
 
+	// CORS Settings
+	CORSAllowedOrigins []string `env:"CORS_ALLOWED_ORIGINS" envSeparator:","`
+
 	// Logging settings
 	Logger string `env:"LOGGER"`
 	Level  string `env:"LOGGER_LEVEL"`

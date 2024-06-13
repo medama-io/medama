@@ -24,7 +24,6 @@ import (
 	"github.com/medama-io/medama/util"
 	"github.com/medama-io/medama/util/logger"
 	"github.com/ogen-go/ogen/middleware"
-	"github.com/rs/cors"
 )
 
 type StartCommand struct {
@@ -64,10 +63,17 @@ func (s *StartCommand) ParseFlags(args []string) error {
 	fs.StringVar(&s.Server.Level, "level", DefaultLoggerLevel, "Logger level (debug, info, warn, error)")
 	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on")
 
+	// Handle array type flags
+	allowedOrigins := fs.String("corsorigins", "", "Comma separated list of allowed origins on API routes")
+
 	// Parse flags
 	err := fs.Parse(args)
 	if err != nil {
 		return errors.Wrap(err, "failed to parse flags")
+	}
+
+	if *allowedOrigins != "" {
+		s.Server.CORSAllowedOrigins = strings.Split(*allowedOrigins, ",")
 	}
 
 	return nil
@@ -80,6 +86,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return errors.Wrap(err, "failed to setup logger")
 	}
 	log.Info().Msg(GetVersion())
+	log.Debug().Interface("config", s).Msg("")
 
 	// Setup database
 	sqlite, err := sqlite.NewClient(s.AppDB.Host)
@@ -178,15 +185,8 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		}
 	}))
 
-	// Apply CORS headers.
-	cors := cors.New(cors.Options{
-		// TODO: Allow for configurable allowed origins. Typically this won't be needed
-		// as the client will be served from the same domain. But it is useful for development
-		// and external dashboards.
-		AllowedOrigins:   []string{"http://localhost:8080", "http://localhost:5173"},
-		AllowCredentials: true,
-	})
-	handler := cors.Handler(mux)
+	// Apply custom CORS middleware to the mux handler
+	handler := middlewares.CORSAllowedOriginsMiddleware(s.Server.CORSAllowedOrigins)(mux)
 
 	srv := &http.Server{
 		Addr:         ":" + strconv.FormatInt(s.Server.Port, 10),
