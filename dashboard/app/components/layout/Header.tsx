@@ -14,13 +14,17 @@ interface RootLoaderData {
 
 const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 	const { pathname } = useLocation();
+	let active = pathname.startsWith(to);
+	if (to === '/') {
+		active = pathname === to;
+	}
 
 	return (
 		<Text
 			component={NavLink}
 			to={to}
 			className={classes.link}
-			data-active={pathname.startsWith(to)}
+			data-active={active}
 		>
 			{label}
 		</Text>

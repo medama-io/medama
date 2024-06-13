@@ -13,8 +13,11 @@
 	--me-color-selected-snow: #eff2f7;
 
 	--me-color-border-grey: #cad4e3;
+	--me-color-border-nav-grey: #39414e;
 	--me-color-border-smoke: #d3dce6;
 	--me-color-border-violet: #9d5def;
+
+	--me-color-logo-green: #17cd8c;
 }
 
 body {
