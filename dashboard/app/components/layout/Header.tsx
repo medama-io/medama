@@ -1,11 +1,17 @@
-import { Box, Button, Group, SimpleGrid, Text } from '@mantine/core';
-import { NavLink, useLocation, useRouteLoaderData } from '@remix-run/react';
+import { Flex, Group, SimpleGrid, Text, UnstyledButton } from '@mantine/core';
+import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 
 import classes from './Header.module.css';
+import { BannerLogo } from '@/components/icons/banner-transparent';
+import { IconSettings } from '@/components/icons/settings';
 
 interface HeaderNavLinkProps {
 	label: string;
 	to: string;
+}
+
+interface LoginButtonProps {
+	isLoggedIn: boolean;
 }
 
 interface RootLoaderData {
@@ -14,16 +20,44 @@ interface RootLoaderData {
 
 const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 	const { pathname } = useLocation();
+	const active = to === '/' ? pathname === to : pathname.startsWith(to);
 
 	return (
 		<Text
-			component={NavLink}
+			component={Link}
 			to={to}
 			className={classes.link}
-			data-active={pathname.startsWith(to)}
+			data-active={active}
+			role="link"
+			aria-current={active ? 'page' : undefined}
+			tabIndex={0}
 		>
 			{label}
 		</Text>
+	);
+};
+
+const LoginButton = ({ isLoggedIn }: LoginButtonProps) => {
+	const linkTo = isLoggedIn ? '/logout' : '/login';
+	const ariaLabel = isLoggedIn ? 'Log out' : 'Log in';
+	const buttonLabel = isLoggedIn ? (
+		<Group gap="xs">
+			<IconSettings aria-hidden="true" />
+			<span>Log Out</span>
+		</Group>
+	) : (
+		'Log In'
+	);
+
+	return (
+		<UnstyledButton
+			className={classes.button}
+			component={Link}
+			to={linkTo}
+			aria-label={ariaLabel}
+		>
+			{buttonLabel}
+		</UnstyledButton>
 	);
 };
 
@@ -32,38 +66,25 @@ export const Header = () => {
 	const isLoggedIn = Boolean(data?.isLoggedIn);
 
 	return (
-		<Box component="header" className={classes.header}>
+		<header className={classes.header}>
 			<SimpleGrid cols={isLoggedIn ? 3 : 2} className={classes.inner}>
-				<Group className={classes.text}>Medama</Group>
+				<Flex align="center">
+					<BannerLogo aria-label="Banner logo" />
+				</Flex>
 				{isLoggedIn && (
-					<Group justify="center">
+					<Group
+						justify="center"
+						role="navigation"
+						aria-label="Main navigation"
+					>
 						<HeaderNavLink label="Dashboard" to="/" />
 						<HeaderNavLink label="Settings" to="/settings" />
 					</Group>
 				)}
 				<Group justify="flex-end">
-					{isLoggedIn ? (
-						<Button
-							component={NavLink}
-							to="/logout"
-							color="gray"
-							variant="light"
-						>
-							Logout
-						</Button>
-					) : (
-						<Button
-							component={NavLink}
-							reloadDocument
-							to="/login"
-							color="gray"
-							variant="light"
-						>
-							Login
-						</Button>
-					)}
+					<LoginButton isLoggedIn={isLoggedIn} />
 				</Group>
 			</SimpleGrid>
-		</Box>
+		</header>
 	);
 };

@@ -15,7 +15,7 @@
 
 .tab-list {
 	padding: 8px;
-	border-bottom: 1px solid var(--me-color-border-grey);
+	border-bottom: 1px solid var(--me-color-border-light);
 }
 
 .tab {
@@ -62,7 +62,7 @@
 	justify-content: center;
 	align-items: center;
 
-	border: 1px solid var(--me-color-border-grey);
+	border: 1px solid var(--me-color-border-light);
 	border-radius: 8px;
 
 	font-size: 14px;

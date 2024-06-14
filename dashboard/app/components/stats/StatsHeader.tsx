@@ -1,4 +1,4 @@
-import { Box, Flex, Group, Text, Tooltip } from '@mantine/core';
+import { Box, Flex, Group, Tooltip, UnstyledButton } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 
 import type { DataResponse } from '@/api/client';
@@ -17,6 +17,51 @@ interface HeaderDataBoxProps {
 	hideBadge?: boolean;
 }
 
+// Calculate percentage change if previous value is available.
+const calculateChange = (
+	value: number,
+	previousValue?: number,
+	isBounce?: boolean,
+): number => {
+	// If isBounce, it is already a percentage so we just need to calculate
+	// the difference between the current and previous bounce rates.
+	if (previousValue) {
+		return isBounce
+			? Math.round((value - previousValue) * 100)
+			: Math.round(((value - previousValue) / previousValue) * 100);
+	}
+	return 0;
+};
+
+const getStatus = (change: number): 'positive' | 'negative' | 'zero' => {
+	if (change > 0) return 'positive';
+	if (change < 0) return 'negative';
+	return 'zero';
+};
+
+const formatTooltipLabel = (
+	value: number,
+	previousValue: number | undefined,
+	status: 'positive' | 'negative' | 'zero',
+	isBounce: boolean | undefined,
+	isDuration: boolean | undefined,
+): string => {
+	if (previousValue === undefined || status === 'zero') {
+		return 'No change since yesterday.';
+	}
+
+	// Rely on Intl.NumberFormat to format the values according to the user's locale
+	const changeValue = isBounce
+		? `${Math.round(Math.abs(value - previousValue) * 100)}%`
+		: isDuration
+			? formatDuration(Math.abs(value - previousValue))
+			: Math.abs(value - previousValue);
+
+	return status === 'positive'
+		? `Increased by ${changeValue} since yesterday.`
+		: `Decreased by ${changeValue} since yesterday.`;
+};
+
 const HeaderDataBox = ({
 	label,
 	value,
@@ -26,80 +71,53 @@ const HeaderDataBox = ({
 	isActive,
 	hideBadge,
 }: HeaderDataBoxProps) => {
-	// Calculate percentage change if previous value is available
-	let change = 0;
-	if (previousValue) {
-		// If isBounce, it is already a percentage so we just need to calculate
-		// the difference between the current and previous bounce rates
-		change = isBounce
-			? Math.round((value - previousValue) * 100)
-			: Math.round(((value - previousValue) / previousValue) * 100);
-	}
+	const change = calculateChange(value, previousValue, isBounce);
+	const status = getStatus(change);
+	const formattedValue = isDuration
+		? formatDuration(value)
+		: isBounce
+			? formatPercentage(value)
+			: formatCount(value);
 
-	let formattedValue: string;
-	if (isDuration) {
-		// Format the duration into a human readable format
-		formattedValue = formatDuration(value);
-	} else {
-		// Rely on Intl.NumberFormat to format the values according to the user's locale
-		formattedValue = isBounce ? formatPercentage(value) : formatCount(value);
-	}
-
-	// Determine if the change is positive or negative
-	let status: 'positive' | 'negative' | 'zero' = 'zero';
-	if (change > 0) {
-		status = 'positive';
-	} else if (change < 0) {
-		status = 'negative';
-	}
-
-	let badgeColor: string;
-	if (isBounce) {
-		badgeColor = status === 'positive' ? '#FFD5B7' : '#DFFFB7';
-	} else {
-		badgeColor = status === 'positive' ? '#DFFFB7' : '#FFD5B7';
-	}
-
-	// Generate a tooltip label depending on if the change is positive or negative
-	let tooltipLabel = 'No change since yesterday.';
-	if (previousValue !== undefined && status !== 'zero') {
-		let changeValue: number | string;
-		if (isBounce) {
-			changeValue = `${Math.round(Math.abs(value - previousValue) * 100)}%`;
-		} else if (isDuration) {
-			changeValue = formatDuration(Math.abs(value - previousValue));
-		} else {
-			changeValue = Math.abs(value - previousValue);
-		}
-
-		if (status === 'positive') {
-			tooltipLabel = `Increased by ${changeValue} since yesterday.`;
-		} else if (status === 'negative') {
-			tooltipLabel = `Decreased by ${changeValue} since yesterday.`;
-		}
-	}
+	const tooltipLabel = formatTooltipLabel(
+		value,
+		previousValue,
+		status,
+		isBounce,
+		isDuration,
+	);
 
 	return (
 		<Tooltip label={tooltipLabel} withArrow>
-			<Box
-				className={classes['data-box']}
-				bg={isActive ? '#39414E' : undefined}
+			<UnstyledButton
+				className={classes.databox}
+				data-active={isActive}
+				aria-label={`${label} is ${formattedValue}. ${tooltipLabel}`}
+				role="region"
+				tabIndex={0}
 			>
-				<Text fw={600} fz={28} pb={6}>
-					{formattedValue}
-				</Text>
-				<Group gap="xs">
-					<Text fz={14} span>
-						{label}
-					</Text>
+				<span className={classes.value}>{formattedValue}</span>
+				<Group gap="sm" mt={8}>
+					<p className={classes.label}>{label}</p>
 					{!hideBadge && (
-						<Box className={classes.badge} bg={badgeColor}>
+						<Box
+							className={classes.badge}
+							data-status={
+								isBounce
+									? status === 'positive'
+										? 'negative'
+										: 'positive'
+									: status
+							}
+							aria-label={`Difference is ${change}%`}
+							role="status"
+						>
 							{status === 'positive' ? '+' : undefined}
 							{change}%
 						</Box>
 					)}
 				</Group>
-			</Box>
+			</UnstyledButton>
 		</Tooltip>
 	);
 };
@@ -119,42 +137,40 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 	return (
 		<div className={classes.header}>
 			<div className={classes.inner}>
-				<Flex justify="space-between">
-					<Text fw={500} fz={32} pb="xl">
+				<Flex justify="space-between" align="center" py={8}>
+					<p className={classes['header-title']} role="heading" aria-level={1}>
 						Dashboard
-					</Text>
+					</p>
 					<DateComboBox />
 				</Flex>
-				<Group>
-					<Group>
-						<HeaderDataBox
-							label="Visitors"
-							value={current.visitors}
-							previousValue={previous?.visitors}
-							hideBadge={isAllTime}
-							isActive
-						/>
-						<HeaderDataBox
-							label="Page Views"
-							value={current.pageviews}
-							previousValue={previous?.pageviews}
-							hideBadge={isAllTime}
-						/>
-						<HeaderDataBox
-							label="Time Spent"
-							value={current.duration}
-							previousValue={previous?.duration}
-							hideBadge={isAllTime}
-							isDuration
-						/>
-						<HeaderDataBox
-							label="Bounce Rate"
-							value={bounceRate}
-							previousValue={previousBounceRate}
-							hideBadge={isAllTime}
-							isBounce
-						/>
-					</Group>
+				<Group mt="xs">
+					<HeaderDataBox
+						label="Visitors"
+						value={current.visitors}
+						previousValue={previous?.visitors}
+						hideBadge={isAllTime}
+						isActive
+					/>
+					<HeaderDataBox
+						label="Page Views"
+						value={current.pageviews}
+						previousValue={previous?.pageviews}
+						hideBadge={isAllTime}
+					/>
+					<HeaderDataBox
+						label="Time Spent"
+						value={current.duration}
+						previousValue={previous?.duration}
+						hideBadge={isAllTime}
+						isDuration
+					/>
+					<HeaderDataBox
+						label="Bounce Rate"
+						value={bounceRate}
+						previousValue={previousBounceRate}
+						hideBadge={isAllTime}
+						isBounce
+					/>
 				</Group>
 			</div>
 		</div>

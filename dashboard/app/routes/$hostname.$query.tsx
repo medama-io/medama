@@ -5,7 +5,6 @@ import {
 	useLoaderData,
 	useParams,
 } from '@remix-run/react';
-
 import { StatsTable } from '@/components/stats/StatsTable';
 import { type DatasetItem, fetchStats, isDatasetItem } from '@/utils/stats';
 
@@ -18,13 +17,11 @@ export const clientLoader = async ({
 	params,
 }: ClientLoaderFunctionArgs) => {
 	const query = params.query as DatasetItem;
-	if (!query || (isDatasetItem(query) && params.query !== 'summary')) {
+	if (!query || query === 'summary' || !isDatasetItem(query)) {
 		throw new Error('Invalid dataset item');
 	}
 
-	const stats = await fetchStats(request, params, {
-		dataset: [query],
-	});
+	const stats = await fetchStats(request, params, { dataset: [query] });
 
 	return json(stats);
 };
