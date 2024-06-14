@@ -18,7 +18,7 @@ export const clientLoader = async ({
 	params,
 }: ClientLoaderFunctionArgs) => {
 	const query = params.query as DatasetItem;
-	if (!query || (isDatasetItem(query) && params.query !== 'summary')) {
+	if (!query || query === 'summary' || !isDatasetItem(query)) {
 		throw new Error('Invalid dataset item');
 	}
 

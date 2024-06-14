@@ -11,7 +11,12 @@
 	padding: 40px 120px 24px 120px;
 }
 
-.data-box {
+.header-title {
+	font-size: 32px;
+	font-weight: 500;
+}
+
+.databox {
 	height: 102px;
 	width: 178px;
 
@@ -21,6 +26,10 @@
 	&:hover {
 		background: #39414e;
 		cursor: pointer;
+	}
+
+	&[data-active="true"] {
+		background: #39414e;
 	}
 }
 

@@ -81,10 +81,7 @@ const HeaderDataBox = ({
 
 	return (
 		<Tooltip label={tooltipLabel} withArrow>
-			<Box
-				className={classes['data-box']}
-				bg={isActive ? '#39414E' : undefined}
-			>
+			<Box className={classes.databox} data-active={isActive}>
 				<Text fw={600} fz={28} pb={6}>
 					{formattedValue}
 				</Text>
@@ -119,10 +116,8 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 	return (
 		<div className={classes.header}>
 			<div className={classes.inner}>
-				<Flex justify="space-between">
-					<Text fw={500} fz={32} pb="xl">
-						Dashboard
-					</Text>
+				<Flex justify="space-between" align="center" py={8}>
+					<p className={classes['header-title']}>Dashboard</p>
 					<DateComboBox />
 				</Flex>
 				<Group>

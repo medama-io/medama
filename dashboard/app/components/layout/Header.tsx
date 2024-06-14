@@ -20,10 +20,7 @@ interface RootLoaderData {
 
 const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 	const { pathname } = useLocation();
-	let active = pathname.startsWith(to);
-	if (to === '/') {
-		active = pathname === to;
-	}
+	const active = to === '/' ? pathname === to : pathname.startsWith(to);
 
 	return (
 		<Text
@@ -41,30 +38,25 @@ const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 };
 
 const LoginButton = ({ isLoggedIn }: LoginButtonProps) => {
-	if (isLoggedIn) {
-		return (
-			<UnstyledButton
-				className={classes.button}
-				component={Link}
-				to="/logout"
-				aria-label="Log out"
-			>
-				<Group gap="xs">
-					<IconSettings aria-hidden="true" />
-					<span>Log Out</span>
-				</Group>
-			</UnstyledButton>
-		);
-	}
+	const linkTo = isLoggedIn ? '/logout' : '/login';
+	const ariaLabel = isLoggedIn ? 'Log out' : 'Log in';
+	const buttonLabel = isLoggedIn ? (
+		<Group gap="xs">
+			<IconSettings aria-hidden="true" />
+			<span>Log Out</span>
+		</Group>
+	) : (
+		'Log In'
+	);
 
 	return (
 		<UnstyledButton
 			className={classes.button}
 			component={Link}
-			to="/login"
-			aria-label="Log in"
+			to={linkTo}
+			aria-label={ariaLabel}
 		>
-			<span>Log In</span>
+			{buttonLabel}
 		</UnstyledButton>
 	);
 };

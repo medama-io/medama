@@ -2,6 +2,7 @@ import { Combobox, InputBase, useCombobox } from '@mantine/core';
 import { useDidUpdate } from '@mantine/hooks';
 import { useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
+import classes from './DateSelector.module.css';
 
 const presets = {
 	today: 'Today',
@@ -37,27 +38,37 @@ export const DateComboBox = () => {
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [preset, setPreset] = useState<keyof typeof presets>(
-		searchParams.get('period')
-			? (searchParams.get('period') as keyof typeof presets)
-			: 'today',
+		(searchParams.get('period') as keyof typeof presets) || 'today',
 	);
 
-	// Update search params when preset changes
 	useDidUpdate(() => {
-		searchParams.set('period', preset);
-		setSearchParams(searchParams);
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		setSearchParams((prevParams) => {
+			const newParams = new URLSearchParams(prevParams);
+			newParams.set('period', preset);
+			return newParams;
+		});
 	}, [preset]);
 
-	const options = Object.entries(presets).map(([value, label]) => (
-		<Combobox.Option key={value} value={value} active={value === preset}>
-			{label}
-		</Combobox.Option>
-	));
+	const options = Object.entries(presets).map(([value, label]) => {
+		const isGroupEnd = ['yesterday', '30d', 'year'].includes(value);
+
+		return (
+			<Combobox.Option
+				key={value}
+				value={value}
+				active={value === preset}
+				data-group-end={isGroupEnd}
+				role="option"
+				aria-selected={value === preset}
+			>
+				{label}
+			</Combobox.Option>
+		);
+	});
 
 	return (
 		<Combobox
+			classNames={{ dropdown: classes.dropdown, option: classes.option }}
 			store={combobox}
 			resetSelectionOnOptionHover
 			onOptionSubmit={(value) => {
@@ -66,6 +77,7 @@ export const DateComboBox = () => {
 		>
 			<Combobox.Target>
 				<InputBase
+					classNames={{ input: classes.target }}
 					component="button"
 					type="button"
 					pointer
@@ -74,7 +86,7 @@ export const DateComboBox = () => {
 					onClick={() => {
 						combobox.toggleDropdown();
 					}}
-					w={200}
+					aria-label="Select date range"
 				>
 					{isPreset(preset) ? presets[preset] : 'Custom range'}
 				</InputBase>

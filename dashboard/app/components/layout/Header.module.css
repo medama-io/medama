@@ -24,7 +24,7 @@
 	transition: background-color 0.05s;
 
 	&:hover {
-		background-color: var(--me-color-border-dark);
+		background-color: var(--me-color-bg-grey-blue);
 	}
 }
 
