@@ -32,20 +32,19 @@ export default function Index() {
 	const { summary } = useLoaderData<typeof clientLoader>();
 	if (!summary) throw new Error('Summary data is required');
 
+	const chartData =
+		summary.interval?.map((item) => ({
+			date: item.date,
+			value: item.visitors,
+			stackValue: item.pageviews,
+		})) || [];
+
 	return (
 		<>
 			<StatsHeader current={summary.current} previous={summary.previous} />
 			<main>
 				<Filters />
-				{summary.interval && (
-					<StackedBarChart
-						data={summary.interval.map((item) => ({
-							date: item.date,
-							value: item.visitors,
-							stackValue: item.pageviews,
-						}))}
-					/>
-				)}
+				{summary.interval && <StackedBarChart data={chartData} />}
 				<Outlet />
 			</main>
 		</>

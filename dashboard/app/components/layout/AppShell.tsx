@@ -1,4 +1,3 @@
-import { Footer } from './Footer';
 import { Header } from './Header';
 
 interface AppShellProps {
@@ -10,7 +9,6 @@ export const AppShell = ({ children }: AppShellProps) => {
 		<>
 			<Header />
 			{children}
-			<Footer />
 		</>
 	);
 };

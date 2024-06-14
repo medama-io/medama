@@ -25,10 +25,12 @@ const calculateChange = (
 ): number => {
 	// If isBounce, it is already a percentage so we just need to calculate
 	// the difference between the current and previous bounce rates.
-	if (previousValue === undefined) return 0;
-	return isBounce
-		? Math.round((value - previousValue) * 100)
-		: Math.round(((value - previousValue) / previousValue) * 100);
+	if (previousValue) {
+		return isBounce
+			? Math.round((value - previousValue) * 100)
+			: Math.round(((value - previousValue) / previousValue) * 100);
+	}
+	return 0;
 };
 
 const getStatus = (change: number): 'positive' | 'negative' | 'zero' => {
