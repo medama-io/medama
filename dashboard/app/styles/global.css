@@ -25,6 +25,8 @@
 
 	/* Logo Color */
 	--me-color-logo-green: #17cd8c;
+	--me-color-badge-positive: #dfffb7;
+	--me-color-badge-negative: #ffd5b7;
 }
 
 body {

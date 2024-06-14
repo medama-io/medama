@@ -1,14 +1,13 @@
 .header {
 	color: var(--me-color-text-light);
-	background: var(--me-color-bg-dark);
+	background-color: var(--me-color-bg-dark);
 }
 
 .inner {
 	width: 100%;
 	max-width: 1440px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 40px 120px 24px 120px;
+	margin: 0 auto;
+	padding: 40px 120px 24px;
 }
 
 .header-title {
@@ -17,31 +16,71 @@
 }
 
 .databox {
-	height: 102px;
-	width: 178px;
+	height: 132px;
+	width: 192px;
+	padding: 12px 24px 24px 24px;
+	position: relative;
+	color: var(--me-color-text-disabled);
+	border: 1px solid transparent;
+	cursor: pointer;
 
 	border-radius: 8px;
-	padding: 14px 16px;
-
-	&:hover {
-		background: #39414e;
-		cursor: pointer;
-	}
 
 	&[data-active="true"] {
-		background: #39414e;
+		color: var(--me-color-text-light);
+		border: 1px solid var(--me-color-border-dark);
 	}
+
+	&:hover {
+		color: var(--me-color-text-light);
+		border: 1px solid var(--me-color-border-dark);
+	}
+}
+
+.label {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.databox[data-active="true"] .label::after {
+	content: "";
+	position: absolute;
+	bottom: 24px;
+	left: 50%;
+	transform: translateX(-50%);
+
+	height: 2px;
+	width: 75%;
+
+	background-color: var(--me-color-logo-green);
+	border-radius: 8px;
+}
+
+.value {
+	font-size: 32px;
+	font-weight: 600;
 }
 
 .badge {
 	min-width: 36px;
 	padding: 0 2px;
 	border-radius: 16px;
-
 	color: var(--me-color-text-dark);
 	font-size: 10px;
 	font-weight: 600;
 	text-align: center;
-
 	line-height: 20px;
+
+	&[data-status="positive"] {
+		background-color: var(--me-color-badge-positive);
+	}
+
+	&[data-status="negative"] {
+		background-color: var(--me-color-badge-negative);
+	}
+
+	&[data-status="zero"] {
+		background-color: var(--me-color-badge-negative);
+	}
 }
