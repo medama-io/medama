@@ -1,13 +1,5 @@
-import {
-	Box,
-	Button,
-	Flex,
-	Group,
-	SimpleGrid,
-	Text,
-	UnstyledButton,
-} from '@mantine/core';
-import { NavLink, useLocation, useRouteLoaderData } from '@remix-run/react';
+import { Flex, Group, SimpleGrid, Text, UnstyledButton } from '@mantine/core';
+import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 
 import classes from './Header.module.css';
 import { BannerLogo } from '@/components/icons/banner-transparent';
@@ -35,10 +27,13 @@ const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 
 	return (
 		<Text
-			component={NavLink}
+			component={Link}
 			to={to}
 			className={classes.link}
 			data-active={active}
+			role="link"
+			aria-current={active ? 'page' : undefined}
+			tabIndex={0}
 		>
 			{label}
 		</Text>
@@ -50,20 +45,26 @@ const LoginButton = ({ isLoggedIn }: LoginButtonProps) => {
 		return (
 			<UnstyledButton
 				className={classes.button}
-				component={NavLink}
+				component={Link}
 				to="/logout"
+				aria-label="Log out"
 			>
 				<Group gap="xs">
-					<IconSettings />
-					Log Out
+					<IconSettings aria-hidden="true" />
+					<span>Log Out</span>
 				</Group>
 			</UnstyledButton>
 		);
 	}
 
 	return (
-		<UnstyledButton className={classes.button} component={NavLink} to="/login">
-			Log In
+		<UnstyledButton
+			className={classes.button}
+			component={Link}
+			to="/login"
+			aria-label="Log in"
+		>
+			<span>Log In</span>
 		</UnstyledButton>
 	);
 };
@@ -73,13 +74,17 @@ export const Header = () => {
 	const isLoggedIn = Boolean(data?.isLoggedIn);
 
 	return (
-		<Box component="header" className={classes.header}>
+		<header className={classes.header}>
 			<SimpleGrid cols={isLoggedIn ? 3 : 2} className={classes.inner}>
 				<Flex align="center">
-					<BannerLogo />
+					<BannerLogo aria-label="Banner logo" />
 				</Flex>
 				{isLoggedIn && (
-					<Group justify="center">
+					<Group
+						justify="center"
+						role="navigation"
+						aria-label="Main navigation"
+					>
 						<HeaderNavLink label="Dashboard" to="/" />
 						<HeaderNavLink label="Settings" to="/settings" />
 					</Group>
@@ -88,6 +93,6 @@ export const Header = () => {
 					<LoginButton isLoggedIn={isLoggedIn} />
 				</Group>
 			</SimpleGrid>
-		</Box>
+		</header>
 	);
 };
