@@ -29,6 +29,7 @@ import '@mantine/core/styles/Tabs.css';
 // Feedback
 import '@mantine/core/styles/Skeleton.css';
 // Misc
+import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';
 import '@mantine/core/styles/Title.css';

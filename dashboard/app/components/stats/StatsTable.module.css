@@ -37,7 +37,7 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 7px 12px 12px 12px;
-	border-bottom: 1px solid var(--me-color-border-grey);
+	border-bottom: 1px solid var(--me-color-border-light);
 }
 
 .back {
@@ -52,7 +52,7 @@
 	font-size: 14px;
 	text-decoration: none;
 
-	border-bottom: 1px solid var(--me-color-border-grey);
+	border-bottom: 1px solid var(--me-color-border-light);
 
 	&:visited {
 		color: var(--me-color-text-dark);
@@ -62,7 +62,7 @@
 /* Pagination */
 .viewspan {
 	font-size: 12px;
-	color: var(--me-color-text-whale);
+	color: var(--me-color-text-muted);
 }
 
 .page-size {
@@ -98,7 +98,7 @@
 	justify-content: center;
 
 	background-color: var(--me-color-bg-light);
-	border: 1px solid var(--me-color-border-smoke);
+	border: 1px solid var(--me-color-border-muted);
 	border-radius: 8px;
 
 	&:hover {
