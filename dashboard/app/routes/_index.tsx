@@ -1,9 +1,8 @@
-import { Divider, Paper, Text } from '@mantine/core';
+import { Divider, Flex, Group, Paper, Text } from '@mantine/core';
 import {
 	json,
 	type MetaFunction,
 	redirect,
-	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	Link,
 	useLoaderData,
@@ -13,6 +12,9 @@ import {
 import type { components } from '@/api/types';
 import { websiteList } from '@/api/websites';
 import { hasSession } from '@/utils/cookies';
+import { InnerHeader } from '@/components/layout/InnerHeader';
+import { ButtonDark } from '@/components/Button';
+import { IconPlus } from '@/components/icons/plus';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;
@@ -25,16 +27,22 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	// Check for session cookie and redirect to login if missing
 	if (!hasSession()) {
 		throw redirect('/login');
 	}
 
-	const { data } = await websiteList();
+	const { data, res } = await websiteList();
+
+	if (!res.ok) {
+		throw json('Failed to fetch websites.', {
+			status: res.status,
+		});
+	}
 
 	if (!data) {
-		throw json('Failed to get websites.', {
+		throw json('Failed to fetch websites.', {
 			status: 500,
 		});
 	}
@@ -46,27 +54,38 @@ export default function Index() {
 	const { websites } = useLoaderData<LoaderData>();
 
 	return (
-		<main>
-			<h1>Websites</h1>
-			<Divider mb={30} />
-			{websites.map((website) => (
-				<Paper
-					key={website.hostname}
-					withBorder
-					w={300}
-					p={8}
-					radius={8}
-					component={Link}
-					to={`/${website.hostname}`}
-					prefetch="intent"
-				>
-					<Text>{website.name}</Text>
-					<Text size="xs" c="gray">
-						{website.hostname}
-					</Text>
-				</Paper>
-			))}
-		</main>
+		<>
+			<InnerHeader>
+				<Flex justify="space-between" align="center" py={8}>
+					<h1>My Websites</h1>
+					<ButtonDark to="/add">
+						<Group>
+							<IconPlus />
+							<span>Add Website</span>
+						</Group>
+					</ButtonDark>
+				</Flex>
+			</InnerHeader>
+			<main>
+				{websites.map((website) => (
+					<Paper
+						key={website.hostname}
+						withBorder
+						w={300}
+						p={8}
+						radius={8}
+						component={Link}
+						to={`/${website.hostname}`}
+						prefetch="intent"
+					>
+						<Text>{website.name}</Text>
+						<Text size="xs" c="gray">
+							{website.hostname}
+						</Text>
+					</Paper>
+				))}
+			</main>
+		</>
 	);
 }
 

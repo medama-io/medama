@@ -1,20 +1,3 @@
-.header {
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-dark);
-}
-
-.inner {
-	width: 100%;
-	max-width: 1440px;
-	margin: 0 auto;
-	padding: 32px 120px 24px;
-}
-
-.header-title {
-	font-size: 32px;
-	font-weight: 500;
-}
-
 .databox {
 	height: 132px;
 	width: 192px;
@@ -25,6 +8,7 @@
 	cursor: pointer;
 
 	border-radius: 8px;
+	transition: all 0.1s ease;
 
 	&[data-active="true"] {
 		color: var(--me-color-text-light);
