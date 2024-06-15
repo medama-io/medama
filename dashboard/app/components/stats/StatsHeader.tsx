@@ -3,10 +3,10 @@ import { useSearchParams } from '@remix-run/react';
 
 import type { DataResponse } from '@/api/client';
 
+import { InnerHeader } from '@/components/layout/InnerHeader';
 import { DateComboBox } from './DateSelector';
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import classes from './StatsHeader.module.css';
-import { InnerHeader } from '@/components/layout/InnerHeader';
 
 interface HeaderDataBoxProps {
 	label: string;

@@ -41,20 +41,20 @@ import 'mantine-datatable/styles.css';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import {
-	json,
-	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	isRouteErrorResponse,
+	json,
 	useRouteError,
 } from '@remix-run/react';
 
+import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
 import theme from '@/styles/theme';
 import { hasSession } from '@/utils/cookies';
-import { API_BASE } from '@/api/client';
 
 enableReactUse();
 

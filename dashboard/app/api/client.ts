@@ -97,4 +97,4 @@ const client = async (
 	return res;
 };
 
-export { client, DEFAULT_HEADERS, API_URL, API_BASE };
+export { API_BASE, API_URL, DEFAULT_HEADERS, client };

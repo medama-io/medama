@@ -1,6 +1,6 @@
 import { hasSession } from '@/utils/cookies';
-import { client, type ClientOptions, type DataResponse } from './client';
 import { redirect } from '@remix-run/react';
+import { client, type ClientOptions, type DataResponse } from './client';
 
 const userGet = async (
 	opts?: ClientOptions,
@@ -29,4 +29,4 @@ const userLoggedIn = async () => {
 	throw redirect('/login');
 };
 
-export { userGet, userUpdate, userLoggedIn };
+export { userGet, userLoggedIn, userUpdate };
