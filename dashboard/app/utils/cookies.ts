@@ -1,4 +1,3 @@
-import { authLogout } from '@/api/auth';
 import { redirect } from '@remix-run/react';
 
 const LOGGED_IN_NAME = '_me_logged_in';

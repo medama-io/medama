@@ -77,7 +77,7 @@ export const Header = () => {
 						role="navigation"
 						aria-label="Main navigation"
 					>
-						<HeaderNavLink label="Dashboard" to="/" />
+						<HeaderNavLink label="Home" to="/" />
 						<HeaderNavLink label="Settings" to="/settings" />
 					</Group>
 				)}

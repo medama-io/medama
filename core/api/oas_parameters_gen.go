@@ -10611,6 +10611,8 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 type GetWebsitesParams struct {
 	// Session token for authentication.
 	MeSess string
+	// Return a summary of the stats.
+	Summary OptBool
 }
 
 func unpackGetWebsitesParams(packed middleware.Parameters) (params GetWebsitesParams) {
@@ -10621,10 +10623,20 @@ func unpackGetWebsitesParams(packed middleware.Parameters) (params GetWebsitesPa
 		}
 		params.MeSess = packed[key].(string)
 	}
+	{
+		key := middleware.ParameterKey{
+			Name: "summary",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Summary = v.(OptBool)
+		}
+	}
 	return params
 }
 
 func decodeGetWebsitesParams(args [0]string, argsEscaped bool, r *http.Request) (params GetWebsitesParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
 	c := uri.NewCookieDecoder(r)
 	// Decode cookie: _me_sess.
 	if err := func() error {
@@ -10657,6 +10669,52 @@ func decodeGetWebsitesParams(args [0]string, argsEscaped bool, r *http.Request) 
 		return params, &ogenerrors.DecodeParamError{
 			Name: "_me_sess",
 			In:   "cookie",
+			Err:  err,
+		}
+	}
+	// Set default value for query: summary.
+	{
+		val := bool(false)
+		params.Summary.SetTo(val)
+	}
+	// Decode query: summary.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "summary",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSummaryVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSummaryVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Summary.SetTo(paramsDotSummaryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "summary",
+			In:   "query",
 			Err:  err,
 		}
 	}

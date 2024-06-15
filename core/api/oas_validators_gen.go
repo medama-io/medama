@@ -800,25 +800,6 @@ func (s *WebsiteCreate) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    256,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     false,
-			Regex:        nil,
-		}).Validate(string(s.Name)); err != nil {
-			return errors.Wrap(err, "string")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "name",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if err := (validate.String{
-			MinLength:    1,
-			MinLengthSet: true,
 			MaxLength:    253,
 			MaxLengthSet: true,
 			Email:        false,
@@ -850,25 +831,6 @@ func (s *WebsiteGet) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    256,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     false,
-			Regex:        nil,
-		}).Validate(string(s.Name)); err != nil {
-			return errors.Wrap(err, "string")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "name",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if err := (validate.String{
-			MinLength:    1,
-			MinLengthSet: true,
 			MaxLength:    253,
 			MaxLengthSet: true,
 			Email:        false,
@@ -896,32 +858,6 @@ func (s *WebsitePatch) Validate() error {
 	}
 
 	var failures []validate.FieldError
-	if err := func() error {
-		if value, ok := s.Name.Get(); ok {
-			if err := func() error {
-				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    256,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     false,
-					Regex:        nil,
-				}).Validate(string(value)); err != nil {
-					return errors.Wrap(err, "string")
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "name",
-			Error: err,
-		})
-	}
 	if err := func() error {
 		if value, ok := s.Hostname.Get(); ok {
 			if err := func() error {

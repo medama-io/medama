@@ -270,6 +270,7 @@ paths:
       operationId: get-websites
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
+        - $ref: "#/components/parameters/Summary"
       responses:
         "200":
           description: Returns a list of websites.
@@ -1440,44 +1441,37 @@ components:
       title: WebsiteGet
       description: Response body for getting a website.
       properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 256
         hostname:
           type: string
           minLength: 1
           maxLength: 253 # FQDN limit
           format: hostname
+        summary:
+          type: object
+          properties:
+            visitors:
+              type: integer
+          required:
+            - visitors
       required:
-        - name
         - hostname
     WebsiteCreate:
       type: object
       title: WebsiteCreate
       description: Request body for creating a website.
       properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 256
         hostname:
           type: string
           minLength: 1
           maxLength: 253 # FQDN limit
           format: hostname
       required:
-        - name
         - hostname
     WebsitePatch:
       type: object
       title: WebsitePatch
       description: Request body for updating a website.
       properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 256
         hostname:
           type: string
           minLength: 1

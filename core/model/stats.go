@@ -19,6 +19,10 @@ type StatsSummary struct {
 	Previous StatsSummarySingle
 }
 
+type StatsSummaryLast24Hours struct {
+	Visitors int `db:"visitors"`
+}
+
 type StatsIntervals struct {
 	Interval  string `db:"interval"`
 	Visitors  int    `db:"visitors"`

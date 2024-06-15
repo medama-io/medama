@@ -281,16 +281,17 @@ export interface components {
      * @description Response body for getting a website.
      */
     WebsiteGet: {
-      name: string;
       /** Format: hostname */
       hostname: string;
+      summary?: {
+        visitors: number;
+      };
     };
     /**
      * WebsiteCreate
      * @description Request body for creating a website.
      */
     WebsiteCreate: {
-      name: string;
       /** Format: hostname */
       hostname: string;
     };
@@ -299,7 +300,6 @@ export interface components {
      * @description Request body for updating a website.
      */
     WebsitePatch: {
-      name?: string;
       /** Format: hostname */
       hostname?: string;
     };
@@ -841,6 +841,9 @@ export interface operations {
    */
   "get-websites": {
     parameters: {
+      query?: {
+        summary?: components["parameters"]["Summary"];
+      };
       cookie: {
         _me_sess: components["parameters"]["SessionAuth"];
       };

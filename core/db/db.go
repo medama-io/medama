@@ -59,6 +59,7 @@ type AnalyticsClient interface {
 	// Summary
 	GetWebsiteSummary(ctx context.Context, filter *Filters) (*model.StatsSummarySingle, error)
 	GetWebsiteIntervals(ctx context.Context, filter *Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error)
+	GetWebsiteSummaryLast24Hours(ctx context.Context, hostname string) (*model.StatsSummaryLast24Hours, error)
 	// Time
 	GetWebsiteTime(ctx context.Context, filter *Filters) ([]*model.StatsTime, error)
 	GetWebsiteTimeSummary(ctx context.Context, filter *Filters) ([]*model.StatsTimeSummary, error)

@@ -1,20 +1,13 @@
-import { Divider, Flex, Group, Paper, Text } from '@mantine/core';
-import {
-	json,
-	type MetaFunction,
-	redirect,
-	isRouteErrorResponse,
-	Link,
-	useLoaderData,
-	useRouteError,
-} from '@remix-run/react';
+import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
+import { json, type MetaFunction, useLoaderData } from '@remix-run/react';
 
 import type { components } from '@/api/types';
 import { websiteList } from '@/api/websites';
-import { hasSession } from '@/utils/cookies';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { ButtonDark } from '@/components/Button';
 import { IconPlus } from '@/components/icons/plus';
+import { WebsiteCard } from '@/components/index/WebsiteCard';
+import { userLoggedIn } from '@/api/user';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;
@@ -28,14 +21,15 @@ export const meta: MetaFunction = () => {
 };
 
 export const clientLoader = async () => {
-	// Check for session cookie and redirect to login if missing
-	if (!hasSession()) {
-		throw redirect('/login');
-	}
+	await userLoggedIn();
 
-	const { data, res } = await websiteList();
+	const { data, res } = await websiteList({ query: { summary: true } });
 
 	if (!res.ok) {
+		if (res.status === 404) {
+			return json<LoaderData>({ websites: [] });
+		}
+
 		throw json('Failed to fetch websites.', {
 			status: res.status,
 		});
@@ -67,48 +61,17 @@ export default function Index() {
 				</Flex>
 			</InnerHeader>
 			<main>
-				{websites.map((website) => (
-					<Paper
-						key={website.hostname}
-						withBorder
-						w={300}
-						p={8}
-						radius={8}
-						component={Link}
-						to={`/${website.hostname}`}
-						prefetch="intent"
-					>
-						<Text>{website.name}</Text>
-						<Text size="xs" c="gray">
-							{website.hostname}
-						</Text>
+				{websites.length === 0 && (
+					<Paper w="100%" p={16} radius={8} withBorder>
+						<Text ta="center">No websites found. Please add a website!</Text>
 					</Paper>
-				))}
+				)}
+				<SimpleGrid cols={3}>
+					{websites.map((website) => (
+						<WebsiteCard key={website.hostname} website={website} />
+					))}
+				</SimpleGrid>
 			</main>
 		</>
 	);
 }
-
-export const ErrorBoundary = () => {
-	const error = useRouteError();
-
-	if (isRouteErrorResponse(error) && error.status === 404) {
-		return (
-			<main>
-				<h1>404</h1>
-				<p>No websites found</p>
-				<Paper
-					withBorder
-					w={300}
-					p={8}
-					radius={8}
-					component={Link}
-					to="/add"
-					prefetch="intent"
-				>
-					Add Website
-				</Paper>
-			</main>
-		);
-	}
-};

@@ -12,7 +12,6 @@ func TestCreateWebsite(t *testing.T) {
 	websiteCreate := model.NewWebsite(
 		"test1",
 		"example.com",
-		"Example",
 		1,
 		2,
 	)
@@ -25,7 +24,6 @@ func TestCreateWebsite(t *testing.T) {
 	assert.NotNil(website)
 	assert.Equal("test1", website.UserID)
 	assert.Equal("example.com", website.Hostname)
-	assert.Equal("Example", website.Name)
 	assert.Equal(int64(1), website.DateCreated)
 	assert.Equal(int64(2), website.DateUpdated)
 }
@@ -36,7 +34,6 @@ func TestCreateWebsiteDuplicateHostname(t *testing.T) {
 	websiteCreate := model.NewWebsite(
 		"test1",
 		"example.com",
-		"Example",
 		1,
 		2,
 	)
@@ -61,7 +58,6 @@ func TestCreateWebsiteMissingUser(t *testing.T) {
 	websiteCreate := model.NewWebsite(
 		"doesnotexist",
 		"exampledoesnotexist.com",
-		"DoesNotExist",
 		1,
 		2,
 	)

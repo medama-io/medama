@@ -58,7 +58,7 @@
 	height: 40px;
 
 	color: var(--me-color-text-light);
-	background-color: #108c6e;
+	background-color: var(--me-color-logo-green-dark);
 
 	border-radius: 8px;
 }
@@ -75,7 +75,7 @@
 	font-weight: 600;
 
 	color: var(--me-color-text-light);
-	background-color: #17cd8c;
+	background-color: var(--me-color-logo-green);
 
 	border-radius: 8px;
 }

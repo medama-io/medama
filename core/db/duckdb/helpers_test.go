@@ -60,7 +60,6 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.C
 	websiteCreate := model.NewWebsite(
 		"duckdb",         // userID
 		"medama-test.io", // hostname
-		"medama-test.io", // name
 		1,                // dateCreated
 		2,                // dateUpdated
 	)
