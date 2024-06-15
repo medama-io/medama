@@ -1,0 +1,26 @@
+.wrapper {
+	justify-content: center;
+	max-width: 420px;
+}
+
+.submit {
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	width: 100%;
+	height: 40px;
+	padding: 0 16px;
+	color: var(--me-color-text-light);
+	background-color: var(--me-color-bg-grey-blue);
+	border: 1px solid var(--me-color-bg-grey-blue);
+	border-radius: 8px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--me-color-bg-grey-blue-dark);
+	}
+
+	span {
+		font-size: 14px;
+	}
+}

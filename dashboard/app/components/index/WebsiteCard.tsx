@@ -1,4 +1,4 @@
-import { Paper, Text, UnstyledButton } from '@mantine/core';
+import { Text, UnstyledButton } from '@mantine/core';
 import { Link } from '@remix-run/react';
 
 import classes from './WebsiteCard.module.css';
@@ -24,9 +24,15 @@ export const WebsiteCard = ({ website }: WebsiteCardProps) => {
 			role="link"
 			tabIndex={0}
 			aria-label={`Visit ${website.hostname}`}
+			aria-describedby={`${website.hostname}-visitors`}
 		>
 			<Text truncate="end">{website.hostname}</Text>
-			<Text component="span" size="xs" c="gray">
+			<Text
+				component="span"
+				size="xs"
+				c="gray"
+				id={`${website.hostname}-visitors`}
+			>
 				{website.summary?.visitors ?? 'N/A'} visitors in the last 24 hours
 			</Text>
 		</UnstyledButton>

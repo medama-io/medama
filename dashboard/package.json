@@ -25,6 +25,7 @@
 		"mantine-datatable": "^7.10.1",
 		"react": "18.3.0-canary-8039e6d0b-20231026",
 		"react-dom": "18.3.0-canary-8039e6d0b-20231026",
+		"react-timezone-select": "^3.2.5",
 		"recharts": "^2.12.7"
 	},
 	"devDependencies": {

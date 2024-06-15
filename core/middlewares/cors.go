@@ -5,7 +5,6 @@ import (
 	"path"
 	"strings"
 
-	"github.com/medama-io/medama/util/logger"
 	"github.com/rs/cors"
 )
 
@@ -25,11 +24,9 @@ func CORSAllowedOriginsMiddleware(allowedOrigins []string) func(http.Handler) ht
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			uPath := path.Clean(r.URL.Path)
-			log := logger.Get()
 
 			if allowedOrigins != nil && strings.HasPrefix(uPath, "/api") && !strings.HasPrefix(uPath, "/api/event") {
 				// Apply modified CORS headers for API routes.
-				log.Debug().Str("allowed_origins", strings.Join(allowedOrigins, ",")).Str("path", uPath).Msg("Applying custom CORS")
 				customCORS.Handler(next).ServeHTTP(w, r)
 			} else {
 				// Apply default CORS headers

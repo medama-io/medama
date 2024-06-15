@@ -3,12 +3,21 @@ import { Link, type LinkProps } from '@remix-run/react';
 
 import classes from './Button.module.css';
 
-interface ButtonProps extends LinkProps {
+interface ButtonDarkProps
+	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode;
 }
 
-export const ButtonDark = (props: ButtonProps) => {
+interface ButtonDarkLinkProps extends LinkProps {
+	children: React.ReactNode;
+}
+
+export const ButtonDark = (props: ButtonDarkProps) => {
+	return <UnstyledButton className={classes.button} {...props} />;
+};
+
+export const ButtonDarkLink = (props: ButtonDarkLinkProps) => {
 	return (
-		<UnstyledButton component={Link} className={classes.button} {...props} />
+		<UnstyledButton className={classes.button} component={Link} {...props} />
 	);
 };

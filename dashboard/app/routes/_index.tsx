@@ -1,13 +1,22 @@
-import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
-import { json, type MetaFunction, useLoaderData } from '@remix-run/react';
+import { Flex, Group, Modal, Paper, SimpleGrid, Text } from '@mantine/core';
+import {
+	json,
+	redirect,
+	useLoaderData,
+	type ClientActionFunctionArgs,
+	type MetaFunction,
+} from '@remix-run/react';
 
 import type { components } from '@/api/types';
-import { websiteList } from '@/api/websites';
-import { InnerHeader } from '@/components/layout/InnerHeader';
+import { userLoggedIn } from '@/api/user';
+import { websiteCreate, websiteList } from '@/api/websites';
 import { ButtonDark } from '@/components/Button';
 import { IconPlus } from '@/components/icons/plus';
+import { Add } from '@/components/index/Add';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
-import { userLoggedIn } from '@/api/user';
+import { InnerHeader } from '@/components/layout/InnerHeader';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;
@@ -44,15 +53,52 @@ export const clientLoader = async () => {
 	return json<LoaderData>({ websites: data });
 };
 
+export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+	const body = await request.formData();
+
+	const hostname = body.get('hostname')
+		? String(body.get('hostname'))
+		: undefined;
+	const name = body.get('name') ? String(body.get('name')) : hostname;
+
+	if (!hostname) {
+		throw json('Missing hostname', {
+			status: 400,
+		});
+	}
+
+	const { data, res } = await websiteCreate({
+		body: {
+			hostname,
+		},
+	});
+
+	if (!data) {
+		throw json('Failed to create website.', {
+			status: res.status,
+		});
+	}
+
+	return redirect(`/${data.hostname}`);
+};
+
 export default function Index() {
 	const { websites } = useLoaderData<LoaderData>();
+	const [opened, { open, close }] = useDisclosure(false);
+
+	// Add website state
+	const [hostname, setHostname] = useState('');
+	const closeModalWithReset = () => {
+		setHostname('');
+		close();
+	};
 
 	return (
 		<>
 			<InnerHeader>
 				<Flex justify="space-between" align="center" py={8}>
 					<h1>My Websites</h1>
-					<ButtonDark to="/add">
+					<ButtonDark onClick={open}>
 						<Group>
 							<IconPlus />
 							<span>Add Website</span>
@@ -71,6 +117,13 @@ export default function Index() {
 						<WebsiteCard key={website.hostname} website={website} />
 					))}
 				</SimpleGrid>
+				<Modal opened={opened} onClose={close} withCloseButton={false} centered>
+					<Add
+						hostname={hostname}
+						setHostname={setHostname}
+						close={closeModalWithReset}
+					/>
+				</Modal>
 			</main>
 		</>
 	);
