@@ -25,3 +25,8 @@ func NewClient(host string) (*Client, error) {
 		DB: db,
 	}, nil
 }
+
+// Close closes the database connection and any prepared statements.
+func (c *Client) Close() error {
+	return c.DB.Close()
+}

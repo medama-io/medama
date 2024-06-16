@@ -40,3 +40,27 @@ func NewClient(host string) (*Client, error) {
 		DB: db,
 	}, nil
 }
+
+// Close closes the database connection and any prepared statements.
+func (c *Client) Close() error {
+	// Helper function to close a statement and wrap any error.
+	closeStmt := func(stmt *sqlx.NamedStmt) error {
+		if stmt != nil {
+			if err := stmt.Close(); err != nil {
+				return errors.Wrap(err, "duckdb")
+			}
+		}
+		return nil
+	}
+
+	// Close the statements.
+	if err := closeStmt(addStmt); err != nil {
+		return err
+	}
+	if err := closeStmt(updateStmt); err != nil {
+		return err
+	}
+
+	// Close the database connection.
+	return c.DB.Close()
+}
