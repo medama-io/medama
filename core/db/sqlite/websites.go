@@ -12,9 +12,26 @@ import (
 
 func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) error {
 	exec := `--sql
-	INSERT INTO websites (user_id, hostname, date_created, date_updated) VALUES (?, ?, ?, ?)`
+	INSERT INTO websites (
+		user_id,
+		hostname,
+		date_created,
+		date_updated
+	) VALUES (
+		:user_id,
+		:hostname,
+		:date_created,
+		:date_updated
+	)`
 
-	_, err := c.DB.ExecContext(ctx, exec, website.UserID, website.Hostname, website.DateCreated, website.DateUpdated)
+	paramMap := map[string]interface{}{
+		"user_id":      website.UserID,
+		"hostname":     website.Hostname,
+		"date_created": website.DateCreated,
+		"date_updated": website.DateUpdated,
+	}
+
+	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		switch {
 		case errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY):
@@ -28,7 +45,8 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 			Str("user_id", website.UserID).
 			Str("hostname", website.Hostname).
 			Int64("date_created", website.DateCreated).
-			Int64("date_updated", website.DateUpdated).Err(err).
+			Int64("date_updated", website.DateUpdated).
+			Err(err).
 			Msg("failed to create website")
 
 		return errors.Wrap(err, "db")
@@ -82,9 +100,14 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 	log := logger.Get()
 	// Update all values except user_id
 	exec := `--sql
-	UPDATE websites SET hostname = ?, date_updated = ? WHERE hostname = ?`
+	UPDATE websites SET hostname = :hostname, date_updated = :date_updated WHERE hostname = :hostname`
 
-	res, err := c.DB.ExecContext(ctx, exec, website.Hostname, website.DateUpdated, website.Hostname)
+	paramMap := map[string]interface{}{
+		"hostname":     website.Hostname,
+		"date_updated": website.DateUpdated,
+	}
+
+	res, err := c.DB.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrWebsiteExists
