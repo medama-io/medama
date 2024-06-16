@@ -86,13 +86,6 @@ export default function Index() {
 	const { websites } = useLoaderData<LoaderData>();
 	const [opened, { open, close }] = useDisclosure(false);
 
-	// Add website state
-	const [hostname, setHostname] = useState('');
-	const closeModalWithReset = () => {
-		setHostname('');
-		close();
-	};
-
 	return (
 		<>
 			<InnerHeader>
@@ -117,12 +110,14 @@ export default function Index() {
 						<WebsiteCard key={website.hostname} website={website} />
 					))}
 				</SimpleGrid>
-				<Modal opened={opened} onClose={close} withCloseButton={false} centered>
-					<Add
-						hostname={hostname}
-						setHostname={setHostname}
-						close={closeModalWithReset}
-					/>
+				<Modal
+					opened={opened}
+					onClose={close}
+					withCloseButton={false}
+					centered
+					size="auto"
+				>
+					<Add close={close} />
 				</Modal>
 			</main>
 		</>

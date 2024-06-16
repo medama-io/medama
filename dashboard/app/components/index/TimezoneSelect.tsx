@@ -1,25 +1,35 @@
 import {
+	CheckIcon,
 	Combobox,
+	Group,
 	Input,
-	InputBase,
 	ScrollArea,
-	Text,
 	useCombobox,
 } from '@mantine/core';
 import { useState } from 'react';
-import { useTimezoneSelect, type ITimezone } from 'react-timezone-select';
+import type { ITimezone, ITimezoneOption } from 'react-timezone-select';
 
 import classes from './TimezoneSelect.module.css';
 
-export const TimezoneSelect = () => {
-	const [search, setSearch] = useState('');
-	const { options: tzOptions, parseTimezone } = useTimezoneSelect({
-		labelStyle: 'abbrev',
-	});
+interface TimezoneSelectProps {
+	timezone: ITimezone;
+	setTimezone: (value: string | ITimezone) => void;
+	parseTimezone: (value: string) => ITimezone;
+	tzOptions: ITimezoneOption[];
+}
 
-	const [selectedItem, setSelectedItem] = useState<ITimezone>(
-		Intl.DateTimeFormat().resolvedOptions().timeZone,
-	);
+export const TimezoneSelect = ({
+	timezone,
+	setTimezone,
+	parseTimezone,
+	tzOptions,
+}: TimezoneSelectProps) => {
+	const [search, setSearch] = useState('');
+
+	const handleTimezone = (value: string) => {
+		setTimezone(parseTimezone(value));
+	};
+
 	const combobox = useCombobox({
 		onDropdownClose: () => {
 			combobox.resetSelectedOption();
@@ -27,47 +37,67 @@ export const TimezoneSelect = () => {
 			setSearch('');
 		},
 
-		onDropdownOpen: () => {
+		onDropdownOpen: (eventSource) => {
 			combobox.focusSearchInput();
+			if (eventSource === 'keyboard') {
+				combobox.selectActiveOption();
+			} else {
+				combobox.updateSelectedOptionIndex('active');
+			}
 		},
 	});
 
 	const options = tzOptions
 		.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()))
-		.map((item) => (
-			<Combobox.Option value={item.value} key={item.value}>
-				{item.label}
-			</Combobox.Option>
-		));
+		.map((item) => {
+			const isActive =
+				typeof timezone === 'string'
+					? item.value === timezone
+					: item.value === timezone.value;
+			return (
+				<Combobox.Option value={item.value} key={item.value} active={isActive}>
+					{isActive && (
+						<CheckIcon
+							size={12}
+							aria-hidden="true"
+							style={{ marginRight: 8 }}
+						/>
+					)}
+					<span>{item.label}</span>
+				</Combobox.Option>
+			);
+		});
 
 	return (
 		<Combobox
 			store={combobox}
-			width={250}
+			width="target"
 			position="bottom-start"
-			onOptionSubmit={(val) => {
-				setSelectedItem(val);
+			onOptionSubmit={(value) => {
+				handleTimezone(value);
 				combobox.closeDropdown();
 			}}
 		>
-			<Combobox.Target>
+			<Combobox.Target targetType="button" withExpandedAttribute>
 				<Input.Wrapper
-					label="Reported Timezone"
-					description="Input description"
+					label="Reporting Timezone"
+					description="This timezone will be used to display reports."
+					mt="md"
+					required
 				>
 					<Input
 						classNames={{ input: classes.target }}
 						component="button"
 						type="button"
 						pointer
-						rightSection={<Combobox.Chevron />}
+						rightSection={<Combobox.Chevron aria-hidden="true" />}
 						rightSectionPointerEvents="none"
 						aria-label="Select timezone"
 						onClick={() => {
 							combobox.toggleDropdown();
 						}}
 					>
-						{String(selectedItem) || 'Select timezone'}{' '}
+						{typeof timezone === 'string' ? timezone : timezone.label}
 					</Input>
 				</Input.Wrapper>
 			</Combobox.Target>
@@ -77,9 +107,10 @@ export const TimezoneSelect = () => {
 					value={search}
 					onChange={(event) => setSearch(event.currentTarget.value)}
 					placeholder="Search timezones"
+					aria-label="Search timezones"
 				/>
 				<Combobox.Options>
-					<ScrollArea.Autosize type="scroll" mah={200}>
+					<ScrollArea.Autosize mah={200} scrollbars="y">
 						{options.length > 0 ? (
 							options
 						) : (
