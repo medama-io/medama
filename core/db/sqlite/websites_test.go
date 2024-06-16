@@ -79,8 +79,9 @@ func TestListWebsitesNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	websites, err := client.ListWebsites(ctx, "doesnotexist")
-	assert.Nil(websites)
-	assert.ErrorIs(err, model.ErrWebsiteNotFound)
+	assert.NoError(err)
+	assert.NotNil(websites)
+	assert.Len(websites, 0)
 }
 
 func TestGetWebsite(t *testing.T) {
