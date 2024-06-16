@@ -24,9 +24,11 @@ interface AddProps {
 }
 
 const addWebsiteSchema = z.object({
-	hostname: z.string().refine((value) => isFQDN(value), {
-		message: 'Please enter a valid domain name.',
-	}),
+	hostname: z
+		.string()
+		.refine((value) => value === 'localhost' || isFQDN(value), {
+			message: 'Please enter a valid domain name.',
+		}),
 });
 
 export const Add = ({ close }: AddProps) => {

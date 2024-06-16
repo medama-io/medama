@@ -34,19 +34,13 @@ export const clientLoader = async () => {
 
 	const { data, res } = await websiteList({ query: { summary: true } });
 
-	if (!res.ok) {
+	if (!res.ok || !data) {
 		if (res.status === 404) {
 			return json<LoaderData>({ websites: [] });
 		}
 
 		throw json('Failed to fetch websites.', {
 			status: res.status,
-		});
-	}
-
-	if (!data) {
-		throw json('Failed to fetch websites.', {
-			status: 500,
 		});
 	}
 
@@ -59,7 +53,6 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	const hostname = body.get('hostname')
 		? String(body.get('hostname'))
 		: undefined;
-	const name = body.get('name') ? String(body.get('name')) : hostname;
 
 	if (!hostname) {
 		throw json('Missing hostname', {
