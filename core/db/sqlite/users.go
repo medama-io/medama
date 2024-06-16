@@ -11,9 +11,32 @@ import (
 
 func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 	exec := `--sql
-	INSERT INTO users (id, username, password, language, date_created, date_updated) VALUES (?, ?, ?, ?, ?, ?)`
+	INSERT INTO users (
+		id,
+		username,
+		password,
+		language,
+		date_created,
+		date_updated
+	) VALUES (
+		:id,
+		:username,
+		:password,
+		:language,
+		:date_created,
+		:date_updated
+	)`
 
-	_, err := c.DB.ExecContext(ctx, exec, user.ID, user.Username, user.Password, user.Language, user.DateCreated, user.DateUpdated)
+	paramMap := map[string]interface{}{
+		"id":           user.ID,
+		"username":     user.Username,
+		"password":     user.Password,
+		"language":     user.Language,
+		"date_created": user.DateCreated,
+		"date_updated": user.DateUpdated,
+	}
+
+	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) || errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrUserExists
@@ -81,9 +104,15 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 
 func (c *Client) UpdateUserUsername(ctx context.Context, id string, username string, dateUpdated int64) error {
 	exec := `--sql
-	UPDATE users SET username = ?, date_updated = ? WHERE id = ?`
+	UPDATE users SET username = :username, date_updated = :date_updated WHERE id = :id`
 
-	_, err := c.DB.ExecContext(ctx, exec, username, dateUpdated, id)
+	paramMap := map[string]interface{}{
+		"id":           id,
+		"username":     username,
+		"date_updated": dateUpdated,
+	}
+
+	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		switch {
 		case errors.Is(err, sqlite3.CONSTRAINT_UNIQUE),
@@ -100,9 +129,15 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 
 func (c *Client) UpdateUserPassword(ctx context.Context, id string, password string, dateUpdated int64) error {
 	exec := `--sql
-	UPDATE users SET password = ?, date_updated = ? WHERE id = ?`
+	UPDATE users SET password = :password, date_updated = :date_updated WHERE id = :id`
 
-	_, err := c.DB.ExecContext(ctx, exec, password, dateUpdated, id)
+	paramMap := map[string]interface{}{
+		"id":           id,
+		"password":     password,
+		"date_updated": dateUpdated,
+	}
+
+	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return model.ErrUserNotFound
