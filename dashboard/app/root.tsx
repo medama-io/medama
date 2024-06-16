@@ -55,6 +55,7 @@ import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
 import theme from '@/styles/theme';
 import { hasSession } from '@/utils/cookies';
+import { InternalServerError, NotFoundError } from '@/components/layout/Error';
 
 enableReactUse();
 
@@ -122,28 +123,33 @@ export const ErrorBoundary = () => {
 
 	if (isRouteErrorResponse(error)) {
 		switch (error.status) {
-			case 401: {
+			case 404: {
 				return (
 					<Document>
-						<p>You don&apos;t have access to this page.</p>
+						<NotFoundError />
 					</Document>
 				);
-			}
-			case 404: {
-				return <Document>Page not found!</Document>;
 			}
 		}
 
 		return (
 			<Document>
-				Something went wrong: {error.status} {error.statusText}
+				<InternalServerError error={error.statusText} />
 			</Document>
 		);
 	}
 
 	if (error instanceof Error) {
-		return <Document>Something went wrong: {error.message}</Document>;
+		return (
+			<Document>
+				<InternalServerError error={error.message} />
+			</Document>
+		);
 	}
 
-	return <Document>Something went wrong: Unknown Error</Document>;
+	return (
+		<Document>
+			<InternalServerError />
+		</Document>
+	);
 };
