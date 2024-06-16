@@ -37,6 +37,16 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Delete all views associated with website
+	err = h.analyticsDB.DeleteWebsite(ctx, params.Hostname)
+	if err != nil {
+		if errors.Is(err, model.ErrWebsiteNotFound) {
+			return ErrNotFound(err), nil
+		}
+
+		return nil, errors.Wrap(err, "services")
+	}
+
 	// Delete website
 	err = h.db.DeleteWebsite(ctx, params.Hostname)
 	if err != nil {
@@ -47,15 +57,8 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 		return nil, errors.Wrap(err, "services")
 	}
 
-	// Delete all views associated with website
-	err = h.analyticsDB.DeleteWebsite(ctx, params.Hostname)
-	if err != nil {
-		if errors.Is(err, model.ErrWebsiteNotFound) {
-			return ErrNotFound(err), nil
-		}
-
-		return nil, errors.Wrap(err, "services")
-	}
+	// Remove website from hostname cache
+	h.hostnames.Remove(params.Hostname)
 
 	return &api.DeleteWebsitesIDOK{}, nil
 }
@@ -171,6 +174,13 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 		return nil, errors.Wrap(err, "services")
 	}
 
+	// If hostname was updated, remove old hostname from cache
+	// and add new hostname to cache
+	if req.Hostname.Value != "" {
+		h.hostnames.Remove(params.Hostname)
+		h.hostnames.Add(req.Hostname.Value)
+	}
+
 	return &api.WebsiteGet{
 		Hostname: website.Hostname,
 	}, nil
@@ -196,6 +206,9 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 	if err != nil {
 		return nil, errors.Wrap(err, "services")
 	}
+
+	// Add hostname to cache
+	h.hostnames.Add(req.Hostname)
 
 	return &api.WebsiteGet{
 		Hostname: req.Hostname,

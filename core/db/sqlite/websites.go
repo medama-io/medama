@@ -56,7 +56,8 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 
 	if len(websites) == 0 {
 		log.Debug().Str("user_id", userID).Msg("no websites found")
-		return nil, model.ErrWebsiteNotFound
+		// Return empty slice instead of nil
+		return []*model.Website{}, nil
 	}
 
 	return websites, nil
