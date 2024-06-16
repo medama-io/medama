@@ -12,9 +12,9 @@ import (
 
 func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) error {
 	exec := `--sql
-	INSERT INTO websites (user_id, hostname, name, date_created, date_updated) VALUES (?, ?, ?, ?, ?)`
+	INSERT INTO websites (user_id, hostname, date_created, date_updated) VALUES (?, ?, ?, ?)`
 
-	_, err := c.DB.ExecContext(ctx, exec, website.UserID, website.Hostname, website.Name, website.DateCreated, website.DateUpdated)
+	_, err := c.DB.ExecContext(ctx, exec, website.UserID, website.Hostname, website.DateCreated, website.DateUpdated)
 	if err != nil {
 		switch {
 		case errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY):
@@ -42,7 +42,7 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 	log := logger.Get()
 
 	query := `--sql
-	SELECT user_id, hostname, name, date_created, date_updated FROM websites WHERE user_id = ?`
+	SELECT user_id, hostname, date_created, date_updated FROM websites WHERE user_id = ?`
 
 	err := c.SelectContext(ctx, &websites, query, userID)
 	if err != nil {
@@ -56,7 +56,8 @@ func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Webs
 
 	if len(websites) == 0 {
 		log.Debug().Str("user_id", userID).Msg("no websites found")
-		return nil, model.ErrWebsiteNotFound
+		// Return empty slice instead of nil
+		return []*model.Website{}, nil
 	}
 
 	return websites, nil
@@ -81,9 +82,9 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 	log := logger.Get()
 	// Update all values except user_id
 	exec := `--sql
-	UPDATE websites SET hostname = ?, name = ?, date_updated = ? WHERE hostname = ?`
+	UPDATE websites SET hostname = ?, date_updated = ? WHERE hostname = ?`
 
-	res, err := c.DB.ExecContext(ctx, exec, website.Hostname, website.Name, website.DateUpdated, website.Hostname)
+	res, err := c.DB.ExecContext(ctx, exec, website.Hostname, website.DateUpdated, website.Hostname)
 	if err != nil {
 		if errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrWebsiteExists
@@ -91,7 +92,6 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 		log.Error().
 			Str("hostname", website.Hostname).
-			Str("name", website.Name).
 			Int64("date_updated", website.DateUpdated).
 			Err(err).
 			Msg("failed to update website")
@@ -103,7 +103,6 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 	if err != nil {
 		log.Error().
 			Str("hostname", website.Hostname).
-			Str("name", website.Name).
 			Int64("date_updated", website.DateUpdated).
 			Err(err).
 			Msg("failed to get rows affected")
@@ -124,7 +123,7 @@ func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Websit
 	log := logger.Get()
 
 	query := `--sql
-	SELECT user_id, hostname, name, date_created, date_updated FROM websites WHERE hostname = ?`
+	SELECT user_id, hostname, date_created, date_updated FROM websites WHERE hostname = ?`
 
 	err := c.QueryRowxContext(ctx, query, hostname).StructScan(&website)
 	if err != nil {

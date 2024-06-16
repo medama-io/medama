@@ -1,0 +1,43 @@
+.root {
+	padding-top: 30vh;
+}
+
+.label {
+	text-align: center;
+	font-weight: 900;
+	font-size: rem(38px);
+	line-height: 1;
+	margin-bottom: var(--mantine-spacing-xl);
+	color: var(--me-color-border-light);
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		font-size: rem(32px);
+	}
+}
+
+.description {
+	max-width: rem(500px);
+	margin: auto;
+	margin-top: var(--mantine-spacing-lg);
+	margin-bottom: calc(1.5 * var(--mantine-spacing-xl));
+}
+
+.title {
+	text-align: center;
+	font-weight: 900;
+	font-size: rem(38px);
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		font-size: rem(32px);
+	}
+}
+
+.anchor {
+	color: var(--me-color-text-muted);
+	text-decoration: underline;
+
+	&:hover,
+	&:focus {
+		color: var(--me-color-text-dark);
+	}
+}

@@ -85,7 +85,6 @@ func SetupDatabaseWithWebsites(t *testing.T) (*assert.Assertions, context.Contex
 			websiteCreate := model.NewWebsite(
 				user_id,
 				fmt.Sprintf("%s-%s.com", id, user_id),
-				fmt.Sprintf("%s-%s", id, user_id),
 				1,
 				2,
 			)

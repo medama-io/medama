@@ -123,3 +123,34 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 
 	return resp, nil
 }
+
+// GetWebsiteSummaryLast24Hours returns the summary stats for the given website in the last 24 hours.
+func (c *Client) GetWebsiteSummaryLast24Hours(ctx context.Context, hostname string) (*model.StatsSummaryLast24Hours, error) {
+	var summary model.StatsSummaryLast24Hours
+	// Visitors are determined by the number of is_unique_user values that are true.
+	query := `--sql
+		SELECT
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
+		FROM
+			views
+		WHERE
+			hostname = :hostname AND date_created > now() - INTERVAL '1 DAY'`
+
+	filterMap := map[string]interface{}{
+		"hostname": hostname,
+	}
+	rows, err := c.NamedQueryContext(ctx, query, filterMap)
+	if err != nil {
+		return nil, errors.Wrap(err, "db: GetWebsiteSummaryLast24Hours")
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		err := rows.StructScan(&summary)
+		if err != nil {
+			return nil, errors.Wrap(err, "db: GetWebsiteSummaryLast24Hours")
+		}
+	}
+
+	return &summary, nil
+}

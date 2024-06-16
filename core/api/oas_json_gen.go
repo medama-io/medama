@@ -1811,6 +1811,39 @@ func (s *OptUserPatchLanguage) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes WebsiteGetSummary as json.
+func (o OptWebsiteGetSummary) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes WebsiteGetSummary from json.
+func (o *OptWebsiteGetSummary) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptWebsiteGetSummary to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptWebsiteGetSummary) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptWebsiteGetSummary) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes StatsBrowsers as json.
 func (s StatsBrowsers) Encode(e *jx.Encoder) {
 	unwrapped := []StatsBrowsersItem(s)
@@ -5334,18 +5367,13 @@ func (s *WebsiteCreate) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *WebsiteCreate) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("name")
-		e.Str(s.Name)
-	}
-	{
 		e.FieldStart("hostname")
 		e.Str(s.Hostname)
 	}
 }
 
-var jsonFieldsNameOfWebsiteCreate = [2]string{
-	0: "name",
-	1: "hostname",
+var jsonFieldsNameOfWebsiteCreate = [1]string{
+	0: "hostname",
 }
 
 // Decode decodes WebsiteCreate from json.
@@ -5357,20 +5385,8 @@ func (s *WebsiteCreate) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "name":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Name = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"name\"")
-			}
 		case "hostname":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
 				s.Hostname = string(v)
@@ -5391,7 +5407,7 @@ func (s *WebsiteCreate) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00000001,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -5447,18 +5463,20 @@ func (s *WebsiteGet) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *WebsiteGet) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("name")
-		e.Str(s.Name)
-	}
-	{
 		e.FieldStart("hostname")
 		e.Str(s.Hostname)
+	}
+	{
+		if s.Summary.Set {
+			e.FieldStart("summary")
+			s.Summary.Encode(e)
+		}
 	}
 }
 
 var jsonFieldsNameOfWebsiteGet = [2]string{
-	0: "name",
-	1: "hostname",
+	0: "hostname",
+	1: "summary",
 }
 
 // Decode decodes WebsiteGet from json.
@@ -5470,20 +5488,8 @@ func (s *WebsiteGet) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "name":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Name = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"name\"")
-			}
 		case "hostname":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := d.Str()
 				s.Hostname = string(v)
@@ -5493,6 +5499,16 @@ func (s *WebsiteGet) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"hostname\"")
+			}
+		case "summary":
+			if err := func() error {
+				s.Summary.Reset()
+				if err := s.Summary.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"summary\"")
 			}
 		default:
 			return d.Skip()
@@ -5504,7 +5520,7 @@ func (s *WebsiteGet) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00000001,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -5551,6 +5567,102 @@ func (s *WebsiteGet) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *WebsiteGetSummary) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *WebsiteGetSummary) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("visitors")
+		e.Int(s.Visitors)
+	}
+}
+
+var jsonFieldsNameOfWebsiteGetSummary = [1]string{
+	0: "visitors",
+}
+
+// Decode decodes WebsiteGetSummary from json.
+func (s *WebsiteGetSummary) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode WebsiteGetSummary to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "visitors":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Int()
+				s.Visitors = int(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"visitors\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode WebsiteGetSummary")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfWebsiteGetSummary) {
+					name = jsonFieldsNameOfWebsiteGetSummary[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *WebsiteGetSummary) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *WebsiteGetSummary) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *WebsitePatch) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -5560,12 +5672,6 @@ func (s *WebsitePatch) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *WebsitePatch) encodeFields(e *jx.Encoder) {
 	{
-		if s.Name.Set {
-			e.FieldStart("name")
-			s.Name.Encode(e)
-		}
-	}
-	{
 		if s.Hostname.Set {
 			e.FieldStart("hostname")
 			s.Hostname.Encode(e)
@@ -5573,9 +5679,8 @@ func (s *WebsitePatch) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfWebsitePatch = [2]string{
-	0: "name",
-	1: "hostname",
+var jsonFieldsNameOfWebsitePatch = [1]string{
+	0: "hostname",
 }
 
 // Decode decodes WebsitePatch from json.
@@ -5586,16 +5691,6 @@ func (s *WebsitePatch) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "name":
-			if err := func() error {
-				s.Name.Reset()
-				if err := s.Name.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"name\"")
-			}
 		case "hostname":
 			if err := func() error {
 				s.Hostname.Reset()

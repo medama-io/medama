@@ -43,7 +43,6 @@ func Up0001(c *sqlite.Client) error {
 	CREATE TABLE IF NOT EXISTS websites (
 		hostname TEXT PRIMARY KEY,
 		user_id TEXT NOT NULL,
-		name TEXT NOT NULL,
 		date_created INTEGER NOT NULL,
 		date_updated INTEGER NOT NULL,
 		FOREIGN KEY(user_id) REFERENCES users(id)

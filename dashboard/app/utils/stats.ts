@@ -204,4 +204,4 @@ const fetchStats = async (
 	};
 };
 
-export { type DatasetItem, type Datasets, fetchStats, isDatasetItem };
+export { fetchStats, isDatasetItem, type DatasetItem, type Datasets };

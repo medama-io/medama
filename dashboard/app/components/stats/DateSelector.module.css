@@ -6,11 +6,10 @@
 	background-color: var(--me-color-bg-grey-blue);
 	border: 1px solid var(--me-color-bg-grey-blue);
 	border-radius: 8px;
-}
 
-.target:hover,
-.option:hover {
-	background-color: var(--me-color-bg-grey-blue-dark);
+	&:hover {
+		background-color: var(--me-color-bg-grey-blue-dark);
+	}
 }
 
 .dropdown {
@@ -32,6 +31,10 @@
 
 	&:last-child {
 		border-radius: 0 0 8px 8px;
+	}
+
+	&:hover {
+		background-color: var(--me-color-bg-grey-blue-dark);
 	}
 
 	&[data-combobox-active="true"] {

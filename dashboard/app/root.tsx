@@ -7,6 +7,8 @@ import '@mantine/core/styles/VisuallyHidden.css';
 import '@mantine/core/styles/Paper.css';
 import '@mantine/core/styles/Popover.css';
 import '@mantine/core/styles/Group.css';
+import '@mantine/core/styles/Overlay.css';
+import '@mantine/core/styles/ModalBase.css';
 import '@mantine/core/styles/Input.css';
 import '@mantine/core/styles/Flex.css';
 import '@mantine/core/styles/InlineInput.css';
@@ -16,7 +18,6 @@ import '@mantine/core/styles/Container.css';
 import '@mantine/core/styles/Stack.css';
 // Buttons
 import '@mantine/core/styles/ActionIcon.css';
-import '@mantine/core/styles/Button.css';
 import '@mantine/core/styles/CloseButton.css';
 // Inputs
 import '@mantine/core/styles/Checkbox.css';
@@ -29,6 +30,7 @@ import '@mantine/core/styles/Tabs.css';
 // Feedback
 import '@mantine/core/styles/Skeleton.css';
 // Misc
+import '@mantine/core/styles/Modal.css';
 import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';
@@ -39,20 +41,21 @@ import 'mantine-datatable/styles.css';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import {
-	json,
-	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	isRouteErrorResponse,
+	json,
 	useRouteError,
 } from '@remix-run/react';
 
+import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
 import theme from '@/styles/theme';
 import { hasSession } from '@/utils/cookies';
-import { API_BASE } from '@/api/client';
+import { InternalServerError, NotFoundError } from '@/components/layout/Error';
 
 enableReactUse();
 
@@ -120,28 +123,33 @@ export const ErrorBoundary = () => {
 
 	if (isRouteErrorResponse(error)) {
 		switch (error.status) {
-			case 401: {
+			case 404: {
 				return (
 					<Document>
-						<p>You don&apos;t have access to this page.</p>
+						<NotFoundError />
 					</Document>
 				);
-			}
-			case 404: {
-				return <Document>Page not found!</Document>;
 			}
 		}
 
 		return (
 			<Document>
-				Something went wrong: {error.status} {error.statusText}
+				<InternalServerError error={error.statusText} />
 			</Document>
 		);
 	}
 
 	if (error instanceof Error) {
-		return <Document>Something went wrong: {error.message}</Document>;
+		return (
+			<Document>
+				<InternalServerError error={error.message} />
+			</Document>
+		);
 	}
 
-	return <Document>Something went wrong: Unknown Error</Document>;
+	return (
+		<Document>
+			<InternalServerError />
+		</Document>
+	);
 };

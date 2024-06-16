@@ -2794,6 +2794,10 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 					Name: "_me_sess",
 					In:   "cookie",
 				}: params.MeSess,
+				{
+					Name: "summary",
+					In:   "query",
+				}: params.Summary,
 			},
 			Raw: r,
 		}

@@ -1,0 +1,16 @@
+.header {
+	color: var(--me-color-text-light);
+	background-color: var(--me-color-bg-dark);
+}
+
+.inner {
+	width: 100%;
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 32px 120px 24px;
+}
+
+h1 {
+	font-size: 32px;
+	font-weight: 500;
+}

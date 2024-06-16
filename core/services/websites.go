@@ -37,6 +37,16 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 		return ErrNotFound(model.ErrWebsiteNotFound), nil
 	}
 
+	// Delete all views associated with website
+	err = h.analyticsDB.DeleteWebsite(ctx, params.Hostname)
+	if err != nil {
+		if errors.Is(err, model.ErrWebsiteNotFound) {
+			return ErrNotFound(err), nil
+		}
+
+		return nil, errors.Wrap(err, "services")
+	}
+
 	// Delete website
 	err = h.db.DeleteWebsite(ctx, params.Hostname)
 	if err != nil {
@@ -47,15 +57,8 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 		return nil, errors.Wrap(err, "services")
 	}
 
-	// Delete all views associated with website
-	err = h.analyticsDB.DeleteWebsite(ctx, params.Hostname)
-	if err != nil {
-		if errors.Is(err, model.ErrWebsiteNotFound) {
-			return ErrNotFound(err), nil
-		}
-
-		return nil, errors.Wrap(err, "services")
-	}
+	// Remove website from hostname cache
+	h.hostnames.Remove(params.Hostname)
 
 	return &api.DeleteWebsitesIDOK{}, nil
 }
@@ -77,11 +80,33 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 
 	// Map to API response
 	websitesGet := &api.GetWebsitesOKApplicationJSON{}
-	for _, w := range websites {
-		*websitesGet = append(*websitesGet, api.WebsiteGet{
-			Name:     w.Hostname,
-			Hostname: w.Hostname,
-		})
+
+	// If summary is requested, include visitors per website
+	if ok := params.Summary.Or(false); ok {
+		for _, w := range websites {
+			views, err := h.analyticsDB.GetWebsiteSummaryLast24Hours(ctx, w.Hostname)
+			if err != nil {
+				if errors.Is(err, model.ErrWebsiteNotFound) {
+					return ErrNotFound(err), nil
+				}
+
+				return nil, errors.Wrap(err, w.Hostname)
+			}
+
+			*websitesGet = append(*websitesGet, api.WebsiteGet{
+				Hostname: w.Hostname,
+				Summary: api.NewOptWebsiteGetSummary(api.WebsiteGetSummary{
+					Visitors: views.Visitors,
+				}),
+			})
+		}
+		// Otherwise, return only hostnames
+	} else {
+		for _, w := range websites {
+			*websitesGet = append(*websitesGet, api.WebsiteGet{
+				Hostname: w.Hostname,
+			})
+		}
 	}
 
 	return websitesGet, nil
@@ -108,7 +133,6 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 	}
 
 	return &api.WebsiteGet{
-		Name:     website.Hostname,
 		Hostname: website.Hostname,
 	}, nil
 }
@@ -138,10 +162,6 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 		website.Hostname = req.Hostname.Value
 	}
 
-	if req.Name.Value != "" {
-		website.Name = req.Name.Value
-	}
-
 	website.DateUpdated = time.Now().Unix()
 
 	// Update website
@@ -154,8 +174,14 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 		return nil, errors.Wrap(err, "services")
 	}
 
+	// If hostname was updated, remove old hostname from cache
+	// and add new hostname to cache
+	if req.Hostname.Value != "" {
+		h.hostnames.Remove(params.Hostname)
+		h.hostnames.Add(req.Hostname.Value)
+	}
+
 	return &api.WebsiteGet{
-		Name:     website.Hostname,
 		Hostname: website.Hostname,
 	}, nil
 }
@@ -172,7 +198,6 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 	websiteCreate := model.NewWebsite(
 		userId,
 		req.Hostname,
-		req.Name,
 		dateCreated,
 		dateCreated,
 	)
@@ -182,8 +207,10 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 		return nil, errors.Wrap(err, "services")
 	}
 
+	// Add hostname to cache
+	h.hostnames.Add(req.Hostname)
+
 	return &api.WebsiteGet{
-		Name:     req.Hostname,
 		Hostname: req.Hostname,
 	}, nil
 }

@@ -1,18 +1,22 @@
-import { Divider, Paper, Text } from '@mantine/core';
+import { Flex, Group, Modal, Paper, SimpleGrid, Text } from '@mantine/core';
 import {
 	json,
-	type MetaFunction,
 	redirect,
-	type ClientLoaderFunctionArgs,
-	isRouteErrorResponse,
-	Link,
 	useLoaderData,
-	useRouteError,
+	type ClientActionFunctionArgs,
+	type MetaFunction,
 } from '@remix-run/react';
 
 import type { components } from '@/api/types';
-import { websiteList } from '@/api/websites';
-import { hasSession } from '@/utils/cookies';
+import { userLoggedIn } from '@/api/user';
+import { websiteCreate, websiteList } from '@/api/websites';
+import { ButtonDark } from '@/components/Button';
+import { IconPlus } from '@/components/icons/plus';
+import { Add } from '@/components/index/Add';
+import { WebsiteCard } from '@/components/index/WebsiteCard';
+import { InnerHeader } from '@/components/layout/InnerHeader';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;
@@ -25,71 +29,90 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
-	// Check for session cookie and redirect to login if missing
-	if (!hasSession()) {
-		throw redirect('/login');
-	}
+export const clientLoader = async () => {
+	await userLoggedIn();
 
-	const { data } = await websiteList();
+	const { data, res } = await websiteList({ query: { summary: true } });
 
-	if (!data) {
-		throw json('Failed to get websites.', {
-			status: 500,
+	if (!res.ok || !data) {
+		if (res.status === 404) {
+			return json<LoaderData>({ websites: [] });
+		}
+
+		throw json('Failed to fetch websites.', {
+			status: res.status,
 		});
 	}
 
 	return json<LoaderData>({ websites: data });
 };
 
+export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+	const body = await request.formData();
+
+	const hostname = body.get('hostname')
+		? String(body.get('hostname'))
+		: undefined;
+
+	if (!hostname) {
+		throw json('Missing hostname', {
+			status: 400,
+		});
+	}
+
+	const { data, res } = await websiteCreate({
+		body: {
+			hostname,
+		},
+	});
+
+	if (!data) {
+		throw json('Failed to create website.', {
+			status: res.status,
+		});
+	}
+
+	return redirect(`/${data.hostname}`);
+};
+
 export default function Index() {
 	const { websites } = useLoaderData<LoaderData>();
+	const [opened, { open, close }] = useDisclosure(false);
 
 	return (
-		<main>
-			<h1>Websites</h1>
-			<Divider mb={30} />
-			{websites.map((website) => (
-				<Paper
-					key={website.hostname}
-					withBorder
-					w={300}
-					p={8}
-					radius={8}
-					component={Link}
-					to={`/${website.hostname}`}
-					prefetch="intent"
+		<>
+			<InnerHeader>
+				<Flex justify="space-between" align="center" py={8}>
+					<h1>My Websites</h1>
+					<ButtonDark onClick={open}>
+						<Group>
+							<IconPlus />
+							<span>Add Website</span>
+						</Group>
+					</ButtonDark>
+				</Flex>
+			</InnerHeader>
+			<main>
+				{websites.length === 0 && (
+					<Paper w="100%" p={16} radius={8} withBorder>
+						<Text ta="center">No websites found. Please add a website!</Text>
+					</Paper>
+				)}
+				<SimpleGrid cols={3}>
+					{websites.map((website) => (
+						<WebsiteCard key={website.hostname} website={website} />
+					))}
+				</SimpleGrid>
+				<Modal
+					opened={opened}
+					onClose={close}
+					withCloseButton={false}
+					centered
+					size="auto"
 				>
-					<Text>{website.name}</Text>
-					<Text size="xs" c="gray">
-						{website.hostname}
-					</Text>
-				</Paper>
-			))}
-		</main>
+					<Add close={close} />
+				</Modal>
+			</main>
+		</>
 	);
 }
-
-export const ErrorBoundary = () => {
-	const error = useRouteError();
-
-	if (isRouteErrorResponse(error) && error.status === 404) {
-		return (
-			<main>
-				<h1>404</h1>
-				<p>No websites found</p>
-				<Paper
-					withBorder
-					w={300}
-					p={8}
-					radius={8}
-					component={Link}
-					to="/add"
-					prefetch="intent"
-				>
-					Add Website
-				</Paper>
-			</main>
-		);
-	}
-};

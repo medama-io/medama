@@ -3,6 +3,7 @@ import { useSearchParams } from '@remix-run/react';
 
 import type { DataResponse } from '@/api/client';
 
+import { InnerHeader } from '@/components/layout/InnerHeader';
 import { DateComboBox } from './DateSelector';
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import classes from './StatsHeader.module.css';
@@ -135,44 +136,40 @@ export const StatsHeader = ({ current, previous }: StatsHeaderProps) => {
 	const isAllTime = searchParams.get('period') === 'all';
 
 	return (
-		<div className={classes.header}>
-			<div className={classes.inner}>
-				<Flex justify="space-between" align="center" py={8}>
-					<p className={classes['header-title']} role="heading" aria-level={1}>
-						Dashboard
-					</p>
-					<DateComboBox />
-				</Flex>
-				<Group mt="xs">
-					<HeaderDataBox
-						label="Visitors"
-						value={current.visitors}
-						previousValue={previous?.visitors}
-						hideBadge={isAllTime}
-						isActive
-					/>
-					<HeaderDataBox
-						label="Page Views"
-						value={current.pageviews}
-						previousValue={previous?.pageviews}
-						hideBadge={isAllTime}
-					/>
-					<HeaderDataBox
-						label="Time Spent"
-						value={current.duration}
-						previousValue={previous?.duration}
-						hideBadge={isAllTime}
-						isDuration
-					/>
-					<HeaderDataBox
-						label="Bounce Rate"
-						value={bounceRate}
-						previousValue={previousBounceRate}
-						hideBadge={isAllTime}
-						isBounce
-					/>
-				</Group>
-			</div>
-		</div>
+		<InnerHeader>
+			<Flex justify="space-between" align="center" py={8}>
+				<h1 aria-level={1}>Dashboard</h1>
+				<DateComboBox />
+			</Flex>
+			<Group mt="xs">
+				<HeaderDataBox
+					label="Visitors"
+					value={current.visitors}
+					previousValue={previous?.visitors}
+					hideBadge={isAllTime}
+					isActive
+				/>
+				<HeaderDataBox
+					label="Page Views"
+					value={current.pageviews}
+					previousValue={previous?.pageviews}
+					hideBadge={isAllTime}
+				/>
+				<HeaderDataBox
+					label="Time Spent"
+					value={current.duration}
+					previousValue={previous?.duration}
+					hideBadge={isAllTime}
+					isDuration
+				/>
+				<HeaderDataBox
+					label="Bounce Rate"
+					value={bounceRate}
+					previousValue={previousBounceRate}
+					hideBadge={isAllTime}
+					isBounce
+				/>
+			</Group>
+		</InnerHeader>
 	);
 };

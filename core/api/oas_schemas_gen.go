@@ -1269,6 +1269,52 @@ func (o OptUserPatchLanguage) Or(d UserPatchLanguage) UserPatchLanguage {
 	return d
 }
 
+// NewOptWebsiteGetSummary returns new OptWebsiteGetSummary with value set to v.
+func NewOptWebsiteGetSummary(v WebsiteGetSummary) OptWebsiteGetSummary {
+	return OptWebsiteGetSummary{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptWebsiteGetSummary is optional WebsiteGetSummary.
+type OptWebsiteGetSummary struct {
+	Value WebsiteGetSummary
+	Set   bool
+}
+
+// IsSet returns true if OptWebsiteGetSummary was set.
+func (o OptWebsiteGetSummary) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptWebsiteGetSummary) Reset() {
+	var v WebsiteGetSummary
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptWebsiteGetSummary) SetTo(v WebsiteGetSummary) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptWebsiteGetSummary) Get() (v WebsiteGetSummary, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptWebsiteGetSummary) Or(d WebsiteGetSummary) WebsiteGetSummary {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // PostAuthLoginOK is response for PostAuthLogin operation.
 type PostAuthLoginOK struct {
 	SetCookie string
@@ -2485,23 +2531,12 @@ func (s *UserPatchLanguage) UnmarshalText(data []byte) error {
 // Request body for creating a website.
 // Ref: #/components/schemas/WebsiteCreate
 type WebsiteCreate struct {
-	Name     string `json:"name"`
 	Hostname string `json:"hostname"`
-}
-
-// GetName returns the value of Name.
-func (s *WebsiteCreate) GetName() string {
-	return s.Name
 }
 
 // GetHostname returns the value of Hostname.
 func (s *WebsiteCreate) GetHostname() string {
 	return s.Hostname
-}
-
-// SetName sets the value of Name.
-func (s *WebsiteCreate) SetName(val string) {
-	s.Name = val
 }
 
 // SetHostname sets the value of Hostname.
@@ -2512,13 +2547,8 @@ func (s *WebsiteCreate) SetHostname(val string) {
 // Response body for getting a website.
 // Ref: #/components/schemas/WebsiteGet
 type WebsiteGet struct {
-	Name     string `json:"name"`
-	Hostname string `json:"hostname"`
-}
-
-// GetName returns the value of Name.
-func (s *WebsiteGet) GetName() string {
-	return s.Name
+	Hostname string               `json:"hostname"`
+	Summary  OptWebsiteGetSummary `json:"summary"`
 }
 
 // GetHostname returns the value of Hostname.
@@ -2526,9 +2556,9 @@ func (s *WebsiteGet) GetHostname() string {
 	return s.Hostname
 }
 
-// SetName sets the value of Name.
-func (s *WebsiteGet) SetName(val string) {
-	s.Name = val
+// GetSummary returns the value of Summary.
+func (s *WebsiteGet) GetSummary() OptWebsiteGetSummary {
+	return s.Summary
 }
 
 // SetHostname sets the value of Hostname.
@@ -2536,30 +2566,38 @@ func (s *WebsiteGet) SetHostname(val string) {
 	s.Hostname = val
 }
 
+// SetSummary sets the value of Summary.
+func (s *WebsiteGet) SetSummary(val OptWebsiteGetSummary) {
+	s.Summary = val
+}
+
 func (*WebsiteGet) getWebsitesIDRes()   {}
 func (*WebsiteGet) patchWebsitesIDRes() {}
 func (*WebsiteGet) postWebsitesRes()    {}
 
+type WebsiteGetSummary struct {
+	Visitors int `json:"visitors"`
+}
+
+// GetVisitors returns the value of Visitors.
+func (s *WebsiteGetSummary) GetVisitors() int {
+	return s.Visitors
+}
+
+// SetVisitors sets the value of Visitors.
+func (s *WebsiteGetSummary) SetVisitors(val int) {
+	s.Visitors = val
+}
+
 // Request body for updating a website.
 // Ref: #/components/schemas/WebsitePatch
 type WebsitePatch struct {
-	Name     OptString `json:"name"`
 	Hostname OptString `json:"hostname"`
-}
-
-// GetName returns the value of Name.
-func (s *WebsitePatch) GetName() OptString {
-	return s.Name
 }
 
 // GetHostname returns the value of Hostname.
 func (s *WebsitePatch) GetHostname() OptString {
 	return s.Hostname
-}
-
-// SetName sets the value of Name.
-func (s *WebsitePatch) SetName(val OptString) {
-	s.Name = val
 }
 
 // SetHostname sets the value of Hostname.
