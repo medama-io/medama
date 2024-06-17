@@ -3,13 +3,8 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
-    paths:
-      - "core/**"
-
   push:
     branches: [main]
-    paths:
-      - "core/**"
 
 permissions:
   contents: read
