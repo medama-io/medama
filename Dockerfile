@@ -5,7 +5,7 @@ FROM jdxcode/mise:latest AS build
 # Install unzip dependency for bun
 RUN apt-get update && apt-get install -y unzip
 
-# Install runtimes
+# Install runtimes - Temporarily include node for google-closure-compiler for tracker
 RUN mise use -g node@20
 RUN mise use -g bun@latest
 RUN mise use -g go@1.22
@@ -43,12 +43,15 @@ LABEL org.opencontainers.image.source=https://github.com/medama-io/medama
 LABEL org.opencontainers.image.description="Cookie-free, privacy-focused website analytics."
 LABEL org.opencontainers.image.licenses=Apache-2.0
 
+ENV PORT=8080
+ENV ANALYTICS_DATABASE_HOST=/app/data/me_analytics.db
+ENV APP_DATABASE_HOST=/app/data/me_app.db
+
 WORKDIR /app
 
 # Copy the binary
 COPY --from=build /app/core/bin/main /app/bin/main
 
-# Run the binary
-EXPOSE 8080
-CMD ["/app/bin/main", "start", "-level=debug"]
+EXPOSE ${PORT}
+CMD ["/app/bin/main", "start", "-env"]
 

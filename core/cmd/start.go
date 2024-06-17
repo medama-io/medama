@@ -33,18 +33,18 @@ type StartCommand struct {
 }
 
 // NewStartCommand creates a new start command.
-func NewStartCommand() (*StartCommand, error) {
-	serverConfig, err := NewServerConfig()
+func NewStartCommand(useEnv bool) (*StartCommand, error) {
+	serverConfig, err := NewServerConfig(useEnv)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create server config")
 	}
 
-	appConfig, err := NewAppDBConfig()
+	appConfig, err := NewAppDBConfig(useEnv)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create app db config")
 	}
 
-	analyticsConfig, err := NewAnalyticsDBConfig()
+	analyticsConfig, err := NewAnalyticsDBConfig(useEnv)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create analytics db config")
 	}
@@ -59,21 +59,30 @@ func NewStartCommand() (*StartCommand, error) {
 // ParseFlags parses the command line flags for the start command.
 func (s *StartCommand) ParseFlags(args []string) error {
 	fs := flag.NewFlagSet("start", flag.ExitOnError)
+
+	// General settings.
+	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on")
 	fs.StringVar(&s.Server.Logger, "logger", DefaultLogger, "Logger format (json, pretty)")
 	fs.StringVar(&s.Server.Level, "level", DefaultLoggerLevel, "Logger level (debug, info, warn, error)")
-	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on")
 
-	// Handle array type flags
-	allowedOrigins := fs.String("corsorigins", "", "Comma separated list of allowed origins on API routes")
+	// Database settings.
+	fs.StringVar(&s.AppDB.Host, "appdb", DefaultSQLiteHost, "Path to app database")
+	fs.StringVar(&s.AnalyticsDB.Host, "analyticsdb", DefaultDuckDBHost, "Path to analytics database")
 
-	// Parse flags
+	// Misc settings.
+	fs.BoolVar(&s.Server.UseEnvironment, "env", false, "Use environment variables for configuration")
+
+	// Handle array type flags.
+	corsAllowedOrigins := fs.String("corsorigins", "", "Comma separated list of allowed origins on API routes")
+
+	// Parse flags.
 	err := fs.Parse(args)
 	if err != nil {
 		return errors.Wrap(err, "failed to parse flags")
 	}
 
-	if *allowedOrigins != "" {
-		s.Server.CORSAllowedOrigins = strings.Split(*allowedOrigins, ",")
+	if *corsAllowedOrigins != "" {
+		s.Server.CORSAllowedOrigins = strings.Split(*corsAllowedOrigins, ",")
 	}
 
 	return nil
