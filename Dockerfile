@@ -39,6 +39,10 @@ RUN --mount=type=cache,target="/root/.cache/go-build" ~/bin/task core:release
 # Build the final image
 FROM gcr.io/distroless/cc-debian12
 
+LABEL org.opencontainers.image.source=https://github.com/medama-io/medama
+LABEL org.opencontainers.image.description="Cookie-free, privacy-focused website analytics."
+LABEL org.opencontainers.image.licenses=Apache-2.0
+
 WORKDIR /app
 
 # Copy the binary
