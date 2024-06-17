@@ -94,6 +94,12 @@ export const Document = ({ children }: DocumentProps) => {
 				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 				<link
 					rel="icon"
+					sizes="192x192"
+					type="image/png"
+					href="/favicon-192x192.png"
+				/>
+				<link
+					rel="icon"
 					sizes="48x48"
 					type="image/png"
 					href="/favicon-48x48.png"
