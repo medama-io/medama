@@ -45,7 +45,20 @@ const InternalServerError = ({ error }: InternalServerErrorProps) => (
 	<ErrorPage
 		label="500"
 		title="Something went wrong."
-		description={`We encountered an unexpected error while processing your request. Please report this issue to the developers. ${error ? `Error: ${error}` : ''}`}
+		description={
+			<>
+				We encountered an unexpected error while processing your request. Please
+				<Anchor
+					component={Link}
+					to="https://github.com/medama-io/medama/issues"
+					className={classes.anchor}
+				>
+					report this issue
+				</Anchor>{' '}
+				to the developers.
+				<Text c="red">{error ? `Error: ${error}` : ''}</Text>
+			</>
+		}
 	/>
 );
 
