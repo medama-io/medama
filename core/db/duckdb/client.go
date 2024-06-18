@@ -57,7 +57,7 @@ func (c *Client) Close() error {
 	if err := closeStmt(addStmt); err != nil {
 		return err
 	}
-	if err := closeStmt(updateStmt); err != nil {
+	if err := closeStmt(durationStmt); err != nil {
 		return err
 	}
 

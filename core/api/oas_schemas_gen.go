@@ -236,8 +236,6 @@ func NewEventUnloadEventHit(v EventUnload) EventHit {
 // Page view load event.
 // Ref: #/components/schemas/EventLoad
 type EventLoad struct {
-	// Beacon ID generated for each user to link multiple events on the same page together.
-	B string `json:"b"`
 	// Page URL including query parameters.
 	U url.URL `json:"u"`
 	// Referrer URL.
@@ -248,11 +246,6 @@ type EventLoad struct {
 	Q bool `json:"q"`
 	// Timezone of the user.
 	T OptString `json:"t"`
-}
-
-// GetB returns the value of B.
-func (s *EventLoad) GetB() string {
-	return s.B
 }
 
 // GetU returns the value of U.
@@ -280,11 +273,6 @@ func (s *EventLoad) GetT() OptString {
 	return s.T
 }
 
-// SetB sets the value of B.
-func (s *EventLoad) SetB(val string) {
-	s.B = val
-}
-
 // SetU sets the value of U.
 func (s *EventLoad) SetU(val url.URL) {
 	s.U = val
@@ -310,18 +298,46 @@ func (s *EventLoad) SetT(val OptString) {
 	s.T = val
 }
 
-// Page view unload event.
+// Merged schema.
 // Ref: #/components/schemas/EventUnload
 type EventUnload struct {
-	// Beacon ID generated for each user to link multiple events on the same page together.
-	B string `json:"b"`
+	// Page URL including query parameters.
+	U url.URL `json:"u"`
+	// Referrer URL.
+	R OptString `json:"r"`
+	// If the user is a unique user or not.
+	P bool `json:"p"`
+	// If the user has visited this page before or not.
+	Q bool `json:"q"`
+	// Timezone of the user.
+	T OptString `json:"t"`
 	// Time spent on page in milliseconds.
 	M int `json:"m"`
 }
 
-// GetB returns the value of B.
-func (s *EventUnload) GetB() string {
-	return s.B
+// GetU returns the value of U.
+func (s *EventUnload) GetU() url.URL {
+	return s.U
+}
+
+// GetR returns the value of R.
+func (s *EventUnload) GetR() OptString {
+	return s.R
+}
+
+// GetP returns the value of P.
+func (s *EventUnload) GetP() bool {
+	return s.P
+}
+
+// GetQ returns the value of Q.
+func (s *EventUnload) GetQ() bool {
+	return s.Q
+}
+
+// GetT returns the value of T.
+func (s *EventUnload) GetT() OptString {
+	return s.T
 }
 
 // GetM returns the value of M.
@@ -329,9 +345,29 @@ func (s *EventUnload) GetM() int {
 	return s.M
 }
 
-// SetB sets the value of B.
-func (s *EventUnload) SetB(val string) {
-	s.B = val
+// SetU sets the value of U.
+func (s *EventUnload) SetU(val url.URL) {
+	s.U = val
+}
+
+// SetR sets the value of R.
+func (s *EventUnload) SetR(val OptString) {
+	s.R = val
+}
+
+// SetP sets the value of P.
+func (s *EventUnload) SetP(val bool) {
+	s.P = val
+}
+
+// SetQ sets the value of Q.
+func (s *EventUnload) SetQ(val bool) {
+	s.Q = val
+}
+
+// SetT sets the value of T.
+func (s *EventUnload) SetT(val OptString) {
+	s.T = val
 }
 
 // SetM sets the value of M.

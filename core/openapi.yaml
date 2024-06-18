@@ -30,7 +30,7 @@ paths:
     post:
       tags:
         - auth
-      summary: Session Token Authentication.
+      summary: Login
       description: Login to the service and retrieve a session token for authentication.
       operationId: post-auth-login
       requestBody:
@@ -64,7 +64,7 @@ paths:
     post:
       tags:
         - auth
-      summary: Session Token Logout.
+      summary: Logout
       description: Logout of the service and destroy the session token.
       operationId: post-auth-logout
       parameters:
@@ -89,8 +89,8 @@ paths:
     post:
       tags:
         - event
-      summary: Send Hit Event.
-      description: Send a hit event to register a user view.
+      summary: Send Hit Event
+      description: Send a hit event to register a user view or interaction.
       operationId: post-event-hit
       parameters:
         - name: User-Agent
@@ -126,8 +126,8 @@ paths:
     get:
       tags:
         - event
-      summary: Unique User Check.
-      description: This is a ping endpoint to determine if the user is unique or not.
+      summary: Ping
+      description: Ping endpoint to determine if the user is unique or not.
       operationId: get-event-ping
       parameters:
         - name: If-Modified-Since
@@ -173,7 +173,7 @@ paths:
         - user
       security:
         - CookieAuth: []
-      summary: Get User Info.
+      summary: Get User Info
       description: Retrieve the information of the user with the matching user ID.
       operationId: get-user
       parameters:
@@ -201,7 +201,7 @@ paths:
         - user
       security:
         - CookieAuth: []
-      summary: Update User Info.
+      summary: Update User Info
       description: Update a user account's details.
       operationId: patch-user
       parameters:
@@ -238,7 +238,7 @@ paths:
         - user
       security:
         - CookieAuth: []
-      summary: Delete User.
+      summary: Delete User
       description: Delete a user account.
       operationId: delete-user
       parameters:
@@ -265,7 +265,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: List Websites.
+      summary: List Websites
       description: Get a list of all websites from the user.
       operationId: get-websites
       parameters:
@@ -296,7 +296,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Add Website.
+      summary: Add Website
       description: Add a new website.
       operationId: post-websites
       requestBody:
@@ -342,7 +342,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Get Website.
+      summary: Get Website
       description: Get website details for an individual website.
       operationId: get-websites-id
       parameters:
@@ -371,7 +371,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Update Website.
+      summary: Update Website
       description: Update a website's information.
       operationId: patch-websites-id
       parameters:
@@ -407,7 +407,7 @@ paths:
         - website
       security:
         - CookieAuth: []
-      summary: Delete Website.
+      summary: Delete Website
       description: Delete a website.
       operationId: delete-websites-id
       parameters:
@@ -433,7 +433,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Stat Summary.
+      summary: Get Stat Summary
       description: Get a summary of the website's stats.
       operationId: get-website-id-summary
       parameters:
@@ -492,7 +492,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Page Stats.
+      summary: Get Page Stats
       description: Get a list of pages and their stats.
       operationId: get-website-id-pages
       parameters:
@@ -537,7 +537,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Time Stats.
+      summary: Get Time Stats
       description: Get a list of pages and their time stats.
       operationId: get-website-id-time
       parameters:
@@ -582,7 +582,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Referrer Stats.
+      summary: Get Referrer Stats
       description: Get a list of referrers and their stats.
       operationId: get-website-id-referrers
       parameters:
@@ -626,7 +626,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get UTM Source Stats.
+      summary: Get UTM Source Stats
       description: Get a list of UTM sources and their stats.
       operationId: get-website-id-sources
       parameters:
@@ -670,7 +670,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get UTM Medium Stats.
+      summary: Get UTM Medium Stats
       description: Get a list of UTM mediums and their stats.
       operationId: get-website-id-mediums
       parameters:
@@ -714,7 +714,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get UTM Campaign Stats.
+      summary: Get UTM Campaign Stats
       description: Get a list of UTM campaigns and their stats.
       operationId: get-website-id-campaigns
       parameters:
@@ -758,7 +758,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Browser Stats.
+      summary: Get Browser Stats
       description: Get a list of browsers and their stats.
       operationId: get-website-id-browsers
       parameters:
@@ -802,7 +802,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get OS Stats.
+      summary: Get OS Stats
       description: Get a list of OS and their stats.
       operationId: get-website-id-os
       parameters:
@@ -846,7 +846,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Device Stats.
+      summary: Get Device Stats
       description: Get a list of devices and their stats.
       operationId: get-website-id-device
       parameters:
@@ -890,7 +890,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Country Stats.
+      summary: Get Country Stats
       description: Get a list of countries and their stats.
       operationId: get-website-id-country
       parameters:
@@ -934,7 +934,7 @@ paths:
         - stats
       security:
         - CookieAuth: []
-      summary: Get Language Stats.
+      summary: Get Language Stats
       description: Get a list of languages and their stats.
       operationId: get-website-id-language
       parameters:
@@ -1297,9 +1297,6 @@ components:
       description: Page view load event.
       type: object
       properties:
-        b:
-          type: string
-          description: Beacon ID generated for each user to link multiple events on the same page together.
         u:
           type: string
           description: Page URL including query parameters.
@@ -1317,24 +1314,22 @@ components:
           type: string
           description: Timezone of the user.
       required:
-        - b
         - u
         - p
         - q
     EventUnload:
       title: EventUnload
-      description: Page view unload event.
+      description: Page view unload event including duration.
       type: object
-      properties:
-        b:
-          type: string
-          description: Beacon ID generated for each user to link multiple events on the same page together.
-        m:
-          type: integer
-          description: Time spent on page in milliseconds.
-      required:
-        - b
-        - m
+      allOf:
+        - $ref: "#/components/schemas/EventLoad"
+        - type: object
+          properties:
+            m:
+              type: integer
+              description: Time spent on page in milliseconds.
+          required:
+            - m
     EventHit:
       title: EventHit
       description: Website hit event.

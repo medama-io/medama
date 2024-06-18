@@ -193,10 +193,6 @@ func (d DeviceType) String() string {
 }
 
 type PageViewHit struct {
-	// Beacon ID - Used to determine if multiple event types are
-	// associated with a single page view.
-	BID string `db:"bid"`
-
 	// Hostname - The hostname of the page view.
 	Hostname string `db:"hostname"`
 	// Pathname - The pathname of the associated URL linked to the page view.
@@ -229,9 +225,7 @@ type PageViewHit struct {
 }
 
 type PageViewDuration struct {
-	// Beacon ID - Used to determine if multiple event types are
-	// associated with a single page view.
-	BID string `db:"bid"`
+	PageViewHit
 	// DurationMs - How long the user has been on the page in milliseconds.
 	DurationMs int `db:"duration_ms"`
 }

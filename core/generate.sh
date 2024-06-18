@@ -13,7 +13,7 @@ go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml
 # in case the line number changes.
 #
 # sed also runs differently on macOS and Linux, so we need to check the OS before running it.
-# Line 256
+# Line 256 and 382
 OS=$(uname)
 if [ "$OS" = "Darwin" ]; then
 	# macOS

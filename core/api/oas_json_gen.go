@@ -557,10 +557,6 @@ func (s EventHit) encodeFields(e *jx.Encoder) {
 		{
 			s := s.EventLoad
 			{
-				e.FieldStart("b")
-				e.Str(s.B)
-			}
-			{
 				e.FieldStart("u")
 				json.EncodeURI(e, s.U)
 			}
@@ -591,8 +587,28 @@ func (s EventHit) encodeFields(e *jx.Encoder) {
 		{
 			s := s.EventUnload
 			{
-				e.FieldStart("b")
-				e.Str(s.B)
+				e.FieldStart("u")
+				json.EncodeURI(e, s.U)
+			}
+			{
+				if s.R.Set {
+					e.FieldStart("r")
+					s.R.Encode(e)
+				}
+			}
+			{
+				e.FieldStart("p")
+				e.Bool(s.P)
+			}
+			{
+				e.FieldStart("q")
+				e.Bool(s.Q)
+			}
+			{
+				if s.T.Set {
+					e.FieldStart("t")
+					s.T.Encode(e)
+				}
 			}
 			{
 				e.FieldStart("m")
@@ -682,10 +698,6 @@ func (s *EventLoad) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *EventLoad) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("b")
-		e.Str(s.B)
-	}
-	{
 		e.FieldStart("u")
 		json.EncodeURI(e, s.U)
 	}
@@ -711,13 +723,12 @@ func (s *EventLoad) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfEventLoad = [6]string{
-	0: "b",
-	1: "u",
-	2: "r",
-	3: "p",
-	4: "q",
-	5: "t",
+var jsonFieldsNameOfEventLoad = [5]string{
+	0: "u",
+	1: "r",
+	2: "p",
+	3: "q",
+	4: "t",
 }
 
 // Decode decodes EventLoad from json.
@@ -729,20 +740,8 @@ func (s *EventLoad) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "b":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.B = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"b\"")
-			}
 		case "u":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
 				v, err := json.DecodeURI(d)
 				s.U = v
@@ -764,7 +763,7 @@ func (s *EventLoad) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"r\"")
 			}
 		case "p":
-			requiredBitSet[0] |= 1 << 3
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Bool()
 				s.P = bool(v)
@@ -776,7 +775,7 @@ func (s *EventLoad) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"p\"")
 			}
 		case "q":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
 				v, err := d.Bool()
 				s.Q = bool(v)
@@ -807,7 +806,7 @@ func (s *EventLoad) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00011011,
+		0b00001101,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -863,8 +862,28 @@ func (s *EventUnload) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *EventUnload) encodeFields(e *jx.Encoder) {
 	{
-		e.FieldStart("b")
-		e.Str(s.B)
+		e.FieldStart("u")
+		json.EncodeURI(e, s.U)
+	}
+	{
+		if s.R.Set {
+			e.FieldStart("r")
+			s.R.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("p")
+		e.Bool(s.P)
+	}
+	{
+		e.FieldStart("q")
+		e.Bool(s.Q)
+	}
+	{
+		if s.T.Set {
+			e.FieldStart("t")
+			s.T.Encode(e)
+		}
 	}
 	{
 		e.FieldStart("m")
@@ -872,9 +891,13 @@ func (s *EventUnload) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfEventUnload = [2]string{
-	0: "b",
-	1: "m",
+var jsonFieldsNameOfEventUnload = [6]string{
+	0: "u",
+	1: "r",
+	2: "p",
+	3: "q",
+	4: "t",
+	5: "m",
 }
 
 // Decode decodes EventUnload from json.
@@ -886,20 +909,64 @@ func (s *EventUnload) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
-		case "b":
+		case "u":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				v, err := d.Str()
-				s.B = string(v)
+				v, err := json.DecodeURI(d)
+				s.U = v
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"b\"")
+				return errors.Wrap(err, "decode field \"u\"")
+			}
+		case "r":
+			if err := func() error {
+				s.R.Reset()
+				if err := s.R.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"r\"")
+			}
+		case "p":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				v, err := d.Bool()
+				s.P = bool(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"p\"")
+			}
+		case "q":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				v, err := d.Bool()
+				s.Q = bool(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"q\"")
+			}
+		case "t":
+			if err := func() error {
+				s.T.Reset()
+				if err := s.T.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"t\"")
 			}
 		case "m":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				v, err := d.Int()
 				s.M = int(v)
@@ -920,7 +987,7 @@ func (s *EventUnload) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00101101,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

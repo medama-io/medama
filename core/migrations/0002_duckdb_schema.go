@@ -14,7 +14,60 @@ func Up0002(c *duckdb.Client) error {
 
 	// Create views table
 	//
-	// bid is the unique beacon id of the page view that links to the unload beacon
+	// hostname is the hostname of the page view
+	//
+	// pathname is the pathname of the page view
+	//
+	// is_unique_user is true if the user is unique
+	//
+	// is_unique_page is true if the user has not visited the page before
+	//
+	// referrer is the referer url from the http header of the page view
+	//
+	// country_code is the country code of the user
+	//
+	// language is the language code of the user
+	//
+	// ua_browser is the browser of the user with an associated enum id
+	//
+	// ua_os is the operating system of the user with an associated enum id
+	//
+	// ua_device_type is the device type of the user with an associated enum id
+	//
+	// utm_source is the utm source of the user
+	//
+	// utm_medium is the utm medium of the user
+	//
+	// utm_campaign is the utm campaign of the user
+	//
+	// date_created is the date the page view was created
+	_, err = tx.Exec(`--sql
+	CREATE TABLE IF NOT EXISTS views (
+		hostname TEXT NOT NULL,
+		pathname TEXT,
+		is_unique_user BOOLEAN,
+		is_unique_page BOOLEAN,
+		referrer TEXT,
+		country_code TEXT,
+		language TEXT,
+		ua_browser UTINYINT NOT NULL,
+		ua_os UTINYINT NOT NULL,
+		ua_device_type UTINYINT NOT NULL,
+		utm_source TEXT,
+		utm_medium TEXT,
+		utm_campaign TEXT,
+		date_created TIMESTAMPTZ NOT NULL
+	)`)
+	if err != nil {
+		rollbackErr := tx.Rollback()
+		if rollbackErr != nil {
+			return rollbackErr
+		}
+
+		return err
+	}
+
+	// Create duration table
 	//
 	// hostname is the hostname of the page view
 	//
@@ -44,10 +97,9 @@ func Up0002(c *duckdb.Client) error {
 	//
 	// duration_ms is the duration of the page view in milliseconds
 	//
-	// date_created is the date the page view was created
+	// date_created is the date the page duration view was created
 	_, err = tx.Exec(`--sql
-	CREATE TABLE IF NOT EXISTS views (
-		bid TEXT,
+	CREATE TABLE IF NOT EXISTS duration (
 		hostname TEXT NOT NULL,
 		pathname TEXT,
 		is_unique_user BOOLEAN,
@@ -61,17 +113,9 @@ func Up0002(c *duckdb.Client) error {
 		utm_source TEXT,
 		utm_medium TEXT,
 		utm_campaign TEXT,
-		duration_ms UINTEGER,
+		duration_ms INTEGER NOT NULL,
 		date_created TIMESTAMPTZ NOT NULL
 	)`)
-	if err != nil {
-		rollbackErr := tx.Rollback()
-		if rollbackErr != nil {
-			return rollbackErr
-		}
-
-		return err
-	}
 
 	// Commit transaction
 	err = tx.Commit()
