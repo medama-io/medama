@@ -2,6 +2,7 @@ package duckdb
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/go-faster/errors"
@@ -25,17 +26,34 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 	//
 	// Duration is the median duration of all pageviews. It needs to be casted to an integer as
 	// the median function can return a float for an even number of rows.
-	//
-	// Active is the number of unique visitors that have visited the website in the last 5 minutes.
 	query.WriteString(`--sql
-		SELECT
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			COUNT(*) AS pageviews,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
+		WITH durations AS MATERIALIZED (
+			SELECT
+				COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms > 0 AND duration_ms < 5000) AS bounces,
+				CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration_median,
+			FROM duration
+			WHERE `)
 	query.WriteString(filter.WhereString())
+	query.WriteString(`--sql
+		),
+		summary AS MATERIALIZED (
+			SELECT
+				COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
+				COUNT(*) AS pageviews,
+			FROM views
+			WHERE `)
+	query.WriteString(filter.WhereString())
+	query.WriteString(`--sql
+		)
+		SELECT
+			summary.visitors AS visitors,
+			summary.pageviews AS pageviews,
+			durations.bounces AS bounces,
+			durations.duration_median AS duration,
+		FROM summary, durations`)
+
+	println(query.String())
+	println(fmt.Printf("%+v", filter.Args(nil)))
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {

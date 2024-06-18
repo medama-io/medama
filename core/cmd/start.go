@@ -111,9 +111,9 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	defer duckdb.Close()
 
 	// Run migrations
-	m := migrations.NewMigrationsService(ctx, sqlite, duckdb)
-	if m == nil {
-		return errors.New("could not create migrations service")
+	m, err := migrations.NewMigrationsService(ctx, sqlite, duckdb)
+	if err != nil {
+		return errors.Wrap(err, "failed to create migrations service")
 	}
 	err = m.AutoMigrate(ctx)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/rand/v2"
 	"testing"
 
 	_ "github.com/marcboeker/go-duckdb"
@@ -17,6 +18,14 @@ import (
 	"github.com/ncruces/go-sqlite3/vfs/memdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+)
+
+const (
+	// Number of page views to generate.
+	PAGEVIEW_COUNT = 1000
+	// Number of page view durations to generate.
+	// Account for unreliability of failing to send page durations with a lower value.
+	DURATION_COUNT = 900
 )
 
 func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.Client) {
@@ -32,15 +41,18 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.C
 	memdb.Create(name, []byte{})
 	client, err := sqlite.NewClient(name)
 	require.NoError(err)
+	require.NoError(client.Ping())
 	assert.NotNil(client)
 
-	// In memory duckdb client
+	// In memory duckdb client.
 	duckdbClient, err := duckdb.NewClient("")
 	require.NoError(err)
+	require.NoError(duckdbClient.Ping())
 	assert.NotNil(duckdbClient)
 
 	// Run migrations
-	m := migrations.NewMigrationsService(ctx, client, duckdbClient)
+	m, err := migrations.NewMigrationsService(ctx, client, duckdbClient)
+	require.NoError(err)
 	err = m.AutoMigrate(ctx)
 	require.NoError(err)
 
@@ -57,14 +69,92 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.C
 	require.NoError(err)
 
 	// Create test website
-	websiteCreate := model.NewWebsite(
-		"duckdb",         // userID
-		"medama-test.io", // hostname
-		1,                // dateCreated
-		2,                // dateUpdated
-	)
-	err = client.CreateWebsite(ctx, websiteCreate)
-	require.NoError(err)
+	hostnames := []string{"1.example.com", "2.example.com", "3.example.com"}
+	for _, hostname := range hostnames {
+		websiteCreate := model.NewWebsite(
+			"duckdb", // userID
+			hostname, // hostname
+			1,        // dateCreated
+			2,        // dateUpdated
+		)
+		err = client.CreateWebsite(ctx, websiteCreate)
+		require.NoError(err)
+	}
 
 	return assert, ctx, duckdbClient
+}
+
+func SetupDatabaseWithPageViews(t *testing.T) (*assert.Assertions, context.Context, *duckdb.Client) {
+	t.Helper()
+	assert, ctx, client := SetupDatabase(t)
+
+	// Using a fixed seed will produce the same output on every run.
+	r := rand.New(rand.NewPCG(1, 2))
+
+	// Generate page view hits.
+	pageViewHits := generatePageViewHits(r, PAGEVIEW_COUNT)
+	for _, pageViewHit := range pageViewHits {
+		err := client.AddPageView(ctx, pageViewHit)
+		require.NoError(t, err)
+	}
+
+	// Generate page view durations.
+	pageViewDurations := generatePageViewDurations(r, DURATION_COUNT)
+	for _, pageViewDuration := range pageViewDurations {
+		err := client.AddPageDuration(ctx, pageViewDuration)
+		require.NoError(t, err)
+	}
+
+	return assert, ctx, client
+}
+
+func generatePageViewHits(r *rand.Rand, count int) []*model.PageViewHit {
+	hostnames := []string{"1.example.com", "2.example.com", "3.example.com"}
+	paths := []string{"/", "/about", "/contact", "/pricing", "/blog"}
+	booleanValues := []bool{true, false}
+	referrers := []string{"1.example.com", "medama.io", "google.com"}
+	countryCodes := []string{"GB", "US", "DE", "FR", "ES", "IT"}
+	languages := []string{"en", "de", "fr", "es", "it"}
+	browserNames := []model.BrowserName{model.ChromeBrowser, model.FirefoxBrowser, model.SafariBrowser, model.EdgeBrowser}
+	oses := []model.OSName{model.WindowsOS, model.MacOS, model.LinuxOS, model.AndroidOS, model.IOS}
+	deviceTypes := []model.DeviceType{model.DesktopDevice, model.MobileDevice, model.TabletDevice}
+	utmSources := []string{"", "bing", "twitter"}
+	utmMediums := []string{"", "cpc", "organic"}
+	utmCampaigns := []string{"", "summer", "winter"}
+
+	pageViewHits := make([]*model.PageViewHit, count)
+
+	for i := range count {
+		pageViewHits[i] = &model.PageViewHit{
+			Hostname:     hostnames[r.IntN(len(hostnames))],
+			Pathname:     paths[r.IntN(len(paths))],
+			IsUniqueUser: booleanValues[r.IntN(len(booleanValues))],
+			IsUniquePage: booleanValues[r.IntN(len(booleanValues))],
+			Referrer:     referrers[r.IntN(len(referrers))],
+			CountryCode:  countryCodes[r.IntN(len(countryCodes))],
+			Language:     languages[r.IntN(len(languages))],
+			BrowserName:  browserNames[r.IntN(len(browserNames))],
+			OS:           oses[r.IntN(len(oses))],
+			DeviceType:   deviceTypes[r.IntN(len(deviceTypes))],
+			UTMSource:    utmSources[r.IntN(len(utmSources))],
+			UTMMedium:    utmMediums[r.IntN(len(utmMediums))],
+			UTMCampaign:  utmCampaigns[r.IntN(len(utmCampaigns))],
+		}
+	}
+
+	return pageViewHits
+}
+
+func generatePageViewDurations(r *rand.Rand, count int) []*model.PageViewDuration {
+	pageViewHits := generatePageViewHits(r, count)
+	durations := make([]*model.PageViewDuration, count)
+
+	for i := range count {
+		durations[i] = &model.PageViewDuration{
+			PageViewHit: *pageViewHits[i],
+			DurationMs:  r.IntN(10000),
+		}
+	}
+
+	return durations
 }

@@ -116,6 +116,12 @@ func Up0002(c *duckdb.Client) error {
 		duration_ms INTEGER NOT NULL,
 		date_created TIMESTAMPTZ NOT NULL
 	)`)
+	if err != nil {
+		rollbackErr := tx.Rollback()
+		if rollbackErr != nil {
+			return rollbackErr
+		}
+	}
 
 	// Commit transaction
 	err = tx.Commit()
@@ -136,6 +142,13 @@ func Down0002(c *duckdb.Client) error {
 	// Drop views table
 	_, err = tx.Exec(`--sql
 	DROP TABLE IF EXISTS views`)
+	if err != nil {
+		return err
+	}
+
+	// Drop duration table
+	_, err = tx.Exec(`--sql
+	DROP TABLE IF EXISTS duration`)
 	if err != nil {
 		return err
 	}

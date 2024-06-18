@@ -40,7 +40,8 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.C
 	assert.NotNil(duckdbClient)
 
 	// Run migrations
-	m := migrations.NewMigrationsService(ctx, client, duckdbClient)
+	m, err := migrations.NewMigrationsService(ctx, client, duckdbClient)
+	require.NoError(err)
 	err = m.AutoMigrate(ctx)
 	assert.NoError(err)
 
