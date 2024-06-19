@@ -39,7 +39,7 @@ func TestAddPageView(t *testing.T) {
 	assert.Equal(1, count)
 }
 
-func testAddPageDuration(t *testing.T) {
+func TestAddPageDuration(t *testing.T) {
 	assert, _, ctx, client := SetupDatabase(t)
 	rows := client.DB.QueryRow("SELECT COUNT(*) FROM duration WHERE hostname = 'add-page-duration-test.io'")
 	var count int

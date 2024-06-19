@@ -10,9 +10,99 @@
 
 [TestGetWebsiteSummaryFilterAll - 1]
 {
+ "Bounces": 250755,
+ "Duration": 4998,
+ "Pageviews": 1000000,
+ "Visitors": 500559
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 2]
+{
+ "Bounces": 83826,
+ "Duration": 4994,
+ "Pageviews": 333970,
+ "Visitors": 167059
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 3]
+{
+ "Bounces": 27942,
+ "Duration": 5017,
+ "Pageviews": 111353,
+ "Visitors": 55806
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 4]
+{
+ "Bounces": 9577,
+ "Duration": 4959,
+ "Pageviews": 37138,
+ "Visitors": 18703
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 5]
+{
+ "Bounces": 3229,
+ "Duration": 5034,
+ "Pageviews": 12522,
+ "Visitors": 6300
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 6]
+{
  "Bounces": 1071,
  "Duration": 5019,
  "Pageviews": 4183,
  "Visitors": 2113
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 7]
+{
+ "Bounces": 363,
+ "Duration": 4924,
+ "Pageviews": 1364,
+ "Visitors": 708
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 8]
+{
+ "Bounces": 126,
+ "Duration": 4924,
+ "Pageviews": 470,
+ "Visitors": 246
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 9]
+{
+ "Bounces": 39,
+ "Duration": 4916,
+ "Pageviews": 152,
+ "Visitors": 80
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 10]
+{
+ "Bounces": 14,
+ "Duration": 5479,
+ "Pageviews": 53,
+ "Visitors": 29
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 11]
+{
+ "Bounces": 9,
+ "Duration": 3962,
+ "Pageviews": 32,
+ "Visitors": 16
 }
 ---

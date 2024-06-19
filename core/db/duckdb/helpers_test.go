@@ -116,21 +116,64 @@ func UseDatabaseFixture(t *testing.T, fixture Fixture) (*assert.Assertions, *req
 	return assert, require, ctx, client
 }
 
-func generateFilterAll(hostname string) *db.Filters {
-	return &db.Filters{
-		Hostname:    hostname,
-		Pathname:    db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")})),
-		Referrer:    db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")})),
-		UTMSource:   db.NewFilter(db.FilterUTMSource, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("bing")})),
-		UTMMedium:   db.NewFilter(db.FilterUTMMedium, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("organic")})),
-		UTMCampaign: db.NewFilter(db.FilterUTMCampaign, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("summer")})),
-		// Browser:     db.NewFilter(db.FilterBrowser, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Chrome")})),
-		// OS:          db.NewFilter(db.FilterOS, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Windows")})),
-		// Device:      db.NewFilter(db.FilterDevice, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Desktop")})),
-		// Country:     db.NewFilter(db.FilterCountry, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("GB")})),
-		// Language:    db.NewFilter(db.FilterLanguage, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("en")})),
+// Generate an array of filters where we incrementally add one new filter to the previous one.
+func generateFilterAll(hostname string) []*db.Filters {
+	filters := make([]*db.Filters, 0)
 
+	baseFilter := &db.Filters{
+		Hostname:    hostname,
 		PeriodStart: TIME_START,
 		PeriodEnd:   TIME_END,
 	}
+	// Make a copy to avoid receiving future modifications.
+	tempFilter := *baseFilter
+	filters = append(filters, &tempFilter)
+
+	filterSteps := []struct {
+		fieldName string
+		filter    *db.Filter
+	}{
+		{"Pathname", db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")}))},
+		{"Referrer", db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")}))},
+		{"UTMSource", db.NewFilter(db.FilterUTMSource, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("bing")}))},
+		{"UTMMedium", db.NewFilter(db.FilterUTMMedium, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("organic")}))},
+		{"UTMCampaign", db.NewFilter(db.FilterUTMCampaign, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("summer")}))},
+		{"Browser", db.NewFilter(db.FilterBrowser, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Chrome")}))},
+		{"OS", db.NewFilter(db.FilterOS, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Windows")}))},
+		{"Device", db.NewFilter(db.FilterDevice, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Desktop")}))},
+		{"Country", db.NewFilter(db.FilterCountry, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("GB")}))},
+		{"Language", db.NewFilter(db.FilterLanguage, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("en")}))},
+	}
+
+	for _, step := range filterSteps {
+		// Modify the base filter with the new filter.
+		switch step.fieldName {
+		case "Pathname":
+			baseFilter.Pathname = step.filter
+		case "Referrer":
+			baseFilter.Referrer = step.filter
+		case "UTMSource":
+			baseFilter.UTMSource = step.filter
+		case "UTMMedium":
+			baseFilter.UTMMedium = step.filter
+		case "UTMCampaign":
+			baseFilter.UTMCampaign = step.filter
+		case "Browser":
+			baseFilter.Browser = step.filter
+		case "OS":
+			baseFilter.OS = step.filter
+		case "Device":
+			baseFilter.Device = step.filter
+		case "Country":
+			baseFilter.Country = step.filter
+		case "Language":
+			baseFilter.Language = step.filter
+		}
+
+		// Make a local copy to avoid overwriting the previous filter.
+		tempFilter := *baseFilter
+		filters = append(filters, &tempFilter)
+	}
+
+	return filters
 }

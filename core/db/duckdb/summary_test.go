@@ -38,8 +38,10 @@ func TestGetWebsiteSummaryEmpty(t *testing.T) {
 func TestGetWebsiteSummaryFilterAll(t *testing.T) {
 	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
 
-	summary, err := client.GetWebsiteSummary(ctx, generateFilterAll(MEDIUM_HOSTNAME))
-	require.NoError(err)
+	for _, filter := range generateFilterAll(MEDIUM_HOSTNAME) {
+		summary, err := client.GetWebsiteSummary(ctx, filter)
+		require.NoError(err)
 
-	snaps.MatchJSON(t, summary)
+		snaps.MatchJSON(t, summary)
+	}
 }
