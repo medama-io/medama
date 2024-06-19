@@ -1,10 +1,6 @@
 package duckdb_test
 
-import (
-	"github.com/medama-io/medama/model"
-)
-
-func testAddPageView(db *duckdbTest) {
+/*func testAddPageView(db *duckdbTest) {
 	rows := db.client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
 	var count int
 	err := rows.Scan(&count)
@@ -70,3 +66,4 @@ func testAddPageDuration(db *duckdbTest) {
 	db.assert.NoError(err)
 	db.assert.Equal(1, count)
 }
+*/

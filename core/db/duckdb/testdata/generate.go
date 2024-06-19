@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"database/sql/driver"
 	"math/rand/v2"
 	"time"
 
 	_ "github.com/marcboeker/go-duckdb"
-	goduckdb "github.com/marcboeker/go-duckdb"
 	_ "github.com/ncruces/go-sqlite3/driver"
 	_ "github.com/ncruces/go-sqlite3/embed"
 
@@ -97,118 +95,34 @@ func main() {
 		}
 	}
 
-	// Initialise appender API for quicker inserts.
-	connector, err := goduckdb.NewConnector(duckdbHost, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	conn, err := connector.Connect(ctx)
-	if err != nil {
-		panic(err)
-	}
-
-	viewAppender, err := goduckdb.NewAppenderFromConn(conn, "", "views")
-	if err != nil {
-		panic(err)
-	}
-
-	durationAppender, err := goduckdb.NewAppenderFromConn(conn, "", "duration")
-	if err != nil {
-		panic(err)
-	}
-
 	// Generate fixtures.
 	//nolint: gosec // Using a fixed seed will produce the same output on every run.
 	smallRand := rand.New(rand.NewPCG(1, 2))
-	generateFixture(smallRand, SMALL_FIXTURE_COUNT, hostnames[0], viewAppender, durationAppender)
+	generateFixture(smallRand, SMALL_FIXTURE_COUNT, hostnames[0], duckdb)
 	//nolint: gosec // Using a fixed seed will produce the same output on every run.
 	mediumRand := rand.New(rand.NewPCG(1, 2))
-	generateFixture(mediumRand, MEDIUM_FIXTURE_COUNT, hostnames[1], viewAppender, durationAppender)
-
-	// Close appenders
-	err = viewAppender.Close()
-	if err != nil {
-		panic(err)
-	}
-
-	err = durationAppender.Close()
-	if err != nil {
-		panic(err)
-	}
-	err = conn.Close()
-	if err != nil {
-		panic(err)
-	}
-	err = connector.Close()
-	if err != nil {
-		panic(err)
-	}
+	generateFixture(mediumRand, MEDIUM_FIXTURE_COUNT, hostnames[1], duckdb)
 }
 
-func generateFixture(r *rand.Rand, count int, hostname string, viewAppender *goduckdb.Appender, durationAppender *goduckdb.Appender) {
+func generateFixture(r *rand.Rand, count int, hostname string, client *duckdb.Client) {
+	// We should use the Appender API for this, but we were encountering corruption issues and segfaults
+	// from the go-duckdb driver. We can revisit this in the future once it is more stable.
+	//
+	// This is an order of magnitude slower than the Appender API, but it is good enough for now.
 	pageViewHits := generatePageViewHits(r, count, hostname)
 	for _, pv := range pageViewHits {
-		if err := viewAppender.AppendRow(pageViewToValues(r, pv)...); err != nil {
+		err := client.AddPageView(context.Background(), pv)
+		if err != nil {
 			panic(err)
 		}
-	}
 
-	err := viewAppender.Flush()
-	if err != nil {
-		panic(err)
 	}
 
 	pageViewDurations := generatePageViewDurations(r, pageViewHits, count)
 	for _, pd := range pageViewDurations {
-		if err := durationAppender.AppendRow(pageDurationToValues(r, pd)...); err != nil {
+		err := client.AddPageDuration(context.Background(), pd)
+		if err != nil {
 			panic(err)
 		}
-	}
-
-	err = durationAppender.Flush()
-	if err != nil {
-		panic(err)
-	}
-}
-
-func pageViewToValues(r *rand.Rand, pv *model.PageViewHit) []driver.Value {
-	return []driver.Value{
-		pv.Hostname,
-		pv.Pathname,
-		pv.IsUniqueUser,
-		pv.IsUniquePage,
-		pv.Referrer,
-		pv.CountryCode,
-		pv.Language,
-		uint8(pv.BrowserName),
-		uint8(pv.OS),
-		uint8(pv.DeviceType),
-		pv.UTMSource,
-		pv.UTMMedium,
-		pv.UTMCampaign,
-		// Generate a random time.Time between TIME_START and TIME_END.
-		TIME_START.Add(time.Duration(r.Int64N(TIME_END.Unix() - TIME_START.Unix()))),
-	}
-}
-
-func pageDurationToValues(r *rand.Rand, pd *model.PageViewDuration) []driver.Value {
-	return []driver.Value{
-		pd.Hostname,
-		pd.Pathname,
-		pd.IsUniqueUser,
-		pd.IsUniquePage,
-		pd.Referrer,
-		pd.CountryCode,
-		pd.Language,
-		uint8(pd.BrowserName),
-		uint8(pd.OS),
-		uint8(pd.DeviceType),
-		pd.UTMSource,
-		pd.UTMMedium,
-		pd.UTMCampaign,
-		int32(pd.DurationMs),
-		// Generate a random time.Time between TIME_START and TIME_END.
-		TIME_START.Add(time.Duration(r.Int64N(TIME_END.Unix() - TIME_START.Unix()))),
 	}
 }

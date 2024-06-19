@@ -22,12 +22,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type Fixture string
+
 const (
-	// Number of page views to generate.
-	PAGEVIEW_COUNT = 50000
-	// Number of page view durations to generate.
-	// Account for unreliability of failing to send page durations with a lower value.
-	DURATION_COUNT = 40000
+	SIMPLE_FIXTURE Fixture = "./testdata/fixtures/simple.test.db"
 )
 
 var (
@@ -37,7 +35,7 @@ var (
 	TIME_END = time.Now().Add(24 * time.Hour).Format(model.DateFormat)
 )
 
-func SetupDatabase(t *testing.T) *duckdbTest {
+func SetupDatabase(t *testing.T) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
@@ -77,7 +75,7 @@ func SetupDatabase(t *testing.T) *duckdbTest {
 	err = client.CreateUser(ctx, userCreate)
 	require.NoError(err)
 
-	// Create test website
+	// Create test websites.
 	hostnames := []string{"1.example.com", "2.example.com", "3.example.com"}
 	for _, hostname := range hostnames {
 		websiteCreate := model.NewWebsite(
@@ -90,27 +88,26 @@ func SetupDatabase(t *testing.T) *duckdbTest {
 		require.NoError(err)
 	}
 
-	return &duckdbTest{assert, require, ctx, duckdbClient}
+	return assert, require, ctx, duckdbClient
 }
 
-func UseDatabaseFixture(t *testing.T, fixture string) *duckdbTest {
+func UseDatabaseFixture(t *testing.T, fixture Fixture) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
 	ctx := context.Background()
 
-	// In memory duckdb client.
-	client, err := duckdb.NewClient(fixture)
+	client, err := duckdb.NewClient(string(fixture))
 	require.NoError(err)
 	require.NoError(client.Ping())
 	assert.NotNil(client)
 
-	return &duckdbTest{assert, require, ctx, client}
+	return assert, require, ctx, client
 }
 
-func generateFilterAll() *db.Filters {
+func generateFilterAll(hostname string) *db.Filters {
 	return &db.Filters{
-		Hostname:    "1.example.com",
+		Hostname:    hostname,
 		Pathname:    db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")})),
 		Referrer:    db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")})),
 		UTMSource:   db.NewFilter(db.FilterUTMSource, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("bing")})),
