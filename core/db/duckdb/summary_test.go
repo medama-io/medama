@@ -39,7 +39,7 @@ func TestGetWebsiteSummaryFilterAll(t *testing.T) {
 	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
 
 	for _, filter := range generateFilterAll(MEDIUM_HOSTNAME) {
-		summary, err := client.GetWebsiteSummary(ctx, filter)
+		summary, err := client.GetWebsiteSummary(ctx, filter.Filters)
 		require.NoError(err)
 
 		snaps.MatchJSON(t, summary)

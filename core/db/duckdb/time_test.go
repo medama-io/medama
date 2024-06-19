@@ -6,14 +6,14 @@ import (
 	"github.com/gkampitakis/go-snaps/snaps"
 )
 
-func TestGetWebsitePagesSummary(t *testing.T) {
+func TestGetWebsiteTimeSummary(t *testing.T) {
 	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
 
 	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			summary, err := client.GetWebsitePagesSummary(ctx, tc.Filters)
+			summary, err := client.GetWebsiteTimeSummary(ctx, tc.Filters)
 			require.NoError(err)
 
 			snap := NewSnapRecords(summary)
@@ -22,17 +22,17 @@ func TestGetWebsitePagesSummary(t *testing.T) {
 	}
 }
 
-func TestGetWebsitePages(t *testing.T) {
+func TestGetWebsiteTime(t *testing.T) {
 	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
 
 	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			pages, err := client.GetWebsitePages(ctx, tc.Filters)
+			times, err := client.GetWebsiteTime(ctx, tc.Filters)
 			require.NoError(err)
 
-			snap := NewSnapRecords(pages)
+			snap := NewSnapRecords(times)
 			snaps.MatchSnapshot(t, snap.Snapshot())
 		})
 	}

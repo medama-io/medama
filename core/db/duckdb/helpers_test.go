@@ -46,6 +46,18 @@ type SnapRecords struct {
 	Records []interface{}
 }
 
+type TestCase struct {
+	Name    string
+	Filters *db.Filters
+}
+
+func TestMain(m *testing.M) {
+	m.Run()
+
+	// After all tests have run `go-snaps` will sort snapshots
+	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+}
+
 func NewSnapRecords(slice interface{}) SnapRecords {
 	v := reflect.ValueOf(slice)
 	if v.Kind() != reflect.Slice {
@@ -68,13 +80,6 @@ func (s SnapRecords) Snapshot() string {
 		sb.WriteString(fmt.Sprintf("%+v\n", record))
 	}
 	return sb.String()
-}
-
-func TestMain(m *testing.M) {
-	m.Run()
-
-	// After all tests have run `go-snaps` will sort snapshots
-	snaps.Clean(m, snaps.CleanOpts{Sort: true})
 }
 
 func SetupDatabase(t *testing.T) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
@@ -148,8 +153,8 @@ func UseDatabaseFixture(t *testing.T, fixture Fixture) (*assert.Assertions, *req
 }
 
 // Generate an array of filters where we incrementally add one new filter to the previous one.
-func generateFilterAll(hostname string) []*db.Filters {
-	filters := make([]*db.Filters, 0)
+func generateFilterAll(hostname string) []TestCase {
+	filters := make([]TestCase, 0)
 
 	baseFilter := &db.Filters{
 		Hostname:    hostname,
@@ -158,7 +163,7 @@ func generateFilterAll(hostname string) []*db.Filters {
 	}
 	// Make a copy to avoid receiving future modifications.
 	tempFilter := *baseFilter
-	filters = append(filters, &tempFilter)
+	filters = append(filters, TestCase{Name: "Base", Filters: &tempFilter})
 
 	filterSteps := []struct {
 		fieldName string
@@ -206,8 +211,33 @@ func generateFilterAll(hostname string) []*db.Filters {
 
 		// Make a local copy to avoid overwriting the previous filter.
 		tempFilter := *baseFilter
-		filters = append(filters, &tempFilter)
+		filters = append(filters, TestCase{Name: step.fieldName, Filters: &tempFilter})
 	}
 
 	return filters
+}
+
+func getBaseTestCases(hostname string) []TestCase {
+	tc := []TestCase{
+		{
+			Name: "Base",
+			Filters: &db.Filters{
+				Hostname:    hostname,
+				PeriodStart: TIME_START,
+				PeriodEnd:   TIME_END,
+			},
+		},
+		{
+			Name: "Empty",
+			Filters: &db.Filters{
+				Hostname:    DOES_NOT_EXIST_HOSTNAME,
+				PeriodStart: TIME_START,
+				PeriodEnd:   TIME_END,
+			},
+		},
+	}
+
+	tc = append(tc, generateFilterAll(hostname)...)
+
+	return tc
 }

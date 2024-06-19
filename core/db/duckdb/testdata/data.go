@@ -7,11 +7,6 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
-const (
-	// Up to 10000ms (10s) of duration can be randomly generated.
-	DURATION_RANGE = 10000
-)
-
 func generatePageViewHits(r *rand.Rand, count int, hostname string) []*model.PageViewHit {
 	paths := []string{"/", "/about", "/contact"}
 	booleanValues := []bool{true, false}
