@@ -62,6 +62,11 @@ tasks:
       - go get -u ./...
       - go mod tidy
 
+  fixtures:
+    cmds:
+      - rm -rf ./db/duckdb/testdata/fixtures/simple.test.db
+      - go run ./db/duckdb/testdata
+
   lint:
     cmds:
       - golangci-lint run ./... --fix
@@ -72,7 +77,7 @@ tasks:
       - go tool cover -html=coverage.out
 
   test:
-    deps: [generate]
+    deps: [generate:go]
     cmds:
       - go test -v ./...
     env:

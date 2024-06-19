@@ -740,7 +740,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						switch method {
 						case "POST":
 							r.name = "PostAuthLogin"
-							r.summary = "Session Token Authentication."
+							r.summary = "Login"
 							r.operationID = "post-auth-login"
 							r.pathPattern = "/auth/login"
 							r.args = args
@@ -765,7 +765,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						switch method {
 						case "POST":
 							r.name = "PostAuthLogout"
-							r.summary = "Session Token Logout."
+							r.summary = "Logout"
 							r.operationID = "post-auth-logout"
 							r.pathPattern = "/auth/logout"
 							r.args = args
@@ -805,7 +805,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						switch method {
 						case "POST":
 							r.name = "PostEventHit"
-							r.summary = "Send Hit Event."
+							r.summary = "Send Hit Event"
 							r.operationID = "post-event-hit"
 							r.pathPattern = "/event/hit"
 							r.args = args
@@ -830,7 +830,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						switch method {
 						case "GET":
 							r.name = "GetEventPing"
-							r.summary = "Unique User Check."
+							r.summary = "Ping"
 							r.operationID = "get-event-ping"
 							r.pathPattern = "/event/ping"
 							r.args = args
@@ -858,7 +858,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					switch method {
 					case "DELETE":
 						r.name = "DeleteUser"
-						r.summary = "Delete User."
+						r.summary = "Delete User"
 						r.operationID = "delete-user"
 						r.pathPattern = "/user"
 						r.args = args
@@ -866,7 +866,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						return r, true
 					case "GET":
 						r.name = "GetUser"
-						r.summary = "Get User Info."
+						r.summary = "Get User Info"
 						r.operationID = "get-user"
 						r.pathPattern = "/user"
 						r.args = args
@@ -874,7 +874,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						return r, true
 					case "PATCH":
 						r.name = "PatchUser"
-						r.summary = "Update User Info."
+						r.summary = "Update User Info"
 						r.operationID = "patch-user"
 						r.pathPattern = "/user"
 						r.args = args
@@ -944,7 +944,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDBrowsers"
-									r.summary = "Get Browser Stats."
+									r.summary = "Get Browser Stats"
 									r.operationID = "get-website-id-browsers"
 									r.pathPattern = "/website/{hostname}/browsers"
 									r.args = args
@@ -981,7 +981,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									switch method {
 									case "GET":
 										r.name = "GetWebsiteIDCampaigns"
-										r.summary = "Get UTM Campaign Stats."
+										r.summary = "Get UTM Campaign Stats"
 										r.operationID = "get-website-id-campaigns"
 										r.pathPattern = "/website/{hostname}/campaigns"
 										r.args = args
@@ -1006,7 +1006,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									switch method {
 									case "GET":
 										r.name = "GetWebsiteIDCountry"
-										r.summary = "Get Country Stats."
+										r.summary = "Get Country Stats"
 										r.operationID = "get-website-id-country"
 										r.pathPattern = "/website/{hostname}/countries"
 										r.args = args
@@ -1034,7 +1034,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDDevice"
-									r.summary = "Get Device Stats."
+									r.summary = "Get Device Stats"
 									r.operationID = "get-website-id-device"
 									r.pathPattern = "/website/{hostname}/devices"
 									r.args = args
@@ -1059,7 +1059,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDLanguage"
-									r.summary = "Get Language Stats."
+									r.summary = "Get Language Stats"
 									r.operationID = "get-website-id-language"
 									r.pathPattern = "/website/{hostname}/languages"
 									r.args = args
@@ -1084,7 +1084,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDMediums"
-									r.summary = "Get UTM Medium Stats."
+									r.summary = "Get UTM Medium Stats"
 									r.operationID = "get-website-id-mediums"
 									r.pathPattern = "/website/{hostname}/mediums"
 									r.args = args
@@ -1109,7 +1109,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDOs"
-									r.summary = "Get OS Stats."
+									r.summary = "Get OS Stats"
 									r.operationID = "get-website-id-os"
 									r.pathPattern = "/website/{hostname}/os"
 									r.args = args
@@ -1134,7 +1134,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDPages"
-									r.summary = "Get Page Stats."
+									r.summary = "Get Page Stats"
 									r.operationID = "get-website-id-pages"
 									r.pathPattern = "/website/{hostname}/pages"
 									r.args = args
@@ -1159,7 +1159,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDReferrers"
-									r.summary = "Get Referrer Stats."
+									r.summary = "Get Referrer Stats"
 									r.operationID = "get-website-id-referrers"
 									r.pathPattern = "/website/{hostname}/referrers"
 									r.args = args
@@ -1196,7 +1196,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									switch method {
 									case "GET":
 										r.name = "GetWebsiteIDSources"
-										r.summary = "Get UTM Source Stats."
+										r.summary = "Get UTM Source Stats"
 										r.operationID = "get-website-id-sources"
 										r.pathPattern = "/website/{hostname}/sources"
 										r.args = args
@@ -1221,7 +1221,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									switch method {
 									case "GET":
 										r.name = "GetWebsiteIDSummary"
-										r.summary = "Get Stat Summary."
+										r.summary = "Get Stat Summary"
 										r.operationID = "get-website-id-summary"
 										r.pathPattern = "/website/{hostname}/summary"
 										r.args = args
@@ -1249,7 +1249,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								switch method {
 								case "GET":
 									r.name = "GetWebsiteIDTime"
-									r.summary = "Get Time Stats."
+									r.summary = "Get Time Stats"
 									r.operationID = "get-website-id-time"
 									r.pathPattern = "/website/{hostname}/time"
 									r.args = args
@@ -1279,7 +1279,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						switch method {
 						case "GET":
 							r.name = "GetWebsites"
-							r.summary = "List Websites."
+							r.summary = "List Websites"
 							r.operationID = "get-websites"
 							r.pathPattern = "/websites"
 							r.args = args
@@ -1287,7 +1287,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							return r, true
 						case "POST":
 							r.name = "PostWebsites"
-							r.summary = "Add Website."
+							r.summary = "Add Website"
 							r.operationID = "post-websites"
 							r.pathPattern = "/websites"
 							r.args = args
@@ -1316,7 +1316,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							switch method {
 							case "DELETE":
 								r.name = "DeleteWebsitesID"
-								r.summary = "Delete Website."
+								r.summary = "Delete Website"
 								r.operationID = "delete-websites-id"
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
@@ -1324,7 +1324,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								return r, true
 							case "GET":
 								r.name = "GetWebsitesID"
-								r.summary = "Get Website."
+								r.summary = "Get Website"
 								r.operationID = "get-websites-id"
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
@@ -1332,7 +1332,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								return r, true
 							case "PATCH":
 								r.name = "PatchWebsitesID"
-								r.summary = "Update Website."
+								r.summary = "Update Website"
 								r.operationID = "patch-websites-id"
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args

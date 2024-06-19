@@ -7,29 +7,41 @@ import (
 )
 
 func TestAddPageView(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	assert, _, ctx, client := SetupDatabase(t)
+	rows := client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+	var count int
+	err := rows.Scan(&count)
+	assert.NoError(err)
+	assert.Equal(0, count)
 
 	event := &model.PageViewHit{
-		BID:         "test_bid",
-		Hostname:    "medama-test.io",
-		Pathname:    "/",
-		Referrer:    "medama.io",
-		CountryCode: "GB",
-		Language:    "en",
-		BrowserName: model.FirefoxBrowser,
-		OS:          model.WindowsOS,
-		DeviceType:  model.DesktopDevice,
-		UTMSource:   "test_source",
-		UTMMedium:   "test_medium",
-		UTMCampaign: "test_campaign",
+		BID:          "test_bid",
+		Hostname:     "add-page-view-test.io",
+		Pathname:     "/",
+		IsUniqueUser: true,
+		IsUniquePage: true,
+		Referrer:     "medama.io",
+		CountryCode:  "GB",
+		Language:     "en",
+		BrowserName:  model.FirefoxBrowser,
+		OS:           model.WindowsOS,
+		DeviceType:   model.DesktopDevice,
+		UTMSource:    "test_source",
+		UTMMedium:    "test_medium",
+		UTMCampaign:  "test_campaign",
 	}
 
-	err := client.AddPageView(ctx, event)
+	err = client.AddPageView(ctx, event)
 	assert.NoError(err)
+
+	rows = client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+	err = rows.Scan(&count)
+	assert.NoError(err)
+	assert.Equal(1, count)
 }
 
 func TestUpdatePageView(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	assert, _, ctx, client := SetupDatabase(t)
 
 	event := &model.PageViewHit{
 		BID:         "test_updated_bid",

@@ -90,7 +90,7 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "DeleteUser",
-			OperationSummary: "Delete User.",
+			OperationSummary: "Delete User",
 			OperationID:      "delete-user",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -213,7 +213,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "DeleteWebsitesID",
-			OperationSummary: "Delete Website.",
+			OperationSummary: "Delete Website",
 			OperationID:      "delete-websites-id",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -267,7 +267,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 
 // handleGetEventPingRequest handles get-event-ping operation.
 //
-// This is a ping endpoint to determine if the user is unique or not.
+// Ping endpoint to determine if the user is unique or not.
 //
 // GET /event/ping
 func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -296,7 +296,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetEventPing",
-			OperationSummary: "Unique User Check.",
+			OperationSummary: "Ping",
 			OperationID:      "get-event-ping",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -423,7 +423,7 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetUser",
-			OperationSummary: "Get User Info.",
+			OperationSummary: "Get User Info",
 			OperationID:      "get-user",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -546,7 +546,7 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDBrowsers",
-			OperationSummary: "Get Browser Stats.",
+			OperationSummary: "Get Browser Stats",
 			OperationID:      "get-website-id-browsers",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -733,7 +733,7 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDCampaigns",
-			OperationSummary: "Get UTM Campaign Stats.",
+			OperationSummary: "Get UTM Campaign Stats",
 			OperationID:      "get-website-id-campaigns",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -920,7 +920,7 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDCountry",
-			OperationSummary: "Get Country Stats.",
+			OperationSummary: "Get Country Stats",
 			OperationID:      "get-website-id-country",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -1107,7 +1107,7 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDDevice",
-			OperationSummary: "Get Device Stats.",
+			OperationSummary: "Get Device Stats",
 			OperationID:      "get-website-id-device",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -1294,7 +1294,7 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDLanguage",
-			OperationSummary: "Get Language Stats.",
+			OperationSummary: "Get Language Stats",
 			OperationID:      "get-website-id-language",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -1481,7 +1481,7 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDMediums",
-			OperationSummary: "Get UTM Medium Stats.",
+			OperationSummary: "Get UTM Medium Stats",
 			OperationID:      "get-website-id-mediums",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -1668,7 +1668,7 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDOs",
-			OperationSummary: "Get OS Stats.",
+			OperationSummary: "Get OS Stats",
 			OperationID:      "get-website-id-os",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -1855,7 +1855,7 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDPages",
-			OperationSummary: "Get Page Stats.",
+			OperationSummary: "Get Page Stats",
 			OperationID:      "get-website-id-pages",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -2042,7 +2042,7 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDReferrers",
-			OperationSummary: "Get Referrer Stats.",
+			OperationSummary: "Get Referrer Stats",
 			OperationID:      "get-website-id-referrers",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -2229,7 +2229,7 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDSources",
-			OperationSummary: "Get UTM Source Stats.",
+			OperationSummary: "Get UTM Source Stats",
 			OperationID:      "get-website-id-sources",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -2416,7 +2416,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDSummary",
-			OperationSummary: "Get Stat Summary.",
+			OperationSummary: "Get Stat Summary",
 			OperationID:      "get-website-id-summary",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -2599,7 +2599,7 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsiteIDTime",
-			OperationSummary: "Get Time Stats.",
+			OperationSummary: "Get Time Stats",
 			OperationID:      "get-website-id-time",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -2786,7 +2786,7 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsites",
-			OperationSummary: "List Websites.",
+			OperationSummary: "List Websites",
 			OperationID:      "get-websites",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -2913,7 +2913,7 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetWebsitesID",
-			OperationSummary: "Get Website.",
+			OperationSummary: "Get Website",
 			OperationID:      "get-websites-id",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -3055,7 +3055,7 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PatchUser",
-			OperationSummary: "Update User Info.",
+			OperationSummary: "Update User Info",
 			OperationID:      "patch-user",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -3193,7 +3193,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PatchWebsitesID",
-			OperationSummary: "Update Website.",
+			OperationSummary: "Update Website",
 			OperationID:      "patch-websites-id",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -3281,7 +3281,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostAuthLogin",
-			OperationSummary: "Session Token Authentication.",
+			OperationSummary: "Login",
 			OperationID:      "post-auth-login",
 			Body:             request,
 			Params:           middleware.Parameters{},
@@ -3355,7 +3355,7 @@ func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostAuthLogout",
-			OperationSummary: "Session Token Logout.",
+			OperationSummary: "Logout",
 			OperationID:      "post-auth-logout",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -3405,7 +3405,7 @@ func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w
 
 // handlePostEventHitRequest handles post-event-hit operation.
 //
-// Send a hit event to register a user view.
+// Send a hit event to register a user view or interaction.
 //
 // POST /event/hit
 func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -3449,7 +3449,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostEventHit",
-			OperationSummary: "Send Hit Event.",
+			OperationSummary: "Send Hit Event",
 			OperationID:      "post-event-hit",
 			Body:             request,
 			Params: middleware.Parameters{
@@ -3581,7 +3581,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostWebsites",
-			OperationSummary: "Add Website.",
+			OperationSummary: "Add Website",
 			OperationID:      "post-websites",
 			Body:             request,
 			Params:           middleware.Parameters{},

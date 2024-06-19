@@ -101,7 +101,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) AS pageviews,
 			ifnull(ROUND(pageviews / (SELECT total_pageviews FROM total), 4), 0) AS pageviews_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)

@@ -61,19 +61,19 @@ func (s *StartCommand) ParseFlags(args []string) error {
 	fs := flag.NewFlagSet("start", flag.ExitOnError)
 
 	// General settings.
-	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on")
+	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on.")
 	fs.StringVar(&s.Server.Logger, "logger", DefaultLogger, "Logger format (json, pretty)")
 	fs.StringVar(&s.Server.Level, "level", DefaultLoggerLevel, "Logger level (debug, info, warn, error)")
 
 	// Database settings.
-	fs.StringVar(&s.AppDB.Host, "appdb", DefaultSQLiteHost, "Path to app database")
-	fs.StringVar(&s.AnalyticsDB.Host, "analyticsdb", DefaultDuckDBHost, "Path to analytics database")
+	fs.StringVar(&s.AppDB.Host, "appdb", DefaultSQLiteHost, "Path to app database.")
+	fs.StringVar(&s.AnalyticsDB.Host, "analyticsdb", DefaultDuckDBHost, "Path to analytics database.")
 
 	// Misc settings.
-	fs.BoolVar(&s.Server.UseEnvironment, "env", false, "Use environment variables for configuration")
+	fs.BoolVar(&s.Server.UseEnvironment, "env", false, "Opt-in to allow environment variables to be used for configuration. Flags will still override environment variables.")
 
 	// Handle array type flags.
-	corsAllowedOrigins := fs.String("corsorigins", "", "Comma separated list of allowed origins on API routes")
+	corsAllowedOrigins := fs.String("corsorigins", "", "Comma separated list of allowed CORS origins on API routes. Useful for external dashboards that may host the frontend on a different domain.")
 
 	// Parse flags.
 	err := fs.Parse(args)
@@ -111,9 +111,9 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	defer duckdb.Close()
 
 	// Run migrations
-	m := migrations.NewMigrationsService(ctx, sqlite, duckdb)
-	if m == nil {
-		return errors.New("could not create migrations service")
+	m, err := migrations.NewMigrationsService(ctx, sqlite, duckdb)
+	if err != nil {
+		return errors.Wrap(err, "failed to create migrations service")
 	}
 	err = m.AutoMigrate(ctx)
 	if err != nil {
