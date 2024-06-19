@@ -22,7 +22,7 @@ type Handler interface {
 	DeleteWebsitesID(ctx context.Context, params DeleteWebsitesIDParams) (DeleteWebsitesIDRes, error)
 	// GetEventPing implements get-event-ping operation.
 	//
-	// This is a ping endpoint to determine if the user is unique or not.
+	// Ping endpoint to determine if the user is unique or not.
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
@@ -142,7 +142,7 @@ type Handler interface {
 	PostAuthLogout(ctx context.Context, params PostAuthLogoutParams) (PostAuthLogoutRes, error)
 	// PostEventHit implements post-event-hit operation.
 	//
-	// Send a hit event to register a user view.
+	// Send a hit event to register a user view or interaction.
 	//
 	// POST /event/hit
 	PostEventHit(ctx context.Context, req EventHit, params PostEventHitParams) (PostEventHitRes, error)
