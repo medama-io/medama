@@ -14,7 +14,6 @@
 	},
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.0.18",
-		"@legendapp/state": "^2.1.14",
 		"@mantine/core": "^7.10.2",
 		"@mantine/form": "^7.10.2",
 		"@mantine/hooks": "^7.10.2",
@@ -23,7 +22,7 @@
 		"clsx": "^2.1.1",
 		"date-fns": "^3.6.0",
 		"isbot": "^5.1.9",
-		"mantine-datatable": "^7.10.2",
+		"mantine-datatable": "^7.10.3",
 		"mantine-form-zod-resolver": "^1.1.0",
 		"react": "18.3.0-canary-8039e6d0b-20231026",
 		"react-dom": "18.3.0-canary-8039e6d0b-20231026",

@@ -1,15 +1,16 @@
+import { Text } from '@mantine/core';
 import {
-	isRouteErrorResponse,
+	json,
+	redirect,
 	useLoaderData,
 	useRevalidator,
-	useRouteError,
-	json,
 	type MetaFunction,
 } from '@remix-run/react';
 import { useEffect } from 'react';
 
-import { expireSession, hasSession } from '@/utils/cookies';
 import { authLogout } from '@/api/auth';
+import { InnerHeader } from '@/components/layout/InnerHeader';
+import { expireSession, hasSession } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -29,9 +30,7 @@ export const clientLoader = async () => {
 		return json('You have been sucessfully logged out.');
 	}
 
-	throw json('You are not logged in.', {
-		status: 401,
-	});
+	return redirect('/login');
 };
 
 export default function Index() {
@@ -45,22 +44,13 @@ export default function Index() {
 	}, [revalidator]);
 
 	return (
-		<div>
-			<h1>Logout</h1>
-			<p>You have been logged out.</p>
-		</div>
+		<>
+			<InnerHeader>
+				<h1>Log out</h1>
+			</InnerHeader>
+			<main>
+				<Text>You have been logged out.</Text>
+			</main>
+		</>
 	);
 }
-
-export const ErrorBoundary = () => {
-	const error = useRouteError();
-
-	if (isRouteErrorResponse(error) && error.status === 401) {
-		return (
-			<div>
-				<h1>Logout</h1>
-				<p>You are not logged in.</p>
-			</div>
-		);
-	}
-};

@@ -1283,7 +1283,7 @@ components:
         username:
           type: string
           minLength: 3
-          maxLength: 120
+          maxLength: 48
         password:
           type: string
           minLength: 5

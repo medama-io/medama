@@ -7,158 +7,158 @@
 export interface paths {
   "/auth/login": {
     /**
-     * Session Token Authentication.
+     * Login
      * @description Login to the service and retrieve a session token for authentication.
      */
     post: operations["post-auth-login"];
   };
   "/auth/logout": {
     /**
-     * Session Token Logout.
+     * Logout
      * @description Logout of the service and destroy the session token.
      */
     post: operations["post-auth-logout"];
   };
   "/event/hit": {
     /**
-     * Send Hit Event.
-     * @description Send a hit event to register a user view.
+     * Send Hit Event
+     * @description Send a hit event to register a user view or interaction.
      */
     post: operations["post-event-hit"];
   };
   "/event/ping": {
     /**
-     * Unique User Check.
-     * @description This is a ping endpoint to determine if the user is unique or not.
+     * Ping
+     * @description Ping endpoint to determine if the user is unique or not.
      */
     get: operations["get-event-ping"];
   };
   "/user": {
     /**
-     * Get User Info.
+     * Get User Info
      * @description Retrieve the information of the user with the matching user ID.
      */
     get: operations["get-user"];
     /**
-     * Delete User.
+     * Delete User
      * @description Delete a user account.
      */
     delete: operations["delete-user"];
     /**
-     * Update User Info.
+     * Update User Info
      * @description Update a user account's details.
      */
     patch: operations["patch-user"];
   };
   "/websites": {
     /**
-     * List Websites.
+     * List Websites
      * @description Get a list of all websites from the user.
      */
     get: operations["get-websites"];
     /**
-     * Add Website.
+     * Add Website
      * @description Add a new website.
      */
     post: operations["post-websites"];
   };
   "/websites/{hostname}": {
     /**
-     * Get Website.
+     * Get Website
      * @description Get website details for an individual website.
      */
     get: operations["get-websites-id"];
     /**
-     * Delete Website.
+     * Delete Website
      * @description Delete a website.
      */
     delete: operations["delete-websites-id"];
     /**
-     * Update Website.
+     * Update Website
      * @description Update a website's information.
      */
     patch: operations["patch-websites-id"];
   };
   "/website/{hostname}/summary": {
     /**
-     * Get Stat Summary.
+     * Get Stat Summary
      * @description Get a summary of the website's stats.
      */
     get: operations["get-website-id-summary"];
   };
   "/website/{hostname}/pages": {
     /**
-     * Get Page Stats.
+     * Get Page Stats
      * @description Get a list of pages and their stats.
      */
     get: operations["get-website-id-pages"];
   };
   "/website/{hostname}/time": {
     /**
-     * Get Time Stats.
+     * Get Time Stats
      * @description Get a list of pages and their time stats.
      */
     get: operations["get-website-id-time"];
   };
   "/website/{hostname}/referrers": {
     /**
-     * Get Referrer Stats.
+     * Get Referrer Stats
      * @description Get a list of referrers and their stats.
      */
     get: operations["get-website-id-referrers"];
   };
   "/website/{hostname}/sources": {
     /**
-     * Get UTM Source Stats.
+     * Get UTM Source Stats
      * @description Get a list of UTM sources and their stats.
      */
     get: operations["get-website-id-sources"];
   };
   "/website/{hostname}/mediums": {
     /**
-     * Get UTM Medium Stats.
+     * Get UTM Medium Stats
      * @description Get a list of UTM mediums and their stats.
      */
     get: operations["get-website-id-mediums"];
   };
   "/website/{hostname}/campaigns": {
     /**
-     * Get UTM Campaign Stats.
+     * Get UTM Campaign Stats
      * @description Get a list of UTM campaigns and their stats.
      */
     get: operations["get-website-id-campaigns"];
   };
   "/website/{hostname}/browsers": {
     /**
-     * Get Browser Stats.
+     * Get Browser Stats
      * @description Get a list of browsers and their stats.
      */
     get: operations["get-website-id-browsers"];
   };
   "/website/{hostname}/os": {
     /**
-     * Get OS Stats.
+     * Get OS Stats
      * @description Get a list of OS and their stats.
      */
     get: operations["get-website-id-os"];
   };
   "/website/{hostname}/devices": {
     /**
-     * Get Device Stats.
+     * Get Device Stats
      * @description Get a list of devices and their stats.
      */
     get: operations["get-website-id-device"];
   };
   "/website/{hostname}/countries": {
     /**
-     * Get Country Stats.
+     * Get Country Stats
      * @description Get a list of countries and their stats.
      */
     get: operations["get-website-id-country"];
   };
   "/website/{hostname}/languages": {
     /**
-     * Get Language Stats.
+     * Get Language Stats
      * @description Get a list of languages and their stats.
      */
     get: operations["get-website-id-language"];
@@ -651,7 +651,7 @@ export type external = Record<string, never>;
 export interface operations {
 
   /**
-   * Session Token Authentication.
+   * Login
    * @description Login to the service and retrieve a session token for authentication.
    */
   "post-auth-login": {
@@ -677,7 +677,7 @@ export interface operations {
     };
   };
   /**
-   * Session Token Logout.
+   * Logout
    * @description Logout of the service and destroy the session token.
    */
   "post-auth-logout": {
@@ -700,8 +700,8 @@ export interface operations {
     };
   };
   /**
-   * Send Hit Event.
-   * @description Send a hit event to register a user view.
+   * Send Hit Event
+   * @description Send a hit event to register a user view or interaction.
    */
   "post-event-hit": {
     parameters: {
@@ -729,8 +729,8 @@ export interface operations {
     };
   };
   /**
-   * Unique User Check.
-   * @description This is a ping endpoint to determine if the user is unique or not.
+   * Ping
+   * @description Ping endpoint to determine if the user is unique or not.
    */
   "get-event-ping": {
     parameters: {
@@ -761,7 +761,7 @@ export interface operations {
     };
   };
   /**
-   * Get User Info.
+   * Get User Info
    * @description Retrieve the information of the user with the matching user ID.
    */
   "get-user": {
@@ -784,7 +784,7 @@ export interface operations {
     };
   };
   /**
-   * Delete User.
+   * Delete User
    * @description Delete a user account.
    */
   "delete-user": {
@@ -806,7 +806,7 @@ export interface operations {
     };
   };
   /**
-   * Update User Info.
+   * Update User Info
    * @description Update a user account's details.
    */
   "patch-user": {
@@ -836,7 +836,7 @@ export interface operations {
     };
   };
   /**
-   * List Websites.
+   * List Websites
    * @description Get a list of all websites from the user.
    */
   "get-websites": {
@@ -862,7 +862,7 @@ export interface operations {
     };
   };
   /**
-   * Add Website.
+   * Add Website
    * @description Add a new website.
    */
   "post-websites": {
@@ -885,7 +885,7 @@ export interface operations {
     };
   };
   /**
-   * Get Website.
+   * Get Website
    * @description Get website details for an individual website.
    */
   "get-websites-id": {
@@ -911,7 +911,7 @@ export interface operations {
     };
   };
   /**
-   * Delete Website.
+   * Delete Website
    * @description Delete a website.
    */
   "delete-websites-id": {
@@ -935,7 +935,7 @@ export interface operations {
     };
   };
   /**
-   * Update Website.
+   * Update Website
    * @description Update a website's information.
    */
   "patch-websites-id": {
@@ -967,7 +967,7 @@ export interface operations {
     };
   };
   /**
-   * Get Stat Summary.
+   * Get Stat Summary
    * @description Get a summary of the website's stats.
    */
   "get-website-id-summary": {
@@ -1011,7 +1011,7 @@ export interface operations {
     };
   };
   /**
-   * Get Page Stats.
+   * Get Page Stats
    * @description Get a list of pages and their stats.
    */
   "get-website-id-pages": {
@@ -1054,7 +1054,7 @@ export interface operations {
     };
   };
   /**
-   * Get Time Stats.
+   * Get Time Stats
    * @description Get a list of pages and their time stats.
    */
   "get-website-id-time": {
@@ -1097,7 +1097,7 @@ export interface operations {
     };
   };
   /**
-   * Get Referrer Stats.
+   * Get Referrer Stats
    * @description Get a list of referrers and their stats.
    */
   "get-website-id-referrers": {
@@ -1141,7 +1141,7 @@ export interface operations {
     };
   };
   /**
-   * Get UTM Source Stats.
+   * Get UTM Source Stats
    * @description Get a list of UTM sources and their stats.
    */
   "get-website-id-sources": {
@@ -1185,7 +1185,7 @@ export interface operations {
     };
   };
   /**
-   * Get UTM Medium Stats.
+   * Get UTM Medium Stats
    * @description Get a list of UTM mediums and their stats.
    */
   "get-website-id-mediums": {
@@ -1229,7 +1229,7 @@ export interface operations {
     };
   };
   /**
-   * Get UTM Campaign Stats.
+   * Get UTM Campaign Stats
    * @description Get a list of UTM campaigns and their stats.
    */
   "get-website-id-campaigns": {
@@ -1273,7 +1273,7 @@ export interface operations {
     };
   };
   /**
-   * Get Browser Stats.
+   * Get Browser Stats
    * @description Get a list of browsers and their stats.
    */
   "get-website-id-browsers": {
@@ -1317,7 +1317,7 @@ export interface operations {
     };
   };
   /**
-   * Get OS Stats.
+   * Get OS Stats
    * @description Get a list of OS and their stats.
    */
   "get-website-id-os": {
@@ -1361,7 +1361,7 @@ export interface operations {
     };
   };
   /**
-   * Get Device Stats.
+   * Get Device Stats
    * @description Get a list of devices and their stats.
    */
   "get-website-id-device": {
@@ -1405,7 +1405,7 @@ export interface operations {
     };
   };
   /**
-   * Get Country Stats.
+   * Get Country Stats
    * @description Get a list of countries and their stats.
    */
   "get-website-id-country": {
@@ -1449,7 +1449,7 @@ export interface operations {
     };
   };
   /**
-   * Get Language Stats.
+   * Get Language Stats
    * @description Get a list of languages and their stats.
    */
   "get-website-id-language": {

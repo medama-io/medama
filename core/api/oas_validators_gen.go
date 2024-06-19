@@ -20,7 +20,7 @@ func (s *AuthLogin) Validate() error {
 		if err := (validate.String{
 			MinLength:    3,
 			MinLengthSet: true,
-			MaxLength:    120,
+			MaxLength:    48,
 			MaxLengthSet: true,
 			Email:        false,
 			Hostname:     false,
