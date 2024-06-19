@@ -1,0 +1,18 @@
+
+[TestGetWebsiteSummary - 1]
+{
+ "Bounces": 250755,
+ "Duration": 4998,
+ "Pageviews": 1000000,
+ "Visitors": 500559
+}
+---
+
+[TestGetWebsiteSummaryFilterAll - 1]
+{
+ "Bounces": 1071,
+ "Duration": 5019,
+ "Pageviews": 4183,
+ "Visitors": 2113
+}
+---

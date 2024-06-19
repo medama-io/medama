@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gkampitakis/go-snaps/snaps"
 	_ "github.com/marcboeker/go-duckdb"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
@@ -26,6 +27,9 @@ type Fixture string
 
 const (
 	SIMPLE_FIXTURE Fixture = "./testdata/fixtures/simple.test.db"
+
+	SMALL_HOSTNAME  = "small.example.com"
+	MEDIUM_HOSTNAME = "medium.example.com"
 )
 
 var (
@@ -34,6 +38,13 @@ var (
 	//nolint:gochecknoglobals // Reason: These are used in every test.
 	TIME_END = time.Now().Add(24 * time.Hour).Format(model.DateFormat)
 )
+
+func TestMain(m *testing.M) {
+	m.Run()
+
+	// After all tests have run `go-snaps` will sort snapshots
+	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+}
 
 func SetupDatabase(t *testing.T) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
 	t.Helper()

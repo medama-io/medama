@@ -3,46 +3,43 @@ package duckdb_test
 import (
 	"testing"
 
+	"github.com/gkampitakis/go-snaps/snaps"
 	"github.com/medama-io/medama/db"
 )
 
 func TestGetWebsiteSummary(t *testing.T) {
-	assert, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
-	println("I RAN")
+	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
 	summary, err := client.GetWebsiteSummary(ctx, &db.Filters{
-		Hostname:    "medium.example.com",
+		Hostname:    MEDIUM_HOSTNAME,
 		PeriodStart: TIME_START,
 		PeriodEnd:   TIME_END,
 	})
-	println("I RAN2")
 	require.NoError(err)
 
-	assert.Equal(871, summary.Visitors)
-	assert.Equal(1707, summary.Pageviews)
-	assert.Equal(349, summary.Bounces)
-	assert.Equal(4994, summary.Duration)
+	snaps.MatchJSON(t, summary)
 }
 
-/* func testGetWebsiteSummaryEmpty(t *duckdbTest) {
-	summary, err := t.client.GetWebsiteSummary(t.ctx, &db.Filters{
+func TestGetWebsiteSummaryEmpty(t *testing.T) {
+	assert, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+
+	summary, err := client.GetWebsiteSummary(ctx, &db.Filters{
 		Hostname:    "do-not-exist.example.com",
 		PeriodStart: TIME_START,
 		PeriodEnd:   TIME_END,
 	})
-	t.require.NoError(err)
+	require.NoError(err)
 
-	t.assert.Equal(0, summary.Visitors)
-	t.assert.Equal(0, summary.Pageviews)
-	t.assert.Equal(0, summary.Bounces)
-	t.assert.Equal(0, summary.Duration)
+	assert.Equal(0, summary.Visitors)
+	assert.Equal(0, summary.Pageviews)
+	assert.Equal(0, summary.Bounces)
+	assert.Equal(0, summary.Duration)
 }
 
-func testGetWebsiteSummaryFilterAll(t *duckdbTest) {
-	summary, err := t.client.GetWebsiteSummary(t.ctx, generateFilterAll())
-	t.require.NoError(err)
+func TestGetWebsiteSummaryFilterAll(t *testing.T) {
+	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
 
-	t.assert.Equal(871, summary.Visitors)
-	t.assert.Equal(1707, summary.Pageviews)
-	t.assert.Equal(349, summary.Bounces)
-	t.assert.Equal(4994, summary.Duration)
-} */
+	summary, err := client.GetWebsiteSummary(ctx, generateFilterAll(MEDIUM_HOSTNAME))
+	require.NoError(err)
+
+	snaps.MatchJSON(t, summary)
+}
