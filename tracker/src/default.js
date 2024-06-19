@@ -61,14 +61,14 @@ var DurationPayload;
 	const currentScript = document.currentScript;
 
 	/**
-	 * Get API URL from data-host in script tag with the correct protocol.
-	 * If the data-host attribute is not set, then we use the current script's
+	 * Get API URL from data-api in script tag with the correct protocol.
+	 * If the data-api attribute is not set, then we use the current script's
 	 * src attribute to determine the host.
 	 */
 	const host = currentScript.getAttribute('data-api')
-	? `${document.location.protocol}//${currentScript.getAttribute('data-api')}`
-	// @ts-ignore - We know this won't be an SVGScriptElement.
-	: currentScript.src.replace(/[^\/]+$/, 'api/');
+		? `${document.location.protocol}//${currentScript.getAttribute('data-api')}`
+		: // @ts-ignore - We know this won't be an SVGScriptElement.
+			currentScript.src.replace(/[^\/]+$/, 'api/');
 
 	/**
 	 * Generate a unique ID for linking multiple beacon events together for the same page

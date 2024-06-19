@@ -22,18 +22,17 @@ func NewClient(host string) (*Client, error) {
 		return nil, errors.Wrap(err, "duckdb")
 	}
 
-	// Enable ICU extension
-	_, err = db.Exec(`--sql
-		INSTALL icu;`)
-	if err != nil {
-		return nil, errors.Wrap(err, "duckdb")
+	bootQueries := []string{
+		// Enable and load the ICU extension.
+		"INSTALL icu;",
+		"LOAD icu;",
 	}
 
-	// Load ICU extension
-	_, err = db.Exec(`--sql
-		LOAD icu;`)
-	if err != nil {
-		return nil, errors.Wrap(err, "duckdb")
+	for _, query := range bootQueries {
+		_, err = db.Exec(query)
+		if err != nil {
+			return nil, errors.Wrap(err, "duckdb")
+		}
 	}
 
 	return &Client{

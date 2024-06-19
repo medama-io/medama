@@ -26,6 +26,7 @@
 
 # DBs
 **/*.db
+!**/*.test.db
 **/*.wal
 
 # Runtime data

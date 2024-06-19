@@ -45,7 +45,7 @@ func CreateMigrationsTable(c *sqlite.Client) error {
 }
 
 // NewMigrationsService creates a new migrations service.
-func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *duckdb.Client) *Service {
+func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *duckdb.Client) (*Service, error) {
 	// Setup migration functions
 	sqliteMigrations := []*Migration[sqlite.Client]{
 		{ID: 1, Name: "0001_sqlite_schema.go", Type: SQLite, Up: Up0001, Down: Down0001},
@@ -59,7 +59,7 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 	err := CreateMigrationsTable(sqliteC)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to create migrations table")
-		return nil
+		return nil, err
 	}
 	log.Debug().Msg("migrations table found")
 
@@ -68,7 +68,7 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 		duckdbMigrations: duckdbMigrations,
 		sqlite:           sqliteC,
 		sqliteMigrations: sqliteMigrations,
-	}
+	}, nil
 }
 
 // runMigrator uses the given client to run the migrations.
