@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"math/rand/v2"
 	"testing"
 	"time"
 
 	_ "github.com/marcboeker/go-duckdb"
+	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/migrations"
@@ -23,10 +24,10 @@ import (
 
 const (
 	// Number of page views to generate.
-	PAGEVIEW_COUNT = 5000
+	PAGEVIEW_COUNT = 50000
 	// Number of page view durations to generate.
 	// Account for unreliability of failing to send page durations with a lower value.
-	DURATION_COUNT = 4000
+	DURATION_COUNT = 40000
 )
 
 var (
@@ -92,76 +93,36 @@ func SetupDatabase(t *testing.T) *duckdbTest {
 	return &duckdbTest{assert, require, ctx, duckdbClient}
 }
 
-func SetupDatabaseWithPageViews(t *testing.T) *duckdbTest {
+func UseDatabaseFixture(t *testing.T, fixture string) *duckdbTest {
 	t.Helper()
-	db := SetupDatabase(t)
+	assert := assert.New(t)
+	require := require.New(t)
+	ctx := context.Background()
 
-	// Using a fixed seed will produce the same output on every run.
-	r := rand.New(rand.NewPCG(1, 2))
+	// In memory duckdb client.
+	client, err := duckdb.NewClient(fixture)
+	require.NoError(err)
+	require.NoError(client.Ping())
+	assert.NotNil(client)
 
-	// Generate page view hits.
-	pageViewHits := generatePageViewHits(r, PAGEVIEW_COUNT)
-	for _, pageViewHit := range pageViewHits {
-		err := db.client.AddPageView(db.ctx, pageViewHit)
-		db.require.NoError(err)
-	}
-
-	// Generate page view durations.
-	pageViewDurations := generatePageViewDurations(r, pageViewHits, DURATION_COUNT)
-	for _, pageViewDuration := range pageViewDurations {
-		err := db.client.AddPageDuration(db.ctx, pageViewDuration)
-		db.require.NoError(err)
-	}
-
-	return db
+	return &duckdbTest{assert, require, ctx, client}
 }
 
-func generatePageViewHits(r *rand.Rand, count int) []*model.PageViewHit {
-	hostnames := []string{"1.example.com", "2.example.com", "3.example.com"}
-	paths := []string{"/", "/about", "/contact", "/pricing", "/blog"}
-	booleanValues := []bool{true, false}
-	referrers := []string{"1.example.com", "medama.io", "google.com"}
-	countryCodes := []string{"GB", "US", "DE", "FR", "ES", "IT"}
-	languages := []string{"en", "de", "fr", "es", "it"}
-	browserNames := []model.BrowserName{model.ChromeBrowser, model.FirefoxBrowser, model.SafariBrowser, model.EdgeBrowser}
-	oses := []model.OSName{model.WindowsOS, model.MacOS, model.LinuxOS, model.AndroidOS, model.IOS}
-	deviceTypes := []model.DeviceType{model.DesktopDevice, model.MobileDevice, model.TabletDevice}
-	utmSources := []string{"", "bing", "twitter"}
-	utmMediums := []string{"", "cpc", "organic"}
-	utmCampaigns := []string{"", "summer", "winter"}
+func generateFilterAll() *db.Filters {
+	return &db.Filters{
+		Hostname:    "1.example.com",
+		Pathname:    db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")})),
+		Referrer:    db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")})),
+		UTMSource:   db.NewFilter(db.FilterUTMSource, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("bing")})),
+		UTMMedium:   db.NewFilter(db.FilterUTMMedium, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("organic")})),
+		UTMCampaign: db.NewFilter(db.FilterUTMCampaign, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("summer")})),
+		// Browser:     db.NewFilter(db.FilterBrowser, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Chrome")})),
+		// OS:          db.NewFilter(db.FilterOS, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Windows")})),
+		// Device:      db.NewFilter(db.FilterDevice, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Desktop")})),
+		// Country:     db.NewFilter(db.FilterCountry, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("GB")})),
+		// Language:    db.NewFilter(db.FilterLanguage, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("en")})),
 
-	pageViewHits := make([]*model.PageViewHit, count)
-
-	for i := range count {
-		pageViewHits[i] = &model.PageViewHit{
-			Hostname:     hostnames[r.IntN(len(hostnames))],
-			Pathname:     paths[r.IntN(len(paths))],
-			IsUniqueUser: booleanValues[r.IntN(len(booleanValues))],
-			IsUniquePage: booleanValues[r.IntN(len(booleanValues))],
-			Referrer:     referrers[r.IntN(len(referrers))],
-			CountryCode:  countryCodes[r.IntN(len(countryCodes))],
-			Language:     languages[r.IntN(len(languages))],
-			BrowserName:  browserNames[r.IntN(len(browserNames))],
-			OS:           oses[r.IntN(len(oses))],
-			DeviceType:   deviceTypes[r.IntN(len(deviceTypes))],
-			UTMSource:    utmSources[r.IntN(len(utmSources))],
-			UTMMedium:    utmMediums[r.IntN(len(utmMediums))],
-			UTMCampaign:  utmCampaigns[r.IntN(len(utmCampaigns))],
-		}
+		PeriodStart: TIME_START,
+		PeriodEnd:   TIME_END,
 	}
-
-	return pageViewHits
-}
-
-func generatePageViewDurations(r *rand.Rand, hits []*model.PageViewHit, count int) []*model.PageViewDuration {
-	durations := make([]*model.PageViewDuration, count)
-
-	for i := range count {
-		durations[i] = &model.PageViewDuration{
-			PageViewHit: *hits[i],
-			DurationMs:  r.IntN(10000),
-		}
-	}
-
-	return durations
 }

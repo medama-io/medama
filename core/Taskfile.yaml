@@ -56,6 +56,11 @@ tasks:
   generate:
     deps: [generate:go, dashboard:embed, tracker:embed]
 
+  fixtures:
+    cmds:
+      - rm -rf ./db/duckdb/testdata/fixtures/simple.test.db
+      - go run ./db/duckdb/testdata
+
   update:
     aliases: [upgrade]
     cmds:

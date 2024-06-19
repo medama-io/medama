@@ -28,9 +28,12 @@ func TestAll(t *testing.T) {
 	defer db.client.Close()
 
 	tests := map[string]func(*duckdbTest){
-		"TestAddPageView":       testAddPageView,
-		"TestAddPageDuration":   testAddPageDuration,
-		"TestGetWebsiteSummary": testGetWebsiteSummary,
+		"TestAddPageView":     testAddPageView,
+		"TestAddPageDuration": testAddPageDuration,
+		// Summary
+		"TestGetWebsiteSummary":          testGetWebsiteSummary,
+		"TestGetWebsiteSummaryEmpty":     testGetWebsiteSummaryEmpty,
+		"TestGetWebsiteSummaryFilterAll": testGetWebsiteSummaryFilterAll,
 	}
 
 	for name, test := range tests {
