@@ -38,8 +38,12 @@ import '@mantine/core/styles/Title.css';
 import '@/styles/global.css';
 import 'mantine-datatable/styles.css';
 
-import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import {
+	ColorSchemeScript,
+	Flex,
+	Loader,
+	MantineProvider,
+} from '@mantine/core';
 import {
 	Links,
 	Meta,
@@ -48,16 +52,15 @@ import {
 	ScrollRestoration,
 	isRouteErrorResponse,
 	json,
+	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
 
 import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
+import { InternalServerError, NotFoundError } from '@/components/layout/Error';
 import theme from '@/styles/theme';
 import { hasSession } from '@/utils/cookies';
-import { InternalServerError, NotFoundError } from '@/components/layout/Error';
-
-enableReactUse();
 
 interface LoaderData {
 	isLoggedIn: boolean;
@@ -139,6 +142,8 @@ export const Document = ({ children }: DocumentProps) => {
 };
 
 export default function App() {
+	// Trigger loader for session check.
+	useLoaderData<LoaderData>();
 	return (
 		<Document>
 			<Outlet />
@@ -149,7 +154,9 @@ export default function App() {
 export const HydrateFallback = () => {
 	return (
 		<Document>
-			<p>Loading...</p>
+			<Flex justify="center" align="center" style={{ height: '90vh' }}>
+				<Loader color="#17cd8c" type="bars" />
+			</Flex>
 		</Document>
 	);
 };

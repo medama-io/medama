@@ -1,8 +1,36 @@
 .wrapper {
+	margin: 0 auto;
+	padding: 32px;
+
+	width: 380px;
 	justify-content: center;
-	max-width: 420px;
+
+	border-radius: 8px;
 }
 
-.title {
-	font-weight: 700;
+.submit {
+	width: 100%;
+	height: 40px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	font-size: 14px;
+
+	padding: 0 16px;
+	color: var(--me-color-text-light);
+
+	background-color: var(--me-color-logo-green-dark);
+
+	border-radius: 8px;
+	cursor: pointer;
+
+	&:hover {
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	span {
+		font-size: 14px;
+	}
 }

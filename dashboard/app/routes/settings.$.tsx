@@ -7,7 +7,7 @@ import {
 } from '@remix-run/react';
 
 import type { components } from '@/api/types';
-import { userGet } from '@/api/user';
+import { userGet, userLoggedIn } from '@/api/user';
 import { Settings } from '@/components/settings/Settings';
 import { hasSession } from '@/utils/cookies';
 
@@ -25,6 +25,8 @@ export const meta: MetaFunction = () => {
 const ACCEPTED_SETTINGS = new Set(['account', 'advanced']);
 
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
+	await userLoggedIn();
+
 	// If pathname does not match accepted settings pages, 404
 	const url = new URL(request.url);
 	const pathname = url.pathname.replace('/settings', '');
@@ -32,11 +34,6 @@ export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 		throw json('Not found', {
 			status: 404,
 		});
-	}
-
-	// Check for session cookie and redirect to login if missing
-	if (!hasSession()) {
-		throw redirect('/login');
 	}
 
 	const { data } = await userGet();

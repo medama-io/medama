@@ -1,13 +1,14 @@
 import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';
+import { InnerHeader } from '@/components/layout/InnerHeader';
 import { Login } from '@/components/login/Login';
 import { LOGGED_IN_COOKIE, hasSession } from '@/utils/cookies';
 import {
+	json,
+	redirect,
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
-	json,
 	type MetaFunction,
-	redirect,
 } from '@remix-run/react';
 
 export const meta: MetaFunction = () => {
@@ -25,7 +26,7 @@ export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 		return redirect('/');
 	}
 
-	return { status: 200 };
+	return null;
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
@@ -65,8 +66,13 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 
 export default function Index() {
 	return (
-		<main>
-			<Login />
-		</main>
+		<>
+			<InnerHeader>
+				<h1>Log In</h1>
+			</InnerHeader>
+			<main>
+				<Login />
+			</main>
+		</>
 	);
 }
