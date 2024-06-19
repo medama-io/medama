@@ -23,7 +23,7 @@ func TestGetWebsiteSummaryEmpty(t *testing.T) {
 	assert, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
 
 	summary, err := client.GetWebsiteSummary(ctx, &db.Filters{
-		Hostname:    "do-not-exist.example.com",
+		Hostname:    DOES_NOT_EXIST_HOSTNAME,
 		PeriodStart: TIME_START,
 		PeriodEnd:   TIME_END,
 	})
@@ -45,3 +45,7 @@ func TestGetWebsiteSummaryFilterAll(t *testing.T) {
 		snaps.MatchJSON(t, summary)
 	}
 }
+
+// TODO: Need to make a new deterministic time fixture for these tests.
+// func TestGetWebsiteIntervals(t *testing.T) {}
+// func TestGetWebsiteLast24Hours(t *testing.T) {}

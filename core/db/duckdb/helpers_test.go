@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -28,8 +30,9 @@ type Fixture string
 const (
 	SIMPLE_FIXTURE Fixture = "./testdata/fixtures/simple.test.db"
 
-	SMALL_HOSTNAME  = "small.example.com"
-	MEDIUM_HOSTNAME = "medium.example.com"
+	SMALL_HOSTNAME          = "small.example.com"
+	MEDIUM_HOSTNAME         = "medium.example.com"
+	DOES_NOT_EXIST_HOSTNAME = "does-not-exist.example.com"
 )
 
 var (
@@ -38,6 +41,34 @@ var (
 	//nolint:gochecknoglobals // Reason: These are used in every test.
 	TIME_END = time.Now().Add(24 * time.Hour).Format(model.DateFormat)
 )
+
+type SnapRecords struct {
+	Records []interface{}
+}
+
+func NewSnapRecords(slice interface{}) SnapRecords {
+	v := reflect.ValueOf(slice)
+	if v.Kind() != reflect.Slice {
+		panic(fmt.Errorf("expected a slice, got %T", slice))
+	}
+
+	interfaceSlice := make([]interface{}, v.Len())
+	for i := 0; i < v.Len(); i++ {
+		interfaceSlice[i] = v.Index(i).Interface()
+	}
+
+	return SnapRecords{Records: interfaceSlice}
+}
+
+// Generate a new snapshot for the given records.
+func (s SnapRecords) Snapshot() string {
+	var sb strings.Builder
+	sb.WriteString("RECORDS:\n")
+	for _, record := range s.Records {
+		sb.WriteString(fmt.Sprintf("%+v\n", record))
+	}
+	return sb.String()
+}
 
 func TestMain(m *testing.M) {
 	m.Run()
@@ -133,16 +164,19 @@ func generateFilterAll(hostname string) []*db.Filters {
 		fieldName string
 		filter    *db.Filter
 	}{
-		{"Pathname", db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")}))},
-		{"Referrer", db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")}))},
+		// Inverted list of least importance to most importance for most appropriate and relevant snapshot results.
 		{"UTMSource", db.NewFilter(db.FilterUTMSource, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("bing")}))},
 		{"UTMMedium", db.NewFilter(db.FilterUTMMedium, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("organic")}))},
 		{"UTMCampaign", db.NewFilter(db.FilterUTMCampaign, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("summer")}))},
-		{"Browser", db.NewFilter(db.FilterBrowser, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Chrome")}))},
-		{"OS", db.NewFilter(db.FilterOS, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Windows")}))},
-		{"Device", db.NewFilter(db.FilterDevice, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Desktop")}))},
-		{"Country", db.NewFilter(db.FilterCountry, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("GB")}))},
+
 		{"Language", db.NewFilter(db.FilterLanguage, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("en")}))},
+		{"Country", db.NewFilter(db.FilterCountry, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("GB")}))},
+
+		{"Device", db.NewFilter(db.FilterDevice, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Desktop")}))},
+		{"OS", db.NewFilter(db.FilterOS, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Windows")}))},
+		{"Browser", db.NewFilter(db.FilterBrowser, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Chrome")}))},
+		{"Referrer", db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")}))},
+		{"Pathname", db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")}))},
 	}
 
 	for _, step := range filterSteps {

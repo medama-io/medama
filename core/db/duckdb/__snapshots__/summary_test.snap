@@ -1,7 +1,7 @@
 
 [TestGetWebsiteSummary - 1]
 {
- "Bounces": 250755,
+ "Bounces": 250806,
  "Duration": 4998,
  "Pageviews": 1000000,
  "Visitors": 500559
@@ -10,7 +10,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 1]
 {
- "Bounces": 250755,
+ "Bounces": 250806,
  "Duration": 4998,
  "Pageviews": 1000000,
  "Visitors": 500559
@@ -19,82 +19,82 @@
 
 [TestGetWebsiteSummaryFilterAll - 2]
 {
- "Bounces": 83826,
- "Duration": 4994,
- "Pageviews": 333970,
- "Visitors": 167059
+ "Bounces": 83852,
+ "Duration": 5001,
+ "Pageviews": 333547,
+ "Visitors": 167256
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 3]
 {
- "Bounces": 27942,
- "Duration": 5017,
- "Pageviews": 111353,
- "Visitors": 55806
+ "Bounces": 27934,
+ "Duration": 5014,
+ "Pageviews": 111475,
+ "Visitors": 55805
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 4]
 {
- "Bounces": 9577,
- "Duration": 4959,
- "Pageviews": 37138,
- "Visitors": 18703
+ "Bounces": 9278,
+ "Duration": 5038,
+ "Pageviews": 37101,
+ "Visitors": 18590
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 5]
 {
- "Bounces": 3229,
- "Duration": 5034,
- "Pageviews": 12522,
- "Visitors": 6300
+ "Bounces": 4607,
+ "Duration": 5019,
+ "Pageviews": 18415,
+ "Visitors": 9193
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 6]
 {
- "Bounces": 1071,
- "Duration": 5019,
- "Pageviews": 4183,
- "Visitors": 2113
+ "Bounces": 1574,
+ "Duration": 5047,
+ "Pageviews": 6194,
+ "Visitors": 3143
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 7]
 {
- "Bounces": 363,
- "Duration": 4924,
- "Pageviews": 1364,
- "Visitors": 708
+ "Bounces": 517,
+ "Duration": 5001,
+ "Pageviews": 2035,
+ "Visitors": 1035
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 8]
 {
- "Bounces": 126,
- "Duration": 4924,
- "Pageviews": 470,
- "Visitors": 246
+ "Bounces": 181,
+ "Duration": 5297,
+ "Pageviews": 715,
+ "Visitors": 369
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 9]
 {
- "Bounces": 39,
- "Duration": 4916,
- "Pageviews": 152,
- "Visitors": 80
+ "Bounces": 72,
+ "Duration": 5194,
+ "Pageviews": 261,
+ "Visitors": 133
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 10]
 {
- "Bounces": 14,
- "Duration": 5479,
- "Pageviews": 53,
- "Visitors": 29
+ "Bounces": 29,
+ "Duration": 4296,
+ "Pageviews": 94,
+ "Visitors": 54
 }
 ---
 

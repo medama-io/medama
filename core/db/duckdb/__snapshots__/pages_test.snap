@@ -1,0 +1,94 @@
+
+[TestGetWebsitePagesSummary - 1]
+RECORDS:
+&{Pathname:/ Visitors:167350 VisitorsPercentage:0.3346}
+&{Pathname:/contact Visitors:166840 VisitorsPercentage:0.3336}
+&{Pathname:/about Visitors:165998 VisitorsPercentage:0.3319}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 1]
+RECORDS:
+&{Pathname:/ Visitors:167350 VisitorsPercentage:0.3346}
+&{Pathname:/contact Visitors:166840 VisitorsPercentage:0.3336}
+&{Pathname:/about Visitors:165998 VisitorsPercentage:0.3319}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 2]
+RECORDS:
+&{Pathname:/ Visitors:55672 VisitorsPercentage:0.3342}
+&{Pathname:/contact Visitors:55580 VisitorsPercentage:0.3337}
+&{Pathname:/about Visitors:55325 VisitorsPercentage:0.3321}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 3]
+RECORDS:
+&{Pathname:/about Visitors:18660 VisitorsPercentage:0.3362}
+&{Pathname:/ Visitors:18507 VisitorsPercentage:0.3334}
+&{Pathname:/contact Visitors:18339 VisitorsPercentage:0.3304}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 4]
+RECORDS:
+&{Pathname:/about Visitors:6224 VisitorsPercentage:0.3372}
+&{Pathname:/contact Visitors:6122 VisitorsPercentage:0.3317}
+&{Pathname:/ Visitors:6110 VisitorsPercentage:0.3311}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 5]
+RECORDS:
+&{Pathname:/ Visitors:3116 VisitorsPercentage:0.3398}
+&{Pathname:/contact Visitors:3029 VisitorsPercentage:0.3304}
+&{Pathname:/about Visitors:3024 VisitorsPercentage:0.3298}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 6]
+RECORDS:
+&{Pathname:/ Visitors:1076 VisitorsPercentage:0.3487}
+&{Pathname:/about Visitors:1023 VisitorsPercentage:0.3315}
+&{Pathname:/contact Visitors:987 VisitorsPercentage:0.3198}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 7]
+RECORDS:
+&{Pathname:/about Visitors:344 VisitorsPercentage:0.3426}
+&{Pathname:/ Visitors:337 VisitorsPercentage:0.3357}
+&{Pathname:/contact Visitors:323 VisitorsPercentage:0.3217}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 8]
+RECORDS:
+&{Pathname:/ Visitors:131 VisitorsPercentage:0.3599}
+&{Pathname:/contact Visitors:117 VisitorsPercentage:0.3214}
+&{Pathname:/about Visitors:116 VisitorsPercentage:0.3187}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 9]
+RECORDS:
+&{Pathname:/ Visitors:48 VisitorsPercentage:0.3529}
+&{Pathname:/contact Visitors:47 VisitorsPercentage:0.3456}
+&{Pathname:/about Visitors:41 VisitorsPercentage:0.3015}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 10]
+RECORDS:
+&{Pathname:/ Visitors:19 VisitorsPercentage:0.4043}
+&{Pathname:/about Visitors:16 VisitorsPercentage:0.3404}
+&{Pathname:/contact Visitors:12 VisitorsPercentage:0.2553}
+
+---
+
+[TestGetWebsitePagesSummaryFilterAll - 11]
+RECORDS:
+&{Pathname:/ Visitors:19 VisitorsPercentage:1}
+
+---

@@ -26,10 +26,10 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 	// Duration is the median duration of all pageviews. It needs to be casted to an integer as
 	// the median function can return a float for an even number of rows.
 	query.WriteString(`--sql
-		WITH durations AS MATERIALIZED (
+		WITH duration_m AS MATERIALIZED (
 			SELECT
-				COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms > 0 AND duration_ms < 5000) AS bounces,
-				CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration_median,
+				COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
+				CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
 			FROM duration
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -47,9 +47,9 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 		SELECT
 			summary.visitors AS visitors,
 			summary.pageviews AS pageviews,
-			durations.bounces AS bounces,
-			durations.duration_median AS duration,
-		FROM summary, durations`)
+			duration_m.bounces AS bounces,
+			duration_m.duration AS duration,
+		FROM summary, duration_m`)
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {

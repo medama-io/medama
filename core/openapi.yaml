@@ -1328,6 +1328,8 @@ components:
             m:
               type: integer
               description: Time spent on page in milliseconds.
+              minimum: 0
+              exclusiveMinimum: true
           required:
             - m
     EventHit:

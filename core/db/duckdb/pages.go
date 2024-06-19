@@ -86,7 +86,16 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	//
 	// This is ordered by the number of unique visitors in descending order.
 	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
+		WITH duration_m AS MATERIALIZED (
+			SELECT
+				COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
+				CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration,
+			FROM duration
+			WHERE `)
+	query.WriteString(filter.WhereString())
+	query.WriteString(`--sql
+		),
+		total AS MATERIALIZED (
 			SELECT
 				COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors,
 				COUNT(*) AS total_pageviews
@@ -96,18 +105,19 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	query.WriteString(`--sql
 		)
 		SELECT
-			pathname,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			views.pathname AS pathname,
+			COUNT(*) FILTER (WHERE views.is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) AS pageviews,
 			ifnull(ROUND(pageviews / (SELECT total_pageviews FROM total), 4), 0) AS pageviews_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
+			duration_m.bounces AS bounces,
+			duration_m.duration AS duration
+		FROM views, duration_m
 		WHERE `)
 	query.WriteString(filter.WhereString())
 	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC, pageviews DESC, pathname ASC`)
 	query.WriteString(filter.PaginationString())
+	println(query.String())
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {

@@ -22,6 +22,8 @@ var (
 	ErrInvalidScreenSize = errors.New("screen height or width is too large")
 	// ErrInvalidTimezone is returned when a given timezone is invalid.
 	ErrInvalidTimezone = errors.New("invalid country code")
+	// ErrInvalidTrackerDuration is returned when a tracker duration is invalid.
+	ErrInvalidTrackerDuration = errors.New("invalid tracker duration")
 	// ErrInvalidTrackerEvent is returned when a given tracker event is invalid.
 	ErrInvalidTrackerEvent = errors.New("invalid tracker event")
 	// ErrRequestContext is returned when a request context is not found.

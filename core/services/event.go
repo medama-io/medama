@@ -206,6 +206,11 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			DurationMs:  req.EventUnload.M,
 		}
 
+		if event.DurationMs <= 0 {
+			log.Error().Msg("hit: invalid duration")
+			return ErrBadRequest(model.ErrInvalidTrackerDuration), nil
+		}
+
 		log = log.With().
 			Int("duration_ms", event.DurationMs).
 			Logger()
