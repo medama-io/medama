@@ -2,7 +2,6 @@ package duckdb
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/go-faster/errors"
@@ -51,9 +50,6 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 			durations.bounces AS bounces,
 			durations.duration_median AS duration,
 		FROM summary, durations`)
-
-	println(query.String())
-	println(fmt.Printf("%+v", filter.Args(nil)))
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {

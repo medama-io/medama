@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand/v2"
 	"testing"
+	"time"
 
 	_ "github.com/marcboeker/go-duckdb"
 	"github.com/medama-io/medama/db/duckdb"
@@ -22,13 +23,20 @@ import (
 
 const (
 	// Number of page views to generate.
-	PAGEVIEW_COUNT = 1000
+	PAGEVIEW_COUNT = 5000
 	// Number of page view durations to generate.
 	// Account for unreliability of failing to send page durations with a lower value.
-	DURATION_COUNT = 900
+	DURATION_COUNT = 4000
 )
 
-func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.Client) {
+var (
+	//nolint:gochecknoglobals // Reason: These are used in every test.
+	TIME_START = time.Unix(0, 0).Format(model.DateFormat)
+	//nolint:gochecknoglobals // Reason: These are used in every test.
+	TIME_END = time.Now().Add(24 * time.Hour).Format(model.DateFormat)
+)
+
+func SetupDatabase(t *testing.T) *duckdbTest {
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
@@ -81,12 +89,12 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *duckdb.C
 		require.NoError(err)
 	}
 
-	return assert, ctx, duckdbClient
+	return &duckdbTest{assert, require, ctx, duckdbClient}
 }
 
-func SetupDatabaseWithPageViews(t *testing.T) (*assert.Assertions, context.Context, *duckdb.Client) {
+func SetupDatabaseWithPageViews(t *testing.T) *duckdbTest {
 	t.Helper()
-	assert, ctx, client := SetupDatabase(t)
+	db := SetupDatabase(t)
 
 	// Using a fixed seed will produce the same output on every run.
 	r := rand.New(rand.NewPCG(1, 2))
@@ -94,18 +102,18 @@ func SetupDatabaseWithPageViews(t *testing.T) (*assert.Assertions, context.Conte
 	// Generate page view hits.
 	pageViewHits := generatePageViewHits(r, PAGEVIEW_COUNT)
 	for _, pageViewHit := range pageViewHits {
-		err := client.AddPageView(ctx, pageViewHit)
-		require.NoError(t, err)
+		err := db.client.AddPageView(db.ctx, pageViewHit)
+		db.require.NoError(err)
 	}
 
 	// Generate page view durations.
-	pageViewDurations := generatePageViewDurations(r, DURATION_COUNT)
+	pageViewDurations := generatePageViewDurations(r, pageViewHits, DURATION_COUNT)
 	for _, pageViewDuration := range pageViewDurations {
-		err := client.AddPageDuration(ctx, pageViewDuration)
-		require.NoError(t, err)
+		err := db.client.AddPageDuration(db.ctx, pageViewDuration)
+		db.require.NoError(err)
 	}
 
-	return assert, ctx, client
+	return db
 }
 
 func generatePageViewHits(r *rand.Rand, count int) []*model.PageViewHit {
@@ -145,13 +153,12 @@ func generatePageViewHits(r *rand.Rand, count int) []*model.PageViewHit {
 	return pageViewHits
 }
 
-func generatePageViewDurations(r *rand.Rand, count int) []*model.PageViewDuration {
-	pageViewHits := generatePageViewHits(r, count)
+func generatePageViewDurations(r *rand.Rand, hits []*model.PageViewHit, count int) []*model.PageViewDuration {
 	durations := make([]*model.PageViewDuration, count)
 
 	for i := range count {
 		durations[i] = &model.PageViewDuration{
-			PageViewHit: *pageViewHits[i],
+			PageViewHit: *hits[i],
 			DurationMs:  r.IntN(10000),
 		}
 	}

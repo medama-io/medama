@@ -1,17 +1,18 @@
 package duckdb_test
 
 import (
-	"testing"
-
 	"github.com/medama-io/medama/model"
 )
 
-func TestAddPageView(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
-	defer client.Close()
+func testAddPageView(db *duckdbTest) {
+	rows := db.client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+	var count int
+	err := rows.Scan(&count)
+	db.assert.NoError(err)
+	db.assert.Equal(0, count)
 
 	event := &model.PageViewHit{
-		Hostname:     "medama-test.io",
+		Hostname:     "add-page-view-test.io",
 		Pathname:     "/",
 		IsUniqueUser: true,
 		IsUniquePage: true,
@@ -26,17 +27,25 @@ func TestAddPageView(t *testing.T) {
 		UTMCampaign:  "test_campaign",
 	}
 
-	err := client.AddPageView(ctx, event)
-	assert.NoError(err)
+	err = db.client.AddPageView(db.ctx, event)
+	db.assert.NoError(err)
+
+	rows = db.client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+	err = rows.Scan(&count)
+	db.assert.NoError(err)
+	db.assert.Equal(1, count)
 }
 
-func TestAddPageDuration(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
-	defer client.Close()
+func testAddPageDuration(db *duckdbTest) {
+	rows := db.client.DB.QueryRow("SELECT COUNT(*) FROM duration WHERE hostname = 'add-page-duration-test.io'")
+	var count int
+	err := rows.Scan(&count)
+	db.assert.NoError(err)
+	db.assert.Equal(0, count)
 
 	event := &model.PageViewDuration{
 		PageViewHit: model.PageViewHit{
-			Hostname:     "medama-test.io",
+			Hostname:     "add-page-duration-test.io",
 			Pathname:     "/",
 			IsUniqueUser: false,
 			IsUniquePage: true,
@@ -53,6 +62,11 @@ func TestAddPageDuration(t *testing.T) {
 		DurationMs: 100,
 	}
 
-	err := client.AddPageDuration(ctx, event)
-	assert.NoError(err)
+	err = db.client.AddPageDuration(db.ctx, event)
+	db.assert.NoError(err)
+
+	rows = db.client.DB.QueryRow("SELECT COUNT(*) FROM duration WHERE hostname = 'add-page-duration-test.io'")
+	err = rows.Scan(&count)
+	db.assert.NoError(err)
+	db.assert.Equal(1, count)
 }
