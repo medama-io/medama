@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/caarlos0/env/v10"
+	"github.com/caarlos0/env/v11"
 	"github.com/go-faster/errors"
 )
 
@@ -11,7 +11,7 @@ type ServerConfig struct {
 	// General settings.
 	Port   int64  `env:"PORT"`
 	Logger string `env:"LOGGER"`
-	Level  string `env:"LOGGER_LEVEL"`
+	Level  string `env:"LEVEL"`
 
 	// Cache settings.
 	CacheCleanupInterval time.Duration

@@ -9,9 +9,9 @@ primary_region = 'lhr'
 
 [env]
 ANALYTICS_DATABASE_HOST = '/db/analytics.db'
-APP_DATABASE_HOST = '/db/sqlite.db'
+APP_DATABASE_HOST = '/db/app.db'
 PORT = '8080'
-LOGGER_LEVEL = 'debug'
+LEVEL = 'debug'
 
 [[mounts]]
 source = 'medama_db'

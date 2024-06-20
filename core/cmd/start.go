@@ -61,19 +61,19 @@ func (s *StartCommand) ParseFlags(args []string) error {
 	fs := flag.NewFlagSet("start", flag.ExitOnError)
 
 	// General settings.
-	fs.Int64Var(&s.Server.Port, "port", DefaultPort, "Port to listen on.")
-	fs.StringVar(&s.Server.Logger, "logger", DefaultLogger, "Logger format (json, pretty)")
-	fs.StringVar(&s.Server.Level, "level", DefaultLoggerLevel, "Logger level (debug, info, warn, error)")
+	fs.Int64Var(&s.Server.Port, "port", s.Server.Port, "Port to listen on.")
+	fs.StringVar(&s.Server.Logger, "logger", s.Server.Logger, "Logger format (json, pretty)")
+	fs.StringVar(&s.Server.Level, "level", s.Server.Level, "Logger level (debug, info, warn, error)")
 
 	// Database settings.
-	fs.StringVar(&s.AppDB.Host, "appdb", DefaultSQLiteHost, "Path to app database.")
-	fs.StringVar(&s.AnalyticsDB.Host, "analyticsdb", DefaultDuckDBHost, "Path to analytics database.")
+	fs.StringVar(&s.AppDB.Host, "appdb", s.AppDB.Host, "Path to app database.")
+	fs.StringVar(&s.AnalyticsDB.Host, "analyticsdb", s.AnalyticsDB.Host, "Path to analytics database.")
 
 	// Misc settings.
 	fs.BoolVar(&s.Server.UseEnvironment, "env", false, "Opt-in to allow environment variables to be used for configuration. Flags will still override environment variables.")
 
 	// Handle array type flags.
-	corsAllowedOrigins := fs.String("corsorigins", "", "Comma separated list of allowed CORS origins on API routes. Useful for external dashboards that may host the frontend on a different domain.")
+	corsAllowedOrigins := fs.String("corsorigins", strings.Join(s.Server.CORSAllowedOrigins, ","), "Comma separated list of allowed CORS origins on API routes. Useful for external dashboards that may host the frontend on a different domain.")
 
 	// Parse flags.
 	err := fs.Parse(args)
@@ -95,7 +95,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return errors.Wrap(err, "failed to setup logger")
 	}
 	log.Info().Msg(GetVersion())
-	log.Debug().Interface("config", s).Msg("")
+	log.Warn().Interface("config", s).Msg("")
 
 	// Setup database
 	sqlite, err := sqlite.NewClient(s.AppDB.Host)

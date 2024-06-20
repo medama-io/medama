@@ -31,6 +31,7 @@ tasks:
     deps: [build]
     cmds:
       - mkdir -p ../core/client
+      - rm -rf ../core/client/*
       - cp -r ./build/client/* ../core/client/
     sources:
       - ./build/client/**/*
