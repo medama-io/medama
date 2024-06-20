@@ -95,7 +95,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return errors.Wrap(err, "failed to setup logger")
 	}
 	log.Info().Msg(GetVersion())
-	log.Warn().Interface("config", s).Msg("")
+	log.Debug().Interface("config", s).Msg("")
 
 	// Setup database
 	sqlite, err := sqlite.NewClient(s.AppDB.Host)
