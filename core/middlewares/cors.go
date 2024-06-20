@@ -16,6 +16,7 @@ func CORSAllowedOriginsMiddleware(allowedOrigins []string) func(http.Handler) ht
 	customCORS := cors.New(cors.Options{
 		AllowedOrigins:   allowedOrigins,
 		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE"},
 	})
 
 	// Create a default CORS handler

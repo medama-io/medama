@@ -14,7 +14,9 @@ interface StatsItemProps {
 }
 
 const StatsItem = ({ label, count, percentage, isTime }: StatsItemProps) => {
-	const formattedValue = isTime ? formatDuration(count) : formatCount(count);
+	const formattedValue = isTime
+		? formatDuration(count ?? 0)
+		: formatCount(count ?? 0);
 	return (
 		<div className={classes['stat-item']}>
 			<Group justify="space-between" pb={6}>

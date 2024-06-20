@@ -1,4 +1,11 @@
 .wrapper {
+	width: 100%;
+	padding: 16px;
+
+	align-items: stretch;
+	gap: 16px;
+
 	background-color: var(--me-color-bg-grey);
+
 	border-radius: 8px;
 }

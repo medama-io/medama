@@ -3,11 +3,12 @@ import { userGet } from '@/api/user';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { Login } from '@/components/login/Login';
 import { LOGGED_IN_COOKIE, hasSession } from '@/utils/cookies';
+import { notifications } from '@mantine/notifications';
 import {
 	json,
 	redirect,
+	useActionData,
 	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/react';
 
@@ -18,7 +19,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	// If the user is already logged in, redirect them to the dashboard.
 	if (hasSession()) {
 		// Check if session hasn't been revoked
@@ -50,10 +51,23 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			username,
 			password,
 		},
+		noThrow: true,
 	});
 
 	if (!res.ok) {
-		throw json('Failed to login.', {
+		if (res.status === 401) {
+			notifications.show({
+				title: 'Invalid username or password.',
+				message: 'Please try again.',
+				withBorder: true,
+				color: 'red',
+			});
+			return json({
+				message: 'Invalid username or password. Please try again.',
+			});
+		}
+
+		throw new Response('Failed to login.', {
 			status: res.status,
 		});
 	}

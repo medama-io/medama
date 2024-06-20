@@ -56,7 +56,10 @@ const InternalServerError = ({ error }: InternalServerErrorProps) => (
 					report this issue
 				</Anchor>{' '}
 				to the developers.
-				<Text c="red">{error ? `Error: ${error}` : ''}</Text>
+				<br />
+				<Text component="span" c="red">
+					{error ? `Error: ${error}` : ''}
+				</Text>
 			</>
 		}
 	/>

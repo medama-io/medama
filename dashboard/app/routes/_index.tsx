@@ -16,7 +16,6 @@ import { Add } from '@/components/index/Add';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;

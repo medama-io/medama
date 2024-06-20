@@ -672,7 +672,6 @@ export interface operations {
       };
       400: components["responses"]["BadRequestError"];
       401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
       500: components["responses"]["InternalServerError"];
     };
   };

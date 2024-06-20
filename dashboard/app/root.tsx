@@ -35,8 +35,10 @@ import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';
 import '@mantine/core/styles/Title.css';
-import '@/styles/global.css';
+import '@mantine/core/styles/Notification.css';
+import '@mantine/notifications/styles.css';
 import 'mantine-datatable/styles.css';
+import '@/styles/global.css';
 
 import {
 	ColorSchemeScript,
@@ -44,6 +46,7 @@ import {
 	Loader,
 	MantineProvider,
 } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import {
 	Links,
 	Meta,
@@ -132,6 +135,7 @@ export const Document = ({ children }: DocumentProps) => {
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>
+					<Notifications />
 					<AppShell>{children}</AppShell>
 					<ScrollRestoration />
 					<Scripts />
@@ -163,6 +167,7 @@ export const HydrateFallback = () => {
 
 export const ErrorBoundary = () => {
 	const error = useRouteError();
+	console.error(error);
 
 	if (isRouteErrorResponse(error)) {
 		switch (error.status) {
@@ -177,7 +182,7 @@ export const ErrorBoundary = () => {
 
 		return (
 			<Document>
-				<InternalServerError error={error.statusText} />
+				<InternalServerError error={error.data ?? error.statusText} />
 			</Document>
 		);
 	}

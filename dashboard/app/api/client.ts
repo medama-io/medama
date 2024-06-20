@@ -45,12 +45,20 @@ export type ClientOptions<
 	query: Record<string, string | number | boolean | undefined>;
 	method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
 	noRedirect: boolean;
+	noThrow: boolean;
 	pathKey: string;
 }>;
 
 const client = async (
 	path: keyof paths,
-	{ body, method = 'GET', noRedirect, pathKey, query }: ClientOptions,
+	{
+		body,
+		method = 'GET',
+		noRedirect,
+		noThrow = false,
+		pathKey,
+		query,
+	}: ClientOptions,
 ): Promise<Response> => {
 	let newPath: string | undefined;
 	// Replace any path closed in curly braces with the pathKey
@@ -77,7 +85,7 @@ const client = async (
 		...(body !== undefined && { body: JSON.stringify(body) }),
 	});
 
-	if (!res.ok) {
+	if (!res.ok && !noThrow) {
 		// If the user is not logged in, redirect to the login page
 		if (res.status === 401 && !noRedirect) {
 			throw expireSession(noRedirect);

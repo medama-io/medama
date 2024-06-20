@@ -36,7 +36,6 @@ export const Add = ({ close }: AddProps) => {
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: { hostname: '' },
-		validateInputOnBlur: true,
 		validate: zodResolver(addWebsiteSchema),
 	});
 

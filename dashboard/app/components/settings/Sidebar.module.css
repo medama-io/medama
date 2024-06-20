@@ -1,8 +1,28 @@
 .wrapper {
 	width: 250px;
-	padding: 20px;
+	height: 100%;
+	padding: 8px;
+	gap: 8px;
 
-	align-items: stretch;
+	background-color: var(--me-color-bg-light);
 
-	background-color: var(--me-color-bg-grey);
+	border-radius: 8px;
+
+	a {
+		padding: 10px 16px;
+		align-items: center;
+
+		border-radius: 8px;
+
+		font-size: 14px;
+
+		&:hover {
+			background-color: var(--me-color-bg-grey);
+		}
+
+		&[data-active="true"] {
+			background-color: var(--me-color-bg-grey);
+			font-weight: 600;
+		}
+	}
 }
