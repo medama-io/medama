@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	github.com/alexedwards/argon2id v1.0.0
-	github.com/caarlos0/env/v10 v10.0.0
+	github.com/caarlos0/env/v11 v11.1.0
 	github.com/gkampitakis/go-snaps v0.5.4
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0

@@ -53,11 +53,16 @@ func run(ctx context.Context, args []string) error {
 	case "start":
 		// Check for --env flag to set configuration to also scan
 		// for environment variables. Ignore all other flags.
-		useEnv := flag.Bool("env", false, "use environment variables for configuration")
-		flag.Parse()
+		useEnv := false
+		for _, arg := range args {
+			switch arg {
+			case "--env", "-env":
+				useEnv = true
+			}
+		}
 
 		// Create start command
-		s, err := NewStartCommand(*useEnv)
+		s, err := NewStartCommand(useEnv)
 		if err != nil {
 			return err
 		}
