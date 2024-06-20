@@ -134,10 +134,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		if err != nil {
 			log.Debug().Err(err).Msg("hit: failed to parse accept language header")
 		}
+
 		// Get the first language from the list which is the most preferred and convert it to a language name
 		language := "Unknown"
 		if len(languages) > 0 {
-			language = display.English.Tags().Name(languages[0])
+			// Narrow down the language to the base language (e.g. en-US -> en)
+			base, _ := languages[0].Base()
+			language = display.English.Tags().Name(base)
 		}
 
 		// Parse user agent
