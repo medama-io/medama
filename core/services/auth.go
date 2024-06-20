@@ -15,7 +15,7 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.Po
 	user, err := h.db.GetUserByUsername(ctx, req.Username)
 	if err != nil {
 		if errors.Is(err, model.ErrUserNotFound) {
-			return ErrNotFound(err), nil
+			return ErrUnauthorised(model.ErrUserNotFound), nil
 		}
 
 		return ErrInternalServerError(err), nil
@@ -27,7 +27,7 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.Po
 		return ErrInternalServerError(err), nil
 	}
 	if !match {
-		return ErrUnauthorised(err), nil
+		return ErrUnauthorised(model.ErrUserNotFound), nil
 	}
 
 	// Create session.

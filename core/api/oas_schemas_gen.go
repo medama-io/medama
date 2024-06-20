@@ -781,7 +781,6 @@ func (*NotFoundError) getWebsitesIDRes()         {}
 func (*NotFoundError) getWebsitesRes()           {}
 func (*NotFoundError) patchUserRes()             {}
 func (*NotFoundError) patchWebsitesIDRes()       {}
-func (*NotFoundError) postAuthLoginRes()         {}
 func (*NotFoundError) postEventHitRes()          {}
 
 type NotFoundErrorError struct {

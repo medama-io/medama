@@ -8,6 +8,12 @@
 	border-radius: 8px;
 }
 
+.error {
+	padding: 8px 12px;
+	background-color: var(--me-color-bg-red-faded);
+	border: 1px solid var(--me-color-border-muted);
+}
+
 .submit {
 	width: 100%;
 	height: 40px;

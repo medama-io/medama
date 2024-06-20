@@ -12,6 +12,7 @@
 	--me-color-bg-dark: #111111;
 	--me-color-bg-grey-blue: #262a31;
 	--me-color-bg-grey-blue-dark: #1b1e24;
+	--me-color-bg-red-faded: rgba(255, 0, 0, 0.1);
 
 	/* Selected Colors */
 	--me-color-selected-light: #e8e7e7;

@@ -45,12 +45,11 @@ export const Login = () => {
 
 	return (
 		<Paper className={classes.wrapper} withBorder>
-			<Text size="lg" fw={500}>
+			<Text size="lg" fw={500} mb="lg">
 				Log in to your dashboard
 			</Text>
-
 			<Form onSubmit={form.onSubmit(handleSubmit)}>
-				<Stack mt="xl" gap="lg">
+				<Stack gap="lg">
 					<TextInput
 						key={form.key('username')}
 						required
