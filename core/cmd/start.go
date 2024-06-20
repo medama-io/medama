@@ -179,6 +179,9 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		// Serve tracker script
 		if uPath == "/script.js" {
 			w.Header().Set("Content-Type", "application/javascript")
+			// Disable caching for /script.js
+			// TODO: Use ETAGs for caching
+			w.Header().Set("Cache-Control", "no-store")
 			_, err := w.Write(trackerFile)
 			if err != nil {
 				http.Error(w, "could not serve tracker script", http.StatusInternalServerError)

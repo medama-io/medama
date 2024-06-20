@@ -54,7 +54,10 @@ tasks:
       - ./api/**/*.go
 
   generate:
-    deps: [generate:go, dashboard:embed, tracker:embed]
+    cmds:
+      - task: generate:go
+      - task: dashboard:embed
+      - task: tracker:embed
 
   update:
     aliases: [upgrade]
