@@ -20,9 +20,9 @@ func TestAddPageView(t *testing.T) {
 		Pathname:     "/",
 		IsUniqueUser: true,
 		IsUniquePage: true,
-		Referrer:     "medama.io",
+		ReferrerHost: "medama.io",
 		CountryCode:  "GB",
-		Language:     "en",
+		LanguageBase: "English",
 		BrowserName:  model.FirefoxBrowser,
 		OS:           model.WindowsOS,
 		DeviceType:   model.DesktopDevice,
@@ -44,18 +44,18 @@ func TestUpdatePageView(t *testing.T) {
 	assert, _, ctx, client := SetupDatabase(t)
 
 	event := &model.PageViewHit{
-		BID:         "test_updated_bid",
-		Hostname:    "medama-test.io",
-		Pathname:    "/",
-		Referrer:    "medama.io",
-		CountryCode: "GB",
-		Language:    "en",
-		BrowserName: model.FirefoxBrowser,
-		OS:          model.WindowsOS,
-		DeviceType:  model.DesktopDevice,
-		UTMSource:   "test_source",
-		UTMMedium:   "test_medium",
-		UTMCampaign: "test_campaign",
+		BID:          "test_updated_bid",
+		Hostname:     "medama-test.io",
+		Pathname:     "/",
+		ReferrerHost: "medama.io",
+		CountryCode:  "GB",
+		LanguageBase: "English",
+		BrowserName:  model.FirefoxBrowser,
+		OS:           model.WindowsOS,
+		DeviceType:   model.DesktopDevice,
+		UTMSource:    "test_source",
+		UTMMedium:    "test_medium",
+		UTMCampaign:  "test_campaign",
 	}
 
 	err := client.AddPageView(ctx, event)

@@ -136,11 +136,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		}
 
 		// Get the first language from the list which is the most preferred and convert it to a language name
-		language := "Unknown"
+		languageBase := "Unknown"
+		languageDialect := "Unknown"
 		if len(languages) > 0 {
 			// Narrow down the language to the base language (e.g. en-US -> en)
 			base, _ := languages[0].Base()
-			language = display.English.Tags().Name(base)
+			languageBase = display.English.Tags().Name(language.Make(base.String()))
+			languageDialect = display.English.Tags().Name(languages[0])
 		}
 
 		// Parse user agent
@@ -165,9 +167,11 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			IsUniqueUser: req.EventLoad.P,
 			IsUniquePage: req.EventLoad.Q,
 			// Optional
-			Referrer:    referrerHost,
-			CountryCode: countryCode,
-			Language:    language,
+			ReferrerHost:    referrerHost,
+			ReferrerGroup:   "", // TODO: https://github.com/medama-io/medama/issues/10
+			CountryCode:     countryCode,
+			LanguageBase:    languageBase,
+			LanguageDialect: languageDialect,
 
 			BrowserName: uaBrowser,
 			OS:          uaOS,
@@ -184,9 +188,11 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			Str("pathname", event.Pathname).
 			Bool("is_unique_user", event.IsUniqueUser).
 			Bool("is_unique_page", event.IsUniquePage).
-			Str("referrer", event.Referrer).
+			Str("referrer_host", event.ReferrerHost).
+			Str("referrer_group", event.ReferrerGroup).
 			Str("country_code", countryCode).
-			Str("language", event.Language).
+			Str("language_base", event.LanguageBase).
+			Str("language_dialect", event.LanguageDialect).
 			Str("browser_name", event.BrowserName.String()).
 			Str("os", event.OS.String()).
 			Str("device_type", event.DeviceType.String()).

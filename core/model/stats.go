@@ -59,7 +59,7 @@ type StatsTime struct {
 }
 
 type StatsReferrerSummary struct {
-	Referrer           string  `db:"referrer"`
+	Referrer           string  `db:"referrer_host"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
@@ -155,7 +155,7 @@ type StatsCountries struct {
 }
 
 type StatsLanguagesSummary struct {
-	Language           string  `db:"language"`
+	Language           string  `db:"language_base"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }

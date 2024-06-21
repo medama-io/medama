@@ -128,13 +128,13 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, filter *db.Filt
 	query.WriteString(`--sql
 		)
 		SELECT
-			language,
+			language_base,
 			COUNT(*) FILTER (is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY language ORDER BY visitors DESC, language ASC`)
+	query.WriteString(` GROUP BY language_base ORDER BY visitors DESC, language_base ASC`)
 	query.WriteString(filter.PaginationString())
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
@@ -176,7 +176,7 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(`--sql
 		)
 		SELECT
-			language,
+			language_base,
 			COUNT(*) FILTER (is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
@@ -184,7 +184,7 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY language ORDER BY visitors DESC, language ASC`)
+	query.WriteString(` GROUP BY language_base ORDER BY visitors DESC, language_base ASC`)
 	query.WriteString(filter.PaginationString())
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))

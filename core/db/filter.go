@@ -14,7 +14,7 @@ type FilterField string
 const (
 	FilterHostname    FilterField = "hostname"
 	FilterPathname    FilterField = "pathname"
-	FilterReferrer    FilterField = "referrer"
+	FilterReferrer    FilterField = "referrer_host"
 	FilterUTMSource   FilterField = "utm_source"
 	FilterUTMMedium   FilterField = "utm_medium"
 	FilterUTMCampaign FilterField = "utm_campaign"
@@ -22,7 +22,7 @@ const (
 	FilterOS          FilterField = "ua_os"
 	FilterDevice      FilterField = "ua_device_type"
 	FilterCountry     FilterField = "country_code"
-	FilterLanguage    FilterField = "language"
+	FilterLanguage    FilterField = "language_base"
 
 	// Custom operations not used in the filtering API
 	// but used in named queries.

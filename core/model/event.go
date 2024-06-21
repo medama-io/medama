@@ -206,12 +206,16 @@ type PageViewHit struct {
 	IsUniqueUser bool `db:"is_unique_user"`
 	// IsUniquePage - Whether or not the user has visited the page before.
 	IsUniquePage bool `db:"is_unique_page"`
-	// Referrer - The referrer URL of the page view.
-	Referrer string `db:"referrer"`
+	// ReferrerHost - The referrer hostname of the page view.
+	ReferrerHost string `db:"referrer_host"`
+	// ReferrerGroup - The referrer group of the page view. e.g. Google
+	ReferrerGroup string `db:"referrer_group"`
 	// CountryCode - The country code associated with the user's timezone.
 	CountryCode string `db:"country_code"`
-	// Language - The language associated with the user's browser.
-	Language string `db:"language"`
+	// LanguageBase - The base language associated with the user's browser.
+	LanguageBase string `db:"language_base"`
+	// LanguageDialect - The dialect of the user's language. e.g. British English.
+	LanguageDialect string `db:"language_dialect"`
 
 	// BrowserName - The name of the user's browser.
 	BrowserName BrowserName `db:"ua_browser"`
