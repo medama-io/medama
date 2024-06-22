@@ -15,11 +15,8 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         arch: [amd64, arm64]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Setup Environment
-        uses: ./.github/workflows/setup-env.yml
+        uses: medama-io/medama/.github/workflows/setup-env.yml
 
       - name: Build
         run: task core:release:${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}:${{ matrix.arch }}

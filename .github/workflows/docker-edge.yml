@@ -1,4 +1,4 @@
-name: Docker Commit Publish # Publish Docker images under `edge` and commit SHA tags
+name: Docker Edge Publish # Publish Docker images under `edge` and commit SHA tags
 on:
   workflow_run:
     workflows: [Tests]

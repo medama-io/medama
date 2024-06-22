@@ -6,15 +6,21 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      checkout-path: ${{ steps.checkout.outputs.path }}
     steps:
+      - name: Checkout code
+        id: checkout
+        uses: actions/checkout@v4
+
       - name: Install Task
         uses: arduino/setup-task@v2
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: ./core/go.mod
-          cache-dependency-path: ./core/go.sum
+          go-version-file: ${{ steps.checkout.outputs.path }}/core/go.mod
+          cache-dependency-path: ${{ steps.checkout.outputs.path }}/core/go.sum
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1

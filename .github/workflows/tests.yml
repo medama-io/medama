@@ -13,11 +13,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Setup Environment
-        uses: ./.github/workflows/setup-env.yml
+        uses: medama-io/medama/.github/workflows/setup-env.yml
 
       - name: Lint
         uses: golangci/golangci-lint-action@v6
