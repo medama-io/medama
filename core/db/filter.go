@@ -1,11 +1,9 @@
 package db
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/medama-io/medama/api"
-	"github.com/medama-io/medama/model"
 )
 
 // FilterField represents a mapping of the filter field to the database column.
@@ -14,15 +12,15 @@ type FilterField string
 const (
 	FilterHostname    FilterField = "hostname"
 	FilterPathname    FilterField = "pathname"
-	FilterReferrer    FilterField = "referrer"
+	FilterReferrer    FilterField = "referrer_host"
 	FilterUTMSource   FilterField = "utm_source"
 	FilterUTMMedium   FilterField = "utm_medium"
 	FilterUTMCampaign FilterField = "utm_campaign"
 	FilterBrowser     FilterField = "ua_browser"
 	FilterOS          FilterField = "ua_os"
 	FilterDevice      FilterField = "ua_device_type"
-	FilterCountry     FilterField = "country_code"
-	FilterLanguage    FilterField = "language"
+	FilterCountry     FilterField = "country"
+	FilterLanguage    FilterField = "language_base"
 
 	// Custom operations not used in the filtering API
 	// but used in named queries.
@@ -76,22 +74,6 @@ func FilterStringToValues(filterString api.FilterString) (string, FilterOperatio
 	}
 }
 
-// FilterFixedToValues converts an api.FilterFixed to a string and FilterOperation.
-func FilterFixedToValues(filterFixed api.FilterFixed) (string, FilterOperation) {
-	switch {
-	case filterFixed.Eq.IsSet():
-		return filterFixed.Eq.Value, FilterEquals
-	case filterFixed.Neq.IsSet():
-		return filterFixed.Neq.Value, FilterNotEquals
-	case filterFixed.In.IsSet():
-		return filterFixed.In.Value, FilterIn
-	case filterFixed.NotIn.IsSet():
-		return filterFixed.NotIn.Value, FilterNotIn
-	default:
-		return "", ""
-	}
-}
-
 // Filter represents a single filter with a field, value, and operation.
 type Filter struct {
 	Field     FilterField
@@ -100,37 +82,13 @@ type Filter struct {
 }
 
 // NewFilter creates a new filter.
-func NewFilter(field FilterField, param interface{}) *Filter {
+func NewFilter(field FilterField, param api.OptFilterString) *Filter {
 	var value string
 	var operation FilterOperation
 
-	switch v := param.(type) {
-	case api.OptFilterFixed:
-		if v.IsSet() {
-			value, operation = FilterFixedToValues(v.Value)
-
-			// Convert the value to the enum integer for the database
-			//nolint:exhaustive // No other fields use uint8 enums
-			switch field {
-			case FilterBrowser:
-				value = strconv.Itoa(int(model.NewBrowserName(value)))
-			case FilterOS:
-				value = strconv.Itoa(int(model.NewOSName(value)))
-			case FilterDevice:
-				value = strconv.Itoa(int(model.NewDeviceTypeString(value)))
-			default:
-				// Do nothing
-			}
-		} else {
-			return nil
-		}
-	case api.OptFilterString:
-		if v.IsSet() {
-			value, operation = FilterStringToValues(v.Value)
-		} else {
-			return nil
-		}
-	default:
+	if param.IsSet() {
+		value, operation = FilterStringToValues(param.Value)
+	} else {
 		return nil
 	}
 

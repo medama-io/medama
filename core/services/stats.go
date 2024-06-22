@@ -673,7 +673,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		res := api.StatsBrowsers{}
 		for _, page := range browsers {
 			res = append(res, api.StatsBrowsersItem{
-				Browser:            page.Browser.String(),
+				Browser:            page.Browser,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
@@ -695,7 +695,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		res := api.StatsBrowsers{}
 		for _, page := range browsers {
 			res = append(res, api.StatsBrowsersItem{
-				Browser:            page.Browser.String(),
+				Browser:            page.Browser,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 				Bounces:            api.NewOptInt(page.Bounces),
@@ -759,7 +759,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		res := api.StatsOS{}
 		for _, page := range os {
 			res = append(res, api.StatsOSItem{
-				Os:                 page.OS.String(),
+				Os:                 page.OS,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
@@ -781,7 +781,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		res := api.StatsOS{}
 		for _, page := range os {
 			res = append(res, api.StatsOSItem{
-				Os:                 page.OS.String(),
+				Os:                 page.OS,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 				Bounces:            api.NewOptInt(page.Bounces),
@@ -845,7 +845,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		res := api.StatsDevices{}
 		for _, page := range devices {
 			res = append(res, api.StatsDevicesItem{
-				Device:             page.Device.String(),
+				Device:             page.Device,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
@@ -867,7 +867,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		res := api.StatsDevices{}
 		for _, page := range devices {
 			res = append(res, api.StatsDevicesItem{
-				Device:             page.Device.String(),
+				Device:             page.Device,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 				Bounces:            api.NewOptInt(page.Bounces),
@@ -1016,28 +1016,8 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		// Create API response
 		res := api.StatsCountries{}
 		for _, page := range countries {
-			// Check if country code is not null
-			if page.Country == "" {
-				res = append(res, api.StatsCountriesItem{
-					Country:            "Unknown",
-					Visitors:           page.Visitors,
-					VisitorsPercentage: page.VisitorsPercentage,
-				})
-				continue
-			}
-
-			// Convert country code to country name
-			country, err := h.codeCountryMap.GetCountry(page.Country)
-			if err != nil {
-				log.Error().
-					Err(err).
-					Str("country", page.Country).
-					Msg("failed to get country name")
-				return ErrInternalServerError(err), nil
-			}
-
 			res = append(res, api.StatsCountriesItem{
-				Country:            country,
+				Country:            page.Country,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
@@ -1058,28 +1038,8 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		// Create API response
 		res := api.StatsCountries{}
 		for _, page := range countries {
-			// Check if country code is not null
-			if page.Country == "" {
-				res = append(res, api.StatsCountriesItem{
-					Country:            "Unknown",
-					Visitors:           page.Visitors,
-					VisitorsPercentage: page.VisitorsPercentage,
-				})
-				continue
-			}
-
-			// Convert country code to country name
-			country, err := h.codeCountryMap.GetCountry(page.Country)
-			if err != nil {
-				log.Error().
-					Err(err).
-					Str("country", page.Country).
-					Msg("failed to get country name")
-				return ErrInternalServerError(err), nil
-			}
-
 			res = append(res, api.StatsCountriesItem{
-				Country:            country,
+				Country:            page.Country,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 				Bounces:            api.NewOptInt(page.Bounces),

@@ -30,7 +30,7 @@ func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filt
 	query.WriteString(`--sql
 		)
 		SELECT
-			country_code AS country,
+			country,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
@@ -78,7 +78,7 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(`--sql
 		)
 		SELECT
-			country_code AS country,
+			country,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
@@ -128,7 +128,7 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, filter *db.Filt
 	query.WriteString(`--sql
 		)
 		SELECT
-			language,
+			language_base AS language,
 			COUNT(*) FILTER (is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
@@ -176,7 +176,7 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(`--sql
 		)
 		SELECT
-			language,
+			language_base AS language,
 			COUNT(*) FILTER (is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,

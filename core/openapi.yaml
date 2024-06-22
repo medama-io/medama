@@ -464,7 +464,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
       responses:
         "200":
@@ -507,7 +507,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -552,7 +552,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -597,7 +597,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -641,7 +641,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -685,7 +685,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -729,7 +729,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -773,7 +773,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -817,7 +817,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -861,7 +861,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -905,7 +905,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -949,7 +949,7 @@ paths:
         - $ref: "#/components/parameters/Browser"
         - $ref: "#/components/parameters/OS"
         - $ref: "#/components/parameters/Device"
-        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
@@ -1065,7 +1065,7 @@ components:
       explode: true
       allowReserved: true
       schema:
-        $ref: "#/components/schemas/FilterFixed"
+        $ref: "#/components/schemas/FilterString"
     OS:
       name: os
       in: query
@@ -1075,7 +1075,7 @@ components:
       explode: true
       allowReserved: true
       schema:
-        $ref: "#/components/schemas/FilterFixed"
+        $ref: "#/components/schemas/FilterString"
     Device:
       name: device
       in: query
@@ -1085,17 +1085,17 @@ components:
       explode: true
       allowReserved: true
       schema:
-        $ref: "#/components/schemas/FilterFixed"
-    CountryCode:
+        $ref: "#/components/schemas/FilterString"
+    Country:
       name: country
       in: query
-      description: Country code.
+      description: Country name.
       required: false
       style: deepObject
       explode: true
       allowReserved: true
       schema:
-        $ref: "#/components/schemas/FilterFixed"
+        $ref: "#/components/schemas/FilterString"
     Language:
       name: language
       in: query
@@ -1105,7 +1105,7 @@ components:
       explode: true
       allowReserved: true
       schema:
-        $ref: "#/components/schemas/FilterFixed"
+        $ref: "#/components/schemas/FilterString"
     PeriodStart:
       name: start
       in: query
@@ -1346,21 +1346,6 @@ components:
         mapping:
           load: "#/components/schemas/EventLoad"
           unload: "#/components/schemas/EventUnload"
-    FilterFixed:
-      type: object
-      properties:
-        eq:
-          type: string
-          description: Equal to.
-        neq:
-          type: string
-          description: Not equal to.
-        in:
-          type: string
-          description: In.
-        not_in:
-          type: string
-          description: Not in.
     FilterString:
       type: object
       properties:

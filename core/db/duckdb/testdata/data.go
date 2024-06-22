@@ -11,11 +11,12 @@ func generatePageViewHits(r *rand.Rand, count int, hostname string) []*model.Pag
 	paths := []string{"/", "/about", "/contact"}
 	booleanValues := []bool{true, false}
 	referrers := []string{"", "medama.io", "google.com"}
-	countryCodes := []string{"GB", "US", "JP"}
-	languages := []string{"en", "jp"}
-	browserNames := []model.BrowserName{model.ChromeBrowser, model.FirefoxBrowser, model.SafariBrowser}
-	oses := []model.OSName{model.WindowsOS, model.LinuxOS, model.IOS}
-	deviceTypes := []model.DeviceType{model.DesktopDevice, model.MobileDevice, model.TabletDevice}
+	countries := []string{"United Kingdom", "United States", "Japan"}
+	languagesBase := []string{"English", "Japanese"}
+	languagesDialects := []string{"British English", "American English"}
+	browserNames := []string{"Chrome", "Firefox", "Safari"}
+	oses := []string{"Windows", "Linux", "iOS"}
+	deviceTypes := []string{"Desktop", "Mobile", "Tablet"}
 	utmSources := []string{"", "bing", "twitter"}
 	utmMediums := []string{"", "cpc", "organic"}
 	utmCampaigns := []string{"", "summer", "winter"}
@@ -23,21 +24,30 @@ func generatePageViewHits(r *rand.Rand, count int, hostname string) []*model.Pag
 	pageViewHits := make([]*model.PageViewHit, count)
 
 	for i := range count {
+		languageBase := languagesBase[r.IntN(len(languagesBase))]
+		var languageDialect string
+		if languageBase == "English" {
+			languageDialect = languagesDialects[r.IntN(len(languagesDialects))]
+		} else {
+			languageDialect = "Japanese"
+		}
+
 		pageViewHits[i] = &model.PageViewHit{
-			Hostname:     hostname,
-			BID:          strconv.Itoa(i),
-			Pathname:     paths[r.IntN(len(paths))],
-			IsUniqueUser: booleanValues[r.IntN(len(booleanValues))],
-			IsUniquePage: booleanValues[r.IntN(len(booleanValues))],
-			Referrer:     referrers[r.IntN(len(referrers))],
-			CountryCode:  countryCodes[r.IntN(len(countryCodes))],
-			Language:     languages[r.IntN(len(languages))],
-			BrowserName:  browserNames[r.IntN(len(browserNames))],
-			OS:           oses[r.IntN(len(oses))],
-			DeviceType:   deviceTypes[r.IntN(len(deviceTypes))],
-			UTMSource:    utmSources[r.IntN(len(utmSources))],
-			UTMMedium:    utmMediums[r.IntN(len(utmMediums))],
-			UTMCampaign:  utmCampaigns[r.IntN(len(utmCampaigns))],
+			Hostname:        hostname,
+			BID:             strconv.Itoa(i),
+			Pathname:        paths[r.IntN(len(paths))],
+			IsUniqueUser:    booleanValues[r.IntN(len(booleanValues))],
+			IsUniquePage:    booleanValues[r.IntN(len(booleanValues))],
+			ReferrerHost:    referrers[r.IntN(len(referrers))],
+			Country:         countries[r.IntN(len(countries))],
+			LanguageBase:    languageBase,
+			LanguageDialect: languageDialect,
+			BrowserName:     browserNames[r.IntN(len(browserNames))],
+			OS:              oses[r.IntN(len(oses))],
+			DeviceType:      deviceTypes[r.IntN(len(deviceTypes))],
+			UTMSource:       utmSources[r.IntN(len(utmSources))],
+			UTMMedium:       utmMediums[r.IntN(len(utmMediums))],
+			UTMCampaign:     utmCampaigns[r.IntN(len(utmCampaigns))],
 		}
 	}
 

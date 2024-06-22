@@ -19,119 +19,69 @@ import { IconPlus } from '@/components/icons/plus';
 import classes from './Filter.module.css';
 
 type FilterType = Record<string, { label: string; value: string }>;
-interface FilterTypes {
-	string: FilterType;
-	fixed: FilterType;
-}
 
-interface FilterChoicesString {
+interface FilterChoices {
 	label: string;
-	type: 'string';
 	placeholder?: string;
 }
 
-interface FilterChoicesFixed {
-	label: string;
-	type: 'fixed';
-	choices: FilterType;
-}
+type FilterOptions = Record<string, FilterChoices>;
 
-type FilterOptions = Record<string, FilterChoicesString | FilterChoicesFixed>;
-
-const filterTypes: FilterTypes = {
-	string: {
-		eq: { label: 'equals', value: 'eq' },
-		neq: { label: 'does not equal', value: 'neq' },
-		contains: { label: 'contains', value: 'contains' },
-		not_contains: { label: 'does not contain', value: 'not_contains' },
-		starts_with: { label: 'starts with', value: 'starts_with' },
-		not_starts_with: {
-			label: 'does not start with',
-			value: 'not_starts_with',
-		},
-		ends_with: { label: 'ends with', value: 'ends_with' },
-		not_ends_with: { label: 'does not end with', value: 'not_ends_with' },
-		// in: { label: 'is in', value: 'in' },
-		// not_in: { label: 'is not in', value: 'not_in' },
+const filterTypes: FilterType = {
+	eq: { label: 'equals', value: 'eq' },
+	neq: { label: 'does not equal', value: 'neq' },
+	contains: { label: 'contains', value: 'contains' },
+	not_contains: { label: 'does not contain', value: 'not_contains' },
+	starts_with: { label: 'starts with', value: 'starts_with' },
+	not_starts_with: {
+		label: 'does not start with',
+		value: 'not_starts_with',
 	},
-	fixed: {
-		eq: { label: 'equals', value: 'eq' },
-		neq: { label: 'does not equal', value: 'neq' },
-		// in: { label: 'is in', value: 'in' },
-		// not_in: { label: 'is not in', value: 'not_in' },
-	},
+	ends_with: { label: 'ends with', value: 'ends_with' },
+	not_ends_with: { label: 'does not end with', value: 'not_ends_with' },
+	// in: { label: 'is in', value: 'in' },
+	// not_in: { label: 'is not in', value: 'not_in' },
 };
 
 const filterOptions: FilterOptions = {
 	path: {
 		label: 'Path',
-		type: 'string',
 		placeholder: 'e.g. /blog',
 	},
 	referrer: {
 		label: 'Referrer',
-		type: 'string',
 		placeholder: 'e.g. /blog',
 	},
 	utm_source: {
 		label: 'UTM Source',
-		type: 'string',
 		placeholder: 'e.g. google',
 	},
 	utm_medium: {
 		label: 'UTM Medium',
-		type: 'string',
 		placeholder: 'e.g. cpc',
 	},
 	utm_campaign: {
 		label: 'UTM Campaign',
-		type: 'string',
 		placeholder: 'e.g. summer_sale',
 	},
 	browser: {
 		label: 'Browser',
-		type: 'fixed',
-		choices: {
-			Chrome: { label: 'Chrome', value: 'Chrome' },
-			Edge: { label: 'Edge', value: 'Edge' },
-			Firefox: { label: 'Firefox', value: 'Firefox' },
-			Opera: { label: 'Opera', value: 'Opera' },
-			Safari: { label: 'Safari', value: 'Safari' },
-			Unknown: { label: 'Unknown', value: 'Unknown' },
-		},
+		placeholder: 'e.g. Chrome',
 	},
 	os: {
 		label: 'OS',
-		type: 'fixed',
-		choices: {
-			Windows: { label: 'Windows', value: 'Windows' },
-			MacOS: { label: 'MacOS', value: 'MacOS' },
-			Linux: { label: 'Linux', value: 'Linux' },
-			iOS: { label: 'iOS', value: 'iOS' },
-			Android: { label: 'Android', value: 'Android' },
-			ChromeOS: { label: 'ChromeOS', value: 'ChromeOS' },
-			Unknown: { label: 'Unknown', value: 'Unknown' },
-		},
+		placeholder: 'e.g. Windows',
 	},
 	device: {
 		label: 'Device',
-		type: 'fixed',
-		choices: {
-			Desktop: { label: 'Desktop', value: 'Desktop' },
-			Mobile: { label: 'Mobile', value: 'Mobile' },
-			Tablet: { label: 'Tablet', value: 'Tablet' },
-			TV: { label: 'TV', value: 'TV' },
-			Unknown: { label: 'Unknown', value: 'Unknown' },
-		},
+		placeholder: 'e.g. Desktop',
 	},
 	country: {
 		label: 'Country',
-		type: 'string',
 		placeholder: 'e.g. United States',
 	},
 	language: {
 		label: 'Language',
-		type: 'string',
 		placeholder: 'e.g. English',
 	},
 };
@@ -214,13 +164,9 @@ export const Filters = () => {
 	// We only reset the value if there is a change in filter type
 	useEffect(() => {
 		setType('eq');
-		// If the filter is a string, reset the value
-		// Otherwise, reset the value to the first choice
-		chosenFilter?.type === 'string'
-			? setValue('')
-			: setValue(Object.keys(chosenFilter?.choices ?? {})[0] ?? 'Unknown');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [chosenFilter]);
+		// Reset the value
+		setValue('');
+	}, []);
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	// Convert the search params to an array of label-type-value tuples
@@ -290,39 +236,23 @@ export const Filters = () => {
 							setValue={setFilter}
 						/>
 						<FilterDropdown
-							choices={
-								chosenFilter?.type === 'string'
-									? filterTypes.string
-									: filterTypes.fixed
-							}
+							choices={filterTypes}
 							value={type}
 							setValue={setType}
 						/>
-						{chosenFilter?.type === 'string' ? (
-							<TextInput
-								h={40}
-								value={value}
-								onChange={(event) => {
-									setValue(event.currentTarget.value);
-								}}
-								onKeyDown={(event) => {
-									if (event.key === 'Enter' && value !== '') {
-										applyFilters();
-									}
-								}}
-								placeholder={chosenFilter.placeholder}
-							/>
-						) : (
-							<FilterDropdown
-								choices={chosenFilter?.choices ?? {}}
-								value={
-									value === ''
-										? Object.keys(chosenFilter?.choices ?? {})[0] ?? 'Unknown'
-										: value
+						<TextInput
+							h={40}
+							value={value}
+							onChange={(event) => {
+								setValue(event.currentTarget.value);
+							}}
+							onKeyDown={(event) => {
+								if (event.key === 'Enter' && value !== '') {
+									applyFilters();
 								}
-								setValue={setValue}
-							/>
-						)}
+							}}
+							placeholder={chosenFilter?.placeholder}
+						/>
 					</Group>
 					<Group justify="flex-end" className={classes.select}>
 						<UnstyledButton
@@ -355,7 +285,7 @@ export const Filters = () => {
 					>
 						<Text fz={14}>{label}&nbsp;</Text>
 						<Text fz={14} fw={700}>
-							{filterTypes.string[type]?.label ?? 'Unknown'}&nbsp;
+							{filterTypes[type]?.label ?? 'Unknown'}&nbsp;
 						</Text>
 						<Text fz={14}>{value}</Text>
 						<CloseButton

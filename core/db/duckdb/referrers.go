@@ -30,7 +30,7 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 	query.WriteString(`--sql
 		)
 		SELECT
-			referrer,
+			referrer_host AS referrer,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
@@ -82,7 +82,7 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(`--sql
 		)
 		SELECT
-			referrer,
+			referrer_host AS referrer,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,

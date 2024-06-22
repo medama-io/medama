@@ -107,9 +107,9 @@ type StatsUTMCampaigns struct {
 }
 
 type StatsBrowsersSummary struct {
-	Browser            BrowserName `db:"browser"`
-	Visitors           int         `db:"visitors"`
-	VisitorsPercentage float32     `db:"visitors_percentage"`
+	Browser            string  `db:"browser"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsBrowsers struct {
@@ -119,7 +119,7 @@ type StatsBrowsers struct {
 }
 
 type StatsOSSummary struct {
-	OS                 OSName  `db:"os"`
+	OS                 string  `db:"os"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
@@ -131,9 +131,9 @@ type StatsOS struct {
 }
 
 type StatsDevicesSummary struct {
-	Device             DeviceType `db:"device"`
-	Visitors           int        `db:"visitors"`
-	VisitorsPercentage float32    `db:"visitors_percentage"`
+	Device             string  `db:"device"`
+	Visitors           int     `db:"visitors"`
+	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
 
 type StatsDevices struct {

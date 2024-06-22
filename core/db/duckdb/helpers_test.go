@@ -168,11 +168,11 @@ func generateFilterAll(hostname string) []TestCase {
 	}{
 		// Alphabetically sorted list of filters as snapshots are sorted. This lets us see the downward progression of
 		// each cumulative filter.
-		{"Browser", db.NewFilter(db.FilterBrowser, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Chrome")}))},
-		{"Country", db.NewFilter(db.FilterCountry, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("GB")}))},
-		{"Device", db.NewFilter(db.FilterDevice, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Desktop")}))},
-		{"Language", db.NewFilter(db.FilterLanguage, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("en")}))},
-		{"OS", db.NewFilter(db.FilterOS, api.NewOptFilterFixed(api.FilterFixed{Eq: api.NewOptString("Windows")}))},
+		{"Browser", db.NewFilter(db.FilterBrowser, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Chrome")}))},
+		{"Country", db.NewFilter(db.FilterCountry, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("United Kingdom")}))},
+		{"Device", db.NewFilter(db.FilterDevice, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Desktop")}))},
+		{"Language", db.NewFilter(db.FilterLanguage, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("English")}))},
+		{"OS", db.NewFilter(db.FilterOS, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Windows")}))},
 		{"Pathname", db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")}))},
 		{"Referrer", db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")}))},
 		{"UTMCampaign", db.NewFilter(db.FilterUTMCampaign, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("summer")}))},
