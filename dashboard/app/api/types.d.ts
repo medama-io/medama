@@ -214,16 +214,6 @@ export interface components {
      * @description Website hit event.
      */
     EventHit: components["schemas"]["EventLoad"] | components["schemas"]["EventUnload"];
-    FilterFixed: {
-      /** @description Equal to. */
-      eq?: string;
-      /** @description Not equal to. */
-      neq?: string;
-      /** @description In. */
-      in?: string;
-      /** @description Not in. */
-      not_in?: string;
-    };
     FilterString: {
       /** @description Equal to. */
       eq?: string;
@@ -621,15 +611,15 @@ export interface components {
     /** @description UTM campaign of the page hit. */
     UTMCampaign?: components["schemas"]["FilterString"];
     /** @description Browser name. */
-    Browser?: components["schemas"]["FilterFixed"];
+    Browser?: components["schemas"]["FilterString"];
     /** @description Operating system name. */
-    OS?: components["schemas"]["FilterFixed"];
+    OS?: components["schemas"]["FilterString"];
     /** @description Device type. */
-    Device?: components["schemas"]["FilterFixed"];
-    /** @description Country code. */
-    CountryCode?: components["schemas"]["FilterFixed"];
+    Device?: components["schemas"]["FilterString"];
+    /** @description Country name. */
+    Country?: components["schemas"]["FilterString"];
     /** @description Language code. */
-    Language?: components["schemas"]["FilterFixed"];
+    Language?: components["schemas"]["FilterString"];
     /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
     PeriodStart?: string;
     /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
@@ -986,7 +976,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
       };
       path: {
@@ -1027,7 +1017,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1070,7 +1060,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1113,7 +1103,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1157,7 +1147,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1201,7 +1191,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1245,7 +1235,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1289,7 +1279,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1333,7 +1323,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1377,7 +1367,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1421,7 +1411,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];
@@ -1465,7 +1455,7 @@ export interface operations {
         browser?: components["parameters"]["Browser"];
         os?: components["parameters"]["OS"];
         device?: components["parameters"]["Device"];
-        country?: components["parameters"]["CountryCode"];
+        country?: components["parameters"]["Country"];
         language?: components["parameters"]["Language"];
         limit?: components["parameters"]["Limit"];
         offset?: components["parameters"]["Offset"];

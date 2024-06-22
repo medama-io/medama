@@ -339,58 +339,6 @@ func (s *EventUnload) SetM(val int) {
 	s.M = val
 }
 
-// Ref: #/components/schemas/FilterFixed
-type FilterFixed struct {
-	// Equal to.
-	Eq OptString `json:"eq"`
-	// Not equal to.
-	Neq OptString `json:"neq"`
-	// In.
-	In OptString `json:"in"`
-	// Not in.
-	NotIn OptString `json:"not_in"`
-}
-
-// GetEq returns the value of Eq.
-func (s *FilterFixed) GetEq() OptString {
-	return s.Eq
-}
-
-// GetNeq returns the value of Neq.
-func (s *FilterFixed) GetNeq() OptString {
-	return s.Neq
-}
-
-// GetIn returns the value of In.
-func (s *FilterFixed) GetIn() OptString {
-	return s.In
-}
-
-// GetNotIn returns the value of NotIn.
-func (s *FilterFixed) GetNotIn() OptString {
-	return s.NotIn
-}
-
-// SetEq sets the value of Eq.
-func (s *FilterFixed) SetEq(val OptString) {
-	s.Eq = val
-}
-
-// SetNeq sets the value of Neq.
-func (s *FilterFixed) SetNeq(val OptString) {
-	s.Neq = val
-}
-
-// SetIn sets the value of In.
-func (s *FilterFixed) SetIn(val OptString) {
-	s.In = val
-}
-
-// SetNotIn sets the value of NotIn.
-func (s *FilterFixed) SetNotIn(val OptString) {
-	s.NotIn = val
-}
-
 // Ref: #/components/schemas/FilterString
 type FilterString struct {
 	// Equal to.
@@ -894,52 +842,6 @@ func (o OptDateTime) Get() (v time.Time, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptDateTime) Or(d time.Time) time.Time {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptFilterFixed returns new OptFilterFixed with value set to v.
-func NewOptFilterFixed(v FilterFixed) OptFilterFixed {
-	return OptFilterFixed{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptFilterFixed is optional FilterFixed.
-type OptFilterFixed struct {
-	Value FilterFixed
-	Set   bool
-}
-
-// IsSet returns true if OptFilterFixed was set.
-func (o OptFilterFixed) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptFilterFixed) Reset() {
-	var v FilterFixed
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptFilterFixed) SetTo(v FilterFixed) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptFilterFixed) Get() (v FilterFixed, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptFilterFixed) Or(d FilterFixed) FilterFixed {
 	if v, ok := o.Get(); ok {
 		return v
 	}

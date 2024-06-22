@@ -24,17 +24,21 @@ func Up0002(c *duckdb.Client) error {
 	//
 	// is_unique_page is true if the user has not visited the page before
 	//
-	// referrer is the referer url from the http header of the page view
+	// referrer_host is the referer hostname from the http header of the page view
 	//
-	// country_code is the country code of the user
+	// referrer_group is the referer group of the page view
 	//
-	// language is the language code of the user
+	// country is the country code of the user
 	//
-	// ua_browser is the browser of the user with an associated enum id
+	// language_base is the base language of the user e.g. English
 	//
-	// ua_os is the operating system of the user with an associated enum id
+	// language_dialect is the dialect of the user's language e.g. British English
 	//
-	// ua_device_type is the device type of the user with an associated enum id
+	// ua_browser is the browser of the user
+	//
+	// ua_os is the operating system of the user
+	//
+	// ua_device_type is the device type of the user
 	//
 	// utm_source is the utm source of the user
 	//
@@ -49,17 +53,17 @@ func Up0002(c *duckdb.Client) error {
 	CREATE TABLE IF NOT EXISTS views (
 		bid TEXT,
 		hostname TEXT NOT NULL,
-		pathname TEXT,
-		is_unique_user BOOLEAN,
-		is_unique_page BOOLEAN,
+		pathname TEXT NOT NULL,
+		is_unique_user BOOLEAN NOT NULL,
+		is_unique_page BOOLEAN NOT NULL,
 		referrer_host TEXT,
 		referrer_group TEXT,
-		country_code TEXT,
+		country TEXT,
 		language_base TEXT,
 		language_dialect TEXT,
-		ua_browser UTINYINT NOT NULL,
-		ua_os UTINYINT NOT NULL,
-		ua_device_type UTINYINT NOT NULL,
+		ua_browser TEXT NOT NULL,
+		ua_os TEXT NOT NULL,
+		ua_device_type TEXT NOT NULL,
 		utm_source TEXT,
 		utm_medium TEXT,
 		utm_campaign TEXT,

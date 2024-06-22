@@ -19,6 +19,8 @@ const (
 	OneDay = 24 * time.Hour
 	// Set to no-cache to disable caching.
 	CacheControl = "no-cache"
+	// Unknown is the default value for unknown fields.
+	Unknown = "Unknown"
 )
 
 func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
@@ -116,10 +118,20 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		// Get country code from user's timezone. This is used as a best effort
 		// to determine the country of the user's location without compromising
 		// their privacy using IP addresses.
+		var countryName string
 		countryCode, err := h.timezoneMap.GetCode(req.EventLoad.T.Value)
 		if err != nil {
 			log.Debug().Err(err).Msg("hit: failed to get country code from timezone")
 			countryCode = ""
+			countryName = Unknown
+		}
+
+		if countryCode != "" {
+			countryName, err = h.codeCountryMap.GetCountry(countryCode)
+			if err != nil {
+				log.Debug().Err(err).Msg("hit: failed to get country name from country code")
+				countryName = Unknown
+			}
 		}
 
 		// Get request from context
@@ -136,8 +148,8 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		}
 
 		// Get the first language from the list which is the most preferred and convert it to a language name
-		languageBase := "Unknown"
-		languageDialect := "Unknown"
+		languageBase := Unknown
+		languageDialect := Unknown
 		if len(languages) > 0 {
 			// Narrow down the language to the base language (e.g. en-US -> en)
 			base, _ := languages[0].Base()
@@ -149,9 +161,27 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		rawUserAgent := reqBody.Header.Get("User-Agent")
 		ua := h.useragent.Parse(rawUserAgent)
 
-		uaBrowser := model.NewBrowserName(ua.Browser)
-		uaOS := model.NewOSName(ua.OS)
-		uaDeviceType := model.NewDeviceType(ua.Desktop, ua.Mobile, ua.Tablet, ua.TV)
+		uaBrowser := ua.Browser
+		if uaBrowser == "" {
+			uaBrowser = Unknown
+		}
+
+		uaOS := ua.OS
+		if uaOS == "" {
+			uaOS = Unknown
+		}
+
+		uaDevice := Unknown
+		switch {
+		case ua.Desktop:
+			uaDevice = "Desktop"
+		case ua.Mobile:
+			uaDevice = "Mobile"
+		case ua.Tablet:
+			uaDevice = "Tablet"
+		case ua.TV:
+			uaDevice = "TV"
+		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
 		queries := req.EventLoad.U.Query()
@@ -169,13 +199,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			// Optional
 			ReferrerHost:    referrerHost,
 			ReferrerGroup:   "", // TODO: https://github.com/medama-io/medama/issues/10
-			CountryCode:     countryCode,
+			Country:         countryName,
 			LanguageBase:    languageBase,
 			LanguageDialect: languageDialect,
 
 			BrowserName: uaBrowser,
 			OS:          uaOS,
-			DeviceType:  uaDeviceType,
+			DeviceType:  uaDevice,
 
 			UTMSource:   utmSource,
 			UTMMedium:   utmMedium,
@@ -190,16 +220,16 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			Bool("is_unique_page", event.IsUniquePage).
 			Str("referrer_host", event.ReferrerHost).
 			Str("referrer_group", event.ReferrerGroup).
-			Str("country_code", countryCode).
+			Str("country", countryName).
 			Str("language_base", event.LanguageBase).
 			Str("language_dialect", event.LanguageDialect).
-			Str("browser_name", event.BrowserName.String()).
-			Str("os", event.OS.String()).
-			Str("device_type", event.DeviceType.String()).
+			Str("browser_name", event.BrowserName).
+			Str("os", event.OS).
+			Str("device_type", event.DeviceType).
 			Logger()
 
 		// TODO: Remove temporary raw user agent logging for debugging
-		if event.BrowserName == model.UnknownBrowser || event.OS == model.UnknownOS || event.DeviceType == model.UnknownDevice {
+		if ua.Browser == "" || ua.OS == "" || event.DeviceType == Unknown {
 			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: unknown user agent")
 		}
 

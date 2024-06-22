@@ -393,15 +393,15 @@ type GetWebsiteIDBrowsersParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -501,7 +501,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -510,7 +510,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -519,7 +519,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -528,7 +528,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -537,7 +537,7 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -948,12 +948,12 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -979,12 +979,12 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -1010,12 +1010,12 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -1041,12 +1041,12 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -1072,12 +1072,12 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -1253,15 +1253,15 @@ type GetWebsiteIDCampaignsParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -1361,7 +1361,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -1370,7 +1370,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -1379,7 +1379,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -1388,7 +1388,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -1397,7 +1397,7 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -1808,12 +1808,12 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -1839,12 +1839,12 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -1870,12 +1870,12 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -1901,12 +1901,12 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -1932,12 +1932,12 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -2113,15 +2113,15 @@ type GetWebsiteIDCountryParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -2221,7 +2221,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -2230,7 +2230,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -2239,7 +2239,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -2248,7 +2248,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -2257,7 +2257,7 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -2668,12 +2668,12 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -2699,12 +2699,12 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -2730,12 +2730,12 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -2761,12 +2761,12 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -2792,12 +2792,12 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -2973,15 +2973,15 @@ type GetWebsiteIDDeviceParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -3081,7 +3081,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -3090,7 +3090,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -3099,7 +3099,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -3108,7 +3108,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -3117,7 +3117,7 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -3528,12 +3528,12 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -3559,12 +3559,12 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -3590,12 +3590,12 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -3621,12 +3621,12 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -3652,12 +3652,12 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -3833,15 +3833,15 @@ type GetWebsiteIDLanguageParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -3941,7 +3941,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -3950,7 +3950,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -3959,7 +3959,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -3968,7 +3968,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -3977,7 +3977,7 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -4388,12 +4388,12 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -4419,12 +4419,12 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -4450,12 +4450,12 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -4481,12 +4481,12 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -4512,12 +4512,12 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -4693,15 +4693,15 @@ type GetWebsiteIDMediumsParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -4801,7 +4801,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -4810,7 +4810,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -4819,7 +4819,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -4828,7 +4828,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -4837,7 +4837,7 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -5248,12 +5248,12 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -5279,12 +5279,12 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -5310,12 +5310,12 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -5341,12 +5341,12 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -5372,12 +5372,12 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -5553,15 +5553,15 @@ type GetWebsiteIDOsParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -5661,7 +5661,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -5670,7 +5670,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -5679,7 +5679,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -5688,7 +5688,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -5697,7 +5697,7 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -6108,12 +6108,12 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -6139,12 +6139,12 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -6170,12 +6170,12 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -6201,12 +6201,12 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -6232,12 +6232,12 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -6413,15 +6413,15 @@ type GetWebsiteIDPagesParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -6521,7 +6521,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -6530,7 +6530,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -6539,7 +6539,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -6548,7 +6548,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -6557,7 +6557,7 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -6968,12 +6968,12 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -6999,12 +6999,12 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -7030,12 +7030,12 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -7061,12 +7061,12 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -7092,12 +7092,12 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -7273,15 +7273,15 @@ type GetWebsiteIDReferrersParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -7381,7 +7381,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -7390,7 +7390,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -7399,7 +7399,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -7408,7 +7408,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -7417,7 +7417,7 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -7828,12 +7828,12 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -7859,12 +7859,12 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -7890,12 +7890,12 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -7921,12 +7921,12 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -7952,12 +7952,12 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -8133,15 +8133,15 @@ type GetWebsiteIDSourcesParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -8241,7 +8241,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -8250,7 +8250,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -8259,7 +8259,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -8268,7 +8268,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -8277,7 +8277,7 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -8688,12 +8688,12 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -8719,12 +8719,12 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -8750,12 +8750,12 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -8781,12 +8781,12 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -8812,12 +8812,12 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -8997,15 +8997,15 @@ type GetWebsiteIDSummaryParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 }
 
 func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWebsiteIDSummaryParams) {
@@ -9110,7 +9110,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -9119,7 +9119,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -9128,7 +9128,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -9137,7 +9137,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -9146,7 +9146,7 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	return params
@@ -9595,12 +9595,12 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -9626,12 +9626,12 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -9657,12 +9657,12 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -9688,12 +9688,12 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -9719,12 +9719,12 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
@@ -9770,15 +9770,15 @@ type GetWebsiteIDTimeParams struct {
 	// UTM campaign of the page hit.
 	UtmCampaign OptFilterString
 	// Browser name.
-	Browser OptFilterFixed
+	Browser OptFilterString
 	// Operating system name.
-	Os OptFilterFixed
+	Os OptFilterString
 	// Device type.
-	Device OptFilterFixed
-	// Country code.
-	Country OptFilterFixed
+	Device OptFilterString
+	// Country name.
+	Country OptFilterString
 	// Language code.
-	Language OptFilterFixed
+	Language OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -9878,7 +9878,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Browser = v.(OptFilterFixed)
+			params.Browser = v.(OptFilterString)
 		}
 	}
 	{
@@ -9887,7 +9887,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Os = v.(OptFilterFixed)
+			params.Os = v.(OptFilterString)
 		}
 	}
 	{
@@ -9896,7 +9896,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Device = v.(OptFilterFixed)
+			params.Device = v.(OptFilterString)
 		}
 	}
 	{
@@ -9905,7 +9905,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Country = v.(OptFilterFixed)
+			params.Country = v.(OptFilterString)
 		}
 	}
 	{
@@ -9914,7 +9914,7 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Language = v.(OptFilterFixed)
+			params.Language = v.(OptFilterString)
 		}
 	}
 	{
@@ -10325,12 +10325,12 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "browser",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotBrowserVal FilterFixed
+				var paramsDotBrowserVal FilterString
 				if err := func() error {
 					return paramsDotBrowserVal.DecodeURI(d)
 				}(); err != nil {
@@ -10356,12 +10356,12 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "os",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotOsVal FilterFixed
+				var paramsDotOsVal FilterString
 				if err := func() error {
 					return paramsDotOsVal.DecodeURI(d)
 				}(); err != nil {
@@ -10387,12 +10387,12 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "device",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotDeviceVal FilterFixed
+				var paramsDotDeviceVal FilterString
 				if err := func() error {
 					return paramsDotDeviceVal.DecodeURI(d)
 				}(); err != nil {
@@ -10418,12 +10418,12 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "country",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountryVal FilterFixed
+				var paramsDotCountryVal FilterString
 				if err := func() error {
 					return paramsDotCountryVal.DecodeURI(d)
 				}(); err != nil {
@@ -10449,12 +10449,12 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			Name:    "language",
 			Style:   uri.QueryStyleDeepObject,
 			Explode: true,
-			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLanguageVal FilterFixed
+				var paramsDotLanguageVal FilterString
 				if err := func() error {
 					return paramsDotLanguageVal.DecodeURI(d)
 				}(); err != nil {
