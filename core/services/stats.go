@@ -1038,28 +1038,8 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		// Create API response
 		res := api.StatsCountries{}
 		for _, page := range countries {
-			// Check if country code is not null
-			if page.Country == "" {
-				res = append(res, api.StatsCountriesItem{
-					Country:            "Unknown",
-					Visitors:           page.Visitors,
-					VisitorsPercentage: page.VisitorsPercentage,
-				})
-				continue
-			}
-
-			// Convert country code to country name
-			country, err := h.codeCountryMap.GetCountry(page.Country)
-			if err != nil {
-				log.Error().
-					Err(err).
-					Str("country", page.Country).
-					Msg("failed to get country name")
-				return ErrInternalServerError(err), nil
-			}
-
 			res = append(res, api.StatsCountriesItem{
-				Country:            country,
+				Country:            page.Country,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 				Bounces:            api.NewOptInt(page.Bounces),

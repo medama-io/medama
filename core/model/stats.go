@@ -59,7 +59,7 @@ type StatsTime struct {
 }
 
 type StatsReferrerSummary struct {
-	Referrer           string  `db:"referrer_host"`
+	Referrer           string  `db:"referrer"`
 	Visitors           int     `db:"visitors"`
 	VisitorsPercentage float32 `db:"visitors_percentage"`
 }
