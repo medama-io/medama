@@ -1,13 +1,18 @@
 name: Setup Environment
 description: Setup the local environment for a Medama workflow
 
+inputs:
+  token:
+    description: "GitHub token for the repository"
+    required: true
+
 runs:
   using: composite
   steps:
     - name: Install Task
       uses: arduino/setup-task@v2
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ inputs.token }}
 
     - name: Setup Go
       uses: actions/setup-go@v5

@@ -20,6 +20,8 @@ jobs:
 
       - name: Setup Environment
         uses: ./.github/actions/setup-env
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install ARM64 toolchain
         if: matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64'

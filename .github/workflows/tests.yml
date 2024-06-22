@@ -18,6 +18,8 @@ jobs:
 
       - name: Setup Environment
         uses: ./.github/actions/setup-env
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Lint
         uses: golangci/golangci-lint-action@v6
@@ -32,6 +34,8 @@ jobs:
 
       - name: Setup Environment
         uses: ./.github/actions/setup-env
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test
         run: task core:test
