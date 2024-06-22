@@ -32,14 +32,6 @@ tasks:
     cmds:
       - ./bin/main {{.CLI_ARGS}}
 
-  release:
-    deps: [generate]
-    cmds:
-      - go build -o ./bin/main -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
-    env:
-      CGO_ENABLED: "1"
-      GOEXPERIMENT: "newinliner"
-
   generate:go:
     cmds:
       - go generate ./...
@@ -85,3 +77,53 @@ tasks:
       - go test -v ./...
     env:
       CGO_ENABLED: "1"
+
+  # Release workflows
+  # Local build
+  release:
+    deps: [generate]
+    cmds:
+      - go build -o ./bin/main -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+    env:
+      CGO_ENABLED: "1"
+      GOEXPERIMENT: "newinliner"
+
+  release:linux:amd64:
+    cmds:
+      - go build -o ./bin/linux_amd64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - echo "linux/amd64 build done"
+    env:
+      CGO_ENABLED: "1"
+      GOEXPERIMENT: "newinliner"
+      GOOS: "linux"
+      GOARCH: "amd64"
+
+  release:linux:arm64:
+    cmds:
+      - go build -o ./bin/linux_arm64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - echo "linux/arm64 build done"
+    env:
+      CGO_ENABLED: "1"
+      GOEXPERIMENT: "newinliner"
+      GOOS: "linux"
+      GOARCH: "arm64"
+
+  release:macos:amd64:
+    cmds:
+      - go build -o ./bin/darwin_amd64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - echo "darwin/amd64 build done"
+    env:
+      CGO_ENABLED: "1"
+      GOEXPERIMENT: "newinliner"
+      GOOS: "darwin"
+      GOARCH: "amd64"
+
+  release:macos:arm64:
+    cmds:
+      - go build -o ./bin/darwin_arm64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - echo "darwin/arm64 build done"
+    env:
+      CGO_ENABLED: "1"
+      GOEXPERIMENT: "newinliner"
+      GOOS: "darwin"
+      GOARCH: "arm64"
