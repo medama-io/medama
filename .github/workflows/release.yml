@@ -15,6 +15,9 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         arch: [amd64, arm64]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Environment
         uses: ./.github/workflows/setup-env.yml
 
