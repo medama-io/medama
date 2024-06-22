@@ -16,4 +16,4 @@ go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml
 # make it portable.
 # Line 256
 sed -i'' -e '256c\
-\tcase ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
+    case ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
