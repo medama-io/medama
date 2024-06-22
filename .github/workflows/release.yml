@@ -30,8 +30,11 @@ jobs:
       - name: Build
         run: task core:release:${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}:${{ matrix.arch }}
 
+      - name: Create Release Directory
+        run: mkdir -p release
+
       - name: Zip Artifact
-        run: zip release/medama-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip ./bin/${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
+        run: zip release/medama-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip ./core/bin/${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
 
       - uses: actions/upload-artifact@v4
         with:
