@@ -4,9 +4,6 @@ description: Setup the local environment for a Medama workflow
 runs:
   using: composite
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: Install Task
       uses: arduino/setup-task@v2
 
