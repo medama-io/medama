@@ -19,8 +19,8 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: ${{ steps.checkout.outputs.path }}/core/go.mod
-          cache-dependency-path: ${{ steps.checkout.outputs.path }}/core/go.sum
+          go-version-file: ./core/go.mod
+          cache-dependency-path: ./core/go.sum
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
