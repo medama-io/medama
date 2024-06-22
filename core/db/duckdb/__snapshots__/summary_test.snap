@@ -1,99 +1,99 @@
 
 [TestGetWebsiteSummary - 1]
 {
- "Bounces": 125612,
- "Duration": 4994,
+ "Bounces": 124684,
+ "Duration": 5003,
  "Pageviews": 1000000,
- "Visitors": 500559
+ "Visitors": 499657
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 1]
 {
- "Bounces": 41751,
- "Duration": 4990,
- "Pageviews": 333093,
- "Visitors": 166756
+ "Bounces": 41640,
+ "Duration": 4980,
+ "Pageviews": 332879,
+ "Visitors": 166090
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 2]
 {
- "Bounces": 13994,
- "Duration": 4977,
- "Pageviews": 110903,
- "Visitors": 55494
+ "Bounces": 13844,
+ "Duration": 4992,
+ "Pageviews": 110733,
+ "Visitors": 55243
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 3]
 {
- "Bounces": 4581,
- "Duration": 4977,
- "Pageviews": 36908,
- "Visitors": 18500
+ "Bounces": 4691,
+ "Duration": 4997,
+ "Pageviews": 37170,
+ "Visitors": 18661
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 4]
 {
- "Bounces": 2328,
- "Duration": 4946,
- "Pageviews": 18481,
- "Visitors": 9276
+ "Bounces": 2355,
+ "Duration": 5003,
+ "Pageviews": 18789,
+ "Visitors": 9486
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 5]
 {
- "Bounces": 822,
- "Duration": 4925,
- "Pageviews": 6193,
- "Visitors": 3139
+ "Bounces": 783,
+ "Duration": 4971,
+ "Pageviews": 6165,
+ "Visitors": 3116
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 6]
 {
- "Bounces": 269,
- "Duration": 4985,
- "Pageviews": 2055,
- "Visitors": 987
+ "Bounces": 268,
+ "Duration": 5098,
+ "Pageviews": 2113,
+ "Visitors": 1090
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 7]
 {
- "Bounces": 84,
- "Duration": 4865,
- "Pageviews": 672,
- "Visitors": 307
+ "Bounces": 96,
+ "Duration": 4728,
+ "Pageviews": 726,
+ "Visitors": 381
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 8]
 {
- "Bounces": 25,
- "Duration": 5043,
- "Pageviews": 215,
- "Visitors": 107
+ "Bounces": 31,
+ "Duration": 4732,
+ "Pageviews": 220,
+ "Visitors": 116
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 9]
 {
- "Bounces": 11,
- "Duration": 5119,
- "Pageviews": 79,
- "Visitors": 46
+ "Bounces": 6,
+ "Duration": 6547,
+ "Pageviews": 67,
+ "Visitors": 35
 }
 ---
 
 [TestGetWebsiteSummaryFilterAll - 10]
 {
- "Bounces": 5,
- "Duration": 4172,
- "Pageviews": 32,
- "Visitors": 16
+ "Bounces": 3,
+ "Duration": 3389,
+ "Pageviews": 28,
+ "Visitors": 17
 }
 ---

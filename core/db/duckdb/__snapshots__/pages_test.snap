@@ -1,33 +1,33 @@
 
 [TestGetWebsitePages/Base - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:167350 VisitorsPercentage:0.3346} Pageviews:333970 PageviewsPercentage:0.334 Bounces:42187 Duration:4996}
-&{StatsPagesSummary:{Pathname:/contact Visitors:166840 VisitorsPercentage:0.3336} Pageviews:333428 PageviewsPercentage:0.3334 Bounces:41749 Duration:4981}
-&{StatsPagesSummary:{Pathname:/about Visitors:165998 VisitorsPercentage:0.3319} Pageviews:332602 PageviewsPercentage:0.3326 Bounces:41676 Duration:5003}
+&{StatsPagesSummary:{Pathname:/about Visitors:166895 VisitorsPercentage:0.3339} Pageviews:333254 PageviewsPercentage:0.3333 Bounces:41454 Duration:5002}
+&{StatsPagesSummary:{Pathname:/ Visitors:166610 VisitorsPercentage:0.3333} Pageviews:332841 PageviewsPercentage:0.3328 Bounces:41785 Duration:5008}
+&{StatsPagesSummary:{Pathname:/contact Visitors:166353 VisitorsPercentage:0.3328} Pageviews:333905 PageviewsPercentage:0.3339 Bounces:41445 Duration:4998}
 
 ---
 
 [TestGetWebsitePages/Browser - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:55831 VisitorsPercentage:0.336} Pageviews:111555 PageviewsPercentage:0.3349 Bounces:14013 Duration:5009}
-&{StatsPagesSummary:{Pathname:/contact Visitors:55212 VisitorsPercentage:0.3323} Pageviews:110848 PageviewsPercentage:0.3328 Bounces:13880 Duration:4962}
-&{StatsPagesSummary:{Pathname:/about Visitors:55102 VisitorsPercentage:0.3317} Pageviews:110690 PageviewsPercentage:0.3323 Bounces:13858 Duration:4997}
+&{StatsPagesSummary:{Pathname:/about Visitors:55789 VisitorsPercentage:0.3357} Pageviews:111449 PageviewsPercentage:0.3348 Bounces:13747 Duration:5000}
+&{StatsPagesSummary:{Pathname:/ Visitors:55260 VisitorsPercentage:0.3326} Pageviews:110416 PageviewsPercentage:0.3317 Bounces:14069 Duration:4983}
+&{StatsPagesSummary:{Pathname:/contact Visitors:55121 VisitorsPercentage:0.3317} Pageviews:111014 PageviewsPercentage:0.3335 Bounces:13824 Duration:4956}
 
 ---
 
 [TestGetWebsitePages/Country - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:18703 VisitorsPercentage:0.3381} Pageviews:37277 PageviewsPercentage:0.3361 Bounces:4732 Duration:4976}
-&{StatsPagesSummary:{Pathname:/about Visitors:18311 VisitorsPercentage:0.331} Pageviews:36819 PageviewsPercentage:0.332 Bounces:4610 Duration:4976}
-&{StatsPagesSummary:{Pathname:/contact Visitors:18304 VisitorsPercentage:0.3309} Pageviews:36807 PageviewsPercentage:0.3319 Bounces:4652 Duration:4978}
+&{StatsPagesSummary:{Pathname:/ Visitors:18558 VisitorsPercentage:0.3352} Pageviews:36995 PageviewsPercentage:0.3341 Bounces:4602 Duration:5041}
+&{StatsPagesSummary:{Pathname:/about Visitors:18499 VisitorsPercentage:0.3341} Pageviews:36933 PageviewsPercentage:0.3335 Bounces:4573 Duration:4975}
+&{StatsPagesSummary:{Pathname:/contact Visitors:18311 VisitorsPercentage:0.3307} Pageviews:36805 PageviewsPercentage:0.3324 Bounces:4669 Duration:4958}
 
 ---
 
 [TestGetWebsitePages/Device - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:6171 VisitorsPercentage:0.3375} Pageviews:12381 PageviewsPercentage:0.3355 Bounces:1568 Duration:4960}
-&{StatsPagesSummary:{Pathname:/about Visitors:6127 VisitorsPercentage:0.3351} Pageviews:12337 PageviewsPercentage:0.3343 Bounces:1485 Duration:5013}
-&{StatsPagesSummary:{Pathname:/contact Visitors:5988 VisitorsPercentage:0.3275} Pageviews:12190 PageviewsPercentage:0.3303 Bounces:1528 Duration:4954}
+&{StatsPagesSummary:{Pathname:/ Visitors:6305 VisitorsPercentage:0.3391} Pageviews:12582 PageviewsPercentage:0.3385 Bounces:1560 Duration:5107}
+&{StatsPagesSummary:{Pathname:/about Visitors:6164 VisitorsPercentage:0.3315} Pageviews:12299 PageviewsPercentage:0.3309 Bounces:1522 Duration:4981}
+&{StatsPagesSummary:{Pathname:/contact Visitors:6124 VisitorsPercentage:0.3294} Pageviews:12289 PageviewsPercentage:0.3306 Bounces:1609 Duration:4894}
 
 ---
 
@@ -38,79 +38,79 @@ RECORDS:
 
 [TestGetWebsitePages/Language - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:3115 VisitorsPercentage:0.3403} Pageviews:6156 PageviewsPercentage:0.3331 Bounces:770 Duration:4973}
-&{StatsPagesSummary:{Pathname:/about Visitors:3079 VisitorsPercentage:0.3364} Pageviews:6212 PageviewsPercentage:0.3361 Bounces:755 Duration:5048}
-&{StatsPagesSummary:{Pathname:/contact Visitors:2960 VisitorsPercentage:0.3234} Pageviews:6113 PageviewsPercentage:0.3308 Bounces:803 Duration:4832}
+&{StatsPagesSummary:{Pathname:/ Visitors:3230 VisitorsPercentage:0.3444} Pageviews:6356 PageviewsPercentage:0.3383 Bounces:764 Duration:5145}
+&{StatsPagesSummary:{Pathname:/about Visitors:3075 VisitorsPercentage:0.3279} Pageviews:6211 PageviewsPercentage:0.3306 Bounces:797 Duration:4936}
+&{StatsPagesSummary:{Pathname:/contact Visitors:3073 VisitorsPercentage:0.3277} Pageviews:6222 PageviewsPercentage:0.3312 Bounces:794 Duration:4874}
 
 ---
 
 [TestGetWebsitePages/OS - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:1041 VisitorsPercentage:0.3365} Pageviews:2055 PageviewsPercentage:0.3318 Bounces:269 Duration:4985}
-&{StatsPagesSummary:{Pathname:/about Visitors:1032 VisitorsPercentage:0.3335} Pageviews:2076 PageviewsPercentage:0.3352 Bounces:274 Duration:4894}
-&{StatsPagesSummary:{Pathname:/contact Visitors:1021 VisitorsPercentage:0.33} Pageviews:2062 PageviewsPercentage:0.333 Bounces:279 Duration:4925}
+&{StatsPagesSummary:{Pathname:/ Visitors:1073 VisitorsPercentage:0.3478} Pageviews:2113 PageviewsPercentage:0.3427 Bounces:268 Duration:5098}
+&{StatsPagesSummary:{Pathname:/about Visitors:1068 VisitorsPercentage:0.3462} Pageviews:2086 PageviewsPercentage:0.3384 Bounces:261 Duration:4845}
+&{StatsPagesSummary:{Pathname:/contact Visitors:944 VisitorsPercentage:0.306} Pageviews:1966 PageviewsPercentage:0.3189 Bounces:254 Duration:4924}
 
 ---
 
 [TestGetWebsitePages/Pathname - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:1041 VisitorsPercentage:1} Pageviews:2055 PageviewsPercentage:1 Bounces:269 Duration:4985}
+&{StatsPagesSummary:{Pathname:/ Visitors:1073 VisitorsPercentage:1} Pageviews:2113 PageviewsPercentage:1 Bounces:268 Duration:5098}
 
 ---
 
 [TestGetWebsitePages/Referrer - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:340 VisitorsPercentage:1} Pageviews:672 PageviewsPercentage:1 Bounces:84 Duration:4865}
+&{StatsPagesSummary:{Pathname:/ Visitors:359 VisitorsPercentage:1} Pageviews:726 PageviewsPercentage:1 Bounces:96 Duration:4728}
 
 ---
 
 [TestGetWebsitePages/UTMCampaign - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:107 VisitorsPercentage:1} Pageviews:215 PageviewsPercentage:1 Bounces:25 Duration:5043}
+&{StatsPagesSummary:{Pathname:/ Visitors:110 VisitorsPercentage:1} Pageviews:220 PageviewsPercentage:1 Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsitePages/UTMMedium - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:40 VisitorsPercentage:1} Pageviews:79 PageviewsPercentage:1 Bounces:11 Duration:5119}
+&{StatsPagesSummary:{Pathname:/ Visitors:36 VisitorsPercentage:1} Pageviews:67 PageviewsPercentage:1 Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsitePages/UTMSource - 1]
 RECORDS:
-&{StatsPagesSummary:{Pathname:/ Visitors:19 VisitorsPercentage:1} Pageviews:32 PageviewsPercentage:1 Bounces:5 Duration:4172}
+&{StatsPagesSummary:{Pathname:/ Visitors:16 VisitorsPercentage:1} Pageviews:28 PageviewsPercentage:1 Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsitePagesSummary/Base - 1]
 RECORDS:
-&{Pathname:/ Visitors:167350 VisitorsPercentage:0.3346}
-&{Pathname:/contact Visitors:166840 VisitorsPercentage:0.3336}
-&{Pathname:/about Visitors:165998 VisitorsPercentage:0.3319}
+&{Pathname:/about Visitors:166895 VisitorsPercentage:0.3339}
+&{Pathname:/ Visitors:166610 VisitorsPercentage:0.3333}
+&{Pathname:/contact Visitors:166353 VisitorsPercentage:0.3328}
 
 ---
 
 [TestGetWebsitePagesSummary/Browser - 1]
 RECORDS:
-&{Pathname:/ Visitors:55831 VisitorsPercentage:0.336}
-&{Pathname:/contact Visitors:55212 VisitorsPercentage:0.3323}
-&{Pathname:/about Visitors:55102 VisitorsPercentage:0.3317}
+&{Pathname:/about Visitors:55789 VisitorsPercentage:0.3357}
+&{Pathname:/ Visitors:55260 VisitorsPercentage:0.3326}
+&{Pathname:/contact Visitors:55121 VisitorsPercentage:0.3317}
 
 ---
 
 [TestGetWebsitePagesSummary/Country - 1]
 RECORDS:
-&{Pathname:/ Visitors:18703 VisitorsPercentage:0.3381}
-&{Pathname:/about Visitors:18311 VisitorsPercentage:0.331}
-&{Pathname:/contact Visitors:18304 VisitorsPercentage:0.3309}
+&{Pathname:/ Visitors:18558 VisitorsPercentage:0.3352}
+&{Pathname:/about Visitors:18499 VisitorsPercentage:0.3341}
+&{Pathname:/contact Visitors:18311 VisitorsPercentage:0.3307}
 
 ---
 
 [TestGetWebsitePagesSummary/Device - 1]
 RECORDS:
-&{Pathname:/ Visitors:6171 VisitorsPercentage:0.3375}
-&{Pathname:/about Visitors:6127 VisitorsPercentage:0.3351}
-&{Pathname:/contact Visitors:5988 VisitorsPercentage:0.3275}
+&{Pathname:/ Visitors:6305 VisitorsPercentage:0.3391}
+&{Pathname:/about Visitors:6164 VisitorsPercentage:0.3315}
+&{Pathname:/contact Visitors:6124 VisitorsPercentage:0.3294}
 
 ---
 
@@ -121,46 +121,46 @@ RECORDS:
 
 [TestGetWebsitePagesSummary/Language - 1]
 RECORDS:
-&{Pathname:/ Visitors:3115 VisitorsPercentage:0.3403}
-&{Pathname:/about Visitors:3079 VisitorsPercentage:0.3364}
-&{Pathname:/contact Visitors:2960 VisitorsPercentage:0.3234}
+&{Pathname:/ Visitors:3230 VisitorsPercentage:0.3444}
+&{Pathname:/about Visitors:3075 VisitorsPercentage:0.3279}
+&{Pathname:/contact Visitors:3073 VisitorsPercentage:0.3277}
 
 ---
 
 [TestGetWebsitePagesSummary/OS - 1]
 RECORDS:
-&{Pathname:/ Visitors:1041 VisitorsPercentage:0.3365}
-&{Pathname:/about Visitors:1032 VisitorsPercentage:0.3335}
-&{Pathname:/contact Visitors:1021 VisitorsPercentage:0.33}
+&{Pathname:/ Visitors:1073 VisitorsPercentage:0.3478}
+&{Pathname:/about Visitors:1068 VisitorsPercentage:0.3462}
+&{Pathname:/contact Visitors:944 VisitorsPercentage:0.306}
 
 ---
 
 [TestGetWebsitePagesSummary/Pathname - 1]
 RECORDS:
-&{Pathname:/ Visitors:1041 VisitorsPercentage:1}
+&{Pathname:/ Visitors:1073 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsitePagesSummary/Referrer - 1]
 RECORDS:
-&{Pathname:/ Visitors:340 VisitorsPercentage:1}
+&{Pathname:/ Visitors:359 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsitePagesSummary/UTMCampaign - 1]
 RECORDS:
-&{Pathname:/ Visitors:107 VisitorsPercentage:1}
+&{Pathname:/ Visitors:110 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsitePagesSummary/UTMMedium - 1]
 RECORDS:
-&{Pathname:/ Visitors:40 VisitorsPercentage:1}
+&{Pathname:/ Visitors:36 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsitePagesSummary/UTMSource - 1]
 RECORDS:
-&{Pathname:/ Visitors:19 VisitorsPercentage:1}
+&{Pathname:/ Visitors:16 VisitorsPercentage:1}
 
 ---
