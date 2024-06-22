@@ -1,0 +1,30 @@
+name: Setup Environment
+description: Setup the local environment for a Medama workflow
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Task
+      uses: arduino/setup-task@v2
+
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: ./core/go.mod
+        cache-dependency-path: ./core/go.sum
+
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Install dashboard dependencies
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: Generate embeds
+      shell: bash
+      run: task core:generate

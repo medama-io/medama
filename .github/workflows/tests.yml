@@ -10,27 +10,22 @@ permissions:
   contents: read
 
 jobs:
-  setup:
-    uses: ./.github/workflows/setup-env.yml
-
   lint:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+
       - name: Lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: latest
           working-directory: core
   test:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Setup Environment
-        uses: ./.github/workflows/setup-env.yml
+        uses: ./.github/actions/setup-env
 
       - name: Test
         run: task core:test
