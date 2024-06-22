@@ -103,6 +103,8 @@ tasks:
       - go build -o ./bin/linux_arm64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - echo "linux/arm64 build done"
     env:
+      CC: "aarch64-linux-gnu-gcc"
+      CXX: "aarch64-linux-gnu-g++"
       CGO_ENABLED: "1"
       GOEXPERIMENT: "newinliner"
       GOOS: "linux"
