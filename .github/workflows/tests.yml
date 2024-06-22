@@ -10,18 +10,20 @@ permissions:
   contents: read
 
 jobs:
+  setup:
+    uses: ./.github/workflows/setup-env.yml
+
   lint:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Environment
-        uses: medama-io/medama/.github/workflows/setup-env.yml
-
       - name: Lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: latest
           working-directory: core
   test:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

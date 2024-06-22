@@ -8,16 +8,17 @@ permissions:
   contents: write
 
 jobs:
+  setup:
+    uses: ./.github/workflows/setup-env.yml
+
   build:
+    needs: setup
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
         arch: [amd64, arm64]
     steps:
-      - name: Setup Environment
-        uses: medama-io/medama/.github/workflows/setup-env.yml
-
       - name: Build
         run: task core:release:${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}:${{ matrix.arch }}
 
