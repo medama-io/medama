@@ -75,7 +75,7 @@ func Up0001(c *sqlite.Client) error {
 	if err != nil {
 		return err
 	}
-	pwdHash, err := auth.HashPassword("admin")
+	pwdHash, err := auth.HashPassword("CHANGE_ME_ON_FIRST_LOGIN")
 	if err != nil {
 		return err
 	}
