@@ -110,7 +110,7 @@ tasks:
       GOOS: "linux"
       GOARCH: "arm64"
 
-  release:macos:amd64:
+  release:darwin:amd64:
     cmds:
       - go build -o ./bin/darwin_amd64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - echo "darwin/amd64 build done"
@@ -120,7 +120,7 @@ tasks:
       GOOS: "darwin"
       GOARCH: "amd64"
 
-  release:macos:arm64:
+  release:darwin:arm64:
     cmds:
       - go build -o ./bin/darwin_arm64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - echo "darwin/arm64 build done"
