@@ -181,6 +181,8 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			uaDevice = "Tablet"
 		case ua.TV:
 			uaDevice = "TV"
+		case ua.Bot: // If the user agent is a bot, we want to ignore it.
+			return &api.PostEventHitNoContent{}, nil
 		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
