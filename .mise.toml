@@ -1,0 +1,5 @@
+[tools]
+zig = "0.13"
+go = "1.22"
+bun = "latest"
+node = "20"

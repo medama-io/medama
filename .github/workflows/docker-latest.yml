@@ -1,19 +1,17 @@
-name: Docker Edge Publish # Publish Docker images under `edge` and commit SHA tags
+name: Docker Latest Publish # Publish Docker images under `latest` and tagged versions
 on:
-  workflow_run:
-    workflows: [Tests]
-    types: [completed]
-    branches: [main]
+  release:
+    types: [released]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  publish-docker-edge:
-    name: Publish Docker edge image
+  publish-docker-latest:
+    name: Publish Docker latest image
     runs-on: ubuntu-latest
-    concurrency: docker-edge-group # ensure only one action runs at a time
+    concurrency: docker-latest-group # ensure only one action runs at a time
     permissions:
       contents: read
       packages: write
@@ -36,10 +34,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
-            latest=false
+            latest=true
           tags: |
-            type=edge,branch=main
-            type=sha,format=short
+            type=ref,event=tag
           labels: |
             org.opencontainers.image.licenses=Apache-2.0
 

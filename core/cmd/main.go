@@ -88,11 +88,11 @@ func run(ctx context.Context, args []string) error {
 
 func GetVersion() string {
 	if Version != "" && Commit != "" {
-		return fmt.Sprintf("Medama v%s, commit=%s", Version, Commit)
+		return fmt.Sprintf("Medama Analytics %s, commit=%s", Version, Commit)
 	}
 
 	if Commit != "" {
-		return fmt.Sprintf("Medama commit=%s", Commit)
+		return fmt.Sprintf("Medama Analytics commit=%s", Commit)
 	}
 
 	return "Medama Development Build"

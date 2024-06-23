@@ -12,27 +12,14 @@ permissions:
 jobs:
   lint:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Install Task
-        uses: arduino/setup-task@v2
-
-      - uses: actions/setup-go@v5
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
-          go-version-file: core/go.mod
-          cache: false
-
-      - uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Install dashboard dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Generate embeds
-        run: task core:generate
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Lint
         uses: golangci/golangci-lint-action@v6
@@ -41,33 +28,14 @@ jobs:
           working-directory: core
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: core
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Install Task
-        uses: arduino/setup-task@v2
-
-      - uses: actions/setup-go@v5
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
-          go-version-file: core/go.mod
-          cache-dependency-path: core/go.sum
-
-      - uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Install Go dependencies
-        run: go mod download
-
-      - name: Install dashboard dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Build
-        run: task build
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test
-        run: task test
+        run: task core:test

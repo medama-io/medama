@@ -12,13 +12,8 @@ go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml
 # This should be verified after each update to the OpenAPI specification or ogen-go
 # in case the line number changes.
 #
-# sed also runs differently on macOS and Linux, so we need to check the OS before running it.
+# sed also runs differently on macOS and Linux, so we need to add a couple odd flags to
+# make it portable.
 # Line 256
-OS=$(uname)
-if [ "$OS" = "Darwin" ]; then
-	# macOS
-	sed -i '' '256 c \\ \tcase ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
-else
-	# Linux
-	sed -i '256 c \\ \tcase ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
-fi
+sed -i'' -e '256c\
+    case ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go
