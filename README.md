@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./.github/images/banner-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="./.github/images/banner-light.svg">
-    <img alt="Medama: Cookie-free privacy-focused website analytics." src="./.github/images/banner-light.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="./.github/images/banner-light.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./.github/images/banner-dark.svg">
+    <img alt="Medama: Cookie-free privacy-focused website analytics." src="./.github/images/banner-dark.svg">
   </picture>
   <br>
   <a href="https://oss.medama.io/introduction">Website</a> |
