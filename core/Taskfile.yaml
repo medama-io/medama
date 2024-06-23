@@ -90,7 +90,7 @@ tasks:
 
   release:linux:amd64:
     cmds:
-      - go build -o ./bin/linux_amd64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/linux_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - echo "linux/amd64 build done"
     env:
       CGO_ENABLED: "1"
@@ -100,7 +100,7 @@ tasks:
 
   release:linux:arm64:
     cmds:
-      - go build -o ./bin/linux_arm64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/linux_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - echo "linux/arm64 build done"
     env:
       CC: "aarch64-linux-gnu-gcc"
@@ -112,7 +112,7 @@ tasks:
 
   release:darwin:amd64:
     cmds:
-      - go build -o ./bin/darwin_amd64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/darwin_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - echo "darwin/amd64 build done"
     env:
       CGO_ENABLED: "1"
@@ -122,7 +122,7 @@ tasks:
 
   release:darwin:arm64:
     cmds:
-      - go build -o ./bin/darwin_arm64 -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/darwin_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - echo "darwin/arm64 build done"
     env:
       CGO_ENABLED: "1"

@@ -18,10 +18,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Environment
+      - name: Setup environment
         uses: ./.github/actions/setup-env
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Save GitHub tag and commit sha to environment
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Install ARM64 toolchain
         if: matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64'
@@ -32,16 +37,16 @@ jobs:
       - name: Build
         run: task core:release:${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}:${{ matrix.arch }}
 
-      - name: Create Release Directory
+      - name: Create release directory
         run: mkdir -p release
 
-      - name: Zip Artifact
-        run: zip release/medama-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip ./core/bin/${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
+      - name: Zip artifact
+        run: zip -j release/medama-${{ github.env.VERSION }}-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip ./core/bin/${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}
-          path: release/medama-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip
+          path: release/medama-${{ github.env.VERSION }}-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip
           retention-days: 1
           if-no-files-found: error
 
@@ -49,15 +54,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download Artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: release-*
           path: release
           merge-multiple: true
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: Create release
+        uses: softprops/action-gh-release@v2
         with:
           files: release/*
           draft: true
