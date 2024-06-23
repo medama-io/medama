@@ -136,6 +136,15 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			uaDevice = "TV"
 		}
 
+		if ua.Browser == "" || ua.OS == "" || uaDevice == Unknown {
+			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: unknown user agent")
+		}
+
+		if ua.Browser == "" && ua.OS == "" && uaDevice == Unknown {
+			// Do not log the event if every element of the user agent is unknown.
+			return &api.PostEventHitNoContent{}, nil
+		}
+
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
 		var referrerHost string
@@ -233,11 +242,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			Str("os", event.OS).
 			Str("device_type", event.DeviceType).
 			Logger()
-
-		// TODO: Remove temporary raw user agent logging for debugging
-		if ua.Browser == "" || ua.OS == "" || event.DeviceType == Unknown {
-			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: unknown user agent")
-		}
 
 		err = h.analyticsDB.AddPageView(ctx, event)
 		if err != nil {
