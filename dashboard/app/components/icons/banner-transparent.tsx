@@ -3,6 +3,8 @@ export const BannerLogo = (props: React.SVGProps<SVGSVGElement>) => {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
+			width="144"
+			height="30"
 			viewBox="0 0 144 30"
 			{...props}
 		>
