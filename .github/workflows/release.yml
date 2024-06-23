@@ -41,12 +41,12 @@ jobs:
         run: mkdir -p release
 
       - name: Zip artifact
-        run: zip -j release/medama-${{ github.env.VERSION }}-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip ./core/bin/${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
+        run: zip -j release/medama-$VERSION-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip ./core/bin/${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}
-          path: release/medama-${{ github.env.VERSION }}-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip
+          path: release/medama-$VERSION-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip
           retention-days: 1
           if-no-files-found: error
 
