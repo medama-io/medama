@@ -108,6 +108,12 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		rawUserAgent := reqBody.Header.Get("User-Agent")
 		ua := h.useragent.Parse(rawUserAgent)
 
+		// If the user agent is a bot, we want to ignore it.
+		if ua.Bot {
+			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: user agent is a bot")
+			return &api.PostEventHitNoContent{}, nil
+		}
+
 		uaBrowser := ua.Browser
 		if uaBrowser == "" {
 			uaBrowser = Unknown
@@ -128,8 +134,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			uaDevice = "Tablet"
 		case ua.TV:
 			uaDevice = "TV"
-		case ua.Bot: // If the user agent is a bot, we want to ignore it.
-			return &api.PostEventHitNoContent{}, nil
 		}
 
 		// Parse referrer URL and remove any query parameters or self-referencing
