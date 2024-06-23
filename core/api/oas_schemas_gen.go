@@ -114,7 +114,6 @@ func (s *ConflictError) SetError(val ConflictErrorError) {
 	s.Error = val
 }
 
-func (*ConflictError) deleteUserRes()   {}
 func (*ConflictError) patchUserRes()    {}
 func (*ConflictError) postWebsitesRes() {}
 
@@ -477,6 +476,8 @@ func (s *ForbiddenError) SetError(val ForbiddenErrorError) {
 	s.Error = val
 }
 
+func (*ForbiddenError) deleteUserRes()            {}
+func (*ForbiddenError) deleteWebsitesIDRes()      {}
 func (*ForbiddenError) getWebsiteIDBrowsersRes()  {}
 func (*ForbiddenError) getWebsiteIDCampaignsRes() {}
 func (*ForbiddenError) getWebsiteIDCountryRes()   {}
@@ -486,6 +487,9 @@ func (*ForbiddenError) getWebsiteIDMediumsRes()   {}
 func (*ForbiddenError) getWebsiteIDOsRes()        {}
 func (*ForbiddenError) getWebsiteIDReferrersRes() {}
 func (*ForbiddenError) getWebsiteIDSourcesRes()   {}
+func (*ForbiddenError) patchUserRes()             {}
+func (*ForbiddenError) patchWebsitesIDRes()       {}
+func (*ForbiddenError) postWebsitesRes()          {}
 
 type ForbiddenErrorError struct {
 	Code    int32  `json:"code"`

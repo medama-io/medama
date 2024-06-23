@@ -40,6 +40,11 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 
 func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.PatchUserParams) (api.PatchUserRes, error) {
 	log := logger.Get()
+	if h.auth.IsDemoMode {
+		log.Debug().Msg("patch user rejected in demo mode")
+		return ErrForbidden(model.ErrDemoMode), nil
+	}
+
 	// Get user id from request context and check if user exists
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -108,6 +113,11 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 
 func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (api.DeleteUserRes, error) {
 	log := logger.Get()
+	if h.auth.IsDemoMode {
+		log.Debug().Msg("delete user rejected in demo mode")
+		return ErrForbidden(model.ErrDemoMode), nil
+	}
+
 	// Get user id from request context and check if user exists
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {

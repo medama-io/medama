@@ -71,7 +71,7 @@ func Up0001(c *sqlite.Client) error {
 	id := typeid.String()
 
 	// Hash default password
-	auth, err := util.NewAuthService(context.Background())
+	auth, err := util.NewAuthService(context.Background(), false)
 	if err != nil {
 		return err
 	}

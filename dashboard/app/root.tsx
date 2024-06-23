@@ -61,7 +61,11 @@ import {
 
 import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
-import { InternalServerError, NotFoundError } from '@/components/layout/Error';
+import {
+	ForbiddenError,
+	InternalServerError,
+	NotFoundError,
+} from '@/components/layout/Error';
 import theme from '@/styles/theme';
 import { hasSession } from '@/utils/cookies';
 
@@ -171,6 +175,13 @@ export const ErrorBoundary = () => {
 
 	if (isRouteErrorResponse(error)) {
 		switch (error.status) {
+			case 403: {
+				return (
+					<Document>
+						<ForbiddenError />
+					</Document>
+				);
+			}
 			case 404: {
 				return (
 					<Document>

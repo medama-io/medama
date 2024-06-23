@@ -28,10 +28,12 @@ type AuthService struct {
 	Cache *Cache
 	// Key used to encrypt session tokens.
 	aes32Key []byte
+	// Demo mode flag.
+	IsDemoMode bool
 }
 
 // NewAuthService returns a new instance of AuthService.
-func NewAuthService(ctx context.Context) (*AuthService, error) {
+func NewAuthService(ctx context.Context, isDemoMode bool) (*AuthService, error) {
 	// Generate a new random key for encrypting session tokens.
 	// Since we store sessions in an in-memory cache, it doesn't
 	// matter if the key doesn't persist as sessions will be
@@ -43,8 +45,9 @@ func NewAuthService(ctx context.Context) (*AuthService, error) {
 	}
 
 	return &AuthService{
-		aes32Key: key,
-		Cache:    NewCache(ctx, model.SessionDuration),
+		aes32Key:   key,
+		Cache:      NewCache(ctx, model.SessionDuration),
+		IsDemoMode: isDemoMode,
 	}, nil
 }
 
