@@ -1,5 +1,3 @@
-# Medama Analytics
-
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./.github/images/banner-dark.svg">
