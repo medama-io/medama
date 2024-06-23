@@ -97,6 +97,45 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			return ErrNotFound(model.ErrWebsiteNotFound), nil
 		}
 
+		// Get request from context
+		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
+		if !ok {
+			log.Error().Msg("hit: failed to get request key from context")
+			return ErrInternalServerError(model.ErrRequestContext), nil
+		}
+
+		// Parse user agent first to catch early if it is a bot.
+		rawUserAgent := reqBody.Header.Get("User-Agent")
+		ua := h.useragent.Parse(rawUserAgent)
+
+		// If the user agent is a bot, we want to ignore it.
+		if ua.Bot {
+			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: user agent is a bot")
+			return &api.PostEventHitNoContent{}, nil
+		}
+
+		uaBrowser := ua.Browser
+		if uaBrowser == "" {
+			uaBrowser = Unknown
+		}
+
+		uaOS := ua.OS
+		if uaOS == "" {
+			uaOS = Unknown
+		}
+
+		uaDevice := Unknown
+		switch {
+		case ua.Desktop:
+			uaDevice = "Desktop"
+		case ua.Mobile:
+			uaDevice = "Mobile"
+		case ua.Tablet:
+			uaDevice = "Tablet"
+		case ua.TV:
+			uaDevice = "TV"
+		}
+
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
 		var referrerHost string
@@ -134,13 +173,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			}
 		}
 
-		// Get request from context
-		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
-		if !ok {
-			log.Error().Msg("hit: failed to get request key from context")
-			return ErrInternalServerError(model.ErrRequestContext), nil
-		}
-
 		// Get users language from Accept-Language header
 		languages, _, err := language.ParseAcceptLanguage(reqBody.Header.Get("Accept-Language"))
 		if err != nil {
@@ -155,32 +187,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			base, _ := languages[0].Base()
 			languageBase = display.English.Tags().Name(language.Make(base.String()))
 			languageDialect = display.English.Tags().Name(languages[0])
-		}
-
-		// Parse user agent
-		rawUserAgent := reqBody.Header.Get("User-Agent")
-		ua := h.useragent.Parse(rawUserAgent)
-
-		uaBrowser := ua.Browser
-		if uaBrowser == "" {
-			uaBrowser = Unknown
-		}
-
-		uaOS := ua.OS
-		if uaOS == "" {
-			uaOS = Unknown
-		}
-
-		uaDevice := Unknown
-		switch {
-		case ua.Desktop:
-			uaDevice = "Desktop"
-		case ua.Mobile:
-			uaDevice = "Mobile"
-		case ua.Tablet:
-			uaDevice = "Tablet"
-		case ua.TV:
-			uaDevice = "TV"
 		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
