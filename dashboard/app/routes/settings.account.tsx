@@ -99,7 +99,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	}
 
 	if (!res.ok) {
-		throw new Response(await res.text(), {
+		throw new Response(res.statusText, {
 			status: res.status,
 		});
 	}

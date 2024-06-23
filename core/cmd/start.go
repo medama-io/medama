@@ -71,6 +71,7 @@ func (s *StartCommand) ParseFlags(args []string) error {
 
 	// Misc settings.
 	fs.BoolVar(&s.Server.UseEnvironment, "env", false, "Opt-in to allow environment variables to be used for configuration. Flags will still override environment variables.")
+	fs.BoolVar(&s.Server.DemoMode, "demo", s.Server.DemoMode, "Enable demo mode restricting all POST/PATCH/DELETE actions (except login).")
 
 	// Handle array type flags.
 	corsAllowedOrigins := fs.String("corsorigins", strings.Join(s.Server.CORSAllowedOrigins, ","), "Comma separated list of allowed CORS origins on API routes. Useful for external dashboards that may host the frontend on a different domain.")
@@ -121,7 +122,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}
 
 	// Setup auth service
-	auth, err := util.NewAuthService(ctx)
+	auth, err := util.NewAuthService(ctx, s.Server.DemoMode)
 	if err != nil {
 		return errors.Wrap(err, "failed to create auth service")
 	}

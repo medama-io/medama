@@ -26,6 +26,7 @@ type ServerConfig struct {
 
 	// Misc settings.
 	UseEnvironment bool
+	DemoMode       bool `env:"DEMO_MODE"`
 }
 
 type AppDBConfig struct {
@@ -55,6 +56,9 @@ const (
 	// Logging constants.
 	DefaultLogger      = "json"
 	DefaultLoggerLevel = "info"
+
+	// Misc constants.
+	DefaultDemoMode = false
 )
 
 // NewServerConfig creates a new server config.
@@ -68,6 +72,7 @@ func NewServerConfig(useEnv bool) (*ServerConfig, error) {
 		TimeoutWrite:         DefaultTimeoutWrite,
 		TimeoutIdle:          DefaultTimeoutIdle,
 		UseEnvironment:       useEnv,
+		DemoMode:             DefaultDemoMode,
 	}
 
 	// Load config from environment variables.

@@ -25,6 +25,32 @@ const ErrorPage = ({ label, title, description }: ErrorPageProps) => {
 	);
 };
 
+const ForbiddenError = () => {
+	// Check if hostname is demo.medama.io or medama.fly.dev to display a different message.
+	const hostname = window.location.hostname;
+	const isDemo = hostname === 'demo.medama.io' || hostname === 'medama.fly.dev';
+
+	const description = isDemo ? (
+		<>
+			You are currently in demo mode. You can't access this page or perform this
+			action.
+		</>
+	) : (
+		<>
+			You don't have permission to view this page or perform this action. Please
+			contact your administrator if you believe this is an error.
+		</>
+	);
+
+	return (
+		<ErrorPage
+			label="403"
+			title="You are not allowed to access this page."
+			description={description}
+		/>
+	);
+};
+
 const NotFoundError = () => (
 	<ErrorPage
 		label="404"
@@ -65,4 +91,4 @@ const InternalServerError = ({ error }: InternalServerErrorProps) => (
 	/>
 );
 
-export { NotFoundError, InternalServerError };
+export { NotFoundError, ForbiddenError, InternalServerError };

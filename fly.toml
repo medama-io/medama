@@ -12,6 +12,7 @@ ANALYTICS_DATABASE_HOST = '/db/analytics.db'
 APP_DATABASE_HOST = '/db/app.db'
 PORT = '8080'
 LEVEL = 'debug'
+DEMO_MODE = 'true'
 
 [[mounts]]
 source = 'medama_db'

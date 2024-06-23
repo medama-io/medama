@@ -7,9 +7,16 @@ import (
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
+	"github.com/medama-io/medama/util/logger"
 )
 
 func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsitesIDParams) (api.DeleteWebsitesIDRes, error) {
+	log := logger.Get()
+	if h.auth.IsDemoMode {
+		log.Debug().Msg("delete website rejected in demo mode")
+		return ErrForbidden(model.ErrDemoMode), nil
+	}
+
 	// Check if user owns website
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -138,6 +145,12 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 }
 
 func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, params api.PatchWebsitesIDParams) (api.PatchWebsitesIDRes, error) {
+	log := logger.Get()
+	if h.auth.IsDemoMode {
+		log.Debug().Msg("patch website rejected in demo mode")
+		return ErrForbidden(model.ErrDemoMode), nil
+	}
+
 	// Get user ID from context
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -187,6 +200,12 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 }
 
 func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api.PostWebsitesRes, error) {
+	log := logger.Get()
+	if h.auth.IsDemoMode {
+		log.Debug().Msg("post website rejected in demo mode")
+		return ErrForbidden(model.ErrDemoMode), nil
+	}
+
 	// Get user ID from context
 	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {

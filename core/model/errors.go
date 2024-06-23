@@ -12,6 +12,8 @@ var (
 	ErrInternalServerError = errors.New("internal server error")
 
 	// Authentication
+	// ErrDemoMode is returned when a user tries to perform an action in demo mode.
+	ErrDemoMode = errors.New("user in demo mode")
 	// ErrInvalidSession is returned when a session is invalid.
 	ErrInvalidSession = errors.New("invalid session")
 	// ErrSessionNotFound is returned when a session is not found.

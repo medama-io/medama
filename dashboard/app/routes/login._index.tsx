@@ -20,6 +20,29 @@ export const meta: MetaFunction = () => {
 };
 
 export const clientLoader = async () => {
+	// If the user is in demo mode (hostname matches demo.medama.io or medama.fly.dev), automatically
+	// log them into the demo account.
+	const hostname = window.location.hostname;
+	const isDemo = hostname === 'demo.medama.io' || hostname === 'medama.fly.dev';
+	if (isDemo) {
+		const { res } = await authLogin({
+			body: {
+				username: 'admin',
+				password: 'CHANGE_ME_ON_FIRST_LOGIN',
+			},
+			noThrow: true,
+		});
+
+		if (!res.ok) {
+			throw new Error('Failed to login to demo account.');
+		}
+
+		// Set logged in cookie
+		document.cookie = LOGGED_IN_COOKIE;
+
+		return redirect('/');
+	}
+
 	// If the user is already logged in, redirect them to the dashboard.
 	if (hasSession()) {
 		// Check if session hasn't been revoked
