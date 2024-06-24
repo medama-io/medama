@@ -60,23 +60,21 @@ const client = async (
 		query,
 	}: ClientOptions,
 ): Promise<Response> => {
-	let newPath: string | undefined;
-	// Replace any path closed in curly braces with the pathKey
-	if (pathKey !== undefined) {
-		newPath = path.replace(/{.*}/, pathKey);
-	}
+	const url = new URL(
+		// Replace any path closed in curly braces with the pathKey.
+		// e.g. /website/{hostname}/mediums -> /website/example.com/mediums
+		`${API_URL}${pathKey ? path.replace(/{.*}/, pathKey) : path}`,
+	);
 
-	// Add the query to the path
-	const url = new URL(`${API_URL}${newPath ?? path}`);
+	// Add the query to the path.
 	if (query !== undefined) {
 		for (const [key, value] of Object.entries(query)) {
 			if (value !== undefined) {
-				// Handle filter for empty values
-				if (value === 'Direct/None') {
-					url.searchParams.append(key, '');
-				} else {
-					url.searchParams.append(key, String(value));
-				}
+				// Handle empty filter values.
+				url.searchParams.append(
+					key,
+					value === 'Direct/None' ? '' : String(value),
+				);
 			}
 		}
 	}
