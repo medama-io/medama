@@ -1,6 +1,5 @@
 import { Tabs, UnstyledButton } from '@mantine/core';
 import { Link, useSearchParams } from '@remix-run/react';
-import { useMemo } from 'react';
 
 import classes from './StatsDisplay.module.css';
 import { StatsItem } from './StatsItem';
@@ -22,12 +21,11 @@ interface StatsDisplayProps {
 
 export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 	const [searchParams] = useSearchParams();
-	const defaultValue = useMemo(() => data[0]?.label ?? '', [data]);
 
 	return (
 		<Tabs
 			variant="unstyled"
-			defaultValue={defaultValue}
+			defaultValue={data[0]?.label}
 			classNames={{
 				root: classes.root,
 				tab: classes.tab,

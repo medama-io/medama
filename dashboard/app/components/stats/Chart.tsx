@@ -21,7 +21,6 @@ interface StackedBarChartProps {
 	data: ChartData[];
 }
 
-// Move this outside the component to avoid recreation on each render
 const intlFormatter = new Intl.DateTimeFormat('en', {
 	year: 'numeric',
 	month: 'short',
