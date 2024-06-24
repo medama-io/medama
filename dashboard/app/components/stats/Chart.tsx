@@ -29,15 +29,6 @@ const intlFormatter = new Intl.DateTimeFormat('en', {
 	minute: 'numeric',
 });
 
-// Suppress specific console errors
-/* biome-ignore lint/suspicious/noExplicitAny: This is a hack to suppress the warning about missing defaultProps in recharts
-library as of version 2.12. @link https://github.com/recharts/recharts/issues/3615 */
-console.error = (...args: any[]) => {
-	if (!/defaultProps/.test(args[0])) {
-		console.error(...args);
-	}
-};
-
 export const StackedBarChart = ({ data }: StackedBarChartProps) => {
 	const [searchParams] = useSearchParams();
 	const period = searchParams.get('period');

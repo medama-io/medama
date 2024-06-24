@@ -290,21 +290,92 @@ const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
 				},
 			];
 		case 'referrers':
+			return [
+				{
+					accessor: 'referrer',
+					title: LABEL_MAP.referrers,
+					width: '100%',
+					render: (record) => record.referrer || 'Direct/None',
+				},
+				...commonColumns,
+			];
 		case 'sources':
+			return [
+				{
+					accessor: 'source',
+					title: LABEL_MAP.sources,
+					width: '100%',
+					render: (record) => record.source || 'Direct/None',
+				},
+				...commonColumns,
+			];
 		case 'mediums':
+			return [
+				{
+					accessor: 'medium',
+					title: LABEL_MAP.mediums,
+					width: '100%',
+					render: (record) => record.medium || 'Direct/None',
+				},
+				...commonColumns,
+			];
 		case 'campaigns':
+			return [
+				{
+					accessor: 'campaign',
+					title: LABEL_MAP.campaigns,
+					width: '100%',
+					render: (record) => record.campaign || 'Direct/None',
+				},
+				...commonColumns,
+			];
 		case 'browsers':
+			return [
+				{
+					accessor: 'browser',
+					title: LABEL_MAP.browsers,
+					width: '100%',
+					render: (record) => record.browser || 'Unknown',
+				},
+				...commonColumns,
+			];
 		case 'os':
+			return [
+				{
+					accessor: 'os',
+					title: LABEL_MAP.os,
+					width: '100%',
+					render: (record) => record.os || 'Unknown',
+				},
+				...commonColumns,
+			];
 		case 'devices':
+			return [
+				{
+					accessor: 'device',
+					title: LABEL_MAP.devices,
+					width: '100%',
+					render: (record) => record.device || 'Unknown',
+				},
+				...commonColumns,
+			];
 		case 'countries':
+			return [
+				{
+					accessor: 'country',
+					title: LABEL_MAP.countries,
+					width: '100%',
+					render: (record) => record.country || 'Unknown',
+				},
+				...commonColumns,
+			];
 		case 'languages':
 			return [
 				{
-					accessor: query.slice(0, -1) as keyof DataRow,
-					title: LABEL_MAP[query],
+					accessor: 'language',
+					title: LABEL_MAP.languages,
 					width: '100%',
-					render: (record) =>
-						record[query.slice(0, -1) as keyof DataRow] || 'Direct/None',
+					render: (record) => record.language || 'Unknown',
 				},
 				...commonColumns,
 			];
