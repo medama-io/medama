@@ -1,80 +1,32 @@
-import { Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { Tabs, UnstyledButton } from '@mantine/core';
 import { Link, useSearchParams } from '@remix-run/react';
 
-import { formatCount, formatDuration } from './formatter';
 import classes from './StatsDisplay.module.css';
+import { StatsItem } from './StatsItem';
 
-interface StatsItem {
+interface StatsValue {
 	label: string;
-	count: number | undefined;
-	percentage: number | undefined;
-}
-
-interface StatsItemProps extends StatsItem {
-	tab: string;
+	count?: number;
+	percentage?: number;
 }
 
 export interface StatsTab {
 	label: string;
-	items: StatsItem[];
+	items: StatsValue[];
 }
 
 interface StatsDisplayProps {
 	data: StatsTab[];
 }
 
-const StatsItem = ({ label, count, percentage, tab }: StatsItemProps) => {
-	const [searchParams, setSearchParams] = useSearchParams();
-
-	const formattedValue =
-		tab === 'Time' ? formatDuration(count ?? 0) : formatCount(count ?? 0);
-
-	const handleFilter = () => {
-		if (tab !== 'Time') {
-			const params = new URLSearchParams(searchParams);
-
-			const filterMap: Record<string, string> = {
-				Referrers: 'referrer',
-				Sources: 'utm_source',
-				Mediums: 'utm_medium',
-				Campaigns: 'utm_campaign',
-				Browsers: 'browser',
-				OS: 'os',
-				Devices: 'device',
-				Countries: 'country',
-				Languages: 'language',
-			};
-			const filter = filterMap[tab] ?? 'path';
-
-			params.append(`${filter}[eq]`, label);
-			setSearchParams(params, {
-				preventScrollReset: true,
-			});
-		}
-	};
-
-	return (
-		<UnstyledButton className={classes['stat-item']} onClick={handleFilter}>
-			<Group justify="space-between" pb={6}>
-				<Text fz={14}>{label}</Text>
-				<Text fw={600} fz={14}>
-					{formattedValue}
-				</Text>
-			</Group>
-			<div
-				className={classes.bar}
-				style={{ width: `${(percentage ?? 0) * 100}%` }}
-			/>
-		</UnstyledButton>
-	);
-};
-
 export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 	const [searchParams] = useSearchParams();
+	const defaultValue = data[0]?.label ?? '';
+
 	return (
 		<Tabs
 			variant="unstyled"
-			defaultValue={data[0]?.label}
+			defaultValue={defaultValue}
 			classNames={{
 				root: classes.root,
 				tab: classes.tab,
@@ -83,7 +35,7 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 		>
 			<Tabs.List>
 				{data.map((tab) => (
-					<Tabs.Tab key={tab.label} value={tab.label}>
+					<Tabs.Tab key={tab.label} value={tab.label} aria-label={tab.label}>
 						{tab.label}
 					</Tabs.Tab>
 				))}
@@ -106,6 +58,7 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 							prefetch="intent"
 							preventScrollReset
 							className={classes.button}
+							aria-label={`Load more ${tab.label} stats.`}
 						>
 							Load More
 						</UnstyledButton>
