@@ -71,7 +71,12 @@ const client = async (
 	if (query !== undefined) {
 		for (const [key, value] of Object.entries(query)) {
 			if (value !== undefined) {
-				url.searchParams.append(key, String(value));
+				// Handle filter for empty values
+				if (value === 'Direct/None') {
+					url.searchParams.append(key, '');
+				} else {
+					url.searchParams.append(key, String(value));
+				}
 			}
 		}
 	}

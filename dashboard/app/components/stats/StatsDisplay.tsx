@@ -1,4 +1,4 @@
-import { Box, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { Group, Tabs, Text, UnstyledButton } from '@mantine/core';
 import { Link, useSearchParams } from '@remix-run/react';
 
 import { formatCount, formatDuration } from './formatter';
@@ -91,7 +91,7 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 
 			{data.map((tab) => (
 				<Tabs.Panel key={tab.label} value={tab.label}>
-					<div style={{ minHeight: 280 }}>
+					<div style={{ minHeight: 306 }}>
 						{tab.items.map((item) => (
 							<StatsItem key={item.label} tab={tab.label} {...item} />
 						))}

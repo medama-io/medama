@@ -291,7 +291,13 @@ export const Filters = () => {
 						<CloseButton
 							onClick={() => {
 								const params = new URLSearchParams(searchParams);
-								params.delete(`${label.toLowerCase()}[${type}]`, value);
+								const filterMap: Record<string, string> = {
+									'UTM Source': 'utm_source',
+									'UTM Medium': 'utm_medium',
+									'UTM Campaign': 'utm_campaign',
+								};
+								const filter = filterMap[label] ?? label.toLowerCase();
+								params.delete(`${filter}[${type}]`, value);
 								setSearchParams(params, {
 									preventScrollReset: true,
 								});
