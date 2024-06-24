@@ -67,7 +67,7 @@ import {
 	NotFoundError,
 } from '@/components/layout/Error';
 import theme from '@/styles/theme';
-import { hasSession } from '@/utils/cookies';
+import { EXPIRE_LOGGED_IN, hasSession } from '@/utils/cookies';
 
 interface LoaderData {
 	isLoggedIn: boolean;
@@ -199,6 +199,15 @@ export const ErrorBoundary = () => {
 	}
 
 	if (error instanceof Error) {
+		// If the error is due to a loader mismatch, reload the page as it may be
+		// related to a bad cookie cache from the API restarting. This is probably
+		// a bug in Remix SPA mode.
+		if (error.message.startsWith('You defined a loader for route "routes')) {
+			document.cookie = EXPIRE_LOGGED_IN;
+			window.location.reload();
+			return HydrateFallback();
+		}
+
 		return (
 			<Document>
 				<InternalServerError error={error.message} />
