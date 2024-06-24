@@ -12,13 +12,13 @@
 
 ## Overview
 
-Medama Analytics is an open-source project dedicated to providing cookie-free, privacy-focused website analytics. With a lightweight tracker of less than 1KB, it aims to offer robust analytics while prioritising user privacy.
+Medama Analytics is an open-source project dedicated to providing self-hostable, cookie-free website analytics. With a lightweight tracker of less than 1KB, it aims to offer useful analytics while prioritising user privacy.
 
 ### Features
 
 - 📊 **Real-Time Analytics:** Gain instant insights with real-time analytics, allowing you to monitor website performance and user interactions as they happen.
-- 🔒 **Cookie-Free Tracking:** Using a lightweight tracker of less than 1KB that operates without relying on cookies, IP addresses, or additional identifiers, this project ensures compliance with GDPR, PECR, and other privacy regulations.
-- 💼 **Self-Hostable:** Using embedded databases such as SQLite and DuckDB, facilitating simple file backups, self-hosting has a straightforward setup with no external dependencies. It's a lightweight solution that can efficiently run on a VM with 256MB of memory for most small websites.
+- 🔒 **Privacy-Focused:** Using a lightweight tracker of less than 1KB that operates without relying on cookies, IP addresses, or additional identifiers, this project ensures compliance with GDPR, PECR, and other privacy regulations.
+- 💼 **Self-Hostable:** Using embedded databases such as SQLite and DuckDB, this approach has a single-binary straightforward setup with no external dependencies. It's a lightweight solution that can efficiently run on a VM with 256MB of memory for most small websites.
 
 ## License
 
