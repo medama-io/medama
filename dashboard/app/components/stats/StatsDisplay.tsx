@@ -1,41 +1,18 @@
-import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { Tabs, UnstyledButton } from '@mantine/core';
 import { Link, useSearchParams } from '@remix-run/react';
 
-import { IconDots } from '@/components/icons/dots';
-
-import { formatCount, formatDuration } from './formatter';
 import classes from './StatsDisplay.module.css';
+import { StatsItem } from './StatsItem';
 
-interface StatsItemProps {
+interface StatsValue {
 	label: string;
-	count: number | undefined;
-	percentage: number | undefined;
-	isTime?: boolean;
+	count?: number;
+	percentage?: number;
 }
-
-const StatsItem = ({ label, count, percentage, isTime }: StatsItemProps) => {
-	const formattedValue = isTime
-		? formatDuration(count ?? 0)
-		: formatCount(count ?? 0);
-	return (
-		<div className={classes['stat-item']}>
-			<Group justify="space-between" pb={6}>
-				<Text fz={14}>{label}</Text>
-				<Text fw={600} fz={14}>
-					{formattedValue}
-				</Text>
-			</Group>
-			<div
-				className={classes.bar}
-				style={{ width: `${(percentage ?? 0) * 100}%` }}
-			/>
-		</div>
-	);
-};
 
 export interface StatsTab {
 	label: string;
-	items: StatsItemProps[];
+	items: StatsValue[];
 }
 
 interface StatsDisplayProps {
@@ -44,53 +21,57 @@ interface StatsDisplayProps {
 
 export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 	const [searchParams] = useSearchParams();
+
 	return (
 		<Tabs
 			variant="unstyled"
 			defaultValue={data[0]?.label}
 			classNames={{
-				root: classes['tab-root'],
+				root: classes.root,
 				tab: classes.tab,
+				list: classes.list,
 			}}
 		>
-			<Group justify="space-between" className={classes['tab-list']}>
-				<Tabs.List>
-					{data.map((tab) => (
-						<Tabs.Tab key={tab.label} value={tab.label}>
-							{tab.label}
-						</Tabs.Tab>
-					))}
-				</Tabs.List>
-				<ActionIcon variant="transparent">
-					<IconDots />
-				</ActionIcon>
-			</Group>
-
+			<Tabs.List>
+				{data.map((tab) => (
+					<Tabs.Tab key={tab.label} value={tab.label} aria-label={tab.label}>
+						{tab.label}
+					</Tabs.Tab>
+				))}
+			</Tabs.List>
 			{data.map((tab) => (
 				<Tabs.Panel key={tab.label} value={tab.label}>
-					{tab.items.map((item) => (
-						<StatsItem
-							key={item.label}
-							isTime={tab.label === 'Time'}
-							{...item}
-						/>
-					))}
-					<div className={classes['button-wrapper']}>
-						<UnstyledButton
-							component={Link}
-							to={{
-								pathname: `./${tab.label.toLowerCase()}`,
-								search: `?${searchParams.toString()}`,
-							}}
-							prefetch="intent"
-							preventScrollReset
-							className={classes.button}
-						>
-							Load More
-						</UnstyledButton>
+					<div style={{ minHeight: 306 }}>
+						{tab.items.map((item) => (
+							<StatsItem key={item.label} tab={tab.label} {...item} />
+						))}
 					</div>
+					<LoadMoreButton tab={tab} searchParams={searchParams} />
 				</Tabs.Panel>
 			))}
 		</Tabs>
 	);
 };
+
+interface LoadMoreButtonProps {
+	tab: StatsTab;
+	searchParams: URLSearchParams;
+}
+
+const LoadMoreButton = ({ tab, searchParams }: LoadMoreButtonProps) => (
+	<div className={classes.more}>
+		<UnstyledButton
+			component={Link}
+			to={{
+				pathname: `./${tab.label.toLowerCase()}`,
+				search: searchParams.toString(),
+			}}
+			prefetch="intent"
+			preventScrollReset
+			className={classes.button}
+			aria-label={`Load more ${tab.label} stats.`}
+		>
+			Load More
+		</UnstyledButton>
+	</div>
+);

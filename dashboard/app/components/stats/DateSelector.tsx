@@ -1,10 +1,11 @@
 import { Combobox, InputBase, useCombobox } from '@mantine/core';
 import { useDidUpdate } from '@mantine/hooks';
 import { useSearchParams } from '@remix-run/react';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+
 import classes from './DateSelector.module.css';
 
-const presets = {
+const PRESETS = {
 	today: 'Today',
 	yesterday: 'Yesterday',
 	'12h': 'Previous 12 hours',
@@ -17,10 +18,14 @@ const presets = {
 	half: 'Previous half year',
 	year: 'Previous year',
 	all: 'All time',
-};
+} as const;
 
-const isPreset = (value: string): value is keyof typeof presets =>
-	Object.keys(presets).includes(value);
+type PresetKey = keyof typeof PRESETS;
+
+const isPreset = (value: string): value is PresetKey =>
+	Object.keys(PRESETS).includes(value);
+
+const GROUP_END_VALUES: PresetKey[] = ['yesterday', '30d', 'year'];
 
 export const DateComboBox = () => {
 	const combobox = useCombobox({
@@ -37,8 +42,8 @@ export const DateComboBox = () => {
 	});
 
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [preset, setPreset] = useState<keyof typeof presets>(
-		(searchParams.get('period') as keyof typeof presets) || 'today',
+	const [preset, setPreset] = useState<PresetKey>(
+		(searchParams.get('period') as PresetKey) || 'today',
 	);
 
 	useDidUpdate(() => {
@@ -49,31 +54,35 @@ export const DateComboBox = () => {
 		});
 	}, [preset]);
 
-	const options = Object.entries(presets).map(([value, label]) => {
-		const isGroupEnd = ['yesterday', '30d', 'year'].includes(value);
+	const handleOptionSubmit = useCallback((value: string) => {
+		if (isPreset(value)) {
+			setPreset(value);
+		}
+	}, []);
 
-		return (
-			<Combobox.Option
-				key={value}
-				value={value}
-				active={value === preset}
-				data-group-end={isGroupEnd}
-				role="option"
-				aria-selected={value === preset}
-			>
-				{label}
-			</Combobox.Option>
-		);
-	});
+	const options = useMemo(
+		() =>
+			Object.entries(PRESETS).map(([value, label]) => (
+				<Combobox.Option
+					key={value}
+					value={value}
+					active={value === preset}
+					data-group-end={GROUP_END_VALUES.includes(value as PresetKey)}
+					role="option"
+					aria-selected={value === preset}
+				>
+					{label}
+				</Combobox.Option>
+			)),
+		[preset],
+	);
 
 	return (
 		<Combobox
 			classNames={{ dropdown: classes.dropdown, option: classes.option }}
 			store={combobox}
 			resetSelectionOnOptionHover
-			onOptionSubmit={(value) => {
-				setPreset(value as keyof typeof presets);
-			}}
+			onOptionSubmit={handleOptionSubmit}
 		>
 			<Combobox.Target>
 				<InputBase
@@ -83,12 +92,10 @@ export const DateComboBox = () => {
 					pointer
 					rightSection={<Combobox.Chevron />}
 					rightSectionPointerEvents="none"
-					onClick={() => {
-						combobox.toggleDropdown();
-					}}
+					onClick={() => combobox.toggleDropdown()}
 					aria-label="Select date range"
 				>
-					{isPreset(preset) ? presets[preset] : 'Custom range'}
+					{isPreset(preset) ? PRESETS[preset] : 'Custom range'}
 				</InputBase>
 			</Combobox.Target>
 			<Combobox.Dropdown>

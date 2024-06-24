@@ -11,7 +11,7 @@ import {
 	useCombobox,
 } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IconChevronDown } from '@/components/icons/chevrondown';
 import { IconPlus } from '@/components/icons/plus';
@@ -50,7 +50,7 @@ const filterOptions: FilterOptions = {
 	},
 	referrer: {
 		label: 'Referrer',
-		placeholder: 'e.g. /blog',
+		placeholder: 'e.g. example.com',
 	},
 	utm_source: {
 		label: 'UTM Source',
@@ -158,7 +158,7 @@ export const Filters = () => {
 	const [type, setType] = useState('eq');
 	const [value, setValue] = useState('');
 
-	const chosenFilter = filterOptions[filter];
+	const chosenFilter = useMemo(() => filterOptions[filter], [filter]);
 
 	// If the filter changes, reset the type
 	// We only reset the value if there is a change in filter type
@@ -171,29 +171,46 @@ export const Filters = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	// Convert the search params to an array of label-type-value tuples
 	// This is used to render the current filters.
-	const paramsArr: Array<[string, string, string]> = [];
-	for (const [key, value] of searchParams.entries()) {
-		const [filter, type] = key.split('['); // e.g. path[eq]
-		// If the filter is not in the filter options, don't render it
-		if (!filter || !filterOptions[filter]) {
-			continue;
+	const paramsArr = useMemo(() => {
+		const arr: Array<[string, string, string]> = [];
+		for (const [key, value] of searchParams.entries()) {
+			const [filter, type] = key.split('['); // e.g. path[eq]
+			// If the filter is not in the filter options, don't render it
+			if (filter && filterOptions[filter]) {
+				const { label = 'N/A' } = filterOptions[filter] ?? {};
+				arr.push([label, type?.replace(']', '') ?? 'Unknown', value]);
+			}
 		}
-
-		const { label = 'N/A' } = filterOptions[filter] ?? {};
-		paramsArr.push([label, type?.replace(']', '') ?? 'Unknown', value]);
-	}
+		return arr;
+	}, [searchParams]);
 
 	// Apply the filters to the search params and close the popover
 	// This should trigger a reload of data on the page with new
 	// data from the server.
-	const applyFilters = () => {
+	const applyFilters = useCallback(() => {
 		const params = new URLSearchParams(searchParams);
 		params.append(`${filter}[${type}]`, value);
-		setSearchParams(params, {
-			preventScrollReset: true,
-		});
+		setSearchParams(params, { preventScrollReset: true });
 		setOpened(false);
-	};
+	}, [filter, type, value, searchParams, setSearchParams]);
+
+	// Remove a filter.
+	const removeFilter = useCallback(
+		(label: string, type: string, value: string) => {
+			return () => {
+				const params = new URLSearchParams(searchParams);
+				const filterMap: Record<string, string> = {
+					'UTM Source': 'utm_source',
+					'UTM Medium': 'utm_medium',
+					'UTM Campaign': 'utm_campaign',
+				};
+				const filterKey = filterMap[label] ?? label.toLowerCase();
+				params.delete(`${filterKey}[${type}]`, value);
+				setSearchParams(params, { preventScrollReset: true });
+			};
+		},
+		[searchParams, setSearchParams],
+	);
 
 	return (
 		<Group mt={-40}>
@@ -288,15 +305,7 @@ export const Filters = () => {
 							{filterTypes[type]?.label ?? 'Unknown'}&nbsp;
 						</Text>
 						<Text fz={14}>{value}</Text>
-						<CloseButton
-							onClick={() => {
-								const params = new URLSearchParams(searchParams);
-								params.delete(`${label.toLowerCase()}[${type}]`, value);
-								setSearchParams(params, {
-									preventScrollReset: true,
-								});
-							}}
-						/>
+						<CloseButton onClick={removeFilter(label, type, value)} />
 					</Group>
 				);
 			})}

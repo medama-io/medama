@@ -34,11 +34,19 @@ export const formatDuration: DurationFormatter = (durationMs = 0) => {
 		return `${hours}h${minutes}m${seconds}s`;
 	}
 
-	if (seconds < 1) {
-		return `0.${Math.floor(milliseconds / 100)}s`;
+	if (minutes === 0) {
+		if (seconds === 0) {
+			return '0s';
+		}
+
+		if (seconds < 1) {
+			return `0.${Math.floor(milliseconds / 100)}s`;
+		}
+
+		return `${seconds}s`;
 	}
 
-	return minutes === 0 ? `${seconds}s` : `${minutes}m${seconds}s`;
+	return `${minutes}m${seconds}s`;
 };
 
 // Format percentage value
