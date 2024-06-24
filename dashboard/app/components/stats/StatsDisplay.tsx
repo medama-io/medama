@@ -1,5 +1,6 @@
 import { Tabs, UnstyledButton } from '@mantine/core';
 import { Link, useSearchParams } from '@remix-run/react';
+import { useMemo } from 'react';
 
 import classes from './StatsDisplay.module.css';
 import { StatsItem } from './StatsItem';
@@ -21,7 +22,7 @@ interface StatsDisplayProps {
 
 export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 	const [searchParams] = useSearchParams();
-	const defaultValue = data[0]?.label ?? '';
+	const defaultValue = useMemo(() => data[0]?.label ?? '', [data]);
 
 	return (
 		<Tabs
@@ -40,7 +41,6 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 					</Tabs.Tab>
 				))}
 			</Tabs.List>
-
 			{data.map((tab) => (
 				<Tabs.Panel key={tab.label} value={tab.label}>
 					<div style={{ minHeight: 306 }}>
@@ -48,23 +48,32 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 							<StatsItem key={item.label} tab={tab.label} {...item} />
 						))}
 					</div>
-					<div className={classes.more}>
-						<UnstyledButton
-							component={Link}
-							to={{
-								pathname: `./${tab.label.toLowerCase()}`,
-								search: `?${searchParams.toString()}`,
-							}}
-							prefetch="intent"
-							preventScrollReset
-							className={classes.button}
-							aria-label={`Load more ${tab.label} stats.`}
-						>
-							Load More
-						</UnstyledButton>
-					</div>
+					<LoadMoreButton tab={tab} searchParams={searchParams} />
 				</Tabs.Panel>
 			))}
 		</Tabs>
 	);
 };
+
+interface LoadMoreButtonProps {
+	tab: StatsTab;
+	searchParams: URLSearchParams;
+}
+
+const LoadMoreButton = ({ tab, searchParams }: LoadMoreButtonProps) => (
+	<div className={classes.more}>
+		<UnstyledButton
+			component={Link}
+			to={{
+				pathname: `./${tab.label.toLowerCase()}`,
+				search: searchParams.toString(),
+			}}
+			prefetch="intent"
+			preventScrollReset
+			className={classes.button}
+			aria-label={`Load more ${tab.label} stats.`}
+		>
+			Load More
+		</UnstyledButton>
+	</div>
+);

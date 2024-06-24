@@ -11,36 +11,39 @@ import {
 	YAxis,
 } from 'recharts';
 
-interface StackedBarChartProps {
-	data: Array<{
-		date: string;
-		value: number;
-		stackValue?: number;
-	}>;
+interface ChartData {
+	date: string;
+	value: number;
+	stackValue?: number;
 }
 
-const error = console.error;
+interface StackedBarChartProps {
+	data: ChartData[];
+}
+
+// Move this outside the component to avoid recreation on each render
+const intlFormatter = new Intl.DateTimeFormat('en', {
+	year: 'numeric',
+	month: 'short',
+	day: 'numeric',
+	hour: 'numeric',
+	minute: 'numeric',
+});
+
+// Suppress specific console errors
 /* biome-ignore lint/suspicious/noExplicitAny: This is a hack to suppress the warning about missing defaultProps in recharts
 library as of version 2.12. @link https://github.com/recharts/recharts/issues/3615 */
-console.error = (...args: any) => {
-	if (/defaultProps/.test(args[0])) return;
-	error(...args);
+console.error = (...args: any[]) => {
+	if (!/defaultProps/.test(args[0])) {
+		console.error(...args);
+	}
 };
 
 export const StackedBarChart = ({ data }: StackedBarChartProps) => {
 	const [searchParams] = useSearchParams();
-
-	const intlFormatter = new Intl.DateTimeFormat('en', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-		hour: 'numeric',
-		minute: 'numeric',
-	});
-
-	// eslint-disable-next-line unicorn/consistent-function-scoping
-	let dateFormatter = (date: Date) => format(date, 'MMM, yyyy');
 	const period = searchParams.get('period');
+
+	let dateFormatter = (date: Date) => format(date, 'MMM, yyyy');
 	switch (true) {
 		case period === null:
 		case period === undefined:

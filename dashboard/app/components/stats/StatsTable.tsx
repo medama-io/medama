@@ -5,7 +5,7 @@ import {
 	type DataTableColumn,
 	type DataTableSortStatus,
 } from 'mantine-datatable';
-import { useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { IconChevronLeft } from '@/components/icons/chevronleft';
 import { IconChevronRight } from '@/components/icons/chevronright';
@@ -49,7 +49,9 @@ interface DataRow {
 	language?: string;
 }
 
-const labelMap = {
+type QueryType = keyof typeof LABEL_MAP;
+
+const LABEL_MAP = {
 	pages: 'Pages',
 	time: 'Time Spent',
 	referrers: 'Referrers',
@@ -61,78 +63,68 @@ const labelMap = {
 	devices: 'Devices',
 	countries: 'Countries',
 	languages: 'Languages',
+} as const;
+
+const PAGE_SIZES = [10, 25, 50, 100] as const;
+
+// Preset columns
+type PresetDataKeys =
+	| 'path'
+	| 'visitors'
+	| 'visitors_percentage'
+	| 'pageviews'
+	| 'pageviews_percentage'
+	| 'bounce_rate'
+	| 'duration';
+
+const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
+	path: { accessor: 'path', title: 'Path', width: '100%' },
+	visitors: { accessor: 'visitors', title: 'Visitors', sortable: true },
+	visitors_percentage: {
+		accessor: 'visitors_percentage',
+		title: 'Visitors %',
+		render: (record) => formatPercentage(record.visitors_percentage ?? 0),
+	},
+	pageviews: {
+		accessor: 'pageviews',
+		title: 'Views',
+		sortable: true,
+		render: (record) => formatCount(record.pageviews ?? 0),
+	},
+	pageviews_percentage: {
+		accessor: 'pageviews_percentage',
+		title: 'Views %',
+		render: (record) => formatPercentage(record.pageviews_percentage ?? 0),
+	},
+	bounce_rate: {
+		accessor: 'bounce_rate',
+		title: 'Bounce %',
+		render: (record) =>
+			formatPercentage((record.bounces ?? 0) / (record.visitors ?? 1)),
+	},
+	duration: {
+		accessor: 'duration',
+		title: 'Duration',
+		sortable: true,
+		render: (record) => formatDuration(record.duration ?? 0),
+	},
 };
 
+const sortBy =
+	// biome-ignore lint/suspicious/noExplicitAny: Generic function.
+		<T extends Record<string, any>>(key: keyof T) =>
+		(a: T, b: T) =>
+			a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0;
+
 interface QueryTableProps {
-	query: keyof typeof labelMap | string;
+	query: QueryType;
 	data: DataRow[];
 }
 
-// Preset columns
-const path = { accessor: 'path', title: 'Path', width: '100%' };
-const visitors: DataTableColumn = {
-	accessor: 'visitors',
-	title: 'Visitors',
-	sortable: true,
-};
-const visitorsPercentage: DataTableColumn = {
-	accessor: 'visitors_percentage',
-	title: 'Visitors %',
-	render: (record: DataRow) =>
-		formatPercentage(record.visitors_percentage ?? 0),
-};
-const pageviews: DataTableColumn = {
-	accessor: 'pageviews',
-	title: 'Views',
-	sortable: true,
-	render: (record: DataRow) => formatCount(record.pageviews ?? 0),
-};
-const pageviewsPercentage: DataTableColumn = {
-	accessor: 'pageviews_percentage',
-	title: 'Views %',
-	render: (record: DataRow) =>
-		formatPercentage(record.pageviews_percentage ?? 0),
-};
-const bounceRate: DataTableColumn = {
-	accessor: 'bounce_rate',
-	title: 'Bounce %',
-	render: (record: DataRow) =>
-		formatPercentage((record.bounces ?? 0) / (record.visitors ?? 0)),
-};
-const duration: DataTableColumn = {
-	accessor: 'duration',
-	title: 'Duration',
-	sortable: true,
-	render: (record: DataRow) => formatDuration(record.duration ?? 0),
-};
-
-const PAGE_SIZES = [10, 25, 50, 100];
-
-// biome-ignore lint/suspicious/noExplicitAny: Generic function
-const sortBy = (key: any) => {
-	// biome-ignore lint/suspicious/noExplicitAny: Generic function
-	return (a: any, b: any) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0);
-};
-
 const QueryTable = ({ query, data }: QueryTableProps) => {
 	// Pagination
-	const [pageSize, setPageSize] = useState(10);
+	const [pageSize, setPageSize] = useState<(typeof PAGE_SIZES)[number]>(10);
 	const [page, setPage] = useState(1);
-	const [records, setRecords] = useState(data.slice(0, pageSize));
-
-	const handlePageChange = (newPage: number) => {
-		// Prevent negative pages
-		if (newPage < 1 || newPage > Math.ceil(data.length / pageSize)) {
-			return;
-		}
-
-		setPage(newPage);
-	};
-
-	const handlePageSizeChange = (newSize: number) => {
-		setPageSize(newSize);
-		setPage(1);
-	};
 
 	// Sorting
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<DataRow>>({
@@ -140,259 +132,208 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 		direction: 'desc',
 	});
 
-	useEffect(() => {
-		// Calculate the range of records to display
+	const columns = useMemo(() => getColumnsForQuery(query), [query]);
+
+	const records = useMemo(() => {
 		const from = (page - 1) * pageSize;
 		const to = from + pageSize;
-
-		// Sort and slice the data to page size
-		const temp = [...data].sort(sortBy(sortStatus.columnAccessor));
-		setRecords(
-			sortStatus.direction === 'desc'
-				? temp.reverse().slice(from, to)
-				: temp.slice(from, to),
+		const sortedData = [...data].sort(
+			sortBy(sortStatus.columnAccessor as keyof DataRow),
 		);
-	}, [sortStatus, data, page, pageSize]);
+		return sortStatus.direction === 'desc'
+			? sortedData.reverse().slice(from, to)
+			: sortedData.slice(from, to);
+	}, [data, page, pageSize, sortStatus]);
 
-	// Define columns based on query
-	const columns: DataTableColumn[] = [];
-	switch (query) {
-		case 'pages': {
-			columns.push(
-				path,
-				visitors,
-				visitorsPercentage,
-				pageviews,
-				pageviewsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'time': {
-			columns.push(
-				path,
-				visitors,
-				duration,
-				{
-					accessor: 'duration_lower_quartile',
-					title: 'Q1 (25%)',
-					sortable: true,
-					render: (record: DataRow) =>
-						formatDuration(record.duration_lower_quartile ?? 0),
-				},
-				{
-					accessor: 'duration_upper_quartile',
-					title: 'Q3 (75%)',
-					sortable: true,
-					render: (record: DataRow) =>
-						formatDuration(record.duration_upper_quartile ?? 0),
-				},
-				{
-					accessor: 'duration_percentage',
-					title: 'Duration %',
-					sortable: true,
-					render: (record: DataRow) =>
-						formatPercentage((record.duration_percentage ?? 0) / 100),
-				},
-				bounceRate,
-			);
-			break;
-		}
-		case 'referrers': {
-			columns.push(
-				{
-					accessor: 'referrer',
-					title: 'Referrer',
-					width: '100%',
-					render: (record: DataRow) =>
-						record.referrer === '' ? 'Direct/None' : record.referrer,
-				},
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'sources': {
-			columns.push(
-				{
-					accessor: 'source',
-					title: 'Source',
-					width: '100%',
-					render: (record: DataRow) =>
-						record.source === '' ? 'Direct/None' : record.source,
-				},
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'mediums': {
-			columns.push(
-				{
-					accessor: 'medium',
-					title: 'Medium',
-					width: '100%',
-					render: (record: DataRow) =>
-						record.medium === '' ? 'Direct/None' : record.medium,
-				},
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'campaigns': {
-			columns.push(
-				{
-					accessor: 'campaign',
-					title: 'Campaign',
-					width: '100%',
-					render: (record: DataRow) =>
-						record.campaign === '' ? 'Direct/None' : record.campaign,
-				},
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'browsers': {
-			columns.push(
-				{ accessor: 'browser', title: 'Browser', width: '100%' },
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'os': {
-			columns.push(
-				{ accessor: 'os', title: 'Operating System', width: '100%' },
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'devices': {
-			columns.push(
-				{ accessor: 'device', title: 'Device', width: '100%' },
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'countries': {
-			columns.push(
-				{ accessor: 'country', title: 'Country', width: '100%' },
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		case 'languages': {
-			columns.push(
-				{ accessor: 'language', title: 'Language', width: '100%' },
-				visitors,
-				visitorsPercentage,
-				bounceRate,
-				duration,
-			);
-			break;
-		}
-		default: {
-			return <div>Invalid query</div>;
-		}
-	}
+	const handlePageChange = useCallback(
+		(newPage: number) => {
+			const maxPage = Math.ceil(data.length / pageSize);
+			setPage(Math.max(1, Math.min(newPage, maxPage)));
+		},
+		[data.length, pageSize],
+	);
+
+	const handlePageSizeChange = useCallback(
+		(newSize: (typeof PAGE_SIZES)[number]) => {
+			setPageSize(newSize);
+			setPage(1);
+		},
+		[],
+	);
 
 	return (
 		<div className={classes['table-wrapper']}>
 			<div className={classes['table-header']}>
 				<Text fz={14} fw={600} py={3}>
-					{labelMap[query] ?? 'N/A'}
+					{LABEL_MAP[query]}
 				</Text>
 			</div>
 			<DataTable
 				minHeight={300}
 				highlightOnHover
 				withRowBorders={false}
-				// Have to type assert here as technically we have Record<string | undefined, unknown>[]
-				// but we don't know the exact shape of the data
-				records={records as Array<Record<string, unknown>>}
-				// biome-ignore lint/suspicious/noExplicitAny: Does not handle generic types very well
-				columns={columns as any}
+				records={records}
+				columns={columns}
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
 			/>
-			<Group justify="space-between" px="lg" py="sm">
-				<Group>
-					<span className={classes.viewspan}>View</span>
-					{PAGE_SIZES.map((size) => (
-						<ActionIcon
-							key={size}
-							variant="transparent"
-							className={classes['page-size']}
-							onClick={() => {
-								handlePageSizeChange(size);
-							}}
-							disabled={size === pageSize || data.length <= size}
-							data-active={size === pageSize}
-						>
-							{size}
-						</ActionIcon>
-					))}
-				</Group>
-				<Group>
-					<ActionIcon
-						variant="transparent"
-						className={classes['page-arrow']}
-						onClick={() => {
-							handlePageChange(page - 1);
-						}}
-						disabled={page <= 1}
-					>
-						<IconChevronLeft />
-					</ActionIcon>
-					<span>
-						Page {page} of {Math.ceil(data.length / pageSize)}
-					</span>
-					<ActionIcon
-						variant="transparent"
-						className={classes['page-arrow']}
-						onClick={() => {
-							handlePageChange(page + 1);
-						}}
-						disabled={page >= Math.ceil(data.length / pageSize)}
-					>
-						<IconChevronRight />
-					</ActionIcon>
-				</Group>
-			</Group>
+			<TablePagination
+				page={page}
+				pageSize={pageSize}
+				totalRecords={data.length}
+				onPageChange={handlePageChange}
+				onPageSizeChange={handlePageSizeChange}
+			/>
 		</div>
 	);
 };
 
+interface TablePaginationProps {
+	page: number;
+	pageSize: number;
+	totalRecords: number;
+	onPageChange: (page: number) => void;
+	onPageSizeChange: (pageSize: (typeof PAGE_SIZES)[number]) => void;
+}
+
+const TablePagination = ({
+	page,
+	pageSize,
+	totalRecords,
+	onPageChange,
+	onPageSizeChange,
+}: TablePaginationProps) => {
+	const totalPages = Math.ceil(totalRecords / pageSize);
+
+	return (
+		<Group justify="space-between" px="lg" py="sm">
+			<Group>
+				<span className={classes.viewspan}>View</span>
+				{PAGE_SIZES.map((size) => (
+					<ActionIcon
+						key={size}
+						variant="transparent"
+						className={classes['page-size']}
+						onClick={() => onPageSizeChange(size)}
+						disabled={size === pageSize || totalRecords <= size}
+						data-active={size === pageSize}
+					>
+						{size}
+					</ActionIcon>
+				))}
+			</Group>
+			<Group>
+				<ActionIcon
+					variant="transparent"
+					className={classes['page-arrow']}
+					onClick={() => onPageChange(page - 1)}
+					disabled={page <= 1}
+				>
+					<IconChevronLeft />
+				</ActionIcon>
+				<span>
+					Page {page} of {totalPages}
+				</span>
+				<ActionIcon
+					variant="transparent"
+					className={classes['page-arrow']}
+					onClick={() => onPageChange(page + 1)}
+					disabled={page >= totalPages}
+				>
+					<IconChevronRight />
+				</ActionIcon>
+			</Group>
+		</Group>
+	);
+};
+
+const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
+	const commonColumns = [
+		PRESET_COLUMNS.visitors,
+		PRESET_COLUMNS.visitors_percentage,
+		PRESET_COLUMNS.bounce_rate,
+		PRESET_COLUMNS.duration,
+	];
+
+	switch (query) {
+		case 'pages':
+			return [
+				PRESET_COLUMNS.path,
+				...commonColumns,
+				PRESET_COLUMNS.pageviews,
+				PRESET_COLUMNS.pageviews_percentage,
+			];
+		case 'time':
+			return [
+				PRESET_COLUMNS.path,
+				...commonColumns,
+				{
+					accessor: 'duration_lower_quartile',
+					title: 'Q1 (25%)',
+					sortable: true,
+					render: (record) =>
+						formatDuration(record.duration_lower_quartile ?? 0),
+				},
+				{
+					accessor: 'duration_upper_quartile',
+					title: 'Q3 (75%)',
+					sortable: true,
+					render: (record) =>
+						formatDuration(record.duration_upper_quartile ?? 0),
+				},
+				{
+					accessor: 'duration_percentage',
+					title: 'Duration %',
+					sortable: true,
+					render: (record) =>
+						formatPercentage((record.duration_percentage ?? 0) / 100),
+				},
+			];
+		case 'referrers':
+		case 'sources':
+		case 'mediums':
+		case 'campaigns':
+		case 'browsers':
+		case 'os':
+		case 'devices':
+		case 'countries':
+		case 'languages':
+			return [
+				{
+					accessor: query.slice(0, -1) as keyof DataRow,
+					title: LABEL_MAP[query],
+					width: '100%',
+					render: (record) =>
+						record[query.slice(0, -1) as keyof DataRow] || 'Direct/None',
+				},
+				...commonColumns,
+			];
+		default:
+			throw new Error(`Invalid query: ${query}`);
+	}
+};
+
 interface StatsTableProps {
-	query: string;
+	query: QueryType;
 	data: DataRow[];
 }
 
 export const StatsTable = ({ query, data }: StatsTableProps) => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+
+	const handleTabChange = useCallback(
+		(value: string | null) => {
+			navigate(
+				{
+					pathname: `../${value}`,
+					search: searchParams.toString(),
+				},
+				{ preventScrollReset: true },
+			);
+		},
+		[navigate, searchParams],
+	);
 
 	return (
 		<Tabs
@@ -404,16 +345,7 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 				list: classes['tab-list'],
 			}}
 			orientation="vertical"
-			onChange={(value) => {
-				navigate(
-					{
-						pathname: `../${value}`,
-						// Preserve search params when switching tabs
-						search: `?${searchParams.toString()}`,
-					},
-					{ preventScrollReset: true },
-				);
-			}}
+			onChange={handleTabChange}
 			keepMounted={false}
 		>
 			<Tabs.List>
@@ -422,22 +354,21 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 						component={Link}
 						to={{
 							pathname: '../',
-							search: `?${searchParams.toString()}`,
+							search: searchParams.toString(),
 						}}
 						className={classes.back}
 					>
 						<IconChevronLeft />
 						<span>Go back</span>
 					</Box>
-					{Object.entries(labelMap).map(([key, label]) => (
+					{Object.entries(LABEL_MAP).map(([key, label]) => (
 						<Tabs.Tab key={key} value={key}>
 							{label}
 						</Tabs.Tab>
 					))}
 				</div>
 			</Tabs.List>
-
-			<Tabs.Panel key={query} value={query}>
+			<Tabs.Panel value={query}>
 				<QueryTable query={query} data={data} />
 			</Tabs.Panel>
 		</Tabs>
