@@ -33,6 +33,7 @@
 	height: 50px;
 	margin: 6px 8px;
 	padding: 7px 16px;
+	width: calc(100% - 16px);
 
 	border-radius: 8px;
 
