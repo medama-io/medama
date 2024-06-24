@@ -78,18 +78,20 @@ const visitors: DataTableColumn = {
 const visitorsPercentage: DataTableColumn = {
 	accessor: 'visitors_percentage',
 	title: 'Visitors %',
-	render: (record: DataRow) => formatPercentage(record.visitors_percentage),
+	render: (record: DataRow) =>
+		formatPercentage(record.visitors_percentage ?? 0),
 };
 const pageviews: DataTableColumn = {
 	accessor: 'pageviews',
 	title: 'Views',
 	sortable: true,
-	render: (record: DataRow) => formatCount(record.pageviews),
+	render: (record: DataRow) => formatCount(record.pageviews ?? 0),
 };
 const pageviewsPercentage: DataTableColumn = {
 	accessor: 'pageviews_percentage',
 	title: 'Views %',
-	render: (record: DataRow) => formatPercentage(record.pageviews_percentage),
+	render: (record: DataRow) =>
+		formatPercentage(record.pageviews_percentage ?? 0),
 };
 const bounceRate: DataTableColumn = {
 	accessor: 'bounce_rate',
@@ -101,7 +103,7 @@ const duration: DataTableColumn = {
 	accessor: 'duration',
 	title: 'Duration',
 	sortable: true,
-	render: (record: DataRow) => formatDuration(record.duration),
+	render: (record: DataRow) => formatDuration(record.duration ?? 0),
 };
 
 const PAGE_SIZES = [10, 25, 50, 100];
@@ -177,14 +179,14 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 					title: 'Q1 (25%)',
 					sortable: true,
 					render: (record: DataRow) =>
-						formatDuration(record.duration_lower_quartile),
+						formatDuration(record.duration_lower_quartile ?? 0),
 				},
 				{
 					accessor: 'duration_upper_quartile',
 					title: 'Q3 (75%)',
 					sortable: true,
 					render: (record: DataRow) =>
-						formatDuration(record.duration_upper_quartile),
+						formatDuration(record.duration_upper_quartile ?? 0),
 				},
 				{
 					accessor: 'duration_percentage',
@@ -412,6 +414,7 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 					{ preventScrollReset: true },
 				);
 			}}
+			keepMounted={false}
 		>
 			<Tabs.List>
 				<div className={classes['list-wrapper']}>

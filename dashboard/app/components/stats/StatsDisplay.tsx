@@ -1,7 +1,5 @@
-import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { Group, Tabs, Text, UnstyledButton } from '@mantine/core';
 import { Link, useSearchParams } from '@remix-run/react';
-
-import { IconDots } from '@/components/icons/dots';
 
 import { formatCount, formatDuration } from './formatter';
 import classes from './StatsDisplay.module.css';
@@ -49,33 +47,31 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 			variant="unstyled"
 			defaultValue={data[0]?.label}
 			classNames={{
-				root: classes['tab-root'],
+				root: classes.root,
 				tab: classes.tab,
+				list: classes.list,
 			}}
 		>
-			<Group justify="space-between" className={classes['tab-list']}>
-				<Tabs.List>
-					{data.map((tab) => (
-						<Tabs.Tab key={tab.label} value={tab.label}>
-							{tab.label}
-						</Tabs.Tab>
-					))}
-				</Tabs.List>
-				<ActionIcon variant="transparent">
-					<IconDots />
-				</ActionIcon>
-			</Group>
+			<Tabs.List>
+				{data.map((tab) => (
+					<Tabs.Tab key={tab.label} value={tab.label}>
+						{tab.label}
+					</Tabs.Tab>
+				))}
+			</Tabs.List>
 
 			{data.map((tab) => (
 				<Tabs.Panel key={tab.label} value={tab.label}>
-					{tab.items.map((item) => (
-						<StatsItem
-							key={item.label}
-							isTime={tab.label === 'Time'}
-							{...item}
-						/>
-					))}
-					<div className={classes['button-wrapper']}>
+					<div style={{ minHeight: 280 }}>
+						{tab.items.map((item) => (
+							<StatsItem
+								key={item.label}
+								isTime={tab.label === 'Time'}
+								{...item}
+							/>
+						))}
+					</div>
+					<div className={classes.more}>
 						<UnstyledButton
 							component={Link}
 							to={{
