@@ -88,6 +88,11 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 	case api.EventLoadEventHit:
 		hostname := req.EventLoad.U.Hostname()
 		pathname := req.EventLoad.U.Path
+		// Remove trailing slash if it exists
+		if pathname != "/" {
+			pathname = strings.TrimSuffix(pathname, "/")
+		}
+
 		log = log.With().Str("hostname", hostname).Logger()
 
 		// Verify hostname exists
