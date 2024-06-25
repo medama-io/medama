@@ -13,6 +13,8 @@ interface StatsItemProps {
 }
 
 const FILTER_MAP: Record<string, string> = {
+	Pages: 'path',
+	Time: 'path',
 	Referrers: 'referrer',
 	Sources: 'utm_source',
 	Mediums: 'utm_medium',
@@ -38,12 +40,10 @@ const StatsItem = ({
 	);
 
 	const handleFilter = () => {
-		if (tab !== 'Time') {
-			const params = new URLSearchParams(searchParams);
-			const filter = FILTER_MAP[tab] ?? 'path';
-			params.append(`${filter}[eq]`, label);
-			setSearchParams(params, { preventScrollReset: true });
-		}
+		const params = new URLSearchParams(searchParams);
+		const filter = FILTER_MAP[tab] ?? 'path';
+		params.append(`${filter}[eq]`, label);
+		setSearchParams(params, { preventScrollReset: true });
 	};
 
 	return (
