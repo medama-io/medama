@@ -12,43 +12,8 @@ import { IconChevronLeft } from '@/components/icons/chevronleft';
 import { IconChevronRight } from '@/components/icons/chevronright';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
+import type { DataRow } from './types';
 import classes from './StatsTable.module.css';
-
-interface DataRow {
-	// Common
-	visitors?: number;
-	visitors_percentage?: number;
-	// Mixed
-	path?: string;
-	bounces?: number;
-	bounce_rate?: number;
-	duration?: number;
-	// Pages
-	pageviews?: number;
-	pageviews_percentage?: number;
-	// Duration
-	duration_upper_quartile?: number;
-	duration_lower_quartile?: number;
-	duration_percentage?: number;
-	// Referrers
-	referrer?: string;
-	// Sources
-	source?: string;
-	// Mediums
-	medium?: string;
-	// Campaigns
-	campaign?: string;
-	// Browsers
-	browser?: string;
-	// Operating Systems
-	os?: string;
-	// Devices
-	device?: string;
-	// Countries
-	country?: string;
-	// Languages
-	language?: string;
-}
 
 type QueryType = keyof typeof LABEL_MAP;
 
@@ -347,23 +312,42 @@ const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
 			return [
 				{
 					accessor: ACCESSOR_MAP[query],
-					title: LABEL_MAP[query],
+					title: LABEL_MAP[query].slice(0, -1),
 					width: '100%',
 					render: (record) => record[ACCESSOR_MAP[query]] || 'Direct/None',
 				},
 				...commonColumns,
 			];
 		case 'browsers':
-		case 'os':
+
 		case 'devices':
-		case 'countries':
 		case 'languages':
 			return [
 				{
 					accessor: ACCESSOR_MAP[query],
-					title: LABEL_MAP[query],
+					title: LABEL_MAP[query].slice(0, -1),
 					width: '100%',
 					render: (record) => record[ACCESSOR_MAP[query]] || 'Unknown',
+				},
+				...commonColumns,
+			];
+		case 'os':
+			return [
+				{
+					accessor: ACCESSOR_MAP[query],
+					title: 'OS',
+					width: '100%',
+					render: (record) => record.os || 'Unknown',
+				},
+				...commonColumns,
+			];
+		case 'countries':
+			return [
+				{
+					accessor: ACCESSOR_MAP[query],
+					title: 'Country',
+					width: '100%',
+					render: (record) => record.country || 'Unknown',
 				},
 				...commonColumns,
 			];
