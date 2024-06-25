@@ -1,7 +1,7 @@
 import { Group, Text, UnstyledButton } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { formatCount, formatDuration } from './formatter';
 import classes from './StatsDisplay.module.css';
 
@@ -12,7 +12,7 @@ interface StatsItemProps {
 	tab: string;
 }
 
-const filterMap: Record<string, string> = {
+const FILTER_MAP: Record<string, string> = {
 	Referrers: 'referrer',
 	Sources: 'utm_source',
 	Mediums: 'utm_medium',
@@ -37,14 +37,14 @@ const StatsItem = ({
 		[tab, count],
 	);
 
-	const handleFilter = useCallback(() => {
+	const handleFilter = () => {
 		if (tab !== 'Time') {
 			const params = new URLSearchParams(searchParams);
-			const filter = filterMap[tab] ?? 'path';
+			const filter = FILTER_MAP[tab] ?? 'path';
 			params.append(`${filter}[eq]`, label);
 			setSearchParams(params, { preventScrollReset: true });
 		}
-	}, [tab, label, searchParams, setSearchParams]);
+	};
 
 	return (
 		<UnstyledButton
