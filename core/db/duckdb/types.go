@@ -23,7 +23,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 	// VisitorsPercentage is the percentage the browser contributes to the total visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -31,7 +31,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 		)
 		SELECT
 			ua_browser AS browser,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
@@ -74,7 +74,7 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 	// Duration is the median duration of the page.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -82,9 +82,9 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 		)
 		SELECT
 			ua_browser AS browser,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
@@ -123,7 +123,7 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -131,7 +131,7 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 		)
 		SELECT
 			ua_os AS os,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
@@ -171,7 +171,7 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -179,9 +179,9 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 		)
 		SELECT
 			ua_os AS os,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
@@ -220,7 +220,7 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 	// VisitorsPercentage is the percentage the device contributes to the total visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -228,7 +228,7 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 		)
 		SELECT
 			ua_device_type AS device,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
@@ -268,7 +268,7 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 	// VisitorsPercentage is the percentage the device contributes to the total visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -276,9 +276,9 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 		)
 		SELECT
 			ua_device_type AS device,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)

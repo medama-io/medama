@@ -22,7 +22,7 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 	// VisitorsPercentage is the percentage the utm source contributes to the total unique visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -30,7 +30,7 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 		)
 		SELECT
 			utm_source AS source,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
@@ -70,7 +70,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 	// VisitorsPercentage is the percentage the utm source contributes to the total unique visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -78,9 +78,9 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 		)
 		SELECT
 			utm_source AS source,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
@@ -119,7 +119,7 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 	// VisitorsPercentage is the percentage the utm medium contributes to the total unique visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -127,7 +127,7 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 		)
 		SELECT
 			utm_medium AS medium,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
@@ -167,7 +167,7 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 	// VisitorsPercentage is the percentage the utm medium contributes to the total unique visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -175,9 +175,9 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 		)
 		SELECT
 			utm_medium AS medium,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)
@@ -216,7 +216,7 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 	// VisitorsPercentage is the percentage the utm campaign contributes to the total unique visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -224,7 +224,7 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 		)
 		SELECT
 			utm_campaign AS campaign,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
@@ -264,7 +264,7 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 	// VisitorsPercentage is the percentage the utm campaign contributes to the total unique visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -272,9 +272,9 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 		)
 		SELECT
 			utm_campaign AS campaign,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces,
+			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
 			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 		FROM views
 		WHERE `)

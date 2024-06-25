@@ -1,29 +1,29 @@
 
 [TestGetWebsiteCountries/Base - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:166773 VisitorsPercentage:0.3336} Bounces:41757 Duration:4986}
-&{StatsCountriesSummary:{Country:Japan Visitors:166589 VisitorsPercentage:0.3333} Bounces:41843 Duration:5007}
-&{StatsCountriesSummary:{Country:United States Visitors:166496 VisitorsPercentage:0.3331} Bounces:41654 Duration:5014}
+&{StatsCountriesSummary:{Country:United States Visitors:166892 VisitorsPercentage:0.334} Bounces:41323 Duration:5014}
+&{StatsCountriesSummary:{Country:Japan Visitors:166747 VisitorsPercentage:0.3337} Bounces:41697 Duration:5007}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:166018 VisitorsPercentage:0.3323} Bounces:41664 Duration:4986}
 
 ---
 
 [TestGetWebsiteCountries/Browser - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:Japan Visitors:55424 VisitorsPercentage:0.3335} Bounces:14169 Duration:4954}
-&{StatsCountriesSummary:{Country:United States Visitors:55378 VisitorsPercentage:0.3333} Bounces:13930 Duration:4992}
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:55368 VisitorsPercentage:0.3332} Bounces:13867 Duration:4992}
+&{StatsCountriesSummary:{Country:Japan Visitors:55533 VisitorsPercentage:0.3344} Bounces:14047 Duration:4954}
+&{StatsCountriesSummary:{Country:United States Visitors:55314 VisitorsPercentage:0.333} Bounces:13749 Duration:4992}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:55243 VisitorsPercentage:0.3326} Bounces:13844 Duration:4992}
 
 ---
 
 [TestGetWebsiteCountries/Country - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:55368 VisitorsPercentage:1} Bounces:13867 Duration:4992}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:55243 VisitorsPercentage:1} Bounces:13844 Duration:4992}
 
 ---
 
 [TestGetWebsiteCountries/Device - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:18593 VisitorsPercentage:1} Bounces:4662 Duration:4997}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:18661 VisitorsPercentage:1} Bounces:4691 Duration:4997}
 
 ---
 
@@ -34,71 +34,71 @@ RECORDS:
 
 [TestGetWebsiteCountries/Language - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:9378 VisitorsPercentage:1} Bounces:2339 Duration:5003}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
 
 ---
 
 [TestGetWebsiteCountries/OS - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:3085 VisitorsPercentage:1} Bounces:786 Duration:4971}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
 
 ---
 
 [TestGetWebsiteCountries/Pathname - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:1073 VisitorsPercentage:1} Bounces:260 Duration:5098}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
 
 ---
 
 [TestGetWebsiteCountries/Referrer - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:359 VisitorsPercentage:1} Bounces:91 Duration:4728}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
 
 ---
 
 [TestGetWebsiteCountries/UTMCampaign - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:110 VisitorsPercentage:1} Bounces:25 Duration:4732}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsiteCountries/UTMMedium - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:36 VisitorsPercentage:1} Bounces:5 Duration:6547}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteCountries/UTMSource - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteCountriesSummary/Base - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:166773 VisitorsPercentage:0.3336}
-&{Country:Japan Visitors:166589 VisitorsPercentage:0.3333}
-&{Country:United States Visitors:166496 VisitorsPercentage:0.3331}
+&{Country:United States Visitors:166892 VisitorsPercentage:0.334}
+&{Country:Japan Visitors:166747 VisitorsPercentage:0.3337}
+&{Country:United Kingdom Visitors:166018 VisitorsPercentage:0.3323}
 
 ---
 
 [TestGetWebsiteCountriesSummary/Browser - 1]
 RECORDS:
-&{Country:Japan Visitors:55424 VisitorsPercentage:0.3335}
-&{Country:United States Visitors:55378 VisitorsPercentage:0.3333}
-&{Country:United Kingdom Visitors:55368 VisitorsPercentage:0.3332}
+&{Country:Japan Visitors:55533 VisitorsPercentage:0.3344}
+&{Country:United States Visitors:55314 VisitorsPercentage:0.333}
+&{Country:United Kingdom Visitors:55243 VisitorsPercentage:0.3326}
 
 ---
 
 [TestGetWebsiteCountriesSummary/Country - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:55368 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:55243 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteCountriesSummary/Device - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:18593 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:18661 VisitorsPercentage:1}
 
 ---
 
@@ -109,71 +109,71 @@ RECORDS:
 
 [TestGetWebsiteCountriesSummary/Language - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:9378 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:9486 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteCountriesSummary/OS - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:3085 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:3116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteCountriesSummary/Pathname - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:1073 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:1090 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteCountriesSummary/Referrer - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:359 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:381 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteCountriesSummary/UTMCampaign - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:110 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteCountriesSummary/UTMMedium - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:36 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:35 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteCountriesSummary/UTMSource - 1]
 RECORDS:
-&{Country:United Kingdom Visitors:16 VisitorsPercentage:1}
+&{Country:United Kingdom Visitors:17 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteLanguages/Base - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:250059 VisitorsPercentage:0.5003} Bounces:62495 Duration:5010}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:249799 VisitorsPercentage:0.4997} Bounces:62759 Duration:4996}
+&{StatsLanguagesSummary:{Language:English Visitors:250816 VisitorsPercentage:0.502} Bounces:62517 Duration:5010}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:248841 VisitorsPercentage:0.498} Bounces:62167 Duration:4996}
 
 ---
 
 [TestGetWebsiteLanguages/Browser - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:83086 VisitorsPercentage:0.5} Bounces:20909 Duration:4992}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:83084 VisitorsPercentage:0.5} Bounces:21057 Duration:4966}
+&{StatsLanguagesSummary:{Language:English Visitors:83279 VisitorsPercentage:0.5014} Bounces:20816 Duration:4992}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986} Bounces:20824 Duration:4966}
 
 ---
 
 [TestGetWebsiteLanguages/Country - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:27787 VisitorsPercentage:0.5019} Bounces:6902 Duration:5006}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:27581 VisitorsPercentage:0.4981} Bounces:6965 Duration:4980}
+&{StatsLanguagesSummary:{Language:English Visitors:27676 VisitorsPercentage:0.501} Bounces:6923 Duration:5006}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:27567 VisitorsPercentage:0.499} Bounces:6921 Duration:4980}
 
 ---
 
 [TestGetWebsiteLanguages/Device - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:9378 VisitorsPercentage:0.5044} Bounces:2339 Duration:5003}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:9215 VisitorsPercentage:0.4956} Bounces:2323 Duration:4992}
+&{StatsLanguagesSummary:{Language:English Visitors:9486 VisitorsPercentage:0.5083} Bounces:2355 Duration:5003}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917} Bounces:2336 Duration:4992}
 
 ---
 
@@ -184,71 +184,71 @@ RECORDS:
 
 [TestGetWebsiteLanguages/Language - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:9378 VisitorsPercentage:1} Bounces:2339 Duration:5003}
+&{StatsLanguagesSummary:{Language:English Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
 
 ---
 
 [TestGetWebsiteLanguages/OS - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:3085 VisitorsPercentage:1} Bounces:786 Duration:4971}
+&{StatsLanguagesSummary:{Language:English Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
 
 ---
 
 [TestGetWebsiteLanguages/Pathname - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:1073 VisitorsPercentage:1} Bounces:260 Duration:5098}
+&{StatsLanguagesSummary:{Language:English Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
 
 ---
 
 [TestGetWebsiteLanguages/Referrer - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:359 VisitorsPercentage:1} Bounces:91 Duration:4728}
+&{StatsLanguagesSummary:{Language:English Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
 
 ---
 
 [TestGetWebsiteLanguages/UTMCampaign - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:110 VisitorsPercentage:1} Bounces:25 Duration:4732}
+&{StatsLanguagesSummary:{Language:English Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsiteLanguages/UTMMedium - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:36 VisitorsPercentage:1} Bounces:5 Duration:6547}
+&{StatsLanguagesSummary:{Language:English Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteLanguages/UTMSource - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsLanguagesSummary:{Language:English Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/Base - 1]
 RECORDS:
-&{Language:English Visitors:250059 VisitorsPercentage:0.5003}
-&{Language:Japanese Visitors:249799 VisitorsPercentage:0.4997}
+&{Language:English Visitors:250816 VisitorsPercentage:0.502}
+&{Language:Japanese Visitors:248841 VisitorsPercentage:0.498}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/Browser - 1]
 RECORDS:
-&{Language:English Visitors:83086 VisitorsPercentage:0.5}
-&{Language:Japanese Visitors:83084 VisitorsPercentage:0.5}
+&{Language:English Visitors:83279 VisitorsPercentage:0.5014}
+&{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/Country - 1]
 RECORDS:
-&{Language:English Visitors:27787 VisitorsPercentage:0.5019}
-&{Language:Japanese Visitors:27581 VisitorsPercentage:0.4981}
+&{Language:English Visitors:27676 VisitorsPercentage:0.501}
+&{Language:Japanese Visitors:27567 VisitorsPercentage:0.499}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/Device - 1]
 RECORDS:
-&{Language:English Visitors:9378 VisitorsPercentage:0.5044}
-&{Language:Japanese Visitors:9215 VisitorsPercentage:0.4956}
+&{Language:English Visitors:9486 VisitorsPercentage:0.5083}
+&{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917}
 
 ---
 
@@ -259,42 +259,42 @@ RECORDS:
 
 [TestGetWebsiteLanguagesSummary/Language - 1]
 RECORDS:
-&{Language:English Visitors:9378 VisitorsPercentage:1}
+&{Language:English Visitors:9486 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/OS - 1]
 RECORDS:
-&{Language:English Visitors:3085 VisitorsPercentage:1}
+&{Language:English Visitors:3116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/Pathname - 1]
 RECORDS:
-&{Language:English Visitors:1073 VisitorsPercentage:1}
+&{Language:English Visitors:1090 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/Referrer - 1]
 RECORDS:
-&{Language:English Visitors:359 VisitorsPercentage:1}
+&{Language:English Visitors:381 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/UTMCampaign - 1]
 RECORDS:
-&{Language:English Visitors:110 VisitorsPercentage:1}
+&{Language:English Visitors:116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/UTMMedium - 1]
 RECORDS:
-&{Language:English Visitors:36 VisitorsPercentage:1}
+&{Language:English Visitors:35 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteLanguagesSummary/UTMSource - 1]
 RECORDS:
-&{Language:English Visitors:16 VisitorsPercentage:1}
+&{Language:English Visitors:17 VisitorsPercentage:1}
 
 ---

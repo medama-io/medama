@@ -1,27 +1,27 @@
 
 [TestGetWebsiteBrowsers/Base - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Safari Visitors:167325 VisitorsPercentage:0.3347} Bounces:41823 Duration:5002}
-&{StatsBrowsersSummary:{Browser:Firefox Visitors:166363 VisitorsPercentage:0.3328} Bounces:41465 Duration:5027}
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:166170 VisitorsPercentage:0.3324} Bounces:41966 Duration:4980}
+&{StatsBrowsersSummary:{Browser:Safari Visitors:166918 VisitorsPercentage:0.3341} Bounces:41597 Duration:5002}
+&{StatsBrowsersSummary:{Browser:Firefox Visitors:166649 VisitorsPercentage:0.3335} Bounces:41447 Duration:5027}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:166090 VisitorsPercentage:0.3324} Bounces:41640 Duration:4980}
 
 ---
 
 [TestGetWebsiteBrowsers/Browser - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:166170 VisitorsPercentage:1} Bounces:41966 Duration:4980}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:166090 VisitorsPercentage:1} Bounces:41640 Duration:4980}
 
 ---
 
 [TestGetWebsiteBrowsers/Country - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:55368 VisitorsPercentage:1} Bounces:13867 Duration:4992}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:55243 VisitorsPercentage:1} Bounces:13844 Duration:4992}
 
 ---
 
 [TestGetWebsiteBrowsers/Device - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:18593 VisitorsPercentage:1} Bounces:4662 Duration:4997}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:18661 VisitorsPercentage:1} Bounces:4691 Duration:4997}
 
 ---
 
@@ -32,69 +32,69 @@ RECORDS:
 
 [TestGetWebsiteBrowsers/Language - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:9378 VisitorsPercentage:1} Bounces:2339 Duration:5003}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
 
 ---
 
 [TestGetWebsiteBrowsers/OS - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:3085 VisitorsPercentage:1} Bounces:786 Duration:4971}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
 
 ---
 
 [TestGetWebsiteBrowsers/Pathname - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:1073 VisitorsPercentage:1} Bounces:260 Duration:5098}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
 
 ---
 
 [TestGetWebsiteBrowsers/Referrer - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:359 VisitorsPercentage:1} Bounces:91 Duration:4728}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
 
 ---
 
 [TestGetWebsiteBrowsers/UTMCampaign - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:110 VisitorsPercentage:1} Bounces:25 Duration:4732}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsiteBrowsers/UTMMedium - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:36 VisitorsPercentage:1} Bounces:5 Duration:6547}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteBrowsers/UTMSource - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/Base - 1]
 RECORDS:
-&{Browser:Safari Visitors:167325 VisitorsPercentage:0.3347}
-&{Browser:Firefox Visitors:166363 VisitorsPercentage:0.3328}
-&{Browser:Chrome Visitors:166170 VisitorsPercentage:0.3324}
+&{Browser:Safari Visitors:166918 VisitorsPercentage:0.3341}
+&{Browser:Firefox Visitors:166649 VisitorsPercentage:0.3335}
+&{Browser:Chrome Visitors:166090 VisitorsPercentage:0.3324}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/Browser - 1]
 RECORDS:
-&{Browser:Chrome Visitors:166170 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:166090 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/Country - 1]
 RECORDS:
-&{Browser:Chrome Visitors:55368 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:55243 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/Device - 1]
 RECORDS:
-&{Browser:Chrome Visitors:18593 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:18661 VisitorsPercentage:1}
 
 ---
 
@@ -105,73 +105,73 @@ RECORDS:
 
 [TestGetWebsiteBrowsersSummary/Language - 1]
 RECORDS:
-&{Browser:Chrome Visitors:9378 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:9486 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/OS - 1]
 RECORDS:
-&{Browser:Chrome Visitors:3085 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:3116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/Pathname - 1]
 RECORDS:
-&{Browser:Chrome Visitors:1073 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:1090 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/Referrer - 1]
 RECORDS:
-&{Browser:Chrome Visitors:359 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:381 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/UTMCampaign - 1]
 RECORDS:
-&{Browser:Chrome Visitors:110 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/UTMMedium - 1]
 RECORDS:
-&{Browser:Chrome Visitors:36 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:35 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteBrowsersSummary/UTMSource - 1]
 RECORDS:
-&{Browser:Chrome Visitors:16 VisitorsPercentage:1}
+&{Browser:Chrome Visitors:17 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteDevices/Base - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:167052 VisitorsPercentage:0.3342} Bounces:41829 Duration:5005}
-&{StatsDevicesSummary:{Device:Tablet Visitors:166644 VisitorsPercentage:0.3334} Bounces:41927 Duration:4995}
-&{StatsDevicesSummary:{Device:Mobile Visitors:166162 VisitorsPercentage:0.3324} Bounces:41498 Duration:5006}
+&{StatsDevicesSummary:{Device:Desktop Visitors:166959 VisitorsPercentage:0.3341} Bounces:41553 Duration:5005}
+&{StatsDevicesSummary:{Device:Tablet Visitors:166722 VisitorsPercentage:0.3337} Bounces:41786 Duration:4995}
+&{StatsDevicesSummary:{Device:Mobile Visitors:165976 VisitorsPercentage:0.3322} Bounces:41345 Duration:5006}
 
 ---
 
 [TestGetWebsiteDevices/Browser - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:55528 VisitorsPercentage:0.3342} Bounces:14051 Duration:4995}
-&{StatsDevicesSummary:{Device:Tablet Visitors:55451 VisitorsPercentage:0.3337} Bounces:14089 Duration:4940}
-&{StatsDevicesSummary:{Device:Mobile Visitors:55191 VisitorsPercentage:0.3321} Bounces:13826 Duration:4999}
+&{StatsDevicesSummary:{Device:Desktop Visitors:55422 VisitorsPercentage:0.3337} Bounces:13790 Duration:4995}
+&{StatsDevicesSummary:{Device:Mobile Visitors:55360 VisitorsPercentage:0.3333} Bounces:13886 Duration:4999}
+&{StatsDevicesSummary:{Device:Tablet Visitors:55308 VisitorsPercentage:0.333} Bounces:13964 Duration:4940}
 
 ---
 
 [TestGetWebsiteDevices/Country - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:18593 VisitorsPercentage:0.3358} Bounces:4662 Duration:4997}
-&{StatsDevicesSummary:{Device:Tablet Visitors:18530 VisitorsPercentage:0.3347} Bounces:4623 Duration:4983}
-&{StatsDevicesSummary:{Device:Mobile Visitors:18245 VisitorsPercentage:0.3295} Bounces:4582 Duration:4994}
+&{StatsDevicesSummary:{Device:Desktop Visitors:18661 VisitorsPercentage:0.3378} Bounces:4691 Duration:4997}
+&{StatsDevicesSummary:{Device:Mobile Visitors:18333 VisitorsPercentage:0.3319} Bounces:4603 Duration:4994}
+&{StatsDevicesSummary:{Device:Tablet Visitors:18249 VisitorsPercentage:0.3303} Bounces:4550 Duration:4983}
 
 ---
 
 [TestGetWebsiteDevices/Device - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:18593 VisitorsPercentage:1} Bounces:4662 Duration:4997}
+&{StatsDevicesSummary:{Device:Desktop Visitors:18661 VisitorsPercentage:1} Bounces:4691 Duration:4997}
 
 ---
 
@@ -182,73 +182,73 @@ RECORDS:
 
 [TestGetWebsiteDevices/Language - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:9378 VisitorsPercentage:1} Bounces:2339 Duration:5003}
+&{StatsDevicesSummary:{Device:Desktop Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
 
 ---
 
 [TestGetWebsiteDevices/OS - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:3085 VisitorsPercentage:1} Bounces:786 Duration:4971}
+&{StatsDevicesSummary:{Device:Desktop Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
 
 ---
 
 [TestGetWebsiteDevices/Pathname - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:1073 VisitorsPercentage:1} Bounces:260 Duration:5098}
+&{StatsDevicesSummary:{Device:Desktop Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
 
 ---
 
 [TestGetWebsiteDevices/Referrer - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:359 VisitorsPercentage:1} Bounces:91 Duration:4728}
+&{StatsDevicesSummary:{Device:Desktop Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
 
 ---
 
 [TestGetWebsiteDevices/UTMCampaign - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:110 VisitorsPercentage:1} Bounces:25 Duration:4732}
+&{StatsDevicesSummary:{Device:Desktop Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsiteDevices/UTMMedium - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:36 VisitorsPercentage:1} Bounces:5 Duration:6547}
+&{StatsDevicesSummary:{Device:Desktop Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteDevices/UTMSource - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsDevicesSummary:{Device:Desktop Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteDevicesSummary/Base - 1]
 RECORDS:
-&{Device:Desktop Visitors:167052 VisitorsPercentage:0.3342}
-&{Device:Tablet Visitors:166644 VisitorsPercentage:0.3334}
-&{Device:Mobile Visitors:166162 VisitorsPercentage:0.3324}
+&{Device:Desktop Visitors:166959 VisitorsPercentage:0.3341}
+&{Device:Tablet Visitors:166722 VisitorsPercentage:0.3337}
+&{Device:Mobile Visitors:165976 VisitorsPercentage:0.3322}
 
 ---
 
 [TestGetWebsiteDevicesSummary/Browser - 1]
 RECORDS:
-&{Device:Desktop Visitors:55528 VisitorsPercentage:0.3342}
-&{Device:Tablet Visitors:55451 VisitorsPercentage:0.3337}
-&{Device:Mobile Visitors:55191 VisitorsPercentage:0.3321}
+&{Device:Desktop Visitors:55422 VisitorsPercentage:0.3337}
+&{Device:Mobile Visitors:55360 VisitorsPercentage:0.3333}
+&{Device:Tablet Visitors:55308 VisitorsPercentage:0.333}
 
 ---
 
 [TestGetWebsiteDevicesSummary/Country - 1]
 RECORDS:
-&{Device:Desktop Visitors:18593 VisitorsPercentage:0.3358}
-&{Device:Tablet Visitors:18530 VisitorsPercentage:0.3347}
-&{Device:Mobile Visitors:18245 VisitorsPercentage:0.3295}
+&{Device:Desktop Visitors:18661 VisitorsPercentage:0.3378}
+&{Device:Mobile Visitors:18333 VisitorsPercentage:0.3319}
+&{Device:Tablet Visitors:18249 VisitorsPercentage:0.3303}
 
 ---
 
 [TestGetWebsiteDevicesSummary/Device - 1]
 RECORDS:
-&{Device:Desktop Visitors:18593 VisitorsPercentage:1}
+&{Device:Desktop Visitors:18661 VisitorsPercentage:1}
 
 ---
 
@@ -259,75 +259,75 @@ RECORDS:
 
 [TestGetWebsiteDevicesSummary/Language - 1]
 RECORDS:
-&{Device:Desktop Visitors:9378 VisitorsPercentage:1}
+&{Device:Desktop Visitors:9486 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteDevicesSummary/OS - 1]
 RECORDS:
-&{Device:Desktop Visitors:3085 VisitorsPercentage:1}
+&{Device:Desktop Visitors:3116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteDevicesSummary/Pathname - 1]
 RECORDS:
-&{Device:Desktop Visitors:1073 VisitorsPercentage:1}
+&{Device:Desktop Visitors:1090 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteDevicesSummary/Referrer - 1]
 RECORDS:
-&{Device:Desktop Visitors:359 VisitorsPercentage:1}
+&{Device:Desktop Visitors:381 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteDevicesSummary/UTMCampaign - 1]
 RECORDS:
-&{Device:Desktop Visitors:110 VisitorsPercentage:1}
+&{Device:Desktop Visitors:116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteDevicesSummary/UTMMedium - 1]
 RECORDS:
-&{Device:Desktop Visitors:36 VisitorsPercentage:1}
+&{Device:Desktop Visitors:35 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteDevicesSummary/UTMSource - 1]
 RECORDS:
-&{Device:Desktop Visitors:16 VisitorsPercentage:1}
+&{Device:Desktop Visitors:17 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteOS/Base - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:167198 VisitorsPercentage:0.3345} Bounces:42038 Duration:5006}
-&{StatsOSSummary:{OS:Windows Visitors:166384 VisitorsPercentage:0.3329} Bounces:41647 Duration:5001}
-&{StatsOSSummary:{OS:Linux Visitors:166276 VisitorsPercentage:0.3326} Bounces:41569 Duration:5002}
+&{StatsOSSummary:{OS:iOS Visitors:166647 VisitorsPercentage:0.3335} Bounces:41649 Duration:5006}
+&{StatsOSSummary:{OS:Windows Visitors:166538 VisitorsPercentage:0.3333} Bounces:41565 Duration:5001}
+&{StatsOSSummary:{OS:Linux Visitors:166472 VisitorsPercentage:0.3332} Bounces:41470 Duration:5002}
 
 ---
 
 [TestGetWebsiteOS/Browser - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:55614 VisitorsPercentage:0.3347} Bounces:14086 Duration:4975}
-&{StatsOSSummary:{OS:Linux Visitors:55441 VisitorsPercentage:0.3336} Bounces:13911 Duration:4997}
-&{StatsOSSummary:{OS:Windows Visitors:55115 VisitorsPercentage:0.3317} Bounces:13969 Duration:4969}
+&{StatsOSSummary:{OS:Linux Visitors:55412 VisitorsPercentage:0.3336} Bounces:13814 Duration:4997}
+&{StatsOSSummary:{OS:Windows Visitors:55394 VisitorsPercentage:0.3335} Bounces:13832 Duration:4969}
+&{StatsOSSummary:{OS:iOS Visitors:55284 VisitorsPercentage:0.3329} Bounces:13994 Duration:4975}
 
 ---
 
 [TestGetWebsiteOS/Country - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:18557 VisitorsPercentage:0.3352} Bounces:4659 Duration:5002}
-&{StatsOSSummary:{OS:Linux Visitors:18456 VisitorsPercentage:0.3333} Bounces:4544 Duration:5046}
-&{StatsOSSummary:{OS:Windows Visitors:18355 VisitorsPercentage:0.3315} Bounces:4664 Duration:4930}
+&{StatsOSSummary:{OS:iOS Visitors:18554 VisitorsPercentage:0.3359} Bounces:4655 Duration:5002}
+&{StatsOSSummary:{OS:Linux Visitors:18365 VisitorsPercentage:0.3324} Bounces:4551 Duration:5046}
+&{StatsOSSummary:{OS:Windows Visitors:18324 VisitorsPercentage:0.3317} Bounces:4638 Duration:4930}
 
 ---
 
 [TestGetWebsiteOS/Device - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:6287 VisitorsPercentage:0.3381} Bounces:1609 Duration:4996}
-&{StatsOSSummary:{OS:Linux Visitors:6155 VisitorsPercentage:0.331} Bounces:1501 Duration:5021}
-&{StatsOSSummary:{OS:Windows Visitors:6151 VisitorsPercentage:0.3308} Bounces:1552 Duration:4978}
+&{StatsOSSummary:{OS:iOS Visitors:6314 VisitorsPercentage:0.3384} Bounces:1608 Duration:4996}
+&{StatsOSSummary:{OS:Linux Visitors:6175 VisitorsPercentage:0.3309} Bounces:1543 Duration:5021}
+&{StatsOSSummary:{OS:Windows Visitors:6172 VisitorsPercentage:0.3307} Bounces:1540 Duration:4978}
 
 ---
 
@@ -338,77 +338,77 @@ RECORDS:
 
 [TestGetWebsiteOS/Language - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:3178 VisitorsPercentage:0.3389} Bounces:820 Duration:5011}
-&{StatsOSSummary:{OS:Linux Visitors:3115 VisitorsPercentage:0.3322} Bounces:733 Duration:5040}
-&{StatsOSSummary:{OS:Windows Visitors:3085 VisitorsPercentage:0.329} Bounces:786 Duration:4971}
+&{StatsOSSummary:{OS:iOS Visitors:3246 VisitorsPercentage:0.3422} Bounces:829 Duration:5011}
+&{StatsOSSummary:{OS:Linux Visitors:3124 VisitorsPercentage:0.3293} Bounces:743 Duration:5040}
+&{StatsOSSummary:{OS:Windows Visitors:3116 VisitorsPercentage:0.3285} Bounces:783 Duration:4971}
 
 ---
 
 [TestGetWebsiteOS/OS - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:3085 VisitorsPercentage:1} Bounces:786 Duration:4971}
+&{StatsOSSummary:{OS:Windows Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
 
 ---
 
 [TestGetWebsiteOS/Pathname - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:1073 VisitorsPercentage:1} Bounces:260 Duration:5098}
+&{StatsOSSummary:{OS:Windows Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
 
 ---
 
 [TestGetWebsiteOS/Referrer - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:359 VisitorsPercentage:1} Bounces:91 Duration:4728}
+&{StatsOSSummary:{OS:Windows Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
 
 ---
 
 [TestGetWebsiteOS/UTMCampaign - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:110 VisitorsPercentage:1} Bounces:25 Duration:4732}
+&{StatsOSSummary:{OS:Windows Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsiteOS/UTMMedium - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:36 VisitorsPercentage:1} Bounces:5 Duration:6547}
+&{StatsOSSummary:{OS:Windows Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteOS/UTMSource - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsOSSummary:{OS:Windows Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteOSSummary/Base - 1]
 RECORDS:
-&{OS:iOS Visitors:167198 VisitorsPercentage:0.3345}
-&{OS:Windows Visitors:166384 VisitorsPercentage:0.3329}
-&{OS:Linux Visitors:166276 VisitorsPercentage:0.3326}
+&{OS:iOS Visitors:166647 VisitorsPercentage:0.3335}
+&{OS:Windows Visitors:166538 VisitorsPercentage:0.3333}
+&{OS:Linux Visitors:166472 VisitorsPercentage:0.3332}
 
 ---
 
 [TestGetWebsiteOSSummary/Browser - 1]
 RECORDS:
-&{OS:iOS Visitors:55614 VisitorsPercentage:0.3347}
-&{OS:Linux Visitors:55441 VisitorsPercentage:0.3336}
-&{OS:Windows Visitors:55115 VisitorsPercentage:0.3317}
+&{OS:Linux Visitors:55412 VisitorsPercentage:0.3336}
+&{OS:Windows Visitors:55394 VisitorsPercentage:0.3335}
+&{OS:iOS Visitors:55284 VisitorsPercentage:0.3329}
 
 ---
 
 [TestGetWebsiteOSSummary/Country - 1]
 RECORDS:
-&{OS:iOS Visitors:18557 VisitorsPercentage:0.3352}
-&{OS:Linux Visitors:18456 VisitorsPercentage:0.3333}
-&{OS:Windows Visitors:18355 VisitorsPercentage:0.3315}
+&{OS:iOS Visitors:18554 VisitorsPercentage:0.3359}
+&{OS:Linux Visitors:18365 VisitorsPercentage:0.3324}
+&{OS:Windows Visitors:18324 VisitorsPercentage:0.3317}
 
 ---
 
 [TestGetWebsiteOSSummary/Device - 1]
 RECORDS:
-&{OS:iOS Visitors:6287 VisitorsPercentage:0.3381}
-&{OS:Linux Visitors:6155 VisitorsPercentage:0.331}
-&{OS:Windows Visitors:6151 VisitorsPercentage:0.3308}
+&{OS:iOS Visitors:6314 VisitorsPercentage:0.3384}
+&{OS:Linux Visitors:6175 VisitorsPercentage:0.3309}
+&{OS:Windows Visitors:6172 VisitorsPercentage:0.3307}
 
 ---
 
@@ -419,44 +419,44 @@ RECORDS:
 
 [TestGetWebsiteOSSummary/Language - 1]
 RECORDS:
-&{OS:iOS Visitors:3178 VisitorsPercentage:0.3389}
-&{OS:Linux Visitors:3115 VisitorsPercentage:0.3322}
-&{OS:Windows Visitors:3085 VisitorsPercentage:0.329}
+&{OS:iOS Visitors:3246 VisitorsPercentage:0.3422}
+&{OS:Linux Visitors:3124 VisitorsPercentage:0.3293}
+&{OS:Windows Visitors:3116 VisitorsPercentage:0.3285}
 
 ---
 
 [TestGetWebsiteOSSummary/OS - 1]
 RECORDS:
-&{OS:Windows Visitors:3085 VisitorsPercentage:1}
+&{OS:Windows Visitors:3116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteOSSummary/Pathname - 1]
 RECORDS:
-&{OS:Windows Visitors:1073 VisitorsPercentage:1}
+&{OS:Windows Visitors:1090 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteOSSummary/Referrer - 1]
 RECORDS:
-&{OS:Windows Visitors:359 VisitorsPercentage:1}
+&{OS:Windows Visitors:381 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteOSSummary/UTMCampaign - 1]
 RECORDS:
-&{OS:Windows Visitors:110 VisitorsPercentage:1}
+&{OS:Windows Visitors:116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteOSSummary/UTMMedium - 1]
 RECORDS:
-&{OS:Windows Visitors:36 VisitorsPercentage:1}
+&{OS:Windows Visitors:35 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteOSSummary/UTMSource - 1]
 RECORDS:
-&{OS:Windows Visitors:16 VisitorsPercentage:1}
+&{OS:Windows Visitors:17 VisitorsPercentage:1}
 
 ---
