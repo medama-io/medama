@@ -1,3 +1,19 @@
+const DATASETS = [
+	'pages',
+	'time',
+	'referrers',
+	'sources',
+	'mediums',
+	'campaigns',
+	'browsers',
+	'os',
+	'devices',
+	'countries',
+	'languages',
+] as const;
+
+type Dataset = (typeof DATASETS)[number];
+
 interface DataRow {
 	// Common
 	visitors?: number;
@@ -34,4 +50,21 @@ interface DataRow {
 	language?: string;
 }
 
-export type { DataRow };
+interface StatsValue {
+	label: string;
+	count?: number;
+	percentage?: number;
+}
+
+interface StatsTab {
+	label: string;
+	items: StatsValue[];
+}
+
+interface StatsGroups {
+	label: string;
+	data: StatsTab[];
+}
+
+export { DATASETS };
+export type { DataRow, Dataset, StatsTab, StatsValue, StatsGroups };

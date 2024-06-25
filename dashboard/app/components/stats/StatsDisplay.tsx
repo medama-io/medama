@@ -3,20 +3,15 @@ import { Link, useSearchParams } from '@remix-run/react';
 
 import classes from './StatsDisplay.module.css';
 import { StatsItem } from './StatsItem';
-
-interface StatsValue {
-	label: string;
-	count?: number;
-	percentage?: number;
-}
-
-export interface StatsTab {
-	label: string;
-	items: StatsValue[];
-}
+import type { StatsTab } from './types';
 
 interface StatsDisplayProps {
 	data: StatsTab[];
+}
+
+interface LoadMoreButtonProps {
+	tab: StatsTab;
+	searchParams: URLSearchParams;
 }
 
 export const StatsDisplay = ({ data }: StatsDisplayProps) => {
@@ -52,11 +47,6 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 		</Tabs>
 	);
 };
-
-interface LoadMoreButtonProps {
-	tab: StatsTab;
-	searchParams: URLSearchParams;
-}
 
 const LoadMoreButton = ({ tab, searchParams }: LoadMoreButtonProps) => (
 	<div className={classes.more}>

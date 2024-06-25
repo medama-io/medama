@@ -38,12 +38,10 @@ const StatsItem = ({
 	);
 
 	const handleFilter = () => {
-		if (tab !== 'Time') {
-			const params = new URLSearchParams(searchParams);
-			const filter = FILTER_MAP[tab] ?? 'path';
-			params.append(`${filter}[eq]`, label);
-			setSearchParams(params, { preventScrollReset: true });
-		}
+		const params = new URLSearchParams(searchParams);
+		const filter = FILTER_MAP[tab] ?? 'path';
+		params.append(`${filter}[eq]`, label);
+		setSearchParams(params, { preventScrollReset: true });
 	};
 
 	return (
@@ -51,7 +49,6 @@ const StatsItem = ({
 			className={classes['stat-item']}
 			onClick={handleFilter}
 			aria-label={`Filter by ${label}`}
-			disabled={tab === 'Time'}
 		>
 			<Group justify="space-between" pb={6}>
 				<Text fz={14} truncate>

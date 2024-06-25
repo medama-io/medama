@@ -48,7 +48,7 @@ const ACCESSOR_MAP: Record<QueryType, keyof DataRow> = {
 
 const FILTER_MAP: Record<string, string | undefined> = {
 	pages: 'path',
-	time: undefined,
+	time: 'path',
 	referrers: 'referrer',
 	sources: 'utm_source',
 	mediums: 'utm_medium',
@@ -161,14 +161,15 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const handleFilter: DataRowClick = (row) => {
-		if (query !== 'time') {
-			const { record } = row;
-			const params = new URLSearchParams(searchParams);
-			const filter = FILTER_MAP[query] ?? 'path';
-			const value = record[ACCESSOR_MAP[query]] || 'Direct/None';
-			params.append(`${filter}[eq]`, String(value));
-			setSearchParams(params, { preventScrollReset: true });
-		}
+		const { record } = row;
+		const params = new URLSearchParams(searchParams);
+		const filter = FILTER_MAP[query] ?? 'path';
+		const value =
+			query === 'time'
+				? record.path
+				: record[ACCESSOR_MAP[query]] || 'Direct/None';
+		params.append(`${filter}[eq]`, String(value));
+		setSearchParams(params, { preventScrollReset: true });
 	};
 
 	// Reset page when query changes.
@@ -189,6 +190,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				noRecordsText="No records found..."
 				highlightOnHover
 				withRowBorders={false}
+				idAccessor={(record) => String(record[ACCESSOR_MAP[query]] ?? 'path')}
 				records={records}
 				columns={columns}
 				sortStatus={sortStatus}

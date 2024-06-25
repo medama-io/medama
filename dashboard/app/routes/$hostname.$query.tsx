@@ -35,12 +35,7 @@ export default function Index() {
 	// We can safely assume that the dataset items are present as the loader function
 	// has already validated the query parameter
 	const query = params.query as keyof typeof data;
-	let stats = data[query] as DataRow[];
-
-	// Add id to each stat item which is the index of the item in the array
-	stats = Array.isArray(stats)
-		? stats.map((stat, index) => ({ ...stat, id: index }))
-		: [stats];
+	const stats = data[query] as DataRow[];
 
 	return <StatsTable query={query} data={stats} />;
 }

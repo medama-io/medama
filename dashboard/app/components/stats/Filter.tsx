@@ -27,7 +27,7 @@ interface FilterChoices {
 
 type FilterOptions = Record<string, FilterChoices>;
 
-const filterTypes: FilterType = {
+const FILTER_TYPES: FilterType = {
 	eq: { label: 'equals', value: 'eq' },
 	neq: { label: 'does not equal', value: 'neq' },
 	contains: { label: 'contains', value: 'contains' },
@@ -43,7 +43,7 @@ const filterTypes: FilterType = {
 	// not_in: { label: 'is not in', value: 'not_in' },
 };
 
-const filterOptions: FilterOptions = {
+const FILTER_OPTIONS: FilterOptions = {
 	path: {
 		label: 'Path',
 		placeholder: 'e.g. /blog',
@@ -158,7 +158,7 @@ export const Filters = () => {
 	const [type, setType] = useState('eq');
 	const [value, setValue] = useState('');
 
-	const chosenFilter = useMemo(() => filterOptions[filter], [filter]);
+	const chosenFilter = useMemo(() => FILTER_OPTIONS[filter], [filter]);
 
 	// If the filter changes, reset the type
 	// We only reset the value if there is a change in filter type
@@ -176,8 +176,8 @@ export const Filters = () => {
 		for (const [key, value] of searchParams.entries()) {
 			const [filter, type] = key.split('['); // e.g. path[eq]
 			// If the filter is not in the filter options, don't render it
-			if (filter && filterOptions[filter]) {
-				const { label = 'N/A' } = filterOptions[filter] ?? {};
+			if (filter && FILTER_OPTIONS[filter]) {
+				const { label = 'N/A' } = FILTER_OPTIONS[filter] ?? {};
 				arr.push([label, type?.replace(']', '') ?? 'Unknown', value]);
 			}
 		}
@@ -248,12 +248,12 @@ export const Filters = () => {
 					</Text>
 					<Group grow>
 						<FilterDropdown
-							choices={filterOptions}
+							choices={FILTER_OPTIONS}
 							value={filter}
 							setValue={setFilter}
 						/>
 						<FilterDropdown
-							choices={filterTypes}
+							choices={FILTER_TYPES}
 							value={type}
 							setValue={setType}
 						/>
@@ -302,7 +302,7 @@ export const Filters = () => {
 					>
 						<Text fz={14}>{label}&nbsp;</Text>
 						<Text fz={14} fw={700}>
-							{filterTypes[type]?.label ?? 'Unknown'}&nbsp;
+							{FILTER_TYPES[type]?.label ?? 'Unknown'}&nbsp;
 						</Text>
 						<Text fz={14}>{value}</Text>
 						<CloseButton onClick={removeFilter(label, type, value)} />
