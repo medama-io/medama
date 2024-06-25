@@ -49,7 +49,6 @@ const StatsItem = ({
 			className={classes['stat-item']}
 			onClick={handleFilter}
 			aria-label={`Filter by ${label}`}
-			disabled={tab === 'Time'}
 		>
 			<Group justify="space-between" pb={6}>
 				<Text fz={14} truncate>

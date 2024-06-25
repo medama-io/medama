@@ -9,6 +9,11 @@ interface StatsDisplayProps {
 	data: StatsTab[];
 }
 
+interface LoadMoreButtonProps {
+	tab: StatsTab;
+	searchParams: URLSearchParams;
+}
+
 export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 	const [searchParams] = useSearchParams();
 
@@ -42,11 +47,6 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 		</Tabs>
 	);
 };
-
-interface LoadMoreButtonProps {
-	tab: StatsTab;
-	searchParams: URLSearchParams;
-}
 
 const LoadMoreButton = ({ tab, searchParams }: LoadMoreButtonProps) => (
 	<div className={classes.more}>

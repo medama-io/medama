@@ -164,7 +164,10 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 		const { record } = row;
 		const params = new URLSearchParams(searchParams);
 		const filter = FILTER_MAP[query] ?? 'path';
-		const value = record[ACCESSOR_MAP[query]] || 'Direct/None';
+		const value =
+			query === 'time'
+				? record.path
+				: record[ACCESSOR_MAP[query]] || 'Direct/None';
 		params.append(`${filter}[eq]`, String(value));
 		setSearchParams(params, { preventScrollReset: true });
 	};
@@ -187,6 +190,7 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				noRecordsText="No records found..."
 				highlightOnHover
 				withRowBorders={false}
+				idAccessor={(record) => String(record[ACCESSOR_MAP[query]] ?? 'path')}
 				records={records}
 				columns={columns}
 				sortStatus={sortStatus}
