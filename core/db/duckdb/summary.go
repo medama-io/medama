@@ -89,7 +89,9 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 			SELECT
 				time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval,
 				COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-				COUNT(*) AS pageviews
+				COUNT(*) AS pageviews,
+				COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
+				CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -99,7 +101,9 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 		SELECT
 			CAST(intervals.interval AS VARCHAR) AS interval,
 			COALESCE(stats.visitors, 0) AS visitors,
-			COALESCE(stats.pageviews, 0) AS pageviews
+			COALESCE(stats.pageviews, 0) AS pageviews,
+			COALESCE(stats.bounces, 0) AS bounces,
+			COALESCE(stats.duration, 0) AS duration
 		FROM intervals LEFT JOIN stats USING (interval)
 		ORDER BY interval ASC`)
 

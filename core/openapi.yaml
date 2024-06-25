@@ -1517,9 +1517,12 @@ components:
                 type: integer
               pageviews:
                 type: integer
+              bounces:
+                type: integer
+              duration:
+                type: integer
             required:
               - date
-              - visitors
       required:
         - current
     StatsPages:

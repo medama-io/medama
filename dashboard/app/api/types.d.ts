@@ -309,8 +309,10 @@ export interface components {
       };
       interval?: {
           date: string;
-          visitors: number;
+          visitors?: number;
           pageviews?: number;
+          bounces?: number;
+          duration?: number;
         }[];
     };
     /** StatsPages */

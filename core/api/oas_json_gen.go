@@ -3676,8 +3676,10 @@ func (s *StatsSummaryIntervalItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Date)
 	}
 	{
-		e.FieldStart("visitors")
-		e.Int(s.Visitors)
+		if s.Visitors.Set {
+			e.FieldStart("visitors")
+			s.Visitors.Encode(e)
+		}
 	}
 	{
 		if s.Pageviews.Set {
@@ -3685,12 +3687,26 @@ func (s *StatsSummaryIntervalItem) encodeFields(e *jx.Encoder) {
 			s.Pageviews.Encode(e)
 		}
 	}
+	{
+		if s.Bounces.Set {
+			e.FieldStart("bounces")
+			s.Bounces.Encode(e)
+		}
+	}
+	{
+		if s.Duration.Set {
+			e.FieldStart("duration")
+			s.Duration.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfStatsSummaryIntervalItem = [3]string{
+var jsonFieldsNameOfStatsSummaryIntervalItem = [5]string{
 	0: "date",
 	1: "visitors",
 	2: "pageviews",
+	3: "bounces",
+	4: "duration",
 }
 
 // Decode decodes StatsSummaryIntervalItem from json.
@@ -3715,11 +3731,9 @@ func (s *StatsSummaryIntervalItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"date\"")
 			}
 		case "visitors":
-			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				v, err := d.Int()
-				s.Visitors = int(v)
-				if err != nil {
+				s.Visitors.Reset()
+				if err := s.Visitors.Decode(d); err != nil {
 					return err
 				}
 				return nil
@@ -3736,6 +3750,26 @@ func (s *StatsSummaryIntervalItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pageviews\"")
 			}
+		case "bounces":
+			if err := func() error {
+				s.Bounces.Reset()
+				if err := s.Bounces.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"bounces\"")
+			}
+		case "duration":
+			if err := func() error {
+				s.Duration.Reset()
+				if err := s.Duration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"duration\"")
+			}
 		default:
 			return d.Skip()
 		}
@@ -3746,7 +3780,7 @@ func (s *StatsSummaryIntervalItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00000001,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

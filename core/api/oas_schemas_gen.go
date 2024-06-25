@@ -1840,8 +1840,10 @@ func (s *StatsSummaryCurrent) SetDuration(val int) {
 
 type StatsSummaryIntervalItem struct {
 	Date      string `json:"date"`
-	Visitors  int    `json:"visitors"`
+	Visitors  OptInt `json:"visitors"`
 	Pageviews OptInt `json:"pageviews"`
+	Bounces   OptInt `json:"bounces"`
+	Duration  OptInt `json:"duration"`
 }
 
 // GetDate returns the value of Date.
@@ -1850,7 +1852,7 @@ func (s *StatsSummaryIntervalItem) GetDate() string {
 }
 
 // GetVisitors returns the value of Visitors.
-func (s *StatsSummaryIntervalItem) GetVisitors() int {
+func (s *StatsSummaryIntervalItem) GetVisitors() OptInt {
 	return s.Visitors
 }
 
@@ -1859,19 +1861,39 @@ func (s *StatsSummaryIntervalItem) GetPageviews() OptInt {
 	return s.Pageviews
 }
 
+// GetBounces returns the value of Bounces.
+func (s *StatsSummaryIntervalItem) GetBounces() OptInt {
+	return s.Bounces
+}
+
+// GetDuration returns the value of Duration.
+func (s *StatsSummaryIntervalItem) GetDuration() OptInt {
+	return s.Duration
+}
+
 // SetDate sets the value of Date.
 func (s *StatsSummaryIntervalItem) SetDate(val string) {
 	s.Date = val
 }
 
 // SetVisitors sets the value of Visitors.
-func (s *StatsSummaryIntervalItem) SetVisitors(val int) {
+func (s *StatsSummaryIntervalItem) SetVisitors(val OptInt) {
 	s.Visitors = val
 }
 
 // SetPageviews sets the value of Pageviews.
 func (s *StatsSummaryIntervalItem) SetPageviews(val OptInt) {
 	s.Pageviews = val
+}
+
+// SetBounces sets the value of Bounces.
+func (s *StatsSummaryIntervalItem) SetBounces(val OptInt) {
+	s.Bounces = val
+}
+
+// SetDuration sets the value of Duration.
+func (s *StatsSummaryIntervalItem) SetDuration(val OptInt) {
+	s.Duration = val
 }
 
 type StatsSummaryPrevious struct {

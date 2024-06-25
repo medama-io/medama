@@ -92,11 +92,15 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 
 		resp.Interval = []api.StatsSummaryIntervalItem{}
 		for _, i := range interval {
-			resp.Interval = append(resp.Interval, api.StatsSummaryIntervalItem{
+			item := api.StatsSummaryIntervalItem{
 				Date:      i.Interval,
-				Visitors:  i.Visitors,
+				Visitors:  api.NewOptInt(i.Visitors),
 				Pageviews: api.NewOptInt(i.Pageviews),
-			})
+				Bounces:   api.NewOptInt(i.Bounces),
+				Duration:  api.NewOptInt(i.Duration),
+			}
+
+			resp.Interval = append(resp.Interval, item)
 		}
 	}
 
