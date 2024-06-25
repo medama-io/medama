@@ -52,3 +52,10 @@ main {
 	flex-direction: column;
 	justify-content: flex-start;
 }
+
+/* StatsTable.tsx */
+.mantine-datatable-empty-state-icon {
+	background: none;
+	padding: 0;
+	margin-bottom: 0;
+}

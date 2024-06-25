@@ -37,10 +37,6 @@ export default function Index() {
 	const query = params.query as keyof typeof data;
 	let stats = data[query] as DataRow[];
 
-	if (!stats || typeof stats === 'number') {
-		return <div>No data found.</div>;
-	}
-
 	// Add id to each stat item which is the index of the item in the array
 	stats = Array.isArray(stats)
 		? stats.map((stat, index) => ({ ...stat, id: index }))

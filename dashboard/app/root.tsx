@@ -16,6 +16,7 @@ import '@mantine/core/styles/InlineInput.css';
 import '@mantine/core/styles/SimpleGrid.css';
 import '@mantine/core/styles/Container.css';
 import '@mantine/core/styles/Stack.css';
+import '@mantine/core/styles/Center.css';
 // Buttons
 import '@mantine/core/styles/ActionIcon.css';
 import '@mantine/core/styles/CloseButton.css';

@@ -13,6 +13,7 @@ import { IconChevronRight } from '@/components/icons/chevronright';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import type { DataRow } from './types';
+
 import classes from './StatsTable.module.css';
 
 type QueryType = keyof typeof LABEL_MAP;
@@ -184,7 +185,8 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				</Text>
 			</div>
 			<DataTable
-				minHeight={300}
+				minHeight={330}
+				noRecordsText="No records found..."
 				highlightOnHover
 				withRowBorders={false}
 				records={records}
