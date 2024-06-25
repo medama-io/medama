@@ -13,8 +13,6 @@ interface StatsItemProps {
 }
 
 const FILTER_MAP: Record<string, string> = {
-	Pages: 'path',
-	Time: 'path',
 	Referrers: 'referrer',
 	Sources: 'utm_source',
 	Mediums: 'utm_medium',

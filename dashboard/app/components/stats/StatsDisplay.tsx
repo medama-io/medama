@@ -3,17 +3,7 @@ import { Link, useSearchParams } from '@remix-run/react';
 
 import classes from './StatsDisplay.module.css';
 import { StatsItem } from './StatsItem';
-
-interface StatsValue {
-	label: string;
-	count?: number;
-	percentage?: number;
-}
-
-export interface StatsTab {
-	label: string;
-	items: StatsValue[];
-}
+import type { StatsTab } from './types';
 
 interface StatsDisplayProps {
 	data: StatsTab[];
