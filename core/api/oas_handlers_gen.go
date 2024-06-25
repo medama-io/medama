@@ -2429,6 +2429,10 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Interval,
 				{
+					Name: "stat",
+					In:   "query",
+				}: params.Stat,
+				{
 					Name: "_me_sess",
 					In:   "cookie",
 				}: params.MeSess,

@@ -54,7 +54,7 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 }
 
 // GetWebsiteIntervals returns the stats for the given website by intervals.
-func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error) {
+func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, interval api.GetWebsiteIDSummaryInterval, stat api.GetWebsiteIDSummaryStat) ([]*model.StatsIntervals, error) {
 	var resp []*model.StatsIntervals
 	var query strings.Builder
 
@@ -72,6 +72,25 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 		intervalQuery = "1 MONTH"
 	}
 
+	// The stat is determined by the type of stat that is requested.
+	var selectStat, selectIntervals string
+	switch stat {
+	case api.GetWebsiteIDSummaryStatVisitors:
+		selectStat = "COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors"
+		selectIntervals = "COALESCE(stats.visitors, 0) AS visitors"
+	case api.GetWebsiteIDSummaryStatPageviews:
+		selectStat = "COUNT(*) AS pageviews"
+		selectIntervals = "COALESCE(stats.pageviews, 0) AS pageviews"
+	case api.GetWebsiteIDSummaryStatBounces:
+		selectStat = "COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces"
+		selectIntervals = "COALESCE(stats.bounces, 0) AS bounces"
+	case api.GetWebsiteIDSummaryStatDuration:
+		selectStat = "CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration"
+		selectIntervals = "COALESCE(stats.duration, 0) AS duration"
+	default:
+		return nil, model.ErrInvalidParameter
+	}
+
 	// Intervals are determined by the number of pageviews that match the hostname
 	// and are grouped by the interval.
 	//
@@ -87,11 +106,9 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 		),
 		stats AS MATERIALIZED (
 			SELECT
-				time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval,
-				COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-				COUNT(*) AS pageviews,
-				COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-				CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
+				time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval,`)
+	query.WriteString(selectStat)
+	query.WriteString(`--sql
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -99,11 +116,9 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 			GROUP BY interval
 		)
 		SELECT
-			CAST(intervals.interval AS VARCHAR) AS interval,
-			COALESCE(stats.visitors, 0) AS visitors,
-			COALESCE(stats.pageviews, 0) AS pageviews,
-			COALESCE(stats.bounces, 0) AS bounces,
-			COALESCE(stats.duration, 0) AS duration
+			CAST(intervals.interval AS VARCHAR) AS interval,`)
+	query.WriteString(selectIntervals)
+	query.WriteString(`--sql
 		FROM intervals LEFT JOIN stats USING (interval)
 		ORDER BY interval ASC`)
 

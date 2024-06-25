@@ -123,6 +123,21 @@ func (s GetWebsiteIDSummaryInterval) Validate() error {
 	}
 }
 
+func (s GetWebsiteIDSummaryStat) Validate() error {
+	switch s {
+	case "visitors":
+		return nil
+	case "pageviews":
+		return nil
+	case "duration":
+		return nil
+	case "bounces":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s GetWebsitesOKApplicationJSON) Validate() error {
 	alias := ([]WebsiteGet)(s)
 	if alias == nil {

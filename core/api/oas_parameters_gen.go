@@ -8978,6 +8978,10 @@ type GetWebsiteIDSummaryParams struct {
 	// The interval to group the data by. This can be set to minute, hour, day, week or month. This will
 	// return an interval property if set.
 	Interval OptGetWebsiteIDSummaryInterval
+	// The stat to group the data by. This can be set to visitors, page views, time spent or bounce rate.
+	// This will return a corresponding stat property if set (interval.visitors, interval.pageviews,
+	// interval.duration, interval.bounces). If not set, it will return visitors by default.
+	Stat OptGetWebsiteIDSummaryStat
 	// Session token for authentication.
 	MeSess string
 	// Hostname for the website.
@@ -9025,6 +9029,15 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Interval = v.(OptGetWebsiteIDSummaryInterval)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "stat",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Stat = v.(OptGetWebsiteIDSummaryStat)
 		}
 	}
 	{
@@ -9253,6 +9266,67 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "interval",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Set default value for query: stat.
+	{
+		val := GetWebsiteIDSummaryStat("visitors")
+		params.Stat.SetTo(val)
+	}
+	// Decode query: stat.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "stat",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotStatVal GetWebsiteIDSummaryStat
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotStatVal = GetWebsiteIDSummaryStat(c)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Stat.SetTo(paramsDotStatVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Stat.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "stat",
 			In:   "query",
 			Err:  err,
 		}

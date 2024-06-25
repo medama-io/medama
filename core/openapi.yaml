@@ -460,6 +460,17 @@ paths:
               - day
               - week
               - month
+        - in: query
+          name: stat
+          description: The stat to group the data by. This can be set to visitors, page views, time spent or bounce rate. This will return a corresponding stat property if set (interval.visitors, interval.pageviews, interval.duration, interval.bounces). If not set, it will return visitors by default.
+          schema:
+            type: string
+            enum:
+              - visitors
+              - pageviews
+              - duration
+              - bounces
+            default: visitors
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/PeriodStart"

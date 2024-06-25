@@ -632,6 +632,61 @@ func (s *GetWebsiteIDSummaryInterval) UnmarshalText(data []byte) error {
 	}
 }
 
+type GetWebsiteIDSummaryStat string
+
+const (
+	GetWebsiteIDSummaryStatVisitors  GetWebsiteIDSummaryStat = "visitors"
+	GetWebsiteIDSummaryStatPageviews GetWebsiteIDSummaryStat = "pageviews"
+	GetWebsiteIDSummaryStatDuration  GetWebsiteIDSummaryStat = "duration"
+	GetWebsiteIDSummaryStatBounces   GetWebsiteIDSummaryStat = "bounces"
+)
+
+// AllValues returns all GetWebsiteIDSummaryStat values.
+func (GetWebsiteIDSummaryStat) AllValues() []GetWebsiteIDSummaryStat {
+	return []GetWebsiteIDSummaryStat{
+		GetWebsiteIDSummaryStatVisitors,
+		GetWebsiteIDSummaryStatPageviews,
+		GetWebsiteIDSummaryStatDuration,
+		GetWebsiteIDSummaryStatBounces,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetWebsiteIDSummaryStat) MarshalText() ([]byte, error) {
+	switch s {
+	case GetWebsiteIDSummaryStatVisitors:
+		return []byte(s), nil
+	case GetWebsiteIDSummaryStatPageviews:
+		return []byte(s), nil
+	case GetWebsiteIDSummaryStatDuration:
+		return []byte(s), nil
+	case GetWebsiteIDSummaryStatBounces:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetWebsiteIDSummaryStat) UnmarshalText(data []byte) error {
+	switch GetWebsiteIDSummaryStat(data) {
+	case GetWebsiteIDSummaryStatVisitors:
+		*s = GetWebsiteIDSummaryStatVisitors
+		return nil
+	case GetWebsiteIDSummaryStatPageviews:
+		*s = GetWebsiteIDSummaryStatPageviews
+		return nil
+	case GetWebsiteIDSummaryStatDuration:
+		*s = GetWebsiteIDSummaryStatDuration
+		return nil
+	case GetWebsiteIDSummaryStatBounces:
+		*s = GetWebsiteIDSummaryStatBounces
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 type GetWebsitesOKApplicationJSON []WebsiteGet
 
 func (*GetWebsitesOKApplicationJSON) getWebsitesRes() {}
@@ -984,6 +1039,52 @@ func (o OptGetWebsiteIDSummaryInterval) Get() (v GetWebsiteIDSummaryInterval, ok
 
 // Or returns value if set, or given parameter if does not.
 func (o OptGetWebsiteIDSummaryInterval) Or(d GetWebsiteIDSummaryInterval) GetWebsiteIDSummaryInterval {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptGetWebsiteIDSummaryStat returns new OptGetWebsiteIDSummaryStat with value set to v.
+func NewOptGetWebsiteIDSummaryStat(v GetWebsiteIDSummaryStat) OptGetWebsiteIDSummaryStat {
+	return OptGetWebsiteIDSummaryStat{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptGetWebsiteIDSummaryStat is optional GetWebsiteIDSummaryStat.
+type OptGetWebsiteIDSummaryStat struct {
+	Value GetWebsiteIDSummaryStat
+	Set   bool
+}
+
+// IsSet returns true if OptGetWebsiteIDSummaryStat was set.
+func (o OptGetWebsiteIDSummaryStat) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptGetWebsiteIDSummaryStat) Reset() {
+	var v GetWebsiteIDSummaryStat
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptGetWebsiteIDSummaryStat) SetTo(v GetWebsiteIDSummaryStat) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptGetWebsiteIDSummaryStat) Get() (v GetWebsiteIDSummaryStat, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptGetWebsiteIDSummaryStat) Or(d GetWebsiteIDSummaryStat) GetWebsiteIDSummaryStat {
 	if v, ok := o.Get(); ok {
 		return v
 	}

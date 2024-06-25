@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"errors"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
@@ -84,20 +85,33 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 
 	// Return bucketed interval values if requested.
 	if params.Interval.Value != "" {
-		interval, err := h.analyticsDB.GetWebsiteIntervals(ctx, filters, params.Interval.Value)
+		interval, err := h.analyticsDB.GetWebsiteIntervals(ctx, filters, params.Interval.Value, params.Stat.Value)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to get website intervals")
+			if errors.Is(err, model.ErrInvalidParameter) {
+				return ErrBadRequest(err), nil
+			}
+
 			return ErrInternalServerError(err), nil
 		}
 
 		resp.Interval = []api.StatsSummaryIntervalItem{}
 		for _, i := range interval {
 			item := api.StatsSummaryIntervalItem{
-				Date:      i.Interval,
-				Visitors:  api.NewOptInt(i.Visitors),
-				Pageviews: api.NewOptInt(i.Pageviews),
-				Bounces:   api.NewOptInt(i.Bounces),
-				Duration:  api.NewOptInt(i.Duration),
+				Date: i.Interval,
+			}
+
+			switch params.Stat.Value {
+			case api.GetWebsiteIDSummaryStatVisitors:
+				item.Visitors = api.NewOptInt(i.Visitors)
+			case api.GetWebsiteIDSummaryStatPageviews:
+				item.Pageviews = api.NewOptInt(i.Pageviews)
+			case api.GetWebsiteIDSummaryStatBounces:
+				item.Bounces = api.NewOptInt(i.Bounces)
+			case api.GetWebsiteIDSummaryStatDuration:
+				item.Duration = api.NewOptInt(i.Duration)
+			default:
+				return ErrBadRequest(model.ErrInvalidParameter), nil
 			}
 
 			resp.Interval = append(resp.Interval, item)
