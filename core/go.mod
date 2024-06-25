@@ -11,7 +11,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/marcboeker/go-duckdb v1.7.0
 	github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7
-	github.com/medama-io/go-useragent v0.0.0-20240624132623-7ed18fe5ae39
+	github.com/medama-io/go-useragent v0.0.0-20240624142159-f7c5b6f02365
 	github.com/ncruces/go-sqlite3 v0.16.3
 	github.com/ogen-go/ogen v1.2.2
 	github.com/rs/cors v1.11.0

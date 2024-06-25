@@ -67,8 +67,8 @@ github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o
 github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
 github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7 h1:mydNOo0Zm10bC/RX4h9iwe18hGS0KB5cTqo/y/WpbLQ=
 github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7/go.mod h1:Wq7lg5D0ZdQ3bHnzOTKsb1YGlxm/l82OVA4aIbAA5w4=
-github.com/medama-io/go-useragent v0.0.0-20240624132623-7ed18fe5ae39 h1:ddSLRZ8zy42yU2Wf2OI4tas4wb/AMwI+kGHaIa6z4aA=
-github.com/medama-io/go-useragent v0.0.0-20240624132623-7ed18fe5ae39/go.mod h1:H9GYWth4IN8vAFZh5LeARza7VwM4jK9uk7Tb9huVzLw=
+github.com/medama-io/go-useragent v0.0.0-20240624142159-f7c5b6f02365 h1:Vu7MURVN0i+FUOajZsb7Ou8d45oHbSvZbSp5yG9jC6o=
+github.com/medama-io/go-useragent v0.0.0-20240624142159-f7c5b6f02365/go.mod h1:H9GYWth4IN8vAFZh5LeARza7VwM4jK9uk7Tb9huVzLw=
 github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/ncruces/go-sqlite3 v0.16.3 h1:Ky0denOdmAGOoCE6lQlw6GCJNMD8gTikNWe8rpu+Gjc=
