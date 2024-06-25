@@ -3,51 +3,18 @@ import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
 	type DataTableColumn,
+	type DataTableRowClickHandler,
 	type DataTableSortStatus,
 } from 'mantine-datatable';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IconChevronLeft } from '@/components/icons/chevronleft';
 import { IconChevronRight } from '@/components/icons/chevronright';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
-import classes from './StatsTable.module.css';
+import type { DataRow } from './types';
 
-interface DataRow {
-	// Common
-	visitors?: number;
-	visitors_percentage?: number;
-	// Mixed
-	path?: string;
-	bounces?: number;
-	bounce_rate?: number;
-	duration?: number;
-	// Pages
-	pageviews?: number;
-	pageviews_percentage?: number;
-	// Duration
-	duration_upper_quartile?: number;
-	duration_lower_quartile?: number;
-	duration_percentage?: number;
-	// Referrers
-	referrer?: string;
-	// Sources
-	source?: string;
-	// Mediums
-	medium?: string;
-	// Campaigns
-	campaign?: string;
-	// Browsers
-	browser?: string;
-	// Operating Systems
-	os?: string;
-	// Devices
-	device?: string;
-	// Countries
-	country?: string;
-	// Languages
-	language?: string;
-}
+import classes from './StatsTable.module.css';
 
 type QueryType = keyof typeof LABEL_MAP;
 
@@ -63,6 +30,34 @@ const LABEL_MAP = {
 	devices: 'Devices',
 	countries: 'Countries',
 	languages: 'Languages',
+} as const;
+
+const ACCESSOR_MAP: Record<QueryType, keyof DataRow> = {
+	pages: 'path',
+	time: 'duration',
+	referrers: 'referrer',
+	sources: 'source',
+	mediums: 'medium',
+	campaigns: 'campaign',
+	browsers: 'browser',
+	os: 'os',
+	devices: 'device',
+	countries: 'country',
+	languages: 'language',
+} as const;
+
+const FILTER_MAP: Record<string, string | undefined> = {
+	pages: 'path',
+	time: undefined,
+	referrers: 'referrer',
+	sources: 'utm_source',
+	mediums: 'utm_medium',
+	campaigns: 'utm_campaign',
+	browsers: 'browser',
+	os: 'os',
+	devices: 'device',
+	countries: 'country',
+	languages: 'language',
 } as const;
 
 const PAGE_SIZES = [10, 25, 50, 100] as const;
@@ -121,6 +116,8 @@ interface QueryTableProps {
 	data: DataRow[];
 }
 
+type DataRowClick = DataTableRowClickHandler<DataRow>;
+
 const QueryTable = ({ query, data }: QueryTableProps) => {
 	// Pagination
 	const [pageSize, setPageSize] = useState<(typeof PAGE_SIZES)[number]>(10);
@@ -161,6 +158,25 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 		[],
 	);
 
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const handleFilter: DataRowClick = (row) => {
+		if (query !== 'time') {
+			const { record } = row;
+			const params = new URLSearchParams(searchParams);
+			const filter = FILTER_MAP[query] ?? 'path';
+			const value = record[ACCESSOR_MAP[query]] || 'Direct/None';
+			params.append(`${filter}[eq]`, String(value));
+			setSearchParams(params, { preventScrollReset: true });
+		}
+	};
+
+	// Reset page when query changes.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Valid pattern.
+	useEffect(() => {
+		setPage(1);
+	}, [query]);
+
 	return (
 		<div className={classes['table-wrapper']}>
 			<div className={classes['table-header']}>
@@ -169,13 +185,15 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 				</Text>
 			</div>
 			<DataTable
-				minHeight={300}
+				minHeight={330}
+				noRecordsText="No records found..."
 				highlightOnHover
 				withRowBorders={false}
 				records={records}
 				columns={columns}
 				sortStatus={sortStatus}
 				onSortStatusChange={setSortStatus}
+				onRowClick={handleFilter}
 			/>
 			<TablePagination
 				page={page}
@@ -290,92 +308,48 @@ const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
 				},
 			];
 		case 'referrers':
-			return [
-				{
-					accessor: 'referrer',
-					title: LABEL_MAP.referrers,
-					width: '100%',
-					render: (record) => record.referrer || 'Direct/None',
-				},
-				...commonColumns,
-			];
 		case 'sources':
-			return [
-				{
-					accessor: 'source',
-					title: LABEL_MAP.sources,
-					width: '100%',
-					render: (record) => record.source || 'Direct/None',
-				},
-				...commonColumns,
-			];
 		case 'mediums':
-			return [
-				{
-					accessor: 'medium',
-					title: LABEL_MAP.mediums,
-					width: '100%',
-					render: (record) => record.medium || 'Direct/None',
-				},
-				...commonColumns,
-			];
 		case 'campaigns':
 			return [
 				{
-					accessor: 'campaign',
-					title: LABEL_MAP.campaigns,
+					accessor: ACCESSOR_MAP[query],
+					title: LABEL_MAP[query].slice(0, -1),
 					width: '100%',
-					render: (record) => record.campaign || 'Direct/None',
+					render: (record) => record[ACCESSOR_MAP[query]] || 'Direct/None',
 				},
 				...commonColumns,
 			];
 		case 'browsers':
+
+		case 'devices':
+		case 'languages':
 			return [
 				{
-					accessor: 'browser',
-					title: LABEL_MAP.browsers,
+					accessor: ACCESSOR_MAP[query],
+					title: LABEL_MAP[query].slice(0, -1),
 					width: '100%',
-					render: (record) => record.browser || 'Unknown',
+					render: (record) => record[ACCESSOR_MAP[query]] || 'Unknown',
 				},
 				...commonColumns,
 			];
 		case 'os':
 			return [
 				{
-					accessor: 'os',
-					title: LABEL_MAP.os,
+					accessor: ACCESSOR_MAP[query],
+					title: 'OS',
 					width: '100%',
 					render: (record) => record.os || 'Unknown',
-				},
-				...commonColumns,
-			];
-		case 'devices':
-			return [
-				{
-					accessor: 'device',
-					title: LABEL_MAP.devices,
-					width: '100%',
-					render: (record) => record.device || 'Unknown',
 				},
 				...commonColumns,
 			];
 		case 'countries':
 			return [
 				{
-					accessor: 'country',
-					title: LABEL_MAP.countries,
+					accessor: ACCESSOR_MAP[query],
+					title: 'Country',
 					width: '100%',
 					render: (record) => record.country || 'Unknown',
-				},
-				...commonColumns,
-			];
-		case 'languages':
-			return [
-				{
-					accessor: 'language',
-					title: LABEL_MAP.languages,
-					width: '100%',
-					render: (record) => record.language || 'Unknown',
 				},
 				...commonColumns,
 			];
