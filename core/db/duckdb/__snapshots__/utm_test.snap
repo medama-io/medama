@@ -1,33 +1,33 @@
 
 [TestGetWebsiteUTMCampaigns/Base - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:166775 VisitorsPercentage:0.3336} Bounces:41899 Duration:5000}
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:166762 VisitorsPercentage:0.3336} Bounces:41845 Duration:5002}
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:166321 VisitorsPercentage:0.3327} Bounces:41510 Duration:5007}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:166923 VisitorsPercentage:0.3341} Bounces:41554 Duration:5000}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:166654 VisitorsPercentage:0.3335} Bounces:41720 Duration:5002}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:166080 VisitorsPercentage:0.3324} Bounces:41410 Duration:5007}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/Browser - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:55460 VisitorsPercentage:0.3338} Bounces:13958 Duration:4970}
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:55392 VisitorsPercentage:0.3333} Bounces:13965 Duration:4977}
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:55318 VisitorsPercentage:0.3329} Bounces:14043 Duration:4992}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:55517 VisitorsPercentage:0.3343} Bounces:13819 Duration:4977}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:55310 VisitorsPercentage:0.333} Bounces:13910 Duration:4992}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:55263 VisitorsPercentage:0.3327} Bounces:13911 Duration:4970}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/Country - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:18553 VisitorsPercentage:0.3351} Bounces:4710 Duration:5017}
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:18425 VisitorsPercentage:0.3328} Bounces:4544 Duration:5002}
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:18390 VisitorsPercentage:0.3321} Bounces:4613 Duration:4958}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:18468 VisitorsPercentage:0.3343} Bounces:4588 Duration:5002}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:18406 VisitorsPercentage:0.3332} Bounces:4657 Duration:5017}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:18369 VisitorsPercentage:0.3325} Bounces:4599 Duration:4958}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/Device - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:6250 VisitorsPercentage:0.3361} Bounces:1567 Duration:4970}
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:6219 VisitorsPercentage:0.3345} Bounces:1539 Duration:5040}
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:6124 VisitorsPercentage:0.3294} Bounces:1556 Duration:4982}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:6260 VisitorsPercentage:0.3355} Bounces:1568 Duration:5040}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:6228 VisitorsPercentage:0.3337} Bounces:1579 Duration:4970}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:6173 VisitorsPercentage:0.3308} Bounces:1544 Duration:4982}
 
 ---
 
@@ -38,83 +38,83 @@ RECORDS:
 
 [TestGetWebsiteUTMCampaigns/Language - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:3148 VisitorsPercentage:0.3357} Bounces:793 Duration:4972}
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:3143 VisitorsPercentage:0.3351} Bounces:756 Duration:5105}
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:3087 VisitorsPercentage:0.3292} Bounces:790 Duration:4872}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:3215 VisitorsPercentage:0.3389} Bounces:812 Duration:4972}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:3150 VisitorsPercentage:0.3321} Bounces:758 Duration:5105}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:3121 VisitorsPercentage:0.329} Bounces:785 Duration:4872}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/OS - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:1047 VisitorsPercentage:0.3394} Bounces:250 Duration:5131}
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:1039 VisitorsPercentage:0.3368} Bounces:265 Duration:4997}
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:999 VisitorsPercentage:0.3238} Bounces:271 Duration:4736}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:1068 VisitorsPercentage:0.3427} Bounces:258 Duration:4997}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:1043 VisitorsPercentage:0.3347} Bounces:255 Duration:5131}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:1005 VisitorsPercentage:0.3225} Bounces:270 Duration:4736}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/Pathname - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:375 VisitorsPercentage:0.3495} Bounces:86 Duration:5509}
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:360 VisitorsPercentage:0.3355} Bounces:88 Duration:4948}
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:338 VisitorsPercentage:0.315} Bounces:86 Duration:5038}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:369 VisitorsPercentage:0.3385} Bounces:92 Duration:4948}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:361 VisitorsPercentage:0.3312} Bounces:86 Duration:5038}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:360 VisitorsPercentage:0.3303} Bounces:90 Duration:5509}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/Referrer - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:128 VisitorsPercentage:0.3565} Bounces:31 Duration:4761}
-&{StatsUTMCampaignsSummary:{Campaign: Visitors:121 VisitorsPercentage:0.337} Bounces:35 Duration:4700}
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:110 VisitorsPercentage:0.3064} Bounces:25 Duration:4732}
+&{StatsUTMCampaignsSummary:{Campaign:winter Visitors:141 VisitorsPercentage:0.3701} Bounces:38 Duration:4761}
+&{StatsUTMCampaignsSummary:{Campaign: Visitors:124 VisitorsPercentage:0.3255} Bounces:27 Duration:4700}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:116 VisitorsPercentage:0.3045} Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/UTMCampaign - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:110 VisitorsPercentage:1} Bounces:25 Duration:4732}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/UTMMedium - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:36 VisitorsPercentage:1} Bounces:5 Duration:6547}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteUTMCampaigns/UTMSource - 1]
 RECORDS:
-&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsUTMCampaignsSummary:{Campaign:summer Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/Base - 1]
 RECORDS:
-&{Campaign: Visitors:166775 VisitorsPercentage:0.3336}
-&{Campaign:winter Visitors:166762 VisitorsPercentage:0.3336}
-&{Campaign:summer Visitors:166321 VisitorsPercentage:0.3327}
+&{Campaign: Visitors:166923 VisitorsPercentage:0.3341}
+&{Campaign:winter Visitors:166654 VisitorsPercentage:0.3335}
+&{Campaign:summer Visitors:166080 VisitorsPercentage:0.3324}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/Browser - 1]
 RECORDS:
-&{Campaign:summer Visitors:55460 VisitorsPercentage:0.3338}
-&{Campaign: Visitors:55392 VisitorsPercentage:0.3333}
-&{Campaign:winter Visitors:55318 VisitorsPercentage:0.3329}
+&{Campaign: Visitors:55517 VisitorsPercentage:0.3343}
+&{Campaign:winter Visitors:55310 VisitorsPercentage:0.333}
+&{Campaign:summer Visitors:55263 VisitorsPercentage:0.3327}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/Country - 1]
 RECORDS:
-&{Campaign:winter Visitors:18553 VisitorsPercentage:0.3351}
-&{Campaign:summer Visitors:18425 VisitorsPercentage:0.3328}
-&{Campaign: Visitors:18390 VisitorsPercentage:0.3321}
+&{Campaign:summer Visitors:18468 VisitorsPercentage:0.3343}
+&{Campaign:winter Visitors:18406 VisitorsPercentage:0.3332}
+&{Campaign: Visitors:18369 VisitorsPercentage:0.3325}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/Device - 1]
 RECORDS:
-&{Campaign:summer Visitors:6250 VisitorsPercentage:0.3361}
-&{Campaign:winter Visitors:6219 VisitorsPercentage:0.3345}
-&{Campaign: Visitors:6124 VisitorsPercentage:0.3294}
+&{Campaign:winter Visitors:6260 VisitorsPercentage:0.3355}
+&{Campaign:summer Visitors:6228 VisitorsPercentage:0.3337}
+&{Campaign: Visitors:6173 VisitorsPercentage:0.3308}
 
 ---
 
@@ -125,83 +125,83 @@ RECORDS:
 
 [TestGetWebsiteUTMCampaignsSummary/Language - 1]
 RECORDS:
-&{Campaign:summer Visitors:3148 VisitorsPercentage:0.3357}
-&{Campaign:winter Visitors:3143 VisitorsPercentage:0.3351}
-&{Campaign: Visitors:3087 VisitorsPercentage:0.3292}
+&{Campaign:summer Visitors:3215 VisitorsPercentage:0.3389}
+&{Campaign:winter Visitors:3150 VisitorsPercentage:0.3321}
+&{Campaign: Visitors:3121 VisitorsPercentage:0.329}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/OS - 1]
 RECORDS:
-&{Campaign:summer Visitors:1047 VisitorsPercentage:0.3394}
-&{Campaign:winter Visitors:1039 VisitorsPercentage:0.3368}
-&{Campaign: Visitors:999 VisitorsPercentage:0.3238}
+&{Campaign:winter Visitors:1068 VisitorsPercentage:0.3427}
+&{Campaign:summer Visitors:1043 VisitorsPercentage:0.3347}
+&{Campaign: Visitors:1005 VisitorsPercentage:0.3225}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/Pathname - 1]
 RECORDS:
-&{Campaign:summer Visitors:375 VisitorsPercentage:0.3495}
-&{Campaign:winter Visitors:360 VisitorsPercentage:0.3355}
-&{Campaign: Visitors:338 VisitorsPercentage:0.315}
+&{Campaign:winter Visitors:369 VisitorsPercentage:0.3385}
+&{Campaign: Visitors:361 VisitorsPercentage:0.3312}
+&{Campaign:summer Visitors:360 VisitorsPercentage:0.3303}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/Referrer - 1]
 RECORDS:
-&{Campaign:winter Visitors:128 VisitorsPercentage:0.3565}
-&{Campaign: Visitors:121 VisitorsPercentage:0.337}
-&{Campaign:summer Visitors:110 VisitorsPercentage:0.3064}
+&{Campaign:winter Visitors:141 VisitorsPercentage:0.3701}
+&{Campaign: Visitors:124 VisitorsPercentage:0.3255}
+&{Campaign:summer Visitors:116 VisitorsPercentage:0.3045}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/UTMCampaign - 1]
 RECORDS:
-&{Campaign:summer Visitors:110 VisitorsPercentage:1}
+&{Campaign:summer Visitors:116 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/UTMMedium - 1]
 RECORDS:
-&{Campaign:summer Visitors:36 VisitorsPercentage:1}
+&{Campaign:summer Visitors:35 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteUTMCampaignsSummary/UTMSource - 1]
 RECORDS:
-&{Campaign:summer Visitors:16 VisitorsPercentage:1}
+&{Campaign:summer Visitors:17 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteUTMMediums/Base - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:167184 VisitorsPercentage:0.3345} Bounces:41714 Duration:5008}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:166565 VisitorsPercentage:0.3332} Bounces:41657 Duration:5004}
-&{StatsUTMMediumsSummary:{Medium: Visitors:166109 VisitorsPercentage:0.3323} Bounces:41883 Duration:4995}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:167067 VisitorsPercentage:0.3344} Bounces:41702 Duration:5008}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:166355 VisitorsPercentage:0.3329} Bounces:41466 Duration:5004}
+&{StatsUTMMediumsSummary:{Medium: Visitors:166235 VisitorsPercentage:0.3327} Bounces:41516 Duration:4995}
 
 ---
 
 [TestGetWebsiteUTMMediums/Browser - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium: Visitors:55528 VisitorsPercentage:0.3342} Bounces:14048 Duration:4976}
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:55479 VisitorsPercentage:0.3339} Bounces:13959 Duration:4992}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:55163 VisitorsPercentage:0.332} Bounces:13959 Duration:4973}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:55415 VisitorsPercentage:0.3336} Bounces:13833 Duration:4992}
+&{StatsUTMMediumsSummary:{Medium: Visitors:55402 VisitorsPercentage:0.3336} Bounces:13902 Duration:4976}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:55273 VisitorsPercentage:0.3328} Bounces:13905 Duration:4973}
 
 ---
 
 [TestGetWebsiteUTMMediums/Country - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:18618 VisitorsPercentage:0.3363} Bounces:4694 Duration:5006}
-&{StatsUTMMediumsSummary:{Medium: Visitors:18435 VisitorsPercentage:0.333} Bounces:4560 Duration:4995}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:18315 VisitorsPercentage:0.3308} Bounces:4613 Duration:4977}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:18538 VisitorsPercentage:0.3356} Bounces:4668 Duration:5006}
+&{StatsUTMMediumsSummary:{Medium: Visitors:18528 VisitorsPercentage:0.3354} Bounces:4607 Duration:4995}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:18177 VisitorsPercentage:0.329} Bounces:4569 Duration:4977}
 
 ---
 
 [TestGetWebsiteUTMMediums/Device - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium: Visitors:6288 VisitorsPercentage:0.3382} Bounces:1569 Duration:5036}
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:6274 VisitorsPercentage:0.3374} Bounces:1615 Duration:4916}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:6031 VisitorsPercentage:0.3244} Bounces:1478 Duration:5028}
+&{StatsUTMMediumsSummary:{Medium: Visitors:6299 VisitorsPercentage:0.3375} Bounces:1579 Duration:5036}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:6293 VisitorsPercentage:0.3372} Bounces:1618 Duration:4916}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:6069 VisitorsPercentage:0.3252} Bounces:1494 Duration:5028}
 
 ---
 
@@ -212,85 +212,85 @@ RECORDS:
 
 [TestGetWebsiteUTMMediums/Language - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium: Visitors:3225 VisitorsPercentage:0.3439} Bounces:781 Duration:5126}
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:3132 VisitorsPercentage:0.334} Bounces:796 Duration:4909}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:3021 VisitorsPercentage:0.3221} Bounces:762 Duration:4968}
+&{StatsUTMMediumsSummary:{Medium: Visitors:3216 VisitorsPercentage:0.339} Bounces:782 Duration:5126}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:3193 VisitorsPercentage:0.3366} Bounces:804 Duration:4909}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:3077 VisitorsPercentage:0.3244} Bounces:769 Duration:4968}
 
 ---
 
 [TestGetWebsiteUTMMediums/OS - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium: Visitors:1078 VisitorsPercentage:0.3494} Bounces:272 Duration:5072}
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:1020 VisitorsPercentage:0.3306} Bounces:255 Duration:4848}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:987 VisitorsPercentage:0.3199} Bounces:259 Duration:4970}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:1052 VisitorsPercentage:0.3376} Bounces:275 Duration:4848}
+&{StatsUTMMediumsSummary:{Medium: Visitors:1043 VisitorsPercentage:0.3347} Bounces:249 Duration:5072}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:1021 VisitorsPercentage:0.3277} Bounces:259 Duration:4970}
 
 ---
 
 [TestGetWebsiteUTMMediums/Pathname - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium: Visitors:385 VisitorsPercentage:0.3588} Bounces:88 Duration:4950}
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:356 VisitorsPercentage:0.3318} Bounces:86 Duration:4826}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:332 VisitorsPercentage:0.3094} Bounces:86 Duration:5556}
+&{StatsUTMMediumsSummary:{Medium: Visitors:384 VisitorsPercentage:0.3523} Bounces:94 Duration:4950}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:364 VisitorsPercentage:0.3339} Bounces:101 Duration:4826}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:342 VisitorsPercentage:0.3138} Bounces:73 Duration:5556}
 
 ---
 
 [TestGetWebsiteUTMMediums/Referrer - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium: Visitors:129 VisitorsPercentage:0.3593} Bounces:26 Duration:4812}
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:121 VisitorsPercentage:0.337} Bounces:36 Duration:4180}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:109 VisitorsPercentage:0.3036} Bounces:29 Duration:5558}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:132 VisitorsPercentage:0.3465} Bounces:41 Duration:4180}
+&{StatsUTMMediumsSummary:{Medium: Visitors:131 VisitorsPercentage:0.3438} Bounces:34 Duration:4812}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:118 VisitorsPercentage:0.3097} Bounces:21 Duration:5558}
 
 ---
 
 [TestGetWebsiteUTMMediums/UTMCampaign - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium: Visitors:41 VisitorsPercentage:0.3727} Bounces:6 Duration:5240}
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:36 VisitorsPercentage:0.3273} Bounces:5 Duration:6547}
-&{StatsUTMMediumsSummary:{Medium:cpc Visitors:33 VisitorsPercentage:0.3} Bounces:14 Duration:4395}
+&{StatsUTMMediumsSummary:{Medium:cpc Visitors:42 VisitorsPercentage:0.3621} Bounces:16 Duration:4395}
+&{StatsUTMMediumsSummary:{Medium: Visitors:39 VisitorsPercentage:0.3362} Bounces:9 Duration:5240}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:35 VisitorsPercentage:0.3017} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteUTMMediums/UTMMedium - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:36 VisitorsPercentage:1} Bounces:5 Duration:6547}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
 
 ---
 
 [TestGetWebsiteUTMMediums/UTMSource - 1]
 RECORDS:
-&{StatsUTMMediumsSummary:{Medium:organic Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsUTMMediumsSummary:{Medium:organic Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/Base - 1]
 RECORDS:
-&{Medium:cpc Visitors:167184 VisitorsPercentage:0.3345}
-&{Medium:organic Visitors:166565 VisitorsPercentage:0.3332}
-&{Medium: Visitors:166109 VisitorsPercentage:0.3323}
+&{Medium:cpc Visitors:167067 VisitorsPercentage:0.3344}
+&{Medium:organic Visitors:166355 VisitorsPercentage:0.3329}
+&{Medium: Visitors:166235 VisitorsPercentage:0.3327}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/Browser - 1]
 RECORDS:
-&{Medium: Visitors:55528 VisitorsPercentage:0.3342}
-&{Medium:cpc Visitors:55479 VisitorsPercentage:0.3339}
-&{Medium:organic Visitors:55163 VisitorsPercentage:0.332}
+&{Medium:cpc Visitors:55415 VisitorsPercentage:0.3336}
+&{Medium: Visitors:55402 VisitorsPercentage:0.3336}
+&{Medium:organic Visitors:55273 VisitorsPercentage:0.3328}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/Country - 1]
 RECORDS:
-&{Medium:cpc Visitors:18618 VisitorsPercentage:0.3363}
-&{Medium: Visitors:18435 VisitorsPercentage:0.333}
-&{Medium:organic Visitors:18315 VisitorsPercentage:0.3308}
+&{Medium:cpc Visitors:18538 VisitorsPercentage:0.3356}
+&{Medium: Visitors:18528 VisitorsPercentage:0.3354}
+&{Medium:organic Visitors:18177 VisitorsPercentage:0.329}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/Device - 1]
 RECORDS:
-&{Medium: Visitors:6288 VisitorsPercentage:0.3382}
-&{Medium:cpc Visitors:6274 VisitorsPercentage:0.3374}
-&{Medium:organic Visitors:6031 VisitorsPercentage:0.3244}
+&{Medium: Visitors:6299 VisitorsPercentage:0.3375}
+&{Medium:cpc Visitors:6293 VisitorsPercentage:0.3372}
+&{Medium:organic Visitors:6069 VisitorsPercentage:0.3252}
 
 ---
 
@@ -301,85 +301,85 @@ RECORDS:
 
 [TestGetWebsiteUTMMediumsSummary/Language - 1]
 RECORDS:
-&{Medium: Visitors:3225 VisitorsPercentage:0.3439}
-&{Medium:cpc Visitors:3132 VisitorsPercentage:0.334}
-&{Medium:organic Visitors:3021 VisitorsPercentage:0.3221}
+&{Medium: Visitors:3216 VisitorsPercentage:0.339}
+&{Medium:cpc Visitors:3193 VisitorsPercentage:0.3366}
+&{Medium:organic Visitors:3077 VisitorsPercentage:0.3244}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/OS - 1]
 RECORDS:
-&{Medium: Visitors:1078 VisitorsPercentage:0.3494}
-&{Medium:cpc Visitors:1020 VisitorsPercentage:0.3306}
-&{Medium:organic Visitors:987 VisitorsPercentage:0.3199}
+&{Medium:cpc Visitors:1052 VisitorsPercentage:0.3376}
+&{Medium: Visitors:1043 VisitorsPercentage:0.3347}
+&{Medium:organic Visitors:1021 VisitorsPercentage:0.3277}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/Pathname - 1]
 RECORDS:
-&{Medium: Visitors:385 VisitorsPercentage:0.3588}
-&{Medium:cpc Visitors:356 VisitorsPercentage:0.3318}
-&{Medium:organic Visitors:332 VisitorsPercentage:0.3094}
+&{Medium: Visitors:384 VisitorsPercentage:0.3523}
+&{Medium:cpc Visitors:364 VisitorsPercentage:0.3339}
+&{Medium:organic Visitors:342 VisitorsPercentage:0.3138}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/Referrer - 1]
 RECORDS:
-&{Medium: Visitors:129 VisitorsPercentage:0.3593}
-&{Medium:cpc Visitors:121 VisitorsPercentage:0.337}
-&{Medium:organic Visitors:109 VisitorsPercentage:0.3036}
+&{Medium:cpc Visitors:132 VisitorsPercentage:0.3465}
+&{Medium: Visitors:131 VisitorsPercentage:0.3438}
+&{Medium:organic Visitors:118 VisitorsPercentage:0.3097}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/UTMCampaign - 1]
 RECORDS:
-&{Medium: Visitors:41 VisitorsPercentage:0.3727}
-&{Medium:organic Visitors:36 VisitorsPercentage:0.3273}
-&{Medium:cpc Visitors:33 VisitorsPercentage:0.3}
+&{Medium:cpc Visitors:42 VisitorsPercentage:0.3621}
+&{Medium: Visitors:39 VisitorsPercentage:0.3362}
+&{Medium:organic Visitors:35 VisitorsPercentage:0.3017}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/UTMMedium - 1]
 RECORDS:
-&{Medium:organic Visitors:36 VisitorsPercentage:1}
+&{Medium:organic Visitors:35 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteUTMMediumsSummary/UTMSource - 1]
 RECORDS:
-&{Medium:organic Visitors:16 VisitorsPercentage:1}
+&{Medium:organic Visitors:17 VisitorsPercentage:1}
 
 ---
 
 [TestGetWebsiteUTMSources/Base - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:167073 VisitorsPercentage:0.3342} Bounces:41766 Duration:5006}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:166544 VisitorsPercentage:0.3332} Bounces:41637 Duration:4990}
-&{StatsUTMSourcesSummary:{Source: Visitors:166241 VisitorsPercentage:0.3326} Bounces:41851 Duration:5013}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:166720 VisitorsPercentage:0.3337} Bounces:41302 Duration:5006}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:166575 VisitorsPercentage:0.3334} Bounces:41910 Duration:4990}
+&{StatsUTMSourcesSummary:{Source: Visitors:166362 VisitorsPercentage:0.333} Bounces:41472 Duration:5013}
 
 ---
 
 [TestGetWebsiteUTMSources/Browser - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:55615 VisitorsPercentage:0.3347} Bounces:13981 Duration:4978}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:55304 VisitorsPercentage:0.3328} Bounces:13994 Duration:4976}
-&{StatsUTMSourcesSummary:{Source: Visitors:55251 VisitorsPercentage:0.3325} Bounces:13991 Duration:4989}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:55742 VisitorsPercentage:0.3356} Bounces:14094 Duration:4976}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:55251 VisitorsPercentage:0.3327} Bounces:13803 Duration:4978}
+&{StatsUTMSourcesSummary:{Source: Visitors:55097 VisitorsPercentage:0.3317} Bounces:13743 Duration:4989}
 
 ---
 
 [TestGetWebsiteUTMSources/Country - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:18525 VisitorsPercentage:0.3346} Bounces:4559 Duration:5014}
-&{StatsUTMSourcesSummary:{Source: Visitors:18437 VisitorsPercentage:0.333} Bounces:4695 Duration:4965}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:18406 VisitorsPercentage:0.3324} Bounces:4613 Duration:4993}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:18552 VisitorsPercentage:0.3358} Bounces:4676 Duration:4993}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:18490 VisitorsPercentage:0.3347} Bounces:4614 Duration:5014}
+&{StatsUTMSourcesSummary:{Source: Visitors:18201 VisitorsPercentage:0.3295} Bounces:4554 Duration:4965}
 
 ---
 
 [TestGetWebsiteUTMSources/Device - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:6284 VisitorsPercentage:0.338} Bounces:1542 Duration:5031}
-&{StatsUTMSourcesSummary:{Source: Visitors:6190 VisitorsPercentage:0.3329} Bounces:1616 Duration:4915}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:6119 VisitorsPercentage:0.3291} Bounces:1504 Duration:5044}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:6267 VisitorsPercentage:0.3358} Bounces:1566 Duration:5044}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:6213 VisitorsPercentage:0.3329} Bounces:1553 Duration:5031}
+&{StatsUTMSourcesSummary:{Source: Visitors:6181 VisitorsPercentage:0.3312} Bounces:1572 Duration:4915}
 
 ---
 
@@ -390,87 +390,87 @@ RECORDS:
 
 [TestGetWebsiteUTMSources/Language - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:3259 VisitorsPercentage:0.3475} Bounces:811 Duration:5028}
-&{StatsUTMSourcesSummary:{Source: Visitors:3090 VisitorsPercentage:0.3295} Bounces:818 Duration:4835}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:3029 VisitorsPercentage:0.323} Bounces:710 Duration:5120}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:3206 VisitorsPercentage:0.338} Bounces:785 Duration:5120}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:3190 VisitorsPercentage:0.3363} Bounces:792 Duration:5028}
+&{StatsUTMSourcesSummary:{Source: Visitors:3090 VisitorsPercentage:0.3257} Bounces:778 Duration:4835}
 
 ---
 
 [TestGetWebsiteUTMSources/OS - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:1060 VisitorsPercentage:0.3436} Bounces:281 Duration:4861}
-&{StatsUTMSourcesSummary:{Source: Visitors:1040 VisitorsPercentage:0.3371} Bounces:271 Duration:4954}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:985 VisitorsPercentage:0.3193} Bounces:234 Duration:5071}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:1064 VisitorsPercentage:0.3415} Bounces:261 Duration:5071}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:1034 VisitorsPercentage:0.3318} Bounces:268 Duration:4861}
+&{StatsUTMSourcesSummary:{Source: Visitors:1018 VisitorsPercentage:0.3267} Bounces:254 Duration:4954}
 
 ---
 
 [TestGetWebsiteUTMSources/Pathname - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:366 VisitorsPercentage:0.3411} Bounces:102 Duration:4985}
-&{StatsUTMSourcesSummary:{Source: Visitors:357 VisitorsPercentage:0.3327} Bounces:86 Duration:5028}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:350 VisitorsPercentage:0.3262} Bounces:72 Duration:5441}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:381 VisitorsPercentage:0.3495} Bounces:88 Duration:5441}
+&{StatsUTMSourcesSummary:{Source: Visitors:365 VisitorsPercentage:0.3349} Bounces:96 Duration:5028}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:344 VisitorsPercentage:0.3156} Bounces:84 Duration:4985}
 
 ---
 
 [TestGetWebsiteUTMSources/Referrer - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source: Visitors:121 VisitorsPercentage:0.337} Bounces:30 Duration:4723}
-&{StatsUTMSourcesSummary:{Source:bing Visitors:120 VisitorsPercentage:0.3343} Bounces:26 Duration:4694}
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:118 VisitorsPercentage:0.3287} Bounces:35 Duration:4732}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:140 VisitorsPercentage:0.3675} Bounces:32 Duration:4694}
+&{StatsUTMSourcesSummary:{Source: Visitors:126 VisitorsPercentage:0.3307} Bounces:38 Duration:4723}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:115 VisitorsPercentage:0.3018} Bounces:26 Duration:4732}
 
 ---
 
 [TestGetWebsiteUTMSources/UTMCampaign - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:bing Visitors:43 VisitorsPercentage:0.3909} Bounces:9 Duration:3851}
-&{StatsUTMSourcesSummary:{Source: Visitors:36 VisitorsPercentage:0.3273} Bounces:10 Duration:3696}
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:31 VisitorsPercentage:0.2818} Bounces:6 Duration:6888}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:49 VisitorsPercentage:0.4224} Bounces:12 Duration:3851}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:35 VisitorsPercentage:0.3017} Bounces:5 Duration:6888}
+&{StatsUTMSourcesSummary:{Source: Visitors:32 VisitorsPercentage:0.2759} Bounces:14 Duration:3696}
 
 ---
 
 [TestGetWebsiteUTMSources/UTMMedium - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:bing Visitors:16 VisitorsPercentage:0.4444} Bounces:2 Duration:3389}
-&{StatsUTMSourcesSummary:{Source: Visitors:12 VisitorsPercentage:0.3333} Bounces:3 Duration:3102}
-&{StatsUTMSourcesSummary:{Source:twitter Visitors:8 VisitorsPercentage:0.2222} Bounces:0 Duration:9728}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:17 VisitorsPercentage:0.4857} Bounces:3 Duration:3389}
+&{StatsUTMSourcesSummary:{Source:twitter Visitors:10 VisitorsPercentage:0.2857} Bounces:0 Duration:9728}
+&{StatsUTMSourcesSummary:{Source: Visitors:8 VisitorsPercentage:0.2286} Bounces:3 Duration:3102}
 
 ---
 
 [TestGetWebsiteUTMSources/UTMSource - 1]
 RECORDS:
-&{StatsUTMSourcesSummary:{Source:bing Visitors:16 VisitorsPercentage:1} Bounces:2 Duration:3389}
+&{StatsUTMSourcesSummary:{Source:bing Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/Base - 1]
 RECORDS:
-&{Source:twitter Visitors:167073 VisitorsPercentage:0.3342}
-&{Source:bing Visitors:166544 VisitorsPercentage:0.3332}
-&{Source: Visitors:166241 VisitorsPercentage:0.3326}
+&{Source:twitter Visitors:166720 VisitorsPercentage:0.3337}
+&{Source:bing Visitors:166575 VisitorsPercentage:0.3334}
+&{Source: Visitors:166362 VisitorsPercentage:0.333}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/Browser - 1]
 RECORDS:
-&{Source:twitter Visitors:55615 VisitorsPercentage:0.3347}
-&{Source:bing Visitors:55304 VisitorsPercentage:0.3328}
-&{Source: Visitors:55251 VisitorsPercentage:0.3325}
+&{Source:bing Visitors:55742 VisitorsPercentage:0.3356}
+&{Source:twitter Visitors:55251 VisitorsPercentage:0.3327}
+&{Source: Visitors:55097 VisitorsPercentage:0.3317}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/Country - 1]
 RECORDS:
-&{Source:twitter Visitors:18525 VisitorsPercentage:0.3346}
-&{Source: Visitors:18437 VisitorsPercentage:0.333}
-&{Source:bing Visitors:18406 VisitorsPercentage:0.3324}
+&{Source:bing Visitors:18552 VisitorsPercentage:0.3358}
+&{Source:twitter Visitors:18490 VisitorsPercentage:0.3347}
+&{Source: Visitors:18201 VisitorsPercentage:0.3295}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/Device - 1]
 RECORDS:
-&{Source:twitter Visitors:6284 VisitorsPercentage:0.338}
-&{Source: Visitors:6190 VisitorsPercentage:0.3329}
-&{Source:bing Visitors:6119 VisitorsPercentage:0.3291}
+&{Source:bing Visitors:6267 VisitorsPercentage:0.3358}
+&{Source:twitter Visitors:6213 VisitorsPercentage:0.3329}
+&{Source: Visitors:6181 VisitorsPercentage:0.3312}
 
 ---
 
@@ -481,54 +481,54 @@ RECORDS:
 
 [TestGetWebsiteUTMSourcesSummary/Language - 1]
 RECORDS:
-&{Source:twitter Visitors:3259 VisitorsPercentage:0.3475}
-&{Source: Visitors:3090 VisitorsPercentage:0.3295}
-&{Source:bing Visitors:3029 VisitorsPercentage:0.323}
+&{Source:bing Visitors:3206 VisitorsPercentage:0.338}
+&{Source:twitter Visitors:3190 VisitorsPercentage:0.3363}
+&{Source: Visitors:3090 VisitorsPercentage:0.3257}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/OS - 1]
 RECORDS:
-&{Source:twitter Visitors:1060 VisitorsPercentage:0.3436}
-&{Source: Visitors:1040 VisitorsPercentage:0.3371}
-&{Source:bing Visitors:985 VisitorsPercentage:0.3193}
+&{Source:bing Visitors:1064 VisitorsPercentage:0.3415}
+&{Source:twitter Visitors:1034 VisitorsPercentage:0.3318}
+&{Source: Visitors:1018 VisitorsPercentage:0.3267}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/Pathname - 1]
 RECORDS:
-&{Source:twitter Visitors:366 VisitorsPercentage:0.3411}
-&{Source: Visitors:357 VisitorsPercentage:0.3327}
-&{Source:bing Visitors:350 VisitorsPercentage:0.3262}
+&{Source:bing Visitors:381 VisitorsPercentage:0.3495}
+&{Source: Visitors:365 VisitorsPercentage:0.3349}
+&{Source:twitter Visitors:344 VisitorsPercentage:0.3156}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/Referrer - 1]
 RECORDS:
-&{Source: Visitors:121 VisitorsPercentage:0.337}
-&{Source:bing Visitors:120 VisitorsPercentage:0.3343}
-&{Source:twitter Visitors:118 VisitorsPercentage:0.3287}
+&{Source:bing Visitors:140 VisitorsPercentage:0.3675}
+&{Source: Visitors:126 VisitorsPercentage:0.3307}
+&{Source:twitter Visitors:115 VisitorsPercentage:0.3018}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/UTMCampaign - 1]
 RECORDS:
-&{Source:bing Visitors:43 VisitorsPercentage:0.3909}
-&{Source: Visitors:36 VisitorsPercentage:0.3273}
-&{Source:twitter Visitors:31 VisitorsPercentage:0.2818}
+&{Source:bing Visitors:49 VisitorsPercentage:0.4224}
+&{Source:twitter Visitors:35 VisitorsPercentage:0.3017}
+&{Source: Visitors:32 VisitorsPercentage:0.2759}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/UTMMedium - 1]
 RECORDS:
-&{Source:bing Visitors:16 VisitorsPercentage:0.4444}
-&{Source: Visitors:12 VisitorsPercentage:0.3333}
-&{Source:twitter Visitors:8 VisitorsPercentage:0.2222}
+&{Source:bing Visitors:17 VisitorsPercentage:0.4857}
+&{Source:twitter Visitors:10 VisitorsPercentage:0.2857}
+&{Source: Visitors:8 VisitorsPercentage:0.2286}
 
 ---
 
 [TestGetWebsiteUTMSourcesSummary/UTMSource - 1]
 RECORDS:
-&{Source:bing Visitors:16 VisitorsPercentage:1}
+&{Source:bing Visitors:17 VisitorsPercentage:1}
 
 ---
