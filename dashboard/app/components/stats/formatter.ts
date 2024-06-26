@@ -1,25 +1,23 @@
 // Define types for formatters
-type DurationFormatter = (durationMs: number) => string;
-type PercentageFormatter = (value: number) => string;
-type CountFormatter = (value: number) => string;
+type Formatter = (value: number) => string;
 
 // Determine languages array
 const languages: string[] =
 	typeof document === 'undefined' ? ['en-US'] : [...navigator.languages];
 
 // Intl formatters
-const countFormatter: CountFormatter = Intl.NumberFormat(languages, {
+const countFormatter: Formatter = Intl.NumberFormat(languages, {
 	notation: 'compact',
 	maximumFractionDigits: 2,
 }).format;
 
-const percentFormatter: PercentageFormatter = Intl.NumberFormat(languages, {
+const percentFormatter: Formatter = Intl.NumberFormat(languages, {
 	style: 'percent',
 	maximumFractionDigits: 1,
 }).format;
 
 // Convert duration in milliseconds to a human readable format
-export const formatDuration: DurationFormatter = (durationMs = 0) => {
+export const formatDuration: Formatter = (durationMs = 0) => {
 	if (durationMs === 0) {
 		return 'N/A';
 	}
@@ -50,11 +48,11 @@ export const formatDuration: DurationFormatter = (durationMs = 0) => {
 };
 
 // Format percentage value
-export const formatPercentage: PercentageFormatter = (value = 0) => {
+export const formatPercentage: Formatter = (value = 0) => {
 	return percentFormatter(value);
 };
 
 // Format count value
-export const formatCount: CountFormatter = (value = 0) => {
+export const formatCount: Formatter = (value = 0) => {
 	return countFormatter(value);
 };

@@ -32,12 +32,14 @@ import '@mantine/core/styles/Tabs.css';
 import '@mantine/core/styles/Skeleton.css';
 // Misc
 import '@mantine/core/styles/Modal.css';
+import '@mantine/core/styles/ColorSwatch.css';
 import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';
 import '@mantine/core/styles/Title.css';
 import '@mantine/core/styles/Notification.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/charts/styles.css';
 import 'mantine-datatable/styles.css';
 import '@/styles/global.css';
 

@@ -89,7 +89,7 @@ export default function Index() {
 					visitors: item.visitors ?? 0,
 					pageviews: item.pageviews ?? 0,
 					bounces: (item.bounces ?? 0) / (item.visitors ?? 0) || 0,
-					duration: (item.duration ?? 0) / 1000,
+					duration: item.duration ?? 0,
 				};
 
 				return {
