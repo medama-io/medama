@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"errors"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
@@ -87,6 +88,10 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		interval, err := h.analyticsDB.GetWebsiteIntervals(ctx, filters, params.Interval.Value)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to get website intervals")
+			if errors.Is(err, model.ErrInvalidParameter) {
+				return ErrBadRequest(err), nil
+			}
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -94,8 +99,10 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		for _, i := range interval {
 			resp.Interval = append(resp.Interval, api.StatsSummaryIntervalItem{
 				Date:      i.Interval,
-				Visitors:  i.Visitors,
+				Visitors:  api.NewOptInt(i.Visitors),
 				Pageviews: api.NewOptInt(i.Pageviews),
+				Bounces:   api.NewOptInt(i.Bounces),
+				Duration:  api.NewOptInt(i.Duration),
 			})
 		}
 	}

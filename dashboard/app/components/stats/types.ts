@@ -66,5 +66,22 @@ interface StatsGroups {
 	data: StatsTab[];
 }
 
+type ChartStat = 'visitors' | 'pageviews' | 'duration' | 'bounces';
+
+interface StatHeaderData {
+	label: string;
+	chart: ChartStat;
+	current: number;
+	previous?: number;
+}
+
 export { DATASETS };
-export type { DataRow, Dataset, StatsTab, StatsValue, StatsGroups };
+export type {
+	ChartStat,
+	DataRow,
+	Dataset,
+	StatHeaderData,
+	StatsGroups,
+	StatsTab,
+	StatsValue,
+};

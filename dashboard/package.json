@@ -14,6 +14,7 @@
 	},
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.0.18",
+		"@mantine/charts": "^7.10.2",
 		"@mantine/core": "^7.10.2",
 		"@mantine/form": "^7.10.2",
 		"@mantine/hooks": "^7.10.2",

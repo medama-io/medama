@@ -81,12 +81,9 @@ const generatePeriods = (period: string) => {
 };
 
 export const generateFilters = (
-	url: string,
+	searchParams: URLSearchParams,
 	opts?: FilterOptions,
 ): [Record<string, string | number | undefined>, string | undefined] => {
-	// Convert search params to filters
-	const searchParams = new URL(url).searchParams;
-
 	// Convert period param to start and end
 	const period = searchParams.get('period');
 	const { start, end, defaultInterval } = generatePeriods(period ?? 'today');

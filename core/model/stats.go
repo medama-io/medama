@@ -27,6 +27,8 @@ type StatsIntervals struct {
 	Interval  string `db:"interval"`
 	Visitors  int    `db:"visitors"`
 	Pageviews int    `db:"pageviews"`
+	Bounces   int    `db:"bounces"`
+	Duration  int    `db:"duration"`
 }
 
 type StatsPagesSummary struct {

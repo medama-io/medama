@@ -25,6 +25,27 @@ const ErrorPage = ({ label, title, description }: ErrorPageProps) => {
 	);
 };
 
+const BadRequestError = () => (
+	<ErrorPage
+		label="400"
+		title="Your request is invalid."
+		description={
+			<>
+				Please check the URL and try again. If you think this is an error,
+				please{' '}
+				<Anchor
+					component={Link}
+					to="https://github.com/medama-io/medama/issues"
+					className={classes.anchor}
+				>
+					report this issue
+				</Anchor>{' '}
+				to the developers.
+			</>
+		}
+	/>
+);
+
 const ForbiddenError = () => {
 	// Check if hostname is demo.medama.io or medama.fly.dev to display a different message.
 	const hostname = window.location.hostname;
@@ -91,4 +112,4 @@ const InternalServerError = ({ error }: InternalServerErrorProps) => (
 	/>
 );
 
-export { NotFoundError, ForbiddenError, InternalServerError };
+export { NotFoundError, ForbiddenError, InternalServerError, BadRequestError };
