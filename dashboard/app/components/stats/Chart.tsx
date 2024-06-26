@@ -3,7 +3,7 @@ import { useSearchParams } from '@remix-run/react';
 import { format, parseISO } from 'date-fns';
 import {
 	Bar,
-	BarChart,
+	BarChart as ReBarChart,
 	CartesianGrid,
 	ResponsiveContainer,
 	Tooltip,
@@ -14,10 +14,10 @@ import {
 interface ChartData {
 	date: string;
 	value: number;
-	stackValue?: number;
 }
 
-interface StackedBarChartProps {
+interface BarChartProps {
+	label: string;
 	data: ChartData[];
 }
 
@@ -29,7 +29,7 @@ const intlFormatter = new Intl.DateTimeFormat('en', {
 	minute: 'numeric',
 });
 
-export const StackedBarChart = ({ data }: StackedBarChartProps) => {
+const BarChart = ({ label, data }: BarChartProps) => {
 	const [searchParams] = useSearchParams();
 	const period = searchParams.get('period');
 
@@ -57,7 +57,7 @@ export const StackedBarChart = ({ data }: StackedBarChartProps) => {
 	return (
 		<Flex h={400} my="lg">
 			<ResponsiveContainer>
-				<BarChart data={data}>
+				<ReBarChart data={data}>
 					<CartesianGrid />
 					<XAxis
 						dataKey="date"
@@ -69,15 +69,11 @@ export const StackedBarChart = ({ data }: StackedBarChartProps) => {
 					<Tooltip
 						labelFormatter={(value) => intlFormatter.format(parseISO(value))}
 					/>
-					<Bar dataKey="value" name="Visitors" stackId="a" fill="#7D44C7" />
-					<Bar
-						dataKey="stackValue"
-						name="Page Views"
-						stackId="a"
-						fill="#9D5DEF"
-					/>
-				</BarChart>
+					<Bar dataKey="value" name={label} stackId="a" fill="#9D5DEF" />
+				</ReBarChart>
 			</ResponsiveContainer>
 		</Flex>
 	);
 };
+
+export { BarChart };

@@ -972,8 +972,6 @@ export interface operations {
         previous?: boolean;
         /** @description The interval to group the data by. This can be set to minute, hour, day, week or month. This will return an interval property if set. */
         interval?: "minute" | "hour" | "day" | "week" | "month";
-        /** @description The stat to group the data by. This can be set to visitors, page views, time spent or bounce rate. This will return a corresponding stat property if set (interval.visitors, interval.pageviews, interval.duration, interval.bounces). If not set, it will return visitors by default. */
-        stat?: "visitors" | "pageviews" | "duration" | "bounces";
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
         path?: components["parameters"]["Path"];

@@ -39,6 +39,7 @@ interface FetchStatsOptions {
 	dataset?: Datasets;
 	limit?: number;
 	isSummary?: boolean;
+	chartStat: string;
 }
 
 const isDatasetItem = (value: string): value is DatasetItem =>
@@ -51,7 +52,9 @@ const fetchStats = async (
 ) => {
 	const { dataset = datasets, isSummary = false, limit } = options;
 	const set = new Set(dataset);
-	const [filters, interval] = generateFilters(request.url, { limit });
+	// Convert search params to filters
+	const searchParams = new URL(request.url).searchParams;
+	const [filters, interval] = generateFilters(searchParams, { limit });
 
 	// Depending on what data is requested, we can make multiple requests in
 	// parallel to speed up the loading time.
@@ -75,6 +78,7 @@ const fetchStats = async (
 					query: {
 						previous: true,
 						interval,
+						stat: options.chartStat,
 						...filters,
 					},
 				})

@@ -63,6 +63,7 @@ import {
 import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
 import {
+	BadRequestError,
 	ForbiddenError,
 	InternalServerError,
 	NotFoundError,
@@ -176,6 +177,13 @@ export const ErrorBoundary = () => {
 
 	if (isRouteErrorResponse(error)) {
 		switch (error.status) {
+			case 400: {
+				return (
+					<Document>
+						<BadRequestError />
+					</Document>
+				);
+			}
 			case 403: {
 				return (
 					<Document>
