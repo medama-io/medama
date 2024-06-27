@@ -140,21 +140,6 @@ var DurationPayload;
 	};
 
 	/**
-	 * Strips the query string from a URL.
-	 * @param {string | URL} url - The URL to strip.
-	 * @returns {string} The URL without the query string.
-	 */
-	const stripQuery = (url) => url.toString().split('?')[0];
-
-	/**
-	 * Compares two URLs ignoring query parameters.
-	 * @param {string | URL} url1 - The first URL to compare.
-	 * @param {string | URL} url2 - The second URL to compare.
-	 * @returns {boolean} True if the URLs have the same path, false otherwise.
-	 */
-	const isSamePath = (url1, url2) => stripQuery(url1) === stripQuery(url2);
-
-	/**
 	 * Wraps a history method with additional tracking events.
 	 * @param {!Function} original - The original history method to wrap.
 	 * @returns {function(this:History, *, string, (string | URL)=): void} The wrapped history method.
@@ -170,7 +155,7 @@ var DurationPayload;
 		 */
 	) =>
 		function (_state, _unused, url) {
-			if (url && !isSamePath(location.href, url)) {
+			if (url && location.pathname !== new URL(url, location.href).pathname) {
 				sendUnloadBeacon();
 				// If the event is a history change, then we need to reset the id and timers
 				// because the page is not actually reloading the script.
