@@ -68,3 +68,44 @@
 		background-color: var(--me-color-badge-negative);
 	}
 }
+
+/* Chart Toggle */
+.toggle {
+	padding: 4px;
+	background-color: var(--me-color-bg-dark);
+
+	border: 1px solid var(--me-color-border-dark);
+	border-radius: 26px;
+
+	position: relative;
+}
+
+.control {
+	color: var(--me-color-text-disabled);
+	width: 38px;
+	height: 38px;
+
+	&[data-active="true"],
+	&:hover {
+		color: var(--me-color-text-light);
+	}
+}
+
+.controlLabel {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	position: relative;
+	z-index: 1;
+
+	svg {
+		width: 20px;
+		height: 20px;
+	}
+}
+
+.indicator {
+	background-color: var(--me-color-logo-green);
+	border-radius: 50%;
+}

@@ -17,6 +17,7 @@ import '@mantine/core/styles/SimpleGrid.css';
 import '@mantine/core/styles/Container.css';
 import '@mantine/core/styles/Stack.css';
 import '@mantine/core/styles/Center.css';
+import '@mantine/core/styles/FloatingIndicator.css';
 // Buttons
 import '@mantine/core/styles/ActionIcon.css';
 import '@mantine/core/styles/CloseButton.css';
@@ -24,6 +25,7 @@ import '@mantine/core/styles/CloseButton.css';
 import '@mantine/core/styles/Checkbox.css';
 import '@mantine/core/styles/Combobox.css';
 import '@mantine/core/styles/PasswordInput.css';
+import '@mantine/core/styles/SegmentedControl.css';
 // Navigation
 import '@mantine/core/styles/Burger.css';
 import '@mantine/core/styles/NavLink.css';

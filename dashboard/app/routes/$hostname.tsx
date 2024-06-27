@@ -2,7 +2,6 @@ import {
 	Outlet,
 	json,
 	useLoaderData,
-	useSearchParams,
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/react';
@@ -13,6 +12,7 @@ import { Chart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
 import { StatsHeader } from '@/components/stats/StatsHeader';
 import type { StatHeaderData } from '@/components/stats/types';
+import { useChartType } from '@/hooks/use-chart-type';
 import { fetchStats } from '@/utils/stats';
 
 export const meta: MetaFunction = () => {
@@ -27,7 +27,7 @@ export const clientLoader = async ({
 
 	// Check chart param for the chart data to display
 	const searchParams = new URL(request.url).searchParams;
-	const chart = searchParams.get('chart');
+	const chart = searchParams.get('chart[stat]');
 
 	const stats = await fetchStats(request, params, {
 		dataset: ['summary'],
@@ -47,11 +47,11 @@ const LABEL_MAP = {
 export default function Index() {
 	const { summary } = useLoaderData<typeof clientLoader>();
 	if (!summary) throw new Error('Summary data is required');
-
-	const [searchParams] = useSearchParams();
-	const chart = searchParams.get('chart') || 'visitors';
-
 	const { current, previous } = summary;
+
+	const { getChartStat, getChartType } = useChartType();
+	const chart = getChartStat();
+	const type = getChartType();
 
 	const stats: StatHeaderData[] = [
 		{
@@ -108,10 +108,7 @@ export default function Index() {
 			<main>
 				<Filters />
 				{summary.interval && (
-					<>
-						<Chart type="bar" label={label} data={chartData} />
-						<Chart type="area" label={label} data={chartData} />
-					</>
+					<Chart type={type} label={label} data={chartData} />
 				)}
 				<Outlet />
 			</main>

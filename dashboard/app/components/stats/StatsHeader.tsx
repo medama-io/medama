@@ -1,18 +1,32 @@
-import { Box, Flex, Group, Tooltip, UnstyledButton } from '@mantine/core';
-import { useSearchParams } from '@remix-run/react';
-import React, { useMemo } from 'react';
+import {
+	Box,
+	Flex,
+	FloatingIndicator,
+	Group,
+	Tooltip,
+	UnstyledButton,
+} from '@mantine/core';
+import React, { useMemo, useState } from 'react';
 
+import { IconAreaChart } from '@/components/icons/area';
+import { IconBarChart } from '@/components/icons/bar';
 import { InnerHeader } from '@/components/layout/InnerHeader';
+import { useChartType } from '@/hooks/use-chart-type';
 
 import { DateComboBox } from './DateSelector';
 import { formatCount, formatDuration, formatPercentage } from './formatter';
-import type { StatHeaderData } from './types';
+import type { ChartType, StatHeaderData } from './types';
 
 import classes from './StatsHeader.module.css';
 
 interface HeaderDataBoxProps {
 	stat: StatHeaderData;
 	isActive: boolean;
+}
+
+interface StatsHeaderProps {
+	stats: StatHeaderData[];
+	chart: string;
 }
 
 // Calculate percentage change if previous value is available.
@@ -52,7 +66,7 @@ const formatTooltipLabel = (
 };
 
 const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const { setChartStat } = useChartType();
 
 	const isPercentage = stat.chart === 'bounces';
 	const isDuration = stat.chart === 'duration';
@@ -79,8 +93,7 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 	);
 
 	const handleClick = () => {
-		searchParams.set('chart', stat.chart);
-		setSearchParams(searchParams);
+		setChartStat(stat.chart);
 	};
 
 	return (
@@ -117,26 +130,75 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 	);
 });
 
-interface StatsHeaderProps {
-	stats: StatHeaderData[];
-	chart: string;
-}
+const CHART_TYPES = [
+	{
+		label: 'Toggle Area Chart',
+		value: 'area',
+		icon: <IconAreaChart />,
+	},
+	{
+		label: 'Toggle Bar Chart',
+		value: 'bar',
+		icon: <IconBarChart />,
+	},
+] as const;
 
 const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
+	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+	const [controlsRefs, setControlsRefs] = useState<
+		Record<string, HTMLButtonElement | null>
+	>({});
+
+	const { setChartType, getChartType } = useChartType();
+	const chartType = getChartType();
+
+	const handleChartChange = (value: ChartType) => {
+		setChartType(value);
+	};
+
+	const setControlRef = (type: ChartType) => (node: HTMLButtonElement) => {
+		controlsRefs[type] = node;
+		setControlsRefs(controlsRefs);
+	};
+
+	const chartTypes = CHART_TYPES.map((item) => (
+		<UnstyledButton
+			key={item.value}
+			className={classes.control}
+			ref={setControlRef(item.value)}
+			aria-label={item.label}
+			onClick={() => handleChartChange(item.value)}
+			data-active={chartType === item.value}
+		>
+			<span className={classes.controlLabel}>{item.icon}</span>
+		</UnstyledButton>
+	));
+
 	return (
 		<InnerHeader>
 			<Flex justify="space-between" align="center" py={8}>
 				<h1>Dashboard</h1>
 				<DateComboBox />
 			</Flex>
-			<Group mt="xs">
-				{stats.map((stat) => (
-					<HeaderDataBox
-						key={stat.label}
-						stat={stat}
-						isActive={chart === stat.chart}
+			<Group justify="space-between" align="flex-end">
+				<Group mt="xs">
+					{stats.map((stat) => (
+						<HeaderDataBox
+							key={stat.label}
+							stat={stat}
+							isActive={chart === stat.chart}
+						/>
+					))}
+				</Group>
+				<div className={classes.toggle} ref={setRootRef}>
+					{chartTypes}
+					<FloatingIndicator
+						component="span"
+						className={classes.indicator}
+						target={controlsRefs[chartType]}
+						parent={rootRef}
 					/>
-				))}
+				</div>
 			</Group>
 		</InnerHeader>
 	);
