@@ -1,4 +1,9 @@
-import { BarChart as MantineBarChart } from '@mantine/charts';
+import {
+	BarChart as MantineBarChart,
+	AreaChart as MantineAreaChart,
+	type BarChartProps,
+	type AreaChartProps,
+} from '@mantine/charts';
 import { ColorSwatch, Group, Paper, Text } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 import { format, parseISO } from 'date-fns';
@@ -11,8 +16,9 @@ interface ChartData {
 	value: number;
 }
 
-interface BarChartProps {
+interface ChartProps {
 	label: string;
+	type: 'bar' | 'area';
 	data: ChartData[];
 }
 
@@ -60,8 +66,13 @@ const ChartTooltip = React.memo(
 	({ label, date, period, payload, valueFormatter }: ChartTooltipProps) => {
 		if (!payload || !label || !date) return null;
 
+		const item = payload[0];
+		if (!item) return null;
+
 		const dateTimeFormat = useMemo(() => {
 			if (
+				period === null ||
+				period === undefined ||
 				period === PERIODS.TODAY ||
 				period === PERIODS.YESTERDAY ||
 				period?.endsWith('h')
@@ -81,40 +92,59 @@ const ChartTooltip = React.memo(
 				<Text fw={500} mb="xs">
 					{dateTimeFormat.format(parseISO(date))}
 				</Text>
-				{payload.map((item) => (
-					<Group key={item.name} gap="xs" justify="space-between">
-						<Group gap="sm">
-							<ColorSwatch color={item.color} size={12} withShadow={false} />
-							<Text fz="sm">{label}</Text>
-						</Group>
-						<Text fz="sm">{valueFormatter(item.value)}</Text>
+				<Group gap="xs" justify="space-between">
+					<Group gap="sm">
+						<ColorSwatch color={item.color} size={12} withShadow={false} />
+						<Text fz="sm">{label}</Text>
 					</Group>
-				))}
+					<Text fz="sm">{valueFormatter(item.value)}</Text>
+				</Group>
 			</Paper>
 		);
 	},
 );
 
-const BarChart = ({ label, data }: BarChartProps) => {
+const AreaChart = (props: AreaChartProps) => {
+	return (
+		<MantineAreaChart
+			areaProps={{ radius: 8, isAnimationActive: true, animationDuration: 500 }}
+			curveType="linear"
+			{...props}
+		/>
+	);
+};
+
+const BarChart = (props: BarChartProps) => {
+	return (
+		<MantineBarChart
+			barChartProps={{ barCategoryGap: '15%' }}
+			barProps={{ radius: 8, isAnimationActive: true, maxBarSize: 50 }}
+			{...props}
+		/>
+	);
+};
+
+const Chart = ({ type, label, data }: ChartProps) => {
 	const [searchParams] = useSearchParams();
 	const period = searchParams.get('period') as Period | null;
 
 	const dateFormatter = useMemo(() => {
-		switch (true) {
-			case period === null:
-			case period === undefined:
-			case period === PERIODS.TODAY:
-			case period === PERIODS.YESTERDAY:
-			case period?.endsWith('h'): {
-				return (date: Date) => format(date, 'HH:mm');
-			}
-			case period?.endsWith('d') && Number.parseInt(period) <= 7: {
+		if (
+			period === null ||
+			period === undefined ||
+			period === PERIODS.TODAY ||
+			period === PERIODS.YESTERDAY ||
+			period?.endsWith('h')
+		) {
+			return (date: Date) => format(date, 'HH:mm');
+		}
+
+		if (period?.endsWith('d')) {
+			if (Number.parseInt(period) <= 7) {
 				return (date: Date) => format(date, 'EEEEEE, MMM d');
 			}
-			case period?.endsWith('d') && Number.parseInt(period) > 7:
-			case period === PERIODS.QUARTER: {
-				return (date: Date) => format(date, 'MMM d');
-			}
+
+			return (date: Date) => format(date, 'MMM d');
 		}
 
 		return (date: Date) => format(date, 'MMM, yyyy');
@@ -126,35 +156,36 @@ const BarChart = ({ label, data }: BarChartProps) => {
 		return formatCount;
 	}, [label]);
 
-	return (
-		<MantineBarChart
-			h={400}
-			my="xl"
-			data={data}
-			dataKey="date"
-			series={[{ name: 'value', label: 'Visitors', color: '#9D5DEF' }]}
-			barProps={{ radius: 8, isAnimationActive: true }}
-			tickLine="y"
-			xAxisProps={{
-				tickFormatter: (value) => dateFormatter(parseISO(value)),
-				minTickGap: 20,
-				interval: 'equidistantPreserveStart',
-			}}
-			valueFormatter={valueFormatter}
-			tooltipProps={{
-				content: ({ label: date, payload }) => (
-					<ChartTooltip
-						label={label}
-						date={date}
-						period={period}
-						payload={payload as TooltipPayload[]}
-						valueFormatter={valueFormatter}
-					/>
-				),
-			}}
-			strokeDasharray={0}
-		/>
-	);
+	const chartStyleProps: BarChartProps & AreaChartProps = {
+		h: 400,
+		my: 'xl',
+		data,
+		dataKey: 'date',
+		series: [{ name: 'value', label, color: '#9D5DEF' }],
+		tickLine: 'y',
+		xAxisProps: {
+			tickFormatter: (value: string) => dateFormatter(parseISO(value)),
+			minTickGap: 20,
+			interval: 'equidistantPreserveStart',
+		},
+		valueFormatter,
+		tooltipProps: {
+			content: ({ label: date, payload }) => (
+				<ChartTooltip
+					label={label}
+					date={date}
+					period={period}
+					payload={payload as TooltipPayload[]}
+					valueFormatter={valueFormatter}
+				/>
+			),
+		},
+		strokeDasharray: 0,
+	};
+
+	if (type === 'bar') return <BarChart {...chartStyleProps} />;
+	if (type === 'area') return <AreaChart {...chartStyleProps} />;
+	return null;
 };
 
-export { BarChart };
+export { Chart };

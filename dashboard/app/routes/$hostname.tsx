@@ -2,17 +2,18 @@ import {
 	Outlet,
 	json,
 	useLoaderData,
-	useSearchParams,
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
+	type ShouldRevalidateFunctionArgs,
 } from '@remix-run/react';
 import { useMemo } from 'react';
 
 import { userLoggedIn } from '@/api/user';
-import { BarChart } from '@/components/stats/Chart';
+import { Chart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
 import { StatsHeader } from '@/components/stats/StatsHeader';
 import type { StatHeaderData } from '@/components/stats/types';
+import { useChartType } from '@/hooks/use-chart-type';
 import { fetchStats } from '@/utils/stats';
 
 export const meta: MetaFunction = () => {
@@ -27,7 +28,7 @@ export const clientLoader = async ({
 
 	// Check chart param for the chart data to display
 	const searchParams = new URL(request.url).searchParams;
-	const chart = searchParams.get('chart');
+	const chart = searchParams.get('chart[stat]');
 
 	const stats = await fetchStats(request, params, {
 		dataset: ['summary'],
@@ -47,11 +48,11 @@ const LABEL_MAP = {
 export default function Index() {
 	const { summary } = useLoaderData<typeof clientLoader>();
 	if (!summary) throw new Error('Summary data is required');
-
-	const [searchParams] = useSearchParams();
-	const chart = searchParams.get('chart') || 'visitors';
-
 	const { current, previous } = summary;
+
+	const { getChartStat, getChartType } = useChartType();
+	const chart = getChartStat();
+	const type = getChartType();
 
 	const stats: StatHeaderData[] = [
 		{
@@ -107,9 +108,30 @@ export default function Index() {
 			<StatsHeader stats={stats} chart={chart} />
 			<main>
 				<Filters />
-				{summary.interval && <BarChart label={label} data={chartData} />}
+				{summary.interval && (
+					<Chart type={type} label={label} data={chartData} />
+				)}
 				<Outlet />
 			</main>
 		</>
 	);
 }
+
+export const shouldRevalidate = ({
+	currentUrl,
+	nextUrl,
+	defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) => {
+	const currentParams = new URL(currentUrl).searchParams;
+	const nextParams = new URL(nextUrl).searchParams;
+	if (
+		// We don't want to revalidate if the chart type or stat changes as
+		// the data doesn't change, only the presentation.
+		currentParams.get('chart[type]') !== nextParams.get('chart[type]') ||
+		currentParams.get('chart[stat]') !== nextParams.get('chart[stat]')
+	) {
+		return false;
+	}
+
+	return defaultShouldRevalidate;
+};

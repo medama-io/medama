@@ -67,6 +67,7 @@ interface StatsGroups {
 }
 
 type ChartStat = 'visitors' | 'pageviews' | 'duration' | 'bounces';
+type ChartType = 'area' | 'bar';
 
 interface StatHeaderData {
 	label: string;
@@ -78,6 +79,7 @@ interface StatHeaderData {
 export { DATASETS };
 export type {
 	ChartStat,
+	ChartType,
 	DataRow,
 	Dataset,
 	StatHeaderData,
