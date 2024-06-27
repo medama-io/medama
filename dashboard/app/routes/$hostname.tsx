@@ -9,7 +9,7 @@ import {
 import { useMemo } from 'react';
 
 import { userLoggedIn } from '@/api/user';
-import { BarChart } from '@/components/stats/Chart';
+import { Chart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
 import { StatsHeader } from '@/components/stats/StatsHeader';
 import type { StatHeaderData } from '@/components/stats/types';
@@ -107,7 +107,12 @@ export default function Index() {
 			<StatsHeader stats={stats} chart={chart} />
 			<main>
 				<Filters />
-				{summary.interval && <BarChart label={label} data={chartData} />}
+				{summary.interval && (
+					<>
+						<Chart type="bar" label={label} data={chartData} />
+						<Chart type="area" label={label} data={chartData} />
+					</>
+				)}
 				<Outlet />
 			</main>
 		</>
