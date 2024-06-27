@@ -4,6 +4,7 @@ import {
 	useLoaderData,
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
+	type ShouldRevalidateFunctionArgs,
 } from '@remix-run/react';
 import { useMemo } from 'react';
 
@@ -115,3 +116,22 @@ export default function Index() {
 		</>
 	);
 }
+
+export const shouldRevalidate = ({
+	currentUrl,
+	nextUrl,
+	defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) => {
+	const currentParams = new URL(currentUrl).searchParams;
+	const nextParams = new URL(nextUrl).searchParams;
+	if (
+		// We don't want to revalidate if the chart type or stat changes as
+		// the data doesn't change, only the presentation.
+		currentParams.get('chart[type]') !== nextParams.get('chart[type]') ||
+		currentParams.get('chart[stat]') !== nextParams.get('chart[stat]')
+	) {
+		return false;
+	}
+
+	return defaultShouldRevalidate;
+};
