@@ -32,6 +32,7 @@ import '@mantine/core/styles/NavLink.css';
 import '@mantine/core/styles/Tabs.css';
 // Feedback
 import '@mantine/core/styles/Skeleton.css';
+import '@mantine/core/styles/Tooltip.css';
 // Misc
 import '@mantine/core/styles/Modal.css';
 import '@mantine/core/styles/ColorSwatch.css';

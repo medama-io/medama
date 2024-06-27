@@ -132,12 +132,12 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 
 const CHART_TYPES = [
 	{
-		label: 'Toggle Area Chart',
+		label: 'Toggle area chart',
 		value: 'area',
 		icon: <IconAreaChart />,
 	},
 	{
-		label: 'Toggle Bar Chart',
+		label: 'Toggle bar chart',
 		value: 'bar',
 		icon: <IconBarChart />,
 	},
@@ -162,16 +162,18 @@ const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
 	};
 
 	const chartTypes = CHART_TYPES.map((item) => (
-		<UnstyledButton
-			key={item.value}
-			className={classes.control}
-			ref={setControlRef(item.value)}
-			aria-label={item.label}
-			onClick={() => handleChartChange(item.value)}
-			data-active={chartType === item.value}
-		>
-			<span className={classes.controlLabel}>{item.icon}</span>
-		</UnstyledButton>
+		<Tooltip key={item.value} label={item.label} withArrow>
+			<UnstyledButton
+				key={item.value}
+				className={classes.control}
+				ref={setControlRef(item.value)}
+				aria-label={item.label}
+				onClick={() => handleChartChange(item.value)}
+				data-active={chartType === item.value}
+			>
+				<span className={classes.controlLabel}>{item.icon}</span>
+			</UnstyledButton>
+		</Tooltip>
 	));
 
 	return (
@@ -191,7 +193,7 @@ const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
 					))}
 				</Group>
 				<div className={classes.toggle} ref={setRootRef}>
-					{chartTypes}
+					<Tooltip.Group openDelay={1000}>{chartTypes}</Tooltip.Group>
 					<FloatingIndicator
 						component="span"
 						className={classes.indicator}
