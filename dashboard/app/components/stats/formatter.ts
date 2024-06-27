@@ -19,7 +19,7 @@ const percentFormatter: Formatter = Intl.NumberFormat(languages, {
 // Convert duration in milliseconds to a human readable format
 export const formatDuration: Formatter = (durationMs = 0) => {
 	if (durationMs === 0) {
-		return 'N/A';
+		return '0s';
 	}
 
 	const totalSeconds = Math.floor(durationMs / 1000);
@@ -33,11 +33,7 @@ export const formatDuration: Formatter = (durationMs = 0) => {
 	}
 
 	if (minutes === 0) {
-		if (seconds === 0) {
-			return '0s';
-		}
-
-		if (seconds < 1) {
+		if (milliseconds < 1000) {
 			return `0.${Math.floor(milliseconds / 100)}s`;
 		}
 
