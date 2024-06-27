@@ -66,6 +66,9 @@ const ChartTooltip = React.memo(
 	({ label, date, period, payload, valueFormatter }: ChartTooltipProps) => {
 		if (!payload || !label || !date) return null;
 
+		const item = payload[0];
+		if (!item) return null;
+
 		const dateTimeFormat = useMemo(() => {
 			if (
 				period === null ||
@@ -89,15 +92,13 @@ const ChartTooltip = React.memo(
 				<Text fw={500} mb="xs">
 					{dateTimeFormat.format(parseISO(date))}
 				</Text>
-				{payload.map((item) => (
-					<Group key={item.name} gap="xs" justify="space-between">
-						<Group gap="sm">
-							<ColorSwatch color={item.color} size={12} withShadow={false} />
-							<Text fz="sm">{label}</Text>
-						</Group>
-						<Text fz="sm">{valueFormatter(item.value)}</Text>
+				<Group gap="xs" justify="space-between">
+					<Group gap="sm">
+						<ColorSwatch color={item.color} size={12} withShadow={false} />
+						<Text fz="sm">{label}</Text>
 					</Group>
-				))}
+					<Text fz="sm">{valueFormatter(item.value)}</Text>
+				</Group>
 			</Paper>
 		);
 	},
