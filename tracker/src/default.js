@@ -127,6 +127,62 @@ var DurationPayload;
 	const historyReplace = history.replaceState;
 
 	/**
+	 * Cleanup temporary variables and reset the unique ID.
+	 */
+	const cleanup = () => {
+		// Main ping cache won't be called again, so we can assume the user is not unique.
+		// However, isFirstVisit will be called on each page load, so we don't need to reset it.
+		isUnique = false;
+		uid = generateUid();
+		hiddenStartTime = 0;
+		hiddenTotalTime = Date.now();
+		isUnloadCalled = false;
+	};
+
+	/**
+	 * Strips the query string from a URL.
+	 * @param {string | URL} url - The URL to strip.
+	 * @returns {string} The URL without the query string.
+	 */
+	const stripQuery = (url) => url.toString().split('?')[0];
+
+	/**
+	 * Compares two URLs ignoring query parameters.
+	 * @param {string | URL} url1 - The first URL to compare.
+	 * @param {string | URL} url2 - The second URL to compare.
+	 * @returns {boolean} True if the URLs have the same path, false otherwise.
+	 */
+	const isSamePath = (url1, url2) => stripQuery(url1) === stripQuery(url2);
+
+	/**
+	 * Wraps a history method with additional tracking events.
+	 * @param {!Function} original - The original history method to wrap.
+	 * @returns {function(this:History, *, string, (string | URL)=): void} The wrapped history method.
+	 */
+	const wrapHistoryFunc = (
+		original,
+		/**
+		 * @this {History}
+		 * @param {*} _state - The state object.
+		 * @param {string} _unused - The title (unused).
+		 * @param {(string | URL)=} url - The URL to navigate to.
+		 * @returns {void}
+		 */
+	) =>
+		function (_state, _unused, url) {
+			if (url && !isSamePath(location.href, url)) {
+				sendUnloadBeacon();
+				// If the event is a history change, then we need to reset the id and timers
+				// because the page is not actually reloading the script.
+				cleanup();
+				original.apply(this, arguments);
+				sendLoadBeacon();
+			} else {
+				original.apply(this, arguments);
+			}
+		};
+
+	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
 	 * if the user is unique or not.
 	 *
@@ -147,19 +203,6 @@ var DurationPayload;
 			xhr.setRequestHeader('Content-Type', 'text/plain');
 			xhr.send();
 		});
-
-	/**
-	 * Cleanup temporary variables and reset the unique ID.
-	 */
-	const cleanup = () => {
-		// Main ping cache won't be called again, so we can assume the user is not unique.
-		// However, isFirstVisit will be called on each page load, so we don't need to reset it.
-		isUnique = false;
-		uid = generateUid();
-		hiddenStartTime = 0;
-		hiddenTotalTime = Date.now();
-		isUnloadCalled = false;
-	};
 
 	/**
 	 * Send a load beacon event to the server when the page is loaded.
@@ -302,25 +345,13 @@ var DurationPayload;
 				},
 			);
 		} else {
-			// Add pushState event listeners to track navigation changes with
-			// router libraries that use the History API.
-			history.pushState = function () {
-				sendUnloadBeacon();
-				// If the event is a history change, then we need to reset the id and timers
-				// because the page is not actually reloading the script.
-				cleanup();
-				historyPush.apply(history, arguments);
-				sendLoadBeacon();
-			};
+			//Add pushState event listeners to track navigation changes with
+			//router libraries that use the History API.
+			history.pushState = wrapHistoryFunc(historyPush);
 
 			// replaceState is used by some router libraries to replace the current
 			// history state instead of pushing a new one.
-			history.replaceState = function () {
-				sendUnloadBeacon();
-				cleanup();
-				historyReplace.apply(history, arguments);
-				sendLoadBeacon();
-			};
+			history.replaceState = wrapHistoryFunc(historyReplace);
 
 			// popstate is fired when the back or forward button is pressed.
 			// We use window instead of document here because the document state
