@@ -50,15 +50,18 @@ const formatTooltipLabel = (
 	if (stat.previous === undefined || status === 'zero')
 		return 'No change since yesterday.';
 
+	let changeValue: string | number = Math.abs(stat.current - stat.previous);
+
 	const isPercentage = stat.chart === 'bounces';
 	const isDuration = stat.chart === 'duration';
 
-	// Rely on Intl.NumberFormat to format the values according to the user's locale
-	const changeValue = isPercentage
-		? `${Math.abs(stat.current - stat.previous).toFixed(2)}%`
-		: isDuration
-			? formatDuration(Math.abs(stat.current - stat.previous))
-			: Math.abs(stat.current - stat.previous);
+	if (isPercentage) {
+		changeValue = formatPercentage(changeValue);
+	}
+
+	if (isDuration) {
+		changeValue = formatDuration(Number(changeValue));
+	}
 
 	return status === 'positive'
 		? `Increased by ${changeValue} since yesterday.`
