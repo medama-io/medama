@@ -9,15 +9,12 @@ import {
 import { useForm } from '@mantine/form';
 import { Form, useSubmit } from '@remix-run/react';
 import { zodResolver } from 'mantine-form-zod-resolver';
-import { useState } from 'react';
-import { useTimezoneSelect, type ITimezone } from 'react-timezone-select';
 import isFQDN from 'validator/lib/isFQDN';
 import { z } from 'zod';
 
 import { IconArrowRight } from '@/components/icons/arrow-right';
 
 import classes from './Add.module.css';
-import { TimezoneSelect } from './TimezoneSelect';
 
 interface AddProps {
 	close: () => void;
@@ -38,14 +35,6 @@ export const Add = ({ close }: AddProps) => {
 		initialValues: { hostname: '' },
 		validate: zodResolver(addWebsiteSchema),
 	});
-
-	const { options: tzOptions, parseTimezone } = useTimezoneSelect({
-		labelStyle: 'abbrev',
-	});
-
-	const [timezone, setTimezone] = useState<ITimezone>(
-		parseTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone),
-	);
 
 	const resetAndClose = () => {
 		form.reset();
@@ -82,12 +71,6 @@ export const Add = ({ close }: AddProps) => {
 					mt="md"
 					autoComplete="off"
 					data-autofocus
-				/>
-				<TimezoneSelect
-					timezone={timezone}
-					setTimezone={setTimezone}
-					parseTimezone={parseTimezone}
-					tzOptions={tzOptions}
 				/>
 				<UnstyledButton className={classes.submit} mt="xl" type="submit">
 					<span>Add Website</span>
