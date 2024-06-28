@@ -10,15 +10,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IconChevronLeft } from '@/components/icons/chevronleft';
 import { IconChevronRight } from '@/components/icons/chevronright';
+import { useFilter } from '@/hooks/use-filter';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
-import type { DataRow } from './types';
+import type { DataRow, Dataset, Filter } from './types';
 
 import classes from './StatsTable.module.css';
 
-type QueryType = keyof typeof LABEL_MAP;
-
-const LABEL_MAP = {
+const LABEL_MAP: Record<Dataset, string> = {
 	pages: 'Pages',
 	time: 'Time Spent',
 	referrers: 'Referrers',
@@ -32,7 +31,7 @@ const LABEL_MAP = {
 	languages: 'Languages',
 } as const;
 
-const ACCESSOR_MAP: Record<QueryType, keyof DataRow> = {
+const ACCESSOR_MAP: Record<Dataset, keyof DataRow> = {
 	pages: 'path',
 	time: 'duration',
 	referrers: 'referrer',
@@ -46,7 +45,7 @@ const ACCESSOR_MAP: Record<QueryType, keyof DataRow> = {
 	languages: 'language',
 } as const;
 
-const FILTER_MAP: Record<string, string | undefined> = {
+const FILTER_MAP: Record<Dataset, Filter> = {
 	pages: 'path',
 	time: 'path',
 	referrers: 'referrer',
@@ -133,7 +132,7 @@ const sortBy =
 			a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0;
 
 interface QueryTableProps {
-	query: QueryType;
+	query: Dataset;
 	data: DataRow[];
 }
 
@@ -179,18 +178,16 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 		[],
 	);
 
-	const [searchParams, setSearchParams] = useSearchParams();
+	const { addFilter } = useFilter();
 
 	const handleFilter: DataRowClick = (row) => {
 		const { record } = row;
-		const params = new URLSearchParams(searchParams);
 		const filter = FILTER_MAP[query] ?? 'path';
 		const value =
 			query === 'time'
 				? record.path
 				: record[ACCESSOR_MAP[query]] || 'Direct/None';
-		params.append(`${filter}[eq]`, String(value));
-		setSearchParams(params, { preventScrollReset: true });
+		addFilter(filter, 'eq', String(value));
 	};
 
 	// Reset page when query changes.
@@ -288,7 +285,7 @@ const TablePagination = ({
 	);
 };
 
-const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
+const getColumnsForQuery = (query: Dataset): DataTableColumn<DataRow>[] => {
 	switch (query) {
 		case 'pages':
 			return [
@@ -374,7 +371,7 @@ const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
 };
 
 interface StatsTableProps {
-	query: QueryType;
+	query: Dataset;
 	data: DataRow[];
 }
 
