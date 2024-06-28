@@ -15,7 +15,9 @@
 Medama Analytics is an open-source project dedicated to providing self-hostable, cookie-free website analytics. With a lightweight tracker of less than 1KB, it aims to offer useful analytics while prioritising user privacy.
 
 <p align="center">
-    <img src="./.github/images/demo.png" alt="Demo Screenshot" width="50%" height="50%">
+    <a href="https://demo.medama.io" target="_blank">
+        <img src="./.github/images/demo.png" alt="Demo Screenshot" width="70%" height="70%">
+    </a>
 </p>
 
 ### Features
