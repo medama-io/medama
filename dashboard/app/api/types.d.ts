@@ -342,6 +342,8 @@ export interface components {
     StatsTime: {
         /** @description Pathname of the page. */
         path: string;
+        /** @description Number of unique visitors for given page. */
+        visitors?: number;
         /** @description Median time spent on page in milliseconds. */
         duration: number;
         /** @description Total time spent on page in milliseconds for the upper quartile (75%). */
@@ -353,8 +355,6 @@ export interface components {
          * @description Percentage of time contributing to the total time spent on the website.
          */
         duration_percentage: number;
-        /** @description Number of unique visitors for given page. */
-        visitors?: number;
       }[];
     /** StatsReferrers */
     StatsReferrers: {

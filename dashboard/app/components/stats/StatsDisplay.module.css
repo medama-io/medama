@@ -29,29 +29,6 @@
 	}
 }
 
-.stat-item {
-	height: 50px;
-	margin: 6px 8px;
-	padding: 7px 16px;
-	width: calc(100% - 16px);
-
-	border-radius: 8px;
-
-	cursor: pointer;
-
-	&:last-child {
-		margin-bottom: 0;
-	}
-
-	&:hover {
-		background-color: var(--me-color-bg-grey);
-	}
-}
-
-.bar {
-	border: 1px solid var(--me-color-border-violet);
-}
-
 .more {
 	width: 100%;
 	padding: 8px 16px;

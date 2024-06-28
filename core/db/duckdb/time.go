@@ -38,9 +38,9 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 		SELECT
 			pathname,
 			duration,
-			ifnull(ROUND(total_duration / (SELECT SUM(total_duration) FROM durations) * 100.0, 4), 0) AS duration_percentage
+			ifnull(ROUND(total_duration / (SELECT SUM(total_duration) FROM durations), 4), 0) AS duration_percentage
 		FROM durations
-		ORDER BY visitors DESC, duration DESC, pathname ASC`)
+		ORDER BY duration_percentage DESC, duration DESC, visitors DESC, pathname ASC`)
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
@@ -99,7 +99,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 			duration,
 			duration_upper_quartile,
 			duration_lower_quartile,
-			ifnull(ROUND(total_duration / (SELECT SUM(total_duration) FROM durations) * 100.0, 4), 0) AS duration_percentage,
+			ifnull(ROUND(total_duration / (SELECT SUM(total_duration) FROM durations), 4), 0) AS duration_percentage,
 			visitors
 		FROM durations
 		ORDER BY visitors DESC, duration DESC, pathname ASC`)

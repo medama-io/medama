@@ -122,8 +122,7 @@ const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
 		accessor: 'duration_percentage',
 		title: 'Duration %',
 		sortable: true,
-		render: (record) =>
-			formatPercentage((record.duration_percentage ?? 0) / 100),
+		render: (record) => formatPercentage(record.duration_percentage ?? 0),
 	},
 };
 

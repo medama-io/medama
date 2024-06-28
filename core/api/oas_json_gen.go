@@ -4037,6 +4037,12 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 		e.Str(s.Path)
 	}
 	{
+		if s.Visitors.Set {
+			e.FieldStart("visitors")
+			s.Visitors.Encode(e)
+		}
+	}
+	{
 		e.FieldStart("duration")
 		e.Int(s.Duration)
 	}
@@ -4056,21 +4062,15 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("duration_percentage")
 		e.Float32(s.DurationPercentage)
 	}
-	{
-		if s.Visitors.Set {
-			e.FieldStart("visitors")
-			s.Visitors.Encode(e)
-		}
-	}
 }
 
 var jsonFieldsNameOfStatsTimeItem = [6]string{
 	0: "path",
-	1: "duration",
-	2: "duration_upper_quartile",
-	3: "duration_lower_quartile",
-	4: "duration_percentage",
-	5: "visitors",
+	1: "visitors",
+	2: "duration",
+	3: "duration_upper_quartile",
+	4: "duration_lower_quartile",
+	5: "duration_percentage",
 }
 
 // Decode decodes StatsTimeItem from json.
@@ -4094,8 +4094,18 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"path\"")
 			}
+		case "visitors":
+			if err := func() error {
+				s.Visitors.Reset()
+				if err := s.Visitors.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"visitors\"")
+			}
 		case "duration":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Int()
 				s.Duration = int(v)
@@ -4127,7 +4137,7 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"duration_lower_quartile\"")
 			}
 		case "duration_percentage":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				v, err := d.Float32()
 				s.DurationPercentage = float32(v)
@@ -4137,16 +4147,6 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"duration_percentage\"")
-			}
-		case "visitors":
-			if err := func() error {
-				s.Visitors.Reset()
-				if err := s.Visitors.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"visitors\"")
 			}
 		default:
 			return d.Skip()
@@ -4158,7 +4158,7 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00010011,
+		0b00100101,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

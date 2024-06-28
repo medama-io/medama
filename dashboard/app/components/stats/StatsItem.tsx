@@ -1,9 +1,11 @@
 import { Group, Text, UnstyledButton } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
+import { useHover } from '@mantine/hooks';
 
 import React, { useMemo } from 'react';
 import { formatCount, formatDuration } from './formatter';
-import classes from './StatsDisplay.module.css';
+
+import classes from './StatsItem.module.css';
 
 interface StatsItemProps {
 	label: string;
@@ -31,6 +33,7 @@ const StatsItem = ({
 	tab,
 }: StatsItemProps) => {
 	const [searchParams, setSearchParams] = useSearchParams();
+	const { hovered, ref } = useHover<HTMLButtonElement>();
 
 	const formattedValue = useMemo(
 		() => (tab === 'Time' ? formatDuration(count) : formatCount(count)),
@@ -46,17 +49,29 @@ const StatsItem = ({
 
 	return (
 		<UnstyledButton
-			className={classes['stat-item']}
+			className={classes.item}
 			onClick={handleFilter}
 			aria-label={`Filter by ${label}`}
+			ref={ref}
 		>
 			<Group justify="space-between" pb={6}>
 				<Text fz={14} truncate>
 					{label}
 				</Text>
-				<Text fw={600} fz={14}>
-					{formattedValue}
-				</Text>
+				<Group align="center" gap="xs">
+					<Text
+						component="span"
+						fz={12}
+						c="gray"
+						mr={4}
+						data-active={hovered ? 'true' : undefined}
+					>
+						{(percentage * 100).toFixed(1)}%
+					</Text>
+					<Text fw={600} fz={14}>
+						{formattedValue}
+					</Text>
+				</Group>
 			</Group>
 			<div
 				className={classes.bar}
