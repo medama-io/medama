@@ -4062,22 +4062,15 @@ func (s *StatsTimeItem) encodeFields(e *jx.Encoder) {
 			s.Visitors.Encode(e)
 		}
 	}
-	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
-		}
-	}
 }
 
-var jsonFieldsNameOfStatsTimeItem = [7]string{
+var jsonFieldsNameOfStatsTimeItem = [6]string{
 	0: "path",
 	1: "duration",
 	2: "duration_upper_quartile",
 	3: "duration_lower_quartile",
 	4: "duration_percentage",
 	5: "visitors",
-	6: "bounces",
 }
 
 // Decode decodes StatsTimeItem from json.
@@ -4154,16 +4147,6 @@ func (s *StatsTimeItem) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors\"")
-			}
-		case "bounces":
-			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
 			}
 		default:
 			return d.Skip()

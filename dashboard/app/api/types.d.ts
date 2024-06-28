@@ -355,8 +355,6 @@ export interface components {
         duration_percentage: number;
         /** @description Number of unique visitors for given page. */
         visitors?: number;
-        /** @description Number of bounces. */
-        bounces?: number;
       }[];
     /** StatsReferrers */
     StatsReferrers: {

@@ -277,7 +277,6 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 				DurationPercentage:    page.DurationPercentage,
 				DurationUpperQuartile: api.NewOptInt(page.DurationUpperQuartile),
 				DurationLowerQuartile: api.NewOptInt(page.DurationLowerQuartile),
-				Bounces:               api.NewOptInt(page.Bounces),
 				Visitors:              api.NewOptInt(page.Visitors),
 			})
 		}

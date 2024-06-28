@@ -70,7 +70,10 @@ type PresetDataKeys =
 	| 'pageviews'
 	| 'pageviews_percentage'
 	| 'bounce_rate'
-	| 'duration';
+	| 'duration'
+	| 'duration_lower_quartile'
+	| 'duration_upper_quartile'
+	| 'duration_percentage';
 
 const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
 	path: { accessor: 'path', title: 'Path', width: '100%' },
@@ -102,6 +105,25 @@ const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
 		title: 'Duration',
 		sortable: true,
 		render: (record) => formatDuration(record.duration ?? 0),
+	},
+	duration_lower_quartile: {
+		accessor: 'duration_lower_quartile',
+		title: 'Q1 (25%)',
+		sortable: true,
+		render: (record) => formatDuration(record.duration_lower_quartile ?? 0),
+	},
+	duration_upper_quartile: {
+		accessor: 'duration_upper_quartile',
+		title: 'Q3 (75%)',
+		sortable: true,
+		render: (record) => formatDuration(record.duration_upper_quartile ?? 0),
+	},
+	duration_percentage: {
+		accessor: 'duration_percentage',
+		title: 'Duration %',
+		sortable: true,
+		render: (record) =>
+			formatPercentage((record.duration_percentage ?? 0) / 100),
 	},
 };
 
@@ -268,46 +290,25 @@ const TablePagination = ({
 };
 
 const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
-	const commonColumns = [
-		PRESET_COLUMNS.visitors,
-		PRESET_COLUMNS.visitors_percentage,
-		PRESET_COLUMNS.bounce_rate,
-		PRESET_COLUMNS.duration,
-	];
-
 	switch (query) {
 		case 'pages':
 			return [
 				PRESET_COLUMNS.path,
-				...commonColumns,
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
 				PRESET_COLUMNS.pageviews,
 				PRESET_COLUMNS.pageviews_percentage,
+				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.duration,
 			];
 		case 'time':
 			return [
 				PRESET_COLUMNS.path,
-				...commonColumns,
-				{
-					accessor: 'duration_lower_quartile',
-					title: 'Q1 (25%)',
-					sortable: true,
-					render: (record) =>
-						formatDuration(record.duration_lower_quartile ?? 0),
-				},
-				{
-					accessor: 'duration_upper_quartile',
-					title: 'Q3 (75%)',
-					sortable: true,
-					render: (record) =>
-						formatDuration(record.duration_upper_quartile ?? 0),
-				},
-				{
-					accessor: 'duration_percentage',
-					title: 'Duration %',
-					sortable: true,
-					render: (record) =>
-						formatPercentage((record.duration_percentage ?? 0) / 100),
-				},
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.duration,
+				PRESET_COLUMNS.duration_lower_quartile,
+				PRESET_COLUMNS.duration_upper_quartile,
+				PRESET_COLUMNS.duration_percentage,
 			];
 		case 'referrers':
 		case 'sources':
@@ -315,25 +316,32 @@ const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
 		case 'campaigns':
 			return [
 				{
+					// Referrer, Source, Medium, Campaign
 					accessor: ACCESSOR_MAP[query],
 					title: LABEL_MAP[query].slice(0, -1),
 					width: '100%',
 					render: (record) => record[ACCESSOR_MAP[query]] || 'Direct/None',
 				},
-				...commonColumns,
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
+				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.duration,
 			];
 		case 'browsers':
-
 		case 'devices':
 		case 'languages':
 			return [
 				{
+					// Browser, Device, Language
 					accessor: ACCESSOR_MAP[query],
 					title: LABEL_MAP[query].slice(0, -1),
 					width: '100%',
 					render: (record) => record[ACCESSOR_MAP[query]] || 'Unknown',
 				},
-				...commonColumns,
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
+				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.duration,
 			];
 		case 'os':
 			return [
@@ -343,7 +351,10 @@ const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
 					width: '100%',
 					render: (record) => record.os || 'Unknown',
 				},
-				...commonColumns,
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
+				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.duration,
 			];
 		case 'countries':
 			return [
@@ -353,7 +364,10 @@ const getColumnsForQuery = (query: QueryType): DataTableColumn<DataRow>[] => {
 					width: '100%',
 					render: (record) => record.country || 'Unknown',
 				},
-				...commonColumns,
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
+				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.duration,
 			];
 		default:
 			throw new Error(`Invalid query: ${query}`);

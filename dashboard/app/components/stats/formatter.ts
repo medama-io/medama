@@ -18,29 +18,19 @@ const percentFormatter: Formatter = Intl.NumberFormat(languages, {
 
 // Convert duration in milliseconds to a human readable format
 export const formatDuration: Formatter = (durationMs = 0) => {
-	if (durationMs === 0) {
-		return '0s';
-	}
+	let milliseconds = durationMs;
+	if (milliseconds === 0 || milliseconds < 50) return 'N/A';
 
-	const totalSeconds = Math.floor(durationMs / 1000);
-	const hours = Math.floor(totalSeconds / 3600);
-	const minutes = Math.floor((totalSeconds % 3600) / 60);
-	const seconds = totalSeconds % 60;
-	const milliseconds = durationMs % 1000;
+	const hours = Math.floor(milliseconds / 3600000);
+	milliseconds %= 3600000;
+	const minutes = Math.floor(milliseconds / 60000);
+	milliseconds %= 60000;
+	const seconds = Math.round(milliseconds / 1000);
 
-	if (hours > 0) {
-		return `${hours}h${minutes}m${seconds}s`;
-	}
-
-	if (minutes === 0) {
-		if (milliseconds < 1000) {
-			return `0.${Math.floor(milliseconds / 100)}s`;
-		}
-
-		return `${seconds}s`;
-	}
-
-	return `${minutes}m${seconds}s`;
+	if (hours > 0) return `${hours}h${minutes}m${seconds}s`;
+	if (minutes > 0) return `${minutes}m${seconds}s`;
+	if (seconds > 0) return `${seconds}s`;
+	return `0.${Math.round(milliseconds / 100)}s`;
 };
 
 // Format percentage value

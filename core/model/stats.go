@@ -57,7 +57,6 @@ type StatsTime struct {
 	DurationLowerQuartile int `db:"duration_lower_quartile"`
 	Pageviews             int `db:"pageviews"`
 	Visitors              int `db:"visitors"`
-	Bounces               int `db:"bounces"`
 }
 
 type StatsReferrerSummary struct {

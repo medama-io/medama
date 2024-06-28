@@ -1960,8 +1960,6 @@ type StatsTimeItem struct {
 	DurationPercentage float32 `json:"duration_percentage"`
 	// Number of unique visitors for given page.
 	Visitors OptInt `json:"visitors"`
-	// Number of bounces.
-	Bounces OptInt `json:"bounces"`
 }
 
 // GetPath returns the value of Path.
@@ -1994,11 +1992,6 @@ func (s *StatsTimeItem) GetVisitors() OptInt {
 	return s.Visitors
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsTimeItem) GetBounces() OptInt {
-	return s.Bounces
-}
-
 // SetPath sets the value of Path.
 func (s *StatsTimeItem) SetPath(val string) {
 	s.Path = val
@@ -2027,11 +2020,6 @@ func (s *StatsTimeItem) SetDurationPercentage(val float32) {
 // SetVisitors sets the value of Visitors.
 func (s *StatsTimeItem) SetVisitors(val OptInt) {
 	s.Visitors = val
-}
-
-// SetBounces sets the value of Bounces.
-func (s *StatsTimeItem) SetBounces(val OptInt) {
-	s.Bounces = val
 }
 
 type StatsUTMCampaigns []StatsUTMCampaignsItem
