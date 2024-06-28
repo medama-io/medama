@@ -1,33 +1,33 @@
 
 [TestGetWebsiteTime/Base - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/about Duration:5002 DurationPercentage:33.33} DurationUpperQuartile:7496 DurationLowerQuartile:2493 Pageviews:0 Visitors:166895 Bounces:41828}
-&{StatsTimeSummary:{Pathname:/ Duration:5008 DurationPercentage:33.37} DurationUpperQuartile:7492 DurationLowerQuartile:2490 Pageviews:0 Visitors:166610 Bounces:41647}
-&{StatsTimeSummary:{Pathname:/contact Duration:4998 DurationPercentage:33.3} DurationUpperQuartile:7498 DurationLowerQuartile:2509 Pageviews:0 Visitors:166353 Bounces:41779}
+&{StatsTimeSummary:{Pathname:/about Duration:5002 DurationPercentage:0.3326} DurationUpperQuartile:7496 DurationLowerQuartile:2493 Pageviews:0 Visitors:166895}
+&{StatsTimeSummary:{Pathname:/ Duration:5008 DurationPercentage:0.3336} DurationUpperQuartile:7492 DurationLowerQuartile:2490 Pageviews:0 Visitors:166610}
+&{StatsTimeSummary:{Pathname:/contact Duration:4998 DurationPercentage:0.3337} DurationUpperQuartile:7498 DurationLowerQuartile:2509 Pageviews:0 Visitors:166353}
 
 ---
 
 [TestGetWebsiteTime/Browser - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/about Duration:5000 DurationPercentage:33.47} DurationUpperQuartile:7489 DurationLowerQuartile:2473 Pageviews:0 Visitors:55789 Bounces:13969}
-&{StatsTimeSummary:{Pathname:/ Duration:4983 DurationPercentage:33.36} DurationUpperQuartile:7476 DurationLowerQuartile:2458 Pageviews:0 Visitors:55260 Bounces:13995}
-&{StatsTimeSummary:{Pathname:/contact Duration:4956 DurationPercentage:33.17} DurationUpperQuartile:7465 DurationLowerQuartile:2500 Pageviews:0 Visitors:55121 Bounces:14002}
+&{StatsTimeSummary:{Pathname:/about Duration:5000 DurationPercentage:0.3336} DurationUpperQuartile:7489 DurationLowerQuartile:2473 Pageviews:0 Visitors:55789}
+&{StatsTimeSummary:{Pathname:/ Duration:4983 DurationPercentage:0.3327} DurationUpperQuartile:7476 DurationLowerQuartile:2458 Pageviews:0 Visitors:55260}
+&{StatsTimeSummary:{Pathname:/contact Duration:4956 DurationPercentage:0.3337} DurationUpperQuartile:7465 DurationLowerQuartile:2500 Pageviews:0 Visitors:55121}
 
 ---
 
 [TestGetWebsiteTime/Country - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:5041 DurationPercentage:33.67} DurationUpperQuartile:7486 DurationLowerQuartile:2511 Pageviews:0 Visitors:18558 Bounces:4632}
-&{StatsTimeSummary:{Pathname:/about Duration:4975 DurationPercentage:33.22} DurationUpperQuartile:7459 DurationLowerQuartile:2446 Pageviews:0 Visitors:18499 Bounces:4608}
-&{StatsTimeSummary:{Pathname:/contact Duration:4958 DurationPercentage:33.11} DurationUpperQuartile:7461 DurationLowerQuartile:2544 Pageviews:0 Visitors:18311 Bounces:4627}
+&{StatsTimeSummary:{Pathname:/ Duration:5041 DurationPercentage:0.3346} DurationUpperQuartile:7486 DurationLowerQuartile:2511 Pageviews:0 Visitors:18558}
+&{StatsTimeSummary:{Pathname:/about Duration:4975 DurationPercentage:0.33} DurationUpperQuartile:7459 DurationLowerQuartile:2446 Pageviews:0 Visitors:18499}
+&{StatsTimeSummary:{Pathname:/contact Duration:4958 DurationPercentage:0.3354} DurationUpperQuartile:7461 DurationLowerQuartile:2544 Pageviews:0 Visitors:18311}
 
 ---
 
 [TestGetWebsiteTime/Device - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:5107 DurationPercentage:34.09} DurationUpperQuartile:7535 DurationLowerQuartile:2559 Pageviews:0 Visitors:6305 Bounces:1534}
-&{StatsTimeSummary:{Pathname:/about Duration:4981 DurationPercentage:33.25} DurationUpperQuartile:7422 DurationLowerQuartile:2374 Pageviews:0 Visitors:6164 Bounces:1534}
-&{StatsTimeSummary:{Pathname:/contact Duration:4894 DurationPercentage:32.67} DurationUpperQuartile:7460 DurationLowerQuartile:2545 Pageviews:0 Visitors:6124 Bounces:1594}
+&{StatsTimeSummary:{Pathname:/ Duration:5107 DurationPercentage:0.3384} DurationUpperQuartile:7535 DurationLowerQuartile:2559 Pageviews:0 Visitors:6305}
+&{StatsTimeSummary:{Pathname:/about Duration:4981 DurationPercentage:0.3274} DurationUpperQuartile:7422 DurationLowerQuartile:2374 Pageviews:0 Visitors:6164}
+&{StatsTimeSummary:{Pathname:/contact Duration:4894 DurationPercentage:0.3342} DurationUpperQuartile:7460 DurationLowerQuartile:2545 Pageviews:0 Visitors:6124}
 
 ---
 
@@ -38,79 +38,79 @@ RECORDS:
 
 [TestGetWebsiteTime/Language - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:5145 DurationPercentage:34.4} DurationUpperQuartile:7523 DurationLowerQuartile:2607 Pageviews:0 Visitors:3230 Bounces:764}
-&{StatsTimeSummary:{Pathname:/about Duration:4936 DurationPercentage:33.01} DurationUpperQuartile:7388 DurationLowerQuartile:2390 Pageviews:0 Visitors:3075 Bounces:786}
-&{StatsTimeSummary:{Pathname:/contact Duration:4874 DurationPercentage:32.59} DurationUpperQuartile:7434 DurationLowerQuartile:2672 Pageviews:0 Visitors:3073 Bounces:789}
+&{StatsTimeSummary:{Pathname:/ Duration:5145 DurationPercentage:0.3397} DurationUpperQuartile:7523 DurationLowerQuartile:2607 Pageviews:0 Visitors:3230}
+&{StatsTimeSummary:{Pathname:/about Duration:4936 DurationPercentage:0.3288} DurationUpperQuartile:7388 DurationLowerQuartile:2390 Pageviews:0 Visitors:3075}
+&{StatsTimeSummary:{Pathname:/contact Duration:4874 DurationPercentage:0.3315} DurationUpperQuartile:7434 DurationLowerQuartile:2672 Pageviews:0 Visitors:3073}
 
 ---
 
 [TestGetWebsiteTime/OS - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:5098 DurationPercentage:34.29} DurationUpperQuartile:7503 DurationLowerQuartile:2572 Pageviews:0 Visitors:1073 Bounces:260}
-&{StatsTimeSummary:{Pathname:/about Duration:4845 DurationPercentage:32.59} DurationUpperQuartile:7325 DurationLowerQuartile:2388 Pageviews:0 Visitors:1068 Bounces:283}
-&{StatsTimeSummary:{Pathname:/contact Duration:4924 DurationPercentage:33.12} DurationUpperQuartile:7435 DurationLowerQuartile:2797 Pageviews:0 Visitors:944 Bounces:243}
+&{StatsTimeSummary:{Pathname:/ Duration:5098 DurationPercentage:0.349} DurationUpperQuartile:7503 DurationLowerQuartile:2572 Pageviews:0 Visitors:1073}
+&{StatsTimeSummary:{Pathname:/about Duration:4845 DurationPercentage:0.3289} DurationUpperQuartile:7325 DurationLowerQuartile:2388 Pageviews:0 Visitors:1068}
+&{StatsTimeSummary:{Pathname:/contact Duration:4924 DurationPercentage:0.3221} DurationUpperQuartile:7435 DurationLowerQuartile:2797 Pageviews:0 Visitors:944}
 
 ---
 
 [TestGetWebsiteTime/Pathname - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:5098 DurationPercentage:100} DurationUpperQuartile:7503 DurationLowerQuartile:2572 Pageviews:0 Visitors:1073 Bounces:260}
+&{StatsTimeSummary:{Pathname:/ Duration:5098 DurationPercentage:1} DurationUpperQuartile:7503 DurationLowerQuartile:2572 Pageviews:0 Visitors:1073}
 
 ---
 
 [TestGetWebsiteTime/Referrer - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:4728 DurationPercentage:100} DurationUpperQuartile:7404 DurationLowerQuartile:2293 Pageviews:0 Visitors:359 Bounces:91}
+&{StatsTimeSummary:{Pathname:/ Duration:4728 DurationPercentage:1} DurationUpperQuartile:7404 DurationLowerQuartile:2293 Pageviews:0 Visitors:359}
 
 ---
 
 [TestGetWebsiteTime/UTMCampaign - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:4732 DurationPercentage:100} DurationUpperQuartile:7502 DurationLowerQuartile:2291 Pageviews:0 Visitors:110 Bounces:25}
+&{StatsTimeSummary:{Pathname:/ Duration:4732 DurationPercentage:1} DurationUpperQuartile:7502 DurationLowerQuartile:2291 Pageviews:0 Visitors:110}
 
 ---
 
 [TestGetWebsiteTime/UTMMedium - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:6547 DurationPercentage:100} DurationUpperQuartile:8733 DurationLowerQuartile:2558 Pageviews:0 Visitors:36 Bounces:5}
+&{StatsTimeSummary:{Pathname:/ Duration:6547 DurationPercentage:1} DurationUpperQuartile:8733 DurationLowerQuartile:2558 Pageviews:0 Visitors:36}
 
 ---
 
 [TestGetWebsiteTime/UTMSource - 1]
 RECORDS:
-&{StatsTimeSummary:{Pathname:/ Duration:3389 DurationPercentage:100} DurationUpperQuartile:6698 DurationLowerQuartile:2220 Pageviews:0 Visitors:16 Bounces:2}
+&{StatsTimeSummary:{Pathname:/ Duration:3389 DurationPercentage:1} DurationUpperQuartile:6698 DurationLowerQuartile:2220 Pageviews:0 Visitors:16}
 
 ---
 
 [TestGetWebsiteTimeSummary/Base - 1]
 RECORDS:
-&{Pathname:/about Duration:5002 DurationPercentage:0.3333}
-&{Pathname:/ Duration:5008 DurationPercentage:0.3337}
-&{Pathname:/contact Duration:4998 DurationPercentage:0.333}
+&{Pathname:/contact Duration:4998 DurationPercentage:0.3337}
+&{Pathname:/ Duration:5008 DurationPercentage:0.3336}
+&{Pathname:/about Duration:5002 DurationPercentage:0.3326}
 
 ---
 
 [TestGetWebsiteTimeSummary/Browser - 1]
 RECORDS:
-&{Pathname:/about Duration:5000 DurationPercentage:0.3347}
-&{Pathname:/ Duration:4983 DurationPercentage:0.3336}
-&{Pathname:/contact Duration:4956 DurationPercentage:0.3317}
+&{Pathname:/contact Duration:4956 DurationPercentage:0.3337}
+&{Pathname:/about Duration:5000 DurationPercentage:0.3336}
+&{Pathname:/ Duration:4983 DurationPercentage:0.3327}
 
 ---
 
 [TestGetWebsiteTimeSummary/Country - 1]
 RECORDS:
-&{Pathname:/ Duration:5041 DurationPercentage:0.3367}
-&{Pathname:/about Duration:4975 DurationPercentage:0.3322}
-&{Pathname:/contact Duration:4958 DurationPercentage:0.3311}
+&{Pathname:/contact Duration:4958 DurationPercentage:0.3354}
+&{Pathname:/ Duration:5041 DurationPercentage:0.3346}
+&{Pathname:/about Duration:4975 DurationPercentage:0.33}
 
 ---
 
 [TestGetWebsiteTimeSummary/Device - 1]
 RECORDS:
-&{Pathname:/ Duration:5107 DurationPercentage:0.3409}
-&{Pathname:/about Duration:4981 DurationPercentage:0.3325}
-&{Pathname:/contact Duration:4894 DurationPercentage:0.3267}
+&{Pathname:/ Duration:5107 DurationPercentage:0.3384}
+&{Pathname:/contact Duration:4894 DurationPercentage:0.3342}
+&{Pathname:/about Duration:4981 DurationPercentage:0.3274}
 
 ---
 
@@ -121,17 +121,17 @@ RECORDS:
 
 [TestGetWebsiteTimeSummary/Language - 1]
 RECORDS:
-&{Pathname:/ Duration:5145 DurationPercentage:0.344}
-&{Pathname:/about Duration:4936 DurationPercentage:0.3301}
-&{Pathname:/contact Duration:4874 DurationPercentage:0.3259}
+&{Pathname:/ Duration:5145 DurationPercentage:0.3397}
+&{Pathname:/contact Duration:4874 DurationPercentage:0.3315}
+&{Pathname:/about Duration:4936 DurationPercentage:0.3288}
 
 ---
 
 [TestGetWebsiteTimeSummary/OS - 1]
 RECORDS:
-&{Pathname:/ Duration:5098 DurationPercentage:0.3429}
-&{Pathname:/about Duration:4845 DurationPercentage:0.3259}
-&{Pathname:/contact Duration:4924 DurationPercentage:0.3312}
+&{Pathname:/ Duration:5098 DurationPercentage:0.349}
+&{Pathname:/about Duration:4845 DurationPercentage:0.3289}
+&{Pathname:/contact Duration:4924 DurationPercentage:0.3221}
 
 ---
 
