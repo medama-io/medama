@@ -26,20 +26,21 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 		SELECT
 			pathname,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration
+			CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration,
+			SUM(duration_ms) AS total_duration
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING duration > 0`)
+	query.WriteString(` GROUP BY pathname HAVING duration > 0 AND visitors >= 3`)
 	query.WriteString(filter.PaginationString())
 	query.WriteString(`)`)
 	query.WriteString(`--sql
 		SELECT
 			pathname,
 			duration,
-			ifnull(ROUND(duration / (SELECT SUM(duration) FROM durations), 4), 0) AS duration_percentage
+			ifnull(ROUND(total_duration / (SELECT SUM(total_duration) FROM durations), 4), 0) AS duration_percentage
 		FROM durations
-		ORDER BY visitors DESC, duration DESC, pathname ASC`)
+		ORDER BY duration_percentage DESC, duration DESC, visitors DESC, pathname ASC`)
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
@@ -77,8 +78,6 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 	// DurationPercentage is the percentage the pathname contributes to the total duration.
 	//
 	// Visitors is the total number of unique visitors for the page.
-	//
-	// Bounces is the total number of bounces for the page.
 	query.WriteString(`--sql
 		WITH durations AS MATERIALIZED (
 		SELECT
@@ -87,11 +86,11 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 			CAST(ifnull(quantile_cont(duration_ms, 0.75), 0) AS INTEGER) AS duration_upper_quartile,
 			CAST(ifnull(quantile_cont(duration_ms, 0.25), 0) AS INTEGER) AS duration_lower_quartile,
 			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			COUNT(*) FILTER (WHERE is_unique_page = true AND duration_ms < 5000) AS bounces
+			SUM(duration_ms) AS total_duration
 		FROM views
 		WHERE `)
 	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING duration > 0`)
+	query.WriteString(` GROUP BY pathname HAVING duration > 0 AND duration_lower_quartile > 0 AND visitors >= 3`)
 	query.WriteString(filter.PaginationString())
 	query.WriteString(`)`)
 	query.WriteString(`--sql
@@ -100,9 +99,8 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 			duration,
 			duration_upper_quartile,
 			duration_lower_quartile,
-			ifnull(ROUND(duration * 100.0 / (SELECT SUM(duration) FROM durations), 2), 0) AS duration_percentage,
-			visitors,
-			bounces
+			ifnull(ROUND(total_duration / (SELECT SUM(total_duration) FROM durations), 4), 0) AS duration_percentage,
+			visitors
 		FROM durations
 		ORDER BY visitors DESC, duration DESC, pathname ASC`)
 

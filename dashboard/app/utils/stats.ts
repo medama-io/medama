@@ -39,7 +39,7 @@ interface FetchStatsOptions {
 	dataset?: Datasets;
 	limit?: number;
 	isSummary?: boolean;
-	chartStat: string;
+	chartStat?: string;
 }
 
 const isDatasetItem = (value: string): value is DatasetItem =>

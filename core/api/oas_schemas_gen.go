@@ -1950,6 +1950,8 @@ func (*StatsTime) getWebsiteIDTimeRes() {}
 type StatsTimeItem struct {
 	// Pathname of the page.
 	Path string `json:"path"`
+	// Number of unique visitors for given page.
+	Visitors OptInt `json:"visitors"`
 	// Median time spent on page in milliseconds.
 	Duration int `json:"duration"`
 	// Total time spent on page in milliseconds for the upper quartile (75%).
@@ -1958,15 +1960,16 @@ type StatsTimeItem struct {
 	DurationLowerQuartile OptInt `json:"duration_lower_quartile"`
 	// Percentage of time contributing to the total time spent on the website.
 	DurationPercentage float32 `json:"duration_percentage"`
-	// Number of unique visitors for given page.
-	Visitors OptInt `json:"visitors"`
-	// Number of bounces.
-	Bounces OptInt `json:"bounces"`
 }
 
 // GetPath returns the value of Path.
 func (s *StatsTimeItem) GetPath() string {
 	return s.Path
+}
+
+// GetVisitors returns the value of Visitors.
+func (s *StatsTimeItem) GetVisitors() OptInt {
+	return s.Visitors
 }
 
 // GetDuration returns the value of Duration.
@@ -1989,19 +1992,14 @@ func (s *StatsTimeItem) GetDurationPercentage() float32 {
 	return s.DurationPercentage
 }
 
-// GetVisitors returns the value of Visitors.
-func (s *StatsTimeItem) GetVisitors() OptInt {
-	return s.Visitors
-}
-
-// GetBounces returns the value of Bounces.
-func (s *StatsTimeItem) GetBounces() OptInt {
-	return s.Bounces
-}
-
 // SetPath sets the value of Path.
 func (s *StatsTimeItem) SetPath(val string) {
 	s.Path = val
+}
+
+// SetVisitors sets the value of Visitors.
+func (s *StatsTimeItem) SetVisitors(val OptInt) {
+	s.Visitors = val
 }
 
 // SetDuration sets the value of Duration.
@@ -2022,16 +2020,6 @@ func (s *StatsTimeItem) SetDurationLowerQuartile(val OptInt) {
 // SetDurationPercentage sets the value of DurationPercentage.
 func (s *StatsTimeItem) SetDurationPercentage(val float32) {
 	s.DurationPercentage = val
-}
-
-// SetVisitors sets the value of Visitors.
-func (s *StatsTimeItem) SetVisitors(val OptInt) {
-	s.Visitors = val
-}
-
-// SetBounces sets the value of Bounces.
-func (s *StatsTimeItem) SetBounces(val OptInt) {
-	s.Bounces = val
 }
 
 type StatsUTMCampaigns []StatsUTMCampaignsItem

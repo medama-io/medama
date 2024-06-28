@@ -1567,6 +1567,9 @@ components:
           path:
             type: string
             description: Pathname of the page.
+          visitors:
+            type: integer
+            description: Number of unique visitors for given page.
           duration:
             type: integer
             description: Median time spent on page in milliseconds.
@@ -1580,12 +1583,6 @@ components:
             type: number
             description: Percentage of time contributing to the total time spent on the website.
             format: float
-          visitors:
-            type: integer
-            description: Number of unique visitors for given page.
-          bounces:
-            type: integer
-            description: Number of bounces.
         required:
           - path
           - duration
