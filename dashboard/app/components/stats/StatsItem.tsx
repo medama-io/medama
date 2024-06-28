@@ -1,9 +1,11 @@
 import { Group, Text, UnstyledButton } from '@mantine/core';
-import { useSearchParams } from '@remix-run/react';
 import { useHover } from '@mantine/hooks';
-
 import React, { useMemo } from 'react';
+
+import { useFilter } from '@/hooks/use-filter';
+
 import { formatCount, formatDuration } from './formatter';
+import type { Filter } from './types';
 
 import classes from './StatsItem.module.css';
 
@@ -14,7 +16,7 @@ interface StatsItemProps {
 	tab: string;
 }
 
-const FILTER_MAP: Record<string, string> = {
+const FILTER_MAP: Record<string, Filter> = {
 	Referrers: 'referrer',
 	Sources: 'utm_source',
 	Mediums: 'utm_medium',
@@ -32,7 +34,7 @@ const StatsItem = ({
 	percentage = 0,
 	tab,
 }: StatsItemProps) => {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const { addFilter } = useFilter();
 	const { hovered, ref } = useHover<HTMLButtonElement>();
 
 	const formattedValue = useMemo(
@@ -41,10 +43,8 @@ const StatsItem = ({
 	);
 
 	const handleFilter = () => {
-		const params = new URLSearchParams(searchParams);
 		const filter = FILTER_MAP[tab] ?? 'path';
-		params.append(`${filter}[eq]`, label);
-		setSearchParams(params, { preventScrollReset: true });
+		addFilter(filter, 'eq', label);
 	};
 
 	return (
