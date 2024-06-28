@@ -93,8 +93,9 @@ func NewFilter(field FilterField, param api.OptFilterString) *Filter {
 	}
 
 	return &Filter{
-		Field:     field,
-		Value:     value,
+		Field: field,
+		// Convert the value to lowercase to make the filter case-insensitive
+		Value:     strings.ToLower(value),
 		Operation: operation,
 	}
 }
@@ -103,8 +104,8 @@ func NewFilter(field FilterField, param api.OptFilterString) *Filter {
 //
 //nolint:exhaustive,gochecknoglobals // TODO: Implement IN and NOT IN
 var filterOperationMap = map[FilterOperation]string{
-	FilterEquals:        "=",
-	FilterNotEquals:     "!=",
+	FilterEquals:        "ILIKE",
+	FilterNotEquals:     "NOT ILIKE",
 	FilterContains:      "contains",
 	FilterNotContains:   "NOT contains",
 	FilterStartsWith:    "starts_with",
@@ -118,9 +119,11 @@ func (f Filter) String() string {
 	//nolint:exhaustive // TODO: Implement IN and NOT IN
 	switch f.Operation {
 	case FilterEquals, FilterNotEquals:
+		// e.g. "lower(hostname) = :hostname"
 		return string(f.Field) + " " + filterOperationMap[f.Operation] + " :" + string(f.Field)
 	case FilterContains, FilterNotContains, FilterStartsWith, FilterNotStartsWith, FilterEndsWith, FilterNotEndsWith:
-		return filterOperationMap[f.Operation] + "(" + string(f.Field) + ", :" + string(f.Field) + ")"
+		// e.g. "contains(hostname, :hostname)"
+		return filterOperationMap[f.Operation] + "(LOWER(" + string(f.Field) + "), LOWER(:" + string(f.Field) + "))"
 	default:
 		return ""
 	}
