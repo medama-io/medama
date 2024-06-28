@@ -15,17 +15,21 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IconChevronDown } from '@/components/icons/chevrondown';
 import { IconPlus } from '@/components/icons/plus';
+import { useFilter } from '@/hooks/use-filter';
+
+import type { Filter, FilterOperator } from './types';
 
 import classes from './Filter.module.css';
-
-type FilterType = Record<string, { label: string; value: string }>;
-
 interface FilterChoices {
 	label: string;
 	placeholder?: string;
 }
 
-type FilterOptions = Record<string, FilterChoices>;
+type FilterOptions = Record<Filter, FilterChoices>;
+type FilterType = Record<
+	FilterOperator,
+	{ label: string; value: FilterOperator }
+>;
 
 const FILTER_TYPES: FilterType = {
 	eq: { label: 'equals', value: 'eq' },
@@ -86,6 +90,11 @@ const FILTER_OPTIONS: FilterOptions = {
 	},
 };
 
+// Add this type guard function
+const isFilterType = (obj: FilterOptions | FilterType): obj is FilterType => {
+	return 'eq' in obj;
+};
+
 interface FilterDropdownProps {
 	choices: FilterOptions | FilterType;
 	value: string;
@@ -105,6 +114,10 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 			}
 		},
 	});
+
+	const label = isFilterType(choices)
+		? choices[value as FilterOperator]?.label
+		: choices[value as Filter]?.label;
 
 	const options = Object.entries(choices).map(([key, filter]) => (
 		<Combobox.Option key={key} value={key} active={key === value}>
@@ -135,7 +148,7 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 					}}
 				>
 					<span className={classes['dropdown-label']}>
-						{choices?.[value]?.label ?? value}
+						{label ?? 'Unknown'}
 					</span>
 				</InputBase>
 			</Combobox.Target>
@@ -153,10 +166,12 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 
 export const Filters = () => {
 	const [opened, setOpened] = useState(false);
+	const [searchParams] = useSearchParams();
+	const { addFilter, removeFilter } = useFilter();
 
-	const [filter, setFilter] = useState('path');
-	const [type, setType] = useState('eq');
-	const [value, setValue] = useState('');
+	const [filter, setFilter] = useState<Filter>('path');
+	const [type, setType] = useState<FilterOperator>('eq');
+	const [value, setValue] = useState<string>('');
 
 	const chosenFilter = useMemo(() => FILTER_OPTIONS[filter], [filter]);
 
@@ -168,7 +183,6 @@ export const Filters = () => {
 		setValue('');
 	}, []);
 
-	const [searchParams, setSearchParams] = useSearchParams();
 	// Convert the search params to an array of label-type-value tuples
 	// This is used to render the current filters.
 	const paramsArr = useMemo(() => {
@@ -176,8 +190,8 @@ export const Filters = () => {
 		for (const [key, value] of searchParams.entries()) {
 			const [filter, type] = key.split('['); // e.g. path[eq]
 			// If the filter is not in the filter options, don't render it
-			if (filter && FILTER_OPTIONS[filter]) {
-				const { label = 'N/A' } = FILTER_OPTIONS[filter] ?? {};
+			if (filter && FILTER_OPTIONS[filter as Filter]) {
+				const { label = 'N/A' } = FILTER_OPTIONS[filter as Filter] ?? {};
 				arr.push([label, type?.replace(']', '') ?? 'Unknown', value]);
 			}
 		}
@@ -187,29 +201,25 @@ export const Filters = () => {
 	// Apply the filters to the search params and close the popover
 	// This should trigger a reload of data on the page with new
 	// data from the server.
-	const applyFilters = useCallback(() => {
-		const params = new URLSearchParams(searchParams);
-		params.append(`${filter}[${type}]`, value);
-		setSearchParams(params, { preventScrollReset: true });
+	const handleAddFilters = useCallback(() => {
+		addFilter(filter, type, value);
 		setOpened(false);
-	}, [filter, type, value, searchParams, setSearchParams]);
+	}, [addFilter, filter, type, value]);
 
 	// Remove a filter.
-	const removeFilter = useCallback(
-		(label: string, type: string, value: string) => {
+	const handleRemoveFilter = useCallback(
+		(label: string, type: FilterOperator, value: string) => {
 			return () => {
-				const params = new URLSearchParams(searchParams);
 				const filterMap: Record<string, string> = {
 					'UTM Source': 'utm_source',
 					'UTM Medium': 'utm_medium',
 					'UTM Campaign': 'utm_campaign',
 				};
 				const filterKey = filterMap[label] ?? label.toLowerCase();
-				params.delete(`${filterKey}[${type}]`, value);
-				setSearchParams(params, { preventScrollReset: true });
+				removeFilter(filterKey as Filter, type, value);
 			};
 		},
-		[searchParams, setSearchParams],
+		[removeFilter],
 	);
 
 	return (
@@ -250,12 +260,12 @@ export const Filters = () => {
 						<FilterDropdown
 							choices={FILTER_OPTIONS}
 							value={filter}
-							setValue={setFilter}
+							setValue={setFilter as (value: string) => void}
 						/>
 						<FilterDropdown
 							choices={FILTER_TYPES}
 							value={type}
-							setValue={setType}
+							setValue={setType as (value: string) => void}
 						/>
 						<TextInput
 							h={40}
@@ -265,7 +275,7 @@ export const Filters = () => {
 							}}
 							onKeyDown={(event) => {
 								if (event.key === 'Enter' && value !== '') {
-									applyFilters();
+									handleAddFilters();
 								}
 							}}
 							placeholder={chosenFilter?.placeholder}
@@ -284,7 +294,7 @@ export const Filters = () => {
 							className={classes.apply}
 							type="submit"
 							onClick={() => {
-								applyFilters();
+								handleAddFilters();
 							}}
 							disabled={value === ''}
 						>
@@ -302,10 +312,12 @@ export const Filters = () => {
 					>
 						<Text fz={14}>{label}&nbsp;</Text>
 						<Text fz={14} fw={700}>
-							{FILTER_TYPES[type]?.label ?? 'Unknown'}&nbsp;
+							{FILTER_TYPES[type as FilterOperator]?.label ?? 'Unknown'}&nbsp;
 						</Text>
 						<Text fz={14}>{value}</Text>
-						<CloseButton onClick={removeFilter(label, type, value)} />
+						<CloseButton
+							onClick={handleRemoveFilter(label, type as FilterOperator, value)}
+						/>
 					</Group>
 				);
 			})}

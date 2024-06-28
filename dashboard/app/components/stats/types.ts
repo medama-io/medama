@@ -66,6 +66,8 @@ interface StatsGroups {
 	data: StatsTab[];
 }
 
+// Charts
+
 type ChartStat = 'visitors' | 'pageviews' | 'duration' | 'bounces';
 type ChartType = 'area' | 'bar';
 
@@ -75,6 +77,38 @@ interface StatHeaderData {
 	current: number;
 	previous?: number;
 }
+
+// Filters
+
+const FILTERS = [
+	'path',
+	'referrer',
+	'utm_source',
+	'utm_medium',
+	'utm_campaign',
+	'browser',
+	'os',
+	'device',
+	'country',
+	'language',
+] as const;
+
+type Filter = (typeof FILTERS)[number];
+
+const FILTER_OPERATOR = [
+	'eq',
+	'neq',
+	'contains',
+	'not_contains',
+	'starts_with',
+	'not_starts_with',
+	'ends_with',
+	'not_ends_with',
+] as const;
+
+type FilterOperator = (typeof FILTER_OPERATOR)[number];
+
+type FilterKey = `${Filter}[${FilterOperator}]`;
 
 export { DATASETS };
 export type {
@@ -86,4 +120,7 @@ export type {
 	StatsGroups,
 	StatsTab,
 	StatsValue,
+	Filter,
+	FilterOperator,
+	FilterKey,
 };
