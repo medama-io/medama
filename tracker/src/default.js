@@ -93,11 +93,6 @@ var DurationPayload;
 	let isUnique = true;
 
 	/**
-	 * Whether the user is visiting this page for the first time.
-	 */
-	let isFirstVisit = true;
-
-	/**
 	 * A temporary variable to store the start time of the page when it is hidden.
 	 */
 	let hiddenStartTime = 0;
@@ -179,6 +174,9 @@ var DurationPayload;
 	 */
 	const pingCache = (url) =>
 		new Promise((resolve) => {
+			// We use XHR here because fetch GET request requires a CORS
+			// header to be set on the server, which adds additional latency
+			// to ping the server.
 			const xhr = new XMLHttpRequest();
 			xhr.onload = () => {
 				// @ts-ignore - Double equals reduces bundle size.
@@ -191,9 +189,9 @@ var DurationPayload;
 
 	/**
 	 * Send a load beacon event to the server when the page is loaded.
-	 * @returns {void}
+	 * @returns {Promise<void>}
 	 */
-	const sendLoadBeacon = () => {
+	const sendLoadBeacon = async () => {
 		// Returns true if it is the user's first visit to page, false if not.
 		// The u query parameter is a cache busting parameter which is the page host and path
 		// without protocol or query parameters.
@@ -201,12 +199,12 @@ var DurationPayload;
 			host +
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
-		).then((response) => {
-			isFirstVisit = response;
-
-			navigator.sendBeacon(
-				host + 'event/hit',
-				JSON.stringify(
+		).then((isFirstVisit) => {
+			// We use fetch here because it is more reliable than XHR and we can rely on
+			// the browser to send the request even if the user navigates away from the page.
+			fetch(host + 'event/hit', {
+				method: 'POST',
+				body: JSON.stringify(
 					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
 					/**
 					 * Payload to send to the server.
@@ -228,7 +226,9 @@ var DurationPayload;
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
 					}),
 				),
-			);
+				// Will make the response opaque, but we don't need it.
+				mode: 'no-cors',
+			});
 		});
 	};
 
@@ -238,6 +238,13 @@ var DurationPayload;
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
+			// We use sendBeacon here because it is more reliable than fetch on page unloads.
+			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
+			// Firefox on top of that.
+			// See: https://github.com/whatwg/fetch/issues/679
+			//
+			// Some adblockers block this API directly, but since this is the unload event,
+			// it's an optional event to send.
 			navigator.sendBeacon(
 				host + 'event/hit',
 				JSON.stringify(
