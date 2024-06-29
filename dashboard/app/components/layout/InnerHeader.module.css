@@ -21,4 +21,8 @@
 h1 {
 	font-size: 32px;
 	font-weight: 500;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		font-size: 28px;
+	}
 }

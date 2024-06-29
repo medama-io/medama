@@ -83,7 +83,7 @@ export default function Index() {
 			<InnerHeader>
 				<Flex justify="space-between" align="center" py={8}>
 					<h1>My Websites</h1>
-					<ButtonDark onClick={open}>
+					<ButtonDark onClick={open} visibleFrom="xs">
 						<Group>
 							<IconPlus />
 							<span>Add Website</span>
@@ -97,7 +97,7 @@ export default function Index() {
 						<Text ta="center">No websites found. Please add a website!</Text>
 					</Paper>
 				)}
-				<SimpleGrid cols={3}>
+				<SimpleGrid cols={{ base: 1, xs: 2, md: 3 }}>
 					{websites.map((website) => (
 						<WebsiteCard key={website.hostname} website={website} />
 					))}

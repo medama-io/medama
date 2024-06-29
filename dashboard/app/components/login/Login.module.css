@@ -6,6 +6,10 @@
 	justify-content: center;
 
 	border-radius: 8px;
+
+	@media (max-width: $mantine-breakpoint-xs) {
+		width: 100%;
+	}
 }
 
 .submit {
@@ -32,5 +36,11 @@
 
 	span {
 		font-size: 14px;
+	}
+
+	@media (max-width: $mantine-breakpoint-xs) {
+		p {
+			display: none;
+		}
 	}
 }
