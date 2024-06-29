@@ -1,9 +1,21 @@
-import { Flex, Group, SimpleGrid, Text, UnstyledButton } from '@mantine/core';
+import {
+	Burger,
+	Drawer,
+	Flex,
+	Group,
+	Stack,
+	Text,
+	UnstyledButton,
+	type DrawerProps,
+	type MantineSize,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 
-import classes from './Header.module.css';
 import { BannerLogo } from '@/components/icons/banner-transparent';
 import { IconSettings } from '@/components/icons/settings';
+
+import classes from './Header.module.css';
 
 interface HeaderNavLinkProps {
 	label: string;
@@ -11,6 +23,12 @@ interface HeaderNavLinkProps {
 }
 
 interface LoginButtonProps {
+	isLoggedIn: boolean;
+	visibleFrom?: MantineSize;
+	hiddenFrom?: MantineSize;
+}
+
+interface MobileDrawerProps extends DrawerProps {
 	isLoggedIn: boolean;
 }
 
@@ -37,37 +55,74 @@ const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 	);
 };
 
-const LoginButton = ({ isLoggedIn }: LoginButtonProps) => {
+const LoginButton = ({
+	isLoggedIn,
+	visibleFrom,
+	hiddenFrom,
+}: LoginButtonProps) => {
 	const linkTo = isLoggedIn ? '/logout' : '/login';
 	const ariaLabel = isLoggedIn ? 'Log out' : 'Log in';
 	const buttonLabel = isLoggedIn ? (
 		<Group gap="xs">
 			<IconSettings aria-hidden="true" />
-			<span>Log Out</span>
+			<span>Log out</span>
 		</Group>
 	) : (
 		'Log In'
 	);
 
 	return (
-		<UnstyledButton
-			className={classes.button}
-			component={Link}
-			to={linkTo}
-			aria-label={ariaLabel}
+		<Flex visibleFrom={visibleFrom} hiddenFrom={hiddenFrom} flex={1}>
+			<UnstyledButton
+				className={classes.login}
+				component={Link}
+				to={linkTo}
+				aria-label={ariaLabel}
+			>
+				{buttonLabel}
+			</UnstyledButton>
+		</Flex>
+	);
+};
+
+const MobileDrawer = ({ isLoggedIn, ...props }: MobileDrawerProps) => {
+	return (
+		<Drawer.Root
+			size="100%"
+			classNames={{
+				body: classes.drawerBody,
+				content: classes.drawer,
+			}}
+			position="top"
+			withOverlay={false}
+			withCloseButton={false}
+			transitionProps={{ duration: 100, transition: 'fade' }}
+			{...props}
 		>
-			{buttonLabel}
-		</UnstyledButton>
+			<Drawer.Content>
+				<Drawer.Body role="navigation" aria-label="Main navigation">
+					{isLoggedIn && (
+						<Stack gap={0}>
+							<HeaderNavLink label="Home" to="/" />
+							<HeaderNavLink label="Settings" to="/settings" />
+						</Stack>
+					)}
+					<LoginButton isLoggedIn={isLoggedIn} hiddenFrom="xs" />
+				</Drawer.Body>
+			</Drawer.Content>
+		</Drawer.Root>
 	);
 };
 
 export const Header = () => {
 	const data = useRouteLoaderData<RootLoaderData>('root');
 	const isLoggedIn = Boolean(data?.isLoggedIn);
+	const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+		useDisclosure(false);
 
 	return (
 		<header className={classes.header}>
-			<SimpleGrid cols={isLoggedIn ? 3 : 2} className={classes.inner}>
+			<Group justify="space-between" className={classes.inner}>
 				<Flex align="center">
 					<BannerLogo aria-label="Banner logo" />
 				</Flex>
@@ -76,15 +131,28 @@ export const Header = () => {
 						justify="center"
 						role="navigation"
 						aria-label="Main navigation"
+						visibleFrom="xs"
 					>
 						<HeaderNavLink label="Home" to="/" />
 						<HeaderNavLink label="Settings" to="/settings" />
 					</Group>
 				)}
 				<Group justify="flex-end">
-					<LoginButton isLoggedIn={isLoggedIn} />
+					<LoginButton isLoggedIn={isLoggedIn} visibleFrom="xs" />
+					<Burger
+						classNames={{ root: classes.burger }}
+						size="sm"
+						opened={drawerOpened}
+						onClick={toggleDrawer}
+						aria-label="Open navigation"
+					/>
 				</Group>
-			</SimpleGrid>
+			</Group>
+			<MobileDrawer
+				isLoggedIn={isLoggedIn}
+				opened={drawerOpened}
+				onClose={closeDrawer}
+			/>
 		</header>
 	);
 };

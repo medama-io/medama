@@ -51,6 +51,14 @@ main {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		padding: 80px 40px;
+	}
+
+	@media (max-width: $mantine-breakpoint-xs) {
+		padding: 80px 24px;
+	}
 }
 
 /* StatsTable.tsx */
