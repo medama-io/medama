@@ -6,7 +6,13 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
-import React, { useMemo, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
@@ -142,7 +148,8 @@ const CHART_TYPES = [
 	},
 ] as const;
 
-const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
+const SegmentedChartControl = () => {
+	// Segmented control for chart type
 	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
 	const [controlsRefs, setControlsRefs] = useState<
 		Record<string, HTMLButtonElement | null>
@@ -176,6 +183,20 @@ const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
 	));
 
 	return (
+		<div className={classes.toggle} ref={setRootRef}>
+			<Tooltip.Group openDelay={1000}>{chartTypes}</Tooltip.Group>
+			<FloatingIndicator
+				component="span"
+				className={classes.indicator}
+				target={controlsRefs[chartType]}
+				parent={rootRef}
+			/>
+		</div>
+	);
+};
+
+const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
+	return (
 		<InnerHeader>
 			<Flex justify="space-between" align="center" py={8}>
 				<h1>Dashboard</h1>
@@ -191,15 +212,7 @@ const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
 						/>
 					))}
 				</Group>
-				<div className={classes.toggle} ref={setRootRef}>
-					<Tooltip.Group openDelay={1000}>{chartTypes}</Tooltip.Group>
-					<FloatingIndicator
-						component="span"
-						className={classes.indicator}
-						target={controlsRefs[chartType]}
-						parent={rootRef}
-					/>
-				</div>
+				<SegmentedChartControl />
 			</Group>
 		</InnerHeader>
 	);
