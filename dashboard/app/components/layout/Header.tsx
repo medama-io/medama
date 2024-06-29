@@ -85,34 +85,32 @@ const LoginButton = ({
 	);
 };
 
-const MobileDrawer = ({ isLoggedIn, ...props }: MobileDrawerProps) => {
-	return (
-		<Drawer.Root
-			size="100%"
-			classNames={{
-				body: classes.drawerBody,
-				content: classes.drawer,
-			}}
-			position="top"
-			withOverlay={false}
-			withCloseButton={false}
-			transitionProps={{ duration: 100, transition: 'fade' }}
-			{...props}
-		>
-			<Drawer.Content>
-				<Drawer.Body role="navigation" aria-label="Main navigation">
-					{isLoggedIn && (
-						<Stack gap={0}>
-							<HeaderNavLink label="Home" to="/" />
-							<HeaderNavLink label="Settings" to="/settings" />
-						</Stack>
-					)}
-					<LoginButton isLoggedIn={isLoggedIn} hiddenFrom="xs" />
-				</Drawer.Body>
-			</Drawer.Content>
-		</Drawer.Root>
-	);
-};
+const MobileDrawer = ({ isLoggedIn, ...props }: MobileDrawerProps) => (
+	<Drawer.Root
+		size="100%"
+		classNames={{
+			body: classes.drawerBody,
+			content: classes.drawer,
+		}}
+		position="top"
+		withOverlay={false}
+		withCloseButton={false}
+		transitionProps={{ duration: 100, transition: 'fade' }}
+		{...props}
+	>
+		<Drawer.Content>
+			<Drawer.Body role="navigation" aria-label="Main navigation">
+				{isLoggedIn && (
+					<Stack gap={0}>
+						<HeaderNavLink label="Home" to="/" />
+						<HeaderNavLink label="Settings" to="/settings" />
+					</Stack>
+				)}
+				<LoginButton isLoggedIn={isLoggedIn} hiddenFrom="xs" />
+			</Drawer.Body>
+		</Drawer.Content>
+	</Drawer.Root>
+);
 
 export const Header = () => {
 	const data = useRouteLoaderData<RootLoaderData>('root');
