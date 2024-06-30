@@ -23,8 +23,11 @@ Medama Analytics is an open-source project dedicated to providing self-hostable,
 ### Features
 
 - 📊 **Real-Time Analytics:** Monitor website performance and user interactions instantly.
+
 - 🔒 **Privacy-Focused:** Lightweight tracker (<1KB) without cookies, IP addresses, or additional identifiers, ensuring compliance with GDPR, PECR, and other regulations.
-- 🧪 **Easy To Integrate:** OpenAPI-based server for effortless integration into personal or professional dashboards.
+
+- 🧪 **Easy To Integrate:** [OpenAPI-based](https://oss.medama.io/api-reference/introduction) server for effortless integration into personal or professional dashboards.
+
 - 💼 **Self-Hostable:** Simple, single-binary setup with no external dependencies, capable of running on VMs with 256MB memory for most small websites.
 
 ## License
