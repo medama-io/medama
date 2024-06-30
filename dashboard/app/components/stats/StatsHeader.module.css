@@ -1,3 +1,17 @@
+.title {
+	padding: 12px 0;
+
+	justify-content: space-between;
+	align-items: center;
+
+	@media (max-width: $mantine-breakpoint-xs) {
+		padding: 0 0 12px 0;
+		justify-content: flex-start;
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
+
 /* Chart Toggle */
 .toggle {
 	padding: 4px;
