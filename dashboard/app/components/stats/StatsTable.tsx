@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, Tabs, Text } from '@mantine/core';
+import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -15,7 +15,27 @@ import { useFilter } from '@/hooks/use-filter';
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import type { DataRow, Dataset, Filter } from './types';
 
+import { useMediaQuery } from '@mantine/hooks';
 import classes from './StatsTable.module.css';
+
+type DataRowClick = DataTableRowClickHandler<DataRow>;
+
+interface TablePaginationProps {
+	page: number;
+	pageSize: number;
+	totalRecords: number;
+	onPageChange: (page: number) => void;
+	onPageSizeChange: (pageSize: (typeof PAGE_SIZES)[number]) => void;
+}
+
+interface StatsTableProps {
+	query: Dataset;
+	data: DataRow[];
+}
+
+interface QueryTableProps extends StatsTableProps {
+	isMobile?: boolean;
+}
 
 const LABEL_MAP: Record<Dataset, string> = {
 	pages: 'Pages',
@@ -131,14 +151,25 @@ const sortBy =
 		(a: T, b: T) =>
 			a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0;
 
-interface QueryTableProps {
-	query: Dataset;
-	data: DataRow[];
-}
+const BackButton = () => {
+	const [searchParams] = useSearchParams();
 
-type DataRowClick = DataTableRowClickHandler<DataRow>;
+	return (
+		<UnstyledButton
+			component={Link}
+			to={{
+				pathname: '../',
+				search: searchParams.toString(),
+			}}
+			className={classes.back}
+		>
+			<IconChevronLeft />
+			<span>Go back</span>
+		</UnstyledButton>
+	);
+};
 
-const QueryTable = ({ query, data }: QueryTableProps) => {
+const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 	// Pagination
 	const [pageSize, setPageSize] = useState<(typeof PAGE_SIZES)[number]>(10);
 	const [page, setPage] = useState(1);
@@ -197,13 +228,15 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 	}, [query]);
 
 	return (
-		<div className={classes['table-wrapper']}>
-			<div className={classes['table-header']}>
+		<div className={classes.tableWrapper}>
+			<div className={classes.tableHeader}>
 				<Text fz={14} fw={600} py={3}>
 					{LABEL_MAP[query]}
 				</Text>
 			</div>
+			{isMobile && <BackButton />}
 			<DataTable
+				classNames={{ header: classes.dataHeader }}
 				minHeight={330}
 				noRecordsText="No records found..."
 				highlightOnHover
@@ -226,14 +259,6 @@ const QueryTable = ({ query, data }: QueryTableProps) => {
 	);
 };
 
-interface TablePaginationProps {
-	page: number;
-	pageSize: number;
-	totalRecords: number;
-	onPageChange: (page: number) => void;
-	onPageSizeChange: (pageSize: (typeof PAGE_SIZES)[number]) => void;
-}
-
 const TablePagination = ({
 	page,
 	pageSize,
@@ -244,14 +269,14 @@ const TablePagination = ({
 	const totalPages = Math.ceil(totalRecords / pageSize);
 
 	return (
-		<Group justify="space-between" px="lg" py="sm">
-			<Group>
+		<Group className={classes.pagination} px="lg" py="sm">
+			<Group visibleFrom="sm">
 				<span className={classes.viewspan}>View</span>
 				{PAGE_SIZES.map((size) => (
 					<ActionIcon
 						key={size}
 						variant="transparent"
-						className={classes['page-size']}
+						className={classes.pageSize}
 						onClick={() => onPageSizeChange(size)}
 						disabled={size === pageSize || totalRecords <= size}
 						data-active={size === pageSize}
@@ -263,7 +288,7 @@ const TablePagination = ({
 			<Group>
 				<ActionIcon
 					variant="transparent"
-					className={classes['page-arrow']}
+					className={classes.pageArrow}
 					onClick={() => onPageChange(page - 1)}
 					disabled={page <= 1}
 				>
@@ -274,7 +299,7 @@ const TablePagination = ({
 				</span>
 				<ActionIcon
 					variant="transparent"
-					className={classes['page-arrow']}
+					className={classes.pageArrow}
 					onClick={() => onPageChange(page + 1)}
 					disabled={page >= totalPages}
 				>
@@ -370,11 +395,6 @@ const getColumnsForQuery = (query: Dataset): DataTableColumn<DataRow>[] => {
 	}
 };
 
-interface StatsTableProps {
-	query: Dataset;
-	data: DataRow[];
-}
-
 export const StatsTable = ({ query, data }: StatsTableProps) => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
@@ -392,41 +412,37 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 		[navigate, searchParams],
 	);
 
+	// max-width: $mantine-breakpoint-lg
+	const isMobile = useMediaQuery('(max-width: 75em)');
+
 	return (
 		<Tabs
 			variant="unstyled"
 			value={query}
 			classNames={{
-				root: classes['tab-root'],
+				root: classes.tabRoot,
 				tab: classes.tab,
-				list: classes['tab-list'],
+				list: classes.tabList,
+				panel: classes.tabPanel,
 			}}
 			orientation="vertical"
 			onChange={handleTabChange}
 			keepMounted={false}
 		>
-			<Tabs.List>
-				<div className={classes['list-wrapper']}>
-					<Box
-						component={Link}
-						to={{
-							pathname: '../',
-							search: searchParams.toString(),
-						}}
-						className={classes.back}
-					>
-						<IconChevronLeft />
-						<span>Go back</span>
-					</Box>
-					{Object.entries(LABEL_MAP).map(([key, label]) => (
-						<Tabs.Tab key={key} value={key}>
-							{label}
-						</Tabs.Tab>
-					))}
-				</div>
-			</Tabs.List>
+			{!isMobile && (
+				<Tabs.List>
+					<div className={classes.listWrapper}>
+						<BackButton />
+						{Object.entries(LABEL_MAP).map(([key, label]) => (
+							<Tabs.Tab key={key} value={key}>
+								{label}
+							</Tabs.Tab>
+						))}
+					</div>
+				</Tabs.List>
+			)}
 			<Tabs.Panel value={query}>
-				<QueryTable query={query} data={data} />
+				<QueryTable query={query} data={data} isMobile={isMobile} />
 			</Tabs.Panel>
 		</Tabs>
 	);
