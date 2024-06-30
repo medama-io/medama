@@ -25,6 +25,7 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 		WITH durations AS MATERIALIZED (
 		SELECT
 			pathname,
+			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
 			CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration,
 			SUM(duration_ms) AS total_duration
 		FROM views
@@ -39,7 +40,7 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 			duration,
 			ifnull(ROUND(total_duration / (SELECT SUM(total_duration) FROM durations), 4), 0) AS duration_percentage
 		FROM durations
-		ORDER BY duration_percentage DESC, duration DESC, pathname ASC`)
+		ORDER BY duration_percentage DESC, duration DESC, visitors DESC, pathname ASC`)
 
 	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
 	if err != nil {
