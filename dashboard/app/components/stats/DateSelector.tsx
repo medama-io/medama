@@ -3,6 +3,8 @@ import { useDidUpdate } from '@mantine/hooks';
 import { useSearchParams } from '@remix-run/react';
 import { useCallback, useMemo, useState } from 'react';
 
+import { IconCalendar } from '@/components/icons/calendar';
+
 import classes from './DateSelector.module.css';
 
 const PRESETS = {
@@ -87,6 +89,7 @@ export const DateComboBox = () => {
 			<Combobox.Target>
 				<InputBase
 					classNames={{ input: classes.target }}
+					className={classes.targetWrapper}
 					component="button"
 					type="button"
 					pointer
@@ -94,6 +97,7 @@ export const DateComboBox = () => {
 					rightSectionPointerEvents="none"
 					onClick={() => combobox.toggleDropdown()}
 					aria-label="Select date range"
+					leftSection={<IconCalendar />}
 				>
 					{isPreset(preset) ? PRESETS[preset] : 'Custom range'}
 				</InputBase>

@@ -1,7 +1,7 @@
 .target {
-	width: 192px;
+	min-width: 192px;
 	height: 40px;
-	padding: 0 16px;
+	padding-left: 32px;
 	color: var(--me-color-text-light);
 	background-color: var(--me-color-bg-grey-blue);
 	border: 1px solid var(--me-color-bg-grey-blue);
@@ -9,6 +9,13 @@
 
 	&:hover {
 		background-color: var(--me-color-bg-grey-blue-dark);
+	}
+}
+
+.targetWrapper {
+	@media (max-width: $mantine-breakpoint-xs) {
+		width: 100%;
+		margin: 4px 0 16px 0;
 	}
 }
 

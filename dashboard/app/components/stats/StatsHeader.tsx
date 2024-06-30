@@ -87,7 +87,7 @@ const SegmentedChartControl = () => {
 const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
 	return (
 		<InnerHeader>
-			<Flex justify="space-between" align="center" py={8}>
+			<Flex className={classes.title}>
 				<h1>Dashboard</h1>
 				<DateComboBox />
 			</Flex>
