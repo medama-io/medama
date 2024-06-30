@@ -29,3 +29,16 @@
 .bar {
 	border: 1px solid var(--me-color-border-violet);
 }
+
+.external {
+	svg {
+		margin-bottom: -2px;
+		color: var(--me-color-text-muted);
+		width: 17px;
+		height: 17px;
+	}
+
+	&[data-hidden="true"] {
+		display: none;
+	}
+}
