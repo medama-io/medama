@@ -1,4 +1,5 @@
 import { Box, Group, Tooltip, UnstyledButton } from '@mantine/core';
+import { useSearchParams } from '@remix-run/react';
 import React, { useMemo } from 'react';
 
 import { useChartType } from '@/hooks/use-chart-type';
@@ -7,7 +8,6 @@ import { formatCount, formatDuration, formatPercentage } from './formatter';
 import type { StatHeaderData } from './types';
 
 import classes from './HeaderDataBox.module.css';
-import { useSearchParams } from '@remix-run/react';
 
 interface HeaderDataBoxProps {
 	stat: StatHeaderData;
