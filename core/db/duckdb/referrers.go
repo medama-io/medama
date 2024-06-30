@@ -23,7 +23,7 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 	// VisitorsPercentage is the percentage the referrer contributes to the total visitors.
 	query.WriteString(`--sql
 		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
+			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
 			FROM views
 			WHERE `)
 	query.WriteString(filter.WhereString())
@@ -31,7 +31,7 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 		)
 		SELECT
 			referrer_host AS referrer,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
+			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
 		WHERE `)
