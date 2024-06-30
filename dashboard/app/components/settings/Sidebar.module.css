@@ -25,4 +25,8 @@
 			font-weight: 600;
 		}
 	}
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		width: 100%;
+	}
 }
