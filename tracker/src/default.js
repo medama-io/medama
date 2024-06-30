@@ -245,9 +245,9 @@ var DurationPayload;
 			//
 			// Some adblockers block this API directly, but since this is the unload event,
 			// it's an optional event to send.
-			navigator.sendBeacon(
-				host + 'event/hit',
-				JSON.stringify(
+			fetch(host + 'event/hit', {
+				method: 'POST',
+				body: JSON.stringify(
 					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
 					/**
 					 * Payload to send to the server.
@@ -259,7 +259,9 @@ var DurationPayload;
 						"m": Date.now() - hiddenTotalTime,
 					}),
 				),
-			);
+				mode: 'no-cors',
+				keepalive: true,
+			});
 		}
 
 		// Ensure unload is only called once.
