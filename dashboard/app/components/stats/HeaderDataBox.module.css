@@ -7,6 +7,9 @@
 	border: 1px solid transparent;
 	cursor: pointer;
 
+	/* Used to prevent wrapping on overflow */
+	flex: "0 0 auto";
+
 	border-radius: 8px;
 	transition: all 0.1s ease;
 

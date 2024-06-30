@@ -7,6 +7,10 @@
 	border-radius: 26px;
 
 	position: relative;
+
+	@media (max-width: $mantine-breakpoint-lg) {
+		display: none;
+	}
 }
 
 .control {

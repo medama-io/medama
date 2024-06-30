@@ -6,6 +6,7 @@ import {
 	UnstyledButton,
 } from '@mantine/core';
 import { useState } from 'react';
+import { ScrollContainer } from 'react-indiana-drag-scroll';
 
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
@@ -90,18 +91,20 @@ const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
 				<h1>Dashboard</h1>
 				<DateComboBox />
 			</Flex>
-			<Group justify="space-between" align="flex-end">
-				<Group mt="xs">
-					{stats.map((stat) => (
-						<HeaderDataBox
-							key={stat.label}
-							stat={stat}
-							isActive={chart === stat.chart}
-						/>
-					))}
+			<ScrollContainer>
+				<Group justify="space-between" align="flex-end" mt="xs">
+					<Group wrap="nowrap">
+						{stats.map((stat) => (
+							<HeaderDataBox
+								key={stat.label}
+								stat={stat}
+								isActive={chart === stat.chart}
+							/>
+						))}
+					</Group>
+					<SegmentedChartControl />
 				</Group>
-				<SegmentedChartControl />
-			</Group>
+			</ScrollContainer>
 		</InnerHeader>
 	);
 };
