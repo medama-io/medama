@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Medama Analytics API
-  version: 0.1.0
+  version: 0.3.0
   description: |
     This is the Medama Analytics OpenAPI 3.0 specification.
   contact:
@@ -15,21 +15,21 @@ servers:
   - url: "http://localhost:8080"
     description: Local Server
 tags:
-  - name: auth
+  - name: Authentication
     description: Authentication
-  - name: event
+  - name: Event
     description: Page Events
-  - name: user
+  - name: User
     description: User Management
-  - name: website
+  - name: Website
     description: Website Management
-  - name: stats
+  - name: Stats
     description: Statistics
 paths:
   /auth/login:
     post:
       tags:
-        - auth
+        - Authentication
       summary: Login
       description: Login to the service and retrieve a session token for authentication.
       operationId: post-auth-login
@@ -61,7 +61,7 @@ paths:
   /auth/logout:
     post:
       tags:
-        - auth
+        - Authentication
       summary: Logout
       description: Logout of the service and destroy the session token.
       operationId: post-auth-logout
@@ -86,7 +86,7 @@ paths:
   /event/hit:
     post:
       tags:
-        - event
+        - Event
       summary: Send Hit Event
       description: Send a hit event to register a user view or interaction.
       operationId: post-event-hit
@@ -123,7 +123,7 @@ paths:
   /event/ping:
     get:
       tags:
-        - event
+        - Event
       summary: Ping
       description: Ping endpoint to determine if the user is unique or not.
       operationId: get-event-ping
@@ -168,7 +168,7 @@ paths:
   /user:
     get:
       tags:
-        - user
+        - User
       security:
         - CookieAuth: []
       summary: Get User Info
@@ -196,7 +196,7 @@ paths:
           description: Local Server
     patch:
       tags:
-        - user
+        - User
       security:
         - CookieAuth: []
       summary: Update User Info
@@ -235,7 +235,7 @@ paths:
           description: Local Server
     delete:
       tags:
-        - user
+        - User
       security:
         - CookieAuth: []
       summary: Delete User
@@ -262,7 +262,7 @@ paths:
   /websites:
     get:
       tags:
-        - website
+        - Website
       security:
         - CookieAuth: []
       summary: List Websites
@@ -293,7 +293,7 @@ paths:
           description: Local Server
     post:
       tags:
-        - website
+        - Website
       security:
         - CookieAuth: []
       summary: Add Website
@@ -341,7 +341,7 @@ paths:
   "/websites/{hostname}":
     get:
       tags:
-        - website
+        - Website
       security:
         - CookieAuth: []
       summary: Get Website
@@ -370,7 +370,7 @@ paths:
           description: Local Server
     patch:
       tags:
-        - website
+        - Website
       security:
         - CookieAuth: []
       summary: Update Website
@@ -408,7 +408,7 @@ paths:
           description: Local Server
     delete:
       tags:
-        - website
+        - Website
       security:
         - CookieAuth: []
       summary: Delete Website
@@ -436,7 +436,7 @@ paths:
   "/website/{hostname}/summary":
     get:
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Stat Summary
@@ -495,7 +495,7 @@ paths:
   "/website/{hostname}/pages":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Page Stats
@@ -540,7 +540,7 @@ paths:
   "/website/{hostname}/time":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Time Stats
@@ -585,7 +585,7 @@ paths:
   "/website/{hostname}/referrers":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Referrer Stats
@@ -629,7 +629,7 @@ paths:
   "/website/{hostname}/sources":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get UTM Source Stats
@@ -673,7 +673,7 @@ paths:
   "/website/{hostname}/mediums":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get UTM Medium Stats
@@ -717,7 +717,7 @@ paths:
   "/website/{hostname}/campaigns":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get UTM Campaign Stats
@@ -761,7 +761,7 @@ paths:
   "/website/{hostname}/browsers":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Browser Stats
@@ -805,7 +805,7 @@ paths:
   "/website/{hostname}/os":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get OS Stats
@@ -849,7 +849,7 @@ paths:
   "/website/{hostname}/devices":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Device Stats
@@ -893,7 +893,7 @@ paths:
   "/website/{hostname}/countries":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Country Stats
@@ -937,7 +937,7 @@ paths:
   "/website/{hostname}/languages":
     "get":
       tags:
-        - stats
+        - Stats
       security:
         - CookieAuth: []
       summary: Get Language Stats
