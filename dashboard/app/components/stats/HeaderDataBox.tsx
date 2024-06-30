@@ -1,4 +1,5 @@
 import { Box, Group, Tooltip, UnstyledButton } from '@mantine/core';
+import { useSearchParams } from '@remix-run/react';
 import React, { useMemo } from 'react';
 
 import { useChartType } from '@/hooks/use-chart-type';
@@ -30,9 +31,11 @@ const getStatus = (change: number): 'positive' | 'negative' | 'zero' => {
 const formatTooltipLabel = (
 	stat: StatHeaderData,
 	status: 'positive' | 'negative' | 'zero',
+	isToday: boolean,
 ): string => {
+	const period = isToday ? 'yesterday' : 'previous period';
 	if (stat.previous === undefined || status === 'zero')
-		return 'No change since yesterday.';
+		return `No change since ${period}.`;
 
 	let changeValue: string | number = Math.abs(stat.current - stat.previous);
 	if (stat.chart === 'bounces') {
@@ -44,12 +47,15 @@ const formatTooltipLabel = (
 	}
 
 	return status === 'positive'
-		? `Increased by ${changeValue} since yesterday.`
-		: `Decreased by ${changeValue} since yesterday.`;
+		? `Increased by ${changeValue} since ${period}.`
+		: `Decreased by ${changeValue} since ${period}.`;
 };
 
 const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 	const { setChartStat } = useChartType();
+	const [searchParams] = useSearchParams();
+	const period = searchParams.get('period') as 'today' | '24h' | string | null;
+	const isToday = period === 'today' || period === '24h';
 
 	const isPercentage = stat.chart === 'bounces';
 	const isDuration = stat.chart === 'duration';
@@ -71,8 +77,8 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 	);
 
 	const tooltipLabel = useMemo(
-		() => formatTooltipLabel(stat, status),
-		[stat, status],
+		() => formatTooltipLabel(stat, status, isToday),
+		[stat, status, isToday],
 	);
 
 	const handleClick = () => {
