@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Medama Analytics API
-  version: 0.1.0
+  version: 0.3.0
   description: |
     This is the Medama Analytics OpenAPI 3.0 specification.
   contact:
