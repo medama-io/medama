@@ -20,23 +20,26 @@ import classes from './Header.module.css';
 interface HeaderNavLinkProps {
 	label: string;
 	to: string;
+	onClick?: () => void;
 }
 
 interface LoginButtonProps {
 	isLoggedIn: boolean;
 	visibleFrom?: MantineSize;
 	hiddenFrom?: MantineSize;
+	onClick?: () => void;
 }
 
 interface MobileDrawerProps extends DrawerProps {
 	isLoggedIn: boolean;
+	toggleDrawer: () => void;
 }
 
 interface RootLoaderData {
 	isLoggedIn: boolean;
 }
 
-const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
+const HeaderNavLink = ({ label, to, onClick }: HeaderNavLinkProps) => {
 	const { pathname } = useLocation();
 	const active = to === '/' ? pathname === to : pathname.startsWith(to);
 
@@ -48,6 +51,7 @@ const HeaderNavLink = ({ label, to }: HeaderNavLinkProps) => {
 			data-active={active}
 			role="link"
 			aria-current={active ? 'page' : undefined}
+			onClick={onClick}
 			tabIndex={0}
 		>
 			{label}
@@ -59,6 +63,7 @@ const LoginButton = ({
 	isLoggedIn,
 	visibleFrom,
 	hiddenFrom,
+	onClick,
 }: LoginButtonProps) => {
 	const linkTo = isLoggedIn ? '/logout' : '/login';
 	const ariaLabel = isLoggedIn ? 'Log out' : 'Log in';
@@ -78,6 +83,7 @@ const LoginButton = ({
 				component={Link}
 				to={linkTo}
 				aria-label={ariaLabel}
+				onClick={onClick}
 			>
 				{buttonLabel}
 			</UnstyledButton>
@@ -85,7 +91,11 @@ const LoginButton = ({
 	);
 };
 
-const MobileDrawer = ({ isLoggedIn, ...props }: MobileDrawerProps) => (
+const MobileDrawer = ({
+	isLoggedIn,
+	toggleDrawer,
+	...props
+}: MobileDrawerProps) => (
 	<Drawer.Root
 		size="100%"
 		classNames={{
@@ -102,11 +112,19 @@ const MobileDrawer = ({ isLoggedIn, ...props }: MobileDrawerProps) => (
 			<Drawer.Body role="navigation" aria-label="Main navigation">
 				{isLoggedIn && (
 					<Stack gap={0}>
-						<HeaderNavLink label="Home" to="/" />
-						<HeaderNavLink label="Settings" to="/settings" />
+						<HeaderNavLink label="Home" to="/" onClick={toggleDrawer} />
+						<HeaderNavLink
+							label="Settings"
+							to="/settings"
+							onClick={toggleDrawer}
+						/>
 					</Stack>
 				)}
-				<LoginButton isLoggedIn={isLoggedIn} hiddenFrom="xs" />
+				<LoginButton
+					isLoggedIn={isLoggedIn}
+					hiddenFrom="xs"
+					onClick={toggleDrawer}
+				/>
 			</Drawer.Body>
 		</Drawer.Content>
 	</Drawer.Root>
@@ -148,6 +166,7 @@ export const Header = () => {
 			</Group>
 			<MobileDrawer
 				isLoggedIn={isLoggedIn}
+				toggleDrawer={toggleDrawer}
 				opened={drawerOpened}
 				onClose={closeDrawer}
 			/>
