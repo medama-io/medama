@@ -1,4 +1,4 @@
-import { UnstyledButton } from '@mantine/core';
+import { type MantineSize, UnstyledButton } from '@mantine/core';
 import { Link, type LinkProps } from '@remix-run/react';
 
 import classes from './Button.module.css';
@@ -6,6 +6,7 @@ import classes from './Button.module.css';
 interface ButtonDarkProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode;
+	visibleFrom?: MantineSize;
 }
 
 interface ButtonDarkLinkProps extends LinkProps {

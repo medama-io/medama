@@ -1,4 +1,4 @@
-.tab-root {
+.tabRoot {
 	background-color: var(--me-color-bg-grey);
 
 	padding: 16px;
@@ -15,29 +15,45 @@
 	}
 }
 
-.tab-list {
+.tabList {
 	padding-right: 16px;
 }
 
-.list-wrapper {
+.listWrapper {
 	background-color: var(--me-color-text-light);
 	border-radius: 8px;
 	width: 220px;
 	padding: 12px;
+
+	@media (max-width: $mantine-breakpoint-lg) {
+		width: 100%;
+	}
 }
 
-.table-wrapper {
+.tableWrapper {
 	background-color: var(--me-color-bg-light);
 	border-radius: 8px;
 	padding: 4px;
 }
 
-.table-header {
+.tableHeader {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 7px 12px 12px 12px;
 	border-bottom: 1px solid var(--me-color-border-light);
+}
+
+.dataHeader {
+	font-size: 13px;
+
+	th {
+		padding: 10px 8px;
+	}
+}
+
+.tabPanel {
+	overflow-x: auto;
 }
 
 .back {
@@ -57,15 +73,32 @@
 	&:visited {
 		color: var(--me-color-text-dark);
 	}
+
+	@media (max-width: $mantine-breakpoint-lg) {
+		padding: 12px;
+		gap: 4px;
+
+		svg {
+			width: 20px;
+			height: 21px;
+		}
+	}
 }
 
 /* Pagination */
+.pagination {
+	justify-content: space-between;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		justify-content: center;
+	}
+}
 .viewspan {
 	font-size: 12px;
 	color: var(--me-color-text-muted);
 }
 
-.page-size {
+.pageSize {
 	display: flex;
 	align-items: center;
 	padding: 10px;
@@ -92,7 +125,7 @@
 	}
 }
 
-.page-arrow {
+.pageArrow {
 	display: flex;
 	align-items: center;
 	justify-content: center;

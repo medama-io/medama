@@ -54,17 +54,18 @@ const StatsItem = ({
 			aria-label={`Filter by ${label}`}
 			ref={ref}
 		>
-			<Group justify="space-between" pb={6}>
+			<Group justify="space-between" pb={6} wrap="nowrap">
 				<Text fz={14} truncate>
 					{label}
 				</Text>
-				<Group align="center" gap="xs">
+				<Group align="center" gap="xs" wrap="nowrap">
 					<Text
 						component="span"
 						fz={12}
 						c="gray"
 						mr={4}
 						data-active={hovered ? 'true' : undefined}
+						visibleFrom="xs"
 					>
 						{(percentage * 100).toFixed(1)}%
 					</Text>

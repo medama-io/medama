@@ -18,8 +18,10 @@ import '@mantine/core/styles/Container.css';
 import '@mantine/core/styles/Stack.css';
 import '@mantine/core/styles/Center.css';
 import '@mantine/core/styles/FloatingIndicator.css';
+import '@mantine/core/styles/Drawer.css';
 // Buttons
 import '@mantine/core/styles/ActionIcon.css';
+import '@mantine/core/styles/Burger.css';
 import '@mantine/core/styles/CloseButton.css';
 // Inputs
 import '@mantine/core/styles/Checkbox.css';
@@ -43,6 +45,7 @@ import '@mantine/core/styles/Notification.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/charts/styles.css';
 import 'mantine-datatable/styles.css';
+import 'react-indiana-drag-scroll/dist/style.css';
 import '@/styles/global.css';
 
 import {

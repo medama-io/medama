@@ -93,7 +93,7 @@ export default function Index() {
 	];
 
 	return (
-		<SimpleGrid cols={2} className={StatsDisplayClasses.grid}>
+		<SimpleGrid cols={{ base: 1, lg: 2 }} className={StatsDisplayClasses.grid}>
 			{statsGroups.map((group) => (
 				<StatsDisplay key={group.label} data={group.data} />
 			))}
