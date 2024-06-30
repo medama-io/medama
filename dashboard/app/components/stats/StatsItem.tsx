@@ -1,7 +1,9 @@
 import { Group, Text, UnstyledButton } from '@mantine/core';
 import { useHover } from '@mantine/hooks';
 import React, { useMemo } from 'react';
+import isFQDN from 'validator/lib/isFQDN';
 
+import { IconExternal } from '@/components/icons/external';
 import { useFilter } from '@/hooks/use-filter';
 
 import { formatCount, formatDuration } from './formatter';
@@ -55,9 +57,23 @@ const StatsItem = ({
 			ref={ref}
 		>
 			<Group justify="space-between" pb={6} wrap="nowrap">
-				<Text fz={14} truncate>
-					{label}
-				</Text>
+				<Group gap="xs">
+					<Text fz={14} truncate style={{ userSelect: 'text' }}>
+						{label}
+					</Text>
+					{tab === 'Referrers' && (
+						<UnstyledButton
+							className={classes.external}
+							component="a"
+							href={`https://${label}`}
+							target="_blank"
+							rel="noreferrer noopener"
+							data-hidden={!isFQDN(label)}
+						>
+							<IconExternal />
+						</UnstyledButton>
+					)}
+				</Group>
 				<Group align="center" gap="xs" wrap="nowrap">
 					<Text
 						component="span"
