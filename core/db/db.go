@@ -10,6 +10,8 @@ import (
 // AppClient is the interface that groups all database operations related to
 // user or website management.
 type AppClient interface {
+	// General
+	GetDatabaseVersion(ctx context.Context) (string, error)
 	// Users
 	// CreateUser adds a new user to the database.
 	CreateUser(ctx context.Context, user *model.User) error
@@ -42,6 +44,8 @@ type AppClient interface {
 // AnalyticsClient is the interface that groups all database operations related
 // to analytics and events.
 type AnalyticsClient interface {
+	// General
+	GetDatabaseVersion(ctx context.Context) (string, error)
 	// Events
 	AddPageView(ctx context.Context, event *model.PageViewHit) error
 	UpdatePageView(ctx context.Context, event *model.PageViewDuration) error
