@@ -1,0 +1,71 @@
+package services
+
+import (
+	"context"
+	"runtime"
+	"time"
+
+	"github.com/medama-io/medama/api"
+	"github.com/shirou/gopsutil/v4/cpu"
+	"github.com/shirou/gopsutil/v4/disk"
+	"github.com/shirou/gopsutil/v4/mem"
+)
+
+func (h *Handler) GetSettingsResource(ctx context.Context, params api.GetSettingsResourceParams) (api.GetSettingsResourceRes, error) {
+	// CPU statistics.
+	cpuCores := runtime.NumCPU()
+	cpuThreads := runtime.GOMAXPROCS(0)
+
+	cpuUsageArr, err := cpu.PercentWithContext(ctx, time.Second, false)
+	if err != nil {
+		return nil, err
+	}
+	// Get the average CPU usage.
+	cpuUsage := 0.0
+	for _, v := range cpuUsageArr {
+		cpuUsage += v
+	}
+	cpuUsage /= float64(len(cpuUsageArr))
+
+	// Memory statistics.
+	vmStat, err := mem.VirtualMemoryWithContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Disk statistics.
+	diskStat, err := disk.UsageWithContext(ctx, "/")
+	if err != nil {
+		return nil, err
+	}
+
+	// Get metadata.
+	sqliteVersion, err := h.db.GetDatabaseVersion(ctx)
+	if err != nil {
+		return nil, err
+	}
+	duckDBVersion, err := h.analyticsDB.GetDatabaseVersion(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &api.SettingsResource{
+		CPU: api.SettingsResourceCPU{
+			Usage:   float32(cpuUsage),
+			Cores:   cpuCores,
+			Threads: cpuThreads,
+		},
+		Memory: api.SettingsResourceMemory{
+			Used:  int64(vmStat.Used),
+			Total: int64(vmStat.Total),
+		},
+		Disk: api.SettingsResourceDisk{
+			Used:  int64(diskStat.Used),
+			Total: int64(diskStat.Total),
+		},
+		Metadata: api.SettingsResourceMetadata{
+			MetaDbVersion:      api.NewOptString(sqliteVersion),
+			AnalyticsDbVersion: api.NewOptString(duckDBVersion),
+		},
+	}, nil
+}

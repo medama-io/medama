@@ -175,6 +175,27 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				elem = origElem
+			case 's': // Prefix: "settings/resources"
+				origElem := elem
+				if l := len("settings/resources"); len(elem) >= l && elem[0:l] == "settings/resources" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch r.Method {
+					case "GET":
+						s.handleGetSettingsResourceRequest([0]string{}, elemIsEscaped, w, r)
+					default:
+						s.notAllowed(w, r, "GET")
+					}
+
+					return
+				}
+
+				elem = origElem
 			case 'u': // Prefix: "user"
 				origElem := elem
 				if l := len("user"); len(elem) >= l && elem[0:l] == "user" {
@@ -842,6 +863,31 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					}
 
 					elem = origElem
+				}
+
+				elem = origElem
+			case 's': // Prefix: "settings/resources"
+				origElem := elem
+				if l := len("settings/resources"); len(elem) >= l && elem[0:l] == "settings/resources" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch method {
+					case "GET":
+						r.name = "GetSettingsResource"
+						r.summary = "Get Resource Usage"
+						r.operationID = "get-settings-resource"
+						r.pathPattern = "/settings/resources"
+						r.args = args
+						r.count = 0
+						return r, true
+					default:
+						return
+					}
 				}
 
 				elem = origElem

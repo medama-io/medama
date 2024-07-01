@@ -33,6 +33,13 @@ export interface paths {
      */
     get: operations["get-event-ping"];
   };
+  "/settings/resources": {
+    /**
+     * Get Resource Usage
+     * @description Get the current CPU, memory and disk usage of the server.
+     */
+    get: operations["get-settings-resource"];
+  };
   "/user": {
     /**
      * Get User Info
@@ -292,6 +299,34 @@ export interface components {
     WebsitePatch: {
       /** Format: hostname */
       hostname?: string;
+    };
+    /**
+     * SettingsResource
+     * @description Response body for getting CPU, memory and disk usage of the server.
+     */
+    SettingsResource: {
+      cpu: {
+        /** Format: float */
+        usage: number;
+        cores: number;
+        threads: number;
+      };
+      memory: {
+        /** Format: int64 */
+        used: number;
+        /** Format: int64 */
+        total: number;
+      };
+      disk: {
+        /** Format: int64 */
+        used: number;
+        /** Format: int64 */
+        total: number;
+      };
+      metadata: {
+        meta_db_version?: string;
+        analytics_db_version?: string;
+      };
     };
     /** StatsSummary */
     StatsSummary: {
@@ -746,6 +781,27 @@ export interface operations {
         };
       };
       400: components["responses"]["BadRequestError"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  /**
+   * Get Resource Usage
+   * @description Get the current CPU, memory and disk usage of the server.
+   */
+  "get-settings-resource": {
+    parameters: {
+      cookie: {
+        _me_sess: components["parameters"]["SessionAuth"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["SettingsResource"];
+        };
+      };
+      401: components["responses"]["UnauthorisedError"];
       500: components["responses"]["InternalServerError"];
     };
   };

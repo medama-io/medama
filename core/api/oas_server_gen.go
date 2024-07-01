@@ -26,6 +26,12 @@ type Handler interface {
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
+	// GetSettingsResource implements get-settings-resource operation.
+	//
+	// Get the current CPU, memory and disk usage of the server.
+	//
+	// GET /settings/resources
+	GetSettingsResource(ctx context.Context, params GetSettingsResourceParams) (GetSettingsResourceRes, error)
 	// GetUser implements get-user operation.
 	//
 	// Retrieve the information of the user with the matching user ID.

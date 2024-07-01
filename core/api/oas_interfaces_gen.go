@@ -13,6 +13,10 @@ type GetEventPingRes interface {
 	getEventPingRes()
 }
 
+type GetSettingsResourceRes interface {
+	getSettingsResourceRes()
+}
+
 type GetUserRes interface {
 	getUserRes()
 }

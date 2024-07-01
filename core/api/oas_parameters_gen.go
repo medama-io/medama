@@ -314,6 +314,62 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 	return params, nil
 }
 
+// GetSettingsResourceParams is parameters of get-settings-resource operation.
+type GetSettingsResourceParams struct {
+	// Session token for authentication.
+	MeSess string
+}
+
+func unpackGetSettingsResourceParams(packed middleware.Parameters) (params GetSettingsResourceParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		params.MeSess = packed[key].(string)
+	}
+	return params
+}
+
+func decodeGetSettingsResourceParams(args [0]string, argsEscaped bool, r *http.Request) (params GetSettingsResourceParams, _ error) {
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // GetUserParams is parameters of get-user operation.
 type GetUserParams struct {
 	// Session token for authentication.
