@@ -2,8 +2,6 @@ package services
 
 import (
 	"context"
-	"runtime"
-	"time"
 
 	"github.com/medama-io/medama/api"
 	"github.com/shirou/gopsutil/v4/cpu"
@@ -13,10 +11,16 @@ import (
 
 func (h *Handler) GetSettingsResource(ctx context.Context, params api.GetSettingsResourceParams) (api.GetSettingsResourceRes, error) {
 	// CPU statistics.
-	cpuCores := runtime.NumCPU()
-	cpuThreads := runtime.GOMAXPROCS(0)
+	cpuCores, err := cpu.CountsWithContext(ctx, false)
+	if err != nil {
+		return nil, err
+	}
+	cpuThreads, err := cpu.CountsWithContext(ctx, true)
+	if err != nil {
+		return nil, err
+	}
 
-	cpuUsageArr, err := cpu.PercentWithContext(ctx, time.Second, false)
+	cpuUsageArr, err := cpu.PercentWithContext(ctx, 0, false)
 	if err != nil {
 		return nil, err
 	}

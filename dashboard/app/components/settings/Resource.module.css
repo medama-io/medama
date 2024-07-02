@@ -1,0 +1,18 @@
+.panel {
+	padding: 18px 16px;
+
+	border: 1px solid var(--me-color-border-muted);
+	border-radius: 8px;
+
+	p {
+		font-size: 14px;
+	}
+
+	div {
+		margin-bottom: 8px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}

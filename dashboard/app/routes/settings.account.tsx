@@ -1,7 +1,6 @@
 import { useForm, zodResolver } from '@mantine/form';
 import {
 	json,
-	useActionData,
 	useLoaderData,
 	useSubmit,
 	type ClientActionFunctionArgs,
@@ -21,7 +20,7 @@ interface LoaderData {
 
 export const meta: MetaFunction = () => {
 	return [
-		{ title: 'Settings | Medama' },
+		{ title: 'Account Settings | Medama' },
 		{ name: 'description', content: 'Privacy focused web analytics.' },
 	];
 };
@@ -51,8 +50,6 @@ const accountSchema = z.object({
 });
 
 export const clientLoader = async () => {
-	await userLoggedIn();
-
 	const { data } = await userGet();
 
 	if (!data) {

@@ -1,7 +1,11 @@
 import { Stack, Text, Title, UnstyledButton } from '@mantine/core';
+import { Form } from '@remix-run/react';
 
 import classes from './Section.module.css';
-import { Form } from '@remix-run/react';
+
+interface SectionWrapperProps {
+	children: React.ReactNode;
+}
 
 interface SectionProps {
 	title: string;
@@ -9,8 +13,12 @@ interface SectionProps {
 	submitDescription?: string;
 
 	children: React.ReactNode;
-	onSubmit: () => void;
+	onSubmit?: () => void;
 }
+
+export const SectionWrapper = ({ children }: SectionWrapperProps) => (
+	<div className={classes.sectionWrapper}>{children}</div>
+);
 
 export const Section = ({
 	title,
