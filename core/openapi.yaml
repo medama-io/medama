@@ -1535,18 +1535,10 @@ components:
           required:
             - used
             - total
-        metadata:
-          type: object
-          properties:
-            meta_db_version:
-              type: string
-            analytics_db_version:
-              type: string
       required:
         - cpu
         - memory
         - disk
-        - metadata
     StatsSummary:
       type: object
       title: StatsSummary

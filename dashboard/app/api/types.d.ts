@@ -323,10 +323,6 @@ export interface components {
         /** Format: int64 */
         total: number;
       };
-      metadata: {
-        meta_db_version?: string;
-        analytics_db_version?: string;
-      };
     };
     /** StatsSummary */
     StatsSummary: {

@@ -43,16 +43,6 @@ func (h *Handler) GetSettingsResource(ctx context.Context, params api.GetSetting
 		return nil, err
 	}
 
-	// Get metadata.
-	sqliteVersion, err := h.db.GetDatabaseVersion(ctx)
-	if err != nil {
-		return nil, err
-	}
-	duckDBVersion, err := h.analyticsDB.GetDatabaseVersion(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	return &api.SettingsResource{
 		CPU: api.SettingsResourceCPU{
 			Usage:   float32(cpuUsage),
@@ -66,10 +56,6 @@ func (h *Handler) GetSettingsResource(ctx context.Context, params api.GetSetting
 		Disk: api.SettingsResourceDisk{
 			Used:  int64(diskStat.Used),
 			Total: int64(diskStat.Total),
-		},
-		Metadata: api.SettingsResourceMetadata{
-			MetaDbVersion:      api.NewOptString(sqliteVersion),
-			AnalyticsDbVersion: api.NewOptString(duckDBVersion),
 		},
 	}, nil
 }

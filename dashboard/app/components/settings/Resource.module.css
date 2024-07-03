@@ -1,11 +1,11 @@
 .panel {
-	padding: 18px 16px;
+	padding: 16px;
 
 	border: 1px solid var(--me-color-border-muted);
 	border-radius: 8px;
 
 	p {
-		font-size: 14px;
+		font-size: 15px;
 	}
 
 	div {
@@ -14,5 +14,11 @@
 		&:last-child {
 			margin-bottom: 0;
 		}
+	}
+
+	span {
+		font-family: "Reddit Mono Variable";
+		font-size: 15px;
+		font-weight: 500;
 	}
 }

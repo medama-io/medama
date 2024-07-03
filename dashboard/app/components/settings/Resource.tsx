@@ -19,12 +19,6 @@ interface ResourcePanelCPUProps extends PanelProps {
 	threads: number;
 }
 
-interface ResourcePanelMetadataProps {
-	title: string;
-	sqlite?: string;
-	duckdb?: string;
-}
-
 const Panel = ({
 	title,
 	usage,
@@ -32,10 +26,14 @@ const Panel = ({
 }: React.PropsWithChildren<PanelProps>) => (
 	<div className={classes.panel}>
 		<Group justify="space-between">
-			<Text fw={500}>{title}</Text>
-			<Text fz={22}>{usage.toFixed(2)}%</Text>
+			<Text fz={16} fw={500}>
+				{title}
+			</Text>
+			<Text fz={22} ff="monospace">
+				{usage.toFixed(2)}%
+			</Text>
 		</Group>
-		<Progress.Root size="xl" mb={16}>
+		<Progress.Root size="xl" mb={24} mt={16}>
 			<Progress.Section
 				value={Math.round(usage)}
 				color="#9d5def"
@@ -78,22 +76,4 @@ export const ResourcePanelCPU = ({
 			</Text>
 		</Group>
 	</Panel>
-);
-
-export const ResourcePanelMetadata = ({
-	title,
-	sqlite,
-	duckdb,
-}: ResourcePanelMetadataProps) => (
-	<div className={classes.panel}>
-		<Text fw={500}>{title}</Text>
-		<Group justify="space-between">
-			<Text>
-				SQLite: <span>{sqlite}</span>
-			</Text>
-			<Text>
-				DuckDB: <span>{duckdb}</span>
-			</Text>
-		</Group>
-	</div>
 );

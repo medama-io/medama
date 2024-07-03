@@ -11,7 +11,6 @@ import { SimpleGrid } from '@mantine/core';
 import {
 	ResourcePanel,
 	ResourcePanelCPU,
-	ResourcePanelMetadata,
 } from '@/components/settings/Resource';
 import { useInterval } from '@mantine/hooks';
 import { useEffect } from 'react';
@@ -41,7 +40,7 @@ export default function Index() {
 	const { usage } = useLoaderData<typeof clientLoader>();
 	const revalidator = useRevalidator();
 	const interval = useInterval(revalidator.revalidate, 2000);
-	const { cpu, memory, disk, metadata } = usage;
+	const { cpu, memory, disk } = usage;
 
 	useEffect(() => {
 		interval.start();
@@ -55,11 +54,6 @@ export default function Index() {
 					<ResourcePanelCPU title="CPU Usage" {...cpu} />
 					<ResourcePanel title="Memory Usage" {...memory} />
 					<ResourcePanel title="Disk Usage" {...disk} />
-					<ResourcePanelMetadata
-						title="Metadata"
-						sqlite={metadata.meta_db_version}
-						duckdb={metadata.analytics_db_version}
-					/>
 				</SimpleGrid>
 			</SectionWrapper>
 			<Section title="Resource management" description="Change program limits">

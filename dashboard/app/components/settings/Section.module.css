@@ -19,7 +19,7 @@
 	padding: 32px 24px;
 	background-color: var(--me-color-bg-light);
 
-	border-radius: 8px 8px 8px 8px;
+	border-radius: 8px;
 }
 
 .title {

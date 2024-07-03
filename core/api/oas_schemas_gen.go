@@ -1263,10 +1263,9 @@ func (*PostEventHitNoContent) postEventHitRes() {}
 // Response body for getting CPU, memory and disk usage of the server.
 // Ref: #/components/schemas/SettingsResource
 type SettingsResource struct {
-	CPU      SettingsResourceCPU      `json:"cpu"`
-	Memory   SettingsResourceMemory   `json:"memory"`
-	Disk     SettingsResourceDisk     `json:"disk"`
-	Metadata SettingsResourceMetadata `json:"metadata"`
+	CPU    SettingsResourceCPU    `json:"cpu"`
+	Memory SettingsResourceMemory `json:"memory"`
+	Disk   SettingsResourceDisk   `json:"disk"`
 }
 
 // GetCPU returns the value of CPU.
@@ -1284,11 +1283,6 @@ func (s *SettingsResource) GetDisk() SettingsResourceDisk {
 	return s.Disk
 }
 
-// GetMetadata returns the value of Metadata.
-func (s *SettingsResource) GetMetadata() SettingsResourceMetadata {
-	return s.Metadata
-}
-
 // SetCPU sets the value of CPU.
 func (s *SettingsResource) SetCPU(val SettingsResourceCPU) {
 	s.CPU = val
@@ -1302,11 +1296,6 @@ func (s *SettingsResource) SetMemory(val SettingsResourceMemory) {
 // SetDisk sets the value of Disk.
 func (s *SettingsResource) SetDisk(val SettingsResourceDisk) {
 	s.Disk = val
-}
-
-// SetMetadata sets the value of Metadata.
-func (s *SettingsResource) SetMetadata(val SettingsResourceMetadata) {
-	s.Metadata = val
 }
 
 func (*SettingsResource) getSettingsResourceRes() {}
@@ -1395,31 +1384,6 @@ func (s *SettingsResourceMemory) SetUsed(val int64) {
 // SetTotal sets the value of Total.
 func (s *SettingsResourceMemory) SetTotal(val int64) {
 	s.Total = val
-}
-
-type SettingsResourceMetadata struct {
-	MetaDbVersion      OptString `json:"meta_db_version"`
-	AnalyticsDbVersion OptString `json:"analytics_db_version"`
-}
-
-// GetMetaDbVersion returns the value of MetaDbVersion.
-func (s *SettingsResourceMetadata) GetMetaDbVersion() OptString {
-	return s.MetaDbVersion
-}
-
-// GetAnalyticsDbVersion returns the value of AnalyticsDbVersion.
-func (s *SettingsResourceMetadata) GetAnalyticsDbVersion() OptString {
-	return s.AnalyticsDbVersion
-}
-
-// SetMetaDbVersion sets the value of MetaDbVersion.
-func (s *SettingsResourceMetadata) SetMetaDbVersion(val OptString) {
-	s.MetaDbVersion = val
-}
-
-// SetAnalyticsDbVersion sets the value of AnalyticsDbVersion.
-func (s *SettingsResourceMetadata) SetAnalyticsDbVersion(val OptString) {
-	s.AnalyticsDbVersion = val
 }
 
 type StatsBrowsers []StatsBrowsersItem
