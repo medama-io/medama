@@ -19,8 +19,8 @@ tasks:
     deps: [build:default]
     cmds:
       - mkdir -p ../core/client
-      - cp ./dist/default.js ../core/client/medama.js
+      - cp ./dist/default.js ../core/client/script.js
     sources:
       - ./dist/default.js
     generates:
-      - ../core/client/medama.js
+      - ../core/client/script.js
