@@ -69,6 +69,7 @@ func (*BadRequestError) getWebsiteIDSummaryRes()   {}
 func (*BadRequestError) getWebsiteIDTimeRes()      {}
 func (*BadRequestError) getWebsitesIDRes()         {}
 func (*BadRequestError) getWebsitesRes()           {}
+func (*BadRequestError) patchSettingsUsageRes()    {}
 func (*BadRequestError) patchUserRes()             {}
 func (*BadRequestError) patchWebsitesIDRes()       {}
 func (*BadRequestError) postAuthLoginRes()         {}
@@ -487,6 +488,7 @@ func (*ForbiddenError) getWebsiteIDMediumsRes()   {}
 func (*ForbiddenError) getWebsiteIDOsRes()        {}
 func (*ForbiddenError) getWebsiteIDReferrersRes() {}
 func (*ForbiddenError) getWebsiteIDSourcesRes()   {}
+func (*ForbiddenError) patchSettingsUsageRes()    {}
 func (*ForbiddenError) patchUserRes()             {}
 func (*ForbiddenError) patchWebsitesIDRes()       {}
 func (*ForbiddenError) postWebsitesRes()          {}
@@ -653,7 +655,7 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 func (*InternalServerError) deleteUserRes()            {}
 func (*InternalServerError) deleteWebsitesIDRes()      {}
 func (*InternalServerError) getEventPingRes()          {}
-func (*InternalServerError) getSettingsResourceRes()   {}
+func (*InternalServerError) getSettingsUsageRes()      {}
 func (*InternalServerError) getUserRes()               {}
 func (*InternalServerError) getWebsiteIDBrowsersRes()  {}
 func (*InternalServerError) getWebsiteIDCampaignsRes() {}
@@ -669,6 +671,7 @@ func (*InternalServerError) getWebsiteIDSummaryRes()   {}
 func (*InternalServerError) getWebsiteIDTimeRes()      {}
 func (*InternalServerError) getWebsitesIDRes()         {}
 func (*InternalServerError) getWebsitesRes()           {}
+func (*InternalServerError) patchSettingsUsageRes()    {}
 func (*InternalServerError) patchUserRes()             {}
 func (*InternalServerError) patchWebsitesIDRes()       {}
 func (*InternalServerError) postAuthLoginRes()         {}
@@ -1221,6 +1224,11 @@ func (o OptWebsiteGetSummary) Or(d WebsiteGetSummary) WebsiteGetSummary {
 	return d
 }
 
+// PatchSettingsUsageCreated is response for PatchSettingsUsage operation.
+type PatchSettingsUsageCreated struct{}
+
+func (*PatchSettingsUsageCreated) patchSettingsUsageRes() {}
+
 // PostAuthLoginOK is response for PostAuthLogin operation.
 type PostAuthLoginOK struct {
 	SetCookie string
@@ -1261,129 +1269,192 @@ type PostEventHitNoContent struct{}
 func (*PostEventHitNoContent) postEventHitRes() {}
 
 // Response body for getting CPU, memory and disk usage of the server.
-// Ref: #/components/schemas/SettingsResource
-type SettingsResource struct {
-	CPU    SettingsResourceCPU    `json:"cpu"`
-	Memory SettingsResourceMemory `json:"memory"`
-	Disk   SettingsResourceDisk   `json:"disk"`
+// Ref: #/components/schemas/SettingsUsageGet
+type SettingsUsageGet struct {
+	CPU      SettingsUsageGetCPU      `json:"cpu"`
+	Memory   SettingsUsageGetMemory   `json:"memory"`
+	Disk     SettingsUsageGetDisk     `json:"disk"`
+	Metadata SettingsUsageGetMetadata `json:"metadata"`
 }
 
 // GetCPU returns the value of CPU.
-func (s *SettingsResource) GetCPU() SettingsResourceCPU {
+func (s *SettingsUsageGet) GetCPU() SettingsUsageGetCPU {
 	return s.CPU
 }
 
 // GetMemory returns the value of Memory.
-func (s *SettingsResource) GetMemory() SettingsResourceMemory {
+func (s *SettingsUsageGet) GetMemory() SettingsUsageGetMemory {
 	return s.Memory
 }
 
 // GetDisk returns the value of Disk.
-func (s *SettingsResource) GetDisk() SettingsResourceDisk {
+func (s *SettingsUsageGet) GetDisk() SettingsUsageGetDisk {
 	return s.Disk
 }
 
+// GetMetadata returns the value of Metadata.
+func (s *SettingsUsageGet) GetMetadata() SettingsUsageGetMetadata {
+	return s.Metadata
+}
+
 // SetCPU sets the value of CPU.
-func (s *SettingsResource) SetCPU(val SettingsResourceCPU) {
+func (s *SettingsUsageGet) SetCPU(val SettingsUsageGetCPU) {
 	s.CPU = val
 }
 
 // SetMemory sets the value of Memory.
-func (s *SettingsResource) SetMemory(val SettingsResourceMemory) {
+func (s *SettingsUsageGet) SetMemory(val SettingsUsageGetMemory) {
 	s.Memory = val
 }
 
 // SetDisk sets the value of Disk.
-func (s *SettingsResource) SetDisk(val SettingsResourceDisk) {
+func (s *SettingsUsageGet) SetDisk(val SettingsUsageGetDisk) {
 	s.Disk = val
 }
 
-func (*SettingsResource) getSettingsResourceRes() {}
+// SetMetadata sets the value of Metadata.
+func (s *SettingsUsageGet) SetMetadata(val SettingsUsageGetMetadata) {
+	s.Metadata = val
+}
 
-type SettingsResourceCPU struct {
+func (*SettingsUsageGet) getSettingsUsageRes() {}
+
+type SettingsUsageGetCPU struct {
 	Usage   float32 `json:"usage"`
 	Cores   int     `json:"cores"`
 	Threads int     `json:"threads"`
 }
 
 // GetUsage returns the value of Usage.
-func (s *SettingsResourceCPU) GetUsage() float32 {
+func (s *SettingsUsageGetCPU) GetUsage() float32 {
 	return s.Usage
 }
 
 // GetCores returns the value of Cores.
-func (s *SettingsResourceCPU) GetCores() int {
+func (s *SettingsUsageGetCPU) GetCores() int {
 	return s.Cores
 }
 
 // GetThreads returns the value of Threads.
-func (s *SettingsResourceCPU) GetThreads() int {
+func (s *SettingsUsageGetCPU) GetThreads() int {
 	return s.Threads
 }
 
 // SetUsage sets the value of Usage.
-func (s *SettingsResourceCPU) SetUsage(val float32) {
+func (s *SettingsUsageGetCPU) SetUsage(val float32) {
 	s.Usage = val
 }
 
 // SetCores sets the value of Cores.
-func (s *SettingsResourceCPU) SetCores(val int) {
+func (s *SettingsUsageGetCPU) SetCores(val int) {
 	s.Cores = val
 }
 
 // SetThreads sets the value of Threads.
-func (s *SettingsResourceCPU) SetThreads(val int) {
+func (s *SettingsUsageGetCPU) SetThreads(val int) {
 	s.Threads = val
 }
 
-type SettingsResourceDisk struct {
+type SettingsUsageGetDisk struct {
 	Used  int64 `json:"used"`
 	Total int64 `json:"total"`
 }
 
 // GetUsed returns the value of Used.
-func (s *SettingsResourceDisk) GetUsed() int64 {
+func (s *SettingsUsageGetDisk) GetUsed() int64 {
 	return s.Used
 }
 
 // GetTotal returns the value of Total.
-func (s *SettingsResourceDisk) GetTotal() int64 {
+func (s *SettingsUsageGetDisk) GetTotal() int64 {
 	return s.Total
 }
 
 // SetUsed sets the value of Used.
-func (s *SettingsResourceDisk) SetUsed(val int64) {
+func (s *SettingsUsageGetDisk) SetUsed(val int64) {
 	s.Used = val
 }
 
 // SetTotal sets the value of Total.
-func (s *SettingsResourceDisk) SetTotal(val int64) {
+func (s *SettingsUsageGetDisk) SetTotal(val int64) {
 	s.Total = val
 }
 
-type SettingsResourceMemory struct {
+type SettingsUsageGetMemory struct {
 	Used  int64 `json:"used"`
 	Total int64 `json:"total"`
 }
 
 // GetUsed returns the value of Used.
-func (s *SettingsResourceMemory) GetUsed() int64 {
+func (s *SettingsUsageGetMemory) GetUsed() int64 {
 	return s.Used
 }
 
 // GetTotal returns the value of Total.
-func (s *SettingsResourceMemory) GetTotal() int64 {
+func (s *SettingsUsageGetMemory) GetTotal() int64 {
 	return s.Total
 }
 
 // SetUsed sets the value of Used.
-func (s *SettingsResourceMemory) SetUsed(val int64) {
+func (s *SettingsUsageGetMemory) SetUsed(val int64) {
 	s.Used = val
 }
 
 // SetTotal sets the value of Total.
-func (s *SettingsResourceMemory) SetTotal(val int64) {
+func (s *SettingsUsageGetMemory) SetTotal(val int64) {
 	s.Total = val
+}
+
+type SettingsUsageGetMetadata struct {
+	Threads     OptInt    `json:"threads"`
+	MemoryLimit OptString `json:"memory_limit"`
+}
+
+// GetThreads returns the value of Threads.
+func (s *SettingsUsageGetMetadata) GetThreads() OptInt {
+	return s.Threads
+}
+
+// GetMemoryLimit returns the value of MemoryLimit.
+func (s *SettingsUsageGetMetadata) GetMemoryLimit() OptString {
+	return s.MemoryLimit
+}
+
+// SetThreads sets the value of Threads.
+func (s *SettingsUsageGetMetadata) SetThreads(val OptInt) {
+	s.Threads = val
+}
+
+// SetMemoryLimit sets the value of MemoryLimit.
+func (s *SettingsUsageGetMetadata) SetMemoryLimit(val OptString) {
+	s.MemoryLimit = val
+}
+
+// Request body for updating the resource limits of the application.
+// Ref: #/components/schemas/SettingsUsagePatch
+type SettingsUsagePatch struct {
+	Threads     OptInt    `json:"threads"`
+	MemoryLimit OptString `json:"memory_limit"`
+}
+
+// GetThreads returns the value of Threads.
+func (s *SettingsUsagePatch) GetThreads() OptInt {
+	return s.Threads
+}
+
+// GetMemoryLimit returns the value of MemoryLimit.
+func (s *SettingsUsagePatch) GetMemoryLimit() OptString {
+	return s.MemoryLimit
+}
+
+// SetThreads sets the value of Threads.
+func (s *SettingsUsagePatch) SetThreads(val OptInt) {
+	s.Threads = val
+}
+
+// SetMemoryLimit sets the value of MemoryLimit.
+func (s *SettingsUsagePatch) SetMemoryLimit(val OptString) {
+	s.MemoryLimit = val
 }
 
 type StatsBrowsers []StatsBrowsersItem
@@ -2366,7 +2437,7 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 
 func (*UnauthorisedError) deleteUserRes()            {}
 func (*UnauthorisedError) deleteWebsitesIDRes()      {}
-func (*UnauthorisedError) getSettingsResourceRes()   {}
+func (*UnauthorisedError) getSettingsUsageRes()      {}
 func (*UnauthorisedError) getUserRes()               {}
 func (*UnauthorisedError) getWebsiteIDBrowsersRes()  {}
 func (*UnauthorisedError) getWebsiteIDCampaignsRes() {}
@@ -2382,6 +2453,7 @@ func (*UnauthorisedError) getWebsiteIDSummaryRes()   {}
 func (*UnauthorisedError) getWebsiteIDTimeRes()      {}
 func (*UnauthorisedError) getWebsitesIDRes()         {}
 func (*UnauthorisedError) getWebsitesRes()           {}
+func (*UnauthorisedError) patchSettingsUsageRes()    {}
 func (*UnauthorisedError) patchUserRes()             {}
 func (*UnauthorisedError) patchWebsitesIDRes()       {}
 func (*UnauthorisedError) postAuthLoginRes()         {}

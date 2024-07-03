@@ -175,9 +175,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				elem = origElem
-			case 's': // Prefix: "settings/resources"
+			case 's': // Prefix: "settings/usage"
 				origElem := elem
-				if l := len("settings/resources"); len(elem) >= l && elem[0:l] == "settings/resources" {
+				if l := len("settings/usage"); len(elem) >= l && elem[0:l] == "settings/usage" {
 					elem = elem[l:]
 				} else {
 					break
@@ -187,9 +187,11 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					// Leaf node.
 					switch r.Method {
 					case "GET":
-						s.handleGetSettingsResourceRequest([0]string{}, elemIsEscaped, w, r)
+						s.handleGetSettingsUsageRequest([0]string{}, elemIsEscaped, w, r)
+					case "PATCH":
+						s.handlePatchSettingsUsageRequest([0]string{}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "GET")
+						s.notAllowed(w, r, "GET,PATCH")
 					}
 
 					return
@@ -866,9 +868,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				}
 
 				elem = origElem
-			case 's': // Prefix: "settings/resources"
+			case 's': // Prefix: "settings/usage"
 				origElem := elem
-				if l := len("settings/resources"); len(elem) >= l && elem[0:l] == "settings/resources" {
+				if l := len("settings/usage"); len(elem) >= l && elem[0:l] == "settings/usage" {
 					elem = elem[l:]
 				} else {
 					break
@@ -878,10 +880,18 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					// Leaf node.
 					switch method {
 					case "GET":
-						r.name = "GetSettingsResource"
+						r.name = "GetSettingsUsage"
 						r.summary = "Get Resource Usage"
-						r.operationID = "get-settings-resource"
-						r.pathPattern = "/settings/resources"
+						r.operationID = "get-settings-usage"
+						r.pathPattern = "/settings/usage"
+						r.args = args
+						r.count = 0
+						return r, true
+					case "PATCH":
+						r.name = "PatchSettingsUsage"
+						r.summary = "Update Resource Usage"
+						r.operationID = "patch-settings-usage"
+						r.pathPattern = "/settings/usage"
 						r.args = args
 						r.count = 0
 						return r, true

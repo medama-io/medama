@@ -42,6 +42,9 @@ type AppClient interface {
 // AnalyticsClient is the interface that groups all database operations related
 // to analytics and events.
 type AnalyticsClient interface {
+	// Settings
+	GetSettingsUsage(ctx context.Context) (*model.GetSettingsUsage, error)
+	PatchSettingsUsage(ctx context.Context, settings *model.GetSettingsUsage) error
 	// Events
 	AddPageView(ctx context.Context, event *model.PageViewHit) error
 	UpdatePageView(ctx context.Context, event *model.PageViewDuration) error

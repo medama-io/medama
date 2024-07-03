@@ -1,4 +1,5 @@
 import { useForm, zodResolver } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import {
 	json,
 	useLoaderData,
@@ -9,20 +10,17 @@ import {
 import { z } from 'zod';
 
 import type { components } from '@/api/types';
-import { userGet, userLoggedIn, userUpdate } from '@/api/user';
+import { userGet, userUpdate } from '@/api/user';
 import { PasswordInput, TextInput } from '@/components/settings/Input';
 import { Section } from '@/components/settings/Section';
-import { notifications } from '@mantine/notifications';
+import { getString, getType } from '@/utils/form';
 
 interface LoaderData {
 	user: components['schemas']['UserGet'];
 }
 
 export const meta: MetaFunction = () => {
-	return [
-		{ title: 'Account Settings | Medama' },
-		{ name: 'description', content: 'Privacy focused web analytics.' },
-	];
+	return [{ title: 'Account Settings | Medama' }];
 };
 
 const accountSchema = z.object({
@@ -65,20 +63,15 @@ export const clientLoader = async () => {
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	const body = await request.formData();
-	const type = body.get('_setting') ? String(body.get('_setting')) : undefined;
-
-	const getValue = (key: string) => {
-		const value = body.get(key);
-		return value && value !== '' ? String(value) : undefined;
-	};
+	const type = getType(body);
 
 	let res: Response | undefined;
 	switch (type) {
 		case 'account': {
 			const update = await userUpdate({
 				body: {
-					username: getValue('username'),
-					password: getValue('password'),
+					username: getString(body, 'username'),
+					password: getString(body, 'password'),
 				},
 				noThrow: true,
 			});
@@ -101,13 +94,14 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		});
 	}
 
+	const message = 'Successfully updated account details.';
 	notifications.show({
 		title: 'Success.',
-		message: 'Successfully updated account details.',
+		message,
 		withBorder: true,
 		color: '#17cd8c',
 	});
-	return json({ message: 'Successfully updated user.' });
+	return json({ message });
 };
 
 export default function Index() {
@@ -128,15 +122,15 @@ export default function Index() {
 		validate: zodResolver(accountSchema),
 	});
 
-	const handleAccountSubmit = async (values: typeof account.values) => {
+	const handleSubmit = (values: typeof account.values) => {
 		submit(values, { method: 'POST' });
 	};
 
 	return (
 		<Section
-			title="Account details"
+			title="Account Details"
 			description="Edit your username and password."
-			onSubmit={account.onSubmit(handleAccountSubmit)}
+			onSubmit={account.onSubmit(handleSubmit)}
 		>
 			<input
 				type="hidden"

@@ -1,13 +1,18 @@
-import { client, type DataResponse } from './client';
+import { type ClientOptions, client, type DataResponse } from './client';
 
-const settingsResources = async (): Promise<
-	DataResponse<'SettingsResource'>
-> => {
-	const res = await client('/settings/resources', {});
+const usageGet = async (): Promise<DataResponse<'SettingsUsageGet'>> => {
+	const res = await client('/settings/usage', {});
 	return {
 		data: await res.json(),
 		res,
 	};
 };
 
-export { settingsResources };
+const usagePatch = async (
+	opts: ClientOptions<'SettingsUsagePatch'>,
+): Promise<DataResponse> => {
+	const res = await client('/settings/usage', { method: 'PATCH', ...opts });
+	return { res };
+};
+
+export { usageGet, usagePatch };

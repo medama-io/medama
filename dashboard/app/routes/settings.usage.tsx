@@ -1,29 +1,33 @@
+import { SimpleGrid } from '@mantine/core';
+import { useForm, zodResolver } from '@mantine/form';
+import { useInterval } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import {
 	json,
 	useLoaderData,
 	useRevalidator,
+	useSubmit,
+	type ClientActionFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/react';
+import { useEffect } from 'react';
+import { z } from 'zod';
 
-import { Section, SectionWrapper } from '@/components/settings/Section';
-import { settingsResources } from '@/api/settings';
-import { SimpleGrid } from '@mantine/core';
+import { usageGet, usagePatch } from '@/api/settings';
+import { TextInput, TextInputWithTooltip } from '@/components/settings/Input';
 import {
 	ResourcePanel,
 	ResourcePanelCPU,
 } from '@/components/settings/Resource';
-import { useInterval } from '@mantine/hooks';
-import { useEffect } from 'react';
+import { Section, SectionWrapper } from '@/components/settings/Section';
+import { getNumber, getString, getType } from '@/utils/form';
 
 export const meta: MetaFunction = () => {
-	return [
-		{ title: 'Usage Settings | Medama' },
-		{ name: 'description', content: 'Privacy focused web analytics.' },
-	];
+	return [{ title: 'Usage Settings | Medama' }];
 };
 
 export const clientLoader = async () => {
-	const { data } = await settingsResources();
+	const { data } = await usageGet();
 
 	if (!data) {
 		throw json('Failed to get server usage metrics.', {
@@ -36,16 +40,99 @@ export const clientLoader = async () => {
 	});
 };
 
+export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+	const body = await request.formData();
+	const type = getType(body);
+
+	let res: Response | undefined;
+	switch (type) {
+		case 'usage': {
+			const update = await usagePatch({
+				body: {
+					threads: getNumber(body, 'threads'),
+					memory_limit: getString(body, 'memory_limit'),
+				},
+				noThrow: true,
+			});
+			res = update.res;
+			break;
+		}
+		default:
+			throw new Response('Invalid setting type.', {
+				status: 400,
+			});
+	}
+
+	if (!res) {
+		throw new Error('Failed to update user.');
+	}
+
+	if (!res.ok) {
+		throw new Response(res.statusText, {
+			status: res.status,
+		});
+	}
+
+	const message = 'Successfully updated usage settings.';
+	notifications.show({
+		title: 'Success.',
+		message,
+		withBorder: true,
+		color: '#17cd8c',
+	});
+	return json({ message });
+};
+
 export default function Index() {
 	const { usage } = useLoaderData<typeof clientLoader>();
+	const submit = useSubmit();
 	const revalidator = useRevalidator();
-	const interval = useInterval(revalidator.revalidate, 2000);
-	const { cpu, memory, disk } = usage;
+	const interval = useInterval(revalidator.revalidate, 10000);
+	const { cpu, memory, disk, metadata } = usage;
 
 	useEffect(() => {
 		interval.start();
 		return interval.stop;
 	}, [interval.start, interval.stop]);
+
+	const usageSchema = z.object({
+		_setting: z.literal('usage'),
+		threads: z.preprocess(
+			(x) => (x ? x : undefined),
+			z.coerce
+				.number()
+				.int()
+				.min(1, {
+					message: 'Threads must be at least 1.',
+				})
+				.max(metadata.threads ?? 1, {
+					message: `Threads must be less than or equal to ${metadata.threads}.`,
+				})
+				.optional(),
+		),
+		memory_limit: z
+			.string()
+			.regex(/^(\d+(?:\.\d+)?)(MB|GB|TB|MiB|GiB|TiB)$/, {
+				message:
+					'Invalid memory limit format. Supported formats: 1MB, 1MiB, 1GB, 1GiB, 1TB, 1TiB.',
+			})
+			.optional(),
+	});
+
+	const usageForm = useForm({
+		mode: 'uncontrolled',
+		initialValues: {
+			_setting: 'usage',
+			threads: String(metadata.threads),
+			memory_limit: metadata.memory_limit,
+		},
+		validate: zodResolver(usageSchema),
+	});
+
+	const handleSubmit = (values: Partial<typeof usageForm.values>) => {
+		console.log('I RAN');
+		submit(values, { method: 'POST' });
+	};
 
 	return (
 		<>
@@ -56,8 +143,31 @@ export default function Index() {
 					<ResourcePanel title="Disk Usage" {...disk} />
 				</SimpleGrid>
 			</SectionWrapper>
-			<Section title="Resource management" description="Change program limits">
-				<p>Test</p>
+			<Section
+				title="Resource Allocation"
+				description="Manage the allocation of system resources."
+				onSubmit={usageForm.onSubmit(handleSubmit)}
+			>
+				<input
+					type="hidden"
+					key={usageForm.key('_setting')}
+					{...usageForm.getInputProps('_setting')}
+				/>
+				<TextInput
+					label="Threads"
+					description="Default is # of available CPU threads."
+					placeholder="4"
+					key={usageForm.key('threads')}
+					{...usageForm.getInputProps('threads')}
+				/>
+				<TextInputWithTooltip
+					label="Memory Limit"
+					description="Default is 80% of total memory."
+					placeholder="1GB"
+					tooltip="The maximum memory usable by the database (e.g. 1GB)"
+					key={usageForm.key('memory_limit')}
+					{...usageForm.getInputProps('memory_limit')}
+				/>
 			</Section>
 		</>
 	);

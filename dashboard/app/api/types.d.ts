@@ -33,12 +33,17 @@ export interface paths {
      */
     get: operations["get-event-ping"];
   };
-  "/settings/resources": {
+  "/settings/usage": {
     /**
      * Get Resource Usage
      * @description Get the current CPU, memory and disk usage of the server.
      */
-    get: operations["get-settings-resource"];
+    get: operations["get-settings-usage"];
+    /**
+     * Update Resource Usage
+     * @description Update the resource usage settings of the server.
+     */
+    patch: operations["patch-settings-usage"];
   };
   "/user": {
     /**
@@ -301,10 +306,10 @@ export interface components {
       hostname?: string;
     };
     /**
-     * SettingsResource
+     * SettingsUsageGet
      * @description Response body for getting CPU, memory and disk usage of the server.
      */
-    SettingsResource: {
+    SettingsUsageGet: {
       cpu: {
         /** Format: float */
         usage: number;
@@ -323,6 +328,18 @@ export interface components {
         /** Format: int64 */
         total: number;
       };
+      metadata: {
+        threads?: number;
+        memory_limit?: string;
+      };
+    };
+    /**
+     * SettingsUsagePatch
+     * @description Request body for updating the resource limits of the application.
+     */
+    SettingsUsagePatch: {
+      threads?: number;
+      memory_limit?: string;
     };
     /** StatsSummary */
     StatsSummary: {
@@ -784,7 +801,7 @@ export interface operations {
    * Get Resource Usage
    * @description Get the current CPU, memory and disk usage of the server.
    */
-  "get-settings-resource": {
+  "get-settings-usage": {
     parameters: {
       cookie: {
         _me_sess: components["parameters"]["SessionAuth"];
@@ -794,10 +811,37 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "application/json": components["schemas"]["SettingsResource"];
+          "application/json": components["schemas"]["SettingsUsageGet"];
         };
       };
       401: components["responses"]["UnauthorisedError"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  /**
+   * Update Resource Usage
+   * @description Update the resource usage settings of the server.
+   */
+  "patch-settings-usage": {
+    parameters: {
+      cookie: {
+        _me_sess: components["parameters"]["SessionAuth"];
+      };
+    };
+    /** @description Resource usage settings to update. */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SettingsUsagePatch"];
+      };
+    };
+    responses: {
+      /** @description Success */
+      201: {
+        content: never;
+      };
+      400: components["responses"]["BadRequestError"];
+      401: components["responses"]["UnauthorisedError"];
+      403: components["responses"]["ForbiddenError"];
       500: components["responses"]["InternalServerError"];
     };
   };

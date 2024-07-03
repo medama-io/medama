@@ -1845,14 +1845,14 @@ func (s *OptWebsiteGetSummary) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s *SettingsResource) Encode(e *jx.Encoder) {
+func (s *SettingsUsageGet) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *SettingsResource) encodeFields(e *jx.Encoder) {
+func (s *SettingsUsageGet) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("cpu")
 		s.CPU.Encode(e)
@@ -1865,18 +1865,23 @@ func (s *SettingsResource) encodeFields(e *jx.Encoder) {
 		e.FieldStart("disk")
 		s.Disk.Encode(e)
 	}
+	{
+		e.FieldStart("metadata")
+		s.Metadata.Encode(e)
+	}
 }
 
-var jsonFieldsNameOfSettingsResource = [3]string{
+var jsonFieldsNameOfSettingsUsageGet = [4]string{
 	0: "cpu",
 	1: "memory",
 	2: "disk",
+	3: "metadata",
 }
 
-// Decode decodes SettingsResource from json.
-func (s *SettingsResource) Decode(d *jx.Decoder) error {
+// Decode decodes SettingsUsageGet from json.
+func (s *SettingsUsageGet) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode SettingsResource to nil")
+		return errors.New("invalid: unable to decode SettingsUsageGet to nil")
 	}
 	var requiredBitSet [1]uint8
 
@@ -1912,17 +1917,27 @@ func (s *SettingsResource) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"disk\"")
 			}
+		case "metadata":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				if err := s.Metadata.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"metadata\"")
+			}
 		default:
 			return d.Skip()
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode SettingsResource")
+		return errors.Wrap(err, "decode SettingsUsageGet")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000111,
+		0b00001111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -1934,8 +1949,8 @@ func (s *SettingsResource) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfSettingsResource) {
-					name = jsonFieldsNameOfSettingsResource[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfSettingsUsageGet) {
+					name = jsonFieldsNameOfSettingsUsageGet[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -1956,27 +1971,27 @@ func (s *SettingsResource) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *SettingsResource) MarshalJSON() ([]byte, error) {
+func (s *SettingsUsageGet) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *SettingsResource) UnmarshalJSON(data []byte) error {
+func (s *SettingsUsageGet) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
 // Encode implements json.Marshaler.
-func (s *SettingsResourceCPU) Encode(e *jx.Encoder) {
+func (s *SettingsUsageGetCPU) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *SettingsResourceCPU) encodeFields(e *jx.Encoder) {
+func (s *SettingsUsageGetCPU) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("usage")
 		e.Float32(s.Usage)
@@ -1991,16 +2006,16 @@ func (s *SettingsResourceCPU) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfSettingsResourceCPU = [3]string{
+var jsonFieldsNameOfSettingsUsageGetCPU = [3]string{
 	0: "usage",
 	1: "cores",
 	2: "threads",
 }
 
-// Decode decodes SettingsResourceCPU from json.
-func (s *SettingsResourceCPU) Decode(d *jx.Decoder) error {
+// Decode decodes SettingsUsageGetCPU from json.
+func (s *SettingsUsageGetCPU) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode SettingsResourceCPU to nil")
+		return errors.New("invalid: unable to decode SettingsUsageGetCPU to nil")
 	}
 	var requiredBitSet [1]uint8
 
@@ -2047,7 +2062,7 @@ func (s *SettingsResourceCPU) Decode(d *jx.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode SettingsResourceCPU")
+		return errors.Wrap(err, "decode SettingsUsageGetCPU")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
@@ -2064,8 +2079,8 @@ func (s *SettingsResourceCPU) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfSettingsResourceCPU) {
-					name = jsonFieldsNameOfSettingsResourceCPU[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfSettingsUsageGetCPU) {
+					name = jsonFieldsNameOfSettingsUsageGetCPU[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -2086,27 +2101,27 @@ func (s *SettingsResourceCPU) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *SettingsResourceCPU) MarshalJSON() ([]byte, error) {
+func (s *SettingsUsageGetCPU) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *SettingsResourceCPU) UnmarshalJSON(data []byte) error {
+func (s *SettingsUsageGetCPU) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
 // Encode implements json.Marshaler.
-func (s *SettingsResourceDisk) Encode(e *jx.Encoder) {
+func (s *SettingsUsageGetDisk) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *SettingsResourceDisk) encodeFields(e *jx.Encoder) {
+func (s *SettingsUsageGetDisk) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("used")
 		e.Int64(s.Used)
@@ -2117,15 +2132,15 @@ func (s *SettingsResourceDisk) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfSettingsResourceDisk = [2]string{
+var jsonFieldsNameOfSettingsUsageGetDisk = [2]string{
 	0: "used",
 	1: "total",
 }
 
-// Decode decodes SettingsResourceDisk from json.
-func (s *SettingsResourceDisk) Decode(d *jx.Decoder) error {
+// Decode decodes SettingsUsageGetDisk from json.
+func (s *SettingsUsageGetDisk) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode SettingsResourceDisk to nil")
+		return errors.New("invalid: unable to decode SettingsUsageGetDisk to nil")
 	}
 	var requiredBitSet [1]uint8
 
@@ -2160,7 +2175,7 @@ func (s *SettingsResourceDisk) Decode(d *jx.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode SettingsResourceDisk")
+		return errors.Wrap(err, "decode SettingsUsageGetDisk")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
@@ -2177,8 +2192,8 @@ func (s *SettingsResourceDisk) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfSettingsResourceDisk) {
-					name = jsonFieldsNameOfSettingsResourceDisk[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfSettingsUsageGetDisk) {
+					name = jsonFieldsNameOfSettingsUsageGetDisk[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -2199,27 +2214,27 @@ func (s *SettingsResourceDisk) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *SettingsResourceDisk) MarshalJSON() ([]byte, error) {
+func (s *SettingsUsageGetDisk) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *SettingsResourceDisk) UnmarshalJSON(data []byte) error {
+func (s *SettingsUsageGetDisk) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
 // Encode implements json.Marshaler.
-func (s *SettingsResourceMemory) Encode(e *jx.Encoder) {
+func (s *SettingsUsageGetMemory) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *SettingsResourceMemory) encodeFields(e *jx.Encoder) {
+func (s *SettingsUsageGetMemory) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("used")
 		e.Int64(s.Used)
@@ -2230,15 +2245,15 @@ func (s *SettingsResourceMemory) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfSettingsResourceMemory = [2]string{
+var jsonFieldsNameOfSettingsUsageGetMemory = [2]string{
 	0: "used",
 	1: "total",
 }
 
-// Decode decodes SettingsResourceMemory from json.
-func (s *SettingsResourceMemory) Decode(d *jx.Decoder) error {
+// Decode decodes SettingsUsageGetMemory from json.
+func (s *SettingsUsageGetMemory) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode SettingsResourceMemory to nil")
+		return errors.New("invalid: unable to decode SettingsUsageGetMemory to nil")
 	}
 	var requiredBitSet [1]uint8
 
@@ -2273,7 +2288,7 @@ func (s *SettingsResourceMemory) Decode(d *jx.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode SettingsResourceMemory")
+		return errors.Wrap(err, "decode SettingsUsageGetMemory")
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
@@ -2290,8 +2305,8 @@ func (s *SettingsResourceMemory) Decode(d *jx.Decoder) error {
 				bitIdx := bits.TrailingZeros8(result)
 				fieldIdx := i*8 + bitIdx
 				var name string
-				if fieldIdx < len(jsonFieldsNameOfSettingsResourceMemory) {
-					name = jsonFieldsNameOfSettingsResourceMemory[fieldIdx]
+				if fieldIdx < len(jsonFieldsNameOfSettingsUsageGetMemory) {
+					name = jsonFieldsNameOfSettingsUsageGetMemory[fieldIdx]
 				} else {
 					name = strconv.Itoa(fieldIdx)
 				}
@@ -2312,14 +2327,174 @@ func (s *SettingsResourceMemory) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *SettingsResourceMemory) MarshalJSON() ([]byte, error) {
+func (s *SettingsUsageGetMemory) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *SettingsResourceMemory) UnmarshalJSON(data []byte) error {
+func (s *SettingsUsageGetMemory) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *SettingsUsageGetMetadata) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *SettingsUsageGetMetadata) encodeFields(e *jx.Encoder) {
+	{
+		if s.Threads.Set {
+			e.FieldStart("threads")
+			s.Threads.Encode(e)
+		}
+	}
+	{
+		if s.MemoryLimit.Set {
+			e.FieldStart("memory_limit")
+			s.MemoryLimit.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfSettingsUsageGetMetadata = [2]string{
+	0: "threads",
+	1: "memory_limit",
+}
+
+// Decode decodes SettingsUsageGetMetadata from json.
+func (s *SettingsUsageGetMetadata) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode SettingsUsageGetMetadata to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "threads":
+			if err := func() error {
+				s.Threads.Reset()
+				if err := s.Threads.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"threads\"")
+			}
+		case "memory_limit":
+			if err := func() error {
+				s.MemoryLimit.Reset()
+				if err := s.MemoryLimit.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"memory_limit\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode SettingsUsageGetMetadata")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *SettingsUsageGetMetadata) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *SettingsUsageGetMetadata) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *SettingsUsagePatch) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *SettingsUsagePatch) encodeFields(e *jx.Encoder) {
+	{
+		if s.Threads.Set {
+			e.FieldStart("threads")
+			s.Threads.Encode(e)
+		}
+	}
+	{
+		if s.MemoryLimit.Set {
+			e.FieldStart("memory_limit")
+			s.MemoryLimit.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfSettingsUsagePatch = [2]string{
+	0: "threads",
+	1: "memory_limit",
+}
+
+// Decode decodes SettingsUsagePatch from json.
+func (s *SettingsUsagePatch) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode SettingsUsagePatch to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "threads":
+			if err := func() error {
+				s.Threads.Reset()
+				if err := s.Threads.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"threads\"")
+			}
+		case "memory_limit":
+			if err := func() error {
+				s.MemoryLimit.Reset()
+				if err := s.MemoryLimit.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"memory_limit\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode SettingsUsagePatch")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *SettingsUsagePatch) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *SettingsUsagePatch) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

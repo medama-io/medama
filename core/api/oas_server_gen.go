@@ -26,12 +26,12 @@ type Handler interface {
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
-	// GetSettingsResource implements get-settings-resource operation.
+	// GetSettingsUsage implements get-settings-usage operation.
 	//
 	// Get the current CPU, memory and disk usage of the server.
 	//
-	// GET /settings/resources
-	GetSettingsResource(ctx context.Context, params GetSettingsResourceParams) (GetSettingsResourceRes, error)
+	// GET /settings/usage
+	GetSettingsUsage(ctx context.Context, params GetSettingsUsageParams) (GetSettingsUsageRes, error)
 	// GetUser implements get-user operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
@@ -122,6 +122,12 @@ type Handler interface {
 	//
 	// GET /websites/{hostname}
 	GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error)
+	// PatchSettingsUsage implements patch-settings-usage operation.
+	//
+	// Update the resource usage settings of the server.
+	//
+	// PATCH /settings/usage
+	PatchSettingsUsage(ctx context.Context, req *SettingsUsagePatch, params PatchSettingsUsageParams) (PatchSettingsUsageRes, error)
 	// PatchUser implements patch-user operation.
 	//
 	// Update a user account's details.
