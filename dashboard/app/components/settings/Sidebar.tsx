@@ -3,7 +3,10 @@ import { Stack, UnstyledButton } from '@mantine/core';
 import classes from './Sidebar.module.css';
 import { Link, useLocation } from '@remix-run/react';
 
-const SETTINGS_MAP = [{ label: 'Account', path: 'account' }] as const;
+const SETTINGS_MAP = [
+	{ label: 'Account', path: 'account' },
+	{ label: 'Usage', path: 'usage' },
+] as const;
 
 export const Sidebar = () => {
 	const { pathname } = useLocation();

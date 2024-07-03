@@ -175,6 +175,29 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				elem = origElem
+			case 's': // Prefix: "settings/usage"
+				origElem := elem
+				if l := len("settings/usage"); len(elem) >= l && elem[0:l] == "settings/usage" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch r.Method {
+					case "GET":
+						s.handleGetSettingsUsageRequest([0]string{}, elemIsEscaped, w, r)
+					case "PATCH":
+						s.handlePatchSettingsUsageRequest([0]string{}, elemIsEscaped, w, r)
+					default:
+						s.notAllowed(w, r, "GET,PATCH")
+					}
+
+					return
+				}
+
+				elem = origElem
 			case 'u': // Prefix: "user"
 				origElem := elem
 				if l := len("user"); len(elem) >= l && elem[0:l] == "user" {
@@ -842,6 +865,39 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					}
 
 					elem = origElem
+				}
+
+				elem = origElem
+			case 's': // Prefix: "settings/usage"
+				origElem := elem
+				if l := len("settings/usage"); len(elem) >= l && elem[0:l] == "settings/usage" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch method {
+					case "GET":
+						r.name = "GetSettingsUsage"
+						r.summary = "Get Resource Usage"
+						r.operationID = "get-settings-usage"
+						r.pathPattern = "/settings/usage"
+						r.args = args
+						r.count = 0
+						return r, true
+					case "PATCH":
+						r.name = "PatchSettingsUsage"
+						r.summary = "Update Resource Usage"
+						r.operationID = "patch-settings-usage"
+						r.pathPattern = "/settings/usage"
+						r.args = args
+						r.count = 0
+						return r, true
+					default:
+						return
+					}
 				}
 
 				elem = origElem

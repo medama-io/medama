@@ -314,6 +314,62 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 	return params, nil
 }
 
+// GetSettingsUsageParams is parameters of get-settings-usage operation.
+type GetSettingsUsageParams struct {
+	// Session token for authentication.
+	MeSess string
+}
+
+func unpackGetSettingsUsageParams(packed middleware.Parameters) (params GetSettingsUsageParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		params.MeSess = packed[key].(string)
+	}
+	return params
+}
+
+func decodeGetSettingsUsageParams(args [0]string, argsEscaped bool, r *http.Request) (params GetSettingsUsageParams, _ error) {
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // GetUserParams is parameters of get-user operation.
 type GetUserParams struct {
 	// Session token for authentication.
@@ -10841,6 +10897,62 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 		return params, &ogenerrors.DecodeParamError{
 			Name: "hostname",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// PatchSettingsUsageParams is parameters of patch-settings-usage operation.
+type PatchSettingsUsageParams struct {
+	// Session token for authentication.
+	MeSess string
+}
+
+func unpackPatchSettingsUsageParams(packed middleware.Parameters) (params PatchSettingsUsageParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "_me_sess",
+			In:   "cookie",
+		}
+		params.MeSess = packed[key].(string)
+	}
+	return params
+}
+
+func decodePatchSettingsUsageParams(args [0]string, argsEscaped bool, r *http.Request) (params PatchSettingsUsageParams, _ error) {
+	c := uri.NewCookieDecoder(r)
+	// Decode cookie: _me_sess.
+	if err := func() error {
+		cfg := uri.CookieParameterDecodingConfig{
+			Name:    "_me_sess",
+			Explode: true,
+		}
+		if err := c.HasParam(cfg); err == nil {
+			if err := c.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.MeSess = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "_me_sess",
+			In:   "cookie",
 			Err:  err,
 		}
 	}

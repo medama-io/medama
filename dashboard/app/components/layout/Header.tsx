@@ -103,8 +103,6 @@ const MobileDrawer = ({
 			content: classes.drawer,
 		}}
 		position="top"
-		withOverlay={false}
-		withCloseButton={false}
 		transitionProps={{ duration: 100, transition: 'fade' }}
 		{...props}
 	>

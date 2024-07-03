@@ -165,6 +165,59 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
+  /settings/usage:
+    get:
+      tags:
+        - Settings
+      security:
+        - CookieAuth: []
+      summary: Get Resource Usage
+      description: Get the current CPU, memory and disk usage of the server.
+      operationId: get-settings-usage
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsUsageGet"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    patch:
+      tags:
+        - Settings
+      security:
+        - CookieAuth: []
+      summary: Update Resource Usage
+      description: Update the resource usage settings of the server.
+      operationId: patch-settings-usage
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      requestBody:
+        description: Resource usage settings to update.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsUsagePatch"
+        required: true
+      responses:
+        "201":
+          description: Success
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      servers:
+        - url: "http://localhost:8080"
+          description: Local Server
   /user:
     get:
       tags:
@@ -1470,6 +1523,72 @@ components:
           minLength: 1
           maxLength: 253 # FQDN limit
           format: hostname
+    SettingsUsageGet:
+      type: object
+      title: SettingsUsageGet
+      description: Response body for getting CPU, memory and disk usage of the server.
+      properties:
+        cpu:
+          type: object
+          properties:
+            usage:
+              type: number
+              format: float
+            cores:
+              type: integer
+            threads:
+              type: integer
+          required:
+            - usage
+            - cores
+            - threads
+        memory:
+          type: object
+          properties:
+            used:
+              type: integer
+              format: int64
+            total:
+              type: integer
+              format: int64
+          required:
+            - used
+            - total
+        disk:
+          type: object
+          properties:
+            used:
+              type: integer
+              format: int64
+            total:
+              type: integer
+              format: int64
+          required:
+            - used
+            - total
+        metadata:
+          type: object
+          properties:
+            threads:
+              type: integer
+            memory_limit:
+              type: string
+      required:
+        - cpu
+        - memory
+        - disk
+        - metadata
+    SettingsUsagePatch:
+      type: object
+      title: SettingsUsagePatch
+      description: Request body for updating the resource limits of the application.
+      properties:
+        threads:
+          type: integer
+          minimum: 1
+        memory_limit:
+          type: string
+          minLength: 1
     StatsSummary:
       type: object
       title: StatsSummary
