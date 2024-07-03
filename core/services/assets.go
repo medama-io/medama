@@ -101,7 +101,6 @@ func (h *SPAHandler) serveFile(w http.ResponseWriter, r *http.Request, filePath 
 		} else {
 			w.Header().Set("Content-Type", "application/octet-stream")
 		}
-
 	}
 
 	h.clientServer.ServeHTTP(w, r)
