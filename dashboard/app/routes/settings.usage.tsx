@@ -10,7 +10,7 @@ import {
 	type ClientActionFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { z } from 'zod';
 
 import { usageGet, usagePatch } from '@/api/settings';
@@ -63,13 +63,9 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res) {
-		throw new Error('Failed to update user.');
-	}
-
-	if (!res.ok) {
-		throw new Response(res.statusText, {
-			status: res.status,
+	if (!res || !res.ok) {
+		throw new Response(res?.statusText || 'Failed to update usage settings.', {
+			status: res?.status || 500,
 		});
 	}
 
@@ -87,7 +83,7 @@ export default function Index() {
 	const { usage } = useLoaderData<typeof clientLoader>();
 	const submit = useSubmit();
 	const revalidator = useRevalidator();
-	const interval = useInterval(revalidator.revalidate, 10000);
+	const interval = useInterval(revalidator.revalidate, 2500);
 	const { cpu, memory, disk, metadata } = usage;
 
 	useEffect(() => {
@@ -95,29 +91,33 @@ export default function Index() {
 		return interval.stop;
 	}, [interval.start, interval.stop]);
 
-	const usageSchema = z.object({
-		_setting: z.literal('usage'),
-		threads: z.preprocess(
-			(x) => (x ? x : undefined),
-			z.coerce
-				.number()
-				.int()
-				.min(1, {
-					message: 'Threads must be at least 1.',
-				})
-				.max(metadata.threads ?? 1, {
-					message: `Threads must be less than or equal to ${metadata.threads}.`,
-				})
-				.optional(),
-		),
-		memory_limit: z
-			.string()
-			.regex(/^(\d+(?:\.\d+)?)(MB|GB|TB|MiB|GiB|TiB)$/, {
-				message:
-					'Invalid memory limit format. Supported formats: 1MB, 1MiB, 1GB, 1GiB, 1TB, 1TiB.',
-			})
-			.optional(),
-	});
+	const usageSchema = useMemo(
+		() =>
+			z.object({
+				_setting: z.literal('usage'),
+				threads: z.preprocess(
+					(x) => (x ? x : undefined),
+					z.coerce
+						.number()
+						.int()
+						.min(1, {
+							message: 'Threads must be at least 1.',
+						})
+						.max(metadata.threads ?? 1, {
+							message: `Threads must be less than or equal to ${metadata.threads}.`,
+						})
+						.optional(),
+				),
+				memory_limit: z
+					.string()
+					.regex(/^(\d+(?:\.\d+)?)(MB|GB|TB|MiB|GiB|TiB)$/, {
+						message:
+							'Invalid memory limit format. Supported formats: 1MB, 1MiB, 1GB, 1GiB, 1TB, 1TiB.',
+					})
+					.optional(),
+			}),
+		[metadata.threads],
+	);
 
 	const usageForm = useForm({
 		mode: 'uncontrolled',

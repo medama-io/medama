@@ -84,13 +84,9 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res) {
-		throw new Error('Failed to update user.');
-	}
-
-	if (!res.ok) {
-		throw new Response(res.statusText, {
-			status: res.status,
+	if (!res || !res.ok) {
+		throw new Response(res?.statusText || 'Failed to update user.', {
+			status: res?.status || 500,
 		});
 	}
 
