@@ -16,6 +16,7 @@ require (
 	github.com/ogen-go/ogen v1.2.2
 	github.com/rs/cors v1.11.0
 	github.com/rs/zerolog v1.33.0
+	github.com/shirou/gopsutil/v4 v4.24.6
 	github.com/stretchr/testify v1.9.0
 	go.jetify.com/typeid v1.2.0
 	go.uber.org/multierr v1.11.0
@@ -53,7 +54,6 @@ require (
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
-	github.com/shirou/gopsutil/v4 v4.24.6 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
 	github.com/tetratelabs/wazero v1.7.3 // indirect
 	github.com/tidwall/gjson v1.17.0 // indirect
