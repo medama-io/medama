@@ -3,12 +3,9 @@ package main
 import (
 	"context"
 	"flag"
-	"io"
-	"io/fs"
 	"net/http"
 	"os"
 	"os/signal"
-	"path"
 	"strconv"
 	"strings"
 	"syscall"
@@ -153,50 +150,11 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	mux.Handle("/openapi.yaml", http.FileServer(http.FS(generate.OpenAPIDocument)))
 	mux.Handle("/api/", http.StripPrefix("/api", apiHandler))
 
-	// SPA client. We need to serve index.html to all routes that are not /api.
-	client, err := generate.SPAClient()
+	// SPA client.
+	err = services.SetupAssetHandler(mux)
 	if err != nil {
-		return errors.Wrap(err, "failed to create spa client")
+		return errors.Wrap(err, "failed to setup asset handler")
 	}
-	clientServer := http.FileServer(http.FS(client))
-
-	// Read index.html and tracker script once during initialisation.
-	indexFile, err := readFile(client, "index.html")
-	if err != nil {
-		return errors.Wrap(err, "could not read index.html")
-	}
-	trackerFile, err := readFile(client, "medama.js")
-	if err != nil {
-		return errors.Wrap(err, "could not read medama.js")
-	}
-
-	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		uPath := path.Clean(r.URL.Path)
-		if strings.HasPrefix(uPath, "/assets/") || strings.HasPrefix(uPath, "/favicon.ico") || strings.HasPrefix(uPath, "/manifest") {
-			clientServer.ServeHTTP(w, r)
-			return
-		}
-
-		// Serve tracker script
-		if uPath == "/script.js" {
-			w.Header().Set("Content-Type", "application/javascript")
-			// Disable caching for /script.js
-			// TODO: Use ETAGs for caching
-			w.Header().Set("Cache-Control", "no-store")
-			_, err := w.Write(trackerFile)
-			if err != nil {
-				http.Error(w, "could not serve tracker script", http.StatusInternalServerError)
-			}
-			return
-		}
-
-		// Serve index.html for any other path
-		w.Header().Set("Content-Type", "text/html")
-		_, err := w.Write(indexFile)
-		if err != nil {
-			http.Error(w, "could not serve index.html", http.StatusInternalServerError)
-		}
-	}))
 
 	// Apply custom CORS middleware to the mux handler
 	handler := middlewares.CORSAllowedOriginsMiddleware(s.Server.CORSAllowedOrigins)(mux)
@@ -235,14 +193,4 @@ func (s *StartCommand) Run(ctx context.Context) error {
 
 	<-closed
 	return nil
-}
-
-func readFile(filesystem fs.FS, file string) ([]byte, error) {
-	f, err := filesystem.Open(file)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	return io.ReadAll(f)
 }
