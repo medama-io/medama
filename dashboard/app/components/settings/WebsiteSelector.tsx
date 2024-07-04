@@ -1,15 +1,19 @@
 import { Combobox, InputBase, useCombobox } from '@mantine/core';
-import { useDidUpdate } from '@mantine/hooks';
-import { useSearchParams } from '@remix-run/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import classes from './WebsiteSelector.module.css';
 
 interface WebsiteListComboboxProps {
 	websites: string[];
+	website: string;
+	setWebsite: (website: string) => void;
 }
 
-export const WebsiteSelector = ({ websites }: WebsiteListComboboxProps) => {
+export const WebsiteSelector = ({
+	websites,
+	website,
+	setWebsite,
+}: WebsiteListComboboxProps) => {
 	const combobox = useCombobox({
 		onDropdownClose: () => {
 			combobox.resetSelectedOption();
@@ -23,22 +27,12 @@ export const WebsiteSelector = ({ websites }: WebsiteListComboboxProps) => {
 		},
 	});
 
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [website, setWebsite] = useState<string>(
-		searchParams.get('website') ?? websites[0] ?? '',
+	const handleOptionSubmit = useCallback(
+		(value: string) => {
+			setWebsite(value);
+		},
+		[setWebsite],
 	);
-
-	useDidUpdate(() => {
-		setSearchParams((prevParams) => {
-			const newParams = new URLSearchParams(prevParams);
-			newParams.set('website', website);
-			return newParams;
-		});
-	}, [website]);
-
-	const handleOptionSubmit = useCallback((value: string) => {
-		setWebsite(value);
-	}, []);
 
 	const options = useMemo(
 		() =>

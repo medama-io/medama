@@ -1,19 +1,21 @@
-import { Group, Modal, Title } from '@mantine/core';
+import { Group, Text, Title } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
+import { useDidUpdate, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
 	json,
 	useLoaderData,
+	useSearchParams,
 	useSubmit,
 	type ClientActionFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/react';
+import { useState } from 'react';
 import { z } from 'zod';
 
-import { userGet, userUpdate } from '@/api/user';
-import { websiteList } from '@/api/websites';
-import { ModalChild, ModalInput } from '@/components/Modal';
+import { userGet } from '@/api/user';
+import { websiteDelete, websiteList } from '@/api/websites';
+import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
 import {
 	SectionDanger,
 	SectionTitle,
@@ -26,14 +28,11 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Account Settings | Medama' }];
 };
 
-const deleteSchema = z.object({
-	_setting: z.literal('delete'),
-	hostname: z.string().min(1),
-});
-
 export const clientLoader = async () => {
-	const { data: user } = await userGet();
-	const { data: websites } = await websiteList();
+	const [{ data: user }, { data: websites }] = await Promise.all([
+		userGet(),
+		websiteList(),
+	]);
 
 	if (!user || !websites) {
 		throw json('Failed to get user.', {
@@ -54,14 +53,12 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	let res: Response | undefined;
 	switch (type) {
 		case 'delete': {
-			const update = await userUpdate({
-				body: {
-					username: getString(body, 'username'),
-					password: getString(body, 'password'),
-				},
+			const deleteWebsite = await websiteDelete({
+				pathKey: getString(body, 'hostname'),
 				noThrow: true,
 			});
-			res = update.res;
+
+			res = deleteWebsite.res;
 			break;
 		}
 		default:
@@ -71,7 +68,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	}
 
 	if (!res || !res.ok) {
-		throw new Response(res?.statusText || 'Failed to update user.', {
+		throw new Response(res?.statusText || 'Failed to delete website.', {
 			status: res?.status || 500,
 		});
 	}
@@ -91,57 +88,79 @@ export default function Index() {
 	const submit = useSubmit();
 	const [opened, { open, close }] = useDisclosure(false);
 
-	if (!user) {
-		return;
-	}
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [website, setWebsite] = useState<string>(
+		searchParams.get('website') ?? websites[0] ?? '',
+	);
+
+	useDidUpdate(() => {
+		setSearchParams((prevParams) => {
+			const newParams = new URLSearchParams(prevParams);
+			newParams.set('website', website);
+			return newParams;
+		});
+	}, [website]);
+
+	const deleteSchema = z.object({
+		_setting: z.literal('delete'),
+		hostname: z.string().refine((hostname) => hostname === website, {
+			message: 'Invalid domain name.',
+		}),
+	});
 
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: {
 			_setting: 'delete',
-			hostname: websites[0] ?? '',
+			hostname: '',
 		},
 		validate: zodResolver(deleteSchema),
 	});
 
 	const resetAndClose = () => {
-		form.reset();
 		close();
+		form.reset();
 	};
 
 	const handleSubmit = (values: typeof form.values) => {
 		submit(values, { method: 'POST' });
+		resetAndClose();
 	};
 
+	if (!user) {
+		return null;
+	}
+
 	const modalChildren = (
-		<Modal
-			opened={opened}
-			onClose={close}
-			withCloseButton={false}
-			centered
-			size="auto"
-		>
+		<ModalWrapper opened={opened} onClose={close}>
 			<ModalChild
-				title="Let's add your website"
-				closeAriaLabel="Close add website modal"
-				description="Tell us more about your website so we can add it to your dashboard."
-				submitLabel="Add Website"
+				title="Delete website"
+				closeAriaLabel="Close delete website modal"
+				description="This website's analytics data will be permanently deleted."
+				submitLabel="Delete Website"
 				onSubmit={form.onSubmit(handleSubmit)}
 				resetForm={resetAndClose}
+				isDanger
 			>
 				<ModalInput
-					label="Domain Name"
-					placeholder="yourwebsite.com"
-					description="The domain or subdomain name of your website."
+					label={
+						<Text fz={13} mb={4}>
+							Enter the domain name{' '}
+							<Text fz={13} fw={600} component="span">
+								{website}
+							</Text>{' '}
+							to continue:
+						</Text>
+					}
 					key={form.key('hostname')}
 					{...form.getInputProps('hostname')}
-					required
 					mt="md"
 					autoComplete="off"
 					data-autofocus
+					disabled={website === ''}
 				/>
 			</ModalChild>
-		</Modal>
+		</ModalWrapper>
 	);
 
 	return (
@@ -151,12 +170,16 @@ export default function Index() {
 					<SectionTitle>
 						<Title order={3}>Choose Website</Title>
 					</SectionTitle>
-					<WebsiteSelector websites={websites} />
+					<WebsiteSelector
+						websites={websites}
+						website={website}
+						setWebsite={setWebsite}
+					/>
 				</Group>
 			</SectionWrapper>
 			<SectionDanger
 				title="Delete Website"
-				description="The website will be permanently deleted, including its data. This action is irreversible and can not be undone."
+				description="The website's analytics data will be permanently deleted. This action is irreversible and can not be undone."
 				modalChildren={modalChildren}
 				open={open}
 			>

@@ -1,5 +1,7 @@
-import { Flex, Group, Modal, Paper, SimpleGrid, Text } from '@mantine/core';
+import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
+import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import {
 	json,
 	redirect,
@@ -19,8 +21,6 @@ import { ButtonDark } from '@/components/Button';
 import { IconPlus } from '@/components/icons/plus';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { InnerHeader } from '@/components/layout/InnerHeader';
-import { ModalChild, ModalInput } from '@/components/Modal';
-import { useDisclosure } from '@mantine/hooks';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;
@@ -132,13 +132,7 @@ export default function Index() {
 						<WebsiteCard key={website.hostname} website={website} />
 					))}
 				</SimpleGrid>
-				<Modal
-					opened={opened}
-					onClose={close}
-					withCloseButton={false}
-					centered
-					size="auto"
-				>
+				<ModalWrapper opened={opened} onClose={close}>
 					<ModalChild
 						title="Let's add your website"
 						closeAriaLabel="Close add website modal"
@@ -159,7 +153,7 @@ export default function Index() {
 							data-autofocus
 						/>
 					</ModalChild>
-				</Modal>
+				</ModalWrapper>
 			</main>
 		</>
 	);

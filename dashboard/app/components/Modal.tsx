@@ -6,6 +6,7 @@ import {
 	TextInput,
 	type TextInputProps,
 	UnstyledButton,
+	Modal as MantineModal,
 } from '@mantine/core';
 import { Form } from '@remix-run/react';
 import type React from 'react';
@@ -14,15 +15,38 @@ import { IconArrowRight } from '@/components/icons/arrow-right';
 
 import classes from './Modal.module.css';
 
+interface ModalWrapperProps {
+	opened: boolean;
+	onClose: () => void;
+}
+
 export interface ModalProps {
-	title: string;
+	title: React.ReactNode;
 	closeAriaLabel: string;
-	description: string;
+	description: React.ReactNode;
 	submitLabel: string;
 
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
 	resetForm: () => void;
+
+	isDanger?: boolean;
 }
+
+export const ModalWrapper = ({
+	opened,
+	onClose,
+	children,
+}: React.PropsWithChildren<ModalWrapperProps>) => (
+	<MantineModal
+		opened={opened}
+		onClose={onClose}
+		withCloseButton={false}
+		centered
+		size="auto"
+	>
+		{children}
+	</MantineModal>
+);
 
 export const ModalInput = (props: TextInputProps) => (
 	<TextInput classNames={{ input: classes.input }} mt="md" {...props} />
@@ -33,6 +57,7 @@ export const ModalChild = ({
 	submitLabel,
 	closeAriaLabel,
 	description,
+	isDanger,
 	onSubmit,
 	resetForm,
 	children,
@@ -57,7 +82,12 @@ export const ModalChild = ({
 			</Text>
 			<Form onSubmit={onSubmit}>
 				{children}
-				<UnstyledButton className={classes.submit} mt="xl" type="submit">
+				<UnstyledButton
+					className={classes.submit}
+					mt="xl"
+					type="submit"
+					data-danger={isDanger}
+				>
 					<span>{submitLabel}</span>
 					<IconArrowRight />
 				</UnstyledButton>

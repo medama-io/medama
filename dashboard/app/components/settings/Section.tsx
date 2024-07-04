@@ -84,7 +84,6 @@ export const SectionDanger = ({
 					Delete Website
 				</UnstyledButton>
 			</div>
-
 			{modalChildren}
 		</Form>
 	);
