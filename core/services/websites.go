@@ -67,7 +67,7 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 	// Remove website from hostname cache
 	h.hostnames.Remove(params.Hostname)
 
-	return &api.DeleteWebsitesIDOK{}, nil
+	return &api.DeleteWebsitesIDNoContent{}, nil
 }
 
 func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams) (api.GetWebsitesRes, error) {

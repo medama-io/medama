@@ -19,4 +19,12 @@ const websiteCreate = async (
 	return { data: await res.json(), res };
 };
 
-export { websiteCreate, websiteList };
+const websiteDelete = async (opts: ClientOptions): Promise<DataResponse> => {
+	const res = await client('/websites/{hostname}', {
+		method: 'DELETE',
+		...opts,
+	});
+	return { res };
+};
+
+export { websiteCreate, websiteList, websiteDelete };

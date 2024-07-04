@@ -879,8 +879,8 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Success */
-      200: {
+      /** @description Success No Content */
+      204: {
         content: never;
       };
       400: components["responses"]["BadRequestError"];
@@ -1011,8 +1011,8 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Success */
-      200: {
+      /** @description Success No Content */
+      204: {
         content: never;
       };
       400: components["responses"]["BadRequestError"];

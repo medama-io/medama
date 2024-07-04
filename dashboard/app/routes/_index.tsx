@@ -1,20 +1,25 @@
 import { Flex, Group, Modal, Paper, SimpleGrid, Text } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import {
 	json,
 	redirect,
 	useLoaderData,
+	useSubmit,
 	type ClientActionFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/react';
+import { zodResolver } from 'mantine-form-zod-resolver';
+import isFQDN from 'validator/lib/isFQDN';
+import { z } from 'zod';
 
 import type { components } from '@/api/types';
 import { userLoggedIn } from '@/api/user';
 import { websiteCreate, websiteList } from '@/api/websites';
 import { ButtonDark } from '@/components/Button';
 import { IconPlus } from '@/components/icons/plus';
-import { Add } from '@/components/index/Add';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { InnerHeader } from '@/components/layout/InnerHeader';
+import { ModalChild, ModalInput } from '@/components/Modal';
 import { useDisclosure } from '@mantine/hooks';
 
 interface LoaderData {
@@ -27,6 +32,14 @@ export const meta: MetaFunction = () => {
 		{ name: 'description', content: 'Privacy focused web analytics.' },
 	];
 };
+
+const addWebsiteSchema = z.object({
+	hostname: z
+		.string()
+		.refine((value) => value === 'localhost' || isFQDN(value), {
+			message: 'Please enter a valid domain name.',
+		}),
+});
 
 export const clientLoader = async () => {
 	await userLoggedIn();
@@ -77,6 +90,23 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 export default function Index() {
 	const { websites } = useLoaderData<LoaderData>();
 	const [opened, { open, close }] = useDisclosure(false);
+	const submit = useSubmit();
+
+	const form = useForm({
+		mode: 'uncontrolled',
+		initialValues: { hostname: '' },
+		validate: zodResolver(addWebsiteSchema),
+	});
+
+	const resetAndClose = () => {
+		form.reset();
+		close();
+	};
+
+	const handleSubmit = (values: typeof form.values) => {
+		submit(values, { method: 'POST' });
+		resetAndClose();
+	};
 
 	return (
 		<>
@@ -109,7 +139,26 @@ export default function Index() {
 					centered
 					size="auto"
 				>
-					<Add close={close} />
+					<ModalChild
+						title="Let's add your website"
+						closeAriaLabel="Close add website modal"
+						description="Tell us more about your website so we can add it to your dashboard."
+						submitLabel="Add Website"
+						onSubmit={form.onSubmit(handleSubmit)}
+						resetForm={resetAndClose}
+					>
+						<ModalInput
+							label="Domain Name"
+							placeholder="yourwebsite.com"
+							description="The domain or subdomain name of your website."
+							key={form.key('hostname')}
+							{...form.getInputProps('hostname')}
+							required
+							mt="md"
+							autoComplete="off"
+							data-autofocus
+						/>
+					</ModalChild>
 				</Modal>
 			</main>
 		</>

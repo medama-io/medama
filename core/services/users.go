@@ -149,5 +149,5 @@ func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (
 		return nil, errors.Wrap(err, "services")
 	}
 
-	return &api.DeleteUserOK{}, nil
+	return &api.DeleteUserNoContent{}, nil
 }

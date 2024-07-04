@@ -5,6 +5,7 @@ import { Link, useLocation } from '@remix-run/react';
 
 const SETTINGS_MAP = [
 	{ label: 'Account', path: 'account' },
+	{ label: 'Websites', path: 'websites' },
 	{ label: 'Usage', path: 'usage' },
 ] as const;
 

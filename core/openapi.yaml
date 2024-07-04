@@ -297,8 +297,8 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
       responses:
-        "200":
-          description: Success
+        "204":
+          description: Success No Content
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -471,8 +471,8 @@ paths:
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
       responses:
-        "200":
-          description: Success
+        "204":
+          description: Success No Content
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":

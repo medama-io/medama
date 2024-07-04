@@ -157,15 +157,15 @@ func (s *CookieAuth) SetAPIKey(val string) {
 	s.APIKey = val
 }
 
-// DeleteUserOK is response for DeleteUser operation.
-type DeleteUserOK struct{}
+// DeleteUserNoContent is response for DeleteUser operation.
+type DeleteUserNoContent struct{}
 
-func (*DeleteUserOK) deleteUserRes() {}
+func (*DeleteUserNoContent) deleteUserRes() {}
 
-// DeleteWebsitesIDOK is response for DeleteWebsitesID operation.
-type DeleteWebsitesIDOK struct{}
+// DeleteWebsitesIDNoContent is response for DeleteWebsitesID operation.
+type DeleteWebsitesIDNoContent struct{}
 
-func (*DeleteWebsitesIDOK) deleteWebsitesIDRes() {}
+func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 
 // Website hit event.
 // Ref: #/components/schemas/EventHit

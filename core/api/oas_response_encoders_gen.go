@@ -15,8 +15,8 @@ import (
 
 func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *DeleteUserOK:
-		w.WriteHeader(200)
+	case *DeleteUserNoContent:
+		w.WriteHeader(204)
 
 		return nil
 
@@ -87,8 +87,8 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 
 func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *DeleteWebsitesIDOK:
-		w.WriteHeader(200)
+	case *DeleteWebsitesIDNoContent:
+		w.WriteHeader(204)
 
 		return nil
 
