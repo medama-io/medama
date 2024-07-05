@@ -182,6 +182,7 @@ export default function Index() {
 				description="The website's analytics data will be permanently deleted. This action is irreversible and can not be undone."
 				modalChildren={modalChildren}
 				open={open}
+				disabled={websites.length === 0}
 			>
 				<input
 					type="hidden"

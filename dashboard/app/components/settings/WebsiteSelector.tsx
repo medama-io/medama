@@ -1,4 +1,4 @@
-import { Combobox, InputBase, useCombobox } from '@mantine/core';
+import { Combobox, InputBase, ScrollArea, useCombobox } from '@mantine/core';
 import { useCallback, useMemo } from 'react';
 
 import classes from './WebsiteSelector.module.css';
@@ -44,7 +44,7 @@ export const WebsiteSelector = ({
 					role="option"
 					aria-selected={value === website}
 				>
-					{website}
+					{value}
 				</Combobox.Option>
 			)),
 		[websites, website],
@@ -74,7 +74,9 @@ export const WebsiteSelector = ({
 				</InputBase>
 			</Combobox.Target>
 			<Combobox.Dropdown>
-				<Combobox.Options>{options}</Combobox.Options>
+				<ScrollArea.Autosize mah={200}>
+					<Combobox.Options>{options}</Combobox.Options>
+				</ScrollArea.Autosize>
 			</Combobox.Dropdown>
 		</Combobox>
 	);

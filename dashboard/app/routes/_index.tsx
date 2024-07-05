@@ -99,8 +99,8 @@ export default function Index() {
 	});
 
 	const resetAndClose = () => {
-		form.reset();
 		close();
+		form.reset();
 	};
 
 	const handleSubmit = (values: typeof form.values) => {

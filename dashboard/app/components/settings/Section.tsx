@@ -18,6 +18,7 @@ interface SectionProps {
 }
 
 interface SectionDangerProps extends SectionProps {
+	disabled?: boolean;
 	modalChildren: React.ReactNode;
 	open: () => void;
 }
@@ -63,6 +64,7 @@ export const SectionDanger = ({
 	submitDescription,
 	children,
 	modalChildren,
+	disabled,
 	onSubmit,
 	open,
 }: SectionDangerProps) => {
@@ -80,6 +82,7 @@ export const SectionDanger = ({
 				<UnstyledButton
 					className={clsx(classes.submit, classes.delete)}
 					onClick={open}
+					disabled={disabled}
 				>
 					Delete Website
 				</UnstyledButton>
