@@ -104,7 +104,7 @@ export default function Index() {
 	const deleteSchema = z.object({
 		_setting: z.literal('delete'),
 		hostname: z.string().refine((hostname) => hostname === website, {
-			message: 'Invalid domain name.',
+			message: 'Domain name does not match.',
 		}),
 	});
 
@@ -125,6 +125,7 @@ export default function Index() {
 	const handleSubmit = (values: typeof form.values) => {
 		submit(values, { method: 'POST' });
 		resetAndClose();
+		setWebsite(websites[0] ?? '');
 	};
 
 	if (!user) {
