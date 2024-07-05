@@ -53,6 +53,16 @@
 
 	background-color: var(--me-color-bg-light);
 	border-radius: 0 0 8px 8px;
+
+	p {
+		padding: 8px;
+		font-size: 14px;
+		font-weight: 400px;
+	}
+
+	@media (max-width: $mantine-breakpoint-xs) {
+		padding: 0 16px 15px 16px;
+	}
 }
 
 .submit {
@@ -73,5 +83,16 @@
 
 	&:hover {
 		background-color: var(--me-color-bg-grey-blue-dark);
+	}
+}
+
+.delete {
+	background-color: var(--me-color-bg-red-danger);
+	border: 1px solid var(--me-color-bg-red-danger);
+	border-radius: 8px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--me-color-bg-red-danger-dark);
 	}
 }

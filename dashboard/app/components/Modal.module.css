@@ -41,4 +41,13 @@
 	span {
 		font-size: 14px;
 	}
+
+	&[data-danger="true"] {
+		background-color: var(--me-color-bg-red-danger);
+		border: 1px solid var(--me-color-bg-red-danger);
+
+		&:hover {
+			background-color: var(--me-color-bg-red-danger-dark);
+		}
+	}
 }

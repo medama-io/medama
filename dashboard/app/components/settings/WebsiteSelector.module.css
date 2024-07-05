@@ -1,0 +1,26 @@
+.target {
+	min-width: 192px;
+	height: 40px;
+	padding: 0 16px;
+
+	border-radius: 8px;
+}
+
+.targetWrapper {
+	@media (max-width: $mantine-breakpoint-xs) {
+		width: 100%;
+		margin: 4px 0 16px 0;
+	}
+}
+
+.dropdown {
+	border-radius: 8px;
+}
+
+.option {
+	padding: 8px 16px;
+
+	&[data-combobox-active="true"] {
+		font-weight: 600;
+	}
+}

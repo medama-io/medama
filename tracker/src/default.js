@@ -175,8 +175,8 @@ var DurationPayload;
 	const pingCache = (url) =>
 		new Promise((resolve) => {
 			// We use XHR here because fetch GET request requires a CORS
-			// header to be set on the server, which adds additional latency
-			// to ping the server.
+			// header to be set on the server, which adds additional requests and
+			// latency to ping the server.
 			const xhr = new XMLHttpRequest();
 			xhr.onload = () => {
 				// @ts-ignore - Double equals reduces bundle size.
@@ -200,8 +200,7 @@ var DurationPayload;
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
 		).then((isFirstVisit) => {
-			// We use fetch here because it is more reliable than XHR and we can rely on
-			// the browser to send the request even if the user navigates away from the page.
+			// We use fetch here because it is more reliable than XHR.
 			fetch(host + 'event/hit', {
 				method: 'POST',
 				body: JSON.stringify(
@@ -238,13 +237,8 @@ var DurationPayload;
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
-			// We use sendBeacon here because it is more reliable than fetch on page unloads.
-			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
-			// Firefox on top of that.
-			// See: https://github.com/whatwg/fetch/issues/679
-			//
-			// Some adblockers block this API directly, but since this is the unload event,
-			// it's an optional event to send.
+			// We use fetch with keepalive here because it can send the request even if the user
+			// navigates away from the page.
 			fetch(host + 'event/hit', {
 				method: 'POST',
 				body: JSON.stringify(
