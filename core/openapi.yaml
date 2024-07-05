@@ -997,6 +997,12 @@ paths:
       description: Get a list of languages and their stats.
       operationId: get-website-id-language
       parameters:
+        - in: query
+          name: locale
+          description: Whether to return the language name or the language dialect/locale.
+          schema:
+            type: boolean
+            default: false
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/Summary"
@@ -1917,12 +1923,14 @@ components:
     StatsLanguages:
       type: array
       title: StatsLanguages
+      description: List of languages and their stats.
       items:
         type: object
         properties:
           language:
             type: string
             description: Language name.
+            example: English
           visitors:
             type: integer
             description: Number of unique visitors for language.

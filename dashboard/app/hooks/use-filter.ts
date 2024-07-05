@@ -36,11 +36,20 @@ const useFilter = () => {
 		[searchParams, setSearchParams],
 	);
 
+	const isFilterActiveEq = useCallback(
+		(filter: Filter) => {
+			const key = getKey(filter, 'eq');
+			return searchParams.has(key);
+		},
+		[searchParams],
+	);
+
 	return {
 		searchParams,
 		addFilter,
 		removeFilter,
+		isFilterActiveEq,
 	};
 };
 
-export { useFilter };
+export { useFilter, getKey };

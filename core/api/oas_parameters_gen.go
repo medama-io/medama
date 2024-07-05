@@ -3868,6 +3868,8 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 
 // GetWebsiteIDLanguageParams is parameters of get-website-id-language operation.
 type GetWebsiteIDLanguageParams struct {
+	// Whether to return the language name or the language dialect/locale.
+	Locale OptBool
 	// Session token for authentication.
 	MeSess string
 	// Hostname for the website.
@@ -3905,6 +3907,15 @@ type GetWebsiteIDLanguageParams struct {
 }
 
 func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetWebsiteIDLanguageParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "locale",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Locale = v.(OptBool)
+		}
+	}
 	{
 		key := middleware.ParameterKey{
 			Name: "_me_sess",
@@ -4060,6 +4071,52 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDLanguageParams, _ error) {
 	q := uri.NewQueryDecoder(r.URL.Query())
 	c := uri.NewCookieDecoder(r)
+	// Set default value for query: locale.
+	{
+		val := bool(false)
+		params.Locale.SetTo(val)
+	}
+	// Decode query: locale.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "locale",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotLocaleVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotLocaleVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Locale.SetTo(paramsDotLocaleVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "locale",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode cookie: _me_sess.
 	if err := func() error {
 		cfg := uri.CookieParameterDecodingConfig{

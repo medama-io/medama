@@ -1,4 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { useDidUpdate, useMediaQuery } from '@mantine/hooks';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -14,8 +15,8 @@ import { useFilter } from '@/hooks/use-filter';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import type { DataRow, Dataset, Filter } from './types';
+import { sortBy } from './utils';
 
-import { useMediaQuery } from '@mantine/hooks';
 import classes from './StatsTable.module.css';
 
 type DataRowClick = DataTableRowClickHandler<DataRow>;
@@ -145,12 +146,6 @@ const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
 	},
 };
 
-const sortBy =
-	// biome-ignore lint/suspicious/noExplicitAny: Generic function.
-		<T extends Record<string, any>>(key: keyof T) =>
-		(a: T, b: T) =>
-			a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0;
-
 const BackButton = () => {
 	const [searchParams] = useSearchParams();
 
@@ -180,11 +175,17 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 		direction: 'desc',
 	});
 
-	const columns = useMemo(() => getColumnsForQuery(query), [query]);
+	const { isFilterActiveEq } = useFilter();
+	const showLocales = isFilterActiveEq('language');
+	const columns = useMemo(
+		() => getColumnsForQuery(query, showLocales),
+		[query, showLocales],
+	);
 
 	const records = useMemo(() => {
 		const from = (page - 1) * pageSize;
 		const to = from + pageSize;
+
 		const sortedData = [...data].sort(
 			sortBy(sortStatus.columnAccessor as keyof DataRow),
 		);
@@ -214,17 +215,28 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 	const handleFilter: DataRowClick = (row) => {
 		const { record } = row;
 		const filter = FILTER_MAP[query] ?? 'path';
-		const value =
-			query === 'time'
-				? record.path
-				: record[ACCESSOR_MAP[query]] || 'Direct/None';
-		addFilter(filter, 'eq', String(value));
+		// Do not add filter if the page is on language and locales are already shown.
+		if (filter !== 'language' || !showLocales) {
+			const value =
+				query === 'time'
+					? record.path
+					: record[ACCESSOR_MAP[query]] || 'Direct/None';
+			addFilter(filter, 'eq', String(value));
+		}
 	};
 
-	// Reset page when query changes.
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Valid pattern.
-	useEffect(() => {
+	// Reset page when query or data length changes (from filters).
+	useDidUpdate(() => {
 		setPage(1);
+		setPageSize(10);
+	}, [query, data.length]);
+
+	// Reset sort status when query changes.
+	useDidUpdate(() => {
+		setSortStatus({
+			columnAccessor: 'visitors',
+			direction: 'desc',
+		});
 	}, [query]);
 
 	return (
@@ -310,7 +322,10 @@ const TablePagination = ({
 	);
 };
 
-const getColumnsForQuery = (query: Dataset): DataTableColumn<DataRow>[] => {
+const getColumnsForQuery = (
+	query: Dataset,
+	filterActive?: boolean,
+): DataTableColumn<DataRow>[] => {
 	switch (query) {
 		case 'pages':
 			return [
@@ -350,12 +365,25 @@ const getColumnsForQuery = (query: Dataset): DataTableColumn<DataRow>[] => {
 			];
 		case 'browsers':
 		case 'devices':
+			return [
+				{
+					// Browser, Device
+					accessor: ACCESSOR_MAP[query],
+					title: LABEL_MAP[query].slice(0, -1),
+					width: '100%',
+					render: (record) => record[ACCESSOR_MAP[query]] || 'Unknown',
+				},
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
+				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.duration,
+			];
 		case 'languages':
 			return [
 				{
 					// Browser, Device, Language
 					accessor: ACCESSOR_MAP[query],
-					title: LABEL_MAP[query].slice(0, -1),
+					title: filterActive ? 'Locale' : 'Language',
 					width: '100%',
 					render: (record) => record[ACCESSOR_MAP[query]] || 'Unknown',
 				},
