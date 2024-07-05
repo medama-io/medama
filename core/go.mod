@@ -11,8 +11,8 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/marcboeker/go-duckdb v1.7.0
 	github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7
-	github.com/medama-io/go-useragent v0.0.0-20240624142159-f7c5b6f02365
-	github.com/ncruces/go-sqlite3 v0.16.3
+	github.com/medama-io/go-useragent v0.0.0-20240705131740-fb0efe8fe75a
+	github.com/ncruces/go-sqlite3 v0.17.0
 	github.com/ogen-go/ogen v1.2.2
 	github.com/rs/cors v1.11.0
 	github.com/rs/zerolog v1.33.0
@@ -65,12 +65,12 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/crypto v0.24.0 // indirect
+	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
-	golang.org/x/mod v0.18.0 // indirect
+	golang.org/x/mod v0.19.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
