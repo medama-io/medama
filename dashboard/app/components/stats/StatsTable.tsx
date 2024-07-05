@@ -231,6 +231,14 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 		setPageSize(10);
 	}, [query, data.length]);
 
+	// Reset sort status when query changes.
+	useDidUpdate(() => {
+		setSortStatus({
+			columnAccessor: 'visitors',
+			direction: 'desc',
+		});
+	}, [query]);
+
 	return (
 		<div className={classes.tableWrapper}>
 			<div className={classes.tableHeader}>
