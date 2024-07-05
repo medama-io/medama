@@ -176,10 +176,10 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 	});
 
 	const { isFilterActiveEq } = useFilter();
-	const isLanguageFilterActive = isFilterActiveEq('language');
+	const showLocales = isFilterActiveEq('language');
 	const columns = useMemo(
-		() => getColumnsForQuery(query, isLanguageFilterActive),
-		[query, isLanguageFilterActive],
+		() => getColumnsForQuery(query, showLocales),
+		[query, showLocales],
 	);
 
 	const records = useMemo(() => {
@@ -215,11 +215,14 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 	const handleFilter: DataRowClick = (row) => {
 		const { record } = row;
 		const filter = FILTER_MAP[query] ?? 'path';
-		const value =
-			query === 'time'
-				? record.path
-				: record[ACCESSOR_MAP[query]] || 'Direct/None';
-		addFilter(filter, 'eq', String(value));
+		// Do not add filter if the page is on language and locales are already shown.
+		if (filter !== 'language' || !showLocales) {
+			const value =
+				query === 'time'
+					? record.path
+					: record[ACCESSOR_MAP[query]] || 'Direct/None';
+			addFilter(filter, 'eq', String(value));
+		}
 	};
 
 	// Reset page when query changes.
