@@ -532,9 +532,15 @@ export interface components {
         /** @description Total time spent on page from referrer in milliseconds. */
         duration?: number;
       }[];
-    /** StatsLanguages */
+    /**
+     * StatsLanguages
+     * @description List of languages and their stats.
+     */
     StatsLanguages: {
-        /** @description Language name. */
+        /**
+         * @description Language name.
+         * @example English
+         */
         language: string;
         /** @description Number of unique visitors for language. */
         visitors: number;
@@ -1544,6 +1550,8 @@ export interface operations {
   "get-website-id-language": {
     parameters: {
       query?: {
+        /** @description Whether to return the language name or the language dialect/locale. */
+        locale?: boolean;
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];

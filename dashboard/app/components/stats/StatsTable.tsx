@@ -1,4 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -14,8 +15,8 @@ import { useFilter } from '@/hooks/use-filter';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import type { DataRow, Dataset, Filter } from './types';
+import { aggregateStatsByLanguage, sortBy } from './utils';
 
-import { useMediaQuery } from '@mantine/hooks';
 import classes from './StatsTable.module.css';
 
 type DataRowClick = DataTableRowClickHandler<DataRow>;
@@ -145,12 +146,6 @@ const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
 	},
 };
 
-const sortBy =
-	// biome-ignore lint/suspicious/noExplicitAny: Generic function.
-		<T extends Record<string, any>>(key: keyof T) =>
-		(a: T, b: T) =>
-			a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0;
-
 const BackButton = () => {
 	const [searchParams] = useSearchParams();
 
@@ -175,23 +170,35 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 	const [page, setPage] = useState(1);
 
 	// Sorting
+	const { isFilterActiveEq } = useFilter();
+	const isLanguageFilterActive = isFilterActiveEq('language');
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<DataRow>>({
 		columnAccessor: 'visitors',
 		direction: 'desc',
 	});
 
-	const columns = useMemo(() => getColumnsForQuery(query), [query]);
+	const columns = useMemo(
+		() => getColumnsForQuery(query, isLanguageFilterActive),
+		[query, isLanguageFilterActive],
+	);
 
 	const records = useMemo(() => {
 		const from = (page - 1) * pageSize;
 		const to = from + pageSize;
+
+		// If the language filter is not active, merge any locale specific stats into a single
+		// base language stat.
+		if (!isLanguageFilterActive) {
+			data = aggregateStatsByLanguage(data);
+		}
+
 		const sortedData = [...data].sort(
 			sortBy(sortStatus.columnAccessor as keyof DataRow),
 		);
 		return sortStatus.direction === 'desc'
 			? sortedData.reverse().slice(from, to)
 			: sortedData.slice(from, to);
-	}, [data, page, pageSize, sortStatus]);
+	}, [data, isLanguageFilterActive, page, pageSize, sortStatus]);
 
 	const handlePageChange = useCallback(
 		(newPage: number) => {
@@ -227,6 +234,12 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 		setPage(1);
 	}, [query]);
 
+	let idAccessor = (record: DataRow) =>
+		String(record[ACCESSOR_MAP[query]] ?? 'path');
+	if (isLanguageFilterActive) {
+		idAccessor = (record) => String(record.locale ?? 'path');
+	}
+
 	return (
 		<div className={classes.tableWrapper}>
 			<div className={classes.tableHeader}>
@@ -241,7 +254,7 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 				noRecordsText="No records found..."
 				highlightOnHover
 				withRowBorders={false}
-				idAccessor={(record) => String(record[ACCESSOR_MAP[query]] ?? 'path')}
+				idAccessor={idAccessor}
 				records={records}
 				columns={columns}
 				sortStatus={sortStatus}
@@ -310,7 +323,10 @@ const TablePagination = ({
 	);
 };
 
-const getColumnsForQuery = (query: Dataset): DataTableColumn<DataRow>[] => {
+const getColumnsForQuery = (
+	query: Dataset,
+	filterActive?: boolean,
+): DataTableColumn<DataRow>[] => {
 	switch (query) {
 		case 'pages':
 			return [
@@ -350,10 +366,9 @@ const getColumnsForQuery = (query: Dataset): DataTableColumn<DataRow>[] => {
 			];
 		case 'browsers':
 		case 'devices':
-		case 'languages':
 			return [
 				{
-					// Browser, Device, Language
+					// Browser, Device
 					accessor: ACCESSOR_MAP[query],
 					title: LABEL_MAP[query].slice(0, -1),
 					width: '100%',
@@ -364,6 +379,22 @@ const getColumnsForQuery = (query: Dataset): DataTableColumn<DataRow>[] => {
 				PRESET_COLUMNS.bounce_rate,
 				PRESET_COLUMNS.duration,
 			];
+		case 'languages': {
+			const accessor = filterActive ? 'locale' : ACCESSOR_MAP[query];
+			return [
+				{
+					// Browser, Device, Language
+					accessor,
+					title: filterActive ? 'Locale' : 'Language',
+					width: '100%',
+					render: (record) => record[accessor] || 'Unknown',
+				},
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
+				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.duration,
+			];
+		}
 		case 'os':
 			return [
 				{
