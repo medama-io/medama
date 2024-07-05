@@ -45,7 +45,23 @@ func TestGetWebsiteLanguagesSummary(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			summary, err := client.GetWebsiteLanguagesSummary(ctx, tc.Filters)
+			summary, err := client.GetWebsiteLanguagesSummary(ctx, false, tc.Filters)
+			require.NoError(err)
+
+			snap := NewSnapRecords(summary)
+			snaps.MatchSnapshot(t, snap.Snapshot())
+		})
+	}
+}
+
+func TestGetWebsiteLanguagesLocaleSummary(t *testing.T) {
+	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+
+	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+			summary, err := client.GetWebsiteLanguagesSummary(ctx, true, tc.Filters)
 			require.NoError(err)
 
 			snap := NewSnapRecords(summary)
@@ -61,7 +77,23 @@ func TestGetWebsiteLanguages(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			languages, err := client.GetWebsiteLanguages(ctx, tc.Filters)
+			languages, err := client.GetWebsiteLanguages(ctx, false, tc.Filters)
+			require.NoError(err)
+
+			snap := NewSnapRecords(languages)
+			snaps.MatchSnapshot(t, snap.Snapshot())
+		})
+	}
+}
+
+func TestGetWebsiteLanguagesLocale(t *testing.T) {
+	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+
+	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+			languages, err := client.GetWebsiteLanguages(ctx, true, tc.Filters)
 			require.NoError(err)
 
 			snap := NewSnapRecords(languages)

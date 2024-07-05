@@ -108,13 +108,13 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 }
 
 // GetWebsiteLanguages returns the languages for the given hostname.
-func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsLanguagesSummary, error) {
+func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, filter *db.Filters) ([]*model.StatsLanguagesSummary, error) {
 	var languages []*model.StatsLanguagesSummary
 	var query strings.Builder
 
 	// Array of languages
 	//
-	// Language is the language of the visitor.
+	// Language is the language of the visitor. If isLocale is true, the language is the locale of the visitor.
 	//
 	// Visitors is the number of unique visitors for the language.
 	//
@@ -127,8 +127,13 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, filter *db.Filt
 	query.WriteString(filter.WhereString())
 	query.WriteString(`--sql
 		)
-		SELECT
-			language_base AS language,
+		SELECT`)
+	if isLocale {
+		query.WriteString(` language_dialect AS language,`)
+	} else {
+		query.WriteString(` language_base AS language,`)
+	}
+	query.WriteString(`--sql
 			COUNT(*) FILTER (is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
@@ -156,7 +161,7 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, filter *db.Filt
 }
 
 // GetWebsiteLanguages returns the languages for the given hostname.
-func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([]*model.StatsLanguages, error) {
+func (c *Client) GetWebsiteLanguages(ctx context.Context, isLocale bool, filter *db.Filters) ([]*model.StatsLanguages, error) {
 	var languages []*model.StatsLanguages
 	var query strings.Builder
 
@@ -175,8 +180,13 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(filter.WhereString())
 	query.WriteString(`--sql
 		)
-		SELECT
-			language_base AS language,
+		SELECT`)
+	if isLocale {
+		query.WriteString(` language_dialect AS language,`)
+	} else {
+		query.WriteString(` language_base AS language,`)
+	}
+	query.WriteString(`--sql
 			COUNT(*) FILTER (is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,

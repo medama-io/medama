@@ -52,4 +52,4 @@ const useFilter = () => {
 	};
 };
 
-export { useFilter };
+export { useFilter, getKey };

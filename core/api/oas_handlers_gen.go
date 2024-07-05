@@ -1422,6 +1422,10 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
+					Name: "locale",
+					In:   "query",
+				}: params.Locale,
+				{
 					Name: "_me_sess",
 					In:   "cookie",
 				}: params.MeSess,

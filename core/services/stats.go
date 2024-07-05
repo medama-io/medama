@@ -924,7 +924,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		languages, err := h.analyticsDB.GetWebsiteLanguagesSummary(ctx, filters)
+		languages, err := h.analyticsDB.GetWebsiteLanguagesSummary(ctx, params.Locale.Value, filters)
 		if err != nil {
 			log.Error().
 				Err(err).
@@ -946,7 +946,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		return &res, nil
 	case false:
 		// Get languages
-		languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, filters)
+		languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, params.Locale.Value, filters)
 		if err != nil {
 			log.Error().
 				Err(err).

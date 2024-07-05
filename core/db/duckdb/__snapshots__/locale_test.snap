@@ -224,6 +224,178 @@ RECORDS:
 
 ---
 
+[TestGetWebsiteLanguagesLocale/Base - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:Japanese Visitors:248841 VisitorsPercentage:0.498} Bounces:62167 Duration:4996}
+&{StatsLanguagesSummary:{Language:British English Visitors:125499 VisitorsPercentage:0.2512} Bounces:31490 Duration:5001}
+&{StatsLanguagesSummary:{Language:American English Visitors:125317 VisitorsPercentage:0.2508} Bounces:31027 Duration:5017}
+
+---
+
+[TestGetWebsiteLanguagesLocale/Browser - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986} Bounces:20824 Duration:4966}
+&{StatsLanguagesSummary:{Language:American English Visitors:41719 VisitorsPercentage:0.2512} Bounces:10350 Duration:4991}
+&{StatsLanguagesSummary:{Language:British English Visitors:41560 VisitorsPercentage:0.2502} Bounces:10466 Duration:4994}
+
+---
+
+[TestGetWebsiteLanguagesLocale/Country - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:Japanese Visitors:27567 VisitorsPercentage:0.499} Bounces:6921 Duration:4980}
+&{StatsLanguagesSummary:{Language:American English Visitors:13901 VisitorsPercentage:0.2516} Bounces:3418 Duration:5008}
+&{StatsLanguagesSummary:{Language:British English Visitors:13775 VisitorsPercentage:0.2494} Bounces:3505 Duration:5004}
+
+---
+
+[TestGetWebsiteLanguagesLocale/Device - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917} Bounces:2336 Duration:4992}
+&{StatsLanguagesSummary:{Language:American English Visitors:4829 VisitorsPercentage:0.2588} Bounces:1168 Duration:5041}
+&{StatsLanguagesSummary:{Language:British English Visitors:4657 VisitorsPercentage:0.2496} Bounces:1187 Duration:4946}
+
+---
+
+[TestGetWebsiteLanguagesLocale/Empty - 1]
+RECORDS:
+
+---
+
+[TestGetWebsiteLanguagesLocale/Language - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:American English Visitors:4829 VisitorsPercentage:0.5091} Bounces:1168 Duration:5041}
+&{StatsLanguagesSummary:{Language:British English Visitors:4657 VisitorsPercentage:0.4909} Bounces:1187 Duration:4946}
+
+---
+
+[TestGetWebsiteLanguagesLocale/OS - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:American English Visitors:1623 VisitorsPercentage:0.5209} Bounces:390 Duration:5050}
+&{StatsLanguagesSummary:{Language:British English Visitors:1493 VisitorsPercentage:0.4791} Bounces:393 Duration:4858}
+
+---
+
+[TestGetWebsiteLanguagesLocale/Pathname - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:American English Visitors:570 VisitorsPercentage:0.5229} Bounces:136 Duration:5294}
+&{StatsLanguagesSummary:{Language:British English Visitors:520 VisitorsPercentage:0.4771} Bounces:132 Duration:4987}
+
+---
+
+[TestGetWebsiteLanguagesLocale/Referrer - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:American English Visitors:194 VisitorsPercentage:0.5092} Bounces:51 Duration:4677}
+&{StatsLanguagesSummary:{Language:British English Visitors:187 VisitorsPercentage:0.4908} Bounces:45 Duration:4761}
+
+---
+
+[TestGetWebsiteLanguagesLocale/UTMCampaign - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:American English Visitors:58 VisitorsPercentage:0.5} Bounces:18 Duration:3943}
+&{StatsLanguagesSummary:{Language:British English Visitors:58 VisitorsPercentage:0.5} Bounces:13 Duration:5896}
+
+---
+
+[TestGetWebsiteLanguagesLocale/UTMMedium - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:American English Visitors:18 VisitorsPercentage:0.5143} Bounces:4 Duration:3038}
+&{StatsLanguagesSummary:{Language:British English Visitors:17 VisitorsPercentage:0.4857} Bounces:2 Duration:7189}
+
+---
+
+[TestGetWebsiteLanguagesLocale/UTMSource - 1]
+RECORDS:
+&{StatsLanguagesSummary:{Language:American English Visitors:10 VisitorsPercentage:0.5882} Bounces:2 Duration:2631}
+&{StatsLanguagesSummary:{Language:British English Visitors:7 VisitorsPercentage:0.4118} Bounces:1 Duration:6547}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Base - 1]
+RECORDS:
+&{Language:Japanese Visitors:248841 VisitorsPercentage:0.498}
+&{Language:British English Visitors:125499 VisitorsPercentage:0.2512}
+&{Language:American English Visitors:125317 VisitorsPercentage:0.2508}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Browser - 1]
+RECORDS:
+&{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986}
+&{Language:American English Visitors:41719 VisitorsPercentage:0.2512}
+&{Language:British English Visitors:41560 VisitorsPercentage:0.2502}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Country - 1]
+RECORDS:
+&{Language:Japanese Visitors:27567 VisitorsPercentage:0.499}
+&{Language:American English Visitors:13901 VisitorsPercentage:0.2516}
+&{Language:British English Visitors:13775 VisitorsPercentage:0.2494}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Device - 1]
+RECORDS:
+&{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917}
+&{Language:American English Visitors:4829 VisitorsPercentage:0.2588}
+&{Language:British English Visitors:4657 VisitorsPercentage:0.2496}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Empty - 1]
+RECORDS:
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Language - 1]
+RECORDS:
+&{Language:American English Visitors:4829 VisitorsPercentage:0.5091}
+&{Language:British English Visitors:4657 VisitorsPercentage:0.4909}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/OS - 1]
+RECORDS:
+&{Language:American English Visitors:1623 VisitorsPercentage:0.5209}
+&{Language:British English Visitors:1493 VisitorsPercentage:0.4791}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Pathname - 1]
+RECORDS:
+&{Language:American English Visitors:570 VisitorsPercentage:0.5229}
+&{Language:British English Visitors:520 VisitorsPercentage:0.4771}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/Referrer - 1]
+RECORDS:
+&{Language:American English Visitors:194 VisitorsPercentage:0.5092}
+&{Language:British English Visitors:187 VisitorsPercentage:0.4908}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/UTMCampaign - 1]
+RECORDS:
+&{Language:American English Visitors:58 VisitorsPercentage:0.5}
+&{Language:British English Visitors:58 VisitorsPercentage:0.5}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/UTMMedium - 1]
+RECORDS:
+&{Language:American English Visitors:18 VisitorsPercentage:0.5143}
+&{Language:British English Visitors:17 VisitorsPercentage:0.4857}
+
+---
+
+[TestGetWebsiteLanguagesLocaleSummary/UTMSource - 1]
+RECORDS:
+&{Language:American English Visitors:10 VisitorsPercentage:0.5882}
+&{Language:British English Visitors:7 VisitorsPercentage:0.4118}
+
+---
+
 [TestGetWebsiteLanguagesSummary/Base - 1]
 RECORDS:
 &{Language:English Visitors:250816 VisitorsPercentage:0.502}

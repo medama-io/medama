@@ -48,7 +48,6 @@ interface DataRow {
 	country?: string;
 	// Languages
 	language?: string;
-	locale?: string;
 }
 
 interface StatsValue {

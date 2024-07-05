@@ -54,8 +54,8 @@ type AnalyticsClient interface {
 	// Locales
 	GetWebsiteCountries(ctx context.Context, filter *Filters) ([]*model.StatsCountries, error)
 	GetWebsiteCountriesSummary(ctx context.Context, filter *Filters) ([]*model.StatsCountriesSummary, error)
-	GetWebsiteLanguages(ctx context.Context, filter *Filters) ([]*model.StatsLanguages, error)
-	GetWebsiteLanguagesSummary(ctx context.Context, filter *Filters) ([]*model.StatsLanguagesSummary, error)
+	GetWebsiteLanguages(ctx context.Context, isLocale bool, filter *Filters) ([]*model.StatsLanguages, error)
+	GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, filter *Filters) ([]*model.StatsLanguagesSummary, error)
 	// Referrers
 	GetWebsiteReferrers(ctx context.Context, filter *Filters) ([]*model.StatsReferrers, error)
 	GetWebsiteReferrersSummary(ctx context.Context, filter *Filters) ([]*model.StatsReferrerSummary, error)

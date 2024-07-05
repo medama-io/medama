@@ -186,6 +186,8 @@ const fetchStats = async (
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
+						// If an eq filter is present, we should return the locales instead of languages.
+						locale: searchParams.has('language[eq]'),
 						...filters,
 					},
 				})
