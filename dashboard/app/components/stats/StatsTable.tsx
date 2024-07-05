@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import { useDidUpdate, useMediaQuery } from '@mantine/hooks';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -225,11 +225,11 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 		}
 	};
 
-	// Reset page when query changes.
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Valid pattern.
-	useEffect(() => {
+	// Reset page when query or data length changes (from filters).
+	useDidUpdate(() => {
 		setPage(1);
-	}, [query]);
+		setPageSize(10);
+	}, [query, data.length]);
 
 	return (
 		<div className={classes.tableWrapper}>
