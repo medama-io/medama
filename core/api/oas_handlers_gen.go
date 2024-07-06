@@ -2174,6 +2174,10 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 			Body:             nil,
 			Params: middleware.Parameters{
 				{
+					Name: "grouped",
+					In:   "query",
+				}: params.Grouped,
+				{
 					Name: "_me_sess",
 					In:   "cookie",
 				}: params.MeSess,

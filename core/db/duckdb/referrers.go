@@ -10,13 +10,14 @@ import (
 )
 
 // GetWebsiteReferrersSummary returns a summary of the referrers for the given filters.
-func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsReferrerSummary, error) {
+func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, filter *db.Filters) ([]*model.StatsReferrerSummary, error) {
 	var referrers []*model.StatsReferrerSummary
 	var query strings.Builder
 
 	// Array of referrer summaries
 	//
-	// Referrer is the hostname of the referrer.
+	// Referrer is the referrer URL. If isGroup is true, the referrer is the grouped aggregation
+	// name. e.g. www.google.com --> Google.
 	//
 	// Visitors is the number of unique visitors for the referrer.
 	//
@@ -29,8 +30,13 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 	query.WriteString(filter.WhereString())
 	query.WriteString(`--sql
 		)
-		SELECT
-			referrer_host AS referrer,
+		SELECT`)
+	if isGroup {
+		query.WriteString(` IF(referrer_group == '', referrer_host, referrer_group) AS referrer,`)
+	} else {
+		query.WriteString(` referrer_host AS referrer,`)
+	}
+	query.WriteString(`--sql
 			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
 		FROM views
@@ -58,13 +64,14 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, filter *db.Filt
 }
 
 // GetWebsiteReferrers returns the referrers for the given hostname.
-func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([]*model.StatsReferrers, error) {
+func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *db.Filters) ([]*model.StatsReferrers, error) {
 	var referrers []*model.StatsReferrers
 	var query strings.Builder
 
 	// Array of referrers
 	//
-	// Referrer is the referrer URL.
+	// Referrer is the referrer URL. If isGroup is true, the referrer is the grouped aggregation
+	// name. e.g. www.google.com --> Google.
 	//
 	// Visitors is the number of unique visitors for the referrer.
 	//
@@ -81,8 +88,13 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, filter *db.Filters) ([
 	query.WriteString(filter.WhereString())
 	query.WriteString(`--sql
 		)
-		SELECT
-			referrer_host AS referrer,
+		SELECT`)
+	if isGroup {
+		query.WriteString(` IF(referrer_group == '', referrer_host, referrer_group) AS referrer,`)
+	} else {
+		query.WriteString(` referrer_host AS referrer,`)
+	}
+	query.WriteString(`--sql
 			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
 			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
 			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,

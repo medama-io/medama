@@ -57,8 +57,8 @@ type AnalyticsClient interface {
 	GetWebsiteLanguages(ctx context.Context, isLocale bool, filter *Filters) ([]*model.StatsLanguages, error)
 	GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, filter *Filters) ([]*model.StatsLanguagesSummary, error)
 	// Referrers
-	GetWebsiteReferrers(ctx context.Context, filter *Filters) ([]*model.StatsReferrers, error)
-	GetWebsiteReferrersSummary(ctx context.Context, filter *Filters) ([]*model.StatsReferrerSummary, error)
+	GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *Filters) ([]*model.StatsReferrers, error)
+	GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, filter *Filters) ([]*model.StatsReferrerSummary, error)
 	// Summary
 	GetWebsiteSummary(ctx context.Context, filter *Filters) (*model.StatsSummarySingle, error)
 	GetWebsiteIntervals(ctx context.Context, filter *Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error)

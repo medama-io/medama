@@ -645,6 +645,12 @@ paths:
       description: Get a list of referrers and their stats.
       operationId: get-website-id-referrers
       parameters:
+        - in: query
+          name: grouped
+          description: Whether to return the grouped aggregation name or only URLs.
+          schema:
+            type: boolean
+            default: true
         - $ref: "#/components/parameters/SessionAuth"
         - $ref: "#/components/parameters/Hostname"
         - $ref: "#/components/parameters/Summary"

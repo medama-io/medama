@@ -325,7 +325,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	switch params.Summary.Value {
 	case true:
 		// Get summary
-		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, filters)
+		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, params.Grouped.Value, filters)
 		if err != nil {
 			log.Error().
 				Err(err).
@@ -347,7 +347,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		return &res, nil
 	case false:
 		// Get referrers
-		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, filters)
+		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, params.Grouped.Value, filters)
 		if err != nil {
 			log.Error().
 				Err(err).
