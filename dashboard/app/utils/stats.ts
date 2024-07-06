@@ -109,6 +109,7 @@ const fetchStats = async (
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
+						grouped: !searchParams.has('referrer[eq]'),
 						...filters,
 					},
 				})

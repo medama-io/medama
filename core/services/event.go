@@ -83,23 +83,21 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 }
 
 func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
-	log := logger.Get()
+	hostname := req.EventLoad.U.Hostname()
+	log := logger.Get().With().Str("hostname", hostname).Logger()
+
+	// Verify hostname exists
+	if !h.hostnames.Has(hostname) {
+		log.Warn().Msg("hit: website not found")
+		return ErrNotFound(model.ErrWebsiteNotFound), nil
+	}
+
 	switch req.Type {
 	case api.EventLoadEventHit:
-		hostname := req.EventLoad.U.Hostname()
 		pathname := req.EventLoad.U.Path
 		// Remove trailing slash if it exists
 		if pathname != "/" {
 			pathname = strings.TrimSuffix(pathname, "/")
-		}
-
-		log = log.With().Str("hostname", hostname).Logger()
-
-		// Verify hostname exists
-		exists := h.hostnames.Has(hostname)
-		if !exists {
-			log.Warn().Msg("hit: website not found")
-			return ErrNotFound(model.ErrWebsiteNotFound), nil
 		}
 
 		// Get request from context
@@ -152,7 +150,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
-		var referrerHost string
+		referrerHost := ""
 		if req.EventLoad.R.Value != "" {
 			referrer, err := url.Parse(req.EventLoad.R.Value)
 			if err != nil {
@@ -166,6 +164,12 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			if referrerHost == hostname {
 				referrerHost = ""
 			}
+		}
+
+		referrerGroup := ""
+		if referrerHost != "" {
+			// Get the referrer group from the referrer URL.
+			referrerGroup = h.referrer.Parse(referrerHost)
 		}
 
 		// Get country code from user's timezone. This is used as a best effort
@@ -218,7 +222,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			IsUniquePage: req.EventLoad.Q,
 			// Optional
 			ReferrerHost:    referrerHost,
-			ReferrerGroup:   "", // TODO: https://github.com/medama-io/medama/issues/10
+			ReferrerGroup:   referrerGroup,
 			Country:         countryName,
 			LanguageBase:    languageBase,
 			LanguageDialect: languageDialect,

@@ -7365,6 +7365,8 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 
 // GetWebsiteIDReferrersParams is parameters of get-website-id-referrers operation.
 type GetWebsiteIDReferrersParams struct {
+	// Whether to return the grouped aggregation name or only URLs.
+	Grouped OptBool
 	// Session token for authentication.
 	MeSess string
 	// Hostname for the website.
@@ -7402,6 +7404,15 @@ type GetWebsiteIDReferrersParams struct {
 }
 
 func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params GetWebsiteIDReferrersParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "grouped",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Grouped = v.(OptBool)
+		}
+	}
 	{
 		key := middleware.ParameterKey{
 			Name: "_me_sess",
@@ -7557,6 +7568,52 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http.Request) (params GetWebsiteIDReferrersParams, _ error) {
 	q := uri.NewQueryDecoder(r.URL.Query())
 	c := uri.NewCookieDecoder(r)
+	// Set default value for query: grouped.
+	{
+		val := bool(true)
+		params.Grouped.SetTo(val)
+	}
+	// Decode query: grouped.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "grouped",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotGroupedVal bool
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToBool(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotGroupedVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Grouped.SetTo(paramsDotGroupedVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "grouped",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode cookie: _me_sess.
 	if err := func() error {
 		cfg := uri.CookieParameterDecodingConfig{

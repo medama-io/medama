@@ -36,8 +36,7 @@ const StatsItem = ({
 	percentage = 0,
 	tab,
 }: StatsItemProps) => {
-	const { addFilter, isFilterActiveEq } = useFilter();
-	const showLocales = isFilterActiveEq('language');
+	const { addFilter } = useFilter();
 	const { hovered, ref } = useHover<HTMLButtonElement>();
 
 	const formattedValue = useMemo(
@@ -47,9 +46,7 @@ const StatsItem = ({
 
 	const handleFilter = () => {
 		const filter = FILTER_MAP[tab] ?? 'path';
-		if (filter !== 'language' || !showLocales) {
-			addFilter(filter, 'eq', label);
-		}
+		addFilter(filter, 'eq', label);
 	};
 
 	return (

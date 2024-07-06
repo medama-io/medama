@@ -1198,6 +1198,8 @@ export interface operations {
   "get-website-id-referrers": {
     parameters: {
       query?: {
+        /** @description Whether to return the grouped aggregation name or only URLs. */
+        grouped?: boolean;
         summary?: components["parameters"]["Summary"];
         start?: components["parameters"]["PeriodStart"];
         end?: components["parameters"]["PeriodEnd"];
