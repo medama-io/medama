@@ -10,18 +10,19 @@ import (
 type FilterField string
 
 const (
-	FilterHostname      FilterField = "hostname"
-	FilterPathname      FilterField = "pathname"
-	FilterReferrer      FilterField = "referrer_host"
-	FilterReferrerGroup FilterField = "referrer_group"
-	FilterUTMSource     FilterField = "utm_source"
-	FilterUTMMedium     FilterField = "utm_medium"
-	FilterUTMCampaign   FilterField = "utm_campaign"
-	FilterBrowser       FilterField = "ua_browser"
-	FilterOS            FilterField = "ua_os"
-	FilterDevice        FilterField = "ua_device_type"
-	FilterCountry       FilterField = "country"
-	FilterLanguage      FilterField = "language_base"
+	FilterHostname        FilterField = "hostname"
+	FilterPathname        FilterField = "pathname"
+	FilterReferrer        FilterField = "referrer_host"
+	FilterReferrerGroup   FilterField = "referrer_group"
+	FilterUTMSource       FilterField = "utm_source"
+	FilterUTMMedium       FilterField = "utm_medium"
+	FilterUTMCampaign     FilterField = "utm_campaign"
+	FilterBrowser         FilterField = "ua_browser"
+	FilterOS              FilterField = "ua_os"
+	FilterDevice          FilterField = "ua_device_type"
+	FilterCountry         FilterField = "country"
+	FilterLanguage        FilterField = "language_base"
+	FilterLanguageDialect FilterField = "language_dialect"
 
 	// Custom operations not used in the filtering API
 	// but used in named queries.
@@ -132,18 +133,19 @@ func (f Filter) String() string {
 
 // Filters is a struct that contains all the possible filters that can be applied to a query.
 type Filters struct {
-	Hostname      string
-	Pathname      *Filter
-	Referrer      *Filter
-	ReferrerGroup *Filter
-	UTMSource     *Filter
-	UTMMedium     *Filter
-	UTMCampaign   *Filter
-	Browser       *Filter
-	OS            *Filter
-	Device        *Filter
-	Country       *Filter
-	Language      *Filter
+	Hostname        string
+	Pathname        *Filter
+	Referrer        *Filter
+	ReferrerGroup   *Filter
+	UTMSource       *Filter
+	UTMMedium       *Filter
+	UTMCampaign     *Filter
+	Browser         *Filter
+	OS              *Filter
+	Device          *Filter
+	Country         *Filter
+	Language        *Filter
+	LanguageDialect *Filter
 
 	// Time Periods (in RFC3339 format 2017-07-21T17:32:28Z)
 	PeriodStart string
@@ -189,7 +191,7 @@ func (f Filters) WhereString() string {
 	addCondition(&query, f.OS)
 	addCondition(&query, f.Device)
 	addCondition(&query, f.Country)
-	addCondition(&query, f.Language)
+	orCondition(&query, f.Language, f.LanguageDialect)
 
 	// Time period filters
 	if f.PeriodStart != "" {
@@ -235,17 +237,18 @@ func (f Filters) Args(customMap *map[string]interface{}) map[string]interface{} 
 
 	//nolint:exhaustive // No other fields use filter structs
 	filterValues := map[FilterField]*Filter{
-		FilterPathname:      f.Pathname,
-		FilterReferrer:      f.Referrer,
-		FilterReferrerGroup: f.ReferrerGroup,
-		FilterUTMSource:     f.UTMSource,
-		FilterUTMMedium:     f.UTMMedium,
-		FilterUTMCampaign:   f.UTMCampaign,
-		FilterBrowser:       f.Browser,
-		FilterOS:            f.OS,
-		FilterDevice:        f.Device,
-		FilterCountry:       f.Country,
-		FilterLanguage:      f.Language,
+		FilterPathname:        f.Pathname,
+		FilterReferrer:        f.Referrer,
+		FilterReferrerGroup:   f.ReferrerGroup,
+		FilterUTMSource:       f.UTMSource,
+		FilterUTMMedium:       f.UTMMedium,
+		FilterUTMCampaign:     f.UTMCampaign,
+		FilterBrowser:         f.Browser,
+		FilterOS:              f.OS,
+		FilterDevice:          f.Device,
+		FilterCountry:         f.Country,
+		FilterLanguage:        f.Language,
+		FilterLanguageDialect: f.LanguageDialect,
 	}
 
 	// Add non-empty filter values to args
