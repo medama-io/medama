@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-faster/errors"
+	"github.com/medama-io/go-referrer-parser"
 	tz "github.com/medama-io/go-timezone-country"
 	"github.com/medama-io/go-useragent"
 	"github.com/medama-io/medama/db/duckdb"
@@ -12,13 +13,18 @@ import (
 )
 
 type Handler struct {
-	auth           *util.AuthService
-	db             *sqlite.Client
-	analyticsDB    *duckdb.Client
+	auth        *util.AuthService
+	db          *sqlite.Client
+	analyticsDB *duckdb.Client
+
+	// Parsing libraries
 	useragent      *useragent.Parser
+	referrer       *referrer.Parser
 	timezoneMap    *tz.TimezoneCodeMap
 	codeCountryMap *tz.CodeCountryMap
-	hostnames      *util.CacheStore
+
+	// Cache store for hostnames
+	hostnames *util.CacheStore
 }
 
 // NewService returns a new instance of the ogen service handler.
@@ -30,6 +36,12 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 	}
 
 	codeCountryMap, err := tz.NewCodeCountryMap()
+	if err != nil {
+		return nil, errors.Wrap(err, "services init")
+	}
+
+	// Load referrer parser
+	referrerParser, err := referrer.NewParser()
 	if err != nil {
 		return nil, errors.Wrap(err, "services init")
 	}
@@ -47,6 +59,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 		db:             sqlite,
 		analyticsDB:    duckdb,
 		useragent:      useragent.NewParser(),
+		referrer:       referrerParser,
 		timezoneMap:    &tzMap,
 		codeCountryMap: &codeCountryMap,
 		hostnames:      &hostnameCache,

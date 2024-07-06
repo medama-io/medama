@@ -10,8 +10,9 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/marcboeker/go-duckdb v1.7.0
+	github.com/medama-io/go-referrer-parser v0.0.0-20240706123409-e53fd3d58ccc
 	github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7
-	github.com/medama-io/go-useragent v0.0.0-20240705131740-fb0efe8fe75a
+	github.com/medama-io/go-useragent v0.0.0-20240705132343-7fdad75704b9
 	github.com/ncruces/go-sqlite3 v0.17.0
 	github.com/ogen-go/ogen v1.2.2
 	github.com/rs/cors v1.11.0
@@ -27,7 +28,7 @@ require (
 	github.com/apache/arrow/go/v14 v14.0.2 // indirect
 	github.com/boyter/go-string v1.0.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dlclark/regexp2 v1.11.0 // indirect
+	github.com/dlclark/regexp2 v1.11.1 // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gkampitakis/ciinfo v0.3.0 // indirect
@@ -68,7 +69,7 @@ require (
 	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
 	golang.org/x/mod v0.19.0 // indirect
-	golang.org/x/net v0.26.0 // indirect
+	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
