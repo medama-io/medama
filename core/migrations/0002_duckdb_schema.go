@@ -1,4 +1,3 @@
-// nolint: wrapcheck
 package migrations
 
 import (

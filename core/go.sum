@@ -72,8 +72,8 @@ github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWE
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
 github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o4kU=
 github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
-github.com/medama-io/go-referrer-parser v0.0.0-20240706123409-e53fd3d58ccc h1:rsGO3bfhGzrGFnGQxGwjJ+6fHwZeouDCsYoWgcMk2+M=
-github.com/medama-io/go-referrer-parser v0.0.0-20240706123409-e53fd3d58ccc/go.mod h1:y/Y+TQijcFNVXWiZ7YhiThXVRbORFdhcY0osQZXQw8Q=
+github.com/medama-io/go-referrer-parser v0.0.0-20240706151617-0106555291e7 h1:r/vA05on+hrhPcTSY9TVFvXUHWB5ZNtynC8CPX1OGS4=
+github.com/medama-io/go-referrer-parser v0.0.0-20240706151617-0106555291e7/go.mod h1:y/Y+TQijcFNVXWiZ7YhiThXVRbORFdhcY0osQZXQw8Q=
 github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7 h1:mydNOo0Zm10bC/RX4h9iwe18hGS0KB5cTqo/y/WpbLQ=
 github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7/go.mod h1:Wq7lg5D0ZdQ3bHnzOTKsb1YGlxm/l82OVA4aIbAA5w4=
 github.com/medama-io/go-useragent v0.0.0-20240705132343-7fdad75704b9 h1:WJcl6hA8S7/F5MmiPaFdUduMyj40IhIAuh14zuLCZyk=

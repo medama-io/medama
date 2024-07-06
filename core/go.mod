@@ -10,7 +10,7 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/marcboeker/go-duckdb v1.7.0
-	github.com/medama-io/go-referrer-parser v0.0.0-20240706123409-e53fd3d58ccc
+	github.com/medama-io/go-referrer-parser v0.0.0-20240706151617-0106555291e7
 	github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7
 	github.com/medama-io/go-useragent v0.0.0-20240705132343-7fdad75704b9
 	github.com/ncruces/go-sqlite3 v0.17.0
