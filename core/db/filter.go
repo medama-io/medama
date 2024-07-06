@@ -167,7 +167,7 @@ func addCondition(query *strings.Builder, filter *Filter) {
 func orCondition(query *strings.Builder, filter *Filter, filter2 *Filter) {
 	switch {
 	case filter != nil && filter2 != nil:
-		query.WriteString(" OR (" + filter.String() + " OR " + filter2.String() + ")")
+		query.WriteString(" AND (" + filter.String() + " OR " + filter2.String() + ")")
 	case filter != nil:
 		addCondition(query, filter)
 	case filter2 != nil:
@@ -182,8 +182,13 @@ func (f Filters) WhereString() string {
 	// Build the query string
 	query.WriteString("hostname = :hostname")
 	addCondition(&query, f.Pathname)
-	addCondition(&query, f.Referrer)
-	orCondition(&query, f.Referrer, f.ReferrerGroup)
+	// If referrer = Direct/None (""), then we need to skip any referrer group
+	// filters.
+	if f.Referrer != nil && f.Referrer.Value != "" {
+		orCondition(&query, f.Referrer, f.ReferrerGroup)
+	} else {
+		addCondition(&query, f.Referrer)
+	}
 	addCondition(&query, f.UTMSource)
 	addCondition(&query, f.UTMMedium)
 	addCondition(&query, f.UTMCampaign)
