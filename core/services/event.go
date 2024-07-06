@@ -83,17 +83,19 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 }
 
 func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
-	hostname := req.EventLoad.U.Hostname()
-	log := logger.Get().With().Str("hostname", hostname).Logger()
-
-	// Verify hostname exists
-	if !h.hostnames.Has(hostname) {
-		log.Warn().Msg("hit: website not found")
-		return ErrNotFound(model.ErrWebsiteNotFound), nil
-	}
+	log := logger.Get()
 
 	switch req.Type {
 	case api.EventLoadEventHit:
+		hostname := req.EventLoad.U.Hostname()
+		log = log.With().Str("hostname", hostname).Logger()
+
+		// Verify hostname exists
+		if !h.hostnames.Has(hostname) {
+			log.Warn().Msg("hit: website not found")
+			return ErrNotFound(model.ErrWebsiteNotFound), nil
+		}
+
 		pathname := req.EventLoad.U.Path
 		// Remove trailing slash if it exists
 		if pathname != "/" {
