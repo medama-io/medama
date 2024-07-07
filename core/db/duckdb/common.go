@@ -9,6 +9,8 @@ const (
 	// VisitorsPercentageStmt is the percentage the country contributes to the total unique visits.
 	// This expects a CTE named total with a total_visitors column to be present.
 	VisitorsPercentageStmt = "ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage"
+	// PageviewsStmt is the number of pageviews for the query.
+	PageviewsStmt = "COUNT(*) AS pageviews"
 	// BouncesStmt is the number of bounces for the query.
 	BouncesStmt = "COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces"
 	// DurationStmt is the median duration of the visits.

@@ -7,34 +7,31 @@ import (
 	"strconv"
 
 	"github.com/go-faster/errors"
+	qb "github.com/medama-io/medama/db/duckdb/query"
 	"github.com/medama-io/medama/model"
 )
 
 func (c *Client) GetSettingsUsage(ctx context.Context) (*model.GetSettingsUsage, error) {
-	queryThreads := `--sql
-		SELECT
-			value AS threads
-		FROM
-			duckdb_settings()
-		WHERE name = 'threads';`
+	queryThreads := qb.New().
+		Select("value AS threads").
+		From("duckdb_settings()").
+		Where("name = 'threads'")
 
-	queryMemory := `--sql
-		SELECT
-			value AS memory_limit
-		FROM
-			duckdb_settings()
-		WHERE name = 'memory_limit';`
+	queryMemory := qb.New().
+		Select("value AS memory_limit").
+		From("duckdb_settings()").
+		Where("name = 'memory_limit'")
 
 	var usage model.GetSettingsUsage
 
 	// Get the number of threads.
-	err := c.GetContext(ctx, &usage, queryThreads)
+	err := c.GetContext(ctx, &usage, queryThreads.Build())
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
 
 	// Get the memory limit.
-	err = c.GetContext(ctx, &usage, queryMemory)
+	err = c.GetContext(ctx, &usage, queryMemory.Build())
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}

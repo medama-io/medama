@@ -2,7 +2,6 @@ package duckdb
 
 import (
 	"context"
-	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
@@ -12,7 +11,11 @@ import (
 // GetWebsiteReferrersSummary returns a summary of the referrers for the given filters.
 func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, filter *db.Filters) ([]*model.StatsReferrerSummary, error) {
 	var referrers []*model.StatsReferrerSummary
-	var query strings.Builder
+
+	referrerStmt := "referrer_host AS referrer"
+	if isGroup {
+		referrerStmt = "IF(referrer_group == '', referrer_host, referrer_group) AS referrer"
+	}
 
 	// Array of referrer summaries
 	//
@@ -22,30 +25,19 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, f
 	// Visitors is the number of unique visitors for the referrer.
 	//
 	// VisitorsPercentage is the percentage the referrer contributes to the total visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT`)
-	if isGroup {
-		query.WriteString(` IF(referrer_group == '', referrer_host, referrer_group) AS referrer,`)
-	} else {
-		query.WriteString(` referrer_host AS referrer,`)
-	}
-	query.WriteString(`--sql
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC, referrer ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			referrerStmt,
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("referrer").
+		OrderBy("visitors DESC", "referrer ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -66,7 +58,11 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, f
 // GetWebsiteReferrers returns the referrers for the given hostname.
 func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *db.Filters) ([]*model.StatsReferrers, error) {
 	var referrers []*model.StatsReferrers
-	var query strings.Builder
+
+	referrerStmt := "referrer_host AS referrer"
+	if isGroup {
+		referrerStmt = "IF(referrer_group == '', referrer_host, referrer_group) AS referrer"
+	}
 
 	// Array of referrers
 	//
@@ -80,32 +76,21 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *
 	// Bounces is the number of bounces for the referrer.
 	//
 	// Duration is the median duration the user spent on the page in milliseconds.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT`)
-	if isGroup {
-		query.WriteString(` IF(referrer_group == '', referrer_host, referrer_group) AS referrer,`)
-	} else {
-		query.WriteString(` referrer_host AS referrer,`)
-	}
-	query.WriteString(`--sql
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY referrer ORDER BY visitors DESC, referrer ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			referrerStmt,
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("referrer").
+		OrderBy("visitors DESC", "referrer ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}

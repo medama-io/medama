@@ -12,9 +12,11 @@ type CTE struct {
 type QueryBuilder struct {
 	cteClauses       []CTE
 	selectClauses    []string
-	fromClause       string
+	fromClause       []string
+	leftJoinClause   string
 	whereClause      string
 	groupByClause    []string
+	havingClause     []string
 	orderByClause    []string
 	paginationClause string
 }
@@ -33,8 +35,13 @@ func (qb *QueryBuilder) Select(columns ...string) *QueryBuilder {
 	return qb
 }
 
-func (qb *QueryBuilder) From(table string) *QueryBuilder {
-	qb.fromClause = table
+func (qb *QueryBuilder) From(tables ...string) *QueryBuilder {
+	qb.fromClause = append(qb.fromClause, tables...)
+	return qb
+}
+
+func (qb *QueryBuilder) LeftJoin(query string) *QueryBuilder {
+	qb.leftJoinClause = query
 	return qb
 }
 
@@ -45,6 +52,11 @@ func (qb *QueryBuilder) Where(query string) *QueryBuilder {
 
 func (qb *QueryBuilder) GroupBy(columns ...string) *QueryBuilder {
 	qb.groupByClause = append(qb.groupByClause, columns...)
+	return qb
+}
+
+func (qb *QueryBuilder) Having(query string) *QueryBuilder {
+	qb.havingClause = append(qb.havingClause, query)
 	return qb
 }
 
@@ -79,7 +91,12 @@ func (qb *QueryBuilder) Build() string {
 	query.WriteString(strings.Join(qb.selectClauses, ", "))
 
 	query.WriteString(" FROM ")
-	query.WriteString(qb.fromClause)
+	query.WriteString(strings.Join(qb.fromClause, ", "))
+
+	if qb.leftJoinClause != "" {
+		query.WriteString(" LEFT JOIN ")
+		query.WriteString(qb.leftJoinClause)
+	}
 
 	if len(qb.whereClause) > 0 {
 		query.WriteString(" WHERE ")
@@ -89,6 +106,11 @@ func (qb *QueryBuilder) Build() string {
 	if len(qb.groupByClause) > 0 {
 		query.WriteString(" GROUP BY ")
 		query.WriteString(strings.Join(qb.groupByClause, ", "))
+	}
+
+	if len(qb.havingClause) > 0 {
+		query.WriteString(" HAVING ")
+		query.WriteString(strings.Join(qb.havingClause, ", "))
 	}
 
 	if len(qb.orderByClause) > 0 {
