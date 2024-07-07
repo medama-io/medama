@@ -237,11 +237,17 @@ var DurationPayload;
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
-			// We use fetch with keepalive here because it can send the request even if the user
-			// navigates away from the page.
-			fetch(host + 'event/hit', {
-				method: 'POST',
-				body: JSON.stringify(
+			// We use sendBeacon here because it is more reliable than fetch on page unloads.
+			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
+			// Firefox on top of that. Previous experiements also seemed to indicate that
+			// the fetch API doesn't work well on page unloads.
+			// See: https://github.com/whatwg/fetch/issues/679
+			//
+			// Some adblockers block this API directly, but since this is the unload event,
+			// it's an optional event to send.
+			navigator.sendBeacon(
+				host + 'event/hit',
+				JSON.stringify(
 					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
 					/**
 					 * Payload to send to the server.
@@ -253,9 +259,7 @@ var DurationPayload;
 						"m": Date.now() - hiddenTotalTime,
 					}),
 				),
-				mode: 'no-cors',
-				keepalive: true,
-			});
+			);
 		}
 
 		// Ensure unload is only called once.
