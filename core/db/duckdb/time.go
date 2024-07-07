@@ -24,18 +24,19 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 	// Duration is the average duration the user spent on the page in milliseconds.
 	//
 	// DurationPercentage is the percentage the pathname contributes to the total duration.
-	query := qb.New().WithMaterialized("durations", qb.New().
-		Select(
-			"pathname",
-			"COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors",
-			"CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration",
-			"SUM(duration_ms) AS total_duration",
-		).
-		From("views").
-		Where(filter.WhereString()).
-		GroupBy("pathname").
-		Having("duration > 0 AND visitors >= 3"),
-	).
+	query := qb.New().WithMaterialized(
+		qb.NewCTE("durations", qb.New().
+			Select(
+				"pathname",
+				"COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors",
+				"CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration",
+				"SUM(duration_ms) AS total_duration",
+			).
+			From("views").
+			Where(filter.WhereString()).
+			GroupBy("pathname").
+			Having("duration > 0 AND visitors >= 3"),
+		)).
 		Select(
 			"pathname",
 			"duration",
@@ -80,20 +81,21 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 	// DurationPercentage is the percentage the pathname contributes to the total duration.
 	//
 	// Visitors is the total number of unique visitors for the page.
-	query := qb.New().WithMaterialized("durations", qb.New().
-		Select(
-			"pathname",
-			"CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration",
-			"CAST(ifnull(quantile_cont(duration_ms, 0.75), 0) AS INTEGER) AS duration_upper_quartile",
-			"CAST(ifnull(quantile_cont(duration_ms, 0.25), 0) AS INTEGER) AS duration_lower_quartile",
-			"COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors",
-			"SUM(duration_ms) AS total_duration",
-		).
-		From("views").
-		Where(filter.WhereString()).
-		GroupBy("pathname").
-		Having("duration > 0 AND duration_lower_quartile > 0 AND visitors >= 3"),
-	).
+	query := qb.New().WithMaterialized(
+		qb.NewCTE("durations", qb.New().
+			Select(
+				"pathname",
+				"CAST(ifnull(quantile_cont(duration_ms, 0.5), 0) AS INTEGER) AS duration",
+				"CAST(ifnull(quantile_cont(duration_ms, 0.75), 0) AS INTEGER) AS duration_upper_quartile",
+				"CAST(ifnull(quantile_cont(duration_ms, 0.25), 0) AS INTEGER) AS duration_lower_quartile",
+				"COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors",
+				"SUM(duration_ms) AS total_duration",
+			).
+			From("views").
+			Where(filter.WhereString()).
+			GroupBy("pathname").
+			Having("duration > 0 AND duration_lower_quartile > 0 AND visitors >= 3"),
+		)).
 		Select(
 			"pathname",
 			"duration",

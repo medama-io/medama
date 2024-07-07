@@ -8,10 +8,10 @@ const (
 )
 
 type StatsSummarySingle struct {
-	Visitors  int `db:"visitors"`
-	Pageviews int `db:"pageviews"`
-	Bounces   int `db:"bounces"`
-	Duration  int `db:"duration"`
+	Visitors   int     `db:"visitors"`
+	Pageviews  int     `db:"pageviews"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsSummary struct {
@@ -24,11 +24,11 @@ type StatsSummaryLast24Hours struct {
 }
 
 type StatsIntervals struct {
-	Interval  string `db:"interval"`
-	Visitors  int    `db:"visitors"`
-	Pageviews int    `db:"pageviews"`
-	Bounces   int    `db:"bounces"`
-	Duration  int    `db:"duration"`
+	Interval   string  `db:"interval"`
+	Visitors   int     `db:"visitors"`
+	Pageviews  int     `db:"pageviews"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsPagesSummary struct {
@@ -41,7 +41,7 @@ type StatsPages struct {
 	StatsPagesSummary
 	Pageviews           int     `db:"pageviews"`
 	PageviewsPercentage float32 `db:"pageviews_percentage"`
-	Bounces             int     `db:"bounces"`
+	BounceRate          float32 `db:"bounce_rate"`
 	Duration            int     `db:"duration"`
 }
 
@@ -67,8 +67,8 @@ type StatsReferrerSummary struct {
 
 type StatsReferrers struct {
 	StatsReferrerSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsUTMSourcesSummary struct {
@@ -79,8 +79,8 @@ type StatsUTMSourcesSummary struct {
 
 type StatsUTMSources struct {
 	StatsUTMSourcesSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsUTMMediumsSummary struct {
@@ -91,8 +91,8 @@ type StatsUTMMediumsSummary struct {
 
 type StatsUTMMediums struct {
 	StatsUTMMediumsSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsUTMCampaignsSummary struct {
@@ -103,8 +103,8 @@ type StatsUTMCampaignsSummary struct {
 
 type StatsUTMCampaigns struct {
 	StatsUTMCampaignsSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsBrowsersSummary struct {
@@ -115,8 +115,8 @@ type StatsBrowsersSummary struct {
 
 type StatsBrowsers struct {
 	StatsBrowsersSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsOSSummary struct {
@@ -127,8 +127,8 @@ type StatsOSSummary struct {
 
 type StatsOS struct {
 	StatsOSSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsDevicesSummary struct {
@@ -139,8 +139,8 @@ type StatsDevicesSummary struct {
 
 type StatsDevices struct {
 	StatsDevicesSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsCountriesSummary struct {
@@ -151,8 +151,8 @@ type StatsCountriesSummary struct {
 
 type StatsCountries struct {
 	StatsCountriesSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }
 
 type StatsLanguagesSummary struct {
@@ -163,6 +163,6 @@ type StatsLanguagesSummary struct {
 
 type StatsLanguages struct {
 	StatsLanguagesSummary
-	Bounces  int `db:"bounces"`
-	Duration int `db:"duration"`
+	BounceRate float32 `db:"bounce_rate"`
+	Duration   int     `db:"duration"`
 }

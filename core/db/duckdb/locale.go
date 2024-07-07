@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
+	qb "github.com/medama-io/medama/db/duckdb/query"
 	"github.com/medama-io/medama/model"
 )
 
@@ -19,7 +20,8 @@ func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filt
 	// Visitors is the number of unique visitors from the country.
 	//
 	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			"country",
 			VisitorsStmt,
@@ -60,12 +62,14 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 	// Visitors is the number of unique visitors from the country.
 	//
 	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"country",
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").
@@ -108,7 +112,8 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, 
 	// Visitors is the number of unique visitors for the language.
 	//
 	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			languageSelect,
 			VisitorsStmt,
@@ -154,12 +159,14 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, isLocale bool, filter 
 	// Visitors is the number of unique visitors for the language.
 	//
 	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			languageSelect,
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").

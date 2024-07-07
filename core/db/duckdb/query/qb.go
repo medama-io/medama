@@ -21,12 +21,19 @@ type QueryBuilder struct {
 	paginationClause string
 }
 
+func NewCTE(name string, subquery *QueryBuilder) CTE {
+	return CTE{
+		Name:     name,
+		Subquery: subquery,
+	}
+}
+
 func New() *QueryBuilder {
 	return &QueryBuilder{}
 }
 
-func (qb *QueryBuilder) WithMaterialized(name string, subquery *QueryBuilder) *QueryBuilder {
-	qb.cteClauses = append(qb.cteClauses, CTE{Name: name, Subquery: subquery})
+func (qb *QueryBuilder) WithMaterialized(cte CTE) *QueryBuilder {
+	qb.cteClauses = append(qb.cteClauses, cte)
 	return qb
 }
 

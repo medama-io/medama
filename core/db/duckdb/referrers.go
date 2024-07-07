@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
+	qb "github.com/medama-io/medama/db/duckdb/query"
 	"github.com/medama-io/medama/model"
 )
 
@@ -25,7 +26,8 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, f
 	// Visitors is the number of unique visitors for the referrer.
 	//
 	// VisitorsPercentage is the percentage the referrer contributes to the total visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			referrerStmt,
 			VisitorsStmt,
@@ -76,12 +78,14 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *
 	// Bounces is the number of bounces for the referrer.
 	//
 	// Duration is the median duration the user spent on the page in milliseconds.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			referrerStmt,
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").

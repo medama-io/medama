@@ -51,10 +51,10 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 
 	resp := &api.StatsSummary{
 		Current: api.StatsSummaryCurrent{
-			Visitors:  currentSummary.Visitors,
-			Pageviews: currentSummary.Pageviews,
-			Bounces:   currentSummary.Bounces,
-			Duration:  currentSummary.Duration,
+			Visitors:         currentSummary.Visitors,
+			Pageviews:        currentSummary.Pageviews,
+			BouncePercentage: currentSummary.BounceRate,
+			Duration:         currentSummary.Duration,
 		},
 	}
 
@@ -77,10 +77,10 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 
 		resp.Previous = api.NewOptStatsSummaryPrevious(
 			api.StatsSummaryPrevious{
-				Visitors:  previousSummary.Visitors,
-				Pageviews: previousSummary.Pageviews,
-				Bounces:   previousSummary.Bounces,
-				Duration:  previousSummary.Duration,
+				Visitors:         previousSummary.Visitors,
+				Pageviews:        previousSummary.Pageviews,
+				BouncePercentage: previousSummary.BounceRate,
+				Duration:         previousSummary.Duration,
 			},
 		)
 	}
@@ -100,11 +100,11 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		resp.Interval = []api.StatsSummaryIntervalItem{}
 		for _, i := range interval {
 			resp.Interval = append(resp.Interval, api.StatsSummaryIntervalItem{
-				Date:      i.Interval,
-				Visitors:  api.NewOptInt(i.Visitors),
-				Pageviews: api.NewOptInt(i.Pageviews),
-				Bounces:   api.NewOptInt(i.Bounces),
-				Duration:  api.NewOptInt(i.Duration),
+				Date:             i.Interval,
+				Visitors:         api.NewOptInt(i.Visitors),
+				Pageviews:        api.NewOptInt(i.Pageviews),
+				BouncePercentage: api.NewOptFloat32(i.BounceRate),
+				Duration:         api.NewOptInt(i.Duration),
 			})
 		}
 	}
@@ -192,7 +192,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 				VisitorsPercentage:  page.VisitorsPercentage,
 				Pageviews:           api.NewOptInt(page.Pageviews),
 				PageviewsPercentage: api.NewOptFloat32(page.PageviewsPercentage),
-				Bounces:             api.NewOptInt(page.Bounces),
+				BouncePercentage:    api.NewOptFloat32(page.BounceRate),
 				Duration:            api.NewOptInt(page.Duration),
 			})
 		}
@@ -371,7 +371,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 				Referrer:           page.Referrer,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -456,7 +456,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 				Source:             page.Source,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -544,7 +544,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 				Medium:             page.Medium,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -632,7 +632,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 				Campaign:           page.Campaign,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -720,7 +720,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 				Browser:            page.Browser,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -808,7 +808,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 				Os:                 page.OS,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -896,7 +896,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 				Device:             page.Device,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -984,7 +984,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 				Language:           page.Language,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}
@@ -1072,7 +1072,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 				Country:            page.Country,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
-				Bounces:            api.NewOptInt(page.Bounces),
+				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
 				Duration:           api.NewOptInt(page.Duration),
 			})
 		}

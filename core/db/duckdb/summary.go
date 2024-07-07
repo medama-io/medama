@@ -27,10 +27,11 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 	//
 	// Active is the number of unique visitors that have visited the website in the last 5 minutes.
 	query := qb.New().
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			VisitorsStmt,
 			PageviewsStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").
@@ -77,26 +78,32 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 	// We then JOIN the intervals with the actual pageview counts to fill in the gaps.
 	// This is done to ensure that we have a row for every interval even if there are no pageviews.
 	query := qb.New().
-		WithMaterialized("intervals", qb.New().
-			Select("generate_series as interval").
-			From("generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))"),
-		).WithMaterialized("stats", qb.New().
-		Select(
-			"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
-			VisitorsStmt,
-			PageviewsStmt,
-			BouncesStmt,
-			DurationStmt,
+		WithMaterialized(
+			qb.NewCTE("intervals", qb.New().
+				Select("generate_series as interval").
+				From("generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))"),
+			),
 		).
-		From("views").
-		Where(filter.WhereString()).
-		GroupBy("interval"),
-	).
+		WithMaterialized(
+			qb.NewCTE("stats", qb.New().
+				WithMaterialized(BounceRateCTE(filter.WhereString())).
+				Select(
+					"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
+					VisitorsStmt,
+					PageviewsStmt,
+					BounceRateStmt,
+					DurationStmt,
+				).
+				From("views").
+				Where(filter.WhereString()).
+				GroupBy("interval"),
+			),
+		).
 		Select(
 			"CAST(intervals.interval AS VARCHAR) AS interval",
 			"COALESCE(stats.visitors, 0) AS visitors",
 			"COALESCE(stats.pageviews, 0) AS pageviews",
-			"COALESCE(stats.bounces, 0) AS bounces",
+			"COALESCE(stats.bounce_rate, 0.0) AS bounce_rate",
 			"COALESCE(stats.duration, 0) AS duration",
 		).
 		From("intervals").

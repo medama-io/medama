@@ -1612,14 +1612,15 @@ components:
               type: integer
             pageviews:
               type: integer
-            bounces:
-              type: integer
+            bounce_percentage:
+              type: number
+              format: float
             duration:
               type: integer
           required:
             - visitors
             - pageviews
-            - bounces
+            - bounce_percentage
             - duration
         previous:
           type: object
@@ -1628,14 +1629,15 @@ components:
               type: integer
             pageviews:
               type: integer
-            bounces:
-              type: integer
+            bounce_percentage:
+              type: number
+              format: float
             duration:
               type: integer
           required:
             - visitors
             - pageviews
-            - bounces
+            - bounce_percentage
             - duration
         interval:
           type: array
@@ -1648,8 +1650,9 @@ components:
                 type: integer
               pageviews:
                 type: integer
-              bounces:
-                type: integer
+              bounce_percentage:
+                type: number
+                format: float
               duration:
                 type: integer
             required:
@@ -1679,9 +1682,10 @@ components:
             type: number
             description: Percentage of page views.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage.
+            format: float
           duration:
             type: integer
             description: Total time spent on page in milliseconds.
@@ -1734,9 +1738,10 @@ components:
             type: number
             description: Percentage of unique visitors from referrer.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from referrer.
+            format: float
           duration:
             type: integer
             description: Total time spent on page from referrer in milliseconds.
@@ -1760,12 +1765,13 @@ components:
             type: number
             description: Percentage of unique visitors from UTM source.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from UTM source.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from UTM source in milliseconds.
         required:
           - source
           - visitors
@@ -1786,12 +1792,13 @@ components:
             type: number
             description: Percentage of unique visitors from UTM medium.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from UTM medium.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from UTM medium in milliseconds.
         required:
           - medium
           - visitors
@@ -1812,12 +1819,13 @@ components:
             type: number
             description: Percentage of unique visitors from UTM campaign.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from UTM campaign.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from UTM campaign in milliseconds.
         required:
           - campaign
           - visitors
@@ -1838,12 +1846,13 @@ components:
             type: number
             description: Percentage of unique visitors from browser.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from browser.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from browser in milliseconds.
         required:
           - browser
           - visitors
@@ -1864,12 +1873,13 @@ components:
             type: number
             description: Percentage of unique visitors from OS.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from OS.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from OS in milliseconds.
         required:
           - os
           - visitors
@@ -1890,12 +1900,13 @@ components:
             type: number
             description: Percentage of unique visitors from device.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from device.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from device in milliseconds.
         required:
           - device
           - visitors
@@ -1916,12 +1927,13 @@ components:
             type: number
             description: Percentage of unique visitors from country.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage from country.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from country in milliseconds.
         required:
           - country
           - visitors
@@ -1944,12 +1956,13 @@ components:
             type: number
             description: Percentage of unique visitors for language.
             format: float
-          bounces:
-            type: integer
-            description: Number of bounces from referrer.
+          bounce_percentage:
+            type: number
+            description: Bounce rate percentage for language.
+            format: float
           duration:
             type: integer
-            description: Total time spent on page from referrer in milliseconds.
+            description: Total time spent on page from language in milliseconds.
         required:
           - language
           - visitors

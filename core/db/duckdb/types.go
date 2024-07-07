@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
+	qb "github.com/medama-io/medama/db/duckdb/query"
 	"github.com/medama-io/medama/model"
 )
 
@@ -19,7 +20,8 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 	// Visitors is the number of unique visitors for the browser.
 	//
 	// VisitorsPercentage is the percentage the browser contributes to the total visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			"ua_browser AS browser",
 			VisitorsStmt,
@@ -63,12 +65,14 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 	// Bounces is the number of unique visitors that match the pathname and have a duration of less than 5 seconds.
 	//
 	// Duration is the median duration of the page.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"ua_browser AS browser",
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").
@@ -105,7 +109,8 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 	// Visitors is the number of unique visitors for the operating system.
 	//
 	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			"ua_os AS os",
 			VisitorsStmt,
@@ -146,12 +151,14 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 	// Visitors is the number of unique visitors for the operating system.
 	//
 	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"ua_os AS os",
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").
@@ -188,7 +195,8 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 	// Visitors is the number of unique visitors for the device.
 	//
 	// VisitorsPercentage is the percentage the device contributes to the total visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			"ua_device_type AS device",
 			VisitorsStmt,
@@ -229,12 +237,14 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 	// Visitors is the number of unique visitors for the device.
 	//
 	// VisitorsPercentage is the percentage the device contributes to the total visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"ua_device_type AS device",
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").

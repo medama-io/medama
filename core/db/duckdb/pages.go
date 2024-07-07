@@ -16,8 +16,8 @@ const (
 
 // TotalPageviewsCTE declares a materialized CTE to calculate the total number of unique visitors
 // per page and pageviews.
-func totalPageviewsCTE(whereClause string) *qb.QueryBuilder {
-	return qb.New().WithMaterialized("total", qb.New().
+func totalPageviewsCTE(whereClause string) qb.CTE {
+	return qb.NewCTE("total", qb.New().
 		Select(
 			"COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors",
 			"COUNT(*) AS total_pageviews",
@@ -41,7 +41,8 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 	// out of all unique visitors for the website.
 	//
 	// This is ordered by the number of unique visitors in descending order.
-	query := totalPageviewsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(totalPageviewsCTE(filter.WhereString())).
 		Select(
 			"pathname",
 			// Different from VisitorsStmt due to is_unique_page
@@ -97,7 +98,9 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	// Duration is the median duration of the pageview that match the pathname in milliseconds.
 	//
 	// This is ordered by the number of unique visitors in descending order.
-	query := totalPageviewsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(totalPageviewsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"pathname",
 			// Different from VisitorsStmt due to is_unique_page
@@ -105,7 +108,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 			VisitorsPercentageStmt,
 			PageviewsStmt,
 			"ifnull(ROUND(pageviews / (SELECT total_pageviews FROM total), 4), 0) AS pageviews_percentage",
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").

@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
+	qb "github.com/medama-io/medama/db/duckdb/query"
 	"github.com/medama-io/medama/model"
 )
 
@@ -18,7 +19,8 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 	// Visitors is the number of unique visitors for the utm source.
 	//
 	// VisitorsPercentage is the percentage the utm source contributes to the total unique visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			"utm_source AS source",
 			VisitorsStmt,
@@ -63,12 +65,14 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 	// Bounces is the number of unique visitors that bounced for the utm source.
 	//
 	// Duration is the median duration of the unique visitors for the utm source.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"utm_source AS source",
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").
@@ -105,7 +109,8 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 	// Visitors is the number of unique visitors for the utm medium.
 	//
 	// VisitorsPercentage is the percentage the utm medium contributes to the total unique visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			"utm_medium AS medium",
 			VisitorsStmt,
@@ -150,12 +155,14 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 	// Bounces is the number of unique visitors that bounced for the utm medium.
 	//
 	// Duration is the median duration of the unique visitors for the utm medium.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"utm_medium AS medium",
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").
@@ -192,7 +199,8 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 	// Visitors is the number of unique visitors for the utm campaign.
 	//
 	// VisitorsPercentage is the percentage the utm campaign contributes to the total unique visitors.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
 		Select(
 			"utm_campaign AS campaign",
 			VisitorsStmt,
@@ -237,12 +245,14 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 	// Bounces is the number of unique visitors that bounced for the utm campaign.
 	//
 	// Duration is the median duration of the unique visitors for the utm campaign.
-	query := TotalVisitorsCTE(filter.WhereString()).
+	query := qb.New().
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"utm_campaign AS campaign",
 			VisitorsStmt,
 			VisitorsPercentageStmt,
-			BouncesStmt,
+			BounceRateStmt,
 			DurationStmt,
 		).
 		From("views").
