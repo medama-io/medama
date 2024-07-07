@@ -76,10 +76,8 @@ export default function Index() {
 		{
 			label: 'Bounce Rate',
 			chart: 'bounces',
-			current: current.bounces / current.visitors || 0,
-			previous: previous
-				? previous.bounces / previous.visitors || 0
-				: undefined,
+			current: current.bounce_percentage,
+			previous: previous?.bounce_percentage,
 		},
 	];
 
@@ -89,7 +87,7 @@ export default function Index() {
 				const valueMap = {
 					visitors: item.visitors ?? 0,
 					pageviews: item.pageviews ?? 0,
-					bounces: (item.bounces ?? 0) / (item.visitors ?? 0) || 0,
+					bounces: item.bounce_percentage ?? 0,
 					duration: item.duration ?? 0,
 				};
 

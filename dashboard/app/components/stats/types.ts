@@ -20,8 +20,7 @@ interface DataRow {
 	visitors_percentage?: number;
 	// Mixed
 	path?: string;
-	bounces?: number;
-	bounce_rate?: number;
+	bounce_percentage?: number;
 	duration?: number;
 	// Pages
 	pageviews?: number;
