@@ -33,14 +33,6 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-const addWebsiteSchema = z.object({
-	hostname: z
-		.string()
-		.refine((value) => value === 'localhost' || isFQDN(value), {
-			message: 'Please enter a valid domain name.',
-		}),
-});
-
 export const clientLoader = async () => {
 	await userLoggedIn();
 
@@ -91,6 +83,20 @@ export default function Index() {
 	const { websites } = useLoaderData<LoaderData>();
 	const [opened, { open, close }] = useDisclosure(false);
 	const submit = useSubmit();
+
+	const addWebsiteSchema = z.object({
+		hostname: z
+			.string()
+			.refine((value) => value === 'localhost' || isFQDN(value), {
+				message: 'Please enter a valid domain name.',
+			})
+			.refine(
+				(value) => !websites.find((website) => website.hostname === value),
+				{
+					message: 'Website already exists.',
+				},
+			),
+	});
 
 	const form = useForm({
 		mode: 'uncontrolled',

@@ -223,6 +223,10 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 
 	err := h.db.CreateWebsite(ctx, websiteCreate)
 	if err != nil {
+		if errors.Is(err, model.ErrWebsiteExists) {
+			return ErrConflict(err), nil
+		}
+
 		return nil, errors.Wrap(err, "services")
 	}
 

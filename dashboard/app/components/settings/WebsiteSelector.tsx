@@ -30,8 +30,9 @@ export const WebsiteSelector = ({
 	const handleOptionSubmit = useCallback(
 		(value: string) => {
 			setWebsite(value);
+			combobox.toggleDropdown();
 		},
-		[setWebsite],
+		[setWebsite, combobox.toggleDropdown],
 	);
 
 	const options = useMemo(
