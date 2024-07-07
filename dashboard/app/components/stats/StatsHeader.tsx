@@ -93,7 +93,7 @@ const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
 			</Flex>
 			<ScrollContainer>
 				<Group justify="space-between" align="flex-end" mt="xs">
-					<Group wrap="nowrap">
+					<Group wrap="nowrap" p={4}>
 						{stats.map((stat) => (
 							<HeaderDataBox
 								key={stat.label}

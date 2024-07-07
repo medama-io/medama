@@ -10,6 +10,10 @@
 	&:hover {
 		background-color: var(--me-color-bg-grey-blue-dark);
 	}
+
+	&:focus-visible {
+		outline: 2px solid var(--mantine-color-blue-outline);
+	}
 }
 
 .targetWrapper {
