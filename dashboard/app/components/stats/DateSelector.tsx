@@ -56,11 +56,15 @@ export const DateComboBox = () => {
 		});
 	}, [preset]);
 
-	const handleOptionSubmit = useCallback((value: string) => {
-		if (isPreset(value)) {
-			setPreset(value);
-		}
-	}, []);
+	const handleOptionSubmit = useCallback(
+		(value: string) => {
+			if (isPreset(value)) {
+				setPreset(value);
+			}
+			combobox.toggleDropdown();
+		},
+		[combobox.toggleDropdown],
+	);
 
 	const options = useMemo(
 		() =>

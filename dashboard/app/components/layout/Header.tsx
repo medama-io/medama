@@ -138,7 +138,9 @@ export const Header = () => {
 		<header className={classes.header}>
 			<Group justify="space-between" className={classes.inner}>
 				<Flex align="center">
-					<BannerLogo aria-label="Banner logo" />
+					<Link to="/" aria-label="Go to home page">
+						<BannerLogo aria-label="Banner logo" />
+					</Link>
 				</Flex>
 				{isLoggedIn && (
 					<Group

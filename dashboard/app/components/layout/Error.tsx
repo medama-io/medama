@@ -1,7 +1,7 @@
 import { Anchor, Container, Text, Title } from '@mantine/core';
 import { Link } from '@remix-run/react';
-import classes from './Error.module.css';
 import type { ReactNode } from 'react';
+import classes from './Error.module.css';
 
 interface ErrorPageProps {
 	label: string;
@@ -88,6 +88,19 @@ const NotFoundError = () => (
 	/>
 );
 
+const ConflictError = () => (
+	<ErrorPage
+		label="409"
+		title="Conflict detected."
+		description={
+			<>
+				There was a conflict while processing your request. Did you try to
+				create something that already exists?
+			</>
+		}
+	/>
+);
+
 const InternalServerError = ({ error }: InternalServerErrorProps) => (
 	<ErrorPage
 		label="500"
@@ -112,4 +125,10 @@ const InternalServerError = ({ error }: InternalServerErrorProps) => (
 	/>
 );
 
-export { NotFoundError, ForbiddenError, InternalServerError, BadRequestError };
+export {
+	BadRequestError,
+	ConflictError,
+	ForbiddenError,
+	InternalServerError,
+	NotFoundError,
+};

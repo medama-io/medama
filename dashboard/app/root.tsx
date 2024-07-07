@@ -73,6 +73,7 @@ import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
 import {
 	BadRequestError,
+	ConflictError,
 	ForbiddenError,
 	InternalServerError,
 	NotFoundError,
@@ -204,6 +205,13 @@ export const ErrorBoundary = () => {
 				return (
 					<Document>
 						<NotFoundError />
+					</Document>
+				);
+			}
+			case 409: {
+				return (
+					<Document>
+						<ConflictError />
 					</Document>
 				);
 			}

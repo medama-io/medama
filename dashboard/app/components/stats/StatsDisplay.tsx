@@ -1,4 +1,4 @@
-import { Tabs, UnstyledButton } from '@mantine/core';
+import { Tabs, Text, UnstyledButton } from '@mantine/core';
 import { Link, useSearchParams } from '@remix-run/react';
 
 import classes from './StatsDisplay.module.css';
@@ -36,10 +36,15 @@ export const StatsDisplay = ({ data }: StatsDisplayProps) => {
 			</Tabs.List>
 			{data.map((tab) => (
 				<Tabs.Panel key={tab.label} value={tab.label}>
-					<div style={{ minHeight: 306 }}>
+					<div className={classes.items} data-empty={tab.items.length === 0}>
 						{tab.items.map((item) => (
 							<StatsItem key={item.label} tab={tab.label} {...item} />
 						))}
+						{tab.items.length === 0 && (
+							<Text c="gray" fz={14}>
+								No records found...
+							</Text>
+						)}
 					</div>
 					<LoadMoreButton tab={tab} searchParams={searchParams} />
 				</Tabs.Panel>

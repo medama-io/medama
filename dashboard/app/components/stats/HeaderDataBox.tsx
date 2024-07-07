@@ -40,10 +40,10 @@ const formatTooltipLabel = (
 	let changeValue: string | number = Math.abs(stat.current - stat.previous);
 	if (stat.chart === 'bounces') {
 		changeValue = formatPercentage(changeValue);
-	}
-
-	if (stat.chart === 'duration') {
+	} else if (stat.chart === 'duration') {
 		changeValue = formatDuration(Number(changeValue));
+	} else {
+		changeValue = formatCount(changeValue);
 	}
 
 	return status === 'positive'
