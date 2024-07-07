@@ -57,7 +57,7 @@ const StatsItem = ({
 			ref={ref}
 		>
 			<Group justify="space-between" pb={6} wrap="nowrap">
-				<Group gap="xs">
+				<Group gap="xs" style={{ overflow: 'hidden' }}>
 					<Text fz={14} truncate style={{ userSelect: 'text' }}>
 						{label}
 					</Text>
@@ -70,6 +70,7 @@ const StatsItem = ({
 							rel="noreferrer noopener"
 							data-hidden={!isFQDN(label)}
 							onClick={(event) => event.stopPropagation()}
+							visibleFrom="xs"
 						>
 							<IconExternal />
 						</UnstyledButton>
