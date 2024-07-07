@@ -31,7 +31,7 @@ func TestGetWebsiteSummaryEmpty(t *testing.T) {
 
 	assert.Equal(0, summary.Visitors)
 	assert.Equal(0, summary.Pageviews)
-	assert.Equal(0, summary.Bounces)
+	assert.Equal(float32(0), summary.BounceRate)
 	assert.Equal(0, summary.Duration)
 }
 

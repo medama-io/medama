@@ -1,29 +1,29 @@
 
 [TestGetWebsiteCountries/Base - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United States Visitors:166892 VisitorsPercentage:0.334} Bounces:41323 Duration:5014}
-&{StatsCountriesSummary:{Country:Japan Visitors:166747 VisitorsPercentage:0.3337} Bounces:41697 Duration:5007}
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:166018 VisitorsPercentage:0.3323} Bounces:41664 Duration:4986}
+&{StatsCountriesSummary:{Country:United States Visitors:166892 VisitorsPercentage:0.334} BounceRate:0.4871 Duration:5014}
+&{StatsCountriesSummary:{Country:Japan Visitors:166747 VisitorsPercentage:0.3337} BounceRate:0.4908 Duration:5007}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:166018 VisitorsPercentage:0.3323} BounceRate:0.4906 Duration:4986}
 
 ---
 
 [TestGetWebsiteCountries/Browser - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:Japan Visitors:55533 VisitorsPercentage:0.3344} Bounces:14047 Duration:4954}
-&{StatsCountriesSummary:{Country:United States Visitors:55314 VisitorsPercentage:0.333} Bounces:13749 Duration:4992}
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:55243 VisitorsPercentage:0.3326} Bounces:13844 Duration:4992}
+&{StatsCountriesSummary:{Country:Japan Visitors:55533 VisitorsPercentage:0.3344} BounceRate:0.4952 Duration:4954}
+&{StatsCountriesSummary:{Country:United States Visitors:55314 VisitorsPercentage:0.333} BounceRate:0.4893 Duration:4992}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:55243 VisitorsPercentage:0.3326} BounceRate:0.4887 Duration:4992}
 
 ---
 
 [TestGetWebsiteCountries/Country - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:55243 VisitorsPercentage:1} Bounces:13844 Duration:4992}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:55243 VisitorsPercentage:1} BounceRate:0.4887 Duration:4992}
 
 ---
 
 [TestGetWebsiteCountries/Device - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:18661 VisitorsPercentage:1} Bounces:4691 Duration:4997}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:18661 VisitorsPercentage:1} BounceRate:0.4852 Duration:4997}
 
 ---
 
@@ -34,43 +34,43 @@ RECORDS:
 
 [TestGetWebsiteCountries/Language - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:9486 VisitorsPercentage:1} BounceRate:0.4824 Duration:5003}
 
 ---
 
 [TestGetWebsiteCountries/OS - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:3116 VisitorsPercentage:1} BounceRate:0.4898 Duration:4971}
 
 ---
 
 [TestGetWebsiteCountries/Pathname - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:1090 VisitorsPercentage:1} BounceRate:0.4852 Duration:5098}
 
 ---
 
 [TestGetWebsiteCountries/Referrer - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:381 VisitorsPercentage:1} BounceRate:0.5196 Duration:4728}
 
 ---
 
 [TestGetWebsiteCountries/UTMCampaign - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:116 VisitorsPercentage:1} BounceRate:0.5439 Duration:4732}
 
 ---
 
 [TestGetWebsiteCountries/UTMMedium - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:35 VisitorsPercentage:1} BounceRate:0.4615 Duration:6547}
 
 ---
 
 [TestGetWebsiteCountries/UTMSource - 1]
 RECORDS:
-&{StatsCountriesSummary:{Country:United Kingdom Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
+&{StatsCountriesSummary:{Country:United Kingdom Visitors:17 VisitorsPercentage:1} BounceRate:0 Duration:3389}
 
 ---
 
@@ -151,29 +151,29 @@ RECORDS:
 
 [TestGetWebsiteLanguages/Base - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:250816 VisitorsPercentage:0.502} Bounces:62517 Duration:5010}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:248841 VisitorsPercentage:0.498} Bounces:62167 Duration:4996}
+&{StatsLanguagesSummary:{Language:English Visitors:250816 VisitorsPercentage:0.502} BounceRate:0.4897 Duration:5010}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:248841 VisitorsPercentage:0.498} BounceRate:0.4893 Duration:4996}
 
 ---
 
 [TestGetWebsiteLanguages/Browser - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:83279 VisitorsPercentage:0.5014} Bounces:20816 Duration:4992}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986} Bounces:20824 Duration:4966}
+&{StatsLanguagesSummary:{Language:English Visitors:83279 VisitorsPercentage:0.5014} BounceRate:0.4898 Duration:4992}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986} BounceRate:0.4924 Duration:4966}
 
 ---
 
 [TestGetWebsiteLanguages/Country - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:27676 VisitorsPercentage:0.501} Bounces:6923 Duration:5006}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:27567 VisitorsPercentage:0.499} Bounces:6921 Duration:4980}
+&{StatsLanguagesSummary:{Language:English Visitors:27676 VisitorsPercentage:0.501} BounceRate:0.4877 Duration:5006}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:27567 VisitorsPercentage:0.499} BounceRate:0.4896 Duration:4980}
 
 ---
 
 [TestGetWebsiteLanguages/Device - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:9486 VisitorsPercentage:0.5083} Bounces:2355 Duration:5003}
-&{StatsLanguagesSummary:{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917} Bounces:2336 Duration:4992}
+&{StatsLanguagesSummary:{Language:English Visitors:9486 VisitorsPercentage:0.5083} BounceRate:0.4824 Duration:5003}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917} BounceRate:0.4881 Duration:4992}
 
 ---
 
@@ -184,75 +184,75 @@ RECORDS:
 
 [TestGetWebsiteLanguages/Language - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
+&{StatsLanguagesSummary:{Language:English Visitors:9486 VisitorsPercentage:1} BounceRate:0.4824 Duration:5003}
 
 ---
 
 [TestGetWebsiteLanguages/OS - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
+&{StatsLanguagesSummary:{Language:English Visitors:3116 VisitorsPercentage:1} BounceRate:0.4898 Duration:4971}
 
 ---
 
 [TestGetWebsiteLanguages/Pathname - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
+&{StatsLanguagesSummary:{Language:English Visitors:1090 VisitorsPercentage:1} BounceRate:0.4852 Duration:5098}
 
 ---
 
 [TestGetWebsiteLanguages/Referrer - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
+&{StatsLanguagesSummary:{Language:English Visitors:381 VisitorsPercentage:1} BounceRate:0.5196 Duration:4728}
 
 ---
 
 [TestGetWebsiteLanguages/UTMCampaign - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
+&{StatsLanguagesSummary:{Language:English Visitors:116 VisitorsPercentage:1} BounceRate:0.5439 Duration:4732}
 
 ---
 
 [TestGetWebsiteLanguages/UTMMedium - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
+&{StatsLanguagesSummary:{Language:English Visitors:35 VisitorsPercentage:1} BounceRate:0.4615 Duration:6547}
 
 ---
 
 [TestGetWebsiteLanguages/UTMSource - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:English Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
+&{StatsLanguagesSummary:{Language:English Visitors:17 VisitorsPercentage:1} BounceRate:0 Duration:3389}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/Base - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:Japanese Visitors:248841 VisitorsPercentage:0.498} Bounces:62167 Duration:4996}
-&{StatsLanguagesSummary:{Language:British English Visitors:125499 VisitorsPercentage:0.2512} Bounces:31490 Duration:5001}
-&{StatsLanguagesSummary:{Language:American English Visitors:125317 VisitorsPercentage:0.2508} Bounces:31027 Duration:5017}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:248841 VisitorsPercentage:0.498} BounceRate:0.4893 Duration:4996}
+&{StatsLanguagesSummary:{Language:British English Visitors:125499 VisitorsPercentage:0.2512} BounceRate:0.492 Duration:5001}
+&{StatsLanguagesSummary:{Language:American English Visitors:125317 VisitorsPercentage:0.2508} BounceRate:0.4874 Duration:5017}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/Browser - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986} Bounces:20824 Duration:4966}
-&{StatsLanguagesSummary:{Language:American English Visitors:41719 VisitorsPercentage:0.2512} Bounces:10350 Duration:4991}
-&{StatsLanguagesSummary:{Language:British English Visitors:41560 VisitorsPercentage:0.2502} Bounces:10466 Duration:4994}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:82811 VisitorsPercentage:0.4986} BounceRate:0.4924 Duration:4966}
+&{StatsLanguagesSummary:{Language:American English Visitors:41719 VisitorsPercentage:0.2512} BounceRate:0.4874 Duration:4991}
+&{StatsLanguagesSummary:{Language:British English Visitors:41560 VisitorsPercentage:0.2502} BounceRate:0.4921 Duration:4994}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/Country - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:Japanese Visitors:27567 VisitorsPercentage:0.499} Bounces:6921 Duration:4980}
-&{StatsLanguagesSummary:{Language:American English Visitors:13901 VisitorsPercentage:0.2516} Bounces:3418 Duration:5008}
-&{StatsLanguagesSummary:{Language:British English Visitors:13775 VisitorsPercentage:0.2494} Bounces:3505 Duration:5004}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:27567 VisitorsPercentage:0.499} BounceRate:0.4896 Duration:4980}
+&{StatsLanguagesSummary:{Language:American English Visitors:13901 VisitorsPercentage:0.2516} BounceRate:0.48 Duration:5008}
+&{StatsLanguagesSummary:{Language:British English Visitors:13775 VisitorsPercentage:0.2494} BounceRate:0.4955 Duration:5004}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/Device - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917} Bounces:2336 Duration:4992}
-&{StatsLanguagesSummary:{Language:American English Visitors:4829 VisitorsPercentage:0.2588} Bounces:1168 Duration:5041}
-&{StatsLanguagesSummary:{Language:British English Visitors:4657 VisitorsPercentage:0.2496} Bounces:1187 Duration:4946}
+&{StatsLanguagesSummary:{Language:Japanese Visitors:9175 VisitorsPercentage:0.4917} BounceRate:0.4881 Duration:4992}
+&{StatsLanguagesSummary:{Language:American English Visitors:4829 VisitorsPercentage:0.2588} BounceRate:0.4741 Duration:5041}
+&{StatsLanguagesSummary:{Language:British English Visitors:4657 VisitorsPercentage:0.2496} BounceRate:0.4909 Duration:4946}
 
 ---
 
@@ -263,50 +263,50 @@ RECORDS:
 
 [TestGetWebsiteLanguagesLocale/Language - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:American English Visitors:4829 VisitorsPercentage:0.5091} Bounces:1168 Duration:5041}
-&{StatsLanguagesSummary:{Language:British English Visitors:4657 VisitorsPercentage:0.4909} Bounces:1187 Duration:4946}
+&{StatsLanguagesSummary:{Language:American English Visitors:4829 VisitorsPercentage:0.5091} BounceRate:0.4741 Duration:5041}
+&{StatsLanguagesSummary:{Language:British English Visitors:4657 VisitorsPercentage:0.4909} BounceRate:0.4909 Duration:4946}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/OS - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:American English Visitors:1623 VisitorsPercentage:0.5209} Bounces:390 Duration:5050}
-&{StatsLanguagesSummary:{Language:British English Visitors:1493 VisitorsPercentage:0.4791} Bounces:393 Duration:4858}
+&{StatsLanguagesSummary:{Language:American English Visitors:1623 VisitorsPercentage:0.5209} BounceRate:0.4739 Duration:5050}
+&{StatsLanguagesSummary:{Language:British English Visitors:1493 VisitorsPercentage:0.4791} BounceRate:0.5066 Duration:4858}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/Pathname - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:American English Visitors:570 VisitorsPercentage:0.5229} Bounces:136 Duration:5294}
-&{StatsLanguagesSummary:{Language:British English Visitors:520 VisitorsPercentage:0.4771} Bounces:132 Duration:4987}
+&{StatsLanguagesSummary:{Language:American English Visitors:570 VisitorsPercentage:0.5229} BounceRate:0.4804 Duration:5294}
+&{StatsLanguagesSummary:{Language:British English Visitors:520 VisitorsPercentage:0.4771} BounceRate:0.4904 Duration:4987}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/Referrer - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:American English Visitors:194 VisitorsPercentage:0.5092} Bounces:51 Duration:4677}
-&{StatsLanguagesSummary:{Language:British English Visitors:187 VisitorsPercentage:0.4908} Bounces:45 Duration:4761}
+&{StatsLanguagesSummary:{Language:American English Visitors:194 VisitorsPercentage:0.5092} BounceRate:0.573 Duration:4677}
+&{StatsLanguagesSummary:{Language:British English Visitors:187 VisitorsPercentage:0.4908} BounceRate:0.4667 Duration:4761}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/UTMCampaign - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:American English Visitors:58 VisitorsPercentage:0.5} Bounces:18 Duration:3943}
-&{StatsLanguagesSummary:{Language:British English Visitors:58 VisitorsPercentage:0.5} Bounces:13 Duration:5896}
+&{StatsLanguagesSummary:{Language:American English Visitors:58 VisitorsPercentage:0.5} BounceRate:0.6207 Duration:3943}
+&{StatsLanguagesSummary:{Language:British English Visitors:58 VisitorsPercentage:0.5} BounceRate:0.4643 Duration:5896}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/UTMMedium - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:American English Visitors:18 VisitorsPercentage:0.5143} Bounces:4 Duration:3038}
-&{StatsLanguagesSummary:{Language:British English Visitors:17 VisitorsPercentage:0.4857} Bounces:2 Duration:7189}
+&{StatsLanguagesSummary:{Language:American English Visitors:18 VisitorsPercentage:0.5143} BounceRate:0.5714 Duration:3038}
+&{StatsLanguagesSummary:{Language:British English Visitors:17 VisitorsPercentage:0.4857} BounceRate:0.3333 Duration:7189}
 
 ---
 
 [TestGetWebsiteLanguagesLocale/UTMSource - 1]
 RECORDS:
-&{StatsLanguagesSummary:{Language:American English Visitors:10 VisitorsPercentage:0.5882} Bounces:2 Duration:2631}
-&{StatsLanguagesSummary:{Language:British English Visitors:7 VisitorsPercentage:0.4118} Bounces:1 Duration:6547}
+&{StatsLanguagesSummary:{Language:American English Visitors:10 VisitorsPercentage:0.5882} BounceRate:0 Duration:2631}
+&{StatsLanguagesSummary:{Language:British English Visitors:7 VisitorsPercentage:0.4118} BounceRate:0 Duration:6547}
 
 ---
 

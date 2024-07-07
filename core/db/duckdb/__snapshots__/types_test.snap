@@ -1,27 +1,27 @@
 
 [TestGetWebsiteBrowsers/Base - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Safari Visitors:166918 VisitorsPercentage:0.3341} Bounces:41597 Duration:5002}
-&{StatsBrowsersSummary:{Browser:Firefox Visitors:166649 VisitorsPercentage:0.3335} Bounces:41447 Duration:5027}
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:166090 VisitorsPercentage:0.3324} Bounces:41640 Duration:4980}
+&{StatsBrowsersSummary:{Browser:Safari Visitors:166918 VisitorsPercentage:0.3341} BounceRate:0.4893 Duration:5002}
+&{StatsBrowsersSummary:{Browser:Firefox Visitors:166649 VisitorsPercentage:0.3335} BounceRate:0.4882 Duration:5027}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:166090 VisitorsPercentage:0.3324} BounceRate:0.4911 Duration:4980}
 
 ---
 
 [TestGetWebsiteBrowsers/Browser - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:166090 VisitorsPercentage:1} Bounces:41640 Duration:4980}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:166090 VisitorsPercentage:1} BounceRate:0.4911 Duration:4980}
 
 ---
 
 [TestGetWebsiteBrowsers/Country - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:55243 VisitorsPercentage:1} Bounces:13844 Duration:4992}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:55243 VisitorsPercentage:1} BounceRate:0.4887 Duration:4992}
 
 ---
 
 [TestGetWebsiteBrowsers/Device - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:18661 VisitorsPercentage:1} Bounces:4691 Duration:4997}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:18661 VisitorsPercentage:1} BounceRate:0.4852 Duration:4997}
 
 ---
 
@@ -32,43 +32,43 @@ RECORDS:
 
 [TestGetWebsiteBrowsers/Language - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:9486 VisitorsPercentage:1} BounceRate:0.4824 Duration:5003}
 
 ---
 
 [TestGetWebsiteBrowsers/OS - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:3116 VisitorsPercentage:1} BounceRate:0.4898 Duration:4971}
 
 ---
 
 [TestGetWebsiteBrowsers/Pathname - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:1090 VisitorsPercentage:1} BounceRate:0.4852 Duration:5098}
 
 ---
 
 [TestGetWebsiteBrowsers/Referrer - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:381 VisitorsPercentage:1} BounceRate:0.5196 Duration:4728}
 
 ---
 
 [TestGetWebsiteBrowsers/UTMCampaign - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:116 VisitorsPercentage:1} BounceRate:0.5439 Duration:4732}
 
 ---
 
 [TestGetWebsiteBrowsers/UTMMedium - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:35 VisitorsPercentage:1} BounceRate:0.4615 Duration:6547}
 
 ---
 
 [TestGetWebsiteBrowsers/UTMSource - 1]
 RECORDS:
-&{StatsBrowsersSummary:{Browser:Chrome Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
+&{StatsBrowsersSummary:{Browser:Chrome Visitors:17 VisitorsPercentage:1} BounceRate:0 Duration:3389}
 
 ---
 
@@ -147,31 +147,31 @@ RECORDS:
 
 [TestGetWebsiteDevices/Base - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:166959 VisitorsPercentage:0.3341} Bounces:41553 Duration:5005}
-&{StatsDevicesSummary:{Device:Tablet Visitors:166722 VisitorsPercentage:0.3337} Bounces:41786 Duration:4995}
-&{StatsDevicesSummary:{Device:Mobile Visitors:165976 VisitorsPercentage:0.3322} Bounces:41345 Duration:5006}
+&{StatsDevicesSummary:{Device:Desktop Visitors:166959 VisitorsPercentage:0.3341} BounceRate:0.4878 Duration:5005}
+&{StatsDevicesSummary:{Device:Tablet Visitors:166722 VisitorsPercentage:0.3337} BounceRate:0.4913 Duration:4995}
+&{StatsDevicesSummary:{Device:Mobile Visitors:165976 VisitorsPercentage:0.3322} BounceRate:0.4894 Duration:5006}
 
 ---
 
 [TestGetWebsiteDevices/Browser - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:55422 VisitorsPercentage:0.3337} Bounces:13790 Duration:4995}
-&{StatsDevicesSummary:{Device:Mobile Visitors:55360 VisitorsPercentage:0.3333} Bounces:13886 Duration:4999}
-&{StatsDevicesSummary:{Device:Tablet Visitors:55308 VisitorsPercentage:0.333} Bounces:13964 Duration:4940}
+&{StatsDevicesSummary:{Device:Desktop Visitors:55422 VisitorsPercentage:0.3337} BounceRate:0.4873 Duration:4995}
+&{StatsDevicesSummary:{Device:Mobile Visitors:55360 VisitorsPercentage:0.3333} BounceRate:0.4912 Duration:4999}
+&{StatsDevicesSummary:{Device:Tablet Visitors:55308 VisitorsPercentage:0.333} BounceRate:0.4946 Duration:4940}
 
 ---
 
 [TestGetWebsiteDevices/Country - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:18661 VisitorsPercentage:0.3378} Bounces:4691 Duration:4997}
-&{StatsDevicesSummary:{Device:Mobile Visitors:18333 VisitorsPercentage:0.3319} Bounces:4603 Duration:4994}
-&{StatsDevicesSummary:{Device:Tablet Visitors:18249 VisitorsPercentage:0.3303} Bounces:4550 Duration:4983}
+&{StatsDevicesSummary:{Device:Desktop Visitors:18661 VisitorsPercentage:0.3378} BounceRate:0.4852 Duration:4997}
+&{StatsDevicesSummary:{Device:Mobile Visitors:18333 VisitorsPercentage:0.3319} BounceRate:0.4913 Duration:4994}
+&{StatsDevicesSummary:{Device:Tablet Visitors:18249 VisitorsPercentage:0.3303} BounceRate:0.4896 Duration:4983}
 
 ---
 
 [TestGetWebsiteDevices/Device - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:18661 VisitorsPercentage:1} Bounces:4691 Duration:4997}
+&{StatsDevicesSummary:{Device:Desktop Visitors:18661 VisitorsPercentage:1} BounceRate:0.4852 Duration:4997}
 
 ---
 
@@ -182,43 +182,43 @@ RECORDS:
 
 [TestGetWebsiteDevices/Language - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:9486 VisitorsPercentage:1} Bounces:2355 Duration:5003}
+&{StatsDevicesSummary:{Device:Desktop Visitors:9486 VisitorsPercentage:1} BounceRate:0.4824 Duration:5003}
 
 ---
 
 [TestGetWebsiteDevices/OS - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
+&{StatsDevicesSummary:{Device:Desktop Visitors:3116 VisitorsPercentage:1} BounceRate:0.4898 Duration:4971}
 
 ---
 
 [TestGetWebsiteDevices/Pathname - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
+&{StatsDevicesSummary:{Device:Desktop Visitors:1090 VisitorsPercentage:1} BounceRate:0.4852 Duration:5098}
 
 ---
 
 [TestGetWebsiteDevices/Referrer - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
+&{StatsDevicesSummary:{Device:Desktop Visitors:381 VisitorsPercentage:1} BounceRate:0.5196 Duration:4728}
 
 ---
 
 [TestGetWebsiteDevices/UTMCampaign - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
+&{StatsDevicesSummary:{Device:Desktop Visitors:116 VisitorsPercentage:1} BounceRate:0.5439 Duration:4732}
 
 ---
 
 [TestGetWebsiteDevices/UTMMedium - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
+&{StatsDevicesSummary:{Device:Desktop Visitors:35 VisitorsPercentage:1} BounceRate:0.4615 Duration:6547}
 
 ---
 
 [TestGetWebsiteDevices/UTMSource - 1]
 RECORDS:
-&{StatsDevicesSummary:{Device:Desktop Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
+&{StatsDevicesSummary:{Device:Desktop Visitors:17 VisitorsPercentage:1} BounceRate:0 Duration:3389}
 
 ---
 
@@ -301,33 +301,33 @@ RECORDS:
 
 [TestGetWebsiteOS/Base - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:166647 VisitorsPercentage:0.3335} Bounces:41649 Duration:5006}
-&{StatsOSSummary:{OS:Windows Visitors:166538 VisitorsPercentage:0.3333} Bounces:41565 Duration:5001}
-&{StatsOSSummary:{OS:Linux Visitors:166472 VisitorsPercentage:0.3332} Bounces:41470 Duration:5002}
+&{StatsOSSummary:{OS:iOS Visitors:166647 VisitorsPercentage:0.3335} BounceRate:0.4907 Duration:5006}
+&{StatsOSSummary:{OS:Windows Visitors:166538 VisitorsPercentage:0.3333} BounceRate:0.4893 Duration:5001}
+&{StatsOSSummary:{OS:Linux Visitors:166472 VisitorsPercentage:0.3332} BounceRate:0.4885 Duration:5002}
 
 ---
 
 [TestGetWebsiteOS/Browser - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Linux Visitors:55412 VisitorsPercentage:0.3336} Bounces:13814 Duration:4997}
-&{StatsOSSummary:{OS:Windows Visitors:55394 VisitorsPercentage:0.3335} Bounces:13832 Duration:4969}
-&{StatsOSSummary:{OS:iOS Visitors:55284 VisitorsPercentage:0.3329} Bounces:13994 Duration:4975}
+&{StatsOSSummary:{OS:Linux Visitors:55412 VisitorsPercentage:0.3336} BounceRate:0.4887 Duration:4997}
+&{StatsOSSummary:{OS:Windows Visitors:55394 VisitorsPercentage:0.3335} BounceRate:0.4904 Duration:4969}
+&{StatsOSSummary:{OS:iOS Visitors:55284 VisitorsPercentage:0.3329} BounceRate:0.4941 Duration:4975}
 
 ---
 
 [TestGetWebsiteOS/Country - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:18554 VisitorsPercentage:0.3359} Bounces:4655 Duration:5002}
-&{StatsOSSummary:{OS:Linux Visitors:18365 VisitorsPercentage:0.3324} Bounces:4551 Duration:5046}
-&{StatsOSSummary:{OS:Windows Visitors:18324 VisitorsPercentage:0.3317} Bounces:4638 Duration:4930}
+&{StatsOSSummary:{OS:iOS Visitors:18554 VisitorsPercentage:0.3359} BounceRate:0.4896 Duration:5002}
+&{StatsOSSummary:{OS:Linux Visitors:18365 VisitorsPercentage:0.3324} BounceRate:0.4847 Duration:5046}
+&{StatsOSSummary:{OS:Windows Visitors:18324 VisitorsPercentage:0.3317} BounceRate:0.4917 Duration:4930}
 
 ---
 
 [TestGetWebsiteOS/Device - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:6314 VisitorsPercentage:0.3384} Bounces:1608 Duration:4996}
-&{StatsOSSummary:{OS:Linux Visitors:6175 VisitorsPercentage:0.3309} Bounces:1543 Duration:5021}
-&{StatsOSSummary:{OS:Windows Visitors:6172 VisitorsPercentage:0.3307} Bounces:1540 Duration:4978}
+&{StatsOSSummary:{OS:iOS Visitors:6314 VisitorsPercentage:0.3384} BounceRate:0.4865 Duration:4996}
+&{StatsOSSummary:{OS:Linux Visitors:6175 VisitorsPercentage:0.3309} BounceRate:0.485 Duration:5021}
+&{StatsOSSummary:{OS:Windows Visitors:6172 VisitorsPercentage:0.3307} BounceRate:0.4841 Duration:4978}
 
 ---
 
@@ -338,45 +338,45 @@ RECORDS:
 
 [TestGetWebsiteOS/Language - 1]
 RECORDS:
-&{StatsOSSummary:{OS:iOS Visitors:3246 VisitorsPercentage:0.3422} Bounces:829 Duration:5011}
-&{StatsOSSummary:{OS:Linux Visitors:3124 VisitorsPercentage:0.3293} Bounces:743 Duration:5040}
-&{StatsOSSummary:{OS:Windows Visitors:3116 VisitorsPercentage:0.3285} Bounces:783 Duration:4971}
+&{StatsOSSummary:{OS:iOS Visitors:3246 VisitorsPercentage:0.3422} BounceRate:0.4894 Duration:5011}
+&{StatsOSSummary:{OS:Linux Visitors:3124 VisitorsPercentage:0.3293} BounceRate:0.4677 Duration:5040}
+&{StatsOSSummary:{OS:Windows Visitors:3116 VisitorsPercentage:0.3285} BounceRate:0.4898 Duration:4971}
 
 ---
 
 [TestGetWebsiteOS/OS - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:3116 VisitorsPercentage:1} Bounces:783 Duration:4971}
+&{StatsOSSummary:{OS:Windows Visitors:3116 VisitorsPercentage:1} BounceRate:0.4898 Duration:4971}
 
 ---
 
 [TestGetWebsiteOS/Pathname - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:1090 VisitorsPercentage:1} Bounces:268 Duration:5098}
+&{StatsOSSummary:{OS:Windows Visitors:1090 VisitorsPercentage:1} BounceRate:0.4852 Duration:5098}
 
 ---
 
 [TestGetWebsiteOS/Referrer - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:381 VisitorsPercentage:1} Bounces:96 Duration:4728}
+&{StatsOSSummary:{OS:Windows Visitors:381 VisitorsPercentage:1} BounceRate:0.5196 Duration:4728}
 
 ---
 
 [TestGetWebsiteOS/UTMCampaign - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:116 VisitorsPercentage:1} Bounces:31 Duration:4732}
+&{StatsOSSummary:{OS:Windows Visitors:116 VisitorsPercentage:1} BounceRate:0.5439 Duration:4732}
 
 ---
 
 [TestGetWebsiteOS/UTMMedium - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:35 VisitorsPercentage:1} Bounces:6 Duration:6547}
+&{StatsOSSummary:{OS:Windows Visitors:35 VisitorsPercentage:1} BounceRate:0.4615 Duration:6547}
 
 ---
 
 [TestGetWebsiteOS/UTMSource - 1]
 RECORDS:
-&{StatsOSSummary:{OS:Windows Visitors:17 VisitorsPercentage:1} Bounces:3 Duration:3389}
+&{StatsOSSummary:{OS:Windows Visitors:17 VisitorsPercentage:1} BounceRate:0 Duration:3389}
 
 ---
 

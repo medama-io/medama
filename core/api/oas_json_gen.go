@@ -2571,9 +2571,9 @@ func (s *StatsBrowsersItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -2588,7 +2588,7 @@ var jsonFieldsNameOfStatsBrowsersItem = [5]string{
 	0: "browser",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -2637,15 +2637,15 @@ func (s *StatsBrowsersItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -2785,9 +2785,9 @@ func (s *StatsCountriesItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -2802,7 +2802,7 @@ var jsonFieldsNameOfStatsCountriesItem = [5]string{
 	0: "country",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -2851,15 +2851,15 @@ func (s *StatsCountriesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -2999,9 +2999,9 @@ func (s *StatsDevicesItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -3016,7 +3016,7 @@ var jsonFieldsNameOfStatsDevicesItem = [5]string{
 	0: "device",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -3065,15 +3065,15 @@ func (s *StatsDevicesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -3213,9 +3213,9 @@ func (s *StatsLanguagesItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -3230,7 +3230,7 @@ var jsonFieldsNameOfStatsLanguagesItem = [5]string{
 	0: "language",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -3279,15 +3279,15 @@ func (s *StatsLanguagesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -3427,9 +3427,9 @@ func (s *StatsOSItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -3444,7 +3444,7 @@ var jsonFieldsNameOfStatsOSItem = [5]string{
 	0: "os",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -3493,15 +3493,15 @@ func (s *StatsOSItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -3653,9 +3653,9 @@ func (s *StatsPagesItem) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -3672,7 +3672,7 @@ var jsonFieldsNameOfStatsPagesItem = [7]string{
 	2: "visitors_percentage",
 	3: "pageviews",
 	4: "pageviews_percentage",
-	5: "bounces",
+	5: "bounce_percentage",
 	6: "duration",
 }
 
@@ -3741,15 +3741,15 @@ func (s *StatsPagesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pageviews_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -3889,9 +3889,9 @@ func (s *StatsReferrersItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -3906,7 +3906,7 @@ var jsonFieldsNameOfStatsReferrersItem = [5]string{
 	0: "referrer",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -3955,15 +3955,15 @@ func (s *StatsReferrersItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -4188,8 +4188,8 @@ func (s *StatsSummaryCurrent) encodeFields(e *jx.Encoder) {
 		e.Int(s.Pageviews)
 	}
 	{
-		e.FieldStart("bounces")
-		e.Int(s.Bounces)
+		e.FieldStart("bounce_percentage")
+		e.Float32(s.BouncePercentage)
 	}
 	{
 		e.FieldStart("duration")
@@ -4200,7 +4200,7 @@ func (s *StatsSummaryCurrent) encodeFields(e *jx.Encoder) {
 var jsonFieldsNameOfStatsSummaryCurrent = [4]string{
 	0: "visitors",
 	1: "pageviews",
-	2: "bounces",
+	2: "bounce_percentage",
 	3: "duration",
 }
 
@@ -4237,17 +4237,17 @@ func (s *StatsSummaryCurrent) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pageviews\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				v, err := d.Int()
-				s.Bounces = int(v)
+				v, err := d.Float32()
+				s.BouncePercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			requiredBitSet[0] |= 1 << 3
@@ -4343,9 +4343,9 @@ func (s *StatsSummaryIntervalItem) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -4360,7 +4360,7 @@ var jsonFieldsNameOfStatsSummaryIntervalItem = [5]string{
 	0: "date",
 	1: "visitors",
 	2: "pageviews",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -4405,15 +4405,15 @@ func (s *StatsSummaryIntervalItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pageviews\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -4499,8 +4499,8 @@ func (s *StatsSummaryPrevious) encodeFields(e *jx.Encoder) {
 		e.Int(s.Pageviews)
 	}
 	{
-		e.FieldStart("bounces")
-		e.Int(s.Bounces)
+		e.FieldStart("bounce_percentage")
+		e.Float32(s.BouncePercentage)
 	}
 	{
 		e.FieldStart("duration")
@@ -4511,7 +4511,7 @@ func (s *StatsSummaryPrevious) encodeFields(e *jx.Encoder) {
 var jsonFieldsNameOfStatsSummaryPrevious = [4]string{
 	0: "visitors",
 	1: "pageviews",
-	2: "bounces",
+	2: "bounce_percentage",
 	3: "duration",
 }
 
@@ -4548,17 +4548,17 @@ func (s *StatsSummaryPrevious) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pageviews\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				v, err := d.Int()
-				s.Bounces = int(v)
+				v, err := d.Float32()
+				s.BouncePercentage = float32(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			requiredBitSet[0] |= 1 << 3
@@ -4931,9 +4931,9 @@ func (s *StatsUTMCampaignsItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -4948,7 +4948,7 @@ var jsonFieldsNameOfStatsUTMCampaignsItem = [5]string{
 	0: "campaign",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -4997,15 +4997,15 @@ func (s *StatsUTMCampaignsItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -5145,9 +5145,9 @@ func (s *StatsUTMMediumsItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -5162,7 +5162,7 @@ var jsonFieldsNameOfStatsUTMMediumsItem = [5]string{
 	0: "medium",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -5211,15 +5211,15 @@ func (s *StatsUTMMediumsItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {
@@ -5359,9 +5359,9 @@ func (s *StatsUTMSourcesItem) encodeFields(e *jx.Encoder) {
 		e.Float32(s.VisitorsPercentage)
 	}
 	{
-		if s.Bounces.Set {
-			e.FieldStart("bounces")
-			s.Bounces.Encode(e)
+		if s.BouncePercentage.Set {
+			e.FieldStart("bounce_percentage")
+			s.BouncePercentage.Encode(e)
 		}
 	}
 	{
@@ -5376,7 +5376,7 @@ var jsonFieldsNameOfStatsUTMSourcesItem = [5]string{
 	0: "source",
 	1: "visitors",
 	2: "visitors_percentage",
-	3: "bounces",
+	3: "bounce_percentage",
 	4: "duration",
 }
 
@@ -5425,15 +5425,15 @@ func (s *StatsUTMSourcesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"visitors_percentage\"")
 			}
-		case "bounces":
+		case "bounce_percentage":
 			if err := func() error {
-				s.Bounces.Reset()
-				if err := s.Bounces.Decode(d); err != nil {
+				s.BouncePercentage.Reset()
+				if err := s.BouncePercentage.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"bounces\"")
+				return errors.Wrap(err, "decode field \"bounce_percentage\"")
 			}
 		case "duration":
 			if err := func() error {

@@ -60,10 +60,10 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 	const isPercentage = stat.chart === 'bounces';
 	const isDuration = stat.chart === 'duration';
 
-	const change = useMemo(
-		() => calculateChange(stat.current, stat.previous),
-		[stat],
-	);
+	const change = useMemo(() => {
+		if (isPercentage) return stat.current - (stat.previous ?? 0);
+		return calculateChange(stat.current, stat.previous);
+	}, [stat, isPercentage]);
 
 	const status = useMemo(() => getStatus(change), [change]);
 	const formattedValue = useMemo(
@@ -111,7 +111,7 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 						role="status"
 					>
 						{status === 'positive' ? '+' : ''}
-						{change}%
+						{isPercentage ? formatPercentage(change) : `${change}%`}
 					</Box>
 				</Group>
 			</UnstyledButton>

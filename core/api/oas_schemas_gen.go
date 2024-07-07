@@ -1468,9 +1468,9 @@ type StatsBrowsersItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from browser.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage from browser.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from browser in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -1489,9 +1489,9 @@ func (s *StatsBrowsersItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsBrowsersItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsBrowsersItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -1514,9 +1514,9 @@ func (s *StatsBrowsersItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsBrowsersItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsBrowsersItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -1535,9 +1535,9 @@ type StatsCountriesItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from country.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage from country.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from country in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -1556,9 +1556,9 @@ func (s *StatsCountriesItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsCountriesItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsCountriesItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -1581,9 +1581,9 @@ func (s *StatsCountriesItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsCountriesItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsCountriesItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -1602,9 +1602,9 @@ type StatsDevicesItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from device.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage from device.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from device in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -1623,9 +1623,9 @@ func (s *StatsDevicesItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsDevicesItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsDevicesItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -1648,9 +1648,9 @@ func (s *StatsDevicesItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsDevicesItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsDevicesItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -1669,9 +1669,9 @@ type StatsLanguagesItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors for language.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage for language.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from language in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -1690,9 +1690,9 @@ func (s *StatsLanguagesItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsLanguagesItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsLanguagesItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -1715,9 +1715,9 @@ func (s *StatsLanguagesItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsLanguagesItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsLanguagesItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -1736,9 +1736,9 @@ type StatsOSItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from OS.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage from OS.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from OS in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -1757,9 +1757,9 @@ func (s *StatsOSItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsOSItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsOSItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -1782,9 +1782,9 @@ func (s *StatsOSItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsOSItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsOSItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -1807,8 +1807,8 @@ type StatsPagesItem struct {
 	Pageviews OptInt `json:"pageviews"`
 	// Percentage of page views.
 	PageviewsPercentage OptFloat32 `json:"pageviews_percentage"`
-	// Number of bounces.
-	Bounces OptInt `json:"bounces"`
+	// Bounce rate percentage.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
 	// Total time spent on page in milliseconds.
 	Duration OptInt `json:"duration"`
 }
@@ -1838,9 +1838,9 @@ func (s *StatsPagesItem) GetPageviewsPercentage() OptFloat32 {
 	return s.PageviewsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsPagesItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsPagesItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -1873,9 +1873,9 @@ func (s *StatsPagesItem) SetPageviewsPercentage(val OptFloat32) {
 	s.PageviewsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsPagesItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsPagesItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -1894,8 +1894,8 @@ type StatsReferrersItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from referrer.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
+	// Bounce rate percentage from referrer.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
 	// Total time spent on page from referrer in milliseconds.
 	Duration OptInt `json:"duration"`
 }
@@ -1915,9 +1915,9 @@ func (s *StatsReferrersItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsReferrersItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsReferrersItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -1940,9 +1940,9 @@ func (s *StatsReferrersItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsReferrersItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsReferrersItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -1990,10 +1990,10 @@ func (s *StatsSummary) SetInterval(val []StatsSummaryIntervalItem) {
 func (*StatsSummary) getWebsiteIDSummaryRes() {}
 
 type StatsSummaryCurrent struct {
-	Visitors  int `json:"visitors"`
-	Pageviews int `json:"pageviews"`
-	Bounces   int `json:"bounces"`
-	Duration  int `json:"duration"`
+	Visitors         int     `json:"visitors"`
+	Pageviews        int     `json:"pageviews"`
+	BouncePercentage float32 `json:"bounce_percentage"`
+	Duration         int     `json:"duration"`
 }
 
 // GetVisitors returns the value of Visitors.
@@ -2006,9 +2006,9 @@ func (s *StatsSummaryCurrent) GetPageviews() int {
 	return s.Pageviews
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsSummaryCurrent) GetBounces() int {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsSummaryCurrent) GetBouncePercentage() float32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -2026,9 +2026,9 @@ func (s *StatsSummaryCurrent) SetPageviews(val int) {
 	s.Pageviews = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsSummaryCurrent) SetBounces(val int) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsSummaryCurrent) SetBouncePercentage(val float32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -2037,11 +2037,11 @@ func (s *StatsSummaryCurrent) SetDuration(val int) {
 }
 
 type StatsSummaryIntervalItem struct {
-	Date      string `json:"date"`
-	Visitors  OptInt `json:"visitors"`
-	Pageviews OptInt `json:"pageviews"`
-	Bounces   OptInt `json:"bounces"`
-	Duration  OptInt `json:"duration"`
+	Date             string     `json:"date"`
+	Visitors         OptInt     `json:"visitors"`
+	Pageviews        OptInt     `json:"pageviews"`
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	Duration         OptInt     `json:"duration"`
 }
 
 // GetDate returns the value of Date.
@@ -2059,9 +2059,9 @@ func (s *StatsSummaryIntervalItem) GetPageviews() OptInt {
 	return s.Pageviews
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsSummaryIntervalItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsSummaryIntervalItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -2084,9 +2084,9 @@ func (s *StatsSummaryIntervalItem) SetPageviews(val OptInt) {
 	s.Pageviews = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsSummaryIntervalItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsSummaryIntervalItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -2095,10 +2095,10 @@ func (s *StatsSummaryIntervalItem) SetDuration(val OptInt) {
 }
 
 type StatsSummaryPrevious struct {
-	Visitors  int `json:"visitors"`
-	Pageviews int `json:"pageviews"`
-	Bounces   int `json:"bounces"`
-	Duration  int `json:"duration"`
+	Visitors         int     `json:"visitors"`
+	Pageviews        int     `json:"pageviews"`
+	BouncePercentage float32 `json:"bounce_percentage"`
+	Duration         int     `json:"duration"`
 }
 
 // GetVisitors returns the value of Visitors.
@@ -2111,9 +2111,9 @@ func (s *StatsSummaryPrevious) GetPageviews() int {
 	return s.Pageviews
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsSummaryPrevious) GetBounces() int {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsSummaryPrevious) GetBouncePercentage() float32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -2131,9 +2131,9 @@ func (s *StatsSummaryPrevious) SetPageviews(val int) {
 	s.Pageviews = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsSummaryPrevious) SetBounces(val int) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsSummaryPrevious) SetBouncePercentage(val float32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -2231,9 +2231,9 @@ type StatsUTMCampaignsItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from UTM campaign.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage from UTM campaign.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from UTM campaign in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -2252,9 +2252,9 @@ func (s *StatsUTMCampaignsItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsUTMCampaignsItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsUTMCampaignsItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -2277,9 +2277,9 @@ func (s *StatsUTMCampaignsItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsUTMCampaignsItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsUTMCampaignsItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -2298,9 +2298,9 @@ type StatsUTMMediumsItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from UTM medium.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage from UTM medium.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from UTM medium in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -2319,9 +2319,9 @@ func (s *StatsUTMMediumsItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsUTMMediumsItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsUTMMediumsItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -2344,9 +2344,9 @@ func (s *StatsUTMMediumsItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsUTMMediumsItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsUTMMediumsItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.
@@ -2365,9 +2365,9 @@ type StatsUTMSourcesItem struct {
 	Visitors int `json:"visitors"`
 	// Percentage of unique visitors from UTM source.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
-	// Number of bounces from referrer.
-	Bounces OptInt `json:"bounces"`
-	// Total time spent on page from referrer in milliseconds.
+	// Bounce rate percentage from UTM source.
+	BouncePercentage OptFloat32 `json:"bounce_percentage"`
+	// Total time spent on page from UTM source in milliseconds.
 	Duration OptInt `json:"duration"`
 }
 
@@ -2386,9 +2386,9 @@ func (s *StatsUTMSourcesItem) GetVisitorsPercentage() float32 {
 	return s.VisitorsPercentage
 }
 
-// GetBounces returns the value of Bounces.
-func (s *StatsUTMSourcesItem) GetBounces() OptInt {
-	return s.Bounces
+// GetBouncePercentage returns the value of BouncePercentage.
+func (s *StatsUTMSourcesItem) GetBouncePercentage() OptFloat32 {
+	return s.BouncePercentage
 }
 
 // GetDuration returns the value of Duration.
@@ -2411,9 +2411,9 @@ func (s *StatsUTMSourcesItem) SetVisitorsPercentage(val float32) {
 	s.VisitorsPercentage = val
 }
 
-// SetBounces sets the value of Bounces.
-func (s *StatsUTMSourcesItem) SetBounces(val OptInt) {
-	s.Bounces = val
+// SetBouncePercentage sets the value of BouncePercentage.
+func (s *StatsUTMSourcesItem) SetBouncePercentage(val OptFloat32) {
+	s.BouncePercentage = val
 }
 
 // SetDuration sets the value of Duration.

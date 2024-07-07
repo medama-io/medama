@@ -346,20 +346,23 @@ export interface components {
       current: {
         visitors: number;
         pageviews: number;
-        bounces: number;
+        /** Format: float */
+        bounce_percentage: number;
         duration: number;
       };
       previous?: {
         visitors: number;
         pageviews: number;
-        bounces: number;
+        /** Format: float */
+        bounce_percentage: number;
         duration: number;
       };
       interval?: {
           date: string;
           visitors?: number;
           pageviews?: number;
-          bounces?: number;
+          /** Format: float */
+          bounce_percentage?: number;
           duration?: number;
         }[];
     };
@@ -381,8 +384,11 @@ export interface components {
          * @description Percentage of page views.
          */
         pageviews_percentage?: number;
-        /** @description Number of bounces. */
-        bounces?: number;
+        /**
+         * Format: float
+         * @description Bounce rate percentage.
+         */
+        bounce_percentage?: number;
         /** @description Total time spent on page in milliseconds. */
         duration?: number;
       }[];
@@ -415,8 +421,11 @@ export interface components {
          * @description Percentage of unique visitors from referrer.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
+        /**
+         * Format: float
+         * @description Bounce rate percentage from referrer.
+         */
+        bounce_percentage?: number;
         /** @description Total time spent on page from referrer in milliseconds. */
         duration?: number;
       }[];
@@ -431,9 +440,12 @@ export interface components {
          * @description Percentage of unique visitors from UTM source.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage from UTM source.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from UTM source in milliseconds. */
         duration?: number;
       }[];
     /** StatsUTMMediums */
@@ -447,9 +459,12 @@ export interface components {
          * @description Percentage of unique visitors from UTM medium.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage from UTM medium.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from UTM medium in milliseconds. */
         duration?: number;
       }[];
     /** StatsUTMCampaigns */
@@ -463,9 +478,12 @@ export interface components {
          * @description Percentage of unique visitors from UTM campaign.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage from UTM campaign.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from UTM campaign in milliseconds. */
         duration?: number;
       }[];
     /** StatsBrowsers */
@@ -479,9 +497,12 @@ export interface components {
          * @description Percentage of unique visitors from browser.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage from browser.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from browser in milliseconds. */
         duration?: number;
       }[];
     /** StatsOS */
@@ -495,9 +516,12 @@ export interface components {
          * @description Percentage of unique visitors from OS.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage from OS.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from OS in milliseconds. */
         duration?: number;
       }[];
     /** StatsDevices */
@@ -511,9 +535,12 @@ export interface components {
          * @description Percentage of unique visitors from device.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage from device.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from device in milliseconds. */
         duration?: number;
       }[];
     /** StatsCountries */
@@ -527,9 +554,12 @@ export interface components {
          * @description Percentage of unique visitors from country.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage from country.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from country in milliseconds. */
         duration?: number;
       }[];
     /**
@@ -549,9 +579,12 @@ export interface components {
          * @description Percentage of unique visitors for language.
          */
         visitors_percentage: number;
-        /** @description Number of bounces from referrer. */
-        bounces?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
+        /**
+         * Format: float
+         * @description Bounce rate percentage for language.
+         */
+        bounce_percentage?: number;
+        /** @description Total time spent on page from language in milliseconds. */
         duration?: number;
       }[];
   };

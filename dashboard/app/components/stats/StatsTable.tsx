@@ -89,7 +89,7 @@ type PresetDataKeys =
 	| 'visitors_percentage'
 	| 'pageviews'
 	| 'pageviews_percentage'
-	| 'bounce_rate'
+	| 'bounce_percentage'
 	| 'duration'
 	| 'duration_lower_quartile'
 	| 'duration_upper_quartile'
@@ -114,11 +114,10 @@ const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
 		title: 'Views %',
 		render: (record) => formatPercentage(record.pageviews_percentage ?? 0),
 	},
-	bounce_rate: {
-		accessor: 'bounce_rate',
+	bounce_percentage: {
+		accessor: 'bounce_percentage',
 		title: 'Bounce %',
-		render: (record) =>
-			formatPercentage((record.bounces ?? 0) / (record.visitors ?? 1)),
+		render: (record) => formatPercentage(record.bounce_percentage ?? 0),
 	},
 	duration: {
 		accessor: 'duration',
@@ -332,7 +331,7 @@ const getColumnsForQuery = (
 				PRESET_COLUMNS.visitors_percentage,
 				PRESET_COLUMNS.pageviews,
 				PRESET_COLUMNS.pageviews_percentage,
-				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.bounce_percentage,
 				PRESET_COLUMNS.duration,
 			];
 		case 'time':
@@ -358,7 +357,7 @@ const getColumnsForQuery = (
 				},
 				PRESET_COLUMNS.visitors,
 				PRESET_COLUMNS.visitors_percentage,
-				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.bounce_percentage,
 				PRESET_COLUMNS.duration,
 			];
 		case 'browsers':
@@ -373,7 +372,7 @@ const getColumnsForQuery = (
 				},
 				PRESET_COLUMNS.visitors,
 				PRESET_COLUMNS.visitors_percentage,
-				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.bounce_percentage,
 				PRESET_COLUMNS.duration,
 			];
 		case 'languages':
@@ -387,7 +386,7 @@ const getColumnsForQuery = (
 				},
 				PRESET_COLUMNS.visitors,
 				PRESET_COLUMNS.visitors_percentage,
-				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.bounce_percentage,
 				PRESET_COLUMNS.duration,
 			];
 		case 'os':
@@ -400,7 +399,7 @@ const getColumnsForQuery = (
 				},
 				PRESET_COLUMNS.visitors,
 				PRESET_COLUMNS.visitors_percentage,
-				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.bounce_percentage,
 				PRESET_COLUMNS.duration,
 			];
 		case 'countries':
@@ -413,7 +412,7 @@ const getColumnsForQuery = (
 				},
 				PRESET_COLUMNS.visitors,
 				PRESET_COLUMNS.visitors_percentage,
-				PRESET_COLUMNS.bounce_rate,
+				PRESET_COLUMNS.bounce_percentage,
 				PRESET_COLUMNS.duration,
 			];
 		default:
