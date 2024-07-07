@@ -47,3 +47,13 @@
 		text-align: center;
 	}
 }
+
+.items {
+	min-height: 306px;
+
+	&[data-empty="true"] {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
