@@ -2,7 +2,6 @@ package duckdb
 
 import (
 	"context"
-	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
@@ -11,7 +10,6 @@ import (
 
 func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMSourcesSummary, error) {
 	var utms []*model.StatsUTMSourcesSummary
-	var query strings.Builder
 
 	// Array of utm sources
 	//
@@ -20,25 +18,19 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 	// Visitors is the number of unique visitors for the utm source.
 	//
 	// VisitorsPercentage is the percentage the utm source contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			utm_source AS source,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_source ORDER BY visitors DESC, source ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"utm_source AS source",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("utm_source").
+		OrderBy("visitors DESC", "source ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -59,7 +51,6 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 // GetWebsiteUTMSources returns the utm sources for the given hostname.
 func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMSources, error) {
 	var utms []*model.StatsUTMSources
-	var query strings.Builder
 
 	// Array of utm sources
 	//
@@ -68,27 +59,25 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 	// Visitors is the number of unique visitors for the utm source.
 	//
 	// VisitorsPercentage is the percentage the utm source contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			utm_source AS source,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_source ORDER BY visitors DESC, source ASC`)
-	query.WriteString(filter.PaginationString())
+	//
+	// Bounces is the number of unique visitors that bounced for the utm source.
+	//
+	// Duration is the median duration of the unique visitors for the utm source.
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"utm_source AS source",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("utm_source").
+		OrderBy("visitors DESC", "source ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -108,7 +97,6 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 
 func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMMediumsSummary, error) {
 	var utms []*model.StatsUTMMediumsSummary
-	var query strings.Builder
 
 	// Array of utm mediums
 	//
@@ -117,25 +105,19 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 	// Visitors is the number of unique visitors for the utm medium.
 	//
 	// VisitorsPercentage is the percentage the utm medium contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			utm_medium AS medium,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_medium ORDER BY visitors DESC, medium ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"utm_medium AS medium",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("utm_medium").
+		OrderBy("visitors DESC", "medium ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -156,7 +138,6 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 // GetWebsiteUTMMediums returns the utm mediums for the given hostname.
 func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMMediums, error) {
 	var utms []*model.StatsUTMMediums
-	var query strings.Builder
 
 	// Array of utm mediums
 	//
@@ -165,27 +146,25 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 	// Visitors is the number of unique visitors for the utm medium.
 	//
 	// VisitorsPercentage is the percentage the utm medium contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			utm_medium AS medium,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_medium ORDER BY visitors DESC, medium ASC`)
-	query.WriteString(filter.PaginationString())
+	//
+	// Bounces is the number of unique visitors that bounced for the utm medium.
+	//
+	// Duration is the median duration of the unique visitors for the utm medium.
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"utm_medium AS medium",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("utm_medium").
+		OrderBy("visitors DESC", "medium ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -205,7 +184,6 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 
 func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMCampaignsSummary, error) {
 	var utms []*model.StatsUTMCampaignsSummary
-	var query strings.Builder
 
 	// Array of utm campaigns
 	//
@@ -214,25 +192,19 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 	// Visitors is the number of unique visitors for the utm campaign.
 	//
 	// VisitorsPercentage is the percentage the utm campaign contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			utm_campaign AS campaign,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_campaign ORDER BY visitors DESC, campaign ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"utm_campaign AS campaign",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("utm_campaign").
+		OrderBy("visitors DESC", "campaign ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -253,7 +225,6 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 // GetWebsiteUTMCampaigns returns the utm campaigns for the given hostname.
 func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMCampaigns, error) {
 	var utms []*model.StatsUTMCampaigns
-	var query strings.Builder
 
 	// Array of utm campaigns
 	//
@@ -262,27 +233,25 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 	// Visitors is the number of unique visitors for the utm campaign.
 	//
 	// VisitorsPercentage is the percentage the utm campaign contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			utm_campaign AS campaign,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY utm_campaign ORDER BY visitors DESC, campaign ASC`)
-	query.WriteString(filter.PaginationString())
+	//
+	// Bounces is the number of unique visitors that bounced for the utm campaign.
+	//
+	// Duration is the median duration of the unique visitors for the utm campaign.
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"utm_campaign AS campaign",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("utm_campaign").
+		OrderBy("visitors DESC", "campaign ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}

@@ -2,17 +2,34 @@ package duckdb
 
 import (
 	"context"
-	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
+	qb "github.com/medama-io/medama/db/duckdb/query"
 	"github.com/medama-io/medama/model"
 )
+
+const (
+	// PageviewsVisitorStmt is the number of unique visitors for the query using is_unique_page.
+	PageviewsVisitorStmt = "COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors"
+)
+
+// TotalPageviewsCTE declares a materialized CTE to calculate the total number of unique visitors
+// per page and pageviews.
+func totalPageviewsCTE(whereClause string) *qb.QueryBuilder {
+	return qb.New().WithMaterialized("total", qb.New().
+		Select(
+			"COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors",
+			"COUNT(*) AS total_pageviews",
+		).
+		From("views").
+		Where(whereClause),
+	)
+}
 
 // GetWebsitePagesSummary returns a summary of the pages for the given hostname.
 func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsPagesSummary, error) {
 	var pages []*model.StatsPagesSummary
-	var query strings.Builder
 
 	// Array of page paths and their relevant counts
 	//
@@ -24,25 +41,21 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 	// out of all unique visitors for the website.
 	//
 	// This is ordered by the number of unique visitors in descending order.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			pathname,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC, pathname ASC`)
-	query.WriteString(filter.PaginationString())
+	query := totalPageviewsCTE(filter.WhereString()).
+		Select(
+			"pathname",
+			// Different from VisitorsStmt due to is_unique_page
+			PageviewsVisitorStmt,
+			VisitorsPercentageStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("pathname").
+		Having("visitors > 0").
+		OrderBy("visitors DESC", "pathname ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -63,7 +76,6 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 // GetWebsitePages returns the pages statistics for the given hostname.
 func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*model.StatsPages, error) {
 	var pages []*model.StatsPages
-	var query strings.Builder
 
 	// Array of page paths and their relevant counts
 	//
@@ -85,31 +97,25 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	// Duration is the median duration of the pageview that match the pathname in milliseconds.
 	//
 	// This is ordered by the number of unique visitors in descending order.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT
-				COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors,
-				COUNT(*) AS total_pageviews
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			pathname,
-			COUNT(*) FILTER (WHERE is_unique_page = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) AS pageviews,
-			ifnull(ROUND(pageviews / (SELECT total_pageviews FROM total), 4), 0) AS pageviews_percentage,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY pathname HAVING visitors > 0 ORDER BY visitors DESC, pageviews DESC, pathname ASC`)
-	query.WriteString(filter.PaginationString())
+	query := totalPageviewsCTE(filter.WhereString()).
+		Select(
+			"pathname",
+			// Different from VisitorsStmt due to is_unique_page
+			PageviewsVisitorStmt,
+			VisitorsPercentageStmt,
+			PageviewsStmt,
+			"ifnull(ROUND(pageviews / (SELECT total_pageviews FROM total), 4), 0) AS pageviews_percentage",
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("pathname").
+		Having("visitors > 0").
+		OrderBy("visitors DESC", "pageviews DESC", "pathname ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}

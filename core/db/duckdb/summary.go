@@ -2,18 +2,17 @@ package duckdb
 
 import (
 	"context"
-	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
+	qb "github.com/medama-io/medama/db/duckdb/query"
 	"github.com/medama-io/medama/model"
 )
 
 // GetWebsiteSummary returns the summary stats for the given website.
 func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*model.StatsSummarySingle, error) {
 	var summary model.StatsSummarySingle
-	var query strings.Builder
 
 	// Visitors are determined by the number of is_unique_user values that are true.
 	//
@@ -27,17 +26,17 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 	// the median function can return a float for an even number of rows.
 	//
 	// Active is the number of unique visitors that have visited the website in the last 5 minutes.
-	query.WriteString(`--sql
-		SELECT
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			COUNT(*) AS pageviews,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
+	query := qb.New().
+		Select(
+			VisitorsStmt,
+			PageviewsStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -56,7 +55,6 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 // GetWebsiteIntervals returns the stats for the given website by intervals.
 func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error) {
 	var resp []*model.StatsIntervals
-	var query strings.Builder
 
 	var intervalQuery string
 	switch interval {
@@ -78,39 +76,37 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 	// We use the WITH clause to generate a series of intervals with empty visitor and pageview counts.
 	// We then JOIN the intervals with the actual pageview counts to fill in the gaps.
 	// This is done to ensure that we have a row for every interval even if there are no pageviews.
-	query.WriteString(`--sql
-		WITH intervals AS MATERIALIZED (
-			SELECT
-				generate_series as interval
-			FROM
-				generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))
-		),
-		stats AS MATERIALIZED (
-			SELECT
-				time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval,
-				COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-				COUNT(*) AS pageviews,
-				COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-				CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-			GROUP BY interval
-		)
-		SELECT
-			CAST(intervals.interval AS VARCHAR) AS interval,
-			COALESCE(stats.visitors, 0) AS visitors,
-			COALESCE(stats.pageviews, 0) AS pageviews,
-			COALESCE(stats.bounces, 0) AS bounces,
-			COALESCE(stats.duration, 0) AS duration
-		FROM intervals LEFT JOIN stats USING (interval)
-		ORDER BY interval ASC`)
+	query := qb.New().
+		WithMaterialized("intervals", qb.New().
+			Select("generate_series as interval").
+			From("generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))"),
+		).WithMaterialized("stats", qb.New().
+		Select(
+			"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
+			VisitorsStmt,
+			PageviewsStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("interval"),
+	).
+		Select(
+			"CAST(intervals.interval AS VARCHAR) AS interval",
+			"COALESCE(stats.visitors, 0) AS visitors",
+			"COALESCE(stats.pageviews, 0) AS pageviews",
+			"COALESCE(stats.bounces, 0) AS bounces",
+			"COALESCE(stats.duration, 0) AS duration",
+		).
+		From("intervals").
+		LeftJoin("stats USING (interval)").
+		OrderBy("interval ASC")
 
 	filterMap := map[string]interface{}{
 		"interval_query": intervalQuery,
 	}
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(&filterMap))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(&filterMap))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -132,18 +128,17 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 func (c *Client) GetWebsiteSummaryLast24Hours(ctx context.Context, hostname string) (*model.StatsSummaryLast24Hours, error) {
 	var summary model.StatsSummaryLast24Hours
 	// Visitors are determined by the number of is_unique_user values that are true.
-	query := `--sql
-		SELECT
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-		FROM
-			views
-		WHERE
-			hostname = :hostname AND date_created > now() - INTERVAL '1 DAY'`
+	query := qb.New().
+		Select(
+			VisitorsStmt,
+		).
+		From("views").
+		Where("hostname = :hostname AND date_created > now() - INTERVAL '1 DAY'")
 
 	filterMap := map[string]interface{}{
 		"hostname": hostname,
 	}
-	rows, err := c.NamedQueryContext(ctx, query, filterMap)
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filterMap)
 	if err != nil {
 		return nil, errors.Wrap(err, "db: GetWebsiteSummaryLast24Hours")
 	}

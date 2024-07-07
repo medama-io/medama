@@ -2,7 +2,6 @@ package duckdb
 
 import (
 	"context"
-	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db"
@@ -12,7 +11,6 @@ import (
 // GetWebsiteCountries returns the countries for the given hostname.
 func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsCountriesSummary, error) {
 	var countries []*model.StatsCountriesSummary
-	var query strings.Builder
 
 	// Array of countries
 	//
@@ -21,25 +19,19 @@ func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filt
 	// Visitors is the number of unique visitors from the country.
 	//
 	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			country,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY country ORDER BY visitors DESC, country ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"country",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("country").
+		OrderBy("visitors DESC", "country ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -60,7 +52,6 @@ func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filt
 // GetWebsiteCountries returns the countries for the given hostname.
 func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([]*model.StatsCountries, error) {
 	var countries []*model.StatsCountries
-	var query strings.Builder
 
 	// Array of countries
 	//
@@ -69,27 +60,21 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 	// Visitors is the number of unique visitors from the country.
 	//
 	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT
-			country,
-			COUNT(*) FILTER (WHERE is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY country ORDER BY visitors DESC, country ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			"country",
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("country").
+		OrderBy("visitors DESC", "country ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -110,7 +95,11 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 // GetWebsiteLanguages returns the languages for the given hostname.
 func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, filter *db.Filters) ([]*model.StatsLanguagesSummary, error) {
 	var languages []*model.StatsLanguagesSummary
-	var query strings.Builder
+
+	languageSelect := "language_base AS language"
+	if isLocale {
+		languageSelect = "language_dialect AS language"
+	}
 
 	// Array of languages
 	//
@@ -119,30 +108,19 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, 
 	// Visitors is the number of unique visitors for the language.
 	//
 	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT`)
-	if isLocale {
-		query.WriteString(` language_dialect AS language,`)
-	} else {
-		query.WriteString(` language_base AS language,`)
-	}
-	query.WriteString(`--sql
-			COUNT(*) FILTER (is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY language ORDER BY visitors DESC, language ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			languageSelect,
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("language").
+		OrderBy("visitors DESC", "language ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
@@ -163,7 +141,11 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, 
 // GetWebsiteLanguages returns the languages for the given hostname.
 func (c *Client) GetWebsiteLanguages(ctx context.Context, isLocale bool, filter *db.Filters) ([]*model.StatsLanguages, error) {
 	var languages []*model.StatsLanguages
-	var query strings.Builder
+
+	languageSelect := "language_base AS language"
+	if isLocale {
+		languageSelect = "language_dialect AS language"
+	}
 
 	// Array of languages
 	//
@@ -172,32 +154,21 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, isLocale bool, filter 
 	// Visitors is the number of unique visitors for the language.
 	//
 	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
-	query.WriteString(`--sql
-		WITH total AS MATERIALIZED (
-			SELECT COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors
-			FROM views
-			WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(`--sql
-		)
-		SELECT`)
-	if isLocale {
-		query.WriteString(` language_dialect AS language,`)
-	} else {
-		query.WriteString(` language_base AS language,`)
-	}
-	query.WriteString(`--sql
-			COUNT(*) FILTER (is_unique_user = true) AS visitors,
-			ifnull(ROUND(visitors / (SELECT total_visitors FROM total), 4), 0) AS visitors_percentage,
-			COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms < 5000) AS bounces,
-			CAST(ifnull(median(duration_ms), 0) AS INTEGER) AS duration
-		FROM views
-		WHERE `)
-	query.WriteString(filter.WhereString())
-	query.WriteString(` GROUP BY language ORDER BY visitors DESC, language ASC`)
-	query.WriteString(filter.PaginationString())
+	query := TotalVisitorsCTE(filter.WhereString()).
+		Select(
+			languageSelect,
+			VisitorsStmt,
+			VisitorsPercentageStmt,
+			BouncesStmt,
+			DurationStmt,
+		).
+		From("views").
+		Where(filter.WhereString()).
+		GroupBy("language").
+		OrderBy("visitors DESC", "language ASC").
+		Pagination(filter.PaginationString())
 
-	rows, err := c.NamedQueryContext(ctx, query.String(), filter.Args(nil))
+	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
