@@ -67,7 +67,6 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 	// Duration is the median duration of the page.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"ua_browser AS browser",
 			VisitorsStmt,
@@ -153,7 +152,6 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"ua_os AS os",
 			VisitorsStmt,
@@ -239,7 +237,6 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 	// VisitorsPercentage is the percentage the device contributes to the total visitors.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"ua_device_type AS device",
 			VisitorsStmt,

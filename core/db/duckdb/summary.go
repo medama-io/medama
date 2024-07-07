@@ -27,7 +27,6 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 	//
 	// Active is the number of unique visitors that have visited the website in the last 5 minutes.
 	query := qb.New().
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			VisitorsStmt,
 			PageviewsStmt,
@@ -86,7 +85,6 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 		).
 		WithMaterialized(
 			qb.NewCTE("stats", qb.New().
-				WithMaterialized(BounceRateCTE(filter.WhereString())).
 				Select(
 					"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
 					VisitorsStmt,

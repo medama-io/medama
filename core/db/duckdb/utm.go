@@ -67,7 +67,6 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 	// Duration is the median duration of the unique visitors for the utm source.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"utm_source AS source",
 			VisitorsStmt,
@@ -157,7 +156,6 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 	// Duration is the median duration of the unique visitors for the utm medium.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"utm_medium AS medium",
 			VisitorsStmt,
@@ -247,7 +245,6 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 	// Duration is the median duration of the unique visitors for the utm campaign.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"utm_campaign AS campaign",
 			VisitorsStmt,

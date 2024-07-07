@@ -80,7 +80,6 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *
 	// Duration is the median duration the user spent on the page in milliseconds.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			referrerStmt,
 			VisitorsStmt,

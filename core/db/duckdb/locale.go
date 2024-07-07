@@ -64,7 +64,6 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"country",
 			VisitorsStmt,
@@ -161,7 +160,6 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, isLocale bool, filter 
 	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
 	query := qb.New().
 		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			languageSelect,
 			VisitorsStmt,

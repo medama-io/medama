@@ -1,7 +1,7 @@
 
 [TestGetWebsiteSummary - 1]
 {
- "BounceRate": 0.4996,
+ "BounceRate": 0.4895,
  "Duration": 5003,
  "Pageviews": 1000000,
  "Visitors": 499657
@@ -10,7 +10,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 1]
 {
- "BounceRate": 0.5009,
+ "BounceRate": 0.4911,
  "Duration": 4980,
  "Pageviews": 332879,
  "Visitors": 166090
@@ -19,7 +19,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 2]
 {
- "BounceRate": 0.4978,
+ "BounceRate": 0.4887,
  "Duration": 4992,
  "Pageviews": 110733,
  "Visitors": 55243
@@ -28,7 +28,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 3]
 {
- "BounceRate": 0.4947,
+ "BounceRate": 0.4852,
  "Duration": 4997,
  "Pageviews": 37170,
  "Visitors": 18661
@@ -37,7 +37,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 4]
 {
- "BounceRate": 0.4931,
+ "BounceRate": 0.4824,
  "Duration": 5003,
  "Pageviews": 18789,
  "Visitors": 9486
@@ -46,7 +46,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 5]
 {
- "BounceRate": 0.5,
+ "BounceRate": 0.4898,
  "Duration": 4971,
  "Pageviews": 6165,
  "Visitors": 3116
@@ -55,7 +55,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 6]
 {
- "BounceRate": 0.4945,
+ "BounceRate": 0.4852,
  "Duration": 5098,
  "Pageviews": 2113,
  "Visitors": 1090
@@ -64,7 +64,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 7]
 {
- "BounceRate": 0.5363,
+ "BounceRate": 0.5196,
  "Duration": 4728,
  "Pageviews": 726,
  "Visitors": 381
@@ -91,7 +91,7 @@
 
 [TestGetWebsiteSummaryFilterAll - 10]
 {
- "BounceRate": 0.6,
+ "BounceRate": 0,
  "Duration": 3389,
  "Pageviews": 28,
  "Visitors": 17

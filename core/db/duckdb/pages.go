@@ -100,7 +100,6 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	// This is ordered by the number of unique visitors in descending order.
 	query := qb.New().
 		WithMaterialized(totalPageviewsCTE(filter.WhereString())).
-		WithMaterialized(BounceRateCTE(filter.WhereString())).
 		Select(
 			"pathname",
 			// Different from VisitorsStmt due to is_unique_page
