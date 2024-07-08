@@ -3,33 +3,30 @@ import { useDidUpdate } from '@mantine/hooks';
 import { useSearchParams } from '@remix-run/react';
 import { useCallback, useMemo, useState } from 'react';
 
-import { IconCalendar } from '@/components/icons/calendar';
+import classes from './DropdownSelect.module.css';
 
-import classes from './DateSelector.module.css';
+interface DropdownSelectProps {
+	// Key to update and read from search params
+	searchParamKey: string;
+	defaultValue: string;
+	defaultLabel: string;
+	selectAriaLabel: string;
 
-const PRESETS = {
-	today: 'Today',
-	yesterday: 'Yesterday',
-	'12h': 'Previous 12 hours',
-	'24h': 'Previous 24 hours',
-	'72h': 'Previous 72 hours',
-	'7d': 'Previous 7 days',
-	'14d': 'Previous 14 days',
-	'30d': 'Previous 30 days',
-	quarter: 'Previous quarter',
-	half: 'Previous half year',
-	year: 'Previous year',
-	all: 'All time',
-} as const;
+	records: Record<string, string>;
+	groupEndValues?: string[];
 
-type PresetKey = keyof typeof PRESETS;
+	leftSection?: React.ReactNode;
+}
 
-const isPreset = (value: string): value is PresetKey =>
-	Object.keys(PRESETS).includes(value);
-
-const GROUP_END_VALUES: PresetKey[] = ['yesterday', '30d', 'year'];
-
-export const DateComboBox = () => {
+export const DropdownSelect = ({
+	searchParamKey,
+	defaultLabel,
+	defaultValue,
+	selectAriaLabel,
+	records,
+	groupEndValues = [],
+	leftSection,
+}: DropdownSelectProps) => {
 	const combobox = useCombobox({
 		onDropdownClose: () => {
 			combobox.resetSelectedOption();
@@ -44,23 +41,21 @@ export const DateComboBox = () => {
 	});
 
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [preset, setPreset] = useState<PresetKey>(
-		(searchParams.get('period') as PresetKey) || 'today',
+	const [option, setOption] = useState<string>(
+		searchParams.get(searchParamKey) || defaultValue,
 	);
 
 	useDidUpdate(() => {
 		setSearchParams((prevParams) => {
 			const newParams = new URLSearchParams(prevParams);
-			newParams.set('period', preset);
+			newParams.set(searchParamKey, option);
 			return newParams;
 		});
-	}, [preset]);
+	}, [option]);
 
 	const handleOptionSubmit = useCallback(
 		(value: string) => {
-			if (isPreset(value)) {
-				setPreset(value);
-			}
+			setOption(value);
 			combobox.toggleDropdown();
 		},
 		[combobox.toggleDropdown],
@@ -68,19 +63,19 @@ export const DateComboBox = () => {
 
 	const options = useMemo(
 		() =>
-			Object.entries(PRESETS).map(([value, label]) => (
+			Object.entries(records).map(([value, label]) => (
 				<Combobox.Option
 					key={value}
 					value={value}
-					active={value === preset}
-					data-group-end={GROUP_END_VALUES.includes(value as PresetKey)}
+					active={value === option}
+					data-group-end={groupEndValues.includes(value)}
 					role="option"
-					aria-selected={value === preset}
+					aria-selected={value === option}
 				>
 					{label}
 				</Combobox.Option>
 			)),
-		[preset],
+		[records, groupEndValues, option],
 	);
 
 	return (
@@ -100,10 +95,10 @@ export const DateComboBox = () => {
 					rightSection={<Combobox.Chevron />}
 					rightSectionPointerEvents="none"
 					onClick={() => combobox.toggleDropdown()}
-					aria-label="Select date range"
-					leftSection={<IconCalendar />}
+					aria-label={selectAriaLabel}
+					leftSection={leftSection}
 				>
-					{isPreset(preset) ? PRESETS[preset] : 'Custom range'}
+					{records[option] || defaultLabel}
 				</InputBase>
 			</Combobox.Target>
 			<Combobox.Dropdown>
