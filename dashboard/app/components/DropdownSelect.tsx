@@ -67,14 +67,14 @@ export const DropdownSelect = (props: DropdownSelectProps) => {
 		} else {
 			navigate(`/${option}`, { relative: 'route' });
 		}
-	}, [option, props, navigate, setSearchParams]);
+	}, [option]);
 
 	const handleOptionSubmit = useCallback(
 		(value: string) => {
 			setOption(value);
 			combobox.toggleDropdown();
 		},
-		[combobox],
+		[combobox.toggleDropdown],
 	);
 
 	const options = useMemo(

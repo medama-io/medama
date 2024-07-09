@@ -6,6 +6,7 @@ import {
 	UnstyledButton,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { useParams } from '@remix-run/react';
 import { useState } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
 
@@ -105,6 +106,7 @@ const SegmentedChartControl = () => {
 };
 
 const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
+	const { hostname } = useParams();
 	const hideWebsiteSelector = useMediaQuery('(36em < width < 62em)');
 	// Convert websites array to object with same key-val for DropdownSelect
 	const websitesRecord = Object.fromEntries(
@@ -119,7 +121,7 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 					{!hideWebsiteSelector && (
 						<DropdownSelect
 							records={websitesRecord}
-							defaultValue={websites[0] ?? ''}
+							defaultValue={hostname ?? ''}
 							defaultLabel="Unknown"
 							selectAriaLabel="Select website"
 							type="link"
