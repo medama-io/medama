@@ -5,15 +5,18 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { useParams } from '@remix-run/react';
 import { useState } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
 
+import { DropdownSelect } from '@/components/DropdownSelect';
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
+import { IconCalendar } from '@/components/icons/calendar';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useChartType } from '@/hooks/use-chart-type';
 
-import { DateComboBox } from './DateSelector';
 import { HeaderDataBox } from './HeaderDataBox';
 import type { ChartType, StatHeaderData } from './types';
 
@@ -22,7 +25,25 @@ import classes from './StatsHeader.module.css';
 interface StatsHeaderProps {
 	stats: StatHeaderData[];
 	chart: string;
+	websites: string[];
 }
+
+const DATE_PRESETS = {
+	today: 'Today',
+	yesterday: 'Yesterday',
+	'12h': 'Previous 12 hours',
+	'24h': 'Previous 24 hours',
+	'72h': 'Previous 72 hours',
+	'7d': 'Previous 7 days',
+	'14d': 'Previous 14 days',
+	'30d': 'Previous 30 days',
+	quarter: 'Previous quarter',
+	half: 'Previous half year',
+	year: 'Previous year',
+	all: 'All time',
+} as const;
+
+const DATE_GROUP_END_VALUES = ['yesterday', '30d', 'year'];
 
 const CHART_TYPES = [
 	{
@@ -84,12 +105,39 @@ const SegmentedChartControl = () => {
 	);
 };
 
-const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
+const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
+	const { hostname } = useParams();
+	const hideWebsiteSelector = useMediaQuery('(36em < width < 62em)');
+	// Convert websites array to object with same key-val for DropdownSelect
+	const websitesRecord = Object.fromEntries(
+		websites.map((website) => [website, website]),
+	);
+
 	return (
 		<InnerHeader>
 			<Flex className={classes.title}>
 				<h1>Dashboard</h1>
-				<DateComboBox />
+				<Group className={classes.dropdowns}>
+					{!hideWebsiteSelector && (
+						<DropdownSelect
+							records={websitesRecord}
+							defaultValue={hostname ?? ''}
+							defaultLabel="Unknown"
+							selectAriaLabel="Select website"
+							type="link"
+						/>
+					)}
+					<DropdownSelect
+						records={DATE_PRESETS}
+						defaultValue="today"
+						defaultLabel="Custom range"
+						selectAriaLabel="Select date range"
+						groupEndValues={DATE_GROUP_END_VALUES}
+						leftSection={<IconCalendar />}
+						type="searchParams"
+						searchParamKey="period"
+					/>
+				</Group>
 			</Flex>
 			<ScrollContainer>
 				<Group justify="space-between" align="flex-end" mt="xs">

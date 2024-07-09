@@ -9,6 +9,7 @@ import {
 import { useMemo } from 'react';
 
 import { userLoggedIn } from '@/api/user';
+import { websiteList } from '@/api/websites';
 import { Chart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
 import { StatsHeader } from '@/components/stats/StatsHeader';
@@ -30,12 +31,15 @@ export const clientLoader = async ({
 	const searchParams = new URL(request.url).searchParams;
 	const chart = searchParams.get('chart[stat]');
 
-	const stats = await fetchStats(request, params, {
-		dataset: ['summary'],
-		chartStat: chart || 'visitors',
-	});
+	const [stats, websites] = await Promise.all([
+		fetchStats(request, params, {
+			dataset: ['summary'],
+			chartStat: chart || 'visitors',
+		}),
+		websiteList(),
+	]);
 
-	return json(stats);
+	return json({ stats, websites: websites.data });
 };
 
 const LABEL_MAP = {
@@ -46,7 +50,9 @@ const LABEL_MAP = {
 };
 
 export default function Index() {
-	const { summary } = useLoaderData<typeof clientLoader>();
+	const { stats, websites } = useLoaderData<typeof clientLoader>();
+	const { summary } = stats;
+	if (!websites) throw new Error('Websites data is required');
 	if (!summary) throw new Error('Summary data is required');
 	const { current, previous } = summary;
 
@@ -54,7 +60,7 @@ export default function Index() {
 	const chart = getChartStat();
 	const type = getChartType();
 
-	const stats: StatHeaderData[] = [
+	const data: StatHeaderData[] = [
 		{
 			label: 'Visitors',
 			chart: 'visitors',
@@ -99,11 +105,13 @@ export default function Index() {
 		[summary.interval, chart],
 	);
 
+	const websiteList = websites.map((website) => website.hostname);
+
 	const label = LABEL_MAP[chart as keyof typeof LABEL_MAP];
 
 	return (
 		<>
-			<StatsHeader stats={stats} chart={chart} />
+			<StatsHeader stats={data} chart={chart} websites={websiteList} />
 			<main>
 				<Filters />
 				{summary.interval && (

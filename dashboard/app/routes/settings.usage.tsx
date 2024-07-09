@@ -130,7 +130,6 @@ export default function Index() {
 	});
 
 	const handleSubmit = (values: Partial<typeof usageForm.values>) => {
-		console.log('I RAN');
 		submit(values, { method: 'POST' });
 	};
 

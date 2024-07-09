@@ -12,6 +12,15 @@
 	}
 }
 
+.dropdowns {
+	align-items: center;
+
+	@media (max-width: $mantine-breakpoint-xs) {
+		gap: 8px;
+		width: 100%;
+	}
+}
+
 /* Chart Toggle */
 .toggle {
 	padding: 4px;
