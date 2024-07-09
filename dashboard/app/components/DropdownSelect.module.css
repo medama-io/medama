@@ -23,7 +23,7 @@
 .targetWrapper {
 	@media (max-width: $mantine-breakpoint-xs) {
 		width: 100%;
-		margin: 4px 0 16px 0;
+		margin: 4px 0;
 	}
 }
 

@@ -19,6 +19,7 @@ import { HeaderDataBox } from './HeaderDataBox';
 import type { ChartType, StatHeaderData } from './types';
 
 import classes from './StatsHeader.module.css';
+import { useMediaQuery } from '@mantine/hooks';
 
 interface StatsHeaderProps {
 	stats: StatHeaderData[];
@@ -104,6 +105,7 @@ const SegmentedChartControl = () => {
 };
 
 const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
+	const hideWebsiteSelector = useMediaQuery('(36em < width < 62em)');
 	// Convert websites array to object with same key-val for DropdownSelect
 	const websitesRecord = Object.fromEntries(
 		websites.map((website) => [website, website]),
@@ -113,14 +115,16 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 		<InnerHeader>
 			<Flex className={classes.title}>
 				<h1>Dashboard</h1>
-				<Group align="center">
-					<DropdownSelect
-						records={websitesRecord}
-						defaultValue={websites[0] ?? ''}
-						defaultLabel="Unknown"
-						selectAriaLabel="Select website"
-						type="link"
-					/>
+				<Group className={classes.dropdowns}>
+					{!hideWebsiteSelector && (
+						<DropdownSelect
+							records={websitesRecord}
+							defaultValue={websites[0] ?? ''}
+							defaultLabel="Unknown"
+							selectAriaLabel="Select website"
+							type="link"
+						/>
+					)}
 					<DropdownSelect
 						records={DATE_PRESETS}
 						defaultValue="today"
