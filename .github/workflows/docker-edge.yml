@@ -1,5 +1,6 @@
 name: Docker Edge Publish # Publish Docker images under `edge` and commit SHA tags
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: [Tests]
     types: [completed]
@@ -22,9 +23,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
