@@ -23,6 +23,7 @@ import classes from './StatsHeader.module.css';
 interface StatsHeaderProps {
 	stats: StatHeaderData[];
 	chart: string;
+	websites: string[];
 }
 
 const DATE_PRESETS = {
@@ -102,20 +103,35 @@ const SegmentedChartControl = () => {
 	);
 };
 
-const StatsHeader = ({ stats, chart }: StatsHeaderProps) => {
+const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
+	// Convert websites array to object with same key-val for DropdownSelect
+	const websitesRecord = Object.fromEntries(
+		websites.map((website) => [website, website]),
+	);
+
 	return (
 		<InnerHeader>
 			<Flex className={classes.title}>
 				<h1>Dashboard</h1>
-				<DropdownSelect
-					records={DATE_PRESETS}
-					searchParamKey="period"
-					defaultValue="today"
-					defaultLabel="Custom range"
-					selectAriaLabel="Select date range"
-					groupEndValues={DATE_GROUP_END_VALUES}
-					leftSection={<IconCalendar />}
-				/>
+				<Group align="center">
+					<DropdownSelect
+						records={websitesRecord}
+						defaultValue={websites[0] ?? ''}
+						defaultLabel="Unknown"
+						selectAriaLabel="Select website"
+						type="link"
+					/>
+					<DropdownSelect
+						records={DATE_PRESETS}
+						defaultValue="today"
+						defaultLabel="Custom range"
+						selectAriaLabel="Select date range"
+						groupEndValues={DATE_GROUP_END_VALUES}
+						leftSection={<IconCalendar />}
+						type="searchParams"
+						searchParamKey="period"
+					/>
+				</Group>
 			</Flex>
 			<ScrollContainer>
 				<Group justify="space-between" align="flex-end" mt="xs">

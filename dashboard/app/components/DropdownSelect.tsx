@@ -1,13 +1,11 @@
 import { Combobox, InputBase, useCombobox } from '@mantine/core';
 import { useDidUpdate } from '@mantine/hooks';
-import { useSearchParams } from '@remix-run/react';
+import { useNavigate, useSearchParams } from '@remix-run/react';
 import { useCallback, useMemo, useState } from 'react';
 
 import classes from './DropdownSelect.module.css';
 
-interface DropdownSelectProps {
-	// Key to update and read from search params
-	searchParamKey: string;
+interface DropdownSelectBase {
 	defaultValue: string;
 	defaultLabel: string;
 	selectAriaLabel: string;
@@ -18,15 +16,32 @@ interface DropdownSelectProps {
 	leftSection?: React.ReactNode;
 }
 
-export const DropdownSelect = ({
-	searchParamKey,
-	defaultLabel,
-	defaultValue,
-	selectAriaLabel,
-	records,
-	groupEndValues = [],
-	leftSection,
-}: DropdownSelectProps) => {
+interface DropdownSearchParams extends DropdownSelectBase {
+	type: 'searchParams';
+	// Key to update and read from search params
+	searchParamKey: string;
+}
+
+interface DropdownSelectLink extends DropdownSelectBase {
+	type: 'link';
+}
+
+type DropdownSelectProps = DropdownSearchParams | DropdownSelectLink;
+
+const isSearchParams = (
+	props: DropdownSelectProps,
+): props is DropdownSearchParams => props.type === 'searchParams';
+
+export const DropdownSelect = (props: DropdownSelectProps) => {
+	const {
+		defaultLabel,
+		defaultValue,
+		selectAriaLabel,
+		records,
+		groupEndValues = [],
+		leftSection,
+	} = props;
+
 	const combobox = useCombobox({
 		onDropdownClose: () => {
 			combobox.resetSelectedOption();
@@ -41,16 +56,26 @@ export const DropdownSelect = ({
 	});
 
 	const [searchParams, setSearchParams] = useSearchParams();
+	const navigate = useNavigate();
+
 	const [option, setOption] = useState<string>(
-		searchParams.get(searchParamKey) || defaultValue,
+		isSearchParams(props)
+			? searchParams.get(props.searchParamKey) || defaultValue
+			: defaultValue,
 	);
 
 	useDidUpdate(() => {
-		setSearchParams((prevParams) => {
-			const newParams = new URLSearchParams(prevParams);
-			newParams.set(searchParamKey, option);
-			return newParams;
-		});
+		if (isSearchParams(props)) {
+			setSearchParams((prevParams) => {
+				const newParams = new URLSearchParams(prevParams);
+				newParams.set(props.searchParamKey, option);
+				return newParams;
+			});
+		} else {
+			navigate(`/${option}`, {
+				relative: 'route',
+			});
+		}
 	}, [option]);
 
 	const handleOptionSubmit = useCallback(
@@ -97,6 +122,7 @@ export const DropdownSelect = ({
 					onClick={() => combobox.toggleDropdown()}
 					aria-label={selectAriaLabel}
 					leftSection={leftSection}
+					data-left={Boolean(leftSection)}
 				>
 					{records[option] || defaultLabel}
 				</InputBase>
