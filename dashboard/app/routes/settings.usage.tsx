@@ -131,6 +131,7 @@ export default function Index() {
 
 	const handleSubmit = (values: Partial<typeof usageForm.values>) => {
 		submit(values, { method: 'POST' });
+		usageForm.reset();
 	};
 
 	return (
