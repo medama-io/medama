@@ -5,6 +5,7 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useState } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
 
@@ -19,7 +20,6 @@ import { HeaderDataBox } from './HeaderDataBox';
 import type { ChartType, StatHeaderData } from './types';
 
 import classes from './StatsHeader.module.css';
-import { useMediaQuery } from '@mantine/hooks';
 
 interface StatsHeaderProps {
 	stats: StatHeaderData[];

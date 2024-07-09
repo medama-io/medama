@@ -9,10 +9,8 @@ interface DropdownSelectBase {
 	defaultValue: string;
 	defaultLabel: string;
 	selectAriaLabel: string;
-
 	records: Record<string, string>;
 	groupEndValues?: string[];
-
 	leftSection?: React.ReactNode;
 }
 
@@ -42,27 +40,22 @@ export const DropdownSelect = (props: DropdownSelectProps) => {
 		leftSection,
 	} = props;
 
-	const combobox = useCombobox({
-		onDropdownClose: () => {
-			combobox.resetSelectedOption();
-		},
-		onDropdownOpen: (eventSource) => {
-			if (eventSource === 'keyboard') {
-				combobox.selectActiveOption();
-			} else {
-				combobox.updateSelectedOptionIndex('active');
-			}
-		},
-	});
-
 	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
-
 	const [option, setOption] = useState<string>(
 		isSearchParams(props)
-			? searchParams.get(props.searchParamKey) || defaultValue
+			? searchParams.get(props.searchParamKey) ?? defaultValue
 			: defaultValue,
 	);
+
+	const combobox = useCombobox({
+		onDropdownClose: () => combobox.resetSelectedOption(),
+		onDropdownOpen: (eventSource) => {
+			eventSource === 'keyboard'
+				? combobox.selectActiveOption()
+				: combobox.updateSelectedOptionIndex('active');
+		},
+	});
 
 	useDidUpdate(() => {
 		if (isSearchParams(props)) {
@@ -72,18 +65,16 @@ export const DropdownSelect = (props: DropdownSelectProps) => {
 				return newParams;
 			});
 		} else {
-			navigate(`/${option}`, {
-				relative: 'route',
-			});
+			navigate(`/${option}`, { relative: 'route' });
 		}
-	}, [option]);
+	}, [option, props, navigate, setSearchParams]);
 
 	const handleOptionSubmit = useCallback(
 		(value: string) => {
 			setOption(value);
 			combobox.toggleDropdown();
 		},
-		[combobox.toggleDropdown],
+		[combobox],
 	);
 
 	const options = useMemo(
@@ -124,7 +115,7 @@ export const DropdownSelect = (props: DropdownSelectProps) => {
 					leftSection={leftSection}
 					data-left={Boolean(leftSection)}
 				>
-					{records[option] || defaultLabel}
+					{records[option] ?? defaultLabel}
 				</InputBase>
 			</Combobox.Target>
 			<Combobox.Dropdown>
