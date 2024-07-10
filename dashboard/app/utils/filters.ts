@@ -1,6 +1,8 @@
 import {
 	endOfDay,
 	endOfHour,
+	endOfMonth,
+	endOfWeek,
 	formatRFC3339,
 	startOfDay,
 	startOfHour,
@@ -34,19 +36,19 @@ const generatePeriods = (period: string) => {
 		}
 		case 'quarter': {
 			startPeriod = startOfWeek(sub(currentDate, { months: 3 }));
-			endPeriod = endOfDay(currentDate);
+			endPeriod = endOfWeek(currentDate);
 			interval = 'week';
 			break;
 		}
 		case 'half': {
 			startPeriod = startOfMonth(sub(currentDate, { months: 6 }));
-			endPeriod = endOfDay(currentDate);
+			endPeriod = endOfMonth(currentDate);
 			interval = 'month';
 			break;
 		}
 		case 'year': {
 			startPeriod = startOfMonth(sub(currentDate, { years: 1 }));
-			endPeriod = endOfDay(currentDate);
+			endPeriod = endOfMonth(currentDate);
 			interval = 'month';
 			break;
 		}

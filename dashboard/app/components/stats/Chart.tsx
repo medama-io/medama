@@ -38,13 +38,16 @@ interface ChartTooltipProps {
 
 type HourPeriod = `${number}h`;
 type DayPeriod = `${number}d`;
-type FixedPeriod = 'today' | 'yesterday' | 'quarter';
+type FixedPeriod = 'today' | 'yesterday' | 'quarter' | 'half' | 'year' | 'all';
 type Period = HourPeriod | DayPeriod | FixedPeriod;
 
 const PERIODS = {
 	TODAY: 'today',
 	YESTERDAY: 'yesterday',
 	QUARTER: 'quarter',
+	HALF: 'half',
+	YEAR: 'year',
+	ALL: 'all',
 } as const;
 
 const intlFormatterBasic = new Intl.DateTimeFormat('en', {
@@ -53,6 +56,11 @@ const intlFormatterBasic = new Intl.DateTimeFormat('en', {
 
 const intlFormatterDay = new Intl.DateTimeFormat('en', {
 	dateStyle: 'full',
+});
+
+const intlFormatterMonth = new Intl.DateTimeFormat('en', {
+	month: 'long',
+	year: 'numeric',
 });
 
 const intlFormatterAll = new Intl.DateTimeFormat('en', {
@@ -84,13 +92,40 @@ const ChartTooltip = React.memo(
 				return intlFormatterDay;
 			}
 
+			if (
+				period === PERIODS.QUARTER ||
+				period === PERIODS.HALF ||
+				period === PERIODS.YEAR ||
+				period === PERIODS.ALL
+			) {
+				return intlFormatterMonth;
+			}
+
 			return intlFormatterBasic;
 		}, [period]);
+
+		const dateLabel = useMemo(() => {
+			const value = dateTimeFormat.format(parseISO(date));
+
+			if (period === PERIODS.QUARTER) {
+				return `Week of ${value}`;
+			}
+
+			if (
+				period === PERIODS.HALF ||
+				period === PERIODS.YEAR ||
+				period === PERIODS.ALL
+			) {
+				return `Month of ${value}`;
+			}
+
+			return value;
+		}, [dateTimeFormat, date, period]);
 
 		return (
 			<Paper px="md" py="md" withBorder shadow="md" radius="md">
 				<Text fw={500} mb="xs">
-					{dateTimeFormat.format(parseISO(date))}
+					{dateLabel}
 				</Text>
 				<Group gap="xs" justify="space-between">
 					<Group gap="sm">
