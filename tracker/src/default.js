@@ -272,31 +272,15 @@ var DurationPayload;
 		/**
 		 * @suppress {checkTypes}
 		 */
-		addEventListener(
-			EventType.PAGEHIDE,
-			() => {
-				sendUnloadBeacon();
-			},
-			{ capture: true },
-		);
+		addEventListener(EventType.PAGEHIDE, sendUnloadBeacon, { capture: true });
 	} else {
 		// Otherwise, use unload and beforeunload. Using both is significantly more
 		// reliable than just one due to browser differences. However, this will break
 		// bfcache, but it's better than nothing.
-		addEventListener(
-			EventType.BEFOREUNLOAD,
-			() => {
-				sendUnloadBeacon();
-			},
-			{ capture: true },
-		);
-		addEventListener(
-			EventType.UNLOAD,
-			() => {
-				sendUnloadBeacon();
-			},
-			{ capture: true },
-		);
+		addEventListener(EventType.BEFOREUNLOAD, sendUnloadBeacon, {
+			capture: true,
+		});
+		addEventListener(EventType.UNLOAD, sendUnloadBeacon, { capture: true });
 	}
 
 	// Visibility change events allow us to track whether a user is tabbed out and
@@ -327,15 +311,12 @@ var DurationPayload;
 		// when the hash changes. If disabled, it is safe to override the History API.
 		if (currentScript.getAttribute('data-hash')) {
 			// Hash mode is enabled. Add hashchange event listener.
-			addEventListener(
-				'hashchange',
-				() => {
-					sendLoadBeacon();
-				},
-				{
-					capture: true,
-				},
-			);
+			/**
+			 * @suppress {checkTypes}
+			 */
+			addEventListener('hashchange', sendLoadBeacon, {
+				capture: true,
+			});
 		} else {
 			//Add pushState event listeners to track navigation changes with
 			//router libraries that use the History API.
