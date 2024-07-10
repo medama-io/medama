@@ -7,7 +7,8 @@
   <br>
   <a href="https://oss.medama.io/introduction">Website</a> |
   <a href="https://oss.medama.io/deployment/installation">Installation</a> |
-  <a href="https://demo.medama.io">Demo</a>
+  <a href="https://demo.medama.io">Demo</a> |
+  <a href="https://medama.io/discord">Discord</a>
 </p>
 
 ## Overview
