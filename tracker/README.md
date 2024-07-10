@@ -10,7 +10,7 @@ Our tracker is designed with compression in mind, given that web traffic is usua
 
 | File         | Size                | Compressed (gzip)   | Compressed (brotli) |
 | ------------ | ------------------- | ------------------- | ------------------- |
-| `default.js` | 1798 bytes (1.76kb) | 890 bytes (0.87 KB) | 740 bytes (0.72 KB) |
+| `default.js` | 1766 bytes (1.72kb) | 890 bytes (0.87 KB) | 729 bytes (0.71 KB) |
 
 ## License
 
