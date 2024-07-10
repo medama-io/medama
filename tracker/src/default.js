@@ -272,7 +272,7 @@ var DurationPayload;
 		/**
 		 * @suppress {checkTypes}
 		 */
-		document.addEventListener(
+		addEventListener(
 			EventType.PAGEHIDE,
 			() => {
 				sendUnloadBeacon();
@@ -283,14 +283,14 @@ var DurationPayload;
 		// Otherwise, use unload and beforeunload. Using both is significantly more
 		// reliable than just one due to browser differences. However, this will break
 		// bfcache, but it's better than nothing.
-		document.addEventListener(
+		addEventListener(
 			EventType.BEFOREUNLOAD,
 			() => {
 				sendUnloadBeacon();
 			},
 			{ capture: true },
 		);
-		document.addEventListener(
+		addEventListener(
 			EventType.UNLOAD,
 			() => {
 				sendUnloadBeacon();
@@ -301,7 +301,7 @@ var DurationPayload;
 
 	// Visibility change events allow us to track whether a user is tabbed out and
 	// correct our timings.
-	document.addEventListener(
+	addEventListener(
 		EventType.VISIBILITYCHANGE,
 		() => {
 			if (document.visibilityState == EventType.HIDDEN) {
@@ -327,7 +327,7 @@ var DurationPayload;
 		// when the hash changes. If disabled, it is safe to override the History API.
 		if (currentScript.getAttribute('data-hash')) {
 			// Hash mode is enabled. Add hashchange event listener.
-			document.addEventListener(
+			addEventListener(
 				'hashchange',
 				() => {
 					sendLoadBeacon();
@@ -346,9 +346,7 @@ var DurationPayload;
 			history.replaceState = wrapHistoryFunc(historyReplace);
 
 			// popstate is fired when the back or forward button is pressed.
-			// We use window instead of document here because the document state
-			// doesn't change immediately when the event is fired.
-			window.addEventListener(
+			addEventListener(
 				'popstate',
 				() => {
 					// Unfortunately, we can't use unload here because we can't call it before
