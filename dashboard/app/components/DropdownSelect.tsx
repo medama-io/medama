@@ -42,11 +42,10 @@ export const DropdownSelect = (props: DropdownSelectProps) => {
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
-	const [option, setOption] = useState<string>(
-		isSearchParams(props)
-			? searchParams.get(props.searchParamKey) ?? defaultValue
-			: defaultValue,
-	);
+
+	const option = isSearchParams(props)
+		? searchParams.get(props.searchParamKey) ?? defaultValue
+		: defaultValue;
 
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption(),
@@ -57,25 +56,18 @@ export const DropdownSelect = (props: DropdownSelectProps) => {
 		},
 	});
 
-	useDidUpdate(() => {
+	const handleOptionSubmit = (value: string) => {
+		combobox.toggleDropdown();
 		if (isSearchParams(props)) {
 			setSearchParams((prevParams) => {
 				const newParams = new URLSearchParams(prevParams);
-				newParams.set(props.searchParamKey, option);
+				newParams.set(props.searchParamKey, value);
 				return newParams;
 			});
 		} else {
-			navigate(`/${option}`, { relative: 'route' });
+			navigate(`/${value}`, { relative: 'route' });
 		}
-	}, [option]);
-
-	const handleOptionSubmit = useCallback(
-		(value: string) => {
-			setOption(value);
-			combobox.toggleDropdown();
-		},
-		[combobox.toggleDropdown],
-	);
+	};
 
 	const options = useMemo(
 		() =>
