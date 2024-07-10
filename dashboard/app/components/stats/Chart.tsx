@@ -93,7 +93,6 @@ const ChartTooltip = React.memo(
 			}
 
 			if (
-				period === PERIODS.QUARTER ||
 				period === PERIODS.HALF ||
 				period === PERIODS.YEAR ||
 				period === PERIODS.ALL

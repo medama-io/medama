@@ -55,6 +55,7 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 // GetWebsiteIntervals returns the stats for the given website by intervals.
 func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error) {
 	var resp []*model.StatsIntervals
+	isMonthly := false
 
 	var intervalQuery string
 	switch interval {
@@ -68,6 +69,7 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 		intervalQuery = "7 DAYS"
 	case api.GetWebsiteIDSummaryIntervalMonth:
 		intervalQuery = "1 MONTH"
+		isMonthly = true
 	}
 
 	// Intervals are determined by the number of pageviews that match the hostname
@@ -76,27 +78,57 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 	// We use the WITH clause to generate a series of intervals with empty visitor and pageview counts.
 	// We then JOIN the intervals with the actual pageview counts to fill in the gaps.
 	// This is done to ensure that we have a row for every interval even if there are no pageviews.
-	query := qb.New().
-		WithMaterialized(
-			qb.NewCTE("intervals", qb.New().
-				Select("generate_series as interval").
-				From("generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))"),
-			),
-		).
-		WithMaterialized(
-			qb.NewCTE("stats", qb.New().
-				Select(
-					"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
-					VisitorsStmt,
-					PageviewsStmt,
-					BounceRateStmt,
-					DurationStmt,
-				).
-				From("views").
-				Where(filter.WhereString()).
-				GroupBy("interval"),
-			),
-		).
+	//
+	// The monthly interval has to be handled differently as we need to use date_trunc to properly
+	// handle month boundaries that have varying days.
+	var query *qb.QueryBuilder
+	if isMonthly {
+		query = qb.New().
+			WithMaterialized(
+				qb.NewCTE("intervals", qb.New().
+					Select("generate_series as interval").
+					From("generate_series(date_trunc('month', CAST(:start_period AS TIMESTAMPTZ)), date_trunc('month', CAST(:end_period AS TIMESTAMPTZ)), INTERVAL '1 MONTH')"),
+				),
+			).
+			WithMaterialized(
+				qb.NewCTE("stats", qb.New().
+					Select(
+						"date_trunc('month', date_created) AS interval",
+						VisitorsStmt,
+						PageviewsStmt,
+						BounceRateStmt,
+						DurationStmt,
+					).
+					From("views").
+					Where(filter.WhereString()).
+					GroupBy("interval"),
+				),
+			)
+	} else {
+		query = qb.New().
+			WithMaterialized(
+				qb.NewCTE("intervals", qb.New().
+					Select("generate_series as interval").
+					From("generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))"),
+				),
+			).
+			WithMaterialized(
+				qb.NewCTE("stats", qb.New().
+					Select(
+						"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
+						VisitorsStmt,
+						PageviewsStmt,
+						BounceRateStmt,
+						DurationStmt,
+					).
+					From("views").
+					Where(filter.WhereString()).
+					GroupBy("interval"),
+				),
+			)
+	}
+
+	query = query.
 		Select(
 			"CAST(intervals.interval AS VARCHAR) AS interval",
 			"COALESCE(stats.visitors, 0) AS visitors",
