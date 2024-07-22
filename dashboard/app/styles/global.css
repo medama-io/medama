@@ -71,11 +71,11 @@ main {
 	flex-direction: column;
 	justify-content: flex-start;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+	@media (--lt-sm) {
 		padding: 80px 40px;
 	}
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		padding: 80px 24px;
 	}
 }

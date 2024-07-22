@@ -9,7 +9,7 @@
 	flex-direction: row;
 	align-items: stretch;
 
-	@media (max-width: $mantine-breakpoint-lg) {
+	@media (--lt-lg) {
 		flex-direction: column;
 	}
 }
@@ -60,7 +60,7 @@
 		font-weight: 400px;
 	}
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		padding: 0 16px 15px 16px;
 	}
 }

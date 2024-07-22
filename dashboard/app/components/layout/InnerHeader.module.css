@@ -9,11 +9,11 @@
 	margin: 0 auto;
 	padding: 32px 120px 24px;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+	@media (--lt-sm) {
 		padding: 32px 40px 24px;
 	}
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		padding: 32px 24px 24px;
 	}
 }
@@ -22,7 +22,7 @@ h1 {
 	font-size: 32px;
 	font-weight: 500;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+	@media (--lt-sm) {
 		font-size: 28px;
 	}
 }

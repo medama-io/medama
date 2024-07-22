@@ -4,7 +4,7 @@
 	justify-content: space-between;
 	align-items: center;
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		padding: 0 0 12px 0;
 		justify-content: flex-start;
 		align-items: flex-start;
@@ -15,7 +15,7 @@
 .dropdowns {
 	align-items: center;
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		gap: 8px;
 		width: 100%;
 	}
@@ -31,7 +31,7 @@
 
 	position: relative;
 
-	@media (max-width: $mantine-breakpoint-lg) {
+	@media (--lt-lg) {
 		display: none;
 	}
 }

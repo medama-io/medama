@@ -25,7 +25,7 @@
 	width: 220px;
 	padding: 12px;
 
-	@media (max-width: $mantine-breakpoint-lg) {
+	@media (--lt-lg) {
 		width: 100%;
 	}
 }
@@ -74,7 +74,7 @@
 		color: var(--me-color-text-dark);
 	}
 
-	@media (max-width: $mantine-breakpoint-lg) {
+	@media (--lt-lg) {
 		padding: 12px;
 		gap: 4px;
 
@@ -89,7 +89,7 @@
 .pagination {
 	justify-content: space-between;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+	@media (--lt-sm) {
 		justify-content: center;
 	}
 }

@@ -11,11 +11,11 @@
 	margin: 0 auto;
 	padding: 0 120px;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+	@media (--lt-sm) {
 		padding: 0 40px;
 	}
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		padding: 0 24px;
 	}
 }
@@ -52,7 +52,7 @@
 		border-radius: 8px;
 	}
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		font-size: 20px;
 		padding: 22px 24px;
 
@@ -80,7 +80,7 @@
 .burger {
 	--burger-color: var(--me-color-text-light);
 
-	@media (min-width: $mantine-breakpoint-xs) {
+	@media (--gt-xs) {
 		display: none;
 	}
 }
@@ -101,7 +101,7 @@
 
 	border-top: 1px solid var(--me-color-border-dark);
 
-	@media (min-width: $mantine-breakpoint-xs) {
+	@media (--gt-xs) {
 		display: none;
 	}
 }
