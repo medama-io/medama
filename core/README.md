@@ -10,6 +10,12 @@ The backend API service for Medama written in Golang.
 - Setup gofumpt and golangci-lint to automatically format and lint your code in IDE
 - Run `go mod download`
 
+To start the API server, run:
+
+```bash
+task dev -- start # Passes start command as an argument to dev task
+```
+
 ### Tests
 
 - Run `task test`

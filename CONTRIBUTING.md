@@ -13,7 +13,7 @@ This project is open to contributions from all levels and any help is appreciate
 Install the following tools for the project:
 
 - [Go](https://go.dev/dl/) - API server (core)
-- [gcc](https://gcc.gnu.org/install/) - Required for CGO in Go
+- [gcc](https://gcc.gnu.org/install/) - Required for CGO in Go (core)
 - [Bun](https://bun.sh/docs/installation) - JavaScript runtime (dashboard, tracker)
 - [Taskfile](https://taskfile.dev/installation/) - Global task runnner
 
@@ -23,17 +23,17 @@ We recommend using [mise-en-place](https://mise.jdx.dev/) as a convenient versio
 
 We use [Taskfile](https://taskfile.dev/) to run scripts and tasks to simplify the development process. Please refer to each sub-project's Taskfile for understanding the available tasks.
 
-A full development setup can be done by running the following commands:
+A full development setup can be done by running the following commands in separate terminals:
 
 
 ```bash [Terminal 1]
 cd ./core
-task dev -- start
+task dev -- start # Start API server
 ```
 
 ```bash [Terminal 2]
 cd ./dashboard
-task dev
+task dev # Start dashboard dev server with HMR
 ```
 
 More details on the development setup can be found in the respective sub-project READMEs.
