@@ -1,5 +1,9 @@
 export default {
 	plugins: {
+		'@csstools/postcss-global-data': {
+			files: ['app/styles/global.css'],
+		},
+		'postcss-custom-media': {},
 		'postcss-preset-mantine': {},
 		'postcss-simple-vars': {
 			variables: {

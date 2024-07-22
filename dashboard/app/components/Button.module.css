@@ -1,13 +1,11 @@
 .base {
 	height: 40px;
-	width: 150px;
 
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
 	user-select: none;
-	vertical-align: top;
 	cursor: pointer;
 
 	font-family: var(--default-font-family);
@@ -28,5 +26,20 @@
 		@media (--lt-xs) {
 			display: none;
 		}
+	}
+}
+
+.link {
+	composes: base;
+	text-decoration: none;
+}
+
+.outline {
+	composes: link;
+	border: 1px solid var(--me-color-border-dark);
+	background: var(--me-color-bg-dark);
+
+	&:hover {
+		background-color: var(--me-color-bg-grey-blue);
 	}
 }
