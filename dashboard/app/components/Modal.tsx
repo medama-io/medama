@@ -5,13 +5,13 @@ import {
 	Text,
 	TextInput,
 	type TextInputProps,
-	UnstyledButton,
 	Modal as MantineModal,
 } from '@mantine/core';
 import { Form } from '@remix-run/react';
 import type React from 'react';
 
 import { IconArrowRight } from '@/components/icons/arrow-right';
+import { Button } from '@/components/Button';
 
 import classes from './Modal.module.css';
 
@@ -82,15 +82,10 @@ export const ModalChild = ({
 			</Text>
 			<Form onSubmit={onSubmit}>
 				{children}
-				<UnstyledButton
-					className={classes.submit}
-					mt="xl"
-					type="submit"
-					data-danger={isDanger}
-				>
+				<Button className={classes.submit} type="submit" data-danger={isDanger}>
 					<span>{submitLabel}</span>
 					<IconArrowRight />
-				</UnstyledButton>
+				</Button>
 			</Form>
 		</Box>
 	);

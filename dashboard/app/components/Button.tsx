@@ -5,25 +5,24 @@ import type React from 'react';
 
 import classes from './Button.module.css';
 
-interface BaseButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	asChild?: 'button' | React.ComponentType;
 	loading?: boolean;
 	children: React.ReactNode;
 }
 
-const BaseButton = ({
+const Button = ({
 	asChild,
 	loading,
 	children,
 	className,
 	...rest
-}: BaseButtonProps) => {
+}: ButtonProps) => {
 	const Comp = asChild ? Slot : 'button';
 
 	return (
 		<Comp
-			className={clsx(classes.base, className)}
+			className={clsx(className, classes.base)}
 			data-disabled={loading || undefined}
 			{...rest}
 		>
@@ -51,8 +50,4 @@ const BaseButton = ({
 	);
 };
 
-const ButtonDark = (props: BaseButtonProps) => {
-	return <BaseButton className={classes.dark} {...props} />;
-};
-
-export { BaseButton, ButtonDark };
+export { Button };

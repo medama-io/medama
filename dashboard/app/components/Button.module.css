@@ -1,4 +1,7 @@
 .base {
+	height: 40px;
+	width: 150px;
+
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -11,16 +14,6 @@
 	font-style: normal;
 	text-align: center;
 
-	&:where([data-visible-from="xs"]) {
-		@media (--lt-xs) {
-			display: none;
-		}
-	}
-}
-
-.dark {
-	width: 150px;
-	height: 40px;
 	padding: 0 16px;
 	color: var(--me-color-text-light);
 	background-color: var(--me-color-bg-grey-blue);
@@ -29,5 +22,11 @@
 
 	&:hover {
 		background-color: var(--me-color-bg-grey-blue-dark);
+	}
+
+	&:where([data-visible-from="xs"]) {
+		@media (--lt-xs) {
+			display: none;
+		}
 	}
 }

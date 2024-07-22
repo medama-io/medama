@@ -17,7 +17,7 @@ import { z } from 'zod';
 import type { components } from '@/api/types';
 import { userLoggedIn } from '@/api/user';
 import { websiteCreate, websiteList } from '@/api/websites';
-import { ButtonDark } from '@/components/Button';
+import { Button } from '@/components/Button';
 import { IconPlus } from '@/components/icons/plus';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { InnerHeader } from '@/components/layout/InnerHeader';
@@ -119,12 +119,12 @@ export default function Index() {
 			<InnerHeader>
 				<Flex justify="space-between" align="center" py={8}>
 					<h1>My Websites</h1>
-					<ButtonDark onClick={open} data-visible-from="xs">
+					<Button onClick={open} data-visible-from="xs">
 						<Group>
 							<IconPlus />
 							<span>Add Website</span>
 						</Group>
-					</ButtonDark>
+					</Button>
 				</Flex>
 			</InnerHeader>
 			<main>
