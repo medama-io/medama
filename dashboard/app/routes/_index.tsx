@@ -119,7 +119,7 @@ export default function Index() {
 			<InnerHeader>
 				<Flex justify="space-between" align="center" py={8}>
 					<h1>My Websites</h1>
-					<ButtonDark onClick={open} visibleFrom="xs">
+					<ButtonDark onClick={open} data-visible-from="xs">
 						<Group>
 							<IconPlus />
 							<span>Add Website</span>

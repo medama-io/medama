@@ -1,6 +1,24 @@
-.button {
-	display: flex;
+.base {
+	display: inline-flex;
 	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	user-select: none;
+	vertical-align: top;
+	cursor: pointer;
+
+	font-family: var(--default-font-family);
+	font-style: normal;
+	text-align: center;
+
+	&:where([data-visible-from="xs"]) {
+		@media (--lt-xs) {
+			display: none;
+		}
+	}
+}
+
+.dark {
 	width: 150px;
 	height: 40px;
 	padding: 0 16px;
@@ -8,13 +26,8 @@
 	background-color: var(--me-color-bg-grey-blue);
 	border: 1px solid var(--me-color-bg-grey-blue);
 	border-radius: 8px;
-	cursor: pointer;
 
 	&:hover {
 		background-color: var(--me-color-bg-grey-blue-dark);
-	}
-
-	span {
-		font-size: 14px;
 	}
 }

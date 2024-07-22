@@ -31,6 +31,22 @@
 	--me-color-logo-green-dark: #108c6e;
 	--me-color-badge-positive: #dfffb7;
 	--me-color-badge-negative: #ffd5b7;
+
+	/* Theme Misc */
+	--default-font-family: "Inter Variable", sans-serif;
+	--default-monospace-font-family: "Reddit Mono Variable", monospace;
+
+	/* Custom Media Breakpoints */
+	@custom-media --gt-xs (width > 36em);
+	@custom-media --gt-sm (width > 48em);
+	@custom-media --gt-md (width > 62em);
+	@custom-media --gt-lg (width > 75em);
+	@custom-media --gt-xl (width > 88em);
+	@custom-media --lt-xs (width < 36em);
+	@custom-media --lt-sm (width < 48em);
+	@custom-media --lt-md (width < 62em);
+	@custom-media --lt-lg (width < 75em);
+	@custom-media --lt-xl (width < 88em);
 }
 
 body {
@@ -40,6 +56,7 @@ body {
 	justify-content: flex-start;
 
 	font-size: 14px;
+	font-family: var(--default-font-family);
 	line-height: 160%;
 }
 
