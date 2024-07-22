@@ -4,7 +4,7 @@ The backend API service for Medama written in Golang.
 
 ## Development
 
-- Install Go 1.21
+- Install the Go version specified in `go.mod`
 - Ensure you have `gcc` installed as CGO is required
 - Ensure you have `Taskfile` installed
 - Setup gofumpt and golangci-lint to automatically format and lint your code in IDE
