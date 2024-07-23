@@ -1,6 +1,5 @@
 import { Group, Text, Title } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { useDidUpdate, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
 	json,
@@ -22,6 +21,8 @@ import {
 	SectionWrapper,
 } from '@/components/settings/Section';
 import { WebsiteSelector } from '@/components/settings/WebsiteSelector';
+import { useDidUpdate } from '@/hooks/use-did-update';
+import { useDisclosure } from '@/hooks/use-disclosure';
 import { getString, getType } from '@/utils/form';
 
 export const meta: MetaFunction = () => {

@@ -8,12 +8,12 @@ import {
 	type DrawerProps,
 	type MantineSize,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 
 import { ButtonLink } from '@/components/Button';
 import { BannerLogo } from '@/components/icons/banner-transparent';
 import { IconSettings } from '@/components/icons/settings';
+import { useDisclosure } from '@/hooks/use-disclosure';
 
 import classes from './Header.module.css';
 

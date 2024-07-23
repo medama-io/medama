@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
-import { useDidUpdate, useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery } from '@mantine/hooks';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -7,10 +7,11 @@ import {
 	type DataTableRowClickHandler,
 	type DataTableSortStatus,
 } from 'mantine-datatable';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { IconChevronLeft } from '@/components/icons/chevronleft';
 import { IconChevronRight } from '@/components/icons/chevronright';
+import { useDidUpdate } from '@/hooks/use-did-update';
 import { useFilter } from '@/hooks/use-filter';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';

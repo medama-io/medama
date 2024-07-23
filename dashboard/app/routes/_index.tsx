@@ -1,7 +1,6 @@
 import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
 import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
 import {
 	json,
 	redirect,
@@ -21,6 +20,7 @@ import { Button } from '@/components/Button';
 import { IconPlus } from '@/components/icons/plus';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { InnerHeader } from '@/components/layout/InnerHeader';
+import { useDisclosure } from '@/hooks/use-disclosure';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;
