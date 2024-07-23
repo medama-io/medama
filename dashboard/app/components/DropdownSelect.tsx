@@ -5,6 +5,7 @@ import type React from 'react';
 import { Fragment, useMemo, useState } from 'react';
 
 import { useDidUpdate } from '@/hooks/use-did-update';
+import { useDisclosure } from '@/hooks/use-disclosure';
 
 import classes from './DropdownSelect.module.css';
 
@@ -12,7 +13,7 @@ interface DropdownProps {
 	defaultValue: string;
 	defaultLabel: string;
 	ariaLabel: string;
-	records: Record<string, string>;
+	records: Record<string, React.ReactNode>;
 
 	icon?: React.ComponentType;
 	searchParamKey?: string;
@@ -38,20 +39,25 @@ const DropdownSelect = ({
 		: defaultValue;
 
 	const [radio, setRadio] = useState(option);
-	const [open, setOpen] = useState(false);
+	const [open, { close, toggle }] = useDisclosure(false);
 
 	const options = useMemo(
 		() =>
-			Object.entries(records).map(([value, label]) => {
-				const option = (
-					<DropdownMenu.RadioItem
-						key={value}
-						className={classes.option}
-						value={value}
-					>
-						{label}
-					</DropdownMenu.RadioItem>
-				);
+			Object.entries(records).map(([value, content]) => {
+				const option =
+					typeof content === 'string' ? (
+						<DropdownMenu.RadioItem
+							key={value}
+							className={classes.option}
+							value={value}
+						>
+							{content}
+						</DropdownMenu.RadioItem>
+					) : (
+						<DropdownMenu.Item key={value} asChild onSelect={close}>
+							{content}
+						</DropdownMenu.Item>
+					);
 
 				if (separatorValues.includes(value) && !shouldUseNavigate) {
 					return (
@@ -64,7 +70,7 @@ const DropdownSelect = ({
 
 				return option;
 			}),
-		[records, separatorValues, shouldUseNavigate],
+		[records, separatorValues, shouldUseNavigate, close],
 	);
 
 	const handleOptionSubmit = (value: string) => {
@@ -87,7 +93,7 @@ const DropdownSelect = ({
 	}, [searchParams]);
 
 	return (
-		<DropdownMenu.Root onOpenChange={(isOpen) => setOpen(isOpen)} modal={false}>
+		<DropdownMenu.Root open={open} onOpenChange={toggle} modal={false}>
 			<DropdownMenu.Trigger asChild>
 				<button
 					type="button"
