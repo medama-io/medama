@@ -1,118 +1,119 @@
-import { Combobox, InputBase, useCombobox } from '@mantine/core';
-import { useDidUpdate } from '@mantine/hooks';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useNavigate, useSearchParams } from '@remix-run/react';
-import { useCallback, useMemo, useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import type React from 'react';
+import { Fragment, useMemo, useState } from 'react';
+
+import { useDidUpdate } from '@/hooks/use-did-update';
 
 import classes from './DropdownSelect.module.css';
 
-interface DropdownSelectBase {
+interface DropdownProps {
 	defaultValue: string;
 	defaultLabel: string;
-	selectAriaLabel: string;
+	ariaLabel: string;
 	records: Record<string, string>;
-	groupEndValues?: string[];
-	leftSection?: React.ReactNode;
+
+	icon?: React.ComponentType;
+	searchParamKey?: string;
+	separatorValues?: string[];
+	shouldUseNavigate?: boolean;
 }
 
-interface DropdownSearchParams extends DropdownSelectBase {
-	type: 'searchParams';
-	// Key to update and read from search params
-	searchParamKey: string;
-}
-
-interface DropdownSelectLink extends DropdownSelectBase {
-	type: 'link';
-}
-
-type DropdownSelectProps = DropdownSearchParams | DropdownSelectLink;
-
-const isSearchParams = (
-	props: DropdownSelectProps,
-): props is DropdownSearchParams => props.type === 'searchParams';
-
-export const DropdownSelect = (props: DropdownSelectProps) => {
-	const {
-		defaultLabel,
-		defaultValue,
-		selectAriaLabel,
-		records,
-		groupEndValues = [],
-		leftSection,
-	} = props;
-
+const DropdownSelect = ({
+	defaultValue,
+	defaultLabel,
+	ariaLabel,
+	records,
+	icon: Icon,
+	shouldUseNavigate = false,
+	searchParamKey,
+	separatorValues = [],
+}: DropdownProps) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
 
-	const option = isSearchParams(props)
-		? searchParams.get(props.searchParamKey) ?? defaultValue
+	const option = searchParamKey
+		? searchParams.get(searchParamKey) ?? defaultValue
 		: defaultValue;
 
-	const combobox = useCombobox({
-		onDropdownClose: () => combobox.resetSelectedOption(),
-		onDropdownOpen: (eventSource) => {
-			eventSource === 'keyboard'
-				? combobox.selectActiveOption()
-				: combobox.updateSelectedOptionIndex('active');
-		},
-	});
-
-	const handleOptionSubmit = (value: string) => {
-		combobox.toggleDropdown();
-		if (isSearchParams(props)) {
-			setSearchParams((prevParams) => {
-				const newParams = new URLSearchParams(prevParams);
-				newParams.set(props.searchParamKey, value);
-				return newParams;
-			});
-		} else {
-			navigate(`/${value}`, { relative: 'route' });
-		}
-	};
+	const [radio, setRadio] = useState(option);
+	const [open, setOpen] = useState(false);
 
 	const options = useMemo(
 		() =>
-			Object.entries(records).map(([value, label]) => (
-				<Combobox.Option
-					key={value}
-					value={value}
-					active={value === option}
-					data-group-end={groupEndValues.includes(value)}
-					role="option"
-					aria-selected={value === option}
-				>
-					{label}
-				</Combobox.Option>
-			)),
-		[records, groupEndValues, option],
+			Object.entries(records).map(([value, label]) => {
+				const option = (
+					<DropdownMenu.RadioItem
+						key={value}
+						className={classes.option}
+						value={value}
+					>
+						{label}
+					</DropdownMenu.RadioItem>
+				);
+
+				if (separatorValues.includes(value) && !shouldUseNavigate) {
+					return (
+						<Fragment key={value}>
+							{option}
+							<DropdownMenu.Separator className={classes.separator} />
+						</Fragment>
+					);
+				}
+
+				return option;
+			}),
+		[records, separatorValues, shouldUseNavigate],
 	);
 
+	const handleOptionSubmit = (value: string) => {
+		if (shouldUseNavigate) {
+			navigate(`/${value}`, { relative: 'route' });
+		} else {
+			setSearchParams((prevParams) => {
+				const newParams = new URLSearchParams(prevParams);
+				if (searchParamKey) {
+					newParams.set(searchParamKey, value);
+				}
+				return newParams;
+			});
+		}
+		setRadio(value);
+	};
+
+	useDidUpdate(() => {
+		setRadio(option);
+	}, [searchParams]);
+
 	return (
-		<Combobox
-			classNames={{ dropdown: classes.dropdown, option: classes.option }}
-			store={combobox}
-			resetSelectionOnOptionHover
-			onOptionSubmit={handleOptionSubmit}
-		>
-			<Combobox.Target>
-				<InputBase
-					classNames={{ input: classes.target }}
-					className={classes.targetWrapper}
-					component="button"
+		<DropdownMenu.Root onOpenChange={(isOpen) => setOpen(isOpen)} modal={false}>
+			<DropdownMenu.Trigger asChild>
+				<button
 					type="button"
-					pointer
-					rightSection={<Combobox.Chevron />}
-					rightSectionPointerEvents="none"
-					onClick={() => combobox.toggleDropdown()}
-					aria-label={selectAriaLabel}
-					leftSection={leftSection}
-					data-left={Boolean(leftSection)}
+					className={classes.trigger}
+					data-left={Boolean(Icon)}
+					aria-label={ariaLabel}
 				>
-					{records[option] ?? defaultLabel}
-				</InputBase>
-			</Combobox.Target>
-			<Combobox.Dropdown>
-				<Combobox.Options>{options}</Combobox.Options>
-			</Combobox.Dropdown>
-		</Combobox>
+					<div>
+						{Icon && <Icon />}
+						<span>{records[option] ?? defaultLabel}</span>
+					</div>
+					{open ? <ChevronUp /> : <ChevronDown />}
+				</button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Portal>
+				<DropdownMenu.Content className={classes.dropdown} sideOffset={8}>
+					<DropdownMenu.RadioGroup
+						value={radio}
+						onValueChange={handleOptionSubmit}
+					>
+						{options}
+					</DropdownMenu.RadioGroup>
+				</DropdownMenu.Content>
+			</DropdownMenu.Portal>
+		</DropdownMenu.Root>
 	);
 };
+
+export { DropdownSelect };

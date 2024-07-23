@@ -13,7 +13,6 @@ import { ScrollContainer } from 'react-indiana-drag-scroll';
 import { DropdownSelect } from '@/components/DropdownSelect';
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
-import { IconCalendar } from '@/components/icons/calendar';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useChartType } from '@/hooks/use-chart-type';
 
@@ -21,6 +20,7 @@ import { HeaderDataBox } from './HeaderDataBox';
 import type { ChartType, StatHeaderData } from './types';
 
 import classes from './StatsHeader.module.css';
+import { CalendarFold } from 'lucide-react';
 
 interface StatsHeaderProps {
 	stats: StatHeaderData[];
@@ -123,19 +123,18 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 							records={websitesRecord}
 							defaultValue={hostname ?? ''}
 							defaultLabel="Unknown"
-							selectAriaLabel="Select website"
-							type="link"
+							ariaLabel="Select website"
+							shouldUseNavigate
 						/>
 					)}
 					<DropdownSelect
 						records={DATE_PRESETS}
 						defaultValue="today"
 						defaultLabel="Custom range"
-						selectAriaLabel="Select date range"
-						groupEndValues={DATE_GROUP_END_VALUES}
-						leftSection={<IconCalendar />}
-						type="searchParams"
+						ariaLabel="Select date range"
+						icon={CalendarFold}
 						searchParamKey="period"
+						separatorValues={DATE_GROUP_END_VALUES}
 					/>
 				</Group>
 			</Flex>
