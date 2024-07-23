@@ -1,4 +1,3 @@
-import { Slot } from '@radix-ui/react-slot';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Link, type LinkProps } from '@remix-run/react';
 import clsx from 'clsx';
@@ -7,7 +6,6 @@ import type React from 'react';
 import classes from './Button.module.css';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	asChild?: 'button' | 'div';
 	loading?: boolean;
 	children: React.ReactNode;
 }
@@ -17,18 +15,17 @@ interface ButtonLinkProps extends LinkProps {
 }
 
 const Button = ({
-	asChild,
 	loading,
+	disabled,
 	children,
 	className,
 	...rest
 }: ButtonProps) => {
-	const Comp = asChild ? Slot : 'button';
-
 	return (
-		<Comp
+		<button
 			className={clsx(className, classes.base)}
-			data-disabled={loading || undefined}
+			disabled={loading || disabled}
+			aria-busy={loading ? 'true' : 'false'}
 			{...rest}
 		>
 			{loading ? (
@@ -51,7 +48,7 @@ const Button = ({
 			) : (
 				children
 			)}
-		</Comp>
+		</button>
 	);
 };
 
@@ -67,6 +64,7 @@ const ButtonLink = ({
 				variant === 'outline' ? classes.outline : classes.link,
 				className,
 			)}
+			role="button"
 			{...rest}
 		>
 			{children}
