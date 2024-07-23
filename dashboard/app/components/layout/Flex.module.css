@@ -1,0 +1,11 @@
+.flex {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: flex-start;
+}
+
+.group {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

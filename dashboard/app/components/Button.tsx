@@ -1,6 +1,7 @@
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Link, type LinkProps } from '@remix-run/react';
 import clsx from 'clsx';
+import { X } from 'lucide-react';
 import type React from 'react';
 
 import classes from './Button.module.css';
@@ -12,6 +13,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 interface ButtonLinkProps extends LinkProps {
 	variant?: 'filled' | 'outline';
+}
+
+interface CloseButtonProps {
+	label: string;
+	onClick?: () => void;
 }
 
 const Button = ({
@@ -72,5 +78,18 @@ const ButtonLink = ({
 	);
 };
 
+const CloseButton = ({ label, onClick }: CloseButtonProps) => {
+	return (
+		<button
+			className={classes.close}
+			type="button"
+			aria-label={label}
+			onClick={onClick}
+		>
+			<X />
+		</button>
+	);
+};
+
 // TODO: Add ButtonNavLink with pending spinners.
-export { Button, ButtonLink };
+export { Button, ButtonLink, CloseButton };
