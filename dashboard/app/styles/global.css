@@ -57,7 +57,7 @@ body {
 
 	font-size: 14px;
 	font-family: var(--default-font-family);
-	line-height: 160%;
+	line-height: 1.6;
 }
 
 main {
@@ -78,6 +78,33 @@ main {
 	@media (--lt-xs) {
 		padding: 80px 24px;
 	}
+}
+
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+
+p,
+span {
+	line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	line-height: 2;
 }
 
 /* StatsTable.tsx */
