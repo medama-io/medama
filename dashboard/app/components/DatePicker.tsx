@@ -11,6 +11,7 @@ import { Group } from '@/components/layout/Flex';
 
 import dayPickerClasses from 'react-day-picker/style.module.css';
 import classes from './DatePicker.module.css';
+import { useMediaQuery } from '@mantine/hooks';
 
 interface DatePickerProps {
 	open: boolean;
@@ -45,6 +46,8 @@ const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 		setOpen(false);
 	};
 
+	const isMobile = useMediaQuery('(max-width: 48em)');
+
 	return (
 		<Dialog.Root open={open} onOpenChange={setOpen}>
 			<Dialog.Portal>
@@ -75,7 +78,7 @@ const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 						}}
 						selected={date}
 						onSelect={setDate}
-						numberOfMonths={2}
+						numberOfMonths={isMobile ? 1 : 2}
 						components={{
 							Chevron: (props) => {
 								if (props.orientation === 'left') {

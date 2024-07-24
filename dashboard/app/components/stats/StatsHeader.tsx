@@ -5,7 +5,6 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import { useParams, useSearchParams } from '@remix-run/react';
 import { CalendarFold } from 'lucide-react';
 import type React from 'react';
@@ -19,6 +18,7 @@ import { IconBarChart } from '@/components/icons/bar';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useChartType } from '@/hooks/use-chart-type';
 import { useDisclosure } from '@/hooks/use-disclosure';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { HeaderDataBox } from './HeaderDataBox';
 import type { ChartType, StatHeaderData } from './types';

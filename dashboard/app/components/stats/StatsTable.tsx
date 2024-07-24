@@ -1,5 +1,4 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -13,6 +12,7 @@ import { IconChevronLeft } from '@/components/icons/chevronleft';
 import { IconChevronRight } from '@/components/icons/chevronright';
 import { useDidUpdate } from '@/hooks/use-did-update';
 import { useFilter } from '@/hooks/use-filter';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import type { DataRow, Dataset, Filter } from './types';
@@ -438,7 +438,6 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 		[navigate, searchParams],
 	);
 
-	// max-width: $mantine-breakpoint-lg
 	const isMobile = useMediaQuery('(max-width: 75em)');
 
 	return (
