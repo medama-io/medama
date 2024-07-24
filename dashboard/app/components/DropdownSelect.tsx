@@ -77,12 +77,11 @@ const DropdownSelect = ({
 		if (shouldUseNavigate) {
 			navigate(`/${value}`, { relative: 'route' });
 		} else {
-			setSearchParams((prevParams) => {
-				const newParams = new URLSearchParams(prevParams);
+			setSearchParams((params) => {
 				if (searchParamKey) {
-					newParams.set(searchParamKey, value);
+					params.set(searchParamKey, value);
 				}
-				return newParams;
+				return params;
 			});
 		}
 		setRadio(value);
@@ -91,6 +90,9 @@ const DropdownSelect = ({
 	useDidUpdate(() => {
 		setRadio(option);
 	}, [searchParams]);
+
+	const labelComp =
+		typeof records[option] === 'string' ? records[option] : defaultLabel;
 
 	return (
 		<DropdownMenu.Root open={open} onOpenChange={toggle} modal={false}>
@@ -103,7 +105,7 @@ const DropdownSelect = ({
 				>
 					<div>
 						{Icon && <Icon />}
-						<span>{records[option] ?? defaultLabel}</span>
+						<span>{labelComp}</span>
 					</div>
 					{open ? <ChevronUp /> : <ChevronDown />}
 				</button>

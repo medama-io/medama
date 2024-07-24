@@ -6,7 +6,7 @@ import {
 	UnstyledButton,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { useParams } from '@remix-run/react';
+import { useParams, useSearchParams } from '@remix-run/react';
 import { CalendarFold } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
@@ -95,6 +95,7 @@ const SegmentedChartControl = () => {
 
 const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 	const { hostname } = useParams();
+	const [searchParams] = useSearchParams();
 	const [dateOpened, { toggle: toggleDate }] = useDisclosure(false);
 	const hideWebsiteSelector = useMediaQuery('(36em < width < 62em)');
 
@@ -121,6 +122,9 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 				type="button"
 				onClick={toggleDate}
 				className={datePickerClasses.button}
+				data-state={
+					searchParams.get('period') === 'custom' ? 'checked' : 'unchecked'
+				}
 			>
 				Custom range
 			</button>
