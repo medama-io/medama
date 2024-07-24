@@ -5,15 +5,15 @@ import {
 	Group,
 	Stack,
 	Text,
-	UnstyledButton,
 	type DrawerProps,
 	type MantineSize,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 
+import { ButtonLink } from '@/components/Button';
 import { BannerLogo } from '@/components/icons/banner-transparent';
 import { IconSettings } from '@/components/icons/settings';
+import { useDisclosure } from '@/hooks/use-disclosure';
 
 import classes from './Header.module.css';
 
@@ -78,15 +78,15 @@ const LoginButton = ({
 
 	return (
 		<Flex visibleFrom={visibleFrom} hiddenFrom={hiddenFrom} flex={1}>
-			<UnstyledButton
+			<ButtonLink
 				className={classes.login}
-				component={Link}
+				variant="outline"
 				to={linkTo}
 				aria-label={ariaLabel}
 				onClick={onClick}
 			>
 				{buttonLabel}
-			</UnstyledButton>
+			</ButtonLink>
 		</Flex>
 	);
 };

@@ -5,17 +5,20 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
-import { useParams } from '@remix-run/react';
+import { useParams, useSearchParams } from '@remix-run/react';
+import { CalendarFold } from 'lucide-react';
+import type React from 'react';
 import { useState } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
 
+import { datePickerClasses, DatePickerRange } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
-import { IconCalendar } from '@/components/icons/calendar';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useChartType } from '@/hooks/use-chart-type';
+import { useDisclosure } from '@/hooks/use-disclosure';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { HeaderDataBox } from './HeaderDataBox';
 import type { ChartType, StatHeaderData } from './types';
@@ -28,22 +31,7 @@ interface StatsHeaderProps {
 	websites: string[];
 }
 
-const DATE_PRESETS = {
-	today: 'Today',
-	yesterday: 'Yesterday',
-	'12h': 'Previous 12 hours',
-	'24h': 'Previous 24 hours',
-	'72h': 'Previous 72 hours',
-	'7d': 'Previous 7 days',
-	'14d': 'Previous 14 days',
-	'30d': 'Previous 30 days',
-	quarter: 'Previous quarter',
-	half: 'Previous half year',
-	year: 'Previous year',
-	all: 'All time',
-} as const;
-
-const DATE_GROUP_END_VALUES = ['yesterday', '30d', 'year'];
+const DATE_GROUP_END_VALUES = ['yesterday', '30d', 'year', 'all'];
 
 const CHART_TYPES = [
 	{
@@ -107,11 +95,41 @@ const SegmentedChartControl = () => {
 
 const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 	const { hostname } = useParams();
+	const [searchParams] = useSearchParams();
+	const [dateOpened, { toggle: toggleDate }] = useDisclosure(false);
 	const hideWebsiteSelector = useMediaQuery('(36em < width < 62em)');
+
 	// Convert websites array to object with same key-val for DropdownSelect
 	const websitesRecord = Object.fromEntries(
 		websites.map((website) => [website, website]),
 	);
+
+	const DATE_PRESETS: Record<string, React.ReactNode> = {
+		today: 'Today',
+		yesterday: 'Yesterday',
+		'12h': 'Previous 12 hours',
+		'24h': 'Previous 24 hours',
+		'72h': 'Previous 72 hours',
+		'7d': 'Previous 7 days',
+		'14d': 'Previous 14 days',
+		'30d': 'Previous 30 days',
+		quarter: 'Previous quarter',
+		half: 'Previous half year',
+		year: 'Previous year',
+		all: 'All time',
+		custom: (
+			<button
+				type="button"
+				onClick={toggleDate}
+				className={datePickerClasses.button}
+				data-state={
+					searchParams.get('period') === 'custom' ? 'checked' : 'unchecked'
+				}
+			>
+				Custom range
+			</button>
+		),
+	};
 
 	return (
 		<InnerHeader>
@@ -123,20 +141,20 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 							records={websitesRecord}
 							defaultValue={hostname ?? ''}
 							defaultLabel="Unknown"
-							selectAriaLabel="Select website"
-							type="link"
+							ariaLabel="Select website"
+							shouldUseNavigate
 						/>
 					)}
 					<DropdownSelect
 						records={DATE_PRESETS}
 						defaultValue="today"
 						defaultLabel="Custom range"
-						selectAriaLabel="Select date range"
-						groupEndValues={DATE_GROUP_END_VALUES}
-						leftSection={<IconCalendar />}
-						type="searchParams"
+						ariaLabel="Select date range"
+						icon={CalendarFold}
 						searchParamKey="period"
+						separatorValues={DATE_GROUP_END_VALUES}
 					/>
+					<DatePickerRange open={dateOpened} setOpen={toggleDate} />
 				</Group>
 			</Flex>
 			<ScrollContainer>

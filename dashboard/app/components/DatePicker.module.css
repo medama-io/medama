@@ -1,0 +1,98 @@
+.button {
+	composes: dropdown option from "./DropdownSelect.module.css";
+	text-align: left;
+}
+
+.header {
+	padding-bottom: 4px;
+}
+
+.title {
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.overlay {
+	background-color: rgba(0, 0, 0, 0.7);
+	position: fixed;
+	inset: 0;
+	animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content {
+	background-color: var(--me-color-bg-light);
+	border-radius: 6px;
+	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	max-height: 85vh;
+	padding: 25px;
+	animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.apply {
+	margin-top: 20px;
+	width: 100%;
+}
+
+/* DatePicker Custom Classes */
+.months {
+	height: 400px;
+	display: inline-flex;
+	flex-direction: row;
+	gap: 20px;
+	width: 100%;
+	justify-content: center;
+
+	margin-bottom: 16px;
+
+	@media (--lt-sm) {
+		flex-direction: column;
+		gap: 8px;
+	}
+}
+
+.root {
+	composes: root from "react-day-picker/style.module.css";
+	margin-top: 8px;
+
+	--rdp-accent-color: var(--me-color-border-violet);
+	--rdp-accent-background-color: var(--me-color-selected-snow);
+	--rdp-font-family: var(--default-font-family);
+	--rdp-day_button-border-radius: 12px;
+	--rdp-day-font: 400 16px var(--rdp-font-family);
+	--rdp-selected-font: 500 16px var(--rdp-font-family);
+}
+
+.month_grid {
+	composes: month_grid from "react-day-picker/style.module.css";
+	border-collapse: separate;
+	border-spacing: 0 8px;
+
+	td:first-child {
+		border-radius: var(--rdp-day_button-border-radius) 0 0
+			var(--rdp-day_button-border-radius);
+	}
+
+	td:last-child {
+		border-radius: 0 var(--rdp-day_button-border-radius)
+			var(--rdp-day_button-border-radius) 0;
+	}
+}
+
+@keyframes overlayShow {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

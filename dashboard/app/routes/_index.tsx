@@ -1,7 +1,6 @@
 import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
 import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
 import {
 	json,
 	redirect,
@@ -17,10 +16,11 @@ import { z } from 'zod';
 import type { components } from '@/api/types';
 import { userLoggedIn } from '@/api/user';
 import { websiteCreate, websiteList } from '@/api/websites';
-import { ButtonDark } from '@/components/Button';
+import { Button } from '@/components/Button';
 import { IconPlus } from '@/components/icons/plus';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { InnerHeader } from '@/components/layout/InnerHeader';
+import { useDisclosure } from '@/hooks/use-disclosure';
 
 interface LoaderData {
 	websites: Array<components['schemas']['WebsiteGet']>;
@@ -119,12 +119,12 @@ export default function Index() {
 			<InnerHeader>
 				<Flex justify="space-between" align="center" py={8}>
 					<h1>My Websites</h1>
-					<ButtonDark onClick={open} visibleFrom="xs">
+					<Button onClick={open} data-visible-from="xs">
 						<Group>
 							<IconPlus />
 							<span>Add Website</span>
 						</Group>
-					</ButtonDark>
+					</Button>
 				</Flex>
 			</InnerHeader>
 			<main>

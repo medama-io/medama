@@ -7,7 +7,7 @@
 
 	border-radius: 8px;
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		width: 100%;
 	}
 }
@@ -38,7 +38,7 @@
 		font-size: 14px;
 	}
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		p {
 			display: none;
 		}

@@ -19,6 +19,7 @@
 	/* Selected Colors */
 	--me-color-selected-light: #e8e7e7;
 	--me-color-selected-snow: #eff2f7;
+	--me-color-focus-outline: #228be6;
 
 	/* Border Colors */
 	--me-color-border-light: #cad4e3;
@@ -31,6 +32,22 @@
 	--me-color-logo-green-dark: #108c6e;
 	--me-color-badge-positive: #dfffb7;
 	--me-color-badge-negative: #ffd5b7;
+
+	/* Theme Misc */
+	--default-font-family: "Inter Variable", sans-serif;
+	--default-monospace-font-family: "Reddit Mono Variable", monospace;
+
+	/* Custom Media Breakpoints */
+	@custom-media --gt-xs (min-width: 36em);
+	@custom-media --gt-sm (min-width: 48em);
+	@custom-media --gt-md (min-width: 62em);
+	@custom-media --gt-lg (min-width: 75em);
+	@custom-media --gt-xl (min-width: 88em);
+	@custom-media --lt-xs (max-width: 36em);
+	@custom-media --lt-sm (max-width: 48em);
+	@custom-media --lt-md (max-width: 62em);
+	@custom-media --lt-lg (max-width: 75em);
+	@custom-media --lt-xl (max-width: 88em);
 }
 
 body {
@@ -40,7 +57,7 @@ body {
 	justify-content: flex-start;
 
 	font-size: 14px;
-	line-height: 160%;
+	font-family: var(--default-font-family);
 }
 
 main {
@@ -54,13 +71,43 @@ main {
 	flex-direction: column;
 	justify-content: flex-start;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+	@media (--lt-sm) {
 		padding: 80px 40px;
 	}
 
-	@media (max-width: $mantine-breakpoint-xs) {
+	@media (--lt-xs) {
 		padding: 80px 24px;
 	}
+}
+
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+
+span {
+	line-height: 1;
+}
+
+p {
+	line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	line-height: 2;
 }
 
 /* StatsTable.tsx */

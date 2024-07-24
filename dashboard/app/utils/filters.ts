@@ -4,6 +4,8 @@ import {
 	endOfMonth,
 	endOfWeek,
 	formatRFC3339,
+	intervalToDuration,
+	parseISO,
 	startOfDay,
 	startOfHour,
 	startOfMonth,
@@ -17,7 +19,8 @@ interface FilterOptions {
 	limit?: number;
 }
 
-const generatePeriods = (period: string) => {
+const generatePeriods = (searchParams: URLSearchParams) => {
+	const period = searchParams.get('period') ?? 'today';
 	const currentDate = new Date();
 	let startPeriod: Date;
 	let endPeriod: Date;
@@ -58,6 +61,27 @@ const generatePeriods = (period: string) => {
 			interval = 'month';
 			break;
 		}
+		case 'custom': {
+			const start = searchParams.get('start');
+			const end = searchParams.get('end');
+			if (start && end) {
+				startPeriod = parseISO(start);
+				endPeriod = parseISO(end);
+			} else {
+				throw new Error('Invalid custom period');
+			}
+
+			const diff = intervalToDuration({ start: startPeriod, end: endPeriod });
+			if (diff.months && diff.months > 1) {
+				interval = 'month';
+			} else if (diff.days && diff.days > 1) {
+				interval = 'day';
+			} else {
+				interval = 'hour';
+			}
+
+			break;
+		}
 		default: {
 			// Manually parse periods like 24h, 14d, 30d, etc
 			if (period.endsWith('d')) {
@@ -87,18 +111,20 @@ export const generateFilters = (
 	opts?: FilterOptions,
 ): [Record<string, string | number | undefined>, string | undefined] => {
 	// Convert period param to start and end
-	const period = searchParams.get('period');
-	const { start, end, defaultInterval } = generatePeriods(period ?? 'today');
-
-	// Get interval param
+	const { start, end, defaultInterval } = generatePeriods(searchParams);
 	const interval = searchParams.get('interval') ?? defaultInterval;
 
-	const filters: Record<string, string> = {};
+	const filters: Record<string, string | number | undefined> = {
+		start,
+		end,
+		limit: opts?.limit,
+	};
+
 	for (const [key, value] of searchParams) {
-		if (value !== null && key !== 'period') {
+		if (value && !['period', 'start', 'end', 'interval'].includes(key)) {
 			filters[key] = value;
 		}
 	}
 
-	return [{ start, end, limit: opts?.limit, ...filters }, interval];
+	return [filters, interval];
 };

@@ -1,10 +1,25 @@
 .card {
+	padding: 16px;
 	border: 1px solid var(--me-color-border-muted);
 	border-radius: 8px;
+
+	text-decoration: none;
 
 	transition: box-shadow 0.05s ease;
 
 	&:hover {
 		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	p {
+		font-size: 16px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
+	span {
+		color: var(--me-color-text-muted);
+		font-size: 12px;
 	}
 }

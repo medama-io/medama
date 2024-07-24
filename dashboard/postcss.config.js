@@ -1,5 +1,9 @@
 export default {
 	plugins: {
+		'@csstools/postcss-global-data': {
+			files: ['app/styles/global.css'],
+		},
+		'postcss-custom-media': {},
 		'postcss-preset-mantine': {},
 		'postcss-simple-vars': {
 			variables: {
@@ -10,6 +14,15 @@ export default {
 				'mantine-breakpoint-xl': '88em',
 			},
 		},
-		'postcss-lightningcss': {},
+		'postcss-lightningcss': {
+			lightningcssOptions: {
+				// Individually enable various drafts
+				drafts: {
+					// Enable custom media queries
+					// https://drafts.csswg.org/mediaqueries-5/#custom-mq
+					customMedia: true,
+				},
+			},
+		},
 	},
 };

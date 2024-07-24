@@ -1,11 +1,17 @@
-.target {
+.trigger {
 	min-width: 192px;
 	height: 40px;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
 	padding-left: 16px;
 	color: var(--me-color-text-light);
 	background-color: var(--me-color-bg-grey-blue);
 	border: 1px solid var(--me-color-bg-grey-blue);
 	border-radius: 8px;
+	cursor: pointer;
 
 	&:hover {
 		background-color: var(--me-color-bg-grey-blue-dark);
@@ -15,13 +21,22 @@
 		outline: 2px solid var(--mantine-color-blue-outline);
 	}
 
-	&[data-left="true"] {
-		padding-left: 32px;
-	}
-}
+	&:where([data-left="true"]) {
+		padding-left: 6px;
 
-.targetWrapper {
-	@media (max-width: $mantine-breakpoint-xs) {
+		div {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+		}
+	}
+
+	svg {
+		color: var(--me-color-text-disabled);
+		height: 15px;
+	}
+
+	@media (--lt-xs) {
 		width: 100%;
 		margin: 4px 0;
 	}
@@ -33,12 +48,27 @@
 	border: 0;
 	border-radius: 8px;
 	padding: 0;
+
+	z-index: 1000;
+
+	@media (--lt-xs) {
+		width: calc(100vw - 48px);
+		margin: 4px 0;
+	}
+}
+
+.separator {
+	border-bottom: 1px solid transparent;
+	border-bottom-color: var(--me-color-text-grey);
 }
 
 .option {
+	min-width: 192px;
+
 	padding: 8px 16px;
 	border-radius: 0px;
 	border-bottom: 1px solid transparent;
+	cursor: pointer;
 
 	&:first-child {
 		border-radius: 8px 8px 0 0;
@@ -52,12 +82,12 @@
 		background-color: var(--me-color-bg-grey-blue-dark);
 	}
 
-	&[data-combobox-active="true"] {
-		color: var(--me-color-logo-green);
-		font-weight: 600;
+	&:focus-visible {
+		outline: 2px solid var(--me-color-focus-outline);
 	}
 
-	&[data-group-end="true"] {
-		border-bottom-color: var(--me-color-text-grey);
+	&[data-state="checked"] {
+		color: var(--me-color-logo-green);
+		font-weight: 600;
 	}
 }
