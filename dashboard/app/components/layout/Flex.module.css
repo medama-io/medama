@@ -1,11 +1,12 @@
 .flex {
-	box-sizing: border-box;
 	display: flex;
+	flex-direction: column;
 	justify-content: flex-start;
 }
 
 .group {
 	display: flex;
+	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 }

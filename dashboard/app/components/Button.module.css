@@ -48,7 +48,7 @@
 	}
 }
 
-.close {
+.icon {
 	composes: base;
 	position: relative;
 	padding: 8px;

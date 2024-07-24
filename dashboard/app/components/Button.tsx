@@ -15,10 +15,13 @@ interface ButtonLinkProps extends LinkProps {
 	variant?: 'filled' | 'outline';
 }
 
-interface CloseButtonProps {
+interface IconButtonProps
+	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	label: string;
-	onClick?: () => void;
+	children: React.ReactNode;
 }
+
+type CloseButtonProps = Omit<IconButtonProps, 'children'>;
 
 const Button = ({
 	loading,
@@ -78,18 +81,21 @@ const ButtonLink = ({
 	);
 };
 
-const CloseButton = ({ label, onClick }: CloseButtonProps) => {
+const IconButton = ({ children, label, ...rest }: IconButtonProps) => {
 	return (
-		<button
-			className={classes.close}
-			type="button"
-			aria-label={label}
-			onClick={onClick}
-		>
-			<X />
+		<button className={classes.icon} type="button" aria-label={label} {...rest}>
+			{children}
 		</button>
 	);
 };
 
+const CloseButton = ({ label, ...rest }: CloseButtonProps) => {
+	return (
+		<IconButton label={label} {...rest}>
+			<X />
+		</IconButton>
+	);
+};
+
 // TODO: Add ButtonNavLink with pending spinners.
-export { Button, ButtonLink, CloseButton };
+export { Button, ButtonLink, CloseButton, IconButton };
