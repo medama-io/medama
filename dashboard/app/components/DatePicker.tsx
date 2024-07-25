@@ -9,7 +9,6 @@ import { DayPicker, type DateRange } from 'react-day-picker';
 import { Button, CloseButton } from '@/components/Button';
 import { Group } from '@/components/layout/Flex';
 
-import dayPickerClasses from 'react-day-picker/style.module.css';
 import classes from './DatePicker.module.css';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -69,13 +68,7 @@ const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 
 					<DayPicker
 						mode="range"
-						classNames={{
-							...dayPickerClasses,
-							root: classes.root,
-							months: classes.months,
-							chevron: undefined,
-							month_grid: classes.month_grid,
-						}}
+						classNames={classes}
 						selected={date}
 						onSelect={setDate}
 						numberOfMonths={isMobile ? 1 : 2}
