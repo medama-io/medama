@@ -2,12 +2,12 @@ import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
 import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {
+	type ClientActionFunctionArgs,
+	type MetaFunction,
 	json,
 	redirect,
 	useLoaderData,
 	useSubmit,
-	type ClientActionFunctionArgs,
-	type MetaFunction,
 } from '@remix-run/react';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import isFQDN from 'validator/lib/isFQDN';

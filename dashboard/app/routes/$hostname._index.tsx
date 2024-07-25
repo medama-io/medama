@@ -1,17 +1,17 @@
 import { SimpleGrid } from '@mantine/core';
 import {
-	json,
-	useLoaderData,
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
+	json,
+	useLoaderData,
 } from '@remix-run/react';
 
 import { StatsDisplay } from '@/components/stats/StatsDisplay';
 import {
 	DATASETS,
-	type StatsGroups,
 	type DataRow,
 	type Dataset,
+	type StatsGroups,
 	type StatsValue,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';

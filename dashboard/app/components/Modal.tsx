@@ -2,16 +2,16 @@ import {
 	Box,
 	CloseButton,
 	Group,
+	Modal as MantineModal,
 	Text,
 	TextInput,
 	type TextInputProps,
-	Modal as MantineModal,
 } from '@mantine/core';
 import { Form } from '@remix-run/react';
 import type React from 'react';
 
-import { IconArrowRight } from '@/components/icons/arrow-right';
 import { Button } from '@/components/Button';
+import { IconArrowRight } from '@/components/icons/arrow-right';
 
 import classes from './Modal.module.css';
 

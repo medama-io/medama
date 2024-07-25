@@ -1,10 +1,10 @@
 import { Text } from '@mantine/core';
 import {
+	type MetaFunction,
 	json,
 	redirect,
 	useLoaderData,
 	useRevalidator,
-	type MetaFunction,
 } from '@remix-run/react';
 import { useEffect } from 'react';
 

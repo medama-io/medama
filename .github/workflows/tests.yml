@@ -21,11 +21,15 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Lint
+      - name: Lint core
         uses: golangci/golangci-lint-action@v6
         with:
           version: latest
           working-directory: core
+
+      - name: Lint dashboard
+        run: task dashboard:lint:ci
+
   test:
     runs-on: ubuntu-latest
     steps:

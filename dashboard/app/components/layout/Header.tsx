@@ -1,12 +1,12 @@
 import {
 	Burger,
 	Drawer,
+	type DrawerProps,
 	Flex,
 	Group,
+	type MantineSize,
 	Stack,
 	Text,
-	type DrawerProps,
-	type MantineSize,
 } from '@mantine/core';
 import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 

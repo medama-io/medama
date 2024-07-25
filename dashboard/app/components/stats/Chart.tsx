@@ -1,8 +1,8 @@
 import {
-	BarChart as MantineBarChart,
-	AreaChart as MantineAreaChart,
-	type BarChartProps,
 	type AreaChartProps,
+	type BarChartProps,
+	AreaChart as MantineAreaChart,
+	BarChart as MantineBarChart,
 } from '@mantine/charts';
 import { ColorSwatch, Group, Paper, Text } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';

@@ -8,8 +8,8 @@
 		"build": "remix vite:build",
 		"preview": "vite preview",
 		"generate": "openapi-typescript ../core/openapi.yaml -o ./app/api/types.d.ts",
-		"format": "biome format --write .",
-		"lint": "biome lint --write .",
+		"lint": "biome check --write .",
+		"lint:ci": "biome check .",
 		"typecheck": "tsc"
 	},
 	"dependencies": {

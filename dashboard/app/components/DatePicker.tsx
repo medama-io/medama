@@ -4,13 +4,13 @@ import { useSearchParams } from '@remix-run/react';
 import { formatISO, parseISO, sub } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import { DayPicker, type DateRange } from 'react-day-picker';
+import { type DateRange, DayPicker } from 'react-day-picker';
 
 import { Button, CloseButton } from '@/components/Button';
 import { Group } from '@/components/layout/Flex';
 
-import classes from './DatePicker.module.css';
 import { useMediaQuery } from '@mantine/hooks';
+import classes from './DatePicker.module.css';
 
 interface DatePickerProps {
 	open: boolean;

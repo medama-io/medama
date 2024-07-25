@@ -1,8 +1,8 @@
 import type React from 'react';
 import type { CSSProperties } from 'react';
 
-import classes from './Flex.module.css';
 import clsx from 'clsx';
+import classes from './Flex.module.css';
 
 interface FlexProps {
 	children: React.ReactNode;

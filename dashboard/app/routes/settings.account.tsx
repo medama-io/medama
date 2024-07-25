@@ -1,11 +1,11 @@
 import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
+	type ClientActionFunctionArgs,
+	type MetaFunction,
 	json,
 	useLoaderData,
 	useSubmit,
-	type ClientActionFunctionArgs,
-	type MetaFunction,
 } from '@remix-run/react';
 import { z } from 'zod';
 
