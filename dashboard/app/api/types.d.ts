@@ -3,1625 +3,2157 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/auth/login": {
-    /**
-     * Login
-     * @description Login to the service and retrieve a session token for authentication.
-     */
-    post: operations["post-auth-login"];
-  };
-  "/auth/logout": {
-    /**
-     * Logout
-     * @description Logout of the service and destroy the session token.
-     */
-    post: operations["post-auth-logout"];
-  };
-  "/event/hit": {
-    /**
-     * Send Hit Event
-     * @description Send a hit event to register a user view or interaction.
-     */
-    post: operations["post-event-hit"];
-  };
-  "/event/ping": {
-    /**
-     * Ping
-     * @description Ping endpoint to determine if the user is unique or not.
-     */
-    get: operations["get-event-ping"];
-  };
-  "/settings/usage": {
-    /**
-     * Get Resource Usage
-     * @description Get the current CPU, memory and disk usage of the server.
-     */
-    get: operations["get-settings-usage"];
-    /**
-     * Update Resource Usage
-     * @description Update the resource usage settings of the server.
-     */
-    patch: operations["patch-settings-usage"];
-  };
-  "/user": {
-    /**
-     * Get User Info
-     * @description Retrieve the information of the user with the matching user ID.
-     */
-    get: operations["get-user"];
-    /**
-     * Delete User
-     * @description Delete a user account.
-     */
-    delete: operations["delete-user"];
-    /**
-     * Update User Info
-     * @description Update a user account's details.
-     */
-    patch: operations["patch-user"];
-  };
-  "/websites": {
-    /**
-     * List Websites
-     * @description Get a list of all websites from the user.
-     */
-    get: operations["get-websites"];
-    /**
-     * Add Website
-     * @description Add a new website.
-     */
-    post: operations["post-websites"];
-  };
-  "/websites/{hostname}": {
-    /**
-     * Get Website
-     * @description Get website details for an individual website.
-     */
-    get: operations["get-websites-id"];
-    /**
-     * Delete Website
-     * @description Delete a website.
-     */
-    delete: operations["delete-websites-id"];
-    /**
-     * Update Website
-     * @description Update a website's information.
-     */
-    patch: operations["patch-websites-id"];
-  };
-  "/website/{hostname}/summary": {
-    /**
-     * Get Stat Summary
-     * @description Get a summary of the website's stats.
-     */
-    get: operations["get-website-id-summary"];
-  };
-  "/website/{hostname}/pages": {
-    /**
-     * Get Page Stats
-     * @description Get a list of pages and their stats.
-     */
-    get: operations["get-website-id-pages"];
-  };
-  "/website/{hostname}/time": {
-    /**
-     * Get Time Stats
-     * @description Get a list of pages and their time stats.
-     */
-    get: operations["get-website-id-time"];
-  };
-  "/website/{hostname}/referrers": {
-    /**
-     * Get Referrer Stats
-     * @description Get a list of referrers and their stats.
-     */
-    get: operations["get-website-id-referrers"];
-  };
-  "/website/{hostname}/sources": {
-    /**
-     * Get UTM Source Stats
-     * @description Get a list of UTM sources and their stats.
-     */
-    get: operations["get-website-id-sources"];
-  };
-  "/website/{hostname}/mediums": {
-    /**
-     * Get UTM Medium Stats
-     * @description Get a list of UTM mediums and their stats.
-     */
-    get: operations["get-website-id-mediums"];
-  };
-  "/website/{hostname}/campaigns": {
-    /**
-     * Get UTM Campaign Stats
-     * @description Get a list of UTM campaigns and their stats.
-     */
-    get: operations["get-website-id-campaigns"];
-  };
-  "/website/{hostname}/browsers": {
-    /**
-     * Get Browser Stats
-     * @description Get a list of browsers and their stats.
-     */
-    get: operations["get-website-id-browsers"];
-  };
-  "/website/{hostname}/os": {
-    /**
-     * Get OS Stats
-     * @description Get a list of OS and their stats.
-     */
-    get: operations["get-website-id-os"];
-  };
-  "/website/{hostname}/devices": {
-    /**
-     * Get Device Stats
-     * @description Get a list of devices and their stats.
-     */
-    get: operations["get-website-id-device"];
-  };
-  "/website/{hostname}/countries": {
-    /**
-     * Get Country Stats
-     * @description Get a list of countries and their stats.
-     */
-    get: operations["get-website-id-country"];
-  };
-  "/website/{hostname}/languages": {
-    /**
-     * Get Language Stats
-     * @description Get a list of languages and their stats.
-     */
-    get: operations["get-website-id-language"];
-  };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Login to the service and retrieve a session token for authentication.
+         */
+        post: operations["post-auth-login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Logout
+         * @description Logout of the service and destroy the session token.
+         */
+        post: operations["post-auth-logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/event/hit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send Hit Event
+         * @description Send a hit event to register a user view or interaction.
+         */
+        post: operations["post-event-hit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/event/ping": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Ping
+         * @description Ping endpoint to determine if the user is unique or not.
+         */
+        get: operations["get-event-ping"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/settings/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Resource Usage
+         * @description Get the current CPU, memory and disk usage of the server.
+         */
+        get: operations["get-settings-usage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Resource Usage
+         * @description Update the resource usage settings of the server.
+         */
+        patch: operations["patch-settings-usage"];
+        trace?: never;
+    };
+    "/user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Info
+         * @description Retrieve the information of the user with the matching user ID.
+         */
+        get: operations["get-user"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete User
+         * @description Delete a user account.
+         */
+        delete: operations["delete-user"];
+        options?: never;
+        head?: never;
+        /**
+         * Update User Info
+         * @description Update a user account's details.
+         */
+        patch: operations["patch-user"];
+        trace?: never;
+    };
+    "/websites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Websites
+         * @description Get a list of all websites from the user.
+         */
+        get: operations["get-websites"];
+        put?: never;
+        /**
+         * Add Website
+         * @description Add a new website.
+         */
+        post: operations["post-websites"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/websites/{hostname}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Website
+         * @description Get website details for an individual website.
+         */
+        get: operations["get-websites-id"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete Website
+         * @description Delete a website.
+         */
+        delete: operations["delete-websites-id"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Website
+         * @description Update a website's information.
+         */
+        patch: operations["patch-websites-id"];
+        trace?: never;
+    };
+    "/website/{hostname}/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Stat Summary
+         * @description Get a summary of the website's stats.
+         */
+        get: operations["get-website-id-summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/pages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Page Stats
+         * @description Get a list of pages and their stats.
+         */
+        get: operations["get-website-id-pages"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/time": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Time Stats
+         * @description Get a list of pages and their time stats.
+         */
+        get: operations["get-website-id-time"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/referrers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Referrer Stats
+         * @description Get a list of referrers and their stats.
+         */
+        get: operations["get-website-id-referrers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get UTM Source Stats
+         * @description Get a list of UTM sources and their stats.
+         */
+        get: operations["get-website-id-sources"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/mediums": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get UTM Medium Stats
+         * @description Get a list of UTM mediums and their stats.
+         */
+        get: operations["get-website-id-mediums"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/campaigns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get UTM Campaign Stats
+         * @description Get a list of UTM campaigns and their stats.
+         */
+        get: operations["get-website-id-campaigns"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/browsers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Browser Stats
+         * @description Get a list of browsers and their stats.
+         */
+        get: operations["get-website-id-browsers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/os": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get OS Stats
+         * @description Get a list of OS and their stats.
+         */
+        get: operations["get-website-id-os"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/devices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Device Stats
+         * @description Get a list of devices and their stats.
+         */
+        get: operations["get-website-id-device"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/countries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Country Stats
+         * @description Get a list of countries and their stats.
+         */
+        get: operations["get-website-id-country"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/website/{hostname}/languages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Language Stats
+         * @description Get a list of languages and their stats.
+         */
+        get: operations["get-website-id-language"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
-  schemas: {
-    /**
-     * AuthLogin
-     * @description Request body for logging in.
-     */
-    AuthLogin: {
-      username: string;
-      /** Format: password */
-      password: string;
-    };
-    /**
-     * EventLoad
-     * @description Page view load event.
-     */
-    EventLoad: {
-      /** @description Beacon ID generated for each user to link multiple events on the same page together. */
-      b: string;
-      /**
-       * Format: uri
-       * @description Page URL including query parameters.
-       */
-      u: string;
-      /** @description Referrer URL. */
-      r?: string;
-      /** @description If the user is a unique user or not. */
-      p: boolean;
-      /** @description If the user has visited this page before or not. */
-      q: boolean;
-      /** @description Timezone of the user. */
-      t?: string;
-    };
-    /**
-     * EventUnload
-     * @description Page view unload event.
-     */
-    EventUnload: {
-      /** @description Beacon ID generated for each user to link multiple events on the same page together. */
-      b: string;
-      /** @description Time spent on page in milliseconds. */
-      m: number;
-    };
-    /**
-     * EventHit
-     * @description Website hit event.
-     */
-    EventHit: components["schemas"]["EventLoad"] | components["schemas"]["EventUnload"];
-    FilterString: {
-      /** @description Equal to. */
-      eq?: string;
-      /** @description Not equal to. */
-      neq?: string;
-      /** @description Contains. */
-      contains?: string;
-      /** @description Does not contain. */
-      not_contains?: string;
-      /** @description Starts with. */
-      starts_with?: string;
-      /** @description Does not start with. */
-      not_starts_with?: string;
-      /** @description Ends with. */
-      ends_with?: string;
-      /** @description Does not end with. */
-      not_ends_with?: string;
-      /** @description In. */
-      in?: string;
-      /** @description Not in. */
-      not_in?: string;
-    };
-    /**
-     * UserGet
-     * @description Response body for getting a user.
-     */
-    UserGet: {
-      username: string;
-      /**
-       * @default en
-       * @enum {string}
-       */
-      language: "en";
-      /** Format: int64 */
-      dateCreated: number;
-      /** Format: int64 */
-      dateUpdated: number;
-    };
-    /**
-     * UserPatch
-     * @description Request body for updating a user.
-     */
-    UserPatch: {
-      username?: string;
-      /** Format: password */
-      password?: string;
-      /**
-       * @default en
-       * @enum {string}
-       */
-      language?: "en";
-    };
-    /**
-     * WebsiteGet
-     * @description Response body for getting a website.
-     */
-    WebsiteGet: {
-      /** Format: hostname */
-      hostname: string;
-      summary?: {
-        visitors: number;
-      };
-    };
-    /**
-     * WebsiteCreate
-     * @description Request body for creating a website.
-     */
-    WebsiteCreate: {
-      /** Format: hostname */
-      hostname: string;
-    };
-    /**
-     * WebsitePatch
-     * @description Request body for updating a website.
-     */
-    WebsitePatch: {
-      /** Format: hostname */
-      hostname?: string;
-    };
-    /**
-     * SettingsUsageGet
-     * @description Response body for getting CPU, memory and disk usage of the server.
-     */
-    SettingsUsageGet: {
-      cpu: {
-        /** Format: float */
-        usage: number;
-        cores: number;
-        threads: number;
-      };
-      memory: {
-        /** Format: int64 */
-        used: number;
-        /** Format: int64 */
-        total: number;
-      };
-      disk: {
-        /** Format: int64 */
-        used: number;
-        /** Format: int64 */
-        total: number;
-      };
-      metadata: {
-        threads?: number;
-        memory_limit?: string;
-      };
-    };
-    /**
-     * SettingsUsagePatch
-     * @description Request body for updating the resource limits of the application.
-     */
-    SettingsUsagePatch: {
-      threads?: number;
-      memory_limit?: string;
-    };
-    /** StatsSummary */
-    StatsSummary: {
-      current: {
-        visitors: number;
-        pageviews: number;
-        /** Format: float */
-        bounce_percentage: number;
-        duration: number;
-      };
-      previous?: {
-        visitors: number;
-        pageviews: number;
-        /** Format: float */
-        bounce_percentage: number;
-        duration: number;
-      };
-      interval?: {
-          date: string;
-          visitors?: number;
-          pageviews?: number;
-          /** Format: float */
-          bounce_percentage?: number;
-          duration?: number;
+    schemas: {
+        /**
+         * AuthLogin
+         * @description Request body for logging in.
+         */
+        AuthLogin: {
+            username: string;
+            /** Format: password */
+            password: string;
+        };
+        /**
+         * EventLoad
+         * @description Page view load event.
+         */
+        EventLoad: {
+            /** @description Beacon ID generated for each user to link multiple events on the same page together. */
+            b: string;
+            /**
+             * Format: uri
+             * @description Page URL including query parameters.
+             */
+            u: string;
+            /** @description Referrer URL. */
+            r?: string;
+            /** @description If the user is a unique user or not. */
+            p: boolean;
+            /** @description If the user has visited this page before or not. */
+            q: boolean;
+            /** @description Timezone of the user. */
+            t?: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            e: "load";
+        };
+        /**
+         * EventUnload
+         * @description Page view unload event.
+         */
+        EventUnload: {
+            /** @description Beacon ID generated for each user to link multiple events on the same page together. */
+            b: string;
+            /** @description Time spent on page in milliseconds. */
+            m: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            e: "unload";
+        };
+        /**
+         * EventHit
+         * @description Website hit event.
+         */
+        EventHit: components["schemas"]["EventLoad"] | components["schemas"]["EventUnload"];
+        FilterString: {
+            /** @description Equal to. */
+            eq?: string;
+            /** @description Not equal to. */
+            neq?: string;
+            /** @description Contains. */
+            contains?: string;
+            /** @description Does not contain. */
+            not_contains?: string;
+            /** @description Starts with. */
+            starts_with?: string;
+            /** @description Does not start with. */
+            not_starts_with?: string;
+            /** @description Ends with. */
+            ends_with?: string;
+            /** @description Does not end with. */
+            not_ends_with?: string;
+            /** @description In. */
+            in?: string;
+            /** @description Not in. */
+            not_in?: string;
+        };
+        /**
+         * UserGet
+         * @description Response body for getting a user.
+         */
+        UserGet: {
+            username: string;
+            /**
+             * @default en
+             * @enum {string}
+             */
+            language: "en";
+            /** Format: int64 */
+            dateCreated: number;
+            /** Format: int64 */
+            dateUpdated: number;
+        };
+        /**
+         * UserPatch
+         * @description Request body for updating a user.
+         */
+        UserPatch: {
+            username?: string;
+            /** Format: password */
+            password?: string;
+            /**
+             * @default en
+             * @enum {string}
+             */
+            language: "en";
+        };
+        /**
+         * WebsiteGet
+         * @description Response body for getting a website.
+         */
+        WebsiteGet: {
+            /** Format: hostname */
+            hostname: string;
+            summary?: {
+                visitors: number;
+            };
+        };
+        /**
+         * WebsiteCreate
+         * @description Request body for creating a website.
+         */
+        WebsiteCreate: {
+            /** Format: hostname */
+            hostname: string;
+        };
+        /**
+         * WebsitePatch
+         * @description Request body for updating a website.
+         */
+        WebsitePatch: {
+            /** Format: hostname */
+            hostname?: string;
+        };
+        /**
+         * SettingsUsageGet
+         * @description Response body for getting CPU, memory and disk usage of the server.
+         */
+        SettingsUsageGet: {
+            cpu: {
+                /** Format: float */
+                usage: number;
+                cores: number;
+                threads: number;
+            };
+            memory: {
+                /** Format: int64 */
+                used: number;
+                /** Format: int64 */
+                total: number;
+            };
+            disk: {
+                /** Format: int64 */
+                used: number;
+                /** Format: int64 */
+                total: number;
+            };
+            metadata: {
+                threads?: number;
+                memory_limit?: string;
+            };
+        };
+        /**
+         * SettingsUsagePatch
+         * @description Request body for updating the resource limits of the application.
+         */
+        SettingsUsagePatch: {
+            threads?: number;
+            memory_limit?: string;
+        };
+        /** StatsSummary */
+        StatsSummary: {
+            current: {
+                visitors: number;
+                pageviews: number;
+                /** Format: float */
+                bounce_percentage: number;
+                duration: number;
+            };
+            previous?: {
+                visitors: number;
+                pageviews: number;
+                /** Format: float */
+                bounce_percentage: number;
+                duration: number;
+            };
+            interval?: {
+                date: string;
+                visitors?: number;
+                pageviews?: number;
+                /** Format: float */
+                bounce_percentage?: number;
+                duration?: number;
+            }[];
+        };
+        /** StatsPages */
+        StatsPages: {
+            /** @description Pathname of the page. */
+            path: string;
+            /** @description Number of unique visitors for given page. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors for given page.
+             */
+            visitors_percentage: number;
+            /** @description Number of page views. */
+            pageviews?: number;
+            /**
+             * Format: float
+             * @description Percentage of page views.
+             */
+            pageviews_percentage?: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsTime */
+        StatsTime: {
+            /** @description Pathname of the page. */
+            path: string;
+            /** @description Number of unique visitors for given page. */
+            visitors?: number;
+            /** @description Median time spent on page in milliseconds. */
+            duration: number;
+            /** @description Total time spent on page in milliseconds for the upper quartile (75%). */
+            duration_upper_quartile?: number;
+            /** @description Total time spent on page in milliseconds for the lower quartile (25%). */
+            duration_lower_quartile?: number;
+            /**
+             * Format: float
+             * @description Percentage of time contributing to the total time spent on the website.
+             */
+            duration_percentage: number;
+        }[];
+        /** StatsReferrers */
+        StatsReferrers: {
+            /** @description Referrer URL. */
+            referrer: string;
+            /** @description Number of unique visitors from referrer. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from referrer.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from referrer.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from referrer in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsUTMSources */
+        StatsUTMSources: {
+            /** @description UTM source. */
+            source: string;
+            /** @description Number of unique visitors from UTM source. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from UTM source.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from UTM source.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from UTM source in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsUTMMediums */
+        StatsUTMMediums: {
+            /** @description UTM medium. */
+            medium: string;
+            /** @description Number of unique visitors from UTM medium. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from UTM medium.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from UTM medium.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from UTM medium in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsUTMCampaigns */
+        StatsUTMCampaigns: {
+            /** @description UTM campaign. */
+            campaign: string;
+            /** @description Number of unique visitors from UTM campaign. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from UTM campaign.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from UTM campaign.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from UTM campaign in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsBrowsers */
+        StatsBrowsers: {
+            /** @description Browser name. */
+            browser: string;
+            /** @description Number of unique visitors from browser. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from browser.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from browser.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from browser in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsOS */
+        StatsOS: {
+            /** @description OS name. */
+            os: string;
+            /** @description Number of unique visitors from OS. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from OS.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from OS.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from OS in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsDevices */
+        StatsDevices: {
+            /** @description Device name. */
+            device: string;
+            /** @description Number of unique visitors from device. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from device.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from device.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from device in milliseconds. */
+            duration?: number;
+        }[];
+        /** StatsCountries */
+        StatsCountries: {
+            /** @description Country name. */
+            country: string;
+            /** @description Number of unique visitors from country. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors from country.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage from country.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from country in milliseconds. */
+            duration?: number;
+        }[];
+        /**
+         * StatsLanguages
+         * @description List of languages and their stats.
+         */
+        StatsLanguages: {
+            /**
+             * @description Language name.
+             * @example English
+             */
+            language: string;
+            /** @description Number of unique visitors for language. */
+            visitors: number;
+            /**
+             * Format: float
+             * @description Percentage of unique visitors for language.
+             */
+            visitors_percentage: number;
+            /**
+             * Format: float
+             * @description Bounce rate percentage for language.
+             */
+            bounce_percentage?: number;
+            /** @description Total time spent on page from language in milliseconds. */
+            duration?: number;
         }[];
     };
-    /** StatsPages */
-    StatsPages: {
-        /** @description Pathname of the page. */
-        path: string;
-        /** @description Number of unique visitors for given page. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors for given page.
-         */
-        visitors_percentage: number;
-        /** @description Number of page views. */
-        pageviews?: number;
-        /**
-         * Format: float
-         * @description Percentage of page views.
-         */
-        pageviews_percentage?: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsTime */
-    StatsTime: {
-        /** @description Pathname of the page. */
-        path: string;
-        /** @description Number of unique visitors for given page. */
-        visitors?: number;
-        /** @description Median time spent on page in milliseconds. */
-        duration: number;
-        /** @description Total time spent on page in milliseconds for the upper quartile (75%). */
-        duration_upper_quartile?: number;
-        /** @description Total time spent on page in milliseconds for the lower quartile (25%). */
-        duration_lower_quartile?: number;
-        /**
-         * Format: float
-         * @description Percentage of time contributing to the total time spent on the website.
-         */
-        duration_percentage: number;
-      }[];
-    /** StatsReferrers */
-    StatsReferrers: {
-        /** @description Referrer URL. */
-        referrer: string;
-        /** @description Number of unique visitors from referrer. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from referrer.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from referrer.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from referrer in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsUTMSources */
-    StatsUTMSources: {
-        /** @description UTM source. */
-        source: string;
-        /** @description Number of unique visitors from UTM source. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from UTM source.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from UTM source.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from UTM source in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsUTMMediums */
-    StatsUTMMediums: {
-        /** @description UTM medium. */
-        medium: string;
-        /** @description Number of unique visitors from UTM medium. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from UTM medium.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from UTM medium.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from UTM medium in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsUTMCampaigns */
-    StatsUTMCampaigns: {
-        /** @description UTM campaign. */
-        campaign: string;
-        /** @description Number of unique visitors from UTM campaign. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from UTM campaign.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from UTM campaign.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from UTM campaign in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsBrowsers */
-    StatsBrowsers: {
+    responses: {
+        /** @description 400 Bad Request. */
+        BadRequestError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    error: {
+                        /**
+                         * Format: int32
+                         * @default 400
+                         */
+                        code: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+        /** @description 401 Unauthorised. */
+        UnauthorisedError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    error: {
+                        /**
+                         * Format: int32
+                         * @default 401
+                         */
+                        code: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+        /** @description 403 Forbidden. */
+        ForbiddenError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    error: {
+                        /**
+                         * Format: int32
+                         * @default 403
+                         */
+                        code: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+        /** @description 404 Not Found. */
+        NotFoundError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    error: {
+                        /**
+                         * Format: int32
+                         * @default 404
+                         */
+                        code: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+        /** @description 409 Conflict Found. */
+        ConflictError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    error: {
+                        /**
+                         * Format: int32
+                         * @default 409
+                         */
+                        code: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+        /** @description 500 Unexpected Internal Server Error. */
+        InternalServerError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    error: {
+                        /**
+                         * Format: int32
+                         * @default 500
+                         */
+                        code: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    parameters: {
+        /** @description Session token for authentication. */
+        SessionAuth: string;
+        /** @description Hostname for the website. */
+        Hostname: string;
+        /** @description Return a summary of the stats. */
+        Summary: boolean;
+        /** @description Path of the page. */
+        Path: components["schemas"]["FilterString"];
+        /** @description Referrer URL of the page hit. */
+        Referrer: components["schemas"]["FilterString"];
+        /** @description UTM source of the page hit. */
+        UTMSource: components["schemas"]["FilterString"];
+        /** @description UTM medium of the page hit. */
+        UTMMedium: components["schemas"]["FilterString"];
+        /** @description UTM campaign of the page hit. */
+        UTMCampaign: components["schemas"]["FilterString"];
         /** @description Browser name. */
-        browser: string;
-        /** @description Number of unique visitors from browser. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from browser.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from browser.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from browser in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsOS */
-    StatsOS: {
-        /** @description OS name. */
-        os: string;
-        /** @description Number of unique visitors from OS. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from OS.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from OS.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from OS in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsDevices */
-    StatsDevices: {
-        /** @description Device name. */
-        device: string;
-        /** @description Number of unique visitors from device. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from device.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from device.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from device in milliseconds. */
-        duration?: number;
-      }[];
-    /** StatsCountries */
-    StatsCountries: {
+        Browser: components["schemas"]["FilterString"];
+        /** @description Operating system name. */
+        OS: components["schemas"]["FilterString"];
+        /** @description Device type. */
+        Device: components["schemas"]["FilterString"];
         /** @description Country name. */
-        country: string;
-        /** @description Number of unique visitors from country. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors from country.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage from country.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from country in milliseconds. */
-        duration?: number;
-      }[];
-    /**
-     * StatsLanguages
-     * @description List of languages and their stats.
-     */
-    StatsLanguages: {
-        /**
-         * @description Language name.
-         * @example English
-         */
-        language: string;
-        /** @description Number of unique visitors for language. */
-        visitors: number;
-        /**
-         * Format: float
-         * @description Percentage of unique visitors for language.
-         */
-        visitors_percentage: number;
-        /**
-         * Format: float
-         * @description Bounce rate percentage for language.
-         */
-        bounce_percentage?: number;
-        /** @description Total time spent on page from language in milliseconds. */
-        duration?: number;
-      }[];
-  };
-  responses: {
-    /** @description 400 Bad Request. */
-    BadRequestError: {
-      content: {
-        "application/json": {
-          error: {
-            /**
-             * Format: int32
-             * @default 400
-             */
-            code: number;
-            message: string;
-          };
-        };
-      };
+        Country: components["schemas"]["FilterString"];
+        /** @description Language code. */
+        Language: components["schemas"]["FilterString"];
+        /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+        PeriodStart: string;
+        /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+        PeriodEnd: string;
+        /** @description Limit the number of results. */
+        Limit: number;
+        /** @description Offset the results paired with the limit parameter. */
+        Offset: number;
     };
-    /** @description 401 Unauthorised. */
-    UnauthorisedError: {
-      content: {
-        "application/json": {
-          error: {
-            /**
-             * Format: int32
-             * @default 401
-             */
-            code: number;
-            message: string;
-          };
-        };
-      };
-    };
-    /** @description 403 Forbidden. */
-    ForbiddenError: {
-      content: {
-        "application/json": {
-          error: {
-            /**
-             * Format: int32
-             * @default 403
-             */
-            code: number;
-            message: string;
-          };
-        };
-      };
-    };
-    /** @description 404 Not Found. */
-    NotFoundError: {
-      content: {
-        "application/json": {
-          error: {
-            /**
-             * Format: int32
-             * @default 404
-             */
-            code: number;
-            message: string;
-          };
-        };
-      };
-    };
-    /** @description 409 Conflict Found. */
-    ConflictError: {
-      content: {
-        "application/json": {
-          error: {
-            /**
-             * Format: int32
-             * @default 409
-             */
-            code: number;
-            message: string;
-          };
-        };
-      };
-    };
-    /** @description 500 Unexpected Internal Server Error. */
-    InternalServerError: {
-      content: {
-        "application/json": {
-          error: {
-            /**
-             * Format: int32
-             * @default 500
-             */
-            code: number;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  parameters: {
-    /** @description Session token for authentication. */
-    SessionAuth: string;
-    /** @description Hostname for the website. */
-    Hostname: string;
-    /** @description Return a summary of the stats. */
-    Summary?: boolean;
-    /** @description Path of the page. */
-    Path?: components["schemas"]["FilterString"];
-    /** @description Referrer URL of the page hit. */
-    Referrer?: components["schemas"]["FilterString"];
-    /** @description UTM source of the page hit. */
-    UTMSource?: components["schemas"]["FilterString"];
-    /** @description UTM medium of the page hit. */
-    UTMMedium?: components["schemas"]["FilterString"];
-    /** @description UTM campaign of the page hit. */
-    UTMCampaign?: components["schemas"]["FilterString"];
-    /** @description Browser name. */
-    Browser?: components["schemas"]["FilterString"];
-    /** @description Operating system name. */
-    OS?: components["schemas"]["FilterString"];
-    /** @description Device type. */
-    Device?: components["schemas"]["FilterString"];
-    /** @description Country name. */
-    Country?: components["schemas"]["FilterString"];
-    /** @description Language code. */
-    Language?: components["schemas"]["FilterString"];
-    /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
-    PeriodStart?: string;
-    /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
-    PeriodEnd?: string;
-    /** @description Limit the number of results. */
-    Limit?: number;
-    /** @description Offset the results paired with the limit parameter. */
-    Offset?: number;
-  };
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
 export interface operations {
-
-  /**
-   * Login
-   * @description Login to the service and retrieve a session token for authentication.
-   */
-  "post-auth-login": {
-    /** @description Login details. */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AuthLogin"];
-      };
-    };
-    responses: {
-      /** @description Success */
-      200: {
-        headers: {
-          /** @description Set the cookie for the session. */
-          "Set-Cookie": string;
+    "post-auth-login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Logout
-   * @description Logout of the service and destroy the session token.
-   */
-  "post-auth-logout": {
-    parameters: {
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description Success */
-      204: {
-        headers: {
-          /** @description Destroy the cookie for the session. */
-          "Set-Cookie": string;
+        /** @description Login details. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AuthLogin"];
+            };
         };
-        content: never;
-      };
-      401: components["responses"]["UnauthorisedError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Send Hit Event
-   * @description Send a hit event to register a user view or interaction.
-   */
-  "post-event-hit": {
-    parameters: {
-      header?: {
-        /** @description Used to infer user browser, OS and device. */
-        "User-Agent"?: string;
-        /** @description Used to infer user language. */
-        "Accept-Language"?: string;
-      };
-    };
-    /** @description Hit event metadata. */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["EventHit"];
-      };
-    };
-    responses: {
-      /** @description OK. */
-      204: {
-        content: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Ping
-   * @description Ping endpoint to determine if the user is unique or not.
-   */
-  "get-event-ping": {
-    parameters: {
-      query?: {
-        /** @description Optional query parameter that is the current host and pathname of the page. */
-        u?: string;
-      };
-      header?: {
-        /** @description If this exists, then user exists in cache and is not a unique user. */
-        "If-Modified-Since"?: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          /** @description This is date of the current day from midnight, incremented by each page view by unique user. */
-          "Last-Modified": string;
-          /** @description This is set to 1 day to prevent the user from being counted as a unique user again. */
-          "Cache-Control": string;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    /** @description Set the cookie for the session. */
+                    "Set-Cookie": string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
         };
-        content: {
-          "text/plain": string;
+    };
+    "post-auth-logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Resource Usage
-   * @description Get the current CPU, memory and disk usage of the server.
-   */
-  "get-settings-usage": {
-    parameters: {
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["SettingsUsageGet"];
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            204: {
+                headers: {
+                    /** @description Destroy the cookie for the session. */
+                    "Set-Cookie": string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      401: components["responses"]["UnauthorisedError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Update Resource Usage
-   * @description Update the resource usage settings of the server.
-   */
-  "patch-settings-usage": {
-    parameters: {
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    /** @description Resource usage settings to update. */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SettingsUsagePatch"];
-      };
-    };
-    responses: {
-      /** @description Success */
-      201: {
-        content: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get User Info
-   * @description Retrieve the information of the user with the matching user ID.
-   */
-  "get-user": {
-    parameters: {
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description User Found */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserGet"];
+    "post-event-hit": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Used to infer user browser, OS and device. */
+                "User-Agent"?: string;
+                /** @description Used to infer user language. */
+                "Accept-Language"?: string;
+            };
+            path?: never;
+            cookie?: never;
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Delete User
-   * @description Delete a user account.
-   */
-  "delete-user": {
-    parameters: {
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description Success No Content */
-      204: {
-        content: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Update User Info
-   * @description Update a user account's details.
-   */
-  "patch-user": {
-    parameters: {
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    /** @description User details to update. */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserPatch"];
-      };
-    };
-    responses: {
-      /** @description Success */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserGet"];
+        /** @description Hit event metadata. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EventHit"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      409: components["responses"]["ConflictError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * List Websites
-   * @description Get a list of all websites from the user.
-   */
-  "get-websites": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description Returns a list of websites. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WebsiteGet"][];
+        responses: {
+            /** @description OK. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Add Website
-   * @description Add a new website.
-   */
-  "post-websites": {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WebsiteCreate"];
-      };
-    };
-    responses: {
-      /** @description Created */
-      201: {
-        content: {
-          "application/json": components["schemas"]["WebsiteGet"];
+    "get-event-ping": {
+        parameters: {
+            query?: {
+                /** @description Optional query parameter that is the current host and pathname of the page. */
+                u?: string;
+            };
+            header?: {
+                /** @description If this exists, then user exists in cache and is not a unique user. */
+                "If-Modified-Since"?: string;
+            };
+            path?: never;
+            cookie?: never;
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      409: components["responses"]["ConflictError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Website
-   * @description Get website details for an individual website.
-   */
-  "get-websites-id": {
-    parameters: {
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WebsiteGet"];
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /** @description This is date of the current day from midnight, incremented by each page view by unique user. */
+                    "Last-Modified": string;
+                    /** @description This is set to 1 day to prevent the user from being counted as a unique user again. */
+                    "Cache-Control": string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": string;
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Delete Website
-   * @description Delete a website.
-   */
-  "delete-websites-id": {
-    parameters: {
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description Success No Content */
-      204: {
-        content: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Update Website
-   * @description Update a website's information.
-   */
-  "patch-websites-id": {
-    parameters: {
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    /** @description Website details to update. */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WebsitePatch"];
-      };
-    };
-    responses: {
-      /** @description Success */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WebsiteGet"];
+    "get-settings-usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Stat Summary
-   * @description Get a summary of the website's stats.
-   */
-  "get-website-id-summary": {
-    parameters: {
-      query?: {
-        /** @description Retrieve the data from the previous period as well. This is useful when comparing data from the previous period to the current period. Requires the start and end period parameters to be set. */
-        previous?: boolean;
-        /** @description The interval to group the data by. This can be set to minute, hour, day, week or month. This will return an interval property if set. */
-        interval?: "minute" | "hour" | "day" | "week" | "month";
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsSummary"];
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SettingsUsageGet"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Get Page Stats
-   * @description Get a list of pages and their stats.
-   */
-  "get-website-id-pages": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsPages"];
+    "patch-settings-usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Time Stats
-   * @description Get a list of pages and their time stats.
-   */
-  "get-website-id-time": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsTime"];
+        /** @description Resource usage settings to update. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SettingsUsagePatch"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Referrer Stats
-   * @description Get a list of referrers and their stats.
-   */
-  "get-website-id-referrers": {
-    parameters: {
-      query?: {
-        /** @description Whether to return the grouped aggregation name or only URLs. */
-        grouped?: boolean;
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsReferrers"];
+        responses: {
+            /** @description Success */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Get UTM Source Stats
-   * @description Get a list of UTM sources and their stats.
-   */
-  "get-website-id-sources": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsUTMSources"];
+    "get-user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get UTM Medium Stats
-   * @description Get a list of UTM mediums and their stats.
-   */
-  "get-website-id-mediums": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsUTMMediums"];
+        requestBody?: never;
+        responses: {
+            /** @description User Found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserGet"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Get UTM Campaign Stats
-   * @description Get a list of UTM campaigns and their stats.
-   */
-  "get-website-id-campaigns": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsUTMCampaigns"];
+    "delete-user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Browser Stats
-   * @description Get a list of browsers and their stats.
-   */
-  "get-website-id-browsers": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsBrowsers"];
+        requestBody?: never;
+        responses: {
+            /** @description Success No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Get OS Stats
-   * @description Get a list of OS and their stats.
-   */
-  "get-website-id-os": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsOS"];
+    "patch-user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Device Stats
-   * @description Get a list of devices and their stats.
-   */
-  "get-website-id-device": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsDevices"];
+        /** @description User details to update. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserPatch"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  /**
-   * Get Country Stats
-   * @description Get a list of countries and their stats.
-   */
-  "get-website-id-country": {
-    parameters: {
-      query?: {
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsCountries"];
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserGet"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            409: components["responses"]["ConflictError"];
+            500: components["responses"]["InternalServerError"];
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
     };
-  };
-  /**
-   * Get Language Stats
-   * @description Get a list of languages and their stats.
-   */
-  "get-website-id-language": {
-    parameters: {
-      query?: {
-        /** @description Whether to return the language name or the language dialect/locale. */
-        locale?: boolean;
-        summary?: components["parameters"]["Summary"];
-        start?: components["parameters"]["PeriodStart"];
-        end?: components["parameters"]["PeriodEnd"];
-        path?: components["parameters"]["Path"];
-        referrer?: components["parameters"]["Referrer"];
-        utm_source?: components["parameters"]["UTMSource"];
-        utm_medium?: components["parameters"]["UTMMedium"];
-        utm_campaign?: components["parameters"]["UTMCampaign"];
-        browser?: components["parameters"]["Browser"];
-        os?: components["parameters"]["OS"];
-        device?: components["parameters"]["Device"];
-        country?: components["parameters"]["Country"];
-        language?: components["parameters"]["Language"];
-        limit?: components["parameters"]["Limit"];
-        offset?: components["parameters"]["Offset"];
-      };
-      path: {
-        hostname: components["parameters"]["Hostname"];
-      };
-      cookie: {
-        _me_sess: components["parameters"]["SessionAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatsLanguages"];
+    "get-websites": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+            };
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
         };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorisedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
+        requestBody?: never;
+        responses: {
+            /** @description Returns a list of websites. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebsiteGet"][];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
     };
-  };
+    "post-websites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WebsiteCreate"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebsiteGet"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            409: components["responses"]["ConflictError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-websites-id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebsiteGet"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "delete-websites-id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "patch-websites-id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        /** @description Website details to update. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WebsitePatch"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebsiteGet"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-summary": {
+        parameters: {
+            query?: {
+                /** @description Retrieve the data from the previous period as well. This is useful when comparing data from the previous period to the current period. Requires the start and end period parameters to be set. */
+                previous?: boolean;
+                /** @description The interval to group the data by. This can be set to minute, hour, day, week or month. This will return an interval property if set. */
+                interval?: "minute" | "hour" | "day" | "week" | "month";
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsSummary"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-pages": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsPages"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-time": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsTime"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-referrers": {
+        parameters: {
+            query?: {
+                /** @description Whether to return the grouped aggregation name or only URLs. */
+                grouped?: boolean;
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsReferrers"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-sources": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsUTMSources"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-mediums": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsUTMMediums"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-campaigns": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsUTMCampaigns"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-browsers": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsBrowsers"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-os": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsOS"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-device": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsDevices"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-country": {
+        parameters: {
+            query?: {
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsCountries"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-language": {
+        parameters: {
+            query?: {
+                /** @description Whether to return the language name or the language dialect/locale. */
+                locale?: boolean;
+                /** @description Return a summary of the stats. */
+                summary?: components["parameters"]["Summary"];
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsLanguages"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
 }
