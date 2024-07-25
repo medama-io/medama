@@ -1,10 +1,10 @@
 import {
-	Outlet,
-	json,
-	useLoaderData,
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
+	Outlet,
 	type ShouldRevalidateFunctionArgs,
+	json,
+	useLoaderData,
 } from '@remix-run/react';
 import { useMemo } from 'react';
 

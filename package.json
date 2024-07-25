@@ -7,8 +7,5 @@
 		"@changesets/cli": "^2.27.5"
 	},
 	"workspaces": ["dashboard", "tracker"],
-	"trustedDependencies": ["@biomejs/biome", "esbuild"],
-	"patchedDependencies": {
-		"react-day-picker@9.0.3": "patches/react-day-picker@9.0.3.patch"
-	}
+	"trustedDependencies": ["@biomejs/biome", "esbuild"]
 }

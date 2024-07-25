@@ -11,7 +11,7 @@ import type React from 'react';
 import { useState } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
 
-import { datePickerClasses, DatePickerRange } from '@/components/DatePicker';
+import { DatePickerRange, datePickerClasses } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';

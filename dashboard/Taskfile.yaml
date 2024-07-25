@@ -41,3 +41,8 @@ tasks:
   lint:
     cmds:
       - bun run lint
+
+  "lint:ci":
+    cmds:
+      - bun run typecheck
+      - bun run lint:ci

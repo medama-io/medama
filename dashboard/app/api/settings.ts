@@ -1,4 +1,4 @@
-import { type ClientOptions, client, type DataResponse } from './client';
+import { type ClientOptions, type DataResponse, client } from './client';
 
 const usageGet = async (): Promise<DataResponse<'SettingsUsageGet'>> => {
 	const res = await client('/settings/usage', {});

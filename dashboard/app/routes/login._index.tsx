@@ -5,11 +5,10 @@ import { Login } from '@/components/login/Login';
 import { LOGGED_IN_COOKIE, hasSession } from '@/utils/cookies';
 import { notifications } from '@mantine/notifications';
 import {
-	json,
-	redirect,
-	useActionData,
 	type ClientActionFunctionArgs,
 	type MetaFunction,
+	json,
+	redirect,
 } from '@remix-run/react';
 
 export const meta: MetaFunction = () => {

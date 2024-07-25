@@ -1,7 +1,7 @@
 import { Stack, UnstyledButton } from '@mantine/core';
 
-import classes from './Sidebar.module.css';
 import { Link, useLocation } from '@remix-run/react';
+import classes from './Sidebar.module.css';
 
 const SETTINGS_MAP = [
 	{ label: 'Account', path: 'account' },

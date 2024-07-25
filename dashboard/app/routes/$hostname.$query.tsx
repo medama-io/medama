@@ -1,14 +1,14 @@
 import {
+	type ClientLoaderFunctionArgs,
+	type MetaFunction,
 	json,
 	useLoaderData,
 	useParams,
-	type ClientLoaderFunctionArgs,
-	type MetaFunction,
 } from '@remix-run/react';
 
 import { StatsTable } from '@/components/stats/StatsTable';
 import type { DataRow } from '@/components/stats/types';
-import { fetchStats, isDatasetItem, type DatasetItem } from '@/utils/stats';
+import { type DatasetItem, fetchStats, isDatasetItem } from '@/utils/stats';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];

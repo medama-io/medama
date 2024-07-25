@@ -1,11 +1,11 @@
 import {
-	type TextInputProps,
+	Box,
+	Group,
+	PasswordInput as MantinePasswordInput,
 	TextInput as MantineTextInput,
 	type PasswordInputProps,
-	PasswordInput as MantinePasswordInput,
-	Group,
+	type TextInputProps,
 	Tooltip,
-	Box,
 } from '@mantine/core';
 
 import { IconInfo } from '@/components/icons/info';

@@ -1,6 +1,6 @@
 import { hasSession } from '@/utils/cookies';
 import { redirect } from '@remix-run/react';
-import { client, type ClientOptions, type DataResponse } from './client';
+import { type ClientOptions, type DataResponse, client } from './client';
 
 const userGet = async (
 	opts?: ClientOptions,
