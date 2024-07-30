@@ -1,10 +1,10 @@
 import { Group, Text, UnstyledButton } from '@mantine/core';
-import { useHover } from '@mantine/hooks';
 import React, { useMemo } from 'react';
 import isFQDN from 'validator/lib/isFQDN';
 
 import { IconExternal } from '@/components/icons/external';
 import { useFilter } from '@/hooks/use-filter';
+import { useHover } from '@/hooks/use-hover';
 
 import { formatCount, formatDuration } from './formatter';
 import type { Filter } from './types';

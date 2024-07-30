@@ -1,6 +1,5 @@
 import { SimpleGrid } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { useInterval } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -20,6 +19,7 @@ import {
 	ResourcePanelCPU,
 } from '@/components/settings/Resource';
 import { Section, SectionWrapper } from '@/components/settings/Section';
+import { useInterval } from '@/hooks/use-interval';
 import { getNumber, getString, getType } from '@/utils/form';
 
 export const meta: MetaFunction = () => {
