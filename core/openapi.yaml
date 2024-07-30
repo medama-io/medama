@@ -1408,17 +1408,34 @@ components:
       required:
         - b
         - m
+    EventCustom:
+      title: EventCustom
+      description: Event with custom properties.
+      type: object
+      properties:
+        n:
+          type: string
+          description: Event name or key.
+        p:
+          type: object
+          description: Event properties.
+          additionalProperties: true
+      required:
+        - n
+        - p
     EventHit:
       title: EventHit
       description: Website hit event.
       oneOf:
         - $ref: "#/components/schemas/EventLoad"
         - $ref: "#/components/schemas/EventUnload"
+        - $ref: "#/components/schemas/EventCustom"
       discriminator:
         propertyName: e
         mapping:
           load: "#/components/schemas/EventLoad"
           unload: "#/components/schemas/EventUnload"
+          custom: "#/components/schemas/EventCustom"
     FilterString:
       type: object
       properties:

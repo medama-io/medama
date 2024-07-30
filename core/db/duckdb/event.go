@@ -12,6 +12,10 @@ import (
 
 var (
 	//nolint:gochecknoglobals // Reason: Singleton patterns are typically written like this.
+	eventOnce sync.Once
+	//nolint:gochecknoglobals // Reason: Prepared statements are meant to be global.
+	eventStmt *sqlx.NamedStmt
+	//nolint:gochecknoglobals // Reason: Singleton patterns are typically written like this.
 	addOnce sync.Once
 	//nolint:gochecknoglobals // Reason: Prepared statements are meant to be global.
 	addStmt *sqlx.NamedStmt
@@ -20,6 +24,46 @@ var (
 	//nolint:gochecknoglobals // Reason: Prepared statements are meant to be global.
 	updateStmt *sqlx.NamedStmt
 )
+
+// AddEvent adds an event with a custom property to the database.
+func (c *Client) AddEvent(ctx context.Context, event *model.EventHit) error {
+	var err error
+	// Prepare named exec once.
+	eventOnce.Do(func() {
+		exec := `--sql
+		INSERT INTO events (
+			group,
+			name,
+			value,
+			date_created
+		) VALUES (
+			:group,
+			:name,
+			:value,
+			NOW()
+		)`
+
+		eventStmt, err = c.DB.PrepareNamedContext(ctx, exec)
+		if err != nil {
+			log := logger.Get()
+			log.Error().Err(err).Msg("failed to create prepared statement for add event")
+			panic("failed to create prepared statement for add event")
+		}
+	})
+
+	paramMap := map[string]interface{}{
+		"group": event.Group,
+		"name":  event.Name,
+		"value": event.Value,
+	}
+
+	_, err = eventStmt.ExecContext(ctx, paramMap)
+	if err != nil {
+		return errors.Wrap(err, "db")
+	}
+
+	return nil
+}
 
 // AddPageView adds a page view to the database.
 func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) error {

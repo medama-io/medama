@@ -69,6 +69,8 @@ func (s EventHit) Validate() error {
 			return err
 		}
 		return nil
+	case EventCustomEventHit:
+		return nil // no validation needed
 	default:
 		return errors.Errorf("invalid type %q", s.Type)
 	}

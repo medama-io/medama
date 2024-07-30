@@ -483,10 +483,27 @@ export interface components {
             e: "unload";
         };
         /**
+         * EventCustom
+         * @description Event with custom properties.
+         */
+        EventCustom: {
+            /** @description Event name or key. */
+            n: string;
+            /** @description Event properties. */
+            p: {
+                [key: string]: unknown;
+            };
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            e: "custom";
+        };
+        /**
          * EventHit
          * @description Website hit event.
          */
-        EventHit: components["schemas"]["EventLoad"] | components["schemas"]["EventUnload"];
+        EventHit: components["schemas"]["EventLoad"] | components["schemas"]["EventUnload"] | components["schemas"]["EventCustom"];
         FilterString: {
             /** @description Equal to. */
             eq?: string;

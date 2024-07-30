@@ -46,6 +46,7 @@ type AnalyticsClient interface {
 	GetSettingsUsage(ctx context.Context) (*model.GetSettingsUsage, error)
 	PatchSettingsUsage(ctx context.Context, settings *model.GetSettingsUsage) error
 	// Events
+	AddEvent(ctx context.Context, event *model.EventHit) error
 	AddPageView(ctx context.Context, event *model.PageViewHit) error
 	UpdatePageView(ctx context.Context, event *model.PageViewDuration) error
 	// Pages

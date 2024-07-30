@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/go-faster/errors"
+	"github.com/go-faster/jx"
 )
 
 // Request body for logging in.
@@ -167,6 +168,47 @@ type DeleteWebsitesIDNoContent struct{}
 
 func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 
+// Event with custom properties.
+// Ref: #/components/schemas/EventCustom
+type EventCustom struct {
+	// Event name or key.
+	N string `json:"n"`
+	// Event properties.
+	P EventCustomP `json:"p"`
+}
+
+// GetN returns the value of N.
+func (s *EventCustom) GetN() string {
+	return s.N
+}
+
+// GetP returns the value of P.
+func (s *EventCustom) GetP() EventCustomP {
+	return s.P
+}
+
+// SetN sets the value of N.
+func (s *EventCustom) SetN(val string) {
+	s.N = val
+}
+
+// SetP sets the value of P.
+func (s *EventCustom) SetP(val EventCustomP) {
+	s.P = val
+}
+
+// Event properties.
+type EventCustomP map[string]jx.Raw
+
+func (s *EventCustomP) init() EventCustomP {
+	m := *s
+	if m == nil {
+		m = map[string]jx.Raw{}
+		*s = m
+	}
+	return m
+}
+
 // Website hit event.
 // Ref: #/components/schemas/EventHit
 // EventHit represents sum type.
@@ -174,6 +216,7 @@ type EventHit struct {
 	Type        EventHitType // switch on this field
 	EventLoad   EventLoad
 	EventUnload EventUnload
+	EventCustom EventCustom
 }
 
 // EventHitType is oneOf type of EventHit.
@@ -183,6 +226,7 @@ type EventHitType string
 const (
 	EventLoadEventHit   EventHitType = "load"
 	EventUnloadEventHit EventHitType = "unload"
+	EventCustomEventHit EventHitType = "custom"
 )
 
 // IsEventLoad reports whether EventHit is EventLoad.
@@ -190,6 +234,9 @@ func (s EventHit) IsEventLoad() bool { return s.Type == EventLoadEventHit }
 
 // IsEventUnload reports whether EventHit is EventUnload.
 func (s EventHit) IsEventUnload() bool { return s.Type == EventUnloadEventHit }
+
+// IsEventCustom reports whether EventHit is EventCustom.
+func (s EventHit) IsEventCustom() bool { return s.Type == EventCustomEventHit }
 
 // SetEventLoad sets EventHit to EventLoad.
 func (s *EventHit) SetEventLoad(v EventLoad) {
@@ -230,6 +277,27 @@ func (s EventHit) GetEventUnload() (v EventUnload, ok bool) {
 func NewEventUnloadEventHit(v EventUnload) EventHit {
 	var s EventHit
 	s.SetEventUnload(v)
+	return s
+}
+
+// SetEventCustom sets EventHit to EventCustom.
+func (s *EventHit) SetEventCustom(v EventCustom) {
+	s.Type = EventCustomEventHit
+	s.EventCustom = v
+}
+
+// GetEventCustom returns EventCustom and true boolean if EventHit is EventCustom.
+func (s EventHit) GetEventCustom() (v EventCustom, ok bool) {
+	if !s.IsEventCustom() {
+		return v, false
+	}
+	return s.EventCustom, true
+}
+
+// NewEventCustomEventHit returns new EventHit from EventCustom.
+func NewEventCustomEventHit(v EventCustom) EventHit {
+	var s EventHit
+	s.SetEventCustom(v)
 	return s
 }
 
