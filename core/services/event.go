@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -283,6 +284,47 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		// Log success
 		log.Debug().Msg("hit: updated page view")
 
+	case api.EventCustomEventHit:
+		group := req.EventCustom.G
+		log = log.With().Str("hostname", group).Logger()
+
+		// Verify hostname exists
+		if !h.hostnames.Has(group) {
+			log.Warn().Msg("hit: website not found")
+			return ErrNotFound(model.ErrWebsiteNotFound), nil
+		}
+
+		events := []model.EventHit{}
+
+		for name, item := range req.EventCustom.P {
+			var value string
+
+			switch item.Type {
+			case api.StringEventCustomPItem:
+				value = item.String
+			case api.IntEventCustomPItem:
+				value = strconv.Itoa(item.Int)
+			case api.BoolEventCustomPItem:
+				value = strconv.FormatBool(item.Bool)
+			default:
+				log.Error().Str("type", string(item.Type)).Msg("hit: invalid custom event property type")
+				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
+			}
+
+			events = append(events, model.EventHit{
+				Group: group,
+				Name:  name,
+				Value: value,
+			})
+
+			log = log.With().Str("name", name).Str("value", value).Logger()
+
+			err := h.analyticsDB.AddEvents(ctx, &events)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to add event")
+				return ErrInternalServerError(err), nil
+			}
+		}
 	default:
 		log.Error().Str("type", string(req.Type)).Msg("hit: invalid event hit type")
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil

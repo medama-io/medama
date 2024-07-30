@@ -14,7 +14,7 @@ const (
 )
 
 // AddEvent adds an event with a custom property to the database.
-func (c *Client) AddEvent(ctx context.Context, event *model.EventHit) error {
+func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error {
 	exec := `--sql
 		INSERT INTO events (
 			group_name,
@@ -33,15 +33,31 @@ func (c *Client) AddEvent(ctx context.Context, event *model.EventHit) error {
 		return errors.Wrap(err, "duckdb")
 	}
 
-	paramMap := map[string]interface{}{
-		"group_name": event.Group,
-		"name":       event.Name,
-		"value":      event.Value,
+	// Start a transaction for batch insert
+	tx, err := c.DB.BeginTxx(ctx, nil)
+	if err != nil {
+		return errors.Wrap(err, "duckdb: begin transaction")
+	}
+	defer tx.Rollback() //nolint: errcheck // Called on defer
+
+	txStmt := tx.NamedStmtContext(ctx, stmt)
+
+	for _, event := range *events {
+		paramMap := map[string]interface{}{
+			"group_name": event.Group,
+			"name":       event.Name,
+			"value":      event.Value,
+		}
+
+		_, err = txStmt.ExecContext(ctx, paramMap)
+		if err != nil {
+			return errors.Wrap(err, "duckdb")
+		}
 	}
 
-	_, err = stmt.ExecContext(ctx, paramMap)
+	err = tx.Commit()
 	if err != nil {
-		return errors.Wrap(err, "duckdb")
+		return errors.Wrap(err, "duckdb: commit transaction")
 	}
 
 	return nil
