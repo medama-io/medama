@@ -22,7 +22,7 @@ func Up0004(c *duckdb.Client) error {
 	// date_created is the date the event was created
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS events (
-		group TEXT NOT NULL,
+		group_name TEXT NOT NULL,
 		name TEXT NOT NULL,
 		value TEXT NOT NULL,
 		date_created TIMESTAMPTZ NOT NULL

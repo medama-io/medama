@@ -9,7 +9,7 @@ const (
 
 type EventHit struct {
 	// Group - The group name of the event, typically the hostname.
-	Group string `db:"group"`
+	Group string `db:"group_name"`
 	// Name - The name of the event.
 	Name string `db:"name"`
 	// Value - The value of the event.

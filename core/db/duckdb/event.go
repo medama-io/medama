@@ -17,12 +17,12 @@ const (
 func (c *Client) AddEvent(ctx context.Context, event *model.EventHit) error {
 	exec := `--sql
 		INSERT INTO events (
-			group,
+			group_name,
 			name,
 			value,
 			date_created
 		) VALUES (
-			:group,
+			:group_name,
 			:name,
 			:value,
 			NOW()
@@ -34,9 +34,9 @@ func (c *Client) AddEvent(ctx context.Context, event *model.EventHit) error {
 	}
 
 	paramMap := map[string]interface{}{
-		"group": event.Group,
-		"name":  event.Name,
-		"value": event.Value,
+		"group_name": event.Group,
+		"name":       event.Name,
+		"value":      event.Value,
 	}
 
 	_, err = stmt.ExecContext(ctx, paramMap)
