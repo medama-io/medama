@@ -487,11 +487,13 @@ export interface components {
          * @description Event with custom properties.
          */
         EventCustom: {
+            /** @description Group name of events. Currently, only the hostname is supported. */
+            g: string;
             /** @description Event name or key. */
             n: string;
             /** @description Event properties. */
             p: {
-                [key: string]: unknown;
+                [key: string]: (string | number | boolean) | undefined;
             };
             /**
              * @description discriminator enum property added by openapi-typescript

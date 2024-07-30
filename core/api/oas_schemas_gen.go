@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/go-faster/errors"
-	"github.com/go-faster/jx"
 )
 
 // Request body for logging in.
@@ -171,10 +170,17 @@ func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 // Event with custom properties.
 // Ref: #/components/schemas/EventCustom
 type EventCustom struct {
+	// Group name of events. Currently, only the hostname is supported.
+	G string `json:"g"`
 	// Event name or key.
 	N string `json:"n"`
 	// Event properties.
 	P EventCustomP `json:"p"`
+}
+
+// GetG returns the value of G.
+func (s *EventCustom) GetG() string {
+	return s.G
 }
 
 // GetN returns the value of N.
@@ -185,6 +191,11 @@ func (s *EventCustom) GetN() string {
 // GetP returns the value of P.
 func (s *EventCustom) GetP() EventCustomP {
 	return s.P
+}
+
+// SetG sets the value of G.
+func (s *EventCustom) SetG(val string) {
+	s.G = val
 }
 
 // SetN sets the value of N.
@@ -198,15 +209,105 @@ func (s *EventCustom) SetP(val EventCustomP) {
 }
 
 // Event properties.
-type EventCustomP map[string]jx.Raw
+type EventCustomP map[string]EventCustomPItem
 
 func (s *EventCustomP) init() EventCustomP {
 	m := *s
 	if m == nil {
-		m = map[string]jx.Raw{}
+		m = map[string]EventCustomPItem{}
 		*s = m
 	}
 	return m
+}
+
+// EventCustomPItem represents sum type.
+type EventCustomPItem struct {
+	Type   EventCustomPItemType // switch on this field
+	String string
+	Int    int
+	Bool   bool
+}
+
+// EventCustomPItemType is oneOf type of EventCustomPItem.
+type EventCustomPItemType string
+
+// Possible values for EventCustomPItemType.
+const (
+	StringEventCustomPItem EventCustomPItemType = "string"
+	IntEventCustomPItem    EventCustomPItemType = "int"
+	BoolEventCustomPItem   EventCustomPItemType = "bool"
+)
+
+// IsString reports whether EventCustomPItem is string.
+func (s EventCustomPItem) IsString() bool { return s.Type == StringEventCustomPItem }
+
+// IsInt reports whether EventCustomPItem is int.
+func (s EventCustomPItem) IsInt() bool { return s.Type == IntEventCustomPItem }
+
+// IsBool reports whether EventCustomPItem is bool.
+func (s EventCustomPItem) IsBool() bool { return s.Type == BoolEventCustomPItem }
+
+// SetString sets EventCustomPItem to string.
+func (s *EventCustomPItem) SetString(v string) {
+	s.Type = StringEventCustomPItem
+	s.String = v
+}
+
+// GetString returns string and true boolean if EventCustomPItem is string.
+func (s EventCustomPItem) GetString() (v string, ok bool) {
+	if !s.IsString() {
+		return v, false
+	}
+	return s.String, true
+}
+
+// NewStringEventCustomPItem returns new EventCustomPItem from string.
+func NewStringEventCustomPItem(v string) EventCustomPItem {
+	var s EventCustomPItem
+	s.SetString(v)
+	return s
+}
+
+// SetInt sets EventCustomPItem to int.
+func (s *EventCustomPItem) SetInt(v int) {
+	s.Type = IntEventCustomPItem
+	s.Int = v
+}
+
+// GetInt returns int and true boolean if EventCustomPItem is int.
+func (s EventCustomPItem) GetInt() (v int, ok bool) {
+	if !s.IsInt() {
+		return v, false
+	}
+	return s.Int, true
+}
+
+// NewIntEventCustomPItem returns new EventCustomPItem from int.
+func NewIntEventCustomPItem(v int) EventCustomPItem {
+	var s EventCustomPItem
+	s.SetInt(v)
+	return s
+}
+
+// SetBool sets EventCustomPItem to bool.
+func (s *EventCustomPItem) SetBool(v bool) {
+	s.Type = BoolEventCustomPItem
+	s.Bool = v
+}
+
+// GetBool returns bool and true boolean if EventCustomPItem is bool.
+func (s EventCustomPItem) GetBool() (v bool, ok bool) {
+	if !s.IsBool() {
+		return v, false
+	}
+	return s.Bool, true
+}
+
+// NewBoolEventCustomPItem returns new EventCustomPItem from bool.
+func NewBoolEventCustomPItem(v bool) EventCustomPItem {
+	var s EventCustomPItem
+	s.SetBool(v)
+	return s
 }
 
 // Website hit event.
