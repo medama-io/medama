@@ -8,8 +8,9 @@ import { type DateRange, DayPicker } from 'react-day-picker';
 
 import { Button, CloseButton } from '@/components/Button';
 import { Group } from '@/components/layout/Flex';
+import { useDidUpdate } from '@/hooks/use-did-update';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
-import { useMediaQuery } from '@mantine/hooks';
 import classes from './DatePicker.module.css';
 
 interface DatePickerProps {
@@ -19,17 +20,25 @@ interface DatePickerProps {
 
 const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [date, setDate] = useState<DateRange | undefined>({
-		from: searchParams.get('start')
-			? // biome-ignore lint/style/noNonNullAssertion: Valid.
-				parseISO(searchParams.get('start')!)
-			: undefined,
 
-		to: searchParams.get('end')
-			? // biome-ignore lint/style/noNonNullAssertion: Valid.
-				parseISO(searchParams.get('end')!)
-			: undefined,
-	});
+	const getDateRange = () => {
+		const start = searchParams.get('start');
+		const end = searchParams.get('end');
+		if (searchParams.get('period') === 'custom' && start && end) {
+			return {
+				from: parseISO(start),
+				to: parseISO(end),
+			};
+		}
+		return undefined;
+	};
+
+	const [date, setDate] = useState<DateRange | undefined>(getDateRange());
+
+	// If the search params change, we should verify if the date range has changed
+	useDidUpdate(() => {
+		setDate(getDateRange());
+	}, [searchParams]);
 
 	const handleSubmit = () => {
 		if (date) {
@@ -65,7 +74,6 @@ const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 							Select the start and end date for the date range.
 						</Dialog.Description>
 					</VisuallyHidden.Root>
-
 					<DayPicker
 						mode="range"
 						classNames={classes}
