@@ -2,6 +2,8 @@ filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
 filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
 github.com/alexedwards/argon2id v1.0.0 h1:wJzDx66hqWX7siL/SRUmgz3F8YMrd/nfX/xHHcQQP0w=
 github.com/alexedwards/argon2id v1.0.0/go.mod h1:tYKkqIjzXvZdzPvADMWOEZ+l6+BD6CtBXMj5fnJppiw=
+github.com/alphadose/haxmap v1.4.0 h1:1yn+oGzy2THJj1DMuJBzRanE3sMnDAjJVbU0L31Jp3w=
+github.com/alphadose/haxmap v1.4.0/go.mod h1:rjHw1IAqbxm0S3U5tD16GoKsiAd8FWx5BJ2IYqXwgmM=
 github.com/apache/arrow/go/v14 v14.0.2 h1:N8OkaJEOfI3mEZt07BIkvo4sC6XDbL+48MBPWO5IONw=
 github.com/apache/arrow/go/v14 v14.0.2/go.mod h1:u3fgh3EdgN/YQ8cVQRguVW3R+seMybFg8QBQ5LU+eBY=
 github.com/boyter/go-string v1.0.5 h1:/xcOlWdgelLYLVkUU0xBLfioGjZ9KIMUMI/RXG138YY=
@@ -76,8 +78,6 @@ github.com/medama-io/go-referrer-parser v0.0.0-20240706151617-0106555291e7 h1:r/
 github.com/medama-io/go-referrer-parser v0.0.0-20240706151617-0106555291e7/go.mod h1:y/Y+TQijcFNVXWiZ7YhiThXVRbORFdhcY0osQZXQw8Q=
 github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7 h1:mydNOo0Zm10bC/RX4h9iwe18hGS0KB5cTqo/y/WpbLQ=
 github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7/go.mod h1:Wq7lg5D0ZdQ3bHnzOTKsb1YGlxm/l82OVA4aIbAA5w4=
-github.com/medama-io/go-useragent v0.0.0-20240705132343-7fdad75704b9 h1:WJcl6hA8S7/F5MmiPaFdUduMyj40IhIAuh14zuLCZyk=
-github.com/medama-io/go-useragent v0.0.0-20240705132343-7fdad75704b9/go.mod h1:H9GYWth4IN8vAFZh5LeARza7VwM4jK9uk7Tb9huVzLw=
 github.com/medama-io/go-useragent v0.0.0-20240707203018-4bd80a87eb23 h1:myjtzE9EGr2zS0d9jguGbZGCgj2117X82L9ZAK1AeYo=
 github.com/medama-io/go-useragent v0.0.0-20240707203018-4bd80a87eb23/go.mod h1:H9GYWth4IN8vAFZh5LeARza7VwM4jK9uk7Tb9huVzLw=
 github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=
