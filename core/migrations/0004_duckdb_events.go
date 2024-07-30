@@ -13,7 +13,7 @@ func Up0004(c *duckdb.Client) error {
 
 	// Create events table
 	//
-	// group is the group name of the event, typically the hostname
+	// group_name is the group name of the event, typically the hostname
 	//
 	// name is the name of the event
 	//

@@ -6,6 +6,29 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
+func TestAddEvent(t *testing.T) {
+	assert, _, ctx, client := SetupDatabase(t)
+	rows := client.DB.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
+	var count int
+	err := rows.Scan(&count)
+	assert.NoError(err)
+	assert.Equal(0, count)
+
+	event := &model.EventHit{
+		Group: "add-event-test.io",
+		Name:  "test_event",
+		Value: "test_value",
+	}
+
+	err = client.AddEvent(ctx, event)
+	assert.NoError(err)
+
+	rows = client.DB.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
+	err = rows.Scan(&count)
+	assert.NoError(err)
+	assert.Equal(1, count)
+}
+
 func TestAddPageView(t *testing.T) {
 	assert, _, ctx, client := SetupDatabase(t)
 	rows := client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
