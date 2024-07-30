@@ -11,6 +11,7 @@ import (
 
 type Client struct {
 	*sqlx.DB
+	// Map of prepared statements.
 	statements *haxmap.Map[string, *sqlx.NamedStmt]
 }
 
@@ -39,49 +40,39 @@ func NewClient(host string) (*Client, error) {
 		}
 	}
 
-	prepared := haxmap.New[string, *sqlx.NamedStmt]()
-	c := &Client{
+	return &Client{
 		DB:         db,
-		statements: prepared,
-	}
-
-	err = c.prepareStatements(context.Background())
-	if err != nil {
-		return nil, err
-	}
-
-	return c, nil
+		statements: haxmap.New[string, *sqlx.NamedStmt](),
+	}, nil
 }
 
 // Close closes the database connection and any prepared statements.
 func (c *Client) Close() error {
 	// Close the statements.
-	c.closeStatements(context.Background())
+	c.closeStatements()
 
 	// Close the database connection.
 	return c.DB.Close()
 }
 
-func (c *Client) prepareStatements(ctx context.Context) error {
-	// Map of statements to prepare on startup
-	queryMap := map[string]string{
-		addEventName:       addEventQuery,
-		addPageViewName:    addPageViewQuery,
-		updatePageViewName: updatePageViewQuery,
+// GetPreparedStmt returns a prepared statement by name. This is lazy loaded and cached after
+// the first call.
+func (c *Client) GetPreparedStmt(ctx context.Context, name string, query string) (*sqlx.NamedStmt, error) {
+	stmt, ok := c.statements.Get(name)
+	if ok {
+		return stmt, nil
 	}
 
-	for name := range queryMap {
-		stmt, err := c.DB.PrepareNamedContext(ctx, queryMap[name])
-		if err != nil {
-			return errors.Wrap(err, "duckdb: unable to create prepared statement")
-		}
-		c.statements.Set(name, stmt)
+	stmt, err := c.DB.PrepareNamedContext(ctx, query)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to create prepared statement")
 	}
 
-	return nil
+	c.statements.Set(name, stmt)
+	return stmt, nil
 }
 
-func (c *Client) closeStatements(ctx context.Context) {
+func (c *Client) closeStatements() {
 	c.statements.ForEach(func(_ string, stmt *sqlx.NamedStmt) bool {
 		stmt.Close()
 		return true

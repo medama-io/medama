@@ -8,8 +8,14 @@ import (
 )
 
 const (
-	addEventName  = "addEvent"
-	addEventQuery = `--sql
+	addEventName       = "addEvent"
+	addPageViewName    = "addPageView"
+	updatePageViewName = "updatePageView"
+)
+
+// AddEvent adds an event with a custom property to the database.
+func (c *Client) AddEvent(ctx context.Context, event *model.EventHit) error {
+	exec := `--sql
 		INSERT INTO events (
 			group,
 			name,
@@ -21,8 +27,29 @@ const (
 			:value,
 			NOW()
 		)`
-	addPageViewName  = "addPageView"
-	addPageViewQuery = `--sql
+
+	stmt, err := c.GetPreparedStmt(ctx, addEventName, exec)
+	if err != nil {
+		return errors.Wrap(err, "duckdb")
+	}
+
+	paramMap := map[string]interface{}{
+		"group": event.Group,
+		"name":  event.Name,
+		"value": event.Value,
+	}
+
+	_, err = stmt.ExecContext(ctx, paramMap)
+	if err != nil {
+		return errors.Wrap(err, "duckdb")
+	}
+
+	return nil
+}
+
+// AddPageView adds a page view to the database.
+func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) error {
+	exec := `--sql
 		INSERT INTO views (
 			bid,
 			hostname,
@@ -60,30 +87,12 @@ const (
 			:utm_campaign,
 			NOW()
 		)`
-	updatePageViewName  = "updatePageView"
-	updatePageViewQuery = `--sql
-		UPDATE views SET duration_ms = :duration_ms WHERE bid = :bid`
-)
 
-// AddEvent adds an event with a custom property to the database.
-func (c *Client) AddEvent(ctx context.Context, event *model.EventHit) error {
-	paramMap := map[string]interface{}{
-		"group": event.Group,
-		"name":  event.Name,
-		"value": event.Value,
-	}
-
-	q, _ := c.statements.Get(addEventName)
-	_, err := q.ExecContext(ctx, paramMap)
+	stmt, err := c.GetPreparedStmt(ctx, addPageViewName, exec)
 	if err != nil {
-		return errors.Wrap(err, "db")
+		return errors.Wrap(err, "duckdb")
 	}
 
-	return nil
-}
-
-// AddPageView adds a page view to the database.
-func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) error {
 	paramMap := map[string]interface{}{
 		"bid":              event.BID,
 		"hostname":         event.Hostname,
@@ -103,8 +112,7 @@ func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) erro
 		"utm_campaign":     event.UTMCampaign,
 	}
 
-	q, _ := c.statements.Get(addPageViewName)
-	_, err := q.ExecContext(ctx, paramMap)
+	_, err = stmt.ExecContext(ctx, paramMap)
 	if err != nil {
 		return errors.Wrap(err, "db")
 	}
@@ -114,13 +122,20 @@ func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) erro
 
 // UpdatePageView updates a page view in the database.
 func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDuration) error {
+	exec := `--sql
+		UPDATE views SET duration_ms = :duration_ms WHERE bid = :bid`
+
+	stmt, err := c.GetPreparedStmt(ctx, updatePageViewName, exec)
+	if err != nil {
+		return errors.Wrap(err, "db")
+	}
+
 	paramMap := map[string]interface{}{
 		"bid":         event.BID,
 		"duration_ms": event.DurationMs,
 	}
 
-	q, _ := c.statements.Get(updatePageViewName)
-	_, err := q.ExecContext(ctx, paramMap)
+	_, err = stmt.ExecContext(ctx, paramMap)
 	if err != nil {
 		return errors.Wrap(err, "db")
 	}
