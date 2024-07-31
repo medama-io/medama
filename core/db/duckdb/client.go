@@ -1,6 +1,9 @@
 package duckdb
 
 import (
+	"context"
+
+	"github.com/alphadose/haxmap"
 	"github.com/go-faster/errors"
 	"github.com/jmoiron/sqlx"
 	"github.com/medama-io/medama/db"
@@ -8,6 +11,8 @@ import (
 
 type Client struct {
 	*sqlx.DB
+	// Map of prepared statements.
+	statements *haxmap.Map[string, *sqlx.NamedStmt]
 }
 
 // Compile time check for Client.
@@ -36,30 +41,40 @@ func NewClient(host string) (*Client, error) {
 	}
 
 	return &Client{
-		DB: db,
+		DB:         db,
+		statements: haxmap.New[string, *sqlx.NamedStmt](),
 	}, nil
 }
 
 // Close closes the database connection and any prepared statements.
 func (c *Client) Close() error {
-	// Helper function to close a statement and wrap any error.
-	closeStmt := func(stmt *sqlx.NamedStmt) error {
-		if stmt != nil {
-			if err := stmt.Close(); err != nil {
-				return errors.Wrap(err, "duckdb")
-			}
-		}
-		return nil
-	}
-
 	// Close the statements.
-	if err := closeStmt(addStmt); err != nil {
-		return err
-	}
-	if err := closeStmt(updateStmt); err != nil {
-		return err
-	}
+	c.closeStatements()
 
 	// Close the database connection.
 	return c.DB.Close()
+}
+
+// GetPreparedStmt returns a prepared statement by name. This is lazy loaded and cached after
+// the first call.
+func (c *Client) GetPreparedStmt(ctx context.Context, name string, query string) (*sqlx.NamedStmt, error) {
+	stmt, ok := c.statements.Get(name)
+	if ok {
+		return stmt, nil
+	}
+
+	stmt, err := c.DB.PrepareNamedContext(ctx, query)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to create prepared statement")
+	}
+
+	c.statements.Set(name, stmt)
+	return stmt, nil
+}
+
+func (c *Client) closeStatements() {
+	c.statements.ForEach(func(_ string, stmt *sqlx.NamedStmt) bool {
+		stmt.Close()
+		return true
+	})
 }

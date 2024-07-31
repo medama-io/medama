@@ -7,6 +7,17 @@ const (
 	RequestKeyBody RequestKey = "request"
 )
 
+type EventHit struct {
+	// BatchID - Used to group together multiple properties of the same event.
+	BatchID string `db:"batch_id"`
+	// Group - The group name of the event, typically the hostname.
+	Group string `db:"group_name"`
+	// Name - The name of the event.
+	Name string `db:"name"`
+	// Value - The value of the event.
+	Value string `db:"value"`
+}
+
 type PageViewHit struct {
 	// Beacon ID - Used to determine if multiple event types are
 	// associated with a single page view.

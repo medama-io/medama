@@ -542,6 +542,247 @@ func (s *ConflictErrorError) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode implements json.Marshaler.
+func (s *EventCustom) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *EventCustom) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("g")
+		e.Str(s.G)
+	}
+	{
+		e.FieldStart("n")
+		e.Str(s.N)
+	}
+	{
+		e.FieldStart("p")
+		s.P.Encode(e)
+	}
+}
+
+var jsonFieldsNameOfEventCustom = [3]string{
+	0: "g",
+	1: "n",
+	2: "p",
+}
+
+// Decode decodes EventCustom from json.
+func (s *EventCustom) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode EventCustom to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "g":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.G = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"g\"")
+			}
+		case "n":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.N = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"n\"")
+			}
+		case "p":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				if err := s.P.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"p\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode EventCustom")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfEventCustom) {
+					name = jsonFieldsNameOfEventCustom[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *EventCustom) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *EventCustom) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s EventCustomP) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields implements json.Marshaler.
+func (s EventCustomP) encodeFields(e *jx.Encoder) {
+	for k, elem := range s {
+		e.FieldStart(k)
+
+		elem.Encode(e)
+	}
+}
+
+// Decode decodes EventCustomP from json.
+func (s *EventCustomP) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode EventCustomP to nil")
+	}
+	m := s.init()
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		var elem EventCustomPItem
+		if err := func() error {
+			if err := elem.Decode(d); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrapf(err, "decode field %q", k)
+		}
+		m[string(k)] = elem
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode EventCustomP")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s EventCustomP) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *EventCustomP) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes EventCustomPItem as json.
+func (s EventCustomPItem) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case StringEventCustomPItem:
+		e.Str(s.String)
+	case IntEventCustomPItem:
+		e.Int(s.Int)
+	case BoolEventCustomPItem:
+		e.Bool(s.Bool)
+	}
+}
+
+// Decode decodes EventCustomPItem from json.
+func (s *EventCustomPItem) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode EventCustomPItem to nil")
+	}
+	// Sum type type_discriminator.
+	switch t := d.Next(); t {
+	case jx.Bool:
+		v, err := d.Bool()
+		s.Bool = bool(v)
+		if err != nil {
+			return err
+		}
+		s.Type = BoolEventCustomPItem
+	case jx.Number:
+		v, err := d.Int()
+		s.Int = int(v)
+		if err != nil {
+			return err
+		}
+		s.Type = IntEventCustomPItem
+	case jx.String:
+		v, err := d.Str()
+		s.String = string(v)
+		if err != nil {
+			return err
+		}
+		s.Type = StringEventCustomPItem
+	default:
+		return errors.Errorf("unexpected json type %q", t)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s EventCustomPItem) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *EventCustomPItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes EventHit as json.
 func (s EventHit) Encode(e *jx.Encoder) {
 	e.ObjStart()
@@ -551,6 +792,24 @@ func (s EventHit) Encode(e *jx.Encoder) {
 
 func (s EventHit) encodeFields(e *jx.Encoder) {
 	switch s.Type {
+	case EventCustomEventHit:
+		e.FieldStart("e")
+		e.Str("custom")
+		{
+			s := s.EventCustom
+			{
+				e.FieldStart("g")
+				e.Str(s.G)
+			}
+			{
+				e.FieldStart("n")
+				e.Str(s.N)
+			}
+			{
+				e.FieldStart("p")
+				s.P.Encode(e)
+			}
+		}
 	case EventLoadEventHit:
 		e.FieldStart("e")
 		e.Str("load")
@@ -625,6 +884,9 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 					return err
 				}
 				switch typ {
+				case "custom":
+					s.Type = EventCustomEventHit
+					found = true
 				case "load":
 					s.Type = EventLoadEventHit
 					found = true
@@ -651,6 +913,10 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 		}
 	case EventUnloadEventHit:
 		if err := s.EventUnload.Decode(d); err != nil {
+			return err
+		}
+	case EventCustomEventHit:
+		if err := s.EventCustom.Decode(d); err != nil {
 			return err
 		}
 	default:

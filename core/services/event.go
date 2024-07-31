@@ -4,12 +4,15 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
+	"go.jetify.com/typeid"
 	"golang.org/x/text/language"
 	"golang.org/x/text/language/display"
 )
@@ -283,6 +286,61 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		// Log success
 		log.Debug().Msg("hit: updated page view")
 
+	case api.EventCustomEventHit:
+		group := req.EventCustom.G
+		log = log.With().Str("hostname", group).Logger()
+
+		// Verify hostname exists
+		if !h.hostnames.Has(group) {
+			log.Warn().Msg("hit: website not found")
+			return ErrNotFound(model.ErrWebsiteNotFound), nil
+		}
+
+		events := []model.EventHit{}
+
+		// Generate batch ID to group all the properties of the same event.
+		batchIDType, err := typeid.WithPrefix("event")
+		if err != nil {
+			return ErrInternalServerError(errors.Wrap(err, "services: typeid custom event")), nil
+		}
+		batchID := batchIDType.String()
+
+		for name, item := range req.EventCustom.P {
+			var value string
+
+			switch item.Type {
+			case api.StringEventCustomPItem:
+				value = item.String
+			case api.IntEventCustomPItem:
+				value = strconv.Itoa(item.Int)
+			case api.BoolEventCustomPItem:
+				value = strconv.FormatBool(item.Bool)
+			default:
+				log.Error().Str("type", string(item.Type)).Msg("hit: invalid custom event property type")
+				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
+			}
+
+			events = append(events, model.EventHit{
+				BatchID: batchID,
+				Group:   group,
+				Name:    name,
+				Value:   value,
+			})
+
+			log = log.With().
+				Str("group", group).
+				Str("name", name).
+				Str("value", value).
+				Logger()
+
+			err := h.analyticsDB.AddEvents(ctx, &events)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to add event")
+				return ErrInternalServerError(err), nil
+			}
+
+			log.Debug().Msg("hit: added custom event")
+		}
 	default:
 		log.Error().Str("type", string(req.Type)).Msg("hit: invalid event hit type")
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil

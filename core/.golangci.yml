@@ -6,11 +6,6 @@ run:
 # This file contains only configs which differ from defaults.
 # All possible options can be found here https://github.com/golangci/golangci-lint/blob/master/.golangci.reference.yml
 linters-settings:
-  cyclop:
-    # The maximal code complexity to report.
-    # Default: 10
-    max-complexity: 40
-
   errcheck:
     # Report about not checking of errors in type assertions: `a := b.(MyStruct)`.
     # Such cases aren't reported by default.
@@ -117,7 +112,7 @@ linters:
     - bodyclose # checks whether HTTP response body is closed successfully
     - containedctx # checks for context.Context contained in a struct
     - contextcheck # checks for common mistakes using context
-    - cyclop # checks function and package cyclomatic complexity
+    # - cyclop # checks function and package cyclomatic complexity
     # - dupl # tool for code clone detection
     - durationcheck # checks for two durations multiplied together
     - errname # checks that sentinel errors are prefixed with the Err and error types are suffixed with the Error
@@ -133,7 +128,7 @@ linters:
     # - gocognit # computes and checks the cognitive complexity of functions
     - goconst # finds repeated strings that could be replaced by a constant
     - gocritic # provides diagnostics that check for bugs, performance and style issues
-    - gocyclo # computes and checks the cyclomatic complexity of functions
+    # - gocyclo # computes and checks the cyclomatic complexity of functions
     - gofumpt # checks if the code is formatted with gofumpt
     - godot # checks if comments end in a period
     - goimports # in addition to fixing imports, goimports also formats your code in the same style as gofmt

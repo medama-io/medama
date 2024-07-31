@@ -54,6 +54,7 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 	duckdbMigrations := []*Migration[duckdb.Client]{
 		{ID: 2, Name: "0002_duckdb_schema.go", Type: DuckDB, Up: Up0002, Down: Down0002},
 		{ID: 3, Name: "0003_duckdb_referrer.go", Type: DuckDB, Up: Up0003, Down: Down0003},
+		{ID: 4, Name: "0004_duckdb_events.go", Type: DuckDB, Up: Up0004, Down: Down0004},
 	}
 
 	log := logger.Get()

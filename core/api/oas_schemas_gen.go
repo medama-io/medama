@@ -167,6 +167,149 @@ type DeleteWebsitesIDNoContent struct{}
 
 func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 
+// Event with custom properties.
+// Ref: #/components/schemas/EventCustom
+type EventCustom struct {
+	// Group name of events. Currently, only the hostname is supported.
+	G string `json:"g"`
+	// Event name or key.
+	N string `json:"n"`
+	// Event properties.
+	P EventCustomP `json:"p"`
+}
+
+// GetG returns the value of G.
+func (s *EventCustom) GetG() string {
+	return s.G
+}
+
+// GetN returns the value of N.
+func (s *EventCustom) GetN() string {
+	return s.N
+}
+
+// GetP returns the value of P.
+func (s *EventCustom) GetP() EventCustomP {
+	return s.P
+}
+
+// SetG sets the value of G.
+func (s *EventCustom) SetG(val string) {
+	s.G = val
+}
+
+// SetN sets the value of N.
+func (s *EventCustom) SetN(val string) {
+	s.N = val
+}
+
+// SetP sets the value of P.
+func (s *EventCustom) SetP(val EventCustomP) {
+	s.P = val
+}
+
+// Event properties.
+type EventCustomP map[string]EventCustomPItem
+
+func (s *EventCustomP) init() EventCustomP {
+	m := *s
+	if m == nil {
+		m = map[string]EventCustomPItem{}
+		*s = m
+	}
+	return m
+}
+
+// EventCustomPItem represents sum type.
+type EventCustomPItem struct {
+	Type   EventCustomPItemType // switch on this field
+	String string
+	Int    int
+	Bool   bool
+}
+
+// EventCustomPItemType is oneOf type of EventCustomPItem.
+type EventCustomPItemType string
+
+// Possible values for EventCustomPItemType.
+const (
+	StringEventCustomPItem EventCustomPItemType = "string"
+	IntEventCustomPItem    EventCustomPItemType = "int"
+	BoolEventCustomPItem   EventCustomPItemType = "bool"
+)
+
+// IsString reports whether EventCustomPItem is string.
+func (s EventCustomPItem) IsString() bool { return s.Type == StringEventCustomPItem }
+
+// IsInt reports whether EventCustomPItem is int.
+func (s EventCustomPItem) IsInt() bool { return s.Type == IntEventCustomPItem }
+
+// IsBool reports whether EventCustomPItem is bool.
+func (s EventCustomPItem) IsBool() bool { return s.Type == BoolEventCustomPItem }
+
+// SetString sets EventCustomPItem to string.
+func (s *EventCustomPItem) SetString(v string) {
+	s.Type = StringEventCustomPItem
+	s.String = v
+}
+
+// GetString returns string and true boolean if EventCustomPItem is string.
+func (s EventCustomPItem) GetString() (v string, ok bool) {
+	if !s.IsString() {
+		return v, false
+	}
+	return s.String, true
+}
+
+// NewStringEventCustomPItem returns new EventCustomPItem from string.
+func NewStringEventCustomPItem(v string) EventCustomPItem {
+	var s EventCustomPItem
+	s.SetString(v)
+	return s
+}
+
+// SetInt sets EventCustomPItem to int.
+func (s *EventCustomPItem) SetInt(v int) {
+	s.Type = IntEventCustomPItem
+	s.Int = v
+}
+
+// GetInt returns int and true boolean if EventCustomPItem is int.
+func (s EventCustomPItem) GetInt() (v int, ok bool) {
+	if !s.IsInt() {
+		return v, false
+	}
+	return s.Int, true
+}
+
+// NewIntEventCustomPItem returns new EventCustomPItem from int.
+func NewIntEventCustomPItem(v int) EventCustomPItem {
+	var s EventCustomPItem
+	s.SetInt(v)
+	return s
+}
+
+// SetBool sets EventCustomPItem to bool.
+func (s *EventCustomPItem) SetBool(v bool) {
+	s.Type = BoolEventCustomPItem
+	s.Bool = v
+}
+
+// GetBool returns bool and true boolean if EventCustomPItem is bool.
+func (s EventCustomPItem) GetBool() (v bool, ok bool) {
+	if !s.IsBool() {
+		return v, false
+	}
+	return s.Bool, true
+}
+
+// NewBoolEventCustomPItem returns new EventCustomPItem from bool.
+func NewBoolEventCustomPItem(v bool) EventCustomPItem {
+	var s EventCustomPItem
+	s.SetBool(v)
+	return s
+}
+
 // Website hit event.
 // Ref: #/components/schemas/EventHit
 // EventHit represents sum type.
@@ -174,6 +317,7 @@ type EventHit struct {
 	Type        EventHitType // switch on this field
 	EventLoad   EventLoad
 	EventUnload EventUnload
+	EventCustom EventCustom
 }
 
 // EventHitType is oneOf type of EventHit.
@@ -183,6 +327,7 @@ type EventHitType string
 const (
 	EventLoadEventHit   EventHitType = "load"
 	EventUnloadEventHit EventHitType = "unload"
+	EventCustomEventHit EventHitType = "custom"
 )
 
 // IsEventLoad reports whether EventHit is EventLoad.
@@ -190,6 +335,9 @@ func (s EventHit) IsEventLoad() bool { return s.Type == EventLoadEventHit }
 
 // IsEventUnload reports whether EventHit is EventUnload.
 func (s EventHit) IsEventUnload() bool { return s.Type == EventUnloadEventHit }
+
+// IsEventCustom reports whether EventHit is EventCustom.
+func (s EventHit) IsEventCustom() bool { return s.Type == EventCustomEventHit }
 
 // SetEventLoad sets EventHit to EventLoad.
 func (s *EventHit) SetEventLoad(v EventLoad) {
@@ -230,6 +378,27 @@ func (s EventHit) GetEventUnload() (v EventUnload, ok bool) {
 func NewEventUnloadEventHit(v EventUnload) EventHit {
 	var s EventHit
 	s.SetEventUnload(v)
+	return s
+}
+
+// SetEventCustom sets EventHit to EventCustom.
+func (s *EventHit) SetEventCustom(v EventCustom) {
+	s.Type = EventCustomEventHit
+	s.EventCustom = v
+}
+
+// GetEventCustom returns EventCustom and true boolean if EventHit is EventCustom.
+func (s EventHit) GetEventCustom() (v EventCustom, ok bool) {
+	if !s.IsEventCustom() {
+		return v, false
+	}
+	return s.EventCustom, true
+}
+
+// NewEventCustomEventHit returns new EventHit from EventCustom.
+func NewEventCustomEventHit(v EventCustom) EventHit {
+	var s EventHit
+	s.SetEventCustom(v)
 	return s
 }
 
