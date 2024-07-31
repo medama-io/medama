@@ -23,3 +23,7 @@ tasks:
       - ./dist/default.js
     generates:
       - ../core/client/script.js
+
+  test:
+    cmds:
+      - bun run e2e

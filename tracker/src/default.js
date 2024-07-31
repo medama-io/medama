@@ -1,3 +1,4 @@
+// @ts-check
 /**
  * Event types for addEventListener function calls.
  *

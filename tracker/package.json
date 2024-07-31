@@ -7,11 +7,15 @@
 		"build": "npm run build:default && npm run build:size",
 		"build:default": "google-closure-compiler -O ADVANCED src/default.js --js_output_file dist/default.js --language_out ECMASCRIPT_2015 --externs src/w3c_event.js",
 		"build:size": "node ./scripts/size.js",
-		"format": "biome format --write ."
+		"format": "biome format --write .",
+		"e2e:serve": "bun run ./tests/fixtures/serve.js",
+		"e2e": "playwright test"
 	},
 	"author": "Ayuhito",
 	"license": "MIT",
 	"devDependencies": {
+		"@playwright/test": "^1.45.3",
+		"@types/node": "^22.0.0",
 		"brotli-size": "^4.0.0",
 		"google-closure-compiler": "^20230802.0.0",
 		"gzip-size": "6"

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>SPA Example</title>
+	</head>
+	<body>
+		<h1>SPA Example</h1>
+		<nav>
+			<a href="#" onclick="navigate('home')">Home</a>
+			<a href="#" onclick="navigate('about')">About</a>
+			<a href="#" onclick="navigate('contact')">Contact</a>
+		</nav>
+		<div id="content"></div>
+
+		<script>
+			function navigate(page) {
+				const content = document.getElementById("content");
+				switch (page) {
+					case "home":
+						content.innerHTML = "<p>This is the home page.</p>";
+						break;
+					case "about":
+						content.innerHTML = "<p>This is the about page.</p>";
+						break;
+					case "contact":
+						content.innerHTML = "<p>This is the contact page.</p>";
+						break;
+				}
+			}
+
+			// Initial load
+			navigate("home");
+		</script>
+	</body>
+</html>

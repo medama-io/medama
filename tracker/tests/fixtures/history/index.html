@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>History API Router Example</title>
+	</head>
+	<body>
+		<h1>History API Router Example</h1>
+		<nav>
+			<a href="/history/home" onclick="navigate('/'); return false;">Home</a>
+			<a href="/history/about" onclick="navigate('/about'); return false;"
+				>About</a
+			>
+			<a href="/history/contact" onclick="navigate('/contact'); return false;"
+				>Contact</a
+			>
+		</nav>
+		<div id="content"></div>
+
+		<script>
+			function navigate(path) {
+				history.pushState(null, "", path);
+				router();
+			}
+
+			function router() {
+				const content = document.getElementById("content");
+				const path = window.location.pathname;
+
+				switch (path) {
+					case "/":
+						content.innerHTML = "<p>This is the home page.</p>";
+						break;
+					case "/about":
+						content.innerHTML = "<p>This is the about page.</p>";
+						break;
+					case "/contact":
+						content.innerHTML = "<p>This is the contact page.</p>";
+						break;
+				}
+			}
+
+			window.addEventListener("popstate", router);
+			router(); // Initial load
+		</script>
+	</body>
+</html>
