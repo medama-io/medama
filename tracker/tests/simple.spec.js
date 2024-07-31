@@ -1,14 +1,4 @@
-import { test, expect } from '@playwright/test';
+// @ts-check
+import { createTests } from './helpers';
 
-test.describe('Simple', () => {
-	test('Load event unique', async ({ page }) => {
-		page.on('request', (request) => {
-			const url = request.url();
-			if (url.includes('/api/')) {
-				console.log('<<', request.method(), request.url());
-			}
-		});
-		await page.goto('/simple/index.html');
-		await page.waitForLoadState();
-	});
-});
+createTests('/simple/index.html');
