@@ -17,11 +17,13 @@ const (
 func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error {
 	exec := `--sql
 		INSERT INTO events (
+			batch_id,
 			group_name,
 			name,
 			value,
 			date_created
 		) VALUES (
+			:batch_id,
 			:group_name,
 			:name,
 			:value,
@@ -36,7 +38,7 @@ func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error 
 	// Start a transaction for batch insert
 	tx, err := c.DB.BeginTxx(ctx, nil)
 	if err != nil {
-		return errors.Wrap(err, "duckdb: begin transaction")
+		return errors.Wrap(err, "duckdb: begin event hit transaction")
 	}
 	defer tx.Rollback() //nolint: errcheck // Called on defer
 
@@ -44,6 +46,7 @@ func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error 
 
 	for _, event := range *events {
 		paramMap := map[string]interface{}{
+			"batch_id":   event.BatchID,
 			"group_name": event.Group,
 			"name":       event.Name,
 			"value":      event.Value,
@@ -57,7 +60,7 @@ func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error 
 
 	err = tx.Commit()
 	if err != nil {
-		return errors.Wrap(err, "duckdb: commit transaction")
+		return errors.Wrap(err, "duckdb: commit event hit transaction")
 	}
 
 	return nil

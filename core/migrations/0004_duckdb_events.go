@@ -11,17 +11,20 @@ func Up0004(c *duckdb.Client) error {
 		return err
 	}
 
-	// Create events table
+	// Create events table.
 	//
-	// group_name is the group name of the event, typically the hostname
+	// batch_id is used to group together multiple properties of the same event.
 	//
-	// name is the name of the event
+	// group_name is the group name of the event, typically the hostname.
 	//
-	// value is the value of the event
+	// name is the name of the event.
 	//
-	// date_created is the date the event was created
+	// value is the value of the event.
+	//
+	// date_created is the date the event was created.
 	_, err = tx.Exec(`--sql
 	CREATE TABLE IF NOT EXISTS events (
+		batch_id TEXT NOT NULL,
 		group_name TEXT NOT NULL,
 		name TEXT NOT NULL,
 		value TEXT NOT NULL,

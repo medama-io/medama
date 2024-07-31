@@ -8,9 +8,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
+	"go.jetify.com/typeid"
 	"golang.org/x/text/language"
 	"golang.org/x/text/language/display"
 )
@@ -296,6 +298,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 
 		events := []model.EventHit{}
 
+		// Generate batch ID to group all the properties of the same event.
+		batchIDType, err := typeid.WithPrefix("event")
+		if err != nil {
+			return ErrInternalServerError(errors.Wrap(err, "services: typeid custom event")), nil
+		}
+		batchID := batchIDType.String()
+
 		for name, item := range req.EventCustom.P {
 			var value string
 
@@ -312,18 +321,26 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			}
 
 			events = append(events, model.EventHit{
-				Group: group,
-				Name:  name,
-				Value: value,
+				BatchID: batchID,
+				Group:   group,
+				Name:    name,
+				Value:   value,
 			})
 
-			log = log.With().Str("name", name).Str("value", value).Logger()
+			log = log.With().
+				Str("group", group).
+				Str("name", name).
+				Str("value", value).
+				Logger()
 
 			err := h.analyticsDB.AddEvents(ctx, &events)
 			if err != nil {
+
 				log.Error().Err(err).Msg("hit: failed to add event")
 				return ErrInternalServerError(err), nil
 			}
+
+			log.Debug().Msg("hit: added custom event")
 		}
 	default:
 		log.Error().Str("type", string(req.Type)).Msg("hit: invalid event hit type")
