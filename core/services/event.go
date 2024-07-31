@@ -335,7 +335,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 
 			err := h.analyticsDB.AddEvents(ctx, &events)
 			if err != nil {
-
 				log.Error().Err(err).Msg("hit: failed to add event")
 				return ErrInternalServerError(err), nil
 			}
