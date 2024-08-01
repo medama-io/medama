@@ -3,6 +3,10 @@ import { expect, test } from '@playwright/test';
 import { loadTests } from './load';
 
 /**
+ * @typedef {('simple'|'history')} Tests
+ */
+
+/**
  * @typedef PostData
  * @property {string} e - Event type
  * @property {string=} u - URL
@@ -153,14 +157,25 @@ const matchRequests = async (data, expectedRequests) => {
 };
 
 /**
+ * Create relative URL for given test.
+ *
+ * @param {Tests} name
+ * @param {string} path
+ * @param {boolean=} relative
+ * @returns {string}
+ */
+const createURL = (name, path, relative = true) =>
+	`${relative ? '.' : ''}/${name}/${path}`;
+
+/**
  * Create test block for given URL.
  *
- * @param {string} testUrl
+ * @param {Tests} name
  */
-const createTests = (testUrl) => {
-	test.describe(testUrl, () => {
-		loadTests(testUrl);
+const createTests = (name) => {
+	test.describe(name, () => {
+		loadTests(name);
 	});
 };
 
-export { createTests, addRequestListeners, matchRequests };
+export { createTests, addRequestListeners, matchRequests, createURL };

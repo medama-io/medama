@@ -1,16 +1,14 @@
 // @ts-check
 import { test } from '@playwright/test';
-import { addRequestListeners, matchRequests } from './helpers';
-
-const baseURL = 'http://localhost:8080';
+import { addRequestListeners, createURL, matchRequests } from './helpers';
 
 /**
  * Create test block for all loading related tests.
  *
- * @param {string} testURL
+ * @param {import('./helpers').Tests} name
  */
-const loadTests = (testURL) => {
-	test.describe(testURL, () => {
+const loadTests = (name) => {
+	test.describe('load', () => {
 		test('unique visitor load event', async ({ page }) => {
 			const expectedRequests = [
 				{
@@ -31,7 +29,7 @@ const loadTests = (testURL) => {
 					status: 204,
 					postData: {
 						e: 'load',
-						u: testURL,
+						u: createURL(name, 'index.html', false),
 						r: '',
 						p: true,
 						q: true,
@@ -41,7 +39,7 @@ const loadTests = (testURL) => {
 
 			const listenerPromise = addRequestListeners(page, expectedRequests);
 
-			await page.goto(`${baseURL}${testURL}`, { waitUntil: 'load' });
+			await page.goto(createURL(name, 'index.html'), { waitUntil: 'load' });
 			await page.waitForLoadState();
 
 			const data = await listenerPromise;
@@ -77,7 +75,7 @@ const loadTests = (testURL) => {
 				status: 204,
 				postData: {
 					e: 'load',
-					u: testURL,
+					u: '/index.html',
 					r: '',
 					p: false, // Returning visitor
 					q: false, // Not a new page view
@@ -86,7 +84,9 @@ const loadTests = (testURL) => {
 		];
 
 		// First load, should be a new visitor
-		await page.goto(`${baseURL}${testURL}`, { waitUntil: 'networkidle' });
+		await page.goto(createURL(name, 'index.html'), {
+			waitUntil: 'networkidle',
+		});
 
 		const listenerPromise = addRequestListeners(page, expectedRequests);
 
