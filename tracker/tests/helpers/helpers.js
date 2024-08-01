@@ -3,10 +3,20 @@ import { expect, test } from '@playwright/test';
 import { loadTests } from './load';
 
 /**
+ * @typedef PostData
+ * @property {string} e - Event type
+ * @property {string=} u - URL
+ * @property {string=} r - Referrer
+ * @property {boolean=} p - Unique visitor
+ * @property {boolean=} q - Unique page view
+ */
+
+/**
  * @typedef ExpectedRequest
  * @property {string} method
  * @property {string} url
  * @property {number} status
+ * @property {PostData=} postData
  * @property {string=} responseBody
  */
 
@@ -15,17 +25,6 @@ import { loadTests } from './load';
  * @property {import('@playwright/test').Request} request
  * @property {import('@playwright/test').Response} response
  */
-
-/**
- * @typedef PostData
- * @property {string} e - Event type
- * @property {string} u - URL
- * @property {string} r - Referrer
- * @property {boolean} p - Unique visitor
- * @property {boolean} q - Unique page view
- */
-
-const baseURL = 'http://localhost:8080';
 
 /**
  * Add request and response listeners to the page to track API calls.
@@ -87,38 +86,80 @@ const addRequestListeners = (page, expectedRequests) => {
  *
  * @param {RequestResponsePair[]} data
  * @param {Array<ExpectedRequest>} expectedRequests
- * @param {PostData} postData
  * @returns {Promise<void>}
  */
-const matchRequests = async (data, expectedRequests, postData) => {
-	for (const [index, pair] of data.entries()) {
-		const { request, response } = pair;
-		const expected = expectedRequests[index];
+const matchRequests = async (data, expectedRequests) => {
+	// Wait for all requests to complete before mapping them into a format that can be compared.
+	const actualRequests = await Promise.all(
+		data.map(async (pair) => {
+			const { request, response } = pair;
+			let responseBody = undefined;
+			let status = undefined;
 
-		expect(request.method()).toBe(expected.method);
-		expect(request.url()).toContain(expected.url);
-		expect(response.status()).toBe(expected.status);
+			if (response) {
+				status = response.status();
+				if (status !== 204) {
+					try {
+						const responseBuffer = await response.body();
+						responseBody = responseBuffer ? await response.text() : null;
+					} catch (error) {
+						console.warn(`Failed to read response body: ${error.message}`);
+						responseBody = null;
+					}
+				}
+			} else {
+				console.warn(
+					`No response for request: ${request.method()} ${request.url()}`,
+				);
+			}
 
-		if (expected.method === 'POST') {
-			expect(request.postDataJSON()).toMatchObject(postData);
-		}
+			return {
+				method: request.method(),
+				url: request.url(),
+				status: status,
+				postData:
+					request.method() === 'POST' ? request.postDataJSON() : undefined,
+				responseBody: responseBody,
+			};
+		}),
+	);
 
-		// No response body for 204 responses
-		if (expected.status !== 204 && expected.responseBody !== undefined) {
-			const responseText = await response.text();
-			expect(responseText).toBe(expected.responseBody);
-		}
-	}
+	const expected = expectedRequests.map((req) => ({
+		method: req.method,
+		url: req.url,
+		status: req.status,
+		postData: req.method === 'POST' ? req.postData : undefined,
+		responseBody: req.status !== 204 ? req.responseBody : undefined,
+	}));
+
+	expect.soft(actualRequests).toEqual(
+		expected.map((exp) => ({
+			method: exp.method,
+			url: expect.stringContaining(exp.url),
+			status: exp.status,
+			postData: exp.postData
+				? expect.objectContaining({
+						...exp.postData,
+						u: exp.postData.u
+							? expect.stringContaining(exp.postData.u)
+							: undefined,
+					})
+				: undefined,
+			responseBody: exp.responseBody,
+		})),
+	);
+
+	expect(actualRequests.length).toBe(expectedRequests.length);
 };
 
 /**
  * Create test block for given URL.
  *
- * @param {string} testURL
+ * @param {string} testUrl
  */
-const createTests = (testURL) => {
-	test.describe(testURL, () => {
-		loadTests(baseURL, testURL);
+const createTests = (testUrl) => {
+	test.describe(testUrl, () => {
+		loadTests(testUrl);
 	});
 };
 

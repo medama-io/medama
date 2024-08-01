@@ -9,7 +9,8 @@
 		"build:size": "node ./scripts/size.js",
 		"format": "biome format --write .",
 		"e2e:serve": "bun run ./tests/fixtures/serve.js",
-		"e2e": "playwright test"
+		"e2e": "playwright test",
+		"e2e:ui": "playwright test --ui"
 	},
 	"author": "Ayuhito",
 	"license": "MIT",

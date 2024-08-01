@@ -3,11 +3,14 @@ const ACCEPTED_PATHS = ['/simple', '/hash', '/history'];
 console.log('Serving on http://localhost:3000');
 Bun.serve({
 	port: 3000,
-	development: true,
 	fetch(req) {
 		const url = new URL(req.url);
 
-		if (url.pathname === '/' || url.pathname === '/index.html') {
+		if (
+			url.pathname === '/' ||
+			url.pathname === '/index.html' ||
+			url.pathname === '/favicon.ico'
+		) {
 			return new Response(null, { status: 200 });
 		}
 

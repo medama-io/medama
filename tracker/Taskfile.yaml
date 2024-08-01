@@ -27,3 +27,7 @@ tasks:
   test:
     cmds:
       - bun run e2e
+
+  test:ui:
+    cmds:
+      - bun run e2e:ui
