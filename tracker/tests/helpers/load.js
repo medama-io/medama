@@ -44,55 +44,55 @@ const loadTests = (name) => {
 
 			await matchRequests(listeners, expectedRequests);
 		});
-	});
 
-	test('returning visitor second load event', async ({ page }) => {
-		const expectedRequests = [
-			{
-				method: 'POST',
-				url: '/api/event/hit',
-				status: 204,
-				postData: {
-					e: 'unload',
+		test('returning visitor second load event', async ({ page }) => {
+			const expectedRequests = [
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'unload',
+					},
 				},
-			},
-			{
-				method: 'GET',
-				url: '/api/event/ping',
-				status: 200,
-				responseBody: '1',
-			},
-			{
-				method: 'GET',
-				url: '/api/event/ping',
-				status: 200,
-				responseBody: '1',
-			},
-			{
-				method: 'POST',
-				url: '/api/event/hit',
-				status: 204,
-				postData: {
-					e: 'load',
-					u: createURL(name, 'index.html', false),
-					r: '',
-					p: false, // Returning visitor
-					q: false, // Not a new page view
+				{
+					method: 'GET',
+					url: '/api/event/ping',
+					status: 200,
+					responseBody: '1',
 				},
-			},
-		];
+				{
+					method: 'GET',
+					url: '/api/event/ping',
+					status: 200,
+					responseBody: '1',
+				},
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'load',
+						u: createURL(name, 'index.html', false),
+						r: '',
+						p: false, // Returning visitor
+						q: false, // Not a new page view
+					},
+				},
+			];
 
-		// First load, should be a new visitor
-		await page.goto(createURL(name, 'index.html'), {
-			waitUntil: 'networkidle',
+			// First load, should be a new visitor
+			await page.goto(createURL(name, 'index.html'), {
+				waitUntil: 'networkidle',
+			});
+
+			const listeners = addRequestListeners(page, expectedRequests);
+
+			// Refresh page for second load
+			await page.reload({ waitUntil: 'networkidle' });
+
+			await matchRequests(listeners, expectedRequests);
 		});
-
-		const listeners = addRequestListeners(page, expectedRequests);
-
-		// Refresh page for second load
-		await page.reload({ waitUntil: 'networkidle' });
-
-		await matchRequests(listeners, expectedRequests);
 	});
 };
 

@@ -71,14 +71,14 @@ module.exports = defineConfig({
 	webServer: [
 		{
 			command: 'bun run e2e:serve',
-			url: 'http://localhost:3000',
+			port: 3000,
 			reuseExistingServer: !process.env.CI,
 			timeout: 2500,
 		},
 		{
 			command:
 				'task start -- start -logger=pretty -level=warn -corsorigins=http://localhost:8080,http://localhost:3000',
-			url: 'http://localhost:8080',
+			port: 8080,
 			reuseExistingServer: !process.env.CI,
 			cwd: '../core',
 		},

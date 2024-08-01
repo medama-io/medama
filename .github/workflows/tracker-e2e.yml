@@ -13,6 +13,7 @@ jobs:
   playwright:
     timeout-minutes: 10
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
@@ -25,8 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get Playwright version
-        run: echo "PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')" >> $GITHUB_ENV
-        working-directory: "./tracker"
+        run: bun ./github/scripts/playwright-version.js >> $GITHUB_ENV
 
       - name: Cache Playwright Browsers
         id: cache-playwright-browsers
