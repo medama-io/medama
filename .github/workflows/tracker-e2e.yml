@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get Playwright version
-        run: bun ./github/scripts/playwright-version.js >> $GITHUB_ENV
+        run: bun ./.github/scripts/playwright-version.js >> $GITHUB_ENV
 
       - name: Cache Playwright Browsers
         id: cache-playwright-browsers
