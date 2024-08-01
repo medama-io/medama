@@ -94,48 +94,101 @@ const loadTests = (name) => {
 
 			await matchRequests(page, listeners, expectedRequests);
 		});
-	});
 
-	test('unique visitor navigates to a new page', async ({ page }) => {
-		const expectedRequests = [
-			{
-				method: 'POST',
-				url: '/api/event/hit',
-				status: 204,
-				postData: {
-					e: 'unload',
+		test('unique visitor navigates to a new page', async ({ page }) => {
+			const expectedRequests = [
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'unload',
+					},
 				},
-			},
-			{
-				method: 'GET',
-				url: '/api/event/ping?',
-				status: 200,
-				responseBody: '0',
-			},
-			{
-				method: 'POST',
-				url: '/api/event/hit',
-				status: 204,
-				postData: {
-					e: 'load',
-					u: createURL(name, 'about', false),
-					p: false, // Returning visitor
-					q: true, // New page view
+				{
+					method: 'GET',
+					url: '/api/event/ping?',
+					status: 200,
+					responseBody: '0',
 				},
-			},
-		];
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'load',
+						u: createURL(name, 'about', false),
+						p: false, // Returning visitor
+						q: true, // New page view
+					},
+				},
+			];
 
-		// First load, should be a new visitor
-		await page.goto(createURL(name, 'index.html'), {
-			waitUntil: 'networkidle',
+			// First load, should be a new visitor
+			await page.goto(createURL(name, 'index.html'), {
+				waitUntil: 'networkidle',
+			});
+
+			const listeners = addRequestListeners(page, expectedRequests);
+
+			// Navigate to about page using proper routing
+			await page.getByRole('link', { name: 'About' }).click();
+
+			await matchRequests(page, listeners, expectedRequests);
 		});
 
-		const listeners = addRequestListeners(page, expectedRequests);
+		test('returning visitor navigates to visited page', async ({ page }) => {
+			const expectedRequests = [
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'unload',
+					},
+				},
+				{
+					method: 'GET',
+					url: '/api/event/ping?',
+					status: 200,
+					responseBody: '1',
+				},
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'load',
+						u: createURL(name, 'about', false),
+						p: false, // Returning visitor
+						q: false, // Returning page view
+					},
+				},
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'unload',
+					},
+				},
+			];
 
-		// Navigate to about page using proper routing
-		await page.getByRole('link', { name: 'About' }).click();
+			// First load, should be a new visitor
+			await page.goto(createURL(name, 'index.html'), {
+				waitUntil: 'networkidle',
+			});
 
-		await matchRequests(page, listeners, expectedRequests);
+			// Navigate to about page to cache visit
+			await page.getByRole('link', { name: 'About' }).click();
+
+			const listeners = addRequestListeners(page, expectedRequests);
+
+			// Navigate back to home page to test returning visitor
+			await page.getByRole('link', { name: 'Home' }).click();
+
+			await matchRequests(page, listeners, expectedRequests);
+		});
 	});
 };
 
