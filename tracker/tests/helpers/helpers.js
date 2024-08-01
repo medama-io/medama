@@ -32,6 +32,14 @@ import { loadTests } from './load';
  */
 
 /**
+ * Get the browser name from the page context.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @returns {string}
+ */
+const getBrowser = (page) => page.context().browser().browserType().name();
+
+/**
  * Add request and response listeners to the page to track API calls.
  *
  * @param {import('@playwright/test').Page} page
@@ -136,7 +144,7 @@ const matchRequests = async (page, responses, expectedRequests) => {
 	);
 
 	// Get browser name to ignore certain requests]
-	const browserName = page.context().browser().browserType().name();
+	const browserName = getBrowser(page);
 
 	const expected = expectedRequests
 		.map((req) => {
@@ -196,4 +204,10 @@ const createTests = (name) => {
 	});
 };
 
-export { createTests, addRequestListeners, matchRequests, createURL };
+export {
+	addRequestListeners,
+	createTests,
+	createURL,
+	getBrowser,
+	matchRequests,
+};

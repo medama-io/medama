@@ -7,11 +7,19 @@
 	<body>
 		<h1>History API Router Example</h1>
 		<nav>
-			<a href="/history/home" onclick="navigate('/'); return false;">Home</a>
-			<a href="/history/about" onclick="navigate('/about'); return false;"
+			<a
+				href="/history/index"
+				onclick="navigate('/history/index'); return false;"
+				>Home</a
+			>
+			<a
+				href="/history/about"
+				onclick="navigate('/history/about'); return false;"
 				>About</a
 			>
-			<a href="/history/contact" onclick="navigate('/contact'); return false;"
+			<a
+				href="/history/contact"
+				onclick="navigate('/history/contact'); return false;"
 				>Contact</a
 			>
 		</nav>
@@ -28,13 +36,13 @@
 				const path = window.location.pathname;
 
 				switch (path) {
-					case "/":
+					case "/history/index":
 						content.innerHTML = "<p>This is the home page.</p>";
 						break;
-					case "/about":
+					case "/history/about":
 						content.innerHTML = "<p>This is the about page.</p>";
 						break;
-					case "/contact":
+					case "/history/contact":
 						content.innerHTML = "<p>This is the contact page.</p>";
 						break;
 				}

@@ -54,7 +54,7 @@ const loadTests = (name) => {
 					postData: {
 						e: 'unload',
 					},
-					ignoreBrowsers: ['firefox'],
+					ignoreBrowsers: ['firefox'], // TODO: Investigate why this request is not sent in Firefox (works outside Playwright)
 				},
 				{
 					method: 'GET',
@@ -94,6 +94,48 @@ const loadTests = (name) => {
 
 			await matchRequests(page, listeners, expectedRequests);
 		});
+	});
+
+	test('unique visitor navigates to a new page', async ({ page }) => {
+		const expectedRequests = [
+			{
+				method: 'POST',
+				url: '/api/event/hit',
+				status: 204,
+				postData: {
+					e: 'unload',
+				},
+			},
+			{
+				method: 'GET',
+				url: '/api/event/ping?',
+				status: 200,
+				responseBody: '0',
+			},
+			{
+				method: 'POST',
+				url: '/api/event/hit',
+				status: 204,
+				postData: {
+					e: 'load',
+					u: createURL(name, 'about', false),
+					p: false, // Returning visitor
+					q: true, // New page view
+				},
+			},
+		];
+
+		// First load, should be a new visitor
+		await page.goto(createURL(name, 'index.html'), {
+			waitUntil: 'networkidle',
+		});
+
+		const listeners = addRequestListeners(page, expectedRequests);
+
+		// Navigate to about page using proper routing
+		await page.getByRole('link', { name: 'About' }).click();
+
+		await matchRequests(page, listeners, expectedRequests);
 	});
 };
 

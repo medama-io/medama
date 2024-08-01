@@ -26,7 +26,7 @@ tasks:
 
   test:
     cmds:
-      - bun run e2e
+      - bunx playwright test {{.CLI_ARGS}}
 
   test:ui:
     cmds:
