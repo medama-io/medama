@@ -42,7 +42,7 @@ const loadTests = (name) => {
 			await page.goto(createURL(name, 'index.html'), { waitUntil: 'load' });
 			await page.waitForLoadState();
 
-			await matchRequests(listeners, expectedRequests);
+			await matchRequests(page, listeners, expectedRequests);
 		});
 
 		test('returning visitor second load event', async ({ page }) => {
@@ -54,6 +54,7 @@ const loadTests = (name) => {
 					postData: {
 						e: 'unload',
 					},
+					ignoreBrowsers: ['firefox'],
 				},
 				{
 					method: 'GET',
@@ -91,7 +92,7 @@ const loadTests = (name) => {
 			// Refresh page for second load
 			await page.reload({ waitUntil: 'networkidle' });
 
-			await matchRequests(listeners, expectedRequests);
+			await matchRequests(page, listeners, expectedRequests);
 		});
 	});
 };

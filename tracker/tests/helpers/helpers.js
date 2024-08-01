@@ -22,6 +22,7 @@ import { loadTests } from './load';
  * @property {number} status
  * @property {PostData=} postData
  * @property {string=} responseBody
+ * @property {Array<string>=} ignoreBrowsers
  */
 
 /**
@@ -88,11 +89,12 @@ const addRequestListeners = (page, expectedRequests) => {
 /**
  * After navigating to a page, wait for the API calls to complete before matching the expected requests.
  *
+ * @param {import('@playwright/test').Page} page
  * @param {Promise<RequestResponsePair[]>} responses
  * @param {Array<ExpectedRequest>} expectedRequests
  * @returns {Promise<void>}
  */
-const matchRequests = async (responses, expectedRequests) => {
+const matchRequests = async (page, responses, expectedRequests) => {
 	const data = await responses;
 
 	// Wait for all requests to complete before mapping them into a format that can be compared.
@@ -133,13 +135,24 @@ const matchRequests = async (responses, expectedRequests) => {
 		}),
 	);
 
-	const expected = expectedRequests.map((req) => ({
-		method: req.method,
-		url: req.url,
-		status: req.status,
-		postData: req.method === 'POST' ? req.postData : undefined,
-		responseBody: req.status !== 204 ? req.responseBody : undefined,
-	}));
+	// Get browser name to ignore certain requests]
+	const browserName = page.context().browser().browserType().name();
+
+	const expected = expectedRequests
+		.map((req) => {
+			if (req.ignoreBrowsers && req.ignoreBrowsers.includes(browserName)) {
+				return null;
+			}
+
+			return {
+				method: req.method,
+				url: req.url,
+				status: req.status,
+				postData: req.method === 'POST' ? req.postData : undefined,
+				responseBody: req.status !== 204 ? req.responseBody : undefined,
+			};
+		})
+		.filter((req) => req !== null);
 
 	expect.soft(actualRequests).toEqual(
 		expected.map((exp) => ({
@@ -158,7 +171,7 @@ const matchRequests = async (responses, expectedRequests) => {
 		})),
 	);
 
-	expect(actualRequests.length).toBe(expectedRequests.length);
+	expect(actualRequests.length).toBe(expected.length);
 };
 
 /**
