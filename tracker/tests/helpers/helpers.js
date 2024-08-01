@@ -113,6 +113,9 @@ const matchRequests = async (responses, expectedRequests) => {
 						responseBody = null;
 					}
 				}
+			} else if (request.method() === 'POST') {
+				// Chromium sometimes doesn't return a response for sendBeacon but the others do (???)
+				status = 204;
 			} else {
 				console.warn(
 					`No response for request: ${request.method()} ${request.url()}`,

@@ -74,7 +74,7 @@ const loadTests = (name) => {
 				status: 204,
 				postData: {
 					e: 'load',
-					u: '/index.html',
+					u: createURL(name, 'index.html', false),
 					r: '',
 					p: false, // Returning visitor
 					q: false, // Not a new page view
@@ -90,7 +90,7 @@ const loadTests = (name) => {
 		const listeners = addRequestListeners(page, expectedRequests);
 
 		// Refresh page for second load
-		await page.reload({ waitUntil: 'load' });
+		await page.reload({ waitUntil: 'networkidle' });
 
 		await matchRequests(listeners, expectedRequests);
 	});
