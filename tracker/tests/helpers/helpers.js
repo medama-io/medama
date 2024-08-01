@@ -88,11 +88,13 @@ const addRequestListeners = (page, expectedRequests) => {
 /**
  * After navigating to a page, wait for the API calls to complete before matching the expected requests.
  *
- * @param {RequestResponsePair[]} data
+ * @param {Promise<RequestResponsePair[]>} responses
  * @param {Array<ExpectedRequest>} expectedRequests
  * @returns {Promise<void>}
  */
-const matchRequests = async (data, expectedRequests) => {
+const matchRequests = async (responses, expectedRequests) => {
+	const data = await responses;
+
 	// Wait for all requests to complete before mapping them into a format that can be compared.
 	const actualRequests = await Promise.all(
 		data.map(async (pair) => {
@@ -144,9 +146,9 @@ const matchRequests = async (data, expectedRequests) => {
 			postData: exp.postData
 				? expect.objectContaining({
 						...exp.postData,
-						u: exp.postData.u
-							? expect.stringContaining(exp.postData.u)
-							: undefined,
+						...(exp.postData.u
+							? { u: expect.stringContaining(exp.postData.u) }
+							: {}),
 					})
 				: undefined,
 			responseBody: exp.responseBody,

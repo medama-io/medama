@@ -37,13 +37,12 @@ const loadTests = (name) => {
 				},
 			];
 
-			const listenerPromise = addRequestListeners(page, expectedRequests);
+			const listeners = addRequestListeners(page, expectedRequests);
 
 			await page.goto(createURL(name, 'index.html'), { waitUntil: 'load' });
 			await page.waitForLoadState();
 
-			const data = await listenerPromise;
-			await matchRequests(data, expectedRequests);
+			await matchRequests(listeners, expectedRequests);
 		});
 	});
 
@@ -88,13 +87,12 @@ const loadTests = (name) => {
 			waitUntil: 'networkidle',
 		});
 
-		const listenerPromise = addRequestListeners(page, expectedRequests);
+		const listeners = addRequestListeners(page, expectedRequests);
 
 		// Refresh page for second load
 		await page.reload({ waitUntil: 'load' });
 
-		const data = await listenerPromise;
-		await matchRequests(data, expectedRequests);
+		await matchRequests(listeners, expectedRequests);
 	});
 };
 
