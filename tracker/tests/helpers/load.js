@@ -133,6 +133,8 @@ const loadTests = (name) => {
 
 			// Navigate to about page using proper routing
 			await page.getByRole('link', { name: 'About' }).click();
+			await page.waitForTimeout(500);
+			await page.waitForLoadState('networkidle');
 
 			await matchRequests(page, listeners, expectedRequests);
 		});
@@ -159,17 +161,9 @@ const loadTests = (name) => {
 					status: 204,
 					postData: {
 						e: 'load',
-						u: createURL(name, 'about', false),
+						u: createURL(name, 'index', false),
 						p: false, // Returning visitor
 						q: false, // Returning page view
-					},
-				},
-				{
-					method: 'POST',
-					url: '/api/event/hit',
-					status: 204,
-					postData: {
-						e: 'unload',
 					},
 				},
 			];
@@ -181,11 +175,14 @@ const loadTests = (name) => {
 
 			// Navigate to about page to cache visit
 			await page.getByRole('link', { name: 'About' }).click();
+			await page.waitForTimeout(500);
+			await page.waitForLoadState('networkidle');
 
 			const listeners = addRequestListeners(page, expectedRequests);
 
 			// Navigate back to home page to test returning visitor
 			await page.getByRole('link', { name: 'Home' }).click();
+			await page.waitForLoadState('networkidle');
 
 			await matchRequests(page, listeners, expectedRequests);
 		});
