@@ -1,4 +1,3 @@
 [tools]
 go = "1.22"
 bun = "latest"
-node = "20"

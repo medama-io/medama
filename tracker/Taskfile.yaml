@@ -17,6 +17,7 @@ tasks:
       - ./dist/default.js
 
   embed:
+    deps: [build:default]
     cmds:
       - mkdir -p ../core/client
       - cp ./dist/default.js ../core/client/script.js
