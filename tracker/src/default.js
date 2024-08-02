@@ -1,24 +1,6 @@
 // @ts-check
-/**
- * Event types for addEventListener function calls.
- *
- * @remark Closure compiler doesn't understand string unions, so we have to
- * use an enum instead.
- * @enum {string}
- */
-const EventType = {
-	UNLOAD: 'unload',
-	LOAD: 'load',
-	// These events must still be sent with the unload event when calling
-	// sendBeacon to ensure there are no duplicate events.
-	PAGEHIDE: 'pagehide',
-	BEFOREUNLOAD: 'beforeunload',
-	// Custom events that are not part of the event listener spec, but is
-	// used to determine what state visibilitychange is in.
-	VISIBILITYCHANGE: 'visibilitychange',
-	HIDDEN: 'hidden',
-	VISIBLE: 'visible',
-};
+
+/** @typedef {('load'|'unload')} EventType */
 
 /**
  * @typedef {Object} HitPayload
@@ -110,9 +92,9 @@ var DurationPayload;
 	let isUnloadCalled = false;
 
 	/**
-	 * @remarks We hoist the following variables to the top to let the closure compiler
-	 * infer that it can declare these variables together with the other variables in a
-	 * single line instead of separately, which saves us a few bytes.
+	 * @remarks We hoist the following variables to the top to let terser infer that it
+	 * can declare these variables together with the other variables in a single line instead
+	 * of separately, which saves us a few bytes.
 	 */
 
 	/**
@@ -211,7 +193,7 @@ var DurationPayload;
 					 * @type {HitPayload}
 					 */ ({
 						"b": uid,
-						"e": EventType.LOAD,
+						"e": "load",
 						"u": location.href,
 						"r": document.referrer,
 						"p": isUnique,
@@ -219,8 +201,6 @@ var DurationPayload;
 						/**
 						 * Get timezone for country detection.
 						 *
-						 * @suppress {checkTypes} Compiler throws an error because we don't call
-						 * "new" for this even though it is unnecessary.
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -256,7 +236,7 @@ var DurationPayload;
 					 */
 					({
 						"b": uid,
-						"e": EventType.UNLOAD,
+						"e": "unload",
 						"m": Date.now() - hiddenTotalTime,
 					}),
 				),
@@ -270,26 +250,23 @@ var DurationPayload;
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.
 	if ('onpagehide' in self) {
-		/**
-		 * @suppress {checkTypes}
-		 */
-		addEventListener(EventType.PAGEHIDE, sendUnloadBeacon, { capture: true });
+		addEventListener('pagehide', sendUnloadBeacon, { capture: true });
 	} else {
 		// Otherwise, use unload and beforeunload. Using both is significantly more
 		// reliable than just one due to browser differences. However, this will break
 		// bfcache, but it's better than nothing.
-		addEventListener(EventType.BEFOREUNLOAD, sendUnloadBeacon, {
+		addEventListener('beforeunload', sendUnloadBeacon, {
 			capture: true,
 		});
-		addEventListener(EventType.UNLOAD, sendUnloadBeacon, { capture: true });
+		addEventListener('unload', sendUnloadBeacon, { capture: true });
 	}
 
 	// Visibility change events allow us to track whether a user is tabbed out and
 	// correct our timings.
 	addEventListener(
-		EventType.VISIBILITYCHANGE,
+		'visibilitychange',
 		() => {
-			if (document.visibilityState == EventType.HIDDEN) {
+			if (document.visibilityState == 'hidden') {
 				// Page is hidden, record the current time.
 				hiddenStartTime = Date.now();
 			} else {
@@ -312,9 +289,6 @@ var DurationPayload;
 		// when the hash changes. If disabled, it is safe to override the History API.
 		if (currentScript.getAttribute('data-hash')) {
 			// Hash mode is enabled. Add hashchange event listener.
-			/**
-			 * @suppress {checkTypes}
-			 */
 			addEventListener('hashchange', sendLoadBeacon, {
 				capture: true,
 			});

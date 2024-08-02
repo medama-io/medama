@@ -18,7 +18,7 @@ for (const file of distJsFiles) {
 	// gzip
 	const gzip = await gzipSize(await fs.readFile(filepath));
 	// brotli
-	const brotli = await brotliSize(await fs.readFile(filepath));
+	const brotli = brotliSize(await fs.readFile(filepath));
 	console.log(`${file}: ${size} bytes (${kb.toFixed(2)} KB)`);
 	console.log(`gzipped: ${gzip} bytes (${(gzip / 1024).toFixed(2)} KB)`);
 	console.log(`brotli: ${brotli} bytes (${(brotli / 1024).toFixed(2)} KB)`);
