@@ -4,9 +4,9 @@
 	"description": "Tracker script for Medama Analytics",
 	"main": "dist/default.js",
 	"scripts": {
-		"build": "npm run build:default && npm run build:size",
-		"build:default": "google-closure-compiler -O ADVANCED src/default.js --js_output_file dist/default.js --language_out ECMASCRIPT_2015 --externs src/w3c_event.js",
-		"build:size": "node ./scripts/size.js",
+		"build": "bun run build:default && bun run build:size",
+		"build:default": "terser src/default.js -o dist/default.js -c passes=2,unsafe=true -m --ecma 2016 --rename --module",
+		"build:size": "bun run ./scripts/size.mjs",
 		"format": "biome format --write .",
 		"e2e:serve": "bun run ./tests/fixtures/serve.js",
 		"e2e": "playwright test",
@@ -17,7 +17,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.45.3",
 		"brotli-size": "^4.0.0",
-		"google-closure-compiler": "^20230802.0.0",
-		"gzip-size": "6"
+		"gzip-size": "^7.0.0",
+		"terser": "^5.31.3"
 	}
 }
