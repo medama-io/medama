@@ -13,13 +13,13 @@ const loadTests = (name) => {
 			const expectedRequests = [
 				{
 					method: 'GET',
-					url: '/api/event/ping',
+					url: '/api/event/ping?root',
 					status: 200,
 					responseBody: '0',
 				},
 				{
 					method: 'GET',
-					url: '/api/event/ping',
+					url: '/api/event/ping?u',
 					status: 200,
 					responseBody: '0',
 				},
@@ -58,13 +58,13 @@ const loadTests = (name) => {
 				},
 				{
 					method: 'GET',
-					url: '/api/event/ping',
+					url: '/api/event/ping?root',
 					status: 200,
 					responseBody: '1',
 				},
 				{
 					method: 'GET',
-					url: '/api/event/ping',
+					url: '/api/event/ping?u',
 					status: 200,
 					responseBody: '1',
 				},
@@ -107,7 +107,7 @@ const loadTests = (name) => {
 				},
 				{
 					method: 'GET',
-					url: '/api/event/ping?',
+					url: '/api/event/ping?u',
 					status: 200,
 					responseBody: '0',
 				},
@@ -151,7 +151,7 @@ const loadTests = (name) => {
 				},
 				{
 					method: 'GET',
-					url: '/api/event/ping?',
+					url: '/api/event/ping?u',
 					status: 200,
 					responseBody: '1',
 				},

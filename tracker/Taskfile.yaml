@@ -25,6 +25,7 @@ tasks:
       - ../core/client/script.js
 
   test:
+    deps: [build:default]
     cmds:
       - bunx playwright test {{.CLI_ARGS}}
 
