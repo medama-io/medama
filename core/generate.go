@@ -7,7 +7,7 @@ import (
 
 // OpenAPI Codegen.
 //
-//go:generate ./generate.sh
+//go:generate bash ./generate.sh
 
 // Embed OpenAPI Specification.
 //

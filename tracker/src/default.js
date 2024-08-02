@@ -1,3 +1,4 @@
+// @ts-check
 /**
  * Event types for addEventListener function calls.
  *
@@ -300,7 +301,7 @@ var DurationPayload;
 		{ capture: true },
 	);
 
-	pingCache(host + 'event/ping').then((response) => {
+	pingCache(host + 'event/ping?root').then((response) => {
 		// The response is a boolean indicating if the user is unique or not.
 		isUnique = response;
 
@@ -330,8 +331,7 @@ var DurationPayload;
 			addEventListener(
 				'popstate',
 				() => {
-					// Unfortunately, we can't use unload here because we can't call it before
-					// the history change, so cleanup any temporary variables here.
+					sendUnloadBeacon();
 					cleanup();
 					sendLoadBeacon();
 				},

@@ -1,0 +1,41 @@
+name: E2E Tracker Tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tracker/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "tracker/**"
+  workflow_dispatch:
+jobs:
+  playwright:
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Playwright with dependencies
+        run: bun playwright install --with-deps chromium firefox webkit chrome msedge
+        working-directory: "./tracker"
+
+      - name: Run Playwright tests
+        run: task test
+        working-directory: "./tracker"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-${{ matrix.os }}
+          path: ./tracker/playwright-report/
+          retention-days: 30

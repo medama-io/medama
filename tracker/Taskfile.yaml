@@ -23,3 +23,16 @@ tasks:
       - ./dist/default.js
     generates:
       - ../core/client/script.js
+
+  test:
+    deps: [build:default]
+    cmds:
+      - bunx playwright test {{.CLI_ARGS}}
+
+  test:ui:
+    cmds:
+      - bun run e2e:ui
+
+  serve:
+    cmds:
+      - bun run e2e:serve
