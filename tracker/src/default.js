@@ -331,8 +331,7 @@ var DurationPayload;
 			addEventListener(
 				'popstate',
 				() => {
-					// Unfortunately, we can't use unload here because we can't call it before
-					// the history change, so cleanup any temporary variables here.
+					sendUnloadBeacon();
 					cleanup();
 					sendLoadBeacon();
 				},

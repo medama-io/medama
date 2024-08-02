@@ -205,6 +205,74 @@ const loadTests = (name) => {
 			await matchRequests(page, listeners, expectedRequests);
 		});
 	});
+
+	test('returning visitors uses back button to visited page', async ({
+		page,
+	}) => {
+		const expectedRequests = [
+			{
+				method: 'POST',
+				url: '/api/event/hit',
+				status: 204,
+				postData: {
+					e: 'unload',
+				},
+			},
+			{
+				method: 'GET',
+				url: '/api/event/ping?u',
+				status: 200,
+				responseBody: '1',
+			},
+			{
+				method: 'POST',
+				url: '/api/event/hit',
+				status: 204,
+				postData: {
+					e: 'load',
+					u: createURL(name, 'index', false),
+					p: false, // Returning visitor
+					q: false, // Returning page view
+				},
+				ignoreBrowsers: ['webkit'],
+			},
+			/**
+			 * @note WebKit browsers do not send If-Modified-Since headers for MPA websites
+			 * leading to p=true in this test.
+			 * @see https://stackoverflow.com/a/75944210
+			 */
+			{
+				method: 'POST',
+				url: '/api/event/hit',
+				status: 204,
+				postData: {
+					e: 'load',
+					u: createURL(name, 'index', false),
+					p: name == 'simple' ? true : false, // Returning visitor
+					q: false, // Returning page view
+				},
+				ignoreBrowsers: ['firefox', 'chrome', 'msedge', 'chromium'],
+			},
+		];
+
+		// First load, should be a new visitor
+		await page.goto(createURL(name, 'index.html'), {
+			waitUntil: 'networkidle',
+		});
+
+		// Navigate to about page to cache visit
+		await page.getByRole('link', { name: 'About' }).click();
+		await page.waitForTimeout(500);
+		await page.waitForLoadState('networkidle');
+
+		const listeners = addRequestListeners(page, expectedRequests);
+
+		// Navigate back to home page to test returning visitor
+		await page.goBack();
+		await page.waitForLoadState('networkidle');
+
+		await matchRequests(page, listeners, expectedRequests);
+	});
 };
 
 export { loadTests };
