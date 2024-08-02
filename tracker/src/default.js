@@ -12,7 +12,6 @@
  * @property {boolean} q If this is the first time the user has visited this specific page.
  * @property {string} t Timezone of the user.
  */
-var HitPayload;
 
 /**
  * @typedef {Object} DurationPayload
@@ -20,7 +19,6 @@ var HitPayload;
  * @property {EventType} e Event type.
  * @property {number} m Time spent on page.
  */
-var DurationPayload;
 
 /**
  * Note that we don't try to inline global values such as `self` or `document` because
