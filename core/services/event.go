@@ -21,7 +21,7 @@ const (
 	// OneDay is the duration of one day.
 	OneDay = 24 * time.Hour
 	// Set to no-cache to disable caching.
-	CacheControl = "no-cache"
+	NoCache = "no-cache"
 	// Unknown is the default value for unknown fields.
 	Unknown = "Unknown"
 )
@@ -42,7 +42,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 
 		return &api.GetEventPingOKHeaders{
 			LastModified: lastModified,
-			CacheControl: CacheControl,
+			CacheControl: NoCache,
 			Response:     api.GetEventPingOK{Data: body},
 		}, nil
 	}
@@ -62,12 +62,11 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 
 		// Return body to activate caching.
 		body := strings.NewReader("0")
-
 		lastModified := lastModifiedTime.Format(http.TimeFormat)
 
 		return &api.GetEventPingOKHeaders{
 			LastModified: lastModified,
-			CacheControl: CacheControl,
+			CacheControl: NoCache, // Keep no-cache for unique users
 			Response:     api.GetEventPingOK{Data: body},
 		}, nil
 	}
@@ -75,10 +74,15 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	// Otherwise, this is not a unique user.
 	body := strings.NewReader("1")
 
+	// Calculate time until lastModifiedTime + OneDay
+	nextResetTime := lastModifiedTime.Add(OneDay)
+	secondsUntilReset := int(time.Until(nextResetTime).Seconds())
+	cacheControl := "max-age=" + strconv.Itoa(secondsUntilReset)
+
 	// Return not modified if the last modified time is today (not unique user).
 	return &api.GetEventPingOKHeaders{
 		LastModified: ifModified,
-		CacheControl: CacheControl,
+		CacheControl: cacheControl,
 		Response: api.GetEventPingOK{
 			Data: body,
 		},
