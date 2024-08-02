@@ -59,9 +59,11 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	// and mark as a unique user.
 	if lastModifiedTime.Before(currentDay) {
 		lastModifiedTime = currentDay
+
 		// Return body to activate caching.
 		body := strings.NewReader("0")
 		lastModified := lastModifiedTime.Format(http.TimeFormat)
+
 		return &api.GetEventPingOKHeaders{
 			LastModified: lastModified,
 			CacheControl: NoCache, // Keep no-cache for unique users
