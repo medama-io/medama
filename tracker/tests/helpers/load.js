@@ -165,6 +165,24 @@ const loadTests = (name) => {
 						p: false, // Returning visitor
 						q: false, // Returning page view
 					},
+					ignoreBrowsers: ['webkit'],
+				},
+				/**
+				 * @note WebKit browsers do not send If-Modified-Since headers for MPA websites
+				 * leading to p=true in this test.
+				 * @see https://stackoverflow.com/a/75944210
+				 */
+				{
+					method: 'POST',
+					url: '/api/event/hit',
+					status: 204,
+					postData: {
+						e: 'load',
+						u: createURL(name, 'index', false),
+						p: name == 'simple' ? true : false, // Returning visitor
+						q: false, // Returning page view
+					},
+					ignoreBrowsers: ['firefox', 'chrome', 'msedge', 'chromium'],
 				},
 			];
 
