@@ -252,7 +252,54 @@
 		isUnloadCalled = true;
 	};
 
+	/**
+	 * Send a custom beacon event to the server.
+	 * @param {Object.<string, string>} properties Event custom properties.
+	 * @returns {void}
+	 */
+	const sendCustomBeacon = (properties) => {
+		// We use fetch here because it is more reliable than XHR.
+		fetch(host + 'event/hit', {
+			method: 'POST',
+			body: JSON.stringify(
+				// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
+				/**
+				 * Payload to send to the server.
+				 * @type {CustomPayload}
+				 */ ({
+						"e": "custom",
+						"g": location.hostname,
+						"d": properties,
+					}),
+			),
+			// Will make the response opaque, but we don't need it.
+			mode: 'no-cors',
+		});
+	};
 
+	addEventListener('click', (event) => {
+		const target =
+			event.target instanceof HTMLElement
+				? event.target.closest('[data-medama-*]')
+				: null;
+		if (target) {
+			const attributes = target
+				.getAttributeNames()
+				.filter((attr) => attr.startsWith('data-medama-'));
+
+			if (attributes.length > 0) {
+				/** @type {Object<string, string>} */
+				const data = {};
+				attributes.forEach((attr) => {
+					const key = attr.replace('data-medama-', '');
+					const value = target.getAttribute(attr);
+					data[key] = value;
+				});
+
+				sendCustomBeacon(data);
+			}
+		}
+	});
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.

@@ -21,12 +21,14 @@ const terser = (file) =>
 
 /**
  * @param {string} file
+ * @param {Object.<string, string | boolean>} opts
  */
-const build = async (file) => {
-	const script = await fs.readFile(path.join(srcDir, `${file}.js`), 'utf8');
-	const processedScript = preprocess(script, {}, preprocessOptions);
+const build = async (file, opts) => {
+	const script = await fs.readFile(path.join(srcDir, 'tracker.js'), 'utf8');
+	const processedScript = preprocess(script, opts, preprocessOptions);
 	await fs.writeFile(path.join(outputDir, `${file}.js`), processedScript);
+	await terser(file);
 };
 
-await build('default');
-await terser('default');
+await build('default', {});
+await build('tagged-events', { TAGGED_EVENTS: true });
