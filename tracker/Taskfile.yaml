@@ -15,14 +15,15 @@ tasks:
       - ./package.json
     generates:
       - ./dist/default.js
+      - ./dist/default.min.js
 
   embed:
     deps: [build:default]
     cmds:
       - mkdir -p ../core/client
-      - cp ./dist/default.js ../core/client/script.js
+      - cp ./dist/default.min.js ../core/client/script.js
     sources:
-      - ./dist/default.js
+      - ./dist/default.min.js
     generates:
       - ../core/client/script.js
 

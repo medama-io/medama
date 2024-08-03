@@ -1,23 +1,24 @@
 {
 	"name": "@medama/tracker",
 	"version": "0.1.0",
-	"description": "Tracker script for Medama Analytics",
+	"author": "Ayuhito",
 	"main": "dist/default.js",
+	"devDependencies": {
+		"@playwright/test": "^1.45.3",
+		"brotli-size": "^4.0.0",
+		"gzip-size": "^7.0.0",
+		"preprocess": "^3.2.0",
+		"terser": "^5.31.3"
+	},
+	"description": "Tracker script for Medama Analytics",
+	"license": "MIT",
 	"scripts": {
 		"build": "bun run build:default && bun run build:size",
-		"build:default": "terser src/default.js -o dist/default.js -c passes=2,unsafe=true -m --ecma 2016 --rename --module",
+		"build:default": "bun run ./scripts/build.mjs",
 		"build:size": "bun run ./scripts/size.mjs",
 		"format": "biome format --write .",
 		"e2e:serve": "bun run ./tests/fixtures/serve.js",
 		"e2e": "playwright test",
 		"e2e:ui": "playwright test --ui"
-	},
-	"author": "Ayuhito",
-	"license": "MIT",
-	"devDependencies": {
-		"@playwright/test": "^1.45.3",
-		"brotli-size": "^4.0.0",
-		"gzip-size": "^7.0.0",
-		"terser": "^5.31.3"
 	}
 }

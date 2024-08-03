@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 
 // Get js files of dist folders
 const distJsFiles = (await fs.readdir('./dist/')).filter((file) =>
-	file.endsWith('.js'),
+	file.endsWith('.min.js'),
 );
 
 // For each file in dist, print size in bytes
