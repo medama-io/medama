@@ -282,20 +282,14 @@
 			event.target instanceof HTMLElement
 				? event.target.closest('[data-medama-*]')
 				: null;
+
 		if (target) {
-			const attributes = target
-				.getAttributeNames()
-				.filter((attr) => attr.startsWith('data-medama-'));
-
-			if (attributes.length > 0) {
-				/** @type {Object<string, string>} */
-				const data = {};
-				attributes.forEach((attr) => {
-					const key = attr.replace('data-medama-', '');
-					const value = target.getAttribute(attr);
-					data[key] = value;
-				});
-
+			const data = Object.fromEntries(
+				[...target.attributes]
+					.filter((attr) => attr.name.startsWith('data-medama-'))
+					.map((attr) => [attr.name.slice(12), attr.value]),
+			);
+			if (Object.keys(data).length > 0) {
 				sendCustomBeacon(data);
 			}
 		}
