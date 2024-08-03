@@ -282,25 +282,37 @@
 	// @endif
 
 	// @ifdef TAGGED_EVENTS
-	addEventListener('click', (event) => {
+	/**
+	 * Click event listener to track custom events.
+	 * @param {MouseEvent} event The click event.
+	 * @returns {void}
+	 */
+	const clickTracker = (event) => {
+		// If event is not a left click or middle click, then bail out.
+		if (event.button > 1) return;
+
 		// Find the closest element with a data-medama-* attribute.
 		const target =
 			event.target instanceof HTMLElement
 				? event.target.closest('[data-medama-*]')
 				: null;
+		if (!target) return;
 
-		if (target) {
-			// Extract all data-medama-* attributes and send them as custom properties.
-			const data = Object.fromEntries(
-				[...target.attributes]
-					.filter((attr) => attr.name.startsWith('data-medama-'))
-					.map((attr) => [attr.name.slice(12), attr.value]),
-			);
-			if (Object.keys(data).length > 0) {
-				sendCustomBeacon(data);
-			}
+		// Extract all data-medama-* attributes and send them as custom properties.
+		const data = Object.fromEntries(
+			[...target.attributes]
+				.filter((attr) => attr.name.startsWith('data-medama-'))
+				.map((attr) => [attr.name.slice(12), attr.value]),
+		);
+		if (Object.keys(data).length > 0) {
+			sendCustomBeacon(data);
 		}
-	});
+	};
+
+	// Click event listener only listens to primary left clicks.
+	addEventListener('click', clickTracker);
+	// Auxclick event listener listens to middle clicks and right clicks.
+	addEventListener('auxclick', clickTracker);
 	// @endif
 
 	// Prefer pagehide if available because it's more reliable than unload.

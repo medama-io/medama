@@ -20,7 +20,8 @@ tasks:
     deps: [build:default]
     cmds:
       - mkdir -p ../core/client
-      - cp ./dist/default.min.js ../core/client/script.js
+      - cp ./dist/default.min.js ../core/client/default.js
+      - cp ./dist/tagged-events.min.js ../core/client/tagged-events.js
     sources:
       - ./dist/*.min.js
     generates:
