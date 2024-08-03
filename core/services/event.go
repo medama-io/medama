@@ -309,15 +309,15 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		}
 		batchID := batchIDType.String()
 
-		for name, item := range req.EventCustom.P {
+		for name, item := range req.EventCustom.D {
 			var value string
 
 			switch item.Type {
-			case api.StringEventCustomPItem:
+			case api.StringEventCustomDItem:
 				value = item.String
-			case api.IntEventCustomPItem:
+			case api.IntEventCustomDItem:
 				value = strconv.Itoa(item.Int)
-			case api.BoolEventCustomPItem:
+			case api.BoolEventCustomDItem:
 				value = strconv.FormatBool(item.Bool)
 			default:
 				log.Error().Str("type", string(item.Type)).Msg("hit: invalid custom event property type")

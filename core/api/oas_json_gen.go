@@ -556,19 +556,14 @@ func (s *EventCustom) encodeFields(e *jx.Encoder) {
 		e.Str(s.G)
 	}
 	{
-		e.FieldStart("n")
-		e.Str(s.N)
-	}
-	{
-		e.FieldStart("p")
-		s.P.Encode(e)
+		e.FieldStart("d")
+		s.D.Encode(e)
 	}
 }
 
-var jsonFieldsNameOfEventCustom = [3]string{
+var jsonFieldsNameOfEventCustom = [2]string{
 	0: "g",
-	1: "n",
-	2: "p",
+	1: "d",
 }
 
 // Decode decodes EventCustom from json.
@@ -592,27 +587,15 @@ func (s *EventCustom) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"g\"")
 			}
-		case "n":
+		case "d":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				v, err := d.Str()
-				s.N = string(v)
-				if err != nil {
+				if err := s.D.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"n\"")
-			}
-		case "p":
-			requiredBitSet[0] |= 1 << 2
-			if err := func() error {
-				if err := s.P.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"p\"")
+				return errors.Wrap(err, "decode field \"d\"")
 			}
 		default:
 			return d.Skip()
@@ -624,7 +607,7 @@ func (s *EventCustom) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000111,
+		0b00000011,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -671,14 +654,14 @@ func (s *EventCustom) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s EventCustomP) Encode(e *jx.Encoder) {
+func (s EventCustomD) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields implements json.Marshaler.
-func (s EventCustomP) encodeFields(e *jx.Encoder) {
+func (s EventCustomD) encodeFields(e *jx.Encoder) {
 	for k, elem := range s {
 		e.FieldStart(k)
 
@@ -686,14 +669,14 @@ func (s EventCustomP) encodeFields(e *jx.Encoder) {
 	}
 }
 
-// Decode decodes EventCustomP from json.
-func (s *EventCustomP) Decode(d *jx.Decoder) error {
+// Decode decodes EventCustomD from json.
+func (s *EventCustomD) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode EventCustomP to nil")
+		return errors.New("invalid: unable to decode EventCustomD to nil")
 	}
 	m := s.init()
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		var elem EventCustomPItem
+		var elem EventCustomDItem
 		if err := func() error {
 			if err := elem.Decode(d); err != nil {
 				return err
@@ -705,41 +688,41 @@ func (s *EventCustomP) Decode(d *jx.Decoder) error {
 		m[string(k)] = elem
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode EventCustomP")
+		return errors.Wrap(err, "decode EventCustomD")
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s EventCustomP) MarshalJSON() ([]byte, error) {
+func (s EventCustomD) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *EventCustomP) UnmarshalJSON(data []byte) error {
+func (s *EventCustomD) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
-// Encode encodes EventCustomPItem as json.
-func (s EventCustomPItem) Encode(e *jx.Encoder) {
+// Encode encodes EventCustomDItem as json.
+func (s EventCustomDItem) Encode(e *jx.Encoder) {
 	switch s.Type {
-	case StringEventCustomPItem:
+	case StringEventCustomDItem:
 		e.Str(s.String)
-	case IntEventCustomPItem:
+	case IntEventCustomDItem:
 		e.Int(s.Int)
-	case BoolEventCustomPItem:
+	case BoolEventCustomDItem:
 		e.Bool(s.Bool)
 	}
 }
 
-// Decode decodes EventCustomPItem from json.
-func (s *EventCustomPItem) Decode(d *jx.Decoder) error {
+// Decode decodes EventCustomDItem from json.
+func (s *EventCustomDItem) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode EventCustomPItem to nil")
+		return errors.New("invalid: unable to decode EventCustomDItem to nil")
 	}
 	// Sum type type_discriminator.
 	switch t := d.Next(); t {
@@ -749,21 +732,21 @@ func (s *EventCustomPItem) Decode(d *jx.Decoder) error {
 		if err != nil {
 			return err
 		}
-		s.Type = BoolEventCustomPItem
+		s.Type = BoolEventCustomDItem
 	case jx.Number:
 		v, err := d.Int()
 		s.Int = int(v)
 		if err != nil {
 			return err
 		}
-		s.Type = IntEventCustomPItem
+		s.Type = IntEventCustomDItem
 	case jx.String:
 		v, err := d.Str()
 		s.String = string(v)
 		if err != nil {
 			return err
 		}
-		s.Type = StringEventCustomPItem
+		s.Type = StringEventCustomDItem
 	default:
 		return errors.Errorf("unexpected json type %q", t)
 	}
@@ -771,14 +754,14 @@ func (s *EventCustomPItem) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s EventCustomPItem) MarshalJSON() ([]byte, error) {
+func (s EventCustomDItem) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *EventCustomPItem) UnmarshalJSON(data []byte) error {
+func (s *EventCustomDItem) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -802,12 +785,8 @@ func (s EventHit) encodeFields(e *jx.Encoder) {
 				e.Str(s.G)
 			}
 			{
-				e.FieldStart("n")
-				e.Str(s.N)
-			}
-			{
-				e.FieldStart("p")
-				s.P.Encode(e)
+				e.FieldStart("d")
+				s.D.Encode(e)
 			}
 		}
 	case EventLoadEventHit:

@@ -489,10 +489,8 @@ export interface components {
         EventCustom: {
             /** @description Group name of events. Currently, only the hostname is supported. */
             g: string;
-            /** @description Event name or key. */
-            n: string;
-            /** @description Event properties. */
-            p: {
+            /** @description Custom event properties. */
+            d: {
                 [key: string]: (string | number | boolean) | undefined;
             };
             /**
