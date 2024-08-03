@@ -22,6 +22,7 @@
 
 /**
  * @typedef {Object} CustomPayload
+ * @property {string} b Beacon ID.
  * @property {string} g Group name of events. Currently, only uses the hostname.
  * @property {EventType} e Event type.
  * @property {Object} d Event custom properties.
@@ -267,6 +268,7 @@
 				 * Payload to send to the server.
 				 * @type {CustomPayload}
 				 */ ({
+						"b": uid,
 						"e": "custom",
 						"g": location.hostname,
 						"d": properties,
@@ -278,12 +280,14 @@
 	};
 
 	addEventListener('click', (event) => {
+		// Find the closest element with a data-medama-* attribute.
 		const target =
 			event.target instanceof HTMLElement
 				? event.target.closest('[data-medama-*]')
 				: null;
 
 		if (target) {
+			// Extract all data-medama-* attributes and send them as custom properties.
 			const data = Object.fromEntries(
 				[...target.attributes]
 					.filter((attr) => attr.name.startsWith('data-medama-'))

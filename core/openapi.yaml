@@ -1413,6 +1413,9 @@ components:
       description: Event with custom properties.
       type: object
       properties:
+        b:
+          type: string
+          description: Optional Beacon ID generated for each user to link multiple events on the same page together.
         g:
           type: string
           description: Group name of events. Currently, only the hostname is supported.

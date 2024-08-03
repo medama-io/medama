@@ -487,6 +487,8 @@ export interface components {
          * @description Event with custom properties.
          */
         EventCustom: {
+            /** @description Beacon ID generated for each user to link multiple events on the same page together. */
+            b?: string;
             /** @description Group name of events. Currently, only the hostname is supported. */
             g: string;
             /** @description Custom event properties. */

@@ -17,12 +17,14 @@ const (
 func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error {
 	exec := `--sql
 		INSERT INTO events (
+			bid,
 			batch_id,
 			group_name,
 			name,
 			value,
 			date_created
 		) VALUES (
+			:bid,
 			:batch_id,
 			:group_name,
 			:name,
@@ -46,6 +48,7 @@ func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error 
 
 	for _, event := range *events {
 		paramMap := map[string]interface{}{
+			"bid":        event.BID,
 			"batch_id":   event.BatchID,
 			"group_name": event.Group,
 			"name":       event.Name,

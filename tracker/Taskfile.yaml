@@ -11,11 +11,10 @@ tasks:
     cmds:
       - bun run build:default
     sources:
-      - ./src/default.js
+      - ./src/*.js
       - ./package.json
     generates:
-      - ./dist/default.js
-      - ./dist/default.min.js
+      - ./dist/*.js
 
   embed:
     deps: [build:default]
@@ -23,7 +22,7 @@ tasks:
       - mkdir -p ../core/client
       - cp ./dist/default.min.js ../core/client/script.js
     sources:
-      - ./dist/default.min.js
+      - ./dist/*.min.js
     generates:
       - ../core/client/script.js
 

@@ -552,6 +552,12 @@ func (s *EventCustom) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *EventCustom) encodeFields(e *jx.Encoder) {
 	{
+		if s.B.Set {
+			e.FieldStart("b")
+			s.B.Encode(e)
+		}
+	}
+	{
 		e.FieldStart("g")
 		e.Str(s.G)
 	}
@@ -561,9 +567,10 @@ func (s *EventCustom) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfEventCustom = [2]string{
-	0: "g",
-	1: "d",
+var jsonFieldsNameOfEventCustom = [3]string{
+	0: "b",
+	1: "g",
+	2: "d",
 }
 
 // Decode decodes EventCustom from json.
@@ -575,8 +582,18 @@ func (s *EventCustom) Decode(d *jx.Decoder) error {
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
+		case "b":
+			if err := func() error {
+				s.B.Reset()
+				if err := s.B.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"b\"")
+			}
 		case "g":
-			requiredBitSet[0] |= 1 << 0
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
 				v, err := d.Str()
 				s.G = string(v)
@@ -588,7 +605,7 @@ func (s *EventCustom) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"g\"")
 			}
 		case "d":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				if err := s.D.Decode(d); err != nil {
 					return err
@@ -607,7 +624,7 @@ func (s *EventCustom) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00000110,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -780,6 +797,12 @@ func (s EventHit) encodeFields(e *jx.Encoder) {
 		e.Str("custom")
 		{
 			s := s.EventCustom
+			{
+				if s.B.Set {
+					e.FieldStart("b")
+					s.B.Encode(e)
+				}
+			}
 			{
 				e.FieldStart("g")
 				e.Str(s.G)

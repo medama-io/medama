@@ -170,10 +170,17 @@ func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 // Event with custom properties.
 // Ref: #/components/schemas/EventCustom
 type EventCustom struct {
+	// Beacon ID generated for each user to link multiple events on the same page together.
+	B OptString `json:"b"`
 	// Group name of events. Currently, only the hostname is supported.
 	G string `json:"g"`
 	// Custom event properties.
 	D EventCustomD `json:"d"`
+}
+
+// GetB returns the value of B.
+func (s *EventCustom) GetB() OptString {
+	return s.B
 }
 
 // GetG returns the value of G.
@@ -184,6 +191,11 @@ func (s *EventCustom) GetG() string {
 // GetD returns the value of D.
 func (s *EventCustom) GetD() EventCustomD {
 	return s.D
+}
+
+// SetB sets the value of B.
+func (s *EventCustom) SetB(val OptString) {
+	s.B = val
 }
 
 // SetG sets the value of G.

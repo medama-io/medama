@@ -22,6 +22,7 @@
 
 /**
  * @typedef {Object} CustomPayload
+ * @property {string} b Beacon ID.
  * @property {string} g Group name of events. Currently, only uses the hostname.
  * @property {EventType} e Event type.
  * @property {Object} d Event custom properties.
