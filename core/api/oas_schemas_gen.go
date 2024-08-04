@@ -170,12 +170,17 @@ func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 // Event with custom properties.
 // Ref: #/components/schemas/EventCustom
 type EventCustom struct {
+	// Beacon ID generated for each user to link multiple events on the same page together.
+	B OptString `json:"b"`
 	// Group name of events. Currently, only the hostname is supported.
 	G string `json:"g"`
-	// Event name or key.
-	N string `json:"n"`
-	// Event properties.
-	P EventCustomP `json:"p"`
+	// Custom event properties.
+	D EventCustomD `json:"d"`
+}
+
+// GetB returns the value of B.
+func (s *EventCustom) GetB() OptString {
+	return s.B
 }
 
 // GetG returns the value of G.
@@ -183,14 +188,14 @@ func (s *EventCustom) GetG() string {
 	return s.G
 }
 
-// GetN returns the value of N.
-func (s *EventCustom) GetN() string {
-	return s.N
+// GetD returns the value of D.
+func (s *EventCustom) GetD() EventCustomD {
+	return s.D
 }
 
-// GetP returns the value of P.
-func (s *EventCustom) GetP() EventCustomP {
-	return s.P
+// SetB sets the value of B.
+func (s *EventCustom) SetB(val OptString) {
+	s.B = val
 }
 
 // SetG sets the value of G.
@@ -198,114 +203,109 @@ func (s *EventCustom) SetG(val string) {
 	s.G = val
 }
 
-// SetN sets the value of N.
-func (s *EventCustom) SetN(val string) {
-	s.N = val
+// SetD sets the value of D.
+func (s *EventCustom) SetD(val EventCustomD) {
+	s.D = val
 }
 
-// SetP sets the value of P.
-func (s *EventCustom) SetP(val EventCustomP) {
-	s.P = val
-}
+// Custom event properties.
+type EventCustomD map[string]EventCustomDItem
 
-// Event properties.
-type EventCustomP map[string]EventCustomPItem
-
-func (s *EventCustomP) init() EventCustomP {
+func (s *EventCustomD) init() EventCustomD {
 	m := *s
 	if m == nil {
-		m = map[string]EventCustomPItem{}
+		m = map[string]EventCustomDItem{}
 		*s = m
 	}
 	return m
 }
 
-// EventCustomPItem represents sum type.
-type EventCustomPItem struct {
-	Type   EventCustomPItemType // switch on this field
+// EventCustomDItem represents sum type.
+type EventCustomDItem struct {
+	Type   EventCustomDItemType // switch on this field
 	String string
 	Int    int
 	Bool   bool
 }
 
-// EventCustomPItemType is oneOf type of EventCustomPItem.
-type EventCustomPItemType string
+// EventCustomDItemType is oneOf type of EventCustomDItem.
+type EventCustomDItemType string
 
-// Possible values for EventCustomPItemType.
+// Possible values for EventCustomDItemType.
 const (
-	StringEventCustomPItem EventCustomPItemType = "string"
-	IntEventCustomPItem    EventCustomPItemType = "int"
-	BoolEventCustomPItem   EventCustomPItemType = "bool"
+	StringEventCustomDItem EventCustomDItemType = "string"
+	IntEventCustomDItem    EventCustomDItemType = "int"
+	BoolEventCustomDItem   EventCustomDItemType = "bool"
 )
 
-// IsString reports whether EventCustomPItem is string.
-func (s EventCustomPItem) IsString() bool { return s.Type == StringEventCustomPItem }
+// IsString reports whether EventCustomDItem is string.
+func (s EventCustomDItem) IsString() bool { return s.Type == StringEventCustomDItem }
 
-// IsInt reports whether EventCustomPItem is int.
-func (s EventCustomPItem) IsInt() bool { return s.Type == IntEventCustomPItem }
+// IsInt reports whether EventCustomDItem is int.
+func (s EventCustomDItem) IsInt() bool { return s.Type == IntEventCustomDItem }
 
-// IsBool reports whether EventCustomPItem is bool.
-func (s EventCustomPItem) IsBool() bool { return s.Type == BoolEventCustomPItem }
+// IsBool reports whether EventCustomDItem is bool.
+func (s EventCustomDItem) IsBool() bool { return s.Type == BoolEventCustomDItem }
 
-// SetString sets EventCustomPItem to string.
-func (s *EventCustomPItem) SetString(v string) {
-	s.Type = StringEventCustomPItem
+// SetString sets EventCustomDItem to string.
+func (s *EventCustomDItem) SetString(v string) {
+	s.Type = StringEventCustomDItem
 	s.String = v
 }
 
-// GetString returns string and true boolean if EventCustomPItem is string.
-func (s EventCustomPItem) GetString() (v string, ok bool) {
+// GetString returns string and true boolean if EventCustomDItem is string.
+func (s EventCustomDItem) GetString() (v string, ok bool) {
 	if !s.IsString() {
 		return v, false
 	}
 	return s.String, true
 }
 
-// NewStringEventCustomPItem returns new EventCustomPItem from string.
-func NewStringEventCustomPItem(v string) EventCustomPItem {
-	var s EventCustomPItem
+// NewStringEventCustomDItem returns new EventCustomDItem from string.
+func NewStringEventCustomDItem(v string) EventCustomDItem {
+	var s EventCustomDItem
 	s.SetString(v)
 	return s
 }
 
-// SetInt sets EventCustomPItem to int.
-func (s *EventCustomPItem) SetInt(v int) {
-	s.Type = IntEventCustomPItem
+// SetInt sets EventCustomDItem to int.
+func (s *EventCustomDItem) SetInt(v int) {
+	s.Type = IntEventCustomDItem
 	s.Int = v
 }
 
-// GetInt returns int and true boolean if EventCustomPItem is int.
-func (s EventCustomPItem) GetInt() (v int, ok bool) {
+// GetInt returns int and true boolean if EventCustomDItem is int.
+func (s EventCustomDItem) GetInt() (v int, ok bool) {
 	if !s.IsInt() {
 		return v, false
 	}
 	return s.Int, true
 }
 
-// NewIntEventCustomPItem returns new EventCustomPItem from int.
-func NewIntEventCustomPItem(v int) EventCustomPItem {
-	var s EventCustomPItem
+// NewIntEventCustomDItem returns new EventCustomDItem from int.
+func NewIntEventCustomDItem(v int) EventCustomDItem {
+	var s EventCustomDItem
 	s.SetInt(v)
 	return s
 }
 
-// SetBool sets EventCustomPItem to bool.
-func (s *EventCustomPItem) SetBool(v bool) {
-	s.Type = BoolEventCustomPItem
+// SetBool sets EventCustomDItem to bool.
+func (s *EventCustomDItem) SetBool(v bool) {
+	s.Type = BoolEventCustomDItem
 	s.Bool = v
 }
 
-// GetBool returns bool and true boolean if EventCustomPItem is bool.
-func (s EventCustomPItem) GetBool() (v bool, ok bool) {
+// GetBool returns bool and true boolean if EventCustomDItem is bool.
+func (s EventCustomDItem) GetBool() (v bool, ok bool) {
 	if !s.IsBool() {
 		return v, false
 	}
 	return s.Bool, true
 }
 
-// NewBoolEventCustomPItem returns new EventCustomPItem from bool.
-func NewBoolEventCustomPItem(v bool) EventCustomPItem {
-	var s EventCustomPItem
+// NewBoolEventCustomDItem returns new EventCustomDItem from bool.
+func NewBoolEventCustomDItem(v bool) EventCustomDItem {
+	var s EventCustomDItem
 	s.SetBool(v)
 	return s
 }

@@ -1,6 +1,6 @@
 // @ts-check
 
-/** @typedef {('load'|'unload')} EventType */
+/** @typedef {('load'|'unload'|'custom')} EventType */
 
 /**
  * @typedef {Object} HitPayload
@@ -18,6 +18,14 @@
  * @property {string} b Beacon ID.
  * @property {EventType} e Event type.
  * @property {number} m Time spent on page.
+ */
+
+/**
+ * @typedef {Object} CustomPayload
+ * @property {string} b Beacon ID.
+ * @property {string} g Group name of events. Currently, only uses the hostname.
+ * @property {EventType} e Event type.
+ * @property {Object} d Event custom properties.
  */
 
 /**
@@ -47,7 +55,7 @@
 	 * src attribute to determine the host.
 	 */
 	const host = currentScript.getAttribute('data-api')
-		? `${document.location.protocol}//${currentScript.getAttribute('data-api')}`
+		? `${location.protocol}//${currentScript.getAttribute('data-api')}`
 		: // @ts-ignore - We know this won't be an SVGScriptElement.
 			currentScript.src.replace(/[^\/]+$/, 'api/');
 
@@ -244,6 +252,64 @@
 		// Ensure unload is only called once.
 		isUnloadCalled = true;
 	};
+
+	/**
+	 * Send a custom beacon event to the server.
+	 * @param {Object.<string, string>} properties Event custom properties.
+	 * @returns {void}
+	 */
+	const sendCustomBeacon = (properties) => {
+		// We use fetch here because it is more reliable than XHR.
+		fetch(host + 'event/hit', {
+			method: 'POST',
+			body: JSON.stringify(
+				// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
+				/**
+				 * Payload to send to the server.
+				 * @type {CustomPayload}
+				 */ ({
+						"b": uid,
+						"e": "custom",
+						"g": location.hostname,
+						"d": properties,
+					}),
+			),
+			// Will make the response opaque, but we don't need it.
+			mode: 'no-cors',
+		});
+	};
+
+	/**
+	 * Click event listener to track custom events.
+	 * @param {MouseEvent} event The click event.
+	 * @returns {void}
+	 */
+	const clickTracker = (event) => {
+		// If event is not a left click or middle click, then bail out.
+		if (event.button > 1) return;
+
+		// Find the closest element with a data-medama-* attribute.
+		const target =
+			event.target instanceof HTMLElement
+				? event.target.closest('[data-medama-*]')
+				: null;
+		if (!target) return;
+
+		// Extract all data-medama-* attributes and send them as custom properties.
+		const data = Object.fromEntries(
+			[...target.attributes]
+				.filter((attr) => attr.name.startsWith('data-medama-'))
+				.map((attr) => [attr.name.slice(12), attr.value]),
+		);
+		if (Object.keys(data).length > 0) {
+			sendCustomBeacon(data);
+		}
+	};
+
+	// Click event listener only listens to primary left clicks.
+	addEventListener('click', clickTracker);
+	// Auxclick event listener listens to middle clicks and right clicks.
+	addEventListener('auxclick', clickTracker);
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.

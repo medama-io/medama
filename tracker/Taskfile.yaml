@@ -11,18 +11,19 @@ tasks:
     cmds:
       - bun run build:default
     sources:
-      - ./src/default.js
+      - ./src/*.js
       - ./package.json
     generates:
-      - ./dist/default.js
+      - ./dist/*.js
 
   embed:
     deps: [build:default]
     cmds:
       - mkdir -p ../core/client
-      - cp ./dist/default.js ../core/client/script.js
+      - cp ./dist/default.min.js ../core/client/script.js # TODO: Rename to default.js
+      - cp ./dist/tagged-events.min.js ../core/client/tagged-events.js
     sources:
-      - ./dist/default.js
+      - ./dist/*.min.js
     generates:
       - ../core/client/script.js
 

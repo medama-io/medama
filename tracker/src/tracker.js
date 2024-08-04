@@ -253,7 +253,67 @@
 		isUnloadCalled = true;
 	};
 
+	// @ifdef TAGGED_EVENTS
+	/**
+	 * Send a custom beacon event to the server.
+	 * @param {Object.<string, string>} properties Event custom properties.
+	 * @returns {void}
+	 */
+	const sendCustomBeacon = (properties) => {
+		// We use fetch here because it is more reliable than XHR.
+		fetch(host + 'event/hit', {
+			method: 'POST',
+			body: JSON.stringify(
+				// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
+				/**
+				 * Payload to send to the server.
+				 * @type {CustomPayload}
+				 */ ({
+						"b": uid,
+						"e": "custom",
+						"g": location.hostname,
+						"d": properties,
+					}),
+			),
+			// Will make the response opaque, but we don't need it.
+			mode: 'no-cors',
+		});
+	};
+	// @endif
 
+	// @ifdef TAGGED_EVENTS
+	/**
+	 * Click event listener to track custom events.
+	 * @param {MouseEvent} event The click event.
+	 * @returns {void}
+	 */
+	const clickTracker = (event) => {
+		// If event is not a left click or middle click, then bail out.
+		if (event.button > 1) return;
+
+		// Find the closest element with a data-medama-* attribute.
+		const target =
+			event.target instanceof HTMLElement
+				? event.target.closest('[data-medama-*]')
+				: null;
+		if (!target) return;
+
+		// Extract all data-medama-* attributes and send them as custom properties.
+		const data = Object.fromEntries(
+			[...target.attributes]
+				.filter((attr) => attr.name.startsWith('data-medama-'))
+				.map((attr) => [attr.name.slice(12), attr.value]),
+		);
+		if (Object.keys(data).length > 0) {
+			sendCustomBeacon(data);
+		}
+	};
+
+	// Click event listener only listens to primary left clicks.
+	addEventListener('click', clickTracker);
+	// Auxclick event listener listens to middle clicks and right clicks.
+	addEventListener('auxclick', clickTracker);
+	// @endif
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.

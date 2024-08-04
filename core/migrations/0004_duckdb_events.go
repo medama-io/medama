@@ -55,7 +55,7 @@ func Down0004(c *duckdb.Client) error {
 		return err
 	}
 
-	// Drop views table
+	// Drop events table
 	_, err = tx.Exec(`--sql
 	DROP TABLE IF EXISTS events`)
 	if err != nil {

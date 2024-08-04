@@ -309,15 +309,15 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		}
 		batchID := batchIDType.String()
 
-		for name, item := range req.EventCustom.P {
+		for name, item := range req.EventCustom.D {
 			var value string
 
 			switch item.Type {
-			case api.StringEventCustomPItem:
+			case api.StringEventCustomDItem:
 				value = item.String
-			case api.IntEventCustomPItem:
+			case api.IntEventCustomDItem:
 				value = strconv.Itoa(item.Int)
-			case api.BoolEventCustomPItem:
+			case api.BoolEventCustomDItem:
 				value = strconv.FormatBool(item.Bool)
 			default:
 				log.Error().Str("type", string(item.Type)).Msg("hit: invalid custom event property type")
@@ -325,26 +325,27 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			}
 
 			events = append(events, model.EventHit{
+				BID:     req.EventCustom.B.Or(""),
 				BatchID: batchID,
 				Group:   group,
 				Name:    name,
 				Value:   value,
 			})
-
-			log = log.With().
-				Str("group", group).
-				Str("name", name).
-				Str("value", value).
-				Logger()
-
-			err := h.analyticsDB.AddEvents(ctx, &events)
-			if err != nil {
-				log.Error().Err(err).Msg("hit: failed to add event")
-				return ErrInternalServerError(err), nil
-			}
-
-			log.Debug().Msg("hit: added custom event")
 		}
+
+		log = log.With().
+			Str("event_type", string(req.Type)).
+			Str("group", group).
+			Int("event_count", len(events)).
+			Logger()
+
+		err = h.analyticsDB.AddEvents(ctx, &events)
+		if err != nil {
+			log.Error().Err(err).Msg("hit: failed to add event")
+			return ErrInternalServerError(err), nil
+		}
+
+		log.Debug().Msg("hit: added custom events")
 	default:
 		log.Error().Str("type", string(req.Type)).Msg("hit: invalid event hit type")
 		return ErrBadRequest(model.ErrInvalidTrackerEvent), nil

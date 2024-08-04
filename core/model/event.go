@@ -8,6 +8,9 @@ const (
 )
 
 type EventHit struct {
+	// Beacon ID - Used to determine if custom events are
+	// associated with a single page view.
+	BID string `db:"bid"`
 	// BatchID - Used to group together multiple properties of the same event.
 	BatchID string `db:"batch_id"`
 	// Group - The group name of the event, typically the hostname.
