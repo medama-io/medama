@@ -84,30 +84,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/settings/usage": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Resource Usage
-         * @description Get the current CPU, memory and disk usage of the server.
-         */
-        get: operations["get-settings-usage"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Resource Usage
-         * @description Update the resource usage settings of the server.
-         */
-        patch: operations["patch-settings-usage"];
-        trace?: never;
-    };
     "/user": {
         parameters: {
             query?: never;
@@ -134,6 +110,26 @@ export interface paths {
          * @description Update a user account's details.
          */
         patch: operations["patch-user"];
+        trace?: never;
+    };
+    "/user/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Resource Usage
+         * @description Get the current CPU, memory and disk usage of the server.
+         */
+        get: operations["get-user-usage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/websites": {
@@ -487,7 +483,7 @@ export interface components {
          * @description Event with custom properties.
          */
         EventCustom: {
-            /** @description Beacon ID generated for each user to link multiple events on the same page together. */
+            /** @description Optional Beacon ID generated for each user to link multiple events on the same page together. */
             b?: string;
             /** @description Group name of events. Currently, only the hostname is supported. */
             g: string;
@@ -529,16 +525,30 @@ export interface components {
             not_in?: string;
         };
         /**
-         * UserGet
-         * @description Response body for getting a user.
+         * UserSettings
+         * @description Response body for getting user settings.
          */
-        UserGet: {
-            username: string;
+        UserSettings: {
             /**
              * @default en
              * @enum {string}
              */
             language: "en";
+            /**
+             * @default default
+             * @enum {string}
+             */
+            script_type: "default" | "tagged-events";
+            threads?: number;
+            memory_limit?: string;
+        };
+        /**
+         * UserGet
+         * @description Response body for getting a user.
+         */
+        UserGet: {
+            username: string;
+            settings: components["schemas"]["UserSettings"];
             /** Format: int64 */
             dateCreated: number;
             /** Format: int64 */
@@ -552,11 +562,7 @@ export interface components {
             username?: string;
             /** Format: password */
             password?: string;
-            /**
-             * @default en
-             * @enum {string}
-             */
-            language: "en";
+            settings?: components["schemas"]["UserSettings"];
         };
         /**
          * WebsiteGet
@@ -612,14 +618,6 @@ export interface components {
                 threads?: number;
                 memory_limit?: string;
             };
-        };
-        /**
-         * SettingsUsagePatch
-         * @description Request body for updating the resource limits of the application.
-         */
-        SettingsUsagePatch: {
-            threads?: number;
-            memory_limit?: string;
         };
         /** StatsSummary */
         StatsSummary: {
@@ -1136,61 +1134,6 @@ export interface operations {
             500: components["responses"]["InternalServerError"];
         };
     };
-    "get-settings-usage": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie: {
-                /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
-            };
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SettingsUsageGet"];
-                };
-            };
-            401: components["responses"]["UnauthorisedError"];
-            500: components["responses"]["InternalServerError"];
-        };
-    };
-    "patch-settings-usage": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie: {
-                /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
-            };
-        };
-        /** @description Resource usage settings to update. */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SettingsUsagePatch"];
-            };
-        };
-        responses: {
-            /** @description Success */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["UnauthorisedError"];
-            403: components["responses"]["ForbiddenError"];
-            500: components["responses"]["InternalServerError"];
-        };
-    };
     "get-user": {
         parameters: {
             query?: never;
@@ -1275,6 +1218,31 @@ export interface operations {
             403: components["responses"]["ForbiddenError"];
             404: components["responses"]["NotFoundError"];
             409: components["responses"]["ConflictError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-user-usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SettingsUsageGet"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
             500: components["responses"]["InternalServerError"];
         };
     };

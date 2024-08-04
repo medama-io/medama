@@ -112,12 +112,12 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, *require.Assertions, conte
 
 	// Create test user
 	userCreate := model.NewUser(
-		"duckdb",             // userID
-		"duckdb@example.com", // email
-		"testtest",           // password
-		"en",                 // language
-		1,                    // dateCreated
-		2,                    // dateUpdated
+		"duckdb",                   // userID
+		"duckdb@example.com",       // email
+		"testtest",                 // password
+		model.NewDefaultSettings(), // settings
+		1,                          // dateCreated
+		2,                          // dateUpdated
 	)
 	err = client.CreateUser(ctx, userCreate)
 	require.NoError(err)

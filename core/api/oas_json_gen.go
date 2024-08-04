@@ -2046,18 +2046,18 @@ func (s *OptString) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes UserPatchLanguage as json.
-func (o OptUserPatchLanguage) Encode(e *jx.Encoder) {
+// Encode encodes UserSettings as json.
+func (o OptUserSettings) Encode(e *jx.Encoder) {
 	if !o.Set {
 		return
 	}
-	e.Str(string(o.Value))
+	o.Value.Encode(e)
 }
 
-// Decode decodes UserPatchLanguage from json.
-func (o *OptUserPatchLanguage) Decode(d *jx.Decoder) error {
+// Decode decodes UserSettings from json.
+func (o *OptUserSettings) Decode(d *jx.Decoder) error {
 	if o == nil {
-		return errors.New("invalid: unable to decode OptUserPatchLanguage to nil")
+		return errors.New("invalid: unable to decode OptUserSettings to nil")
 	}
 	o.Set = true
 	if err := o.Value.Decode(d); err != nil {
@@ -2067,14 +2067,80 @@ func (o *OptUserPatchLanguage) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s OptUserPatchLanguage) MarshalJSON() ([]byte, error) {
+func (s OptUserSettings) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptUserPatchLanguage) UnmarshalJSON(data []byte) error {
+func (s *OptUserSettings) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes UserSettingsLanguage as json.
+func (o OptUserSettingsLanguage) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes UserSettingsLanguage from json.
+func (o *OptUserSettingsLanguage) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptUserSettingsLanguage to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptUserSettingsLanguage) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptUserSettingsLanguage) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes UserSettingsScriptType as json.
+func (o OptUserSettingsScriptType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes UserSettingsScriptType from json.
+func (o *OptUserSettingsScriptType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptUserSettingsScriptType to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptUserSettingsScriptType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptUserSettingsScriptType) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -2683,86 +2749,6 @@ func (s *SettingsUsageGetMetadata) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *SettingsUsageGetMetadata) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s *SettingsUsagePatch) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields encodes fields.
-func (s *SettingsUsagePatch) encodeFields(e *jx.Encoder) {
-	{
-		if s.Threads.Set {
-			e.FieldStart("threads")
-			s.Threads.Encode(e)
-		}
-	}
-	{
-		if s.MemoryLimit.Set {
-			e.FieldStart("memory_limit")
-			s.MemoryLimit.Encode(e)
-		}
-	}
-}
-
-var jsonFieldsNameOfSettingsUsagePatch = [2]string{
-	0: "threads",
-	1: "memory_limit",
-}
-
-// Decode decodes SettingsUsagePatch from json.
-func (s *SettingsUsagePatch) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode SettingsUsagePatch to nil")
-	}
-
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		case "threads":
-			if err := func() error {
-				s.Threads.Reset()
-				if err := s.Threads.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"threads\"")
-			}
-		case "memory_limit":
-			if err := func() error {
-				s.MemoryLimit.Reset()
-				if err := s.MemoryLimit.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"memory_limit\"")
-			}
-		default:
-			return d.Skip()
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode SettingsUsagePatch")
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s *SettingsUsagePatch) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *SettingsUsagePatch) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -5991,8 +5977,8 @@ func (s *UserGet) encodeFields(e *jx.Encoder) {
 		e.Str(s.Username)
 	}
 	{
-		e.FieldStart("language")
-		s.Language.Encode(e)
+		e.FieldStart("settings")
+		s.Settings.Encode(e)
 	}
 	{
 		e.FieldStart("dateCreated")
@@ -6006,7 +5992,7 @@ func (s *UserGet) encodeFields(e *jx.Encoder) {
 
 var jsonFieldsNameOfUserGet = [4]string{
 	0: "username",
-	1: "language",
+	1: "settings",
 	2: "dateCreated",
 	3: "dateUpdated",
 }
@@ -6017,7 +6003,6 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 		return errors.New("invalid: unable to decode UserGet to nil")
 	}
 	var requiredBitSet [1]uint8
-	s.setDefaults()
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -6033,15 +6018,15 @@ func (s *UserGet) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"username\"")
 			}
-		case "language":
+		case "settings":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				if err := s.Language.Decode(d); err != nil {
+				if err := s.Settings.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"language\"")
+				return errors.Wrap(err, "decode field \"settings\"")
 			}
 		case "dateCreated":
 			requiredBitSet[0] |= 1 << 2
@@ -6123,44 +6108,6 @@ func (s *UserGet) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes UserGetLanguage as json.
-func (s UserGetLanguage) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes UserGetLanguage from json.
-func (s *UserGetLanguage) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode UserGetLanguage to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch UserGetLanguage(v) {
-	case UserGetLanguageEn:
-		*s = UserGetLanguageEn
-	default:
-		*s = UserGetLanguage(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s UserGetLanguage) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UserGetLanguage) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode implements json.Marshaler.
 func (s *UserPatch) Encode(e *jx.Encoder) {
 	e.ObjStart()
@@ -6183,9 +6130,9 @@ func (s *UserPatch) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.Language.Set {
-			e.FieldStart("language")
-			s.Language.Encode(e)
+		if s.Settings.Set {
+			e.FieldStart("settings")
+			s.Settings.Encode(e)
 		}
 	}
 }
@@ -6193,7 +6140,7 @@ func (s *UserPatch) encodeFields(e *jx.Encoder) {
 var jsonFieldsNameOfUserPatch = [3]string{
 	0: "username",
 	1: "password",
-	2: "language",
+	2: "settings",
 }
 
 // Decode decodes UserPatch from json.
@@ -6201,7 +6148,6 @@ func (s *UserPatch) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode UserPatch to nil")
 	}
-	s.setDefaults()
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -6225,15 +6171,15 @@ func (s *UserPatch) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"password\"")
 			}
-		case "language":
+		case "settings":
 			if err := func() error {
-				s.Language.Reset()
-				if err := s.Language.Decode(d); err != nil {
+				s.Settings.Reset()
+				if err := s.Settings.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"language\"")
+				return errors.Wrap(err, "decode field \"settings\"")
 			}
 		default:
 			return d.Skip()
@@ -6259,40 +6205,195 @@ func (s *UserPatch) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes UserPatchLanguage as json.
-func (s UserPatchLanguage) Encode(e *jx.Encoder) {
-	e.Str(string(s))
+// Encode implements json.Marshaler.
+func (s *UserSettings) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
 }
 
-// Decode decodes UserPatchLanguage from json.
-func (s *UserPatchLanguage) Decode(d *jx.Decoder) error {
+// encodeFields encodes fields.
+func (s *UserSettings) encodeFields(e *jx.Encoder) {
+	{
+		if s.Language.Set {
+			e.FieldStart("language")
+			s.Language.Encode(e)
+		}
+	}
+	{
+		if s.ScriptType.Set {
+			e.FieldStart("script_type")
+			s.ScriptType.Encode(e)
+		}
+	}
+	{
+		if s.Threads.Set {
+			e.FieldStart("threads")
+			s.Threads.Encode(e)
+		}
+	}
+	{
+		if s.MemoryLimit.Set {
+			e.FieldStart("memory_limit")
+			s.MemoryLimit.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfUserSettings = [4]string{
+	0: "language",
+	1: "script_type",
+	2: "threads",
+	3: "memory_limit",
+}
+
+// Decode decodes UserSettings from json.
+func (s *UserSettings) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode UserPatchLanguage to nil")
+		return errors.New("invalid: unable to decode UserSettings to nil")
 	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch UserPatchLanguage(v) {
-	case UserPatchLanguageEn:
-		*s = UserPatchLanguageEn
-	default:
-		*s = UserPatchLanguage(v)
+	s.setDefaults()
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "language":
+			if err := func() error {
+				s.Language.Reset()
+				if err := s.Language.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"language\"")
+			}
+		case "script_type":
+			if err := func() error {
+				s.ScriptType.Reset()
+				if err := s.ScriptType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"script_type\"")
+			}
+		case "threads":
+			if err := func() error {
+				s.Threads.Reset()
+				if err := s.Threads.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"threads\"")
+			}
+		case "memory_limit":
+			if err := func() error {
+				s.MemoryLimit.Reset()
+				if err := s.MemoryLimit.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"memory_limit\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode UserSettings")
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s UserPatchLanguage) MarshalJSON() ([]byte, error) {
+func (s *UserSettings) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UserPatchLanguage) UnmarshalJSON(data []byte) error {
+func (s *UserSettings) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes UserSettingsLanguage as json.
+func (s UserSettingsLanguage) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes UserSettingsLanguage from json.
+func (s *UserSettingsLanguage) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode UserSettingsLanguage to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch UserSettingsLanguage(v) {
+	case UserSettingsLanguageEn:
+		*s = UserSettingsLanguageEn
+	default:
+		*s = UserSettingsLanguage(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s UserSettingsLanguage) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *UserSettingsLanguage) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes UserSettingsScriptType as json.
+func (s UserSettingsScriptType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes UserSettingsScriptType from json.
+func (s *UserSettingsScriptType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode UserSettingsScriptType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch UserSettingsScriptType(v) {
+	case UserSettingsScriptTypeDefault:
+		*s = UserSettingsScriptTypeDefault
+	case UserSettingsScriptTypeTaggedEvents:
+		*s = UserSettingsScriptTypeTaggedEvents
+	default:
+		*s = UserSettingsScriptType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s UserSettingsScriptType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *UserSettingsScriptType) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

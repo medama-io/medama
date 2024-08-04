@@ -3,11 +3,15 @@ package migrations
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
+	"github.com/medama-io/medama/model"
+	"github.com/medama-io/medama/util"
 	"github.com/medama-io/medama/util/logger"
+	"go.jetify.com/typeid"
 )
 
 type MigrationType string
@@ -49,6 +53,7 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 	// Setup migration functions
 	sqliteMigrations := []*Migration[sqlite.Client]{
 		{ID: 1, Name: "0001_sqlite_schema.go", Type: SQLite, Up: Up0001, Down: Down0001},
+		{ID: 6, Name: "0006_sqlite_settings.go", Type: SQLite, Up: Up0006, Down: Down0006},
 	}
 
 	duckdbMigrations := []*Migration[duckdb.Client]{
@@ -145,6 +150,55 @@ func (s *Service) AutoMigrate(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+
+	// Count if there are any users. If there are no users, create the default admin user.
+	rows, err := s.sqlite.QueryContext(ctx, "SELECT COUNT(*) FROM users")
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	var count int
+	for rows.Next() {
+		err = rows.Scan(&count)
+		if err != nil {
+			return err
+		}
+	}
+
+	if count > 0 {
+		return nil
+	}
+
+	// Create default admin user
+	log := logger.Get()
+	log.Warn().Msg("no users found, creating default admin user")
+
+	// UUIDv7 id generation
+	typeid, err := typeid.WithPrefix("user")
+	if err != nil {
+		return err
+	}
+	id := typeid.String()
+
+	// Hash default password
+	auth, err := util.NewAuthService(context.Background(), false)
+	if err != nil {
+		return err
+	}
+	pwdHash, err := auth.HashPassword("CHANGE_ME_ON_FIRST_LOGIN")
+	if err != nil {
+		return err
+	}
+
+	dateCreated := time.Now().Unix()
+	dateUpdated := dateCreated
+	err = s.sqlite.CreateUser(context.Background(), model.NewUser(id, "admin", pwdHash, model.NewDefaultSettings(), dateCreated, dateUpdated))
+	if err != nil {
+		return err
+	}
+
+	log.Warn().Msg("default admin user created")
 
 	return nil
 }

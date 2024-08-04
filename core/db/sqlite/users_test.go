@@ -13,7 +13,7 @@ func TestCreateUser(t *testing.T) {
 		"test",
 		"username",
 		"password",
-		"en",
+		model.NewDefaultSettings(),
 		1,
 		2,
 	)
@@ -26,7 +26,7 @@ func TestCreateUser(t *testing.T) {
 	assert.NotNil(user)
 	assert.Equal("test", user.ID)
 	assert.Equal("username", user.Username)
-	assert.Equal("en", user.Language)
+	assert.Equal("en", user.Settings.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
 }
@@ -39,7 +39,7 @@ func TestGetUser(t *testing.T) {
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
-	assert.Equal("en", user.Language)
+	assert.Equal("en", user.Settings.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
 }
@@ -60,7 +60,7 @@ func TestGetUserByUsername(t *testing.T) {
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
-	assert.Equal("en", user.Language)
+	assert.Equal("en", user.Settings.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
 }
@@ -72,7 +72,7 @@ func TestGetDefaultAdminUser(t *testing.T) {
 	assert.NoError(err)
 	assert.NotNil(user)
 	assert.Equal("admin", user.Username)
-	assert.Equal("en", user.Language)
+	assert.Equal("en", user.Settings.Language)
 }
 
 func TestGetUserByUsernameNotFound(t *testing.T) {

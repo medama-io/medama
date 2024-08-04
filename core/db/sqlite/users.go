@@ -3,6 +3,7 @@ package sqlite
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
@@ -15,28 +16,34 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 		id,
 		username,
 		password,
-		language,
+		settings,
 		date_created,
 		date_updated
 	) VALUES (
 		:id,
 		:username,
 		:password,
-		:language,
+		:settings,
 		:date_created,
 		:date_updated
 	)`
+
+	// Marshal settings to JSON
+	settingsJSON, err := json.Marshal(user.Settings)
+	if err != nil {
+		return errors.Wrap(err, "marshaling settings")
+	}
 
 	paramMap := map[string]interface{}{
 		"id":           user.ID,
 		"username":     user.Username,
 		"password":     user.Password,
-		"language":     user.Language,
+		"settings":     string(settingsJSON),
 		"date_created": user.DateCreated,
 		"date_updated": user.DateUpdated,
 	}
 
-	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err = c.DB.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) || errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrUserExists
@@ -50,7 +57,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 
 func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	query := `--sql
-	SELECT id, username, password, language, date_created, date_updated FROM users WHERE id = ?`
+	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE id = ?`
 
 	res, err := c.DB.QueryxContext(ctx, query, id)
 	if err != nil {
@@ -79,7 +86,7 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 
 func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	query := `--sql
-	SELECT id, username, password, language, date_created, date_updated FROM users WHERE username = ?`
+	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE username = ?`
 
 	res, err := c.DB.QueryxContext(ctx, query, username)
 	if err != nil {

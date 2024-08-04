@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"time"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/go-faster/errors"
+	"github.com/medama-io/medama/db/duckdb"
+	"github.com/medama-io/medama/db/sqlite"
 )
 
 type ServerConfig struct {
@@ -35,6 +38,24 @@ type AppDBConfig struct {
 
 type AnalyticsDBConfig struct {
 	Host string `env:"ANALYTICS_DATABASE_HOST"`
+}
+
+// This is a runtime config that is read from user settings in the database.
+type RuntimeConfig struct {
+	// Tracker settings.
+	// Choose what type of script to serve from /script.js.
+	//
+	// Options:
+	//
+	// - "default" - Default script that collects page view data.
+	//
+	// - "tagged-events" - Script that collects page view data and custom event properties.
+	ScriptType string
+	// Usage settings.
+	// Number of threads to use for processing events.
+	Threads int
+	// Memory limit for processing events.
+	MemoryLimit string
 }
 
 const (
@@ -115,4 +136,27 @@ func NewAnalyticsDBConfig(useEnv bool) (*AnalyticsDBConfig, error) {
 	}
 
 	return config, nil
+}
+
+// NewRuntimeConfig creates a new runtime config.
+func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, analytics *duckdb.Client) (*RuntimeConfig, error) {
+	// Load the script type from the database.
+	settings, err := user.GetSettings(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "runtime config")
+	}
+
+	// Set the DuckDB settings.
+	if settings.MemoryLimit != "" || settings.Threads != 0 {
+		err := analytics.SetDuckDBSettings(ctx, &settings.DuckDBSettings)
+		if err != nil {
+			return nil, errors.Wrap(err, "runtime config")
+		}
+	}
+
+	return &RuntimeConfig{
+		ScriptType:  settings.ScriptType,
+		Threads:     settings.Threads,
+		MemoryLimit: settings.MemoryLimit,
+	}, nil
 }

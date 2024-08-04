@@ -11,7 +11,7 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
-func (c *Client) GetSettingsUsage(ctx context.Context) (*model.GetSettingsUsage, error) {
+func (c *Client) GetDuckDBSettings(ctx context.Context) (*model.DuckDBSettings, error) {
 	queryThreads := qb.New().
 		Select("value AS threads").
 		From("duckdb_settings()").
@@ -22,7 +22,7 @@ func (c *Client) GetSettingsUsage(ctx context.Context) (*model.GetSettingsUsage,
 		From("duckdb_settings()").
 		Where("name = 'memory_limit'")
 
-	var usage model.GetSettingsUsage
+	var usage model.DuckDBSettings
 
 	// Get the number of threads.
 	err := c.GetContext(ctx, &usage, queryThreads.Build())
@@ -39,7 +39,7 @@ func (c *Client) GetSettingsUsage(ctx context.Context) (*model.GetSettingsUsage,
 	return &usage, nil
 }
 
-func (c *Client) PatchSettingsUsage(ctx context.Context, settings *model.GetSettingsUsage) error {
+func (c *Client) SetDuckDBSettings(ctx context.Context, settings *model.DuckDBSettings) error {
 	// SET does not support binding parameters, so we need to sanitize the input manually
 	if settings.Threads > 0 {
 		exec := fmt.Sprintf("SET threads = %s", strconv.Itoa(settings.Threads))

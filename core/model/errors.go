@@ -36,6 +36,8 @@ var (
 	ErrInvalidFilterOperation = errors.New("invalid filter operation")
 
 	// Users
+	// ErrSettingNotFound is returned when a setting is not found.
+	ErrSettingNotFound = errors.New("setting not found")
 	// ErrUserExists is returned when a user already exists.
 	ErrUserExists = errors.New("user already exists")
 	// ErrUserInvalidLanguage is returned when a user has an invalid language.
