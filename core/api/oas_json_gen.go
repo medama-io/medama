@@ -5651,25 +5651,11 @@ func (s *UserSettings) encodeFields(e *jx.Encoder) {
 			s.ScriptType.Encode(e)
 		}
 	}
-	{
-		if s.Threads.Set {
-			e.FieldStart("threads")
-			s.Threads.Encode(e)
-		}
-	}
-	{
-		if s.MemoryLimit.Set {
-			e.FieldStart("memory_limit")
-			s.MemoryLimit.Encode(e)
-		}
-	}
 }
 
-var jsonFieldsNameOfUserSettings = [4]string{
+var jsonFieldsNameOfUserSettings = [2]string{
 	0: "language",
 	1: "script_type",
-	2: "threads",
-	3: "memory_limit",
 }
 
 // Decode decodes UserSettings from json.
@@ -5700,26 +5686,6 @@ func (s *UserSettings) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"script_type\"")
-			}
-		case "threads":
-			if err := func() error {
-				s.Threads.Reset()
-				if err := s.Threads.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"threads\"")
-			}
-		case "memory_limit":
-			if err := func() error {
-				s.MemoryLimit.Reset()
-				if err := s.MemoryLimit.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"memory_limit\"")
 			}
 		default:
 			return d.Skip()
@@ -5844,17 +5810,12 @@ func (s *UserUsageGet) encodeFields(e *jx.Encoder) {
 		e.FieldStart("disk")
 		s.Disk.Encode(e)
 	}
-	{
-		e.FieldStart("metadata")
-		s.Metadata.Encode(e)
-	}
 }
 
-var jsonFieldsNameOfUserUsageGet = [4]string{
+var jsonFieldsNameOfUserUsageGet = [3]string{
 	0: "cpu",
 	1: "memory",
 	2: "disk",
-	3: "metadata",
 }
 
 // Decode decodes UserUsageGet from json.
@@ -5896,16 +5857,6 @@ func (s *UserUsageGet) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"disk\"")
 			}
-		case "metadata":
-			requiredBitSet[0] |= 1 << 3
-			if err := func() error {
-				if err := s.Metadata.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"metadata\"")
-			}
 		default:
 			return d.Skip()
 		}
@@ -5916,7 +5867,7 @@ func (s *UserUsageGet) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00001111,
+		0b00000111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -6314,86 +6265,6 @@ func (s *UserUsageGetMemory) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *UserUsageGetMemory) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s *UserUsageGetMetadata) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields encodes fields.
-func (s *UserUsageGetMetadata) encodeFields(e *jx.Encoder) {
-	{
-		if s.Threads.Set {
-			e.FieldStart("threads")
-			s.Threads.Encode(e)
-		}
-	}
-	{
-		if s.MemoryLimit.Set {
-			e.FieldStart("memory_limit")
-			s.MemoryLimit.Encode(e)
-		}
-	}
-}
-
-var jsonFieldsNameOfUserUsageGetMetadata = [2]string{
-	0: "threads",
-	1: "memory_limit",
-}
-
-// Decode decodes UserUsageGetMetadata from json.
-func (s *UserUsageGetMetadata) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode UserUsageGetMetadata to nil")
-	}
-
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		case "threads":
-			if err := func() error {
-				s.Threads.Reset()
-				if err := s.Threads.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"threads\"")
-			}
-		case "memory_limit":
-			if err := func() error {
-				s.MemoryLimit.Reset()
-				if err := s.MemoryLimit.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"memory_limit\"")
-			}
-		default:
-			return d.Skip()
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode UserUsageGetMetadata")
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s *UserUsageGetMetadata) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UserUsageGetMetadata) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

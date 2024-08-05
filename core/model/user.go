@@ -5,13 +5,13 @@ type User struct {
 	Username string `json:"username" db:"username"`
 	Password string `json:"password" db:"password"`
 
-	Settings    *GlobalSettings `json:"settings" db:"settings"`
-	DateCreated int64           `json:"date_created" db:"date_created"`
-	DateUpdated int64           `json:"date_updated" db:"date_updated"`
+	Settings    *UserSettings `json:"settings" db:"settings"`
+	DateCreated int64         `json:"date_created" db:"date_created"`
+	DateUpdated int64         `json:"date_updated" db:"date_updated"`
 }
 
 // NewUser returns a new instance of User with the given values.
-func NewUser(id string, username string, password string, settings *GlobalSettings, dateCreated int64, dateUpdated int64) *User {
+func NewUser(id string, username string, password string, settings *UserSettings, dateCreated int64, dateUpdated int64) *User {
 	return &User{
 		ID:       id,
 		Username: username,
@@ -24,12 +24,9 @@ func NewUser(id string, username string, password string, settings *GlobalSettin
 }
 
 // NewSettings returns a new instance of Settings with default values.
-func NewDefaultSettings() *GlobalSettings {
-	return &GlobalSettings{
-		DuckDBSettings: DuckDBSettings{},
-		UserSettings: UserSettings{
-			Language:   "en",
-			ScriptType: "default",
-		},
+func NewDefaultSettings() *UserSettings {
+	return &UserSettings{
+		Language:   "en",
+		ScriptType: "default",
 	}
 }

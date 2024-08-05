@@ -16,7 +16,7 @@ type AppClient interface {
 	// GetSetting retrieves a user setting from the database.
 	GetSetting(ctx context.Context, key model.SettingsKey) (string, error)
 	// GetSettings retrieves all the user settings from the database.
-	GetSettings(ctx context.Context) (*model.GlobalSettings, error)
+	GetSettings(ctx context.Context) (*model.UserSettings, error)
 	// GetUser retrieves a user from the database by id.
 	GetUser(ctx context.Context, id string) (*model.User, error)
 	// GetUserByUsername retrieves a user from the database by username.
@@ -28,7 +28,7 @@ type AppClient interface {
 	// UpdateSetting updates a user setting in the database.
 	UpdateSetting(ctx context.Context, key model.SettingsKey, value string) error
 	// UpdateSettings updates a user's settings in the database.
-	UpdateSettings(ctx context.Context, id string, settings *model.GlobalSettings) error
+	UpdateSettings(ctx context.Context, id string, settings *model.UserSettings) error
 	// DeleteUser deletes a user from the database.
 	DeleteUser(ctx context.Context, id string) error
 
@@ -50,10 +50,6 @@ type AppClient interface {
 // AnalyticsClient is the interface that groups all database operations related
 // to analytics and events.
 type AnalyticsClient interface {
-	// Settings
-	GetDuckDBSettings(ctx context.Context) (*model.DuckDBSettings, error)
-	// This has to be called at the start of the application to set the settings.
-	SetDuckDBSettings(ctx context.Context, settings *model.DuckDBSettings) error
 	// Events
 	AddEvents(ctx context.Context, event *[]model.EventHit) error
 	AddPageView(ctx context.Context, event *model.PageViewHit) error

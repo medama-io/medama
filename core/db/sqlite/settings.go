@@ -35,13 +35,11 @@ func (c *Client) GetSetting(ctx context.Context, key model.SettingsKey) (string,
 	return value.String, nil
 }
 
-func (c *Client) GetSettings(ctx context.Context) (*model.GlobalSettings, error) {
+func (c *Client) GetSettings(ctx context.Context) (*model.UserSettings, error) {
 	query := `--sql
 	SELECT
 		JSON_EXTRACT(settings, '$.language') AS language,
-		JSON_EXTRACT(settings, '$.script_type') AS script_type,
-		JSON_EXTRACT(settings, '$.threads') AS threads,
-		JSON_EXTRACT(settings, '$.memory_limit') AS memory_limit
+		JSON_EXTRACT(settings, '$.script_type') AS script_type
 	FROM users LIMIT 1`
 
 	settings := model.NewDefaultSettings()
@@ -87,7 +85,7 @@ func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value
 }
 
 // UpdateSettings updates a user's settings in the database.
-func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *model.GlobalSettings) error {
+func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *model.UserSettings) error {
 	query := `--sql
     UPDATE users
     SET settings = :settings,

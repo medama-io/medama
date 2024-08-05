@@ -539,8 +539,6 @@ export interface components {
              * @enum {string}
              */
             script_type?: "default" | "tagged-events";
-            threads?: number;
-            memory_limit?: string;
         };
         /**
          * UserGet
@@ -553,6 +551,30 @@ export interface components {
             dateCreated: number;
             /** Format: int64 */
             dateUpdated: number;
+        };
+        /**
+         * UserUsageGet
+         * @description Response body for getting CPU, memory and disk usage of the server.
+         */
+        UserUsageGet: {
+            cpu: {
+                /** Format: float */
+                usage: number;
+                cores: number;
+                threads: number;
+            };
+            memory: {
+                /** Format: int64 */
+                used: number;
+                /** Format: int64 */
+                total: number;
+            };
+            disk: {
+                /** Format: int64 */
+                used: number;
+                /** Format: int64 */
+                total: number;
+            };
         };
         /**
          * UserPatch
@@ -590,34 +612,6 @@ export interface components {
         WebsitePatch: {
             /** Format: hostname */
             hostname?: string;
-        };
-        /**
-         * UserUsageGet
-         * @description Response body for getting CPU, memory and disk usage of the server.
-         */
-        UserUsageGet: {
-            cpu: {
-                /** Format: float */
-                usage: number;
-                cores: number;
-                threads: number;
-            };
-            memory: {
-                /** Format: int64 */
-                used: number;
-                /** Format: int64 */
-                total: number;
-            };
-            disk: {
-                /** Format: int64 */
-                used: number;
-                /** Format: int64 */
-                total: number;
-            };
-            metadata: {
-                threads?: number;
-                memory_limit?: string;
-            };
         };
         /** StatsSummary */
         StatsSummary: {

@@ -1458,12 +1458,6 @@ components:
           type: string
           enum: [default, tagged-events]
           default: default
-        threads:
-          type: integer
-          minimum: 0
-        memory_limit:
-          type: string
-          minLength: 0
     UserGet:
       type: object
       title: UserGet
@@ -1486,6 +1480,53 @@ components:
         - settings
         - dateCreated
         - dateUpdated
+    UserUsageGet:
+      type: object
+      title: UserUsageGet
+      description: Response body for getting CPU, memory and disk usage of the server.
+      properties:
+        cpu:
+          type: object
+          properties:
+            usage:
+              type: number
+              format: float
+            cores:
+              type: integer
+            threads:
+              type: integer
+          required:
+            - usage
+            - cores
+            - threads
+        memory:
+          type: object
+          properties:
+            used:
+              type: integer
+              format: int64
+            total:
+              type: integer
+              format: int64
+          required:
+            - used
+            - total
+        disk:
+          type: object
+          properties:
+            used:
+              type: integer
+              format: int64
+            total:
+              type: integer
+              format: int64
+          required:
+            - used
+            - total
+      required:
+        - cpu
+        - memory
+        - disk
     UserPatch:
       type: object
       title: UserPatch
@@ -1543,61 +1584,6 @@ components:
           minLength: 1
           maxLength: 253 # FQDN limit
           format: hostname
-    UserUsageGet:
-      type: object
-      title: UserUsageGet
-      description: Response body for getting CPU, memory and disk usage of the server.
-      properties:
-        cpu:
-          type: object
-          properties:
-            usage:
-              type: number
-              format: float
-            cores:
-              type: integer
-            threads:
-              type: integer
-          required:
-            - usage
-            - cores
-            - threads
-        memory:
-          type: object
-          properties:
-            used:
-              type: integer
-              format: int64
-            total:
-              type: integer
-              format: int64
-          required:
-            - used
-            - total
-        disk:
-          type: object
-          properties:
-            used:
-              type: integer
-              format: int64
-            total:
-              type: integer
-              format: int64
-          required:
-            - used
-            - total
-        metadata:
-          type: object
-          properties:
-            threads:
-              type: integer
-            memory_limit:
-              type: string
-      required:
-        - cpu
-        - memory
-        - disk
-        - metadata
     StatsSummary:
       type: object
       title: StatsSummary

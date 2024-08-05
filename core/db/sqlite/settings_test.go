@@ -31,8 +31,6 @@ func TestGetSettings(t *testing.T) {
 	assert.NotNil(settings)
 	assert.Equal("en", settings.Language)
 	assert.Equal("default", settings.ScriptType)
-	assert.Equal(0, settings.Threads)
-	assert.Equal("", settings.MemoryLimit)
 }
 
 func TestUpdateSetting(t *testing.T) {
@@ -52,15 +50,9 @@ func TestUpdateSettings(t *testing.T) {
 	user, err := client.GetUserByUsername(ctx, "admin")
 	assert.NoError(err)
 
-	err = client.UpdateSettings(ctx, user.ID, &model.GlobalSettings{
-		DuckDBSettings: model.DuckDBSettings{
-			Threads:     4,
-			MemoryLimit: "1GB",
-		},
-		UserSettings: model.UserSettings{
-			Language:   "jp",
-			ScriptType: "tagged-events",
-		},
+	err = client.UpdateSettings(ctx, user.ID, &model.UserSettings{
+		Language:   "jp",
+		ScriptType: "tagged-events",
 	})
 	assert.NoError(err)
 
@@ -68,6 +60,4 @@ func TestUpdateSettings(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal("jp", settings.Language)
 	assert.Equal("tagged-events", settings.ScriptType)
-	assert.Equal(4, settings.Threads)
-	assert.Equal("1GB", settings.MemoryLimit)
 }

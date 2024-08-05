@@ -2641,10 +2641,8 @@ func (s *UserPatch) SetSettings(val OptUserSettings) {
 // Response body for getting user settings.
 // Ref: #/components/schemas/UserSettings
 type UserSettings struct {
-	Language    OptUserSettingsLanguage   `json:"language"`
-	ScriptType  OptUserSettingsScriptType `json:"script_type"`
-	Threads     OptInt                    `json:"threads"`
-	MemoryLimit OptString                 `json:"memory_limit"`
+	Language   OptUserSettingsLanguage   `json:"language"`
+	ScriptType OptUserSettingsScriptType `json:"script_type"`
 }
 
 // GetLanguage returns the value of Language.
@@ -2657,16 +2655,6 @@ func (s *UserSettings) GetScriptType() OptUserSettingsScriptType {
 	return s.ScriptType
 }
 
-// GetThreads returns the value of Threads.
-func (s *UserSettings) GetThreads() OptInt {
-	return s.Threads
-}
-
-// GetMemoryLimit returns the value of MemoryLimit.
-func (s *UserSettings) GetMemoryLimit() OptString {
-	return s.MemoryLimit
-}
-
 // SetLanguage sets the value of Language.
 func (s *UserSettings) SetLanguage(val OptUserSettingsLanguage) {
 	s.Language = val
@@ -2675,16 +2663,6 @@ func (s *UserSettings) SetLanguage(val OptUserSettingsLanguage) {
 // SetScriptType sets the value of ScriptType.
 func (s *UserSettings) SetScriptType(val OptUserSettingsScriptType) {
 	s.ScriptType = val
-}
-
-// SetThreads sets the value of Threads.
-func (s *UserSettings) SetThreads(val OptInt) {
-	s.Threads = val
-}
-
-// SetMemoryLimit sets the value of MemoryLimit.
-func (s *UserSettings) SetMemoryLimit(val OptString) {
-	s.MemoryLimit = val
 }
 
 type UserSettingsLanguage string
@@ -2765,10 +2743,9 @@ func (s *UserSettingsScriptType) UnmarshalText(data []byte) error {
 // Response body for getting CPU, memory and disk usage of the server.
 // Ref: #/components/schemas/UserUsageGet
 type UserUsageGet struct {
-	CPU      UserUsageGetCPU      `json:"cpu"`
-	Memory   UserUsageGetMemory   `json:"memory"`
-	Disk     UserUsageGetDisk     `json:"disk"`
-	Metadata UserUsageGetMetadata `json:"metadata"`
+	CPU    UserUsageGetCPU    `json:"cpu"`
+	Memory UserUsageGetMemory `json:"memory"`
+	Disk   UserUsageGetDisk   `json:"disk"`
 }
 
 // GetCPU returns the value of CPU.
@@ -2786,11 +2763,6 @@ func (s *UserUsageGet) GetDisk() UserUsageGetDisk {
 	return s.Disk
 }
 
-// GetMetadata returns the value of Metadata.
-func (s *UserUsageGet) GetMetadata() UserUsageGetMetadata {
-	return s.Metadata
-}
-
 // SetCPU sets the value of CPU.
 func (s *UserUsageGet) SetCPU(val UserUsageGetCPU) {
 	s.CPU = val
@@ -2804,11 +2776,6 @@ func (s *UserUsageGet) SetMemory(val UserUsageGetMemory) {
 // SetDisk sets the value of Disk.
 func (s *UserUsageGet) SetDisk(val UserUsageGetDisk) {
 	s.Disk = val
-}
-
-// SetMetadata sets the value of Metadata.
-func (s *UserUsageGet) SetMetadata(val UserUsageGetMetadata) {
-	s.Metadata = val
 }
 
 func (*UserUsageGet) getUserUsageRes() {}
@@ -2897,31 +2864,6 @@ func (s *UserUsageGetMemory) SetUsed(val int64) {
 // SetTotal sets the value of Total.
 func (s *UserUsageGetMemory) SetTotal(val int64) {
 	s.Total = val
-}
-
-type UserUsageGetMetadata struct {
-	Threads     OptInt    `json:"threads"`
-	MemoryLimit OptString `json:"memory_limit"`
-}
-
-// GetThreads returns the value of Threads.
-func (s *UserUsageGetMetadata) GetThreads() OptInt {
-	return s.Threads
-}
-
-// GetMemoryLimit returns the value of MemoryLimit.
-func (s *UserUsageGetMetadata) GetMemoryLimit() OptString {
-	return s.MemoryLimit
-}
-
-// SetThreads sets the value of Threads.
-func (s *UserUsageGetMetadata) SetThreads(val OptInt) {
-	s.Threads = val
-}
-
-// SetMemoryLimit sets the value of MemoryLimit.
-func (s *UserUsageGetMetadata) SetMemoryLimit(val OptString) {
-	s.MemoryLimit = val
 }
 
 // Request body for creating a website.

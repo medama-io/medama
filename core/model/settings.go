@@ -7,17 +7,7 @@ const (
 	SettingsKeyLanguage SettingsKey = "language"
 	// SettingsKeyScriptType is the key for the user's script type setting.
 	SettingsKeyScriptType SettingsKey = "script_type"
-	// SettingsKeyThreads is the key for the user's threads setting.
-	SettingsKeyThreads SettingsKey = "threads"
-	// SettingsKeyMemoryLimit is the key for the user's memory limit setting.
-	SettingsKeyMemoryLimit SettingsKey = "memory_limit"
 )
-
-type DuckDBSettings struct {
-	// Usage
-	Threads     int    `json:"threads" db:"threads"`
-	MemoryLimit string `json:"memory_limit" db:"memory_limit"`
-}
 
 type UserSettings struct {
 	// Account
@@ -25,11 +15,6 @@ type UserSettings struct {
 
 	// Tracker
 	ScriptType string `json:"script_type" db:"script_type"`
-}
-
-type GlobalSettings struct {
-	DuckDBSettings
-	UserSettings
 }
 
 type WebsiteSettings struct{}

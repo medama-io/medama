@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
@@ -92,10 +91,6 @@ func (h *Handler) GetUserUsage(ctx context.Context, params api.GetUserUsageParam
 			Used:  int64(diskStat.Used),
 			Total: int64(diskStat.Total),
 		},
-		Metadata: api.UserUsageGetMetadata{
-			Threads:     api.NewOptInt(h.runtimeConfig.Threads),
-			MemoryLimit: api.NewOptString(strings.ReplaceAll(h.runtimeConfig.MemoryLimit, " ", "")),
-		},
 	}, nil
 }
 
@@ -180,7 +175,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		}
 
 		// Also update live runtime config.
-		err = h.runtimeConfig.UpdateConfig(ctx, h.db, h.analyticsDB, settings)
+		err = h.runtimeConfig.UpdateConfig(ctx, h.db, settings)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to update runtime config")
 			return nil, errors.Wrap(err, "services")
