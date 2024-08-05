@@ -9,6 +9,13 @@ const userGet = async (
 	return { data: await res.json(), res };
 };
 
+const userUsageGet = async (
+	opts?: ClientOptions,
+): Promise<DataResponse<'UserUsageGet'>> => {
+	const res = await client('/user/usage', { method: 'GET', ...opts });
+	return { data: await res.json(), res };
+};
+
 const userUpdate = async (
 	opts: ClientOptions<'UserPatch'>,
 ): Promise<DataResponse<'UserGet'>> => {
@@ -29,4 +36,4 @@ const userLoggedIn = async () => {
 	throw redirect('/login');
 };
 
-export { userGet, userLoggedIn, userUpdate };
+export { userGet, userLoggedIn, userUpdate, userUsageGet };

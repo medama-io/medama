@@ -69,7 +69,6 @@ func (*BadRequestError) getWebsiteIDSummaryRes()   {}
 func (*BadRequestError) getWebsiteIDTimeRes()      {}
 func (*BadRequestError) getWebsitesIDRes()         {}
 func (*BadRequestError) getWebsitesRes()           {}
-func (*BadRequestError) patchSettingsUsageRes()    {}
 func (*BadRequestError) patchUserRes()             {}
 func (*BadRequestError) patchWebsitesIDRes()       {}
 func (*BadRequestError) postAuthLoginRes()         {}
@@ -170,7 +169,7 @@ func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 // Event with custom properties.
 // Ref: #/components/schemas/EventCustom
 type EventCustom struct {
-	// Beacon ID generated for each user to link multiple events on the same page together.
+	// Optional Beacon ID generated for each user to link multiple events on the same page together.
 	B OptString `json:"b"`
 	// Group name of events. Currently, only the hostname is supported.
 	G string `json:"g"`
@@ -657,7 +656,6 @@ func (*ForbiddenError) getWebsiteIDMediumsRes()   {}
 func (*ForbiddenError) getWebsiteIDOsRes()        {}
 func (*ForbiddenError) getWebsiteIDReferrersRes() {}
 func (*ForbiddenError) getWebsiteIDSourcesRes()   {}
-func (*ForbiddenError) patchSettingsUsageRes()    {}
 func (*ForbiddenError) patchUserRes()             {}
 func (*ForbiddenError) patchWebsitesIDRes()       {}
 func (*ForbiddenError) postWebsitesRes()          {}
@@ -824,8 +822,8 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 func (*InternalServerError) deleteUserRes()            {}
 func (*InternalServerError) deleteWebsitesIDRes()      {}
 func (*InternalServerError) getEventPingRes()          {}
-func (*InternalServerError) getSettingsUsageRes()      {}
 func (*InternalServerError) getUserRes()               {}
+func (*InternalServerError) getUserUsageRes()          {}
 func (*InternalServerError) getWebsiteIDBrowsersRes()  {}
 func (*InternalServerError) getWebsiteIDCampaignsRes() {}
 func (*InternalServerError) getWebsiteIDCountryRes()   {}
@@ -840,7 +838,6 @@ func (*InternalServerError) getWebsiteIDSummaryRes()   {}
 func (*InternalServerError) getWebsiteIDTimeRes()      {}
 func (*InternalServerError) getWebsitesIDRes()         {}
 func (*InternalServerError) getWebsitesRes()           {}
-func (*InternalServerError) patchSettingsUsageRes()    {}
 func (*InternalServerError) patchUserRes()             {}
 func (*InternalServerError) patchWebsitesIDRes()       {}
 func (*InternalServerError) postAuthLoginRes()         {}
@@ -1301,38 +1298,38 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-// NewOptUserPatchLanguage returns new OptUserPatchLanguage with value set to v.
-func NewOptUserPatchLanguage(v UserPatchLanguage) OptUserPatchLanguage {
-	return OptUserPatchLanguage{
+// NewOptUserSettings returns new OptUserSettings with value set to v.
+func NewOptUserSettings(v UserSettings) OptUserSettings {
+	return OptUserSettings{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptUserPatchLanguage is optional UserPatchLanguage.
-type OptUserPatchLanguage struct {
-	Value UserPatchLanguage
+// OptUserSettings is optional UserSettings.
+type OptUserSettings struct {
+	Value UserSettings
 	Set   bool
 }
 
-// IsSet returns true if OptUserPatchLanguage was set.
-func (o OptUserPatchLanguage) IsSet() bool { return o.Set }
+// IsSet returns true if OptUserSettings was set.
+func (o OptUserSettings) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptUserPatchLanguage) Reset() {
-	var v UserPatchLanguage
+func (o *OptUserSettings) Reset() {
+	var v UserSettings
 	o.Value = v
 	o.Set = false
 }
 
 // SetTo sets value to v.
-func (o *OptUserPatchLanguage) SetTo(v UserPatchLanguage) {
+func (o *OptUserSettings) SetTo(v UserSettings) {
 	o.Set = true
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptUserPatchLanguage) Get() (v UserPatchLanguage, ok bool) {
+func (o OptUserSettings) Get() (v UserSettings, ok bool) {
 	if !o.Set {
 		return v, false
 	}
@@ -1340,7 +1337,99 @@ func (o OptUserPatchLanguage) Get() (v UserPatchLanguage, ok bool) {
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptUserPatchLanguage) Or(d UserPatchLanguage) UserPatchLanguage {
+func (o OptUserSettings) Or(d UserSettings) UserSettings {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUserSettingsLanguage returns new OptUserSettingsLanguage with value set to v.
+func NewOptUserSettingsLanguage(v UserSettingsLanguage) OptUserSettingsLanguage {
+	return OptUserSettingsLanguage{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUserSettingsLanguage is optional UserSettingsLanguage.
+type OptUserSettingsLanguage struct {
+	Value UserSettingsLanguage
+	Set   bool
+}
+
+// IsSet returns true if OptUserSettingsLanguage was set.
+func (o OptUserSettingsLanguage) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUserSettingsLanguage) Reset() {
+	var v UserSettingsLanguage
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUserSettingsLanguage) SetTo(v UserSettingsLanguage) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUserSettingsLanguage) Get() (v UserSettingsLanguage, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUserSettingsLanguage) Or(d UserSettingsLanguage) UserSettingsLanguage {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUserSettingsScriptType returns new OptUserSettingsScriptType with value set to v.
+func NewOptUserSettingsScriptType(v UserSettingsScriptType) OptUserSettingsScriptType {
+	return OptUserSettingsScriptType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUserSettingsScriptType is optional UserSettingsScriptType.
+type OptUserSettingsScriptType struct {
+	Value UserSettingsScriptType
+	Set   bool
+}
+
+// IsSet returns true if OptUserSettingsScriptType was set.
+func (o OptUserSettingsScriptType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUserSettingsScriptType) Reset() {
+	var v UserSettingsScriptType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUserSettingsScriptType) SetTo(v UserSettingsScriptType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUserSettingsScriptType) Get() (v UserSettingsScriptType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUserSettingsScriptType) Or(d UserSettingsScriptType) UserSettingsScriptType {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1393,11 +1482,6 @@ func (o OptWebsiteGetSummary) Or(d WebsiteGetSummary) WebsiteGetSummary {
 	return d
 }
 
-// PatchSettingsUsageCreated is response for PatchSettingsUsage operation.
-type PatchSettingsUsageCreated struct{}
-
-func (*PatchSettingsUsageCreated) patchSettingsUsageRes() {}
-
 // PostAuthLoginOK is response for PostAuthLogin operation.
 type PostAuthLoginOK struct {
 	SetCookie string
@@ -1436,195 +1520,6 @@ func (*PostAuthLogoutNoContent) postAuthLogoutRes() {}
 type PostEventHitNoContent struct{}
 
 func (*PostEventHitNoContent) postEventHitRes() {}
-
-// Response body for getting CPU, memory and disk usage of the server.
-// Ref: #/components/schemas/SettingsUsageGet
-type SettingsUsageGet struct {
-	CPU      SettingsUsageGetCPU      `json:"cpu"`
-	Memory   SettingsUsageGetMemory   `json:"memory"`
-	Disk     SettingsUsageGetDisk     `json:"disk"`
-	Metadata SettingsUsageGetMetadata `json:"metadata"`
-}
-
-// GetCPU returns the value of CPU.
-func (s *SettingsUsageGet) GetCPU() SettingsUsageGetCPU {
-	return s.CPU
-}
-
-// GetMemory returns the value of Memory.
-func (s *SettingsUsageGet) GetMemory() SettingsUsageGetMemory {
-	return s.Memory
-}
-
-// GetDisk returns the value of Disk.
-func (s *SettingsUsageGet) GetDisk() SettingsUsageGetDisk {
-	return s.Disk
-}
-
-// GetMetadata returns the value of Metadata.
-func (s *SettingsUsageGet) GetMetadata() SettingsUsageGetMetadata {
-	return s.Metadata
-}
-
-// SetCPU sets the value of CPU.
-func (s *SettingsUsageGet) SetCPU(val SettingsUsageGetCPU) {
-	s.CPU = val
-}
-
-// SetMemory sets the value of Memory.
-func (s *SettingsUsageGet) SetMemory(val SettingsUsageGetMemory) {
-	s.Memory = val
-}
-
-// SetDisk sets the value of Disk.
-func (s *SettingsUsageGet) SetDisk(val SettingsUsageGetDisk) {
-	s.Disk = val
-}
-
-// SetMetadata sets the value of Metadata.
-func (s *SettingsUsageGet) SetMetadata(val SettingsUsageGetMetadata) {
-	s.Metadata = val
-}
-
-func (*SettingsUsageGet) getSettingsUsageRes() {}
-
-type SettingsUsageGetCPU struct {
-	Usage   float32 `json:"usage"`
-	Cores   int     `json:"cores"`
-	Threads int     `json:"threads"`
-}
-
-// GetUsage returns the value of Usage.
-func (s *SettingsUsageGetCPU) GetUsage() float32 {
-	return s.Usage
-}
-
-// GetCores returns the value of Cores.
-func (s *SettingsUsageGetCPU) GetCores() int {
-	return s.Cores
-}
-
-// GetThreads returns the value of Threads.
-func (s *SettingsUsageGetCPU) GetThreads() int {
-	return s.Threads
-}
-
-// SetUsage sets the value of Usage.
-func (s *SettingsUsageGetCPU) SetUsage(val float32) {
-	s.Usage = val
-}
-
-// SetCores sets the value of Cores.
-func (s *SettingsUsageGetCPU) SetCores(val int) {
-	s.Cores = val
-}
-
-// SetThreads sets the value of Threads.
-func (s *SettingsUsageGetCPU) SetThreads(val int) {
-	s.Threads = val
-}
-
-type SettingsUsageGetDisk struct {
-	Used  int64 `json:"used"`
-	Total int64 `json:"total"`
-}
-
-// GetUsed returns the value of Used.
-func (s *SettingsUsageGetDisk) GetUsed() int64 {
-	return s.Used
-}
-
-// GetTotal returns the value of Total.
-func (s *SettingsUsageGetDisk) GetTotal() int64 {
-	return s.Total
-}
-
-// SetUsed sets the value of Used.
-func (s *SettingsUsageGetDisk) SetUsed(val int64) {
-	s.Used = val
-}
-
-// SetTotal sets the value of Total.
-func (s *SettingsUsageGetDisk) SetTotal(val int64) {
-	s.Total = val
-}
-
-type SettingsUsageGetMemory struct {
-	Used  int64 `json:"used"`
-	Total int64 `json:"total"`
-}
-
-// GetUsed returns the value of Used.
-func (s *SettingsUsageGetMemory) GetUsed() int64 {
-	return s.Used
-}
-
-// GetTotal returns the value of Total.
-func (s *SettingsUsageGetMemory) GetTotal() int64 {
-	return s.Total
-}
-
-// SetUsed sets the value of Used.
-func (s *SettingsUsageGetMemory) SetUsed(val int64) {
-	s.Used = val
-}
-
-// SetTotal sets the value of Total.
-func (s *SettingsUsageGetMemory) SetTotal(val int64) {
-	s.Total = val
-}
-
-type SettingsUsageGetMetadata struct {
-	Threads     OptInt    `json:"threads"`
-	MemoryLimit OptString `json:"memory_limit"`
-}
-
-// GetThreads returns the value of Threads.
-func (s *SettingsUsageGetMetadata) GetThreads() OptInt {
-	return s.Threads
-}
-
-// GetMemoryLimit returns the value of MemoryLimit.
-func (s *SettingsUsageGetMetadata) GetMemoryLimit() OptString {
-	return s.MemoryLimit
-}
-
-// SetThreads sets the value of Threads.
-func (s *SettingsUsageGetMetadata) SetThreads(val OptInt) {
-	s.Threads = val
-}
-
-// SetMemoryLimit sets the value of MemoryLimit.
-func (s *SettingsUsageGetMetadata) SetMemoryLimit(val OptString) {
-	s.MemoryLimit = val
-}
-
-// Request body for updating the resource limits of the application.
-// Ref: #/components/schemas/SettingsUsagePatch
-type SettingsUsagePatch struct {
-	Threads     OptInt    `json:"threads"`
-	MemoryLimit OptString `json:"memory_limit"`
-}
-
-// GetThreads returns the value of Threads.
-func (s *SettingsUsagePatch) GetThreads() OptInt {
-	return s.Threads
-}
-
-// GetMemoryLimit returns the value of MemoryLimit.
-func (s *SettingsUsagePatch) GetMemoryLimit() OptString {
-	return s.MemoryLimit
-}
-
-// SetThreads sets the value of Threads.
-func (s *SettingsUsagePatch) SetThreads(val OptInt) {
-	s.Threads = val
-}
-
-// SetMemoryLimit sets the value of MemoryLimit.
-func (s *SettingsUsagePatch) SetMemoryLimit(val OptString) {
-	s.MemoryLimit = val
-}
 
 type StatsBrowsers []StatsBrowsersItem
 
@@ -2606,8 +2501,8 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 
 func (*UnauthorisedError) deleteUserRes()            {}
 func (*UnauthorisedError) deleteWebsitesIDRes()      {}
-func (*UnauthorisedError) getSettingsUsageRes()      {}
 func (*UnauthorisedError) getUserRes()               {}
+func (*UnauthorisedError) getUserUsageRes()          {}
 func (*UnauthorisedError) getWebsiteIDBrowsersRes()  {}
 func (*UnauthorisedError) getWebsiteIDCampaignsRes() {}
 func (*UnauthorisedError) getWebsiteIDCountryRes()   {}
@@ -2622,7 +2517,6 @@ func (*UnauthorisedError) getWebsiteIDSummaryRes()   {}
 func (*UnauthorisedError) getWebsiteIDTimeRes()      {}
 func (*UnauthorisedError) getWebsitesIDRes()         {}
 func (*UnauthorisedError) getWebsitesRes()           {}
-func (*UnauthorisedError) patchSettingsUsageRes()    {}
 func (*UnauthorisedError) patchUserRes()             {}
 func (*UnauthorisedError) patchWebsitesIDRes()       {}
 func (*UnauthorisedError) postAuthLoginRes()         {}
@@ -2657,10 +2551,10 @@ func (s *UnauthorisedErrorError) SetMessage(val string) {
 // Response body for getting a user.
 // Ref: #/components/schemas/UserGet
 type UserGet struct {
-	Username    string          `json:"username"`
-	Language    UserGetLanguage `json:"language"`
-	DateCreated int64           `json:"dateCreated"`
-	DateUpdated int64           `json:"dateUpdated"`
+	Username    string       `json:"username"`
+	Settings    UserSettings `json:"settings"`
+	DateCreated int64        `json:"dateCreated"`
+	DateUpdated int64        `json:"dateUpdated"`
 }
 
 // GetUsername returns the value of Username.
@@ -2668,9 +2562,9 @@ func (s *UserGet) GetUsername() string {
 	return s.Username
 }
 
-// GetLanguage returns the value of Language.
-func (s *UserGet) GetLanguage() UserGetLanguage {
-	return s.Language
+// GetSettings returns the value of Settings.
+func (s *UserGet) GetSettings() UserSettings {
+	return s.Settings
 }
 
 // GetDateCreated returns the value of DateCreated.
@@ -2688,9 +2582,9 @@ func (s *UserGet) SetUsername(val string) {
 	s.Username = val
 }
 
-// SetLanguage sets the value of Language.
-func (s *UserGet) SetLanguage(val UserGetLanguage) {
-	s.Language = val
+// SetSettings sets the value of Settings.
+func (s *UserGet) SetSettings(val UserSettings) {
+	s.Settings = val
 }
 
 // SetDateCreated sets the value of DateCreated.
@@ -2706,46 +2600,12 @@ func (s *UserGet) SetDateUpdated(val int64) {
 func (*UserGet) getUserRes()   {}
 func (*UserGet) patchUserRes() {}
 
-type UserGetLanguage string
-
-const (
-	UserGetLanguageEn UserGetLanguage = "en"
-)
-
-// AllValues returns all UserGetLanguage values.
-func (UserGetLanguage) AllValues() []UserGetLanguage {
-	return []UserGetLanguage{
-		UserGetLanguageEn,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s UserGetLanguage) MarshalText() ([]byte, error) {
-	switch s {
-	case UserGetLanguageEn:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UserGetLanguage) UnmarshalText(data []byte) error {
-	switch UserGetLanguage(data) {
-	case UserGetLanguageEn:
-		*s = UserGetLanguageEn
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
 // Request body for updating a user.
 // Ref: #/components/schemas/UserPatch
 type UserPatch struct {
-	Username OptString            `json:"username"`
-	Password OptString            `json:"password"`
-	Language OptUserPatchLanguage `json:"language"`
+	Username OptString       `json:"username"`
+	Password OptString       `json:"password"`
+	Settings OptUserSettings `json:"settings"`
 }
 
 // GetUsername returns the value of Username.
@@ -2758,9 +2618,9 @@ func (s *UserPatch) GetPassword() OptString {
 	return s.Password
 }
 
-// GetLanguage returns the value of Language.
-func (s *UserPatch) GetLanguage() OptUserPatchLanguage {
-	return s.Language
+// GetSettings returns the value of Settings.
+func (s *UserPatch) GetSettings() OptUserSettings {
+	return s.Settings
 }
 
 // SetUsername sets the value of Username.
@@ -2773,28 +2633,55 @@ func (s *UserPatch) SetPassword(val OptString) {
 	s.Password = val
 }
 
+// SetSettings sets the value of Settings.
+func (s *UserPatch) SetSettings(val OptUserSettings) {
+	s.Settings = val
+}
+
+// Response body for getting user settings.
+// Ref: #/components/schemas/UserSettings
+type UserSettings struct {
+	Language   OptUserSettingsLanguage   `json:"language"`
+	ScriptType OptUserSettingsScriptType `json:"script_type"`
+}
+
+// GetLanguage returns the value of Language.
+func (s *UserSettings) GetLanguage() OptUserSettingsLanguage {
+	return s.Language
+}
+
+// GetScriptType returns the value of ScriptType.
+func (s *UserSettings) GetScriptType() OptUserSettingsScriptType {
+	return s.ScriptType
+}
+
 // SetLanguage sets the value of Language.
-func (s *UserPatch) SetLanguage(val OptUserPatchLanguage) {
+func (s *UserSettings) SetLanguage(val OptUserSettingsLanguage) {
 	s.Language = val
 }
 
-type UserPatchLanguage string
+// SetScriptType sets the value of ScriptType.
+func (s *UserSettings) SetScriptType(val OptUserSettingsScriptType) {
+	s.ScriptType = val
+}
+
+type UserSettingsLanguage string
 
 const (
-	UserPatchLanguageEn UserPatchLanguage = "en"
+	UserSettingsLanguageEn UserSettingsLanguage = "en"
 )
 
-// AllValues returns all UserPatchLanguage values.
-func (UserPatchLanguage) AllValues() []UserPatchLanguage {
-	return []UserPatchLanguage{
-		UserPatchLanguageEn,
+// AllValues returns all UserSettingsLanguage values.
+func (UserSettingsLanguage) AllValues() []UserSettingsLanguage {
+	return []UserSettingsLanguage{
+		UserSettingsLanguageEn,
 	}
 }
 
 // MarshalText implements encoding.TextMarshaler.
-func (s UserPatchLanguage) MarshalText() ([]byte, error) {
+func (s UserSettingsLanguage) MarshalText() ([]byte, error) {
 	switch s {
-	case UserPatchLanguageEn:
+	case UserSettingsLanguageEn:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -2802,14 +2689,181 @@ func (s UserPatchLanguage) MarshalText() ([]byte, error) {
 }
 
 // UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UserPatchLanguage) UnmarshalText(data []byte) error {
-	switch UserPatchLanguage(data) {
-	case UserPatchLanguageEn:
-		*s = UserPatchLanguageEn
+func (s *UserSettingsLanguage) UnmarshalText(data []byte) error {
+	switch UserSettingsLanguage(data) {
+	case UserSettingsLanguageEn:
+		*s = UserSettingsLanguageEn
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
 	}
+}
+
+type UserSettingsScriptType string
+
+const (
+	UserSettingsScriptTypeDefault      UserSettingsScriptType = "default"
+	UserSettingsScriptTypeTaggedEvents UserSettingsScriptType = "tagged-events"
+)
+
+// AllValues returns all UserSettingsScriptType values.
+func (UserSettingsScriptType) AllValues() []UserSettingsScriptType {
+	return []UserSettingsScriptType{
+		UserSettingsScriptTypeDefault,
+		UserSettingsScriptTypeTaggedEvents,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UserSettingsScriptType) MarshalText() ([]byte, error) {
+	switch s {
+	case UserSettingsScriptTypeDefault:
+		return []byte(s), nil
+	case UserSettingsScriptTypeTaggedEvents:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UserSettingsScriptType) UnmarshalText(data []byte) error {
+	switch UserSettingsScriptType(data) {
+	case UserSettingsScriptTypeDefault:
+		*s = UserSettingsScriptTypeDefault
+		return nil
+	case UserSettingsScriptTypeTaggedEvents:
+		*s = UserSettingsScriptTypeTaggedEvents
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Response body for getting CPU, memory and disk usage of the server.
+// Ref: #/components/schemas/UserUsageGet
+type UserUsageGet struct {
+	CPU    UserUsageGetCPU    `json:"cpu"`
+	Memory UserUsageGetMemory `json:"memory"`
+	Disk   UserUsageGetDisk   `json:"disk"`
+}
+
+// GetCPU returns the value of CPU.
+func (s *UserUsageGet) GetCPU() UserUsageGetCPU {
+	return s.CPU
+}
+
+// GetMemory returns the value of Memory.
+func (s *UserUsageGet) GetMemory() UserUsageGetMemory {
+	return s.Memory
+}
+
+// GetDisk returns the value of Disk.
+func (s *UserUsageGet) GetDisk() UserUsageGetDisk {
+	return s.Disk
+}
+
+// SetCPU sets the value of CPU.
+func (s *UserUsageGet) SetCPU(val UserUsageGetCPU) {
+	s.CPU = val
+}
+
+// SetMemory sets the value of Memory.
+func (s *UserUsageGet) SetMemory(val UserUsageGetMemory) {
+	s.Memory = val
+}
+
+// SetDisk sets the value of Disk.
+func (s *UserUsageGet) SetDisk(val UserUsageGetDisk) {
+	s.Disk = val
+}
+
+func (*UserUsageGet) getUserUsageRes() {}
+
+type UserUsageGetCPU struct {
+	Usage   float32 `json:"usage"`
+	Cores   int     `json:"cores"`
+	Threads int     `json:"threads"`
+}
+
+// GetUsage returns the value of Usage.
+func (s *UserUsageGetCPU) GetUsage() float32 {
+	return s.Usage
+}
+
+// GetCores returns the value of Cores.
+func (s *UserUsageGetCPU) GetCores() int {
+	return s.Cores
+}
+
+// GetThreads returns the value of Threads.
+func (s *UserUsageGetCPU) GetThreads() int {
+	return s.Threads
+}
+
+// SetUsage sets the value of Usage.
+func (s *UserUsageGetCPU) SetUsage(val float32) {
+	s.Usage = val
+}
+
+// SetCores sets the value of Cores.
+func (s *UserUsageGetCPU) SetCores(val int) {
+	s.Cores = val
+}
+
+// SetThreads sets the value of Threads.
+func (s *UserUsageGetCPU) SetThreads(val int) {
+	s.Threads = val
+}
+
+type UserUsageGetDisk struct {
+	Used  int64 `json:"used"`
+	Total int64 `json:"total"`
+}
+
+// GetUsed returns the value of Used.
+func (s *UserUsageGetDisk) GetUsed() int64 {
+	return s.Used
+}
+
+// GetTotal returns the value of Total.
+func (s *UserUsageGetDisk) GetTotal() int64 {
+	return s.Total
+}
+
+// SetUsed sets the value of Used.
+func (s *UserUsageGetDisk) SetUsed(val int64) {
+	s.Used = val
+}
+
+// SetTotal sets the value of Total.
+func (s *UserUsageGetDisk) SetTotal(val int64) {
+	s.Total = val
+}
+
+type UserUsageGetMemory struct {
+	Used  int64 `json:"used"`
+	Total int64 `json:"total"`
+}
+
+// GetUsed returns the value of Used.
+func (s *UserUsageGetMemory) GetUsed() int64 {
+	return s.Used
+}
+
+// GetTotal returns the value of Total.
+func (s *UserUsageGetMemory) GetTotal() int64 {
+	return s.Total
+}
+
+// SetUsed sets the value of Used.
+func (s *UserUsageGetMemory) SetUsed(val int64) {
+	s.Used = val
+}
+
+// SetTotal sets the value of Total.
+func (s *UserUsageGetMemory) SetTotal(val int64) {
+	s.Total = val
 }
 
 // Request body for creating a website.

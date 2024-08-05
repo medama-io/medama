@@ -1,13 +1,7 @@
 package migrations
 
 import (
-	"context"
-	"time"
-
 	"github.com/medama-io/medama/db/sqlite"
-	"github.com/medama-io/medama/model"
-	"github.com/medama-io/medama/util"
-	"go.jetify.com/typeid"
 )
 
 func Up0001(c *sqlite.Client) error {
@@ -61,30 +55,7 @@ func Up0001(c *sqlite.Client) error {
 		return err
 	}
 
-	// Create default admin user
-	// UUIDv7 id generation
-	typeid, err := typeid.WithPrefix("user")
-	if err != nil {
-		return err
-	}
-	id := typeid.String()
-
-	// Hash default password
-	auth, err := util.NewAuthService(context.Background(), false)
-	if err != nil {
-		return err
-	}
-	pwdHash, err := auth.HashPassword("CHANGE_ME_ON_FIRST_LOGIN")
-	if err != nil {
-		return err
-	}
-
-	dateCreated := time.Now().Unix()
-	dateUpdated := dateCreated
-	err = c.CreateUser(context.Background(), model.NewUser(id, "admin", pwdHash, "en", dateCreated, dateUpdated))
-	if err != nil {
-		return err
-	}
+	// Moved user creation to 0006_sqlite_settings.go
 
 	return nil
 }

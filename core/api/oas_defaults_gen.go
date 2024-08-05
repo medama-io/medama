@@ -51,17 +51,13 @@ func (s *UnauthorisedErrorError) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *UserGet) setDefaults() {
+func (s *UserSettings) setDefaults() {
 	{
-		val := UserGetLanguage("en")
-		s.Language = val
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *UserPatch) setDefaults() {
-	{
-		val := UserPatchLanguage("en")
+		val := UserSettingsLanguage("en")
 		s.Language.SetTo(val)
+	}
+	{
+		val := UserSettingsScriptType("default")
+		s.ScriptType.SetTo(val)
 	}
 }

@@ -165,59 +165,6 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
-  /settings/usage:
-    get:
-      tags:
-        - Settings
-      security:
-        - CookieAuth: []
-      summary: Get Resource Usage
-      description: Get the current CPU, memory and disk usage of the server.
-      operationId: get-settings-usage
-      parameters:
-        - $ref: "#/components/parameters/SessionAuth"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SettingsUsageGet"
-        "401":
-          $ref: "#/components/responses/UnauthorisedError"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-    patch:
-      tags:
-        - Settings
-      security:
-        - CookieAuth: []
-      summary: Update Resource Usage
-      description: Update the resource usage settings of the server.
-      operationId: patch-settings-usage
-      parameters:
-        - $ref: "#/components/parameters/SessionAuth"
-      requestBody:
-        description: Resource usage settings to update.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SettingsUsagePatch"
-        required: true
-      responses:
-        "201":
-          description: Success
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorisedError"
-        "403":
-          $ref: "#/components/responses/ForbiddenError"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-      servers:
-        - url: "http://localhost:8080"
-          description: Local Server
   /user:
     get:
       tags:
@@ -312,6 +259,28 @@ paths:
       servers:
         - url: "http://localhost:8080"
           description: Local Server
+  /user/usage:
+    get:
+      tags:
+        - User
+      security:
+        - CookieAuth: []
+      summary: Get Resource Usage
+      description: Get the current CPU, memory and disk usage of the server.
+      operationId: get-user-usage
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUsageGet"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /websites:
     get:
       tags:
@@ -1476,6 +1445,19 @@ components:
         not_in:
           type: string
           description: Not in.
+    UserSettings:
+      type: object
+      title: UserSettings
+      description: Response body for getting user settings.
+      properties:
+        language:
+          type: string
+          enum: [en]
+          default: en
+        script_type:
+          type: string
+          enum: [default, tagged-events]
+          default: default
     UserGet:
       type: object
       title: UserGet
@@ -1485,10 +1467,8 @@ components:
           type: string
           minLength: 3
           maxLength: 120
-        language:
-          type: string
-          enum: [en]
-          default: en
+        settings:
+          $ref: "#/components/schemas/UserSettings"
         dateCreated:
           type: integer
           format: int64
@@ -1497,9 +1477,56 @@ components:
           format: int64
       required:
         - username
-        - language
+        - settings
         - dateCreated
         - dateUpdated
+    UserUsageGet:
+      type: object
+      title: UserUsageGet
+      description: Response body for getting CPU, memory and disk usage of the server.
+      properties:
+        cpu:
+          type: object
+          properties:
+            usage:
+              type: number
+              format: float
+            cores:
+              type: integer
+            threads:
+              type: integer
+          required:
+            - usage
+            - cores
+            - threads
+        memory:
+          type: object
+          properties:
+            used:
+              type: integer
+              format: int64
+            total:
+              type: integer
+              format: int64
+          required:
+            - used
+            - total
+        disk:
+          type: object
+          properties:
+            used:
+              type: integer
+              format: int64
+            total:
+              type: integer
+              format: int64
+          required:
+            - used
+            - total
+      required:
+        - cpu
+        - memory
+        - disk
     UserPatch:
       type: object
       title: UserPatch
@@ -1514,10 +1541,8 @@ components:
           minLength: 5
           maxLength: 128
           format: password
-        language:
-          type: string
-          enum: [en]
-          default: en
+        settings:
+          $ref: "#/components/schemas/UserSettings"
     WebsiteGet:
       type: object
       title: WebsiteGet
@@ -1559,72 +1584,6 @@ components:
           minLength: 1
           maxLength: 253 # FQDN limit
           format: hostname
-    SettingsUsageGet:
-      type: object
-      title: SettingsUsageGet
-      description: Response body for getting CPU, memory and disk usage of the server.
-      properties:
-        cpu:
-          type: object
-          properties:
-            usage:
-              type: number
-              format: float
-            cores:
-              type: integer
-            threads:
-              type: integer
-          required:
-            - usage
-            - cores
-            - threads
-        memory:
-          type: object
-          properties:
-            used:
-              type: integer
-              format: int64
-            total:
-              type: integer
-              format: int64
-          required:
-            - used
-            - total
-        disk:
-          type: object
-          properties:
-            used:
-              type: integer
-              format: int64
-            total:
-              type: integer
-              format: int64
-          required:
-            - used
-            - total
-        metadata:
-          type: object
-          properties:
-            threads:
-              type: integer
-            memory_limit:
-              type: string
-      required:
-        - cpu
-        - memory
-        - disk
-        - metadata
-    SettingsUsagePatch:
-      type: object
-      title: SettingsUsagePatch
-      description: Request body for updating the resource limits of the application.
-      properties:
-        threads:
-          type: integer
-          minimum: 1
-        memory_limit:
-          type: string
-          minLength: 1
     StatsSummary:
       type: object
       title: StatsSummary

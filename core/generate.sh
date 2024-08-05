@@ -14,6 +14,6 @@ go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml
 #
 # sed also runs differently on macOS and Linux, so we need to add a couple odd flags to
 # make it portable.
-# Line 327
-sed -i'' -e '327c\
+# Line 256
+sed -i'' -e '256c\
     case ct == "application/json", ct == "text/plain":' ./api/oas_request_decoders_gen.go

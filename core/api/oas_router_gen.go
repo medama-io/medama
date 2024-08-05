@@ -175,29 +175,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				elem = origElem
-			case 's': // Prefix: "settings/usage"
-				origElem := elem
-				if l := len("settings/usage"); len(elem) >= l && elem[0:l] == "settings/usage" {
-					elem = elem[l:]
-				} else {
-					break
-				}
-
-				if len(elem) == 0 {
-					// Leaf node.
-					switch r.Method {
-					case "GET":
-						s.handleGetSettingsUsageRequest([0]string{}, elemIsEscaped, w, r)
-					case "PATCH":
-						s.handlePatchSettingsUsageRequest([0]string{}, elemIsEscaped, w, r)
-					default:
-						s.notAllowed(w, r, "GET,PATCH")
-					}
-
-					return
-				}
-
-				elem = origElem
 			case 'u': // Prefix: "user"
 				origElem := elem
 				if l := len("user"); len(elem) >= l && elem[0:l] == "user" {
@@ -207,7 +184,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				if len(elem) == 0 {
-					// Leaf node.
 					switch r.Method {
 					case "DELETE":
 						s.handleDeleteUserRequest([0]string{}, elemIsEscaped, w, r)
@@ -220,6 +196,29 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					}
 
 					return
+				}
+				switch elem[0] {
+				case '/': // Prefix: "/usage"
+					origElem := elem
+					if l := len("/usage"); len(elem) >= l && elem[0:l] == "/usage" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						// Leaf node.
+						switch r.Method {
+						case "GET":
+							s.handleGetUserUsageRequest([0]string{}, elemIsEscaped, w, r)
+						default:
+							s.notAllowed(w, r, "GET")
+						}
+
+						return
+					}
+
+					elem = origElem
 				}
 
 				elem = origElem
@@ -868,39 +867,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				}
 
 				elem = origElem
-			case 's': // Prefix: "settings/usage"
-				origElem := elem
-				if l := len("settings/usage"); len(elem) >= l && elem[0:l] == "settings/usage" {
-					elem = elem[l:]
-				} else {
-					break
-				}
-
-				if len(elem) == 0 {
-					// Leaf node.
-					switch method {
-					case "GET":
-						r.name = "GetSettingsUsage"
-						r.summary = "Get Resource Usage"
-						r.operationID = "get-settings-usage"
-						r.pathPattern = "/settings/usage"
-						r.args = args
-						r.count = 0
-						return r, true
-					case "PATCH":
-						r.name = "PatchSettingsUsage"
-						r.summary = "Update Resource Usage"
-						r.operationID = "patch-settings-usage"
-						r.pathPattern = "/settings/usage"
-						r.args = args
-						r.count = 0
-						return r, true
-					default:
-						return
-					}
-				}
-
-				elem = origElem
 			case 'u': // Prefix: "user"
 				origElem := elem
 				if l := len("user"); len(elem) >= l && elem[0:l] == "user" {
@@ -910,7 +876,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				}
 
 				if len(elem) == 0 {
-					// Leaf node.
 					switch method {
 					case "DELETE":
 						r.name = "DeleteUser"
@@ -939,6 +904,33 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					default:
 						return
 					}
+				}
+				switch elem[0] {
+				case '/': // Prefix: "/usage"
+					origElem := elem
+					if l := len("/usage"); len(elem) >= l && elem[0:l] == "/usage" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						// Leaf node.
+						switch method {
+						case "GET":
+							r.name = "GetUserUsage"
+							r.summary = "Get Resource Usage"
+							r.operationID = "get-user-usage"
+							r.pathPattern = "/user/usage"
+							r.args = args
+							r.count = 0
+							return r, true
+						default:
+							return
+						}
+					}
+
+					elem = origElem
 				}
 
 				elem = origElem

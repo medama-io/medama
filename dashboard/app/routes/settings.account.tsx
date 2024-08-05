@@ -72,7 +72,9 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 				body: {
 					username: getString(body, 'username'),
 					password: getString(body, 'password'),
-					language: 'en',
+					settings: {
+						language: 'en',
+					},
 				},
 				noThrow: true,
 			});
@@ -121,7 +123,7 @@ export default function Index() {
 
 	const handleSubmit = (values: typeof account.values) => {
 		submit(values, { method: 'POST' });
-		account.reset();
+		account.setFieldValue('password', '');
 	};
 
 	return (
