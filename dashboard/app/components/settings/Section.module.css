@@ -38,6 +38,8 @@
 }
 
 .form {
+	composes: flex from global;
+
 	padding: 8px;
 	flex: 1;
 	gap: 16px;
@@ -87,6 +89,7 @@
 }
 
 .delete {
+	composes: submit;
 	background-color: var(--me-color-bg-red-danger);
 	border: 1px solid var(--me-color-bg-red-danger);
 	border-radius: 8px;

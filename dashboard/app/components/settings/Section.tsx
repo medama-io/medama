@@ -1,6 +1,5 @@
-import { Stack, Text, Title, UnstyledButton } from '@mantine/core';
+import { UnstyledButton } from '@mantine/core';
 import { Form } from '@remix-run/react';
-import clsx from 'clsx';
 import type React from 'react';
 
 import classes from './Section.module.css';
@@ -42,13 +41,13 @@ export const Section = ({
 		<Form onSubmit={onSubmit}>
 			<div className={classes.wrapper}>
 				<SectionTitle>
-					<Title order={3}>{title}</Title>
-					<Text mt="xs">{description}</Text>
+					<h3>{title}</h3>
+					<p style={{ marginTop: 4 }}>{description}</p>
 				</SectionTitle>
-				<Stack className={classes.form}>{children}</Stack>
+				<div className={classes.form}>{children}</div>
 			</div>
 			<div className={classes.divider}>
-				<Text>{submitDescription}</Text>
+				<p>{submitDescription}</p>
 				<UnstyledButton className={classes.submit} type="submit">
 					Save
 				</UnstyledButton>
@@ -72,15 +71,15 @@ export const SectionDanger = ({
 		<Form onSubmit={onSubmit}>
 			<div className={classes.wrapper}>
 				<SectionTitle>
-					<Title order={3}>{title}</Title>
-					<Text mt="xs">{description}</Text>
+					<h3>{title}</h3>
+					<p style={{ marginTop: 4 }}>{description}</p>
 				</SectionTitle>
-				<Stack className={classes.form}>{children}</Stack>
+				<div className={classes.form}>{children}</div>
 			</div>
 			<div className={classes.divider}>
-				<Text>{submitDescription}</Text>
+				<p>{submitDescription}</p>
 				<UnstyledButton
-					className={clsx(classes.submit, classes.delete)}
+					className={classes.delete}
 					onClick={open}
 					disabled={disabled}
 				>
