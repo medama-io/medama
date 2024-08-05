@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"time"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
@@ -56,7 +57,7 @@ func (c *Client) GetSettings(ctx context.Context) (*model.GlobalSettings, error)
 	return settings, nil
 }
 
-func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value string, dateUpdated int64) error {
+func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value string) error {
 	query := `--sql
     UPDATE users
     SET settings = JSON_SET(settings, :key, :value),
@@ -65,7 +66,7 @@ func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value
 	params := map[string]interface{}{
 		"key":          "$." + string(key),
 		"value":        value,
-		"date_updated": dateUpdated,
+		"date_updated": time.Now().Unix(),
 	}
 
 	result, err := c.DB.NamedExecContext(ctx, query, params)
@@ -86,7 +87,7 @@ func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value
 }
 
 // UpdateSettings updates a user's settings in the database.
-func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *model.GlobalSettings, dateUpdated int64) error {
+func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *model.GlobalSettings) error {
 	query := `--sql
     UPDATE users
     SET settings = :settings,
@@ -99,8 +100,8 @@ func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *mo
 	}
 
 	params := map[string]interface{}{
+		"date_updated": time.Now().Unix(),
 		"settings":     string(settingsJSON),
-		"date_updated": dateUpdated,
 		"user_id":      userID,
 	}
 

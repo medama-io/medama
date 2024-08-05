@@ -92,7 +92,9 @@ func TestUpdateUserUsername(t *testing.T) {
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
 
-	err = client.UpdateUserUsername(ctx, "test1", "usernamenew", 3)
+	dateUpdated := user.DateUpdated
+
+	err = client.UpdateUserUsername(ctx, "test1", "usernamenew")
 	assert.NoError(err)
 
 	user, err = client.GetUser(ctx, "test1")
@@ -100,7 +102,7 @@ func TestUpdateUserUsername(t *testing.T) {
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("usernamenew", user.Username)
-	assert.Equal(int64(3), user.DateUpdated)
+	assert.Greater(user.DateUpdated, dateUpdated)
 }
 
 func TestUpdateUserUsernameExisting(t *testing.T) {
@@ -112,14 +114,14 @@ func TestUpdateUserUsernameExisting(t *testing.T) {
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
 
-	err = client.UpdateUserUsername(ctx, "test1", "username2", 3)
+	err = client.UpdateUserUsername(ctx, "test1", "username2")
 	assert.ErrorIs(err, model.ErrUserExists)
 }
 
 func TestUpdateUserPassword(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
-	err := client.UpdateUserPassword(ctx, "test1", "password2", 3)
+	err := client.UpdateUserPassword(ctx, "test1", "password2")
 	assert.NoError(err)
 
 	user, err := client.GetUser(ctx, "test1")
@@ -127,7 +129,6 @@ func TestUpdateUserPassword(t *testing.T) {
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("password2", user.Password)
-	assert.Equal(int64(3), user.DateUpdated)
 }
 
 func TestDeleteUser(t *testing.T) {

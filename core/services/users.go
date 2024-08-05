@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"strings"
-	"time"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
@@ -79,12 +78,6 @@ func (h *Handler) GetUserUsage(ctx context.Context, params api.GetUserUsageParam
 		return nil, err
 	}
 
-	// Get the current database settings.
-	metadata, err := h.analyticsDB.GetDuckDBSettings(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	return &api.UserUsageGet{
 		CPU: api.UserUsageGetCPU{
 			Usage:   float32(cpuUsage),
@@ -100,8 +93,8 @@ func (h *Handler) GetUserUsage(ctx context.Context, params api.GetUserUsageParam
 			Total: int64(diskStat.Total),
 		},
 		Metadata: api.UserUsageGetMetadata{
-			Threads:     api.NewOptInt(metadata.Threads),
-			MemoryLimit: api.NewOptString(strings.ReplaceAll(metadata.MemoryLimit, " ", "")),
+			Threads:     api.NewOptInt(h.runtimeConfig.Threads),
+			MemoryLimit: api.NewOptString(strings.ReplaceAll(h.runtimeConfig.MemoryLimit, " ", "")),
 		},
 	}, nil
 }
@@ -133,12 +126,10 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 	}
 
 	// Update values
-	dateUpdated := time.Now().Unix()
-
 	if req.Username.IsSet() {
 		username := req.Username.Value
 		user.Username = username
-		err = h.db.UpdateUserUsername(ctx, user.ID, username, dateUpdated)
+		err = h.db.UpdateUserUsername(ctx, user.ID, username)
 		if err != nil {
 			log := log.With().Str("username", username).Err(err).Logger()
 
@@ -165,7 +156,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 			return nil, errors.Wrap(err, "services")
 		}
 
-		err = h.db.UpdateUserPassword(ctx, user.ID, pwdHash, dateUpdated)
+		err = h.db.UpdateUserPassword(ctx, user.ID, pwdHash)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to update user password")
 			return nil, errors.Wrap(err, "services")
@@ -182,9 +173,16 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 			settings.ScriptType = string(req.Settings.Value.ScriptType.Value)
 		}
 
-		err = h.db.UpdateSettings(ctx, user.ID, settings, dateUpdated)
+		err = h.db.UpdateSettings(ctx, user.ID, settings)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to update user settings")
+			return nil, errors.Wrap(err, "services")
+		}
+
+		// Also update live runtime config.
+		err = h.runtimeConfig.UpdateConfig(ctx, h.db, h.analyticsDB, settings)
+		if err != nil {
+			log.Error().Err(err).Msg("failed to update runtime config")
 			return nil, errors.Wrap(err, "services")
 		}
 	}

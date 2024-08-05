@@ -22,13 +22,13 @@ type AppClient interface {
 	// GetUserByUsername retrieves a user from the database by username.
 	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
 	// UpdateUserUsername updates a user's username in the database.
-	UpdateUserUsername(ctx context.Context, id string, username string, dateUpdated int64) error
+	UpdateUserUsername(ctx context.Context, id string, username string) error
 	// UpdateUserPassword updates a user's password in the database.
-	UpdateUserPassword(ctx context.Context, id string, password string, dateUpdated int64) error
+	UpdateUserPassword(ctx context.Context, id string, password string) error
 	// UpdateSetting updates a user setting in the database.
-	UpdateSetting(ctx context.Context, key model.SettingsKey, value string, dateUpdated int64) error
+	UpdateSetting(ctx context.Context, key model.SettingsKey, value string) error
 	// UpdateSettings updates a user's settings in the database.
-	UpdateSettings(ctx context.Context, id string, settings *model.GlobalSettings, dateUpdated int64) error
+	UpdateSettings(ctx context.Context, id string, settings *model.GlobalSettings) error
 	// DeleteUser deletes a user from the database.
 	DeleteUser(ctx context.Context, id string) error
 

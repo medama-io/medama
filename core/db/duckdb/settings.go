@@ -51,7 +51,7 @@ func (c *Client) SetDuckDBSettings(ctx context.Context, settings *model.DuckDBSe
 	if settings.MemoryLimit != "" {
 		sanitized, err := sanitizeMemoryLimit(settings.MemoryLimit)
 		if err != nil {
-			return errors.Wrap(err, "invalid memory limit")
+			return errors.Wrap(err, "db")
 		}
 		exec := fmt.Sprintf("SET memory_limit = '%s'", sanitized)
 		_, err = c.ExecContext(ctx, exec)
@@ -73,7 +73,7 @@ func sanitizeMemoryLimit(limit string) (string, error) {
 	re := regexp.MustCompile(pattern)
 	matches := re.FindStringSubmatch(limit)
 	if matches == nil {
-		return "", errors.New("invalid memory limit format")
+		return "", errors.New("invalid memory limit format " + limit)
 	}
 
 	return limit, nil

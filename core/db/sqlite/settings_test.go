@@ -38,7 +38,7 @@ func TestGetSettings(t *testing.T) {
 func TestUpdateSetting(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	err := client.UpdateSetting(ctx, model.SettingsKeyLanguage, "jp", 3)
+	err := client.UpdateSetting(ctx, model.SettingsKeyLanguage, "jp")
 	assert.NoError(err)
 
 	setting, err := client.GetSetting(ctx, model.SettingsKeyLanguage)
@@ -61,7 +61,7 @@ func TestUpdateSettings(t *testing.T) {
 			Language:   "jp",
 			ScriptType: "tagged-events",
 		},
-	}, 3)
+	})
 	assert.NoError(err)
 
 	settings, err := client.GetSettings(ctx)

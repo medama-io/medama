@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"time"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/model"
@@ -123,14 +124,14 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 	return &user, nil
 }
 
-func (c *Client) UpdateUserUsername(ctx context.Context, id string, username string, dateUpdated int64) error {
+func (c *Client) UpdateUserUsername(ctx context.Context, id string, username string) error {
 	exec := `--sql
 	UPDATE users SET username = :username, date_updated = :date_updated WHERE id = :id`
 
 	paramMap := map[string]interface{}{
 		"id":           id,
 		"username":     username,
-		"date_updated": dateUpdated,
+		"date_updated": time.Now().Unix(),
 	}
 
 	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
@@ -148,14 +149,14 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 	return nil
 }
 
-func (c *Client) UpdateUserPassword(ctx context.Context, id string, password string, dateUpdated int64) error {
+func (c *Client) UpdateUserPassword(ctx context.Context, id string, password string) error {
 	exec := `--sql
 	UPDATE users SET password = :password, date_updated = :date_updated WHERE id = :id`
 
 	paramMap := map[string]interface{}{
 		"id":           id,
 		"password":     password,
-		"date_updated": dateUpdated,
+		"date_updated": time.Now().Unix(),
 	}
 
 	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
