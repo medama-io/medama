@@ -85,21 +85,21 @@ func (h *Handler) GetUserUsage(ctx context.Context, params api.GetUserUsageParam
 		return nil, err
 	}
 
-	return &api.SettingsUsageGet{
-		CPU: api.SettingsUsageGetCPU{
+	return &api.UserUsageGet{
+		CPU: api.UserUsageGetCPU{
 			Usage:   float32(cpuUsage),
 			Cores:   cpuCores,
 			Threads: cpuThreads,
 		},
-		Memory: api.SettingsUsageGetMemory{
+		Memory: api.UserUsageGetMemory{
 			Used:  int64(vmStat.Used),
 			Total: int64(vmStat.Total),
 		},
-		Disk: api.SettingsUsageGetDisk{
+		Disk: api.UserUsageGetDisk{
 			Used:  int64(diskStat.Used),
 			Total: int64(diskStat.Total),
 		},
-		Metadata: api.SettingsUsageGetMetadata{
+		Metadata: api.UserUsageGetMetadata{
 			Threads:     api.NewOptInt(metadata.Threads),
 			MemoryLimit: api.NewOptString(strings.ReplaceAll(metadata.MemoryLimit, " ", "")),
 		},

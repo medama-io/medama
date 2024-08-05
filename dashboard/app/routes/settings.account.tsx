@@ -72,7 +72,9 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 				body: {
 					username: getString(body, 'username'),
 					password: getString(body, 'password'),
-					language: 'en',
+					settings: {
+						language: 'en',
+					},
 				},
 				noThrow: true,
 			});

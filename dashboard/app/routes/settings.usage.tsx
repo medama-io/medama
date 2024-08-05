@@ -12,7 +12,7 @@ import {
 import { useEffect, useMemo } from 'react';
 import { z } from 'zod';
 
-import { usageGet, usagePatch } from '@/api/settings';
+import { userUsageGet, userUpdate } from '@/api/user';
 import { TextInput, TextInputWithTooltip } from '@/components/settings/Input';
 import {
 	ResourcePanel,
@@ -27,7 +27,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const clientLoader = async () => {
-	const { data } = await usageGet();
+	const { data } = await userUsageGet();
 
 	if (!data) {
 		throw json('Failed to get server usage metrics.', {
@@ -47,10 +47,12 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	let res: Response | undefined;
 	switch (type) {
 		case 'usage': {
-			const update = await usagePatch({
+			const update = await userUpdate({
 				body: {
-					threads: getNumber(body, 'threads'),
-					memory_limit: getString(body, 'memory_limit'),
+					settings: {
+						threads: getNumber(body, 'threads'),
+						memory_limit: getString(body, 'memory_limit'),
+					},
 				},
 				noThrow: true,
 			});

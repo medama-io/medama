@@ -1521,168 +1521,6 @@ type PostEventHitNoContent struct{}
 
 func (*PostEventHitNoContent) postEventHitRes() {}
 
-// Response body for getting CPU, memory and disk usage of the server.
-// Ref: #/components/schemas/SettingsUsageGet
-type SettingsUsageGet struct {
-	CPU      SettingsUsageGetCPU      `json:"cpu"`
-	Memory   SettingsUsageGetMemory   `json:"memory"`
-	Disk     SettingsUsageGetDisk     `json:"disk"`
-	Metadata SettingsUsageGetMetadata `json:"metadata"`
-}
-
-// GetCPU returns the value of CPU.
-func (s *SettingsUsageGet) GetCPU() SettingsUsageGetCPU {
-	return s.CPU
-}
-
-// GetMemory returns the value of Memory.
-func (s *SettingsUsageGet) GetMemory() SettingsUsageGetMemory {
-	return s.Memory
-}
-
-// GetDisk returns the value of Disk.
-func (s *SettingsUsageGet) GetDisk() SettingsUsageGetDisk {
-	return s.Disk
-}
-
-// GetMetadata returns the value of Metadata.
-func (s *SettingsUsageGet) GetMetadata() SettingsUsageGetMetadata {
-	return s.Metadata
-}
-
-// SetCPU sets the value of CPU.
-func (s *SettingsUsageGet) SetCPU(val SettingsUsageGetCPU) {
-	s.CPU = val
-}
-
-// SetMemory sets the value of Memory.
-func (s *SettingsUsageGet) SetMemory(val SettingsUsageGetMemory) {
-	s.Memory = val
-}
-
-// SetDisk sets the value of Disk.
-func (s *SettingsUsageGet) SetDisk(val SettingsUsageGetDisk) {
-	s.Disk = val
-}
-
-// SetMetadata sets the value of Metadata.
-func (s *SettingsUsageGet) SetMetadata(val SettingsUsageGetMetadata) {
-	s.Metadata = val
-}
-
-func (*SettingsUsageGet) getUserUsageRes() {}
-
-type SettingsUsageGetCPU struct {
-	Usage   float32 `json:"usage"`
-	Cores   int     `json:"cores"`
-	Threads int     `json:"threads"`
-}
-
-// GetUsage returns the value of Usage.
-func (s *SettingsUsageGetCPU) GetUsage() float32 {
-	return s.Usage
-}
-
-// GetCores returns the value of Cores.
-func (s *SettingsUsageGetCPU) GetCores() int {
-	return s.Cores
-}
-
-// GetThreads returns the value of Threads.
-func (s *SettingsUsageGetCPU) GetThreads() int {
-	return s.Threads
-}
-
-// SetUsage sets the value of Usage.
-func (s *SettingsUsageGetCPU) SetUsage(val float32) {
-	s.Usage = val
-}
-
-// SetCores sets the value of Cores.
-func (s *SettingsUsageGetCPU) SetCores(val int) {
-	s.Cores = val
-}
-
-// SetThreads sets the value of Threads.
-func (s *SettingsUsageGetCPU) SetThreads(val int) {
-	s.Threads = val
-}
-
-type SettingsUsageGetDisk struct {
-	Used  int64 `json:"used"`
-	Total int64 `json:"total"`
-}
-
-// GetUsed returns the value of Used.
-func (s *SettingsUsageGetDisk) GetUsed() int64 {
-	return s.Used
-}
-
-// GetTotal returns the value of Total.
-func (s *SettingsUsageGetDisk) GetTotal() int64 {
-	return s.Total
-}
-
-// SetUsed sets the value of Used.
-func (s *SettingsUsageGetDisk) SetUsed(val int64) {
-	s.Used = val
-}
-
-// SetTotal sets the value of Total.
-func (s *SettingsUsageGetDisk) SetTotal(val int64) {
-	s.Total = val
-}
-
-type SettingsUsageGetMemory struct {
-	Used  int64 `json:"used"`
-	Total int64 `json:"total"`
-}
-
-// GetUsed returns the value of Used.
-func (s *SettingsUsageGetMemory) GetUsed() int64 {
-	return s.Used
-}
-
-// GetTotal returns the value of Total.
-func (s *SettingsUsageGetMemory) GetTotal() int64 {
-	return s.Total
-}
-
-// SetUsed sets the value of Used.
-func (s *SettingsUsageGetMemory) SetUsed(val int64) {
-	s.Used = val
-}
-
-// SetTotal sets the value of Total.
-func (s *SettingsUsageGetMemory) SetTotal(val int64) {
-	s.Total = val
-}
-
-type SettingsUsageGetMetadata struct {
-	Threads     OptInt    `json:"threads"`
-	MemoryLimit OptString `json:"memory_limit"`
-}
-
-// GetThreads returns the value of Threads.
-func (s *SettingsUsageGetMetadata) GetThreads() OptInt {
-	return s.Threads
-}
-
-// GetMemoryLimit returns the value of MemoryLimit.
-func (s *SettingsUsageGetMetadata) GetMemoryLimit() OptString {
-	return s.MemoryLimit
-}
-
-// SetThreads sets the value of Threads.
-func (s *SettingsUsageGetMetadata) SetThreads(val OptInt) {
-	s.Threads = val
-}
-
-// SetMemoryLimit sets the value of MemoryLimit.
-func (s *SettingsUsageGetMetadata) SetMemoryLimit(val OptString) {
-	s.MemoryLimit = val
-}
-
 type StatsBrowsers []StatsBrowsersItem
 
 func (*StatsBrowsers) getWebsiteIDBrowsersRes() {}
@@ -2922,6 +2760,168 @@ func (s *UserSettingsScriptType) UnmarshalText(data []byte) error {
 	default:
 		return errors.Errorf("invalid value: %q", data)
 	}
+}
+
+// Response body for getting CPU, memory and disk usage of the server.
+// Ref: #/components/schemas/UserUsageGet
+type UserUsageGet struct {
+	CPU      UserUsageGetCPU      `json:"cpu"`
+	Memory   UserUsageGetMemory   `json:"memory"`
+	Disk     UserUsageGetDisk     `json:"disk"`
+	Metadata UserUsageGetMetadata `json:"metadata"`
+}
+
+// GetCPU returns the value of CPU.
+func (s *UserUsageGet) GetCPU() UserUsageGetCPU {
+	return s.CPU
+}
+
+// GetMemory returns the value of Memory.
+func (s *UserUsageGet) GetMemory() UserUsageGetMemory {
+	return s.Memory
+}
+
+// GetDisk returns the value of Disk.
+func (s *UserUsageGet) GetDisk() UserUsageGetDisk {
+	return s.Disk
+}
+
+// GetMetadata returns the value of Metadata.
+func (s *UserUsageGet) GetMetadata() UserUsageGetMetadata {
+	return s.Metadata
+}
+
+// SetCPU sets the value of CPU.
+func (s *UserUsageGet) SetCPU(val UserUsageGetCPU) {
+	s.CPU = val
+}
+
+// SetMemory sets the value of Memory.
+func (s *UserUsageGet) SetMemory(val UserUsageGetMemory) {
+	s.Memory = val
+}
+
+// SetDisk sets the value of Disk.
+func (s *UserUsageGet) SetDisk(val UserUsageGetDisk) {
+	s.Disk = val
+}
+
+// SetMetadata sets the value of Metadata.
+func (s *UserUsageGet) SetMetadata(val UserUsageGetMetadata) {
+	s.Metadata = val
+}
+
+func (*UserUsageGet) getUserUsageRes() {}
+
+type UserUsageGetCPU struct {
+	Usage   float32 `json:"usage"`
+	Cores   int     `json:"cores"`
+	Threads int     `json:"threads"`
+}
+
+// GetUsage returns the value of Usage.
+func (s *UserUsageGetCPU) GetUsage() float32 {
+	return s.Usage
+}
+
+// GetCores returns the value of Cores.
+func (s *UserUsageGetCPU) GetCores() int {
+	return s.Cores
+}
+
+// GetThreads returns the value of Threads.
+func (s *UserUsageGetCPU) GetThreads() int {
+	return s.Threads
+}
+
+// SetUsage sets the value of Usage.
+func (s *UserUsageGetCPU) SetUsage(val float32) {
+	s.Usage = val
+}
+
+// SetCores sets the value of Cores.
+func (s *UserUsageGetCPU) SetCores(val int) {
+	s.Cores = val
+}
+
+// SetThreads sets the value of Threads.
+func (s *UserUsageGetCPU) SetThreads(val int) {
+	s.Threads = val
+}
+
+type UserUsageGetDisk struct {
+	Used  int64 `json:"used"`
+	Total int64 `json:"total"`
+}
+
+// GetUsed returns the value of Used.
+func (s *UserUsageGetDisk) GetUsed() int64 {
+	return s.Used
+}
+
+// GetTotal returns the value of Total.
+func (s *UserUsageGetDisk) GetTotal() int64 {
+	return s.Total
+}
+
+// SetUsed sets the value of Used.
+func (s *UserUsageGetDisk) SetUsed(val int64) {
+	s.Used = val
+}
+
+// SetTotal sets the value of Total.
+func (s *UserUsageGetDisk) SetTotal(val int64) {
+	s.Total = val
+}
+
+type UserUsageGetMemory struct {
+	Used  int64 `json:"used"`
+	Total int64 `json:"total"`
+}
+
+// GetUsed returns the value of Used.
+func (s *UserUsageGetMemory) GetUsed() int64 {
+	return s.Used
+}
+
+// GetTotal returns the value of Total.
+func (s *UserUsageGetMemory) GetTotal() int64 {
+	return s.Total
+}
+
+// SetUsed sets the value of Used.
+func (s *UserUsageGetMemory) SetUsed(val int64) {
+	s.Used = val
+}
+
+// SetTotal sets the value of Total.
+func (s *UserUsageGetMemory) SetTotal(val int64) {
+	s.Total = val
+}
+
+type UserUsageGetMetadata struct {
+	Threads     OptInt    `json:"threads"`
+	MemoryLimit OptString `json:"memory_limit"`
+}
+
+// GetThreads returns the value of Threads.
+func (s *UserUsageGetMetadata) GetThreads() OptInt {
+	return s.Threads
+}
+
+// GetMemoryLimit returns the value of MemoryLimit.
+func (s *UserUsageGetMetadata) GetMemoryLimit() OptString {
+	return s.MemoryLimit
+}
+
+// SetThreads sets the value of Threads.
+func (s *UserUsageGetMetadata) SetThreads(val OptInt) {
+	s.Threads = val
+}
+
+// SetMemoryLimit sets the value of MemoryLimit.
+func (s *UserUsageGetMetadata) SetMemoryLimit(val OptString) {
+	s.MemoryLimit = val
 }
 
 // Request body for creating a website.

@@ -533,12 +533,12 @@ export interface components {
              * @default en
              * @enum {string}
              */
-            language: "en";
+            language?: "en";
             /**
              * @default default
              * @enum {string}
              */
-            script_type: "default" | "tagged-events";
+            script_type?: "default" | "tagged-events";
             threads?: number;
             memory_limit?: string;
         };
@@ -592,10 +592,10 @@ export interface components {
             hostname?: string;
         };
         /**
-         * SettingsUsageGet
+         * UserUsageGet
          * @description Response body for getting CPU, memory and disk usage of the server.
          */
-        SettingsUsageGet: {
+        UserUsageGet: {
             cpu: {
                 /** Format: float */
                 usage: number;
@@ -1239,7 +1239,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SettingsUsageGet"];
+                    "application/json": components["schemas"]["UserUsageGet"];
                 };
             };
             401: components["responses"]["UnauthorisedError"];

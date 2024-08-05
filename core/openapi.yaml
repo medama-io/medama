@@ -276,7 +276,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SettingsUsageGet"
+                $ref: "#/components/schemas/UserUsageGet"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
         "500":
@@ -1543,9 +1543,9 @@ components:
           minLength: 1
           maxLength: 253 # FQDN limit
           format: hostname
-    SettingsUsageGet:
+    UserUsageGet:
       type: object
-      title: SettingsUsageGet
+      title: UserUsageGet
       description: Response body for getting CPU, memory and disk usage of the server.
       properties:
         cpu:

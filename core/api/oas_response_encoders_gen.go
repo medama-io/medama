@@ -304,7 +304,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 
 func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *SettingsUsageGet:
+	case *UserUsageGet:
 		if err := func() error {
 			if err := response.Validate(); err != nil {
 				return err
