@@ -1,7 +1,8 @@
+import { Outlet, useLoaderData } from '@remix-run/react';
+
 import { userLoggedIn } from '@/api/user';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { SettingsLayout } from '@/components/settings/Layout';
-import { Outlet, useLoaderData } from '@remix-run/react';
 
 export const clientLoader = async () => {
 	await userLoggedIn();

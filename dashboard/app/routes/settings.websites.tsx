@@ -1,4 +1,3 @@
-import { Group, Text } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
@@ -14,6 +13,7 @@ import { z } from 'zod';
 
 import { userGet } from '@/api/user';
 import { websiteDelete, websiteList } from '@/api/websites';
+import { Group } from '@/components/layout/Flex';
 import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
 import {
 	SectionDanger,
@@ -146,13 +146,11 @@ export default function Index() {
 			>
 				<ModalInput
 					label={
-						<Text fz={13} mb={4}>
+						<p style={{ fontSize: 13, marginBottom: 4 }}>
 							Enter the domain name{' '}
-							<Text fz={13} fw={600} component="span">
-								{website}
-							</Text>{' '}
+							<span style={{ fontSize: 13, fontWeight: 600 }}>{website}</span>{' '}
 							to continue:
-						</Text>
+						</p>
 					}
 					key={form.key('hostname')}
 					{...form.getInputProps('hostname')}
@@ -168,7 +166,7 @@ export default function Index() {
 	return (
 		<>
 			<SectionWrapper>
-				<Group justify="space-between">
+				<Group>
 					<SectionTitle>
 						<h3>Choose Website</h3>
 					</SectionTitle>
