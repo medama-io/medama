@@ -55,8 +55,6 @@ func Up0001(c *sqlite.Client) error {
 		return err
 	}
 
-	// Moved user creation to 0006_sqlite_settings.go
-
 	return nil
 }
 

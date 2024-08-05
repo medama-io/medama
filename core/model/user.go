@@ -22,11 +22,3 @@ func NewUser(id string, username string, password string, settings *UserSettings
 		DateUpdated: dateUpdated,
 	}
 }
-
-// NewSettings returns a new instance of Settings with default values.
-func NewDefaultSettings() *UserSettings {
-	return &UserSettings{
-		Language:   "en",
-		ScriptType: "default",
-	}
-}

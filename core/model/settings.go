@@ -18,3 +18,11 @@ type UserSettings struct {
 }
 
 type WebsiteSettings struct{}
+
+// NewSettings returns a new instance of Settings with default values.
+func NewDefaultSettings() *UserSettings {
+	return &UserSettings{
+		Language:   "en",
+		ScriptType: "default",
+	}
+}
