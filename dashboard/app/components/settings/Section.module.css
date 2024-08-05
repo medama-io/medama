@@ -68,6 +68,7 @@
 }
 
 .submit {
+	composes: button from global;
 	height: 40px;
 
 	display: flex;

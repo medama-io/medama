@@ -1,5 +1,3 @@
-import { Stack, UnstyledButton } from '@mantine/core';
-
 import { Link, useLocation } from '@remix-run/react';
 import classes from './Sidebar.module.css';
 
@@ -17,16 +15,15 @@ export const Sidebar = () => {
 		const active = pathname.startsWith(`/settings/${setting.path}`);
 
 		return (
-			<UnstyledButton
+			<Link
 				key={setting.path}
-				component={Link}
 				to={`/settings/${setting.path}`}
 				data-active={active}
 			>
 				{setting.label}
-			</UnstyledButton>
+			</Link>
 		);
 	});
 
-	return <Stack className={classes.wrapper}>{options}</Stack>;
+	return <div className={classes.wrapper}>{options}</div>;
 };

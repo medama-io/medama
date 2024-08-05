@@ -1,8 +1,10 @@
-import { UnstyledButton } from '@mantine/core';
 import { Form } from '@remix-run/react';
 import type React from 'react';
 
+import { Button } from '@/components/Button';
+
 import classes from './Section.module.css';
+
 interface SectionWrapperProps {
 	children: React.ReactNode;
 }
@@ -48,9 +50,9 @@ export const Section = ({
 			</div>
 			<div className={classes.divider}>
 				<p>{submitDescription}</p>
-				<UnstyledButton className={classes.submit} type="submit">
+				<Button className={classes.submit} type="submit">
 					Save
-				</UnstyledButton>
+				</Button>
 			</div>
 		</Form>
 	);
@@ -78,13 +80,9 @@ export const SectionDanger = ({
 			</div>
 			<div className={classes.divider}>
 				<p>{submitDescription}</p>
-				<UnstyledButton
-					className={classes.delete}
-					onClick={open}
-					disabled={disabled}
-				>
+				<Button className={classes.delete} onClick={open} disabled={disabled}>
 					Delete Website
-				</UnstyledButton>
+				</Button>
 			</div>
 			{modalChildren}
 		</Form>
