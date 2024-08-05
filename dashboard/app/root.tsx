@@ -41,13 +41,15 @@ import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';
 import '@mantine/core/styles/Title.css';
-import '@mantine/core/styles/Progress.css';
 import '@mantine/core/styles/Notification.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/charts/styles.css';
 import 'mantine-datatable/styles.css';
 import 'react-indiana-drag-scroll/dist/style.css';
+
 import '@/styles/global.css';
+import '@/styles/Layout.css';
+import '@/styles/Button.css';
 
 import {
 	ColorSchemeScript,

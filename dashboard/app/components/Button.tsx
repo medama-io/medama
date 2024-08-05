@@ -1,10 +1,7 @@
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Link, type LinkProps } from '@remix-run/react';
-import clsx from 'clsx';
 import { X } from 'lucide-react';
 import type React from 'react';
-
-import classes from './Button.module.css';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	loading?: boolean;
@@ -32,7 +29,7 @@ const Button = ({
 }: ButtonProps) => {
 	return (
 		<button
-			className={clsx(className, classes.base)}
+			className={className ? className : 'button'}
 			disabled={loading || disabled}
 			aria-busy={loading ? 'true' : 'false'}
 			{...rest}
@@ -69,10 +66,13 @@ const ButtonLink = ({
 }: ButtonLinkProps) => {
 	return (
 		<Link
-			className={clsx(
-				variant === 'outline' ? classes.outline : classes.link,
-				className,
-			)}
+			className={
+				className
+					? className
+					: variant === 'outline'
+						? 'button-outline'
+						: 'button-link'
+			}
 			role="button"
 			{...rest}
 		>
@@ -83,7 +83,7 @@ const ButtonLink = ({
 
 const IconButton = ({ children, label, ...rest }: IconButtonProps) => {
 	return (
-		<button className={classes.icon} type="button" aria-label={label} {...rest}>
+		<button className="button-icon" type="button" aria-label={label} {...rest}>
 			{children}
 		</button>
 	);

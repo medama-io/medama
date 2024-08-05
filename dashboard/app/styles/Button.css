@@ -1,4 +1,4 @@
-.base {
+.button {
 	height: 40px;
 
 	display: inline-flex;
@@ -18,6 +18,8 @@
 	border: 1px solid var(--me-color-bg-grey-blue);
 	border-radius: 8px;
 
+	text-decoration: none;
+
 	&:hover {
 		background-color: var(--me-color-bg-grey-blue-dark);
 	}
@@ -33,13 +35,8 @@
 	}
 }
 
-.link {
-	composes: base;
-	text-decoration: none;
-}
-
-.outline {
-	composes: link;
+.button-outline {
+	composes: button;
 	border: 1px solid var(--me-color-border-dark);
 	background: var(--me-color-bg-dark);
 
@@ -48,8 +45,8 @@
 	}
 }
 
-.icon {
-	composes: base;
+.button-icon {
+	composes: button;
 	position: relative;
 	padding: 8px;
 

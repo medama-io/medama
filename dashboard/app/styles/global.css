@@ -117,17 +117,3 @@ h6 {
 	padding: 0;
 	margin-bottom: 0;
 }
-
-/* Composable CSS */
-.flex {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-}
-
-.group {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
