@@ -79,7 +79,7 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
-		user.Settings = &model.GlobalSettings{}
+		user.Settings = model.NewDefaultSettings()
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to unmarshal settings")
@@ -113,7 +113,7 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
-		user.Settings = &model.GlobalSettings{}
+		user.Settings = model.NewDefaultSettings()
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to unmarshal settings")

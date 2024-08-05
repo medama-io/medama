@@ -43,7 +43,7 @@ func (c *Client) GetSettings(ctx context.Context) (*model.GlobalSettings, error)
 		JSON_EXTRACT(settings, '$.memory_limit') AS memory_limit
 	FROM users LIMIT 1`
 
-	settings := &model.GlobalSettings{}
+	settings := model.NewDefaultSettings()
 	err := c.DB.GetContext(ctx, settings, query)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, model.ErrSettingNotFound
