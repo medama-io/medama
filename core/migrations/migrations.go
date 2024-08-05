@@ -182,7 +182,7 @@ func (s *Service) AutoMigrate(ctx context.Context) error {
 	id := typeid.String()
 
 	// Hash default password
-	auth, err := util.NewAuthService(context.Background(), false)
+	auth, err := util.NewAuthService(ctx, false)
 	if err != nil {
 		return err
 	}
@@ -193,7 +193,7 @@ func (s *Service) AutoMigrate(ctx context.Context) error {
 
 	dateCreated := time.Now().Unix()
 	dateUpdated := dateCreated
-	err = s.sqlite.CreateUser(context.Background(), model.NewUser(id, "admin", pwdHash, model.NewDefaultSettings(), dateCreated, dateUpdated))
+	err = s.sqlite.CreateUser(ctx, model.NewUser(id, "admin", pwdHash, model.NewDefaultSettings(), dateCreated, dateUpdated))
 	if err != nil {
 		return err
 	}
