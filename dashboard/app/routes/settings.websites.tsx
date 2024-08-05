@@ -1,4 +1,4 @@
-import { Group, Text, Title } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
@@ -170,7 +170,7 @@ export default function Index() {
 			<SectionWrapper>
 				<Group justify="space-between">
 					<SectionTitle>
-						<Title order={3}>Choose Website</Title>
+						<h3>Choose Website</h3>
 					</SectionTitle>
 					<WebsiteSelector
 						websites={websites}

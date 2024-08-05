@@ -40,7 +40,6 @@ import '@mantine/core/styles/ColorSwatch.css';
 import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';
-import '@mantine/core/styles/Title.css';
 import '@mantine/core/styles/Notification.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/charts/styles.css';
