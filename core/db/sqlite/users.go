@@ -59,54 +59,68 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	query := `--sql
 	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE id = ?`
 
-	res, err := c.DB.QueryxContext(ctx, query, id)
+	var user model.User
+	var settingsJSON string
+
+	err := c.DB.QueryRowxContext(ctx, query, id).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Password,
+		&settingsJSON,
+		&user.DateCreated,
+		&user.DateUpdated,
+	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, model.ErrUserNotFound
 		}
-
 		return nil, errors.Wrap(err, "db")
 	}
 
-	defer res.Close()
-
-	if res.Next() {
-		user := &model.User{}
-
-		err := res.StructScan(user)
+	// Parse the JSON settings
+	if settingsJSON != "" {
+		user.Settings = &model.GlobalSettings{}
+		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
-			return nil, errors.Wrap(err, "db")
+			return nil, errors.Wrap(err, "failed to unmarshal settings")
 		}
-
-		return user, nil
 	}
 
-	return nil, model.ErrUserNotFound
+	return &user, nil
 }
 
 func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	query := `--sql
 	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE username = ?`
 
-	res, err := c.DB.QueryxContext(ctx, query, username)
+	var user model.User
+	var settingsJSON string
+
+	err := c.DB.QueryRowxContext(ctx, query, username).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Password,
+		&settingsJSON,
+		&user.DateCreated,
+		&user.DateUpdated,
+	)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, model.ErrUserNotFound
+		}
 		return nil, errors.Wrap(err, "db")
 	}
 
-	defer res.Close()
-
-	if res.Next() {
-		user := &model.User{}
-
-		err := res.StructScan(user)
+	// Parse the JSON settings
+	if settingsJSON != "" {
+		user.Settings = &model.GlobalSettings{}
+		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
-			return nil, errors.Wrap(err, "db")
+			return nil, errors.Wrap(err, "failed to unmarshal settings")
 		}
-
-		return user, nil
 	}
 
-	return nil, model.ErrUserNotFound
+	return &user, nil
 }
 
 func (c *Client) UpdateUserUsername(ctx context.Context, id string, username string, dateUpdated int64) error {

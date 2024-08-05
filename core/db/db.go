@@ -16,7 +16,7 @@ type AppClient interface {
 	// GetSetting retrieves a user setting from the database.
 	GetSetting(ctx context.Context, key model.SettingsKey) (string, error)
 	// GetSettings retrieves all the user settings from the database.
-	GetSettings(ctx context.Context) (*model.Settings, error)
+	GetSettings(ctx context.Context) (*model.GlobalSettings, error)
 	// GetUser retrieves a user from the database by id.
 	GetUser(ctx context.Context, id string) (*model.User, error)
 	// GetUserByUsername retrieves a user from the database by username.
@@ -28,7 +28,7 @@ type AppClient interface {
 	// UpdateSetting updates a user setting in the database.
 	UpdateSetting(ctx context.Context, key model.SettingsKey, value string, dateUpdated int64) error
 	// UpdateSettings updates a user's settings in the database.
-	UpdateSettings(ctx context.Context, id string, settings *model.Settings, dateUpdated int64) error
+	UpdateSettings(ctx context.Context, id string, settings *model.GlobalSettings, dateUpdated int64) error
 	// DeleteUser deletes a user from the database.
 	DeleteUser(ctx context.Context, id string) error
 

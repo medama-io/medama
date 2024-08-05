@@ -32,6 +32,13 @@ func Up0006(c *sqlite.Client) error {
 		return err
 	}
 
+	// Update websites table to create new settings JSON column.
+	_, err = tx.Exec(`--sql
+	ALTER TABLE websites ADD COLUMN settings JSON NOT NULL DEFAULT '{}'`)
+	if err != nil {
+		return err
+	}
+
 	// Commit transaction
 	err = tx.Commit()
 	if err != nil {
@@ -65,6 +72,13 @@ func Down0006(c *sqlite.Client) error {
 	// Remove settings JSON column from users table.
 	_, err = tx.Exec(`--sql
 	ALTER TABLE users DROP COLUMN settings`)
+	if err != nil {
+		return err
+	}
+
+	// Remove settings JSON column from websites table.
+	_, err = tx.Exec(`--sql
+	ALTER TABLE websites DROP COLUMN settings`)
 	if err != nil {
 		return err
 	}

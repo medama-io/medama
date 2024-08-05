@@ -27,7 +27,9 @@ type UserSettings struct {
 	ScriptType string `json:"script_type" db:"script_type"`
 }
 
-type Settings struct {
+type GlobalSettings struct {
 	DuckDBSettings
 	UserSettings
 }
+
+type WebsiteSettings struct{}

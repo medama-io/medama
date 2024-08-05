@@ -11,24 +11,30 @@ import (
 
 func (c *Client) GetSetting(ctx context.Context, key model.SettingsKey) (string, error) {
 	name := "$." + string(key)
-	query := `--sql
-	SELECT
-		JSON_EXTRACT(settings, ?) AS value
-	FROM users LIMIT 1`
+	query := `
+    SELECT
+        JSON_EXTRACT(settings, ?) AS value
+    FROM users
+    WHERE JSON_EXTRACT(settings, ?) IS NOT NULL
+    LIMIT 1`
 
-	var value string
-	err := c.DB.GetContext(ctx, &value, query, name)
-	if errors.Is(err, sql.ErrNoRows) {
+	var value sql.NullString
+	err := c.DB.GetContext(ctx, &value, query, name, name)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return "", model.ErrSettingNotFound
+		}
+		return "", errors.Wrap(err, "db")
+	}
+
+	if !value.Valid {
 		return "", model.ErrSettingNotFound
 	}
 
-	if err != nil {
-		return "", errors.Wrap(err, "db")
-	}
-	return value, nil
+	return value.String, nil
 }
 
-func (c *Client) GetSettings(ctx context.Context) (*model.Settings, error) {
+func (c *Client) GetSettings(ctx context.Context) (*model.GlobalSettings, error) {
 	query := `--sql
 	SELECT
 		JSON_EXTRACT(settings, '$.language') AS language,
@@ -37,7 +43,7 @@ func (c *Client) GetSettings(ctx context.Context) (*model.Settings, error) {
 		JSON_EXTRACT(settings, '$.memory_limit') AS memory_limit
 	FROM users LIMIT 1`
 
-	settings := &model.Settings{}
+	settings := &model.GlobalSettings{}
 	err := c.DB.GetContext(ctx, settings, query)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, model.ErrSettingNotFound
@@ -80,7 +86,7 @@ func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value
 }
 
 // UpdateSettings updates a user's settings in the database.
-func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *model.Settings, dateUpdated int64) error {
+func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *model.GlobalSettings, dateUpdated int64) error {
 	query := `--sql
     UPDATE users
     SET settings = :settings,
