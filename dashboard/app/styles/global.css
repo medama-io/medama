@@ -9,6 +9,7 @@
 	/* Background Colors */
 	--me-color-bg-light: #fcfdfe;
 	--me-color-bg-grey: #f3f3f3;
+	--me-color-bg-grey-dark: #e9ecef;
 	--me-color-bg-dark: #111111;
 	--me-color-bg-grey-blue: #262a31;
 	--me-color-bg-grey-blue-dark: #1b1e24;
@@ -115,4 +116,18 @@ h6 {
 	background: none;
 	padding: 0;
 	margin-bottom: 0;
+}
+
+/* Composable CSS */
+.flex {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.group {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }

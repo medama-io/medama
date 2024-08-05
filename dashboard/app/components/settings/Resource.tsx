@@ -1,5 +1,8 @@
-import { Group, Progress, Stack, Text } from '@mantine/core';
+import { Text } from '@mantine/core';
 import byteSize from 'byte-size';
+import * as Progress from '@radix-ui/react-progress';
+
+import { Group } from '@/components/layout/Flex';
 
 import classes from './Resource.module.css';
 
@@ -25,7 +28,7 @@ const Panel = ({
 	children,
 }: React.PropsWithChildren<PanelProps>) => (
 	<div className={classes.panel}>
-		<Group justify="space-between">
+		<Group style={{ marginBottom: 16 }}>
 			<Text fz={16} fw={500}>
 				{title}
 			</Text>
@@ -33,11 +36,10 @@ const Panel = ({
 				{usage.toFixed(2)}%
 			</Text>
 		</Group>
-		<Progress.Root size="xl" mb={24} mt={16}>
-			<Progress.Section
-				value={Math.round(usage)}
-				color="#9d5def"
-				aria-label={`${title} Progress`}
+		<Progress.Root className={classes.progress} value={Math.round(usage)}>
+			<Progress.Indicator
+				className={classes.indicator}
+				style={{ transform: `translateX(-${100 - Math.round(usage)}%)` }}
 			/>
 		</Progress.Root>
 		{children}
@@ -48,14 +50,14 @@ export const ResourcePanel = ({ title, used, total }: ResourcePanelProps) => {
 	const usage = (used / total) * 100;
 	return (
 		<Panel title={title} usage={usage}>
-			<Group justify="space-between">
+			<div className={classes.group}>
 				<Text>
 					Used: <span>{String(byteSize(used))}</span>
 				</Text>
 				<Text>
 					Capacity: <span>{String(byteSize(total))}</span>
 				</Text>
-			</Group>
+			</div>
 		</Panel>
 	);
 };
@@ -67,13 +69,13 @@ export const ResourcePanelCPU = ({
 	threads,
 }: ResourcePanelCPUProps) => (
 	<Panel title={title} usage={usage}>
-		<Group justify="space-between">
+		<div className={classes.group}>
 			<Text>
 				Cores: <span>{String(cores)}</span>
 			</Text>
 			<Text>
 				Threads: <span>{String(threads)}</span>
 			</Text>
-		</Group>
+		</div>
 	</Panel>
 );

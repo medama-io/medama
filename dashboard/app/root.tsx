@@ -1,5 +1,4 @@
 import '@fontsource-variable/inter/wght.css';
-import '@fontsource-variable/reddit-mono';
 // Comman
 import '@mantine/core/styles/global.css';
 import '@mantine/core/styles/ScrollArea.css';
