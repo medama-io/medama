@@ -123,7 +123,7 @@ export default function Index() {
 
 	const handleSubmit = (values: typeof account.values) => {
 		submit(values, { method: 'POST' });
-		account.reset();
+		account.setFieldValue('password', '');
 	};
 
 	return (
