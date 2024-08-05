@@ -38,8 +38,8 @@ func (c *Client) GetSetting(ctx context.Context, key model.SettingsKey) (string,
 func (c *Client) GetSettings(ctx context.Context) (*model.UserSettings, error) {
 	query := `--sql
 	SELECT
-		JSON_EXTRACT(settings, '$.language') AS language,
-		JSON_EXTRACT(settings, '$.script_type') AS script_type
+		COALESCE(JSON_EXTRACT(settings, '$.language'), 'en') AS language,
+		COALESCE(JSON_EXTRACT(settings, '$.script_type'), 'default') AS script_type
 	FROM users LIMIT 1`
 
 	settings := model.NewDefaultSettings()
