@@ -19,6 +19,7 @@
 		"@mantine/form": "^7.11.2",
 		"@mantine/notifications": "^7.11.2",
 		"@radix-ui/react-accessible-icon": "^1.1.0",
+		"@radix-ui/react-checkbox": "^1.1.1",
 		"@radix-ui/react-dialog": "^1.1.1",
 		"@radix-ui/react-dropdown-menu": "^2.1.1",
 		"@radix-ui/react-popover": "^1.1.1",

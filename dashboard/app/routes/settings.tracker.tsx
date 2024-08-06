@@ -11,7 +11,8 @@ import { z } from 'zod';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
-import { PasswordInput, TextInput } from '@/components/settings/Input';
+import { CheckBox } from '@/components/Checkbox';
+import { Flex } from '@/components/layout/Flex';
 import { Section } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
 
@@ -127,29 +128,23 @@ export default function Index() {
 	};
 
 	return (
-		<Section
-			title="Tracker Configuration"
-			description="Choose what features you want to enable in the tracker."
-			onSubmit={account.onSubmit(handleSubmit)}
-		>
-			<input
-				type="hidden"
-				key={account.key('_setting')}
-				{...account.getInputProps('_setting')}
-			/>
-			<TextInput
-				label="Username"
-				placeholder="Username"
-				key={account.key('username')}
-				{...account.getInputProps('username')}
-			/>
-			<PasswordInput
-				label="Password"
-				placeholder="New password"
-				type="password"
-				key={account.key('password')}
-				{...account.getInputProps('password')}
-			/>
-		</Section>
+		<>
+			<Section
+				title="Tracker Configuration"
+				description="Choose what features you want to enable in the tracker."
+				onSubmit={account.onSubmit(handleSubmit)}
+			>
+				<input
+					type="hidden"
+					key={account.key('_setting')}
+					{...account.getInputProps('_setting')}
+				/>
+				<Flex style={{ gap: 8 }}>
+					<CheckBox label="Default" checked disabled />
+					<CheckBox label="Tagged Events" />
+				</Flex>
+			</Section>
+			<Flex>fa</Flex>
+		</>
 	);
 }

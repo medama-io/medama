@@ -34,6 +34,49 @@
 	--me-color-badge-positive: #dfffb7;
 	--me-color-badge-negative: #ffd5b7;
 
+	/* --black-a1: color(display-p3 0 0 0 / 0.05); /* rgba(0, 0, 0, 0.05); */
+	/* --black-a2: color(display-p3 0 0 0 / 0.1); /* rgba(0, 0, 0, 0.1); */
+	--black-a3: color(display-p3 0 0 0 / 0.15); /* rgba(0, 0, 0, 0.15); */
+	/* --black-a4: color(display-p3 0 0 0 / 0.2); /* rgba(0, 0, 0, 0.2); */
+	/* --black-a5: color(display-p3 0 0 0 / 0.3); /* rgba(0, 0, 0, 0.3); */
+	/* --black-a6: color(display-p3 0 0 0 / 0.4); /* rgba(0, 0, 0, 0.4); */
+	--black-a7: color(display-p3 0 0 0 / 0.5); /* rgba(0, 0, 0, 0.5); */
+	/* --black-a8: color(display-p3 0 0 0 / 0.6); /* rgba(0, 0, 0, 0.6); */
+	/* --black-a9: color(display-p3 0 0 0 / 0.7); /* rgba(0, 0, 0, 0.7); */
+	/* --black-a10: color(display-p3 0 0 0 / 0.8); /* rgba(0, 0, 0, 0.8); */
+	/* --black-a11: color(display-p3 0 0 0 / 0.9); /* rgba(0, 0, 0, 0.9); */
+	/* --black-a12: color(display-p3 0 0 0 / 0.95); /* rgba(0, 0, 0, 0.95);*/
+
+	--violet: #9d5def;
+
+	/* --violet-1: oklch(99.3% 0.004 300.5);
+	--violet-2: oklch(98.2% 0.011 300.5);
+	--violet-3: oklch(95.9% 0.028 300.5);
+	--violet-4: oklch(93.3% 0.045 300.5);
+	--violet-5: oklch(90.1% 0.062 300.5);
+	--violet-6: oklch(86% 0.082 300.5);
+	--violet-7: oklch(80.4% 0.107 300.5);
+	--violet-8: oklch(73.4% 0.141 300.5); */
+	--violet-9: oklch(62% 0.211 300.5);
+	/* --violet-10: oklch(57.8% 0.211 300.5);
+	--violet-11: oklch(51.6% 0.2 300.5);
+	--violet-12: oklch(32.3% 0.128 300.5); */
+
+	/* --violet-a1: color(display-p3 0.349 0.024 1 / 0.012); /*  #5500ff03 */
+	/* --violet-a2: color(display-p3 0.302 0.024 0.863 / 0.028); /*  #4900ff07 */
+	--violet-a3: color(display-p3 0.298 0.008 0.945 / 0.067); /*  #5a00ff11 */
+	/* --violet-a4: color(display-p3 0.314 0.004 0.933 / 0.114); /*  #6100ff1d */
+	/* --violet-a5: color(display-p3 0.271 0.004 0.929 / 0.161); /*  #5c00ff2a */
+	/* --violet-a6: color(display-p3 0.282 0.004 0.933 / 0.224); /*  #5800ff3a */
+	/* --violet-a7: color(display-p3 0.282 0.004 0.875 / 0.31); /*  #5700f050 */
+	/* --violet-a8: color(display-p3 0.282 0.004 0.843 / 0.42); /*  #5800e66c */
+	/* --violet-a9: color(display-p3 0.329 0 0.851 / 0.624); /*  #6500e6a2 */
+	/* --violet-a10: color(display-p3 0.314 0 0.78 / 0.679); /*  #6000d4b0 */
+	/* --violet-a11: color(display-p3 0.271 0 0.663 / 0.742); /*  #5300b3c0 */
+	/* --violet-a12: color(display-p3 0.129 0 0.314 / 0.883); /*  #290057e3 */
+
+	--violet-indicator: var(--violet-9);
+
 	/* Theme Misc */
 	--default-font-family: "Inter Variable", sans-serif;
 	--default-monospace-font-family: "Reddit Mono Variable", monospace;
