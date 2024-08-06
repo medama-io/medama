@@ -1,4 +1,3 @@
-import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -7,45 +6,36 @@ import {
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
-import { z } from 'zod';
+import { useForm } from '@tanstack/react-form';
+import { valibotValidator } from '@tanstack/valibot-form-adapter';
+import * as v from 'valibot';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
 import { CheckBox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
 import { Section } from '@/components/settings/Section';
-import { getString, getType } from '@/utils/form';
+import { getType } from '@/utils/form';
 
 interface LoaderData {
 	user: components['schemas']['UserGet'];
 }
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'Account Settings | Medama' }];
+	return [{ title: 'Tracker Settings | Medama' }];
 };
 
-const accountSchema = z.object({
-	_setting: z.literal('account'),
-	username: z
-		.string()
-		.max(48, {
-			message: 'Username should not exceed 36 characters.',
-		})
-		.trim()
-		.refine((value) => value.length === 0 || value.length >= 3, {
-			message: 'Username should include at least 3 characters.',
-		})
-		.optional(),
-	password: z
-		.string()
-		.max(128, {
-			message: 'Password should not be larger than 128 characters.',
-		})
-		.trim()
-		.refine((value) => value.length === 0 || value.length >= 5, {
-			message: 'Password should include at least 5 characters.',
-		})
-		.optional(),
+const SCRIPT_TYPES = {
+	Default: 'default',
+	'Tagged Events': 'tagged-events',
+} as const;
+
+const trackerSchema = v.strictObject({
+	_setting: v.literal('tracker', 'Invalid setting type.'),
+	script_type: v.array(
+		v.enum(SCRIPT_TYPES, 'Invalid script type.'),
+		'Invalid script type array.',
+	),
 });
 
 export const clientLoader = async () => {
@@ -68,13 +58,11 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 
 	let res: Response | undefined;
 	switch (type) {
-		case 'account': {
+		case 'tracker': {
 			const update = await userUpdate({
 				body: {
-					username: getString(body, 'username'),
-					password: getString(body, 'password'),
 					settings: {
-						language: 'en',
+						script_type: 'default',
 					},
 				},
 				noThrow: true,
@@ -94,7 +82,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		});
 	}
 
-	const message = 'Successfully updated account details.';
+	const message = 'Successfully updated tracker details.';
 	notifications.show({
 		title: 'Success.',
 		message,
@@ -112,36 +100,55 @@ export default function Index() {
 		return;
 	}
 
-	const account = useForm({
-		mode: 'uncontrolled',
-		initialValues: {
-			_setting: 'account',
-			username: user.username,
-			password: '',
+	const { Field, handleSubmit } = useForm({
+		defaultValues: {
+			_setting: 'tracker',
+			script_type: user.settings.script_type
+				? [user.settings.script_type]
+				: ['default'],
 		},
-		validate: zodResolver(accountSchema),
+		validatorAdapter: valibotValidator(),
+		validators: {
+			onSubmit: trackerSchema,
+		},
+		onSubmit: (values) => {
+			submit(values.value, { method: 'POST' });
+		},
 	});
-
-	const handleSubmit = (values: typeof account.values) => {
-		submit(values, { method: 'POST' });
-		account.setFieldValue('password', '');
-	};
 
 	return (
 		<>
 			<Section
 				title="Tracker Configuration"
 				description="Choose what features you want to enable in the tracker."
-				onSubmit={account.onSubmit(handleSubmit)}
+				onSubmit={handleSubmit}
 			>
-				<input
-					type="hidden"
-					key={account.key('_setting')}
-					{...account.getInputProps('_setting')}
-				/>
+				<Field name="_setting">{() => <input type="hidden" />}</Field>
 				<Flex style={{ gap: 8 }}>
-					<CheckBox label="Default" checked disabled />
-					<CheckBox label="Tagged Events" />
+					<Field name="script_type" mode="array">
+						{(field) => (
+							<>
+								{Object.entries(SCRIPT_TYPES).map(([key, value]) => (
+									<CheckBox
+										key={value}
+										label={key}
+										value={value}
+										checked={field.state.value.includes(value)}
+										disabled={value === SCRIPT_TYPES.Default}
+										onCheckedChange={(checked) => {
+											if (checked) {
+												field.setValue([...field.state.value, value]);
+											} else {
+												field.setValue(
+													field.state.value.filter((v) => v !== value),
+												);
+											}
+										}}
+									/>
+								))}
+							</>
+						)}
+					</Field>
 				</Flex>
 			</Section>
 			<Flex>fa</Flex>

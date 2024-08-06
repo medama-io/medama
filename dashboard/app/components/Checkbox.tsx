@@ -8,18 +8,29 @@ import classes from './Checkbox.module.css';
 
 interface CheckBoxProps {
 	label: string;
+	value: string;
 	icon?: React.ReactNode;
 
 	checked?: boolean;
 	disabled?: boolean;
+	onCheckedChange?: (checked: boolean) => void;
 }
 
-const CheckBox = ({ label, icon, checked, disabled }: CheckBoxProps) => (
+const CheckBox = ({
+	label,
+	value,
+	icon,
+	checked,
+	disabled,
+	onCheckedChange,
+}: CheckBoxProps) => (
 	<Group style={{ justifyContent: 'flex-start' }}>
 		<CheckboxPrimitive.Root
 			className={classes.root}
+			value={value}
 			checked={checked}
 			disabled={disabled}
+			onCheckedChange={onCheckedChange}
 		>
 			<CheckboxPrimitive.Indicator className={classes.indicator}>
 				{icon ? icon : <Check />}

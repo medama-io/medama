@@ -40,7 +40,13 @@ export const Section = ({
 	onSubmit,
 }: SectionProps) => {
 	return (
-		<Form onSubmit={onSubmit}>
+		<Form
+			onSubmit={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				onSubmit?.();
+			}}
+		>
 			<div className={classes.wrapper}>
 				<SectionTitle>
 					<h3>{title}</h3>

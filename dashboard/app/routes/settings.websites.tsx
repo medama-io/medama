@@ -26,7 +26,7 @@ import { useDisclosure } from '@/hooks/use-disclosure';
 import { getString, getType } from '@/utils/form';
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'Account Settings | Medama' }];
+	return [{ title: 'Website Settings | Medama' }];
 };
 
 export const clientLoader = async () => {
