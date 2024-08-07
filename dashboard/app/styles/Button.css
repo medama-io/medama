@@ -21,11 +21,15 @@
 	text-decoration: none;
 
 	&:hover {
-		background-color: var(--me-color-bg-grey-blue-dark);
+		background-color: var(--black-a12);
 	}
 
 	&:focus-visible {
 		outline: 2px solid var(--me-color-focus-outline);
+	}
+
+	&:visited {
+		color: var(--me-color-text-light);
 	}
 
 	&:where([data-visible-from="xs"]) {

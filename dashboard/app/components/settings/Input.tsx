@@ -12,10 +12,6 @@ import { IconInfo } from '@/components/icons/info';
 
 import classes from './Input.module.css';
 
-export const TextInput = (props: TextInputProps) => (
-	<MantineTextInput {...props} className={classes.input} />
-);
-
 export const TextInputWithTooltip = (
 	props: TextInputProps & { tooltip: string },
 ) => (

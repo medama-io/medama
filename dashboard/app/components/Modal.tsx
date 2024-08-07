@@ -4,8 +4,6 @@ import {
 	Group,
 	Modal as MantineModal,
 	Text,
-	TextInput,
-	type TextInputProps,
 } from '@mantine/core';
 import { Form } from '@remix-run/react';
 import type React from 'react';
@@ -26,7 +24,7 @@ export interface ModalProps {
 	description: React.ReactNode;
 	submitLabel: string;
 
-	onSubmit: React.FormEventHandler<HTMLFormElement>;
+	onSubmit: () => void;
 	close: () => void;
 
 	isDanger?: boolean;
@@ -48,10 +46,6 @@ export const ModalWrapper = ({
 	</MantineModal>
 );
 
-export const ModalInput = (props: TextInputProps) => (
-	<TextInput classNames={{ input: classes.input }} mt="md" {...props} />
-);
-
 export const ModalChild = ({
 	title,
 	submitLabel,
@@ -71,7 +65,13 @@ export const ModalChild = ({
 			<Text size="sm" mt="xs">
 				{description}
 			</Text>
-			<Form onSubmit={onSubmit}>
+			<Form
+				onSubmit={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					onSubmit();
+				}}
+			>
 				{children}
 				<Button className={classes.submit} type="submit" data-danger={isDanger}>
 					<span>{submitLabel}</span>

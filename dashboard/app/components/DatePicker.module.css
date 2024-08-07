@@ -50,7 +50,7 @@
 .root {
 	margin-top: 8px;
 
-	--rdp-accent-color: var(--me-color-border-violet);
+	--rdp-accent-color: var(--violet);
 	--rdp-accent-background-color: var(--me-color-selected-snow);
 	--rdp-font-family: var(--default-font-family);
 

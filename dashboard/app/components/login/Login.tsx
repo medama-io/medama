@@ -4,31 +4,29 @@ import {
 	PasswordInput,
 	Stack,
 	Text,
-	TextInput,
 	UnstyledButton,
 } from '@mantine/core';
-import { useForm, zodResolver } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import { Form, useSubmit } from '@remix-run/react';
-import { z } from 'zod';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
+import * as v from 'valibot';
+
+import { Button } from '@/components/Button';
+import { TextInput } from '@/components/TextField';
 
 import classes from './Login.module.css';
 
-const loginSchema = z.object({
-	username: z
-		.string()
-		.min(3, {
-			message: 'Username should include at least 3 characters.',
-		})
-		.max(48, {
-			message: 'Username should not exceed 36 characters.',
-		})
-		.trim(),
-	password: z
-		.string()
-		.min(5, {
-			message: 'Password should include at least 5 characters.',
-		})
-		.trim(),
+const loginSchema = v.object({
+	username: v.pipe(
+		v.string(),
+		v.trim(),
+		v.minLength(3, 'Username should include at least 3 characters.'),
+	),
+	password: v.pipe(
+		v.string(),
+		v.trim(),
+		v.minLength(5, 'Password should include at least 5 characters.'),
+	),
 });
 
 export const Login = () => {
@@ -36,7 +34,7 @@ export const Login = () => {
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: { username: '', password: '' },
-		validate: zodResolver(loginSchema),
+		validate: valibotResolver(loginSchema),
 	});
 
 	const handleSubmit = (values: typeof form.values) => {
@@ -55,7 +53,6 @@ export const Login = () => {
 						required
 						label="Username"
 						placeholder="Your username"
-						radius="md"
 						{...form.getInputProps('username')}
 					/>
 					<PasswordInput
@@ -68,7 +65,7 @@ export const Login = () => {
 					/>
 				</Stack>
 
-				<UnstyledButton mt="xl" className={classes.submit} type="submit">
+				<Button className={classes.submit} type="submit">
 					<Group align="center" gap="xs">
 						<Text fz={14}>Log In</Text>
 						<svg
@@ -88,7 +85,7 @@ export const Login = () => {
 							<line x1="15" x2="3" y1="12" y2="12" />
 						</svg>
 					</Group>
-				</UnstyledButton>
+				</Button>
 			</Form>
 		</Paper>
 	);

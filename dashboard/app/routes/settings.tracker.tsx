@@ -1,3 +1,4 @@
+import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -6,8 +7,6 @@ import {
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
-import { useForm } from '@tanstack/react-form';
-import { valibotValidator } from '@tanstack/valibot-form-adapter';
 import * as v from 'valibot';
 
 import type { components } from '@/api/types';
@@ -16,6 +15,7 @@ import { CheckBox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
 import { Section } from '@/components/settings/Section';
 import { getType } from '@/utils/form';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 
 interface LoaderData {
 	user: components['schemas']['UserGet'];
@@ -100,56 +100,34 @@ export default function Index() {
 		return;
 	}
 
-	const { Field, handleSubmit } = useForm({
-		defaultValues: {
+	const form = useForm({
+		mode: 'uncontrolled',
+		initialValues: {
 			_setting: 'tracker',
 			script_type: user.settings.script_type
 				? [user.settings.script_type]
 				: ['default'],
 		},
-		validatorAdapter: valibotValidator(),
-		validators: {
-			onSubmit: trackerSchema,
-		},
-		onSubmit: (values) => {
-			submit(values.value, { method: 'POST' });
-		},
+		validate: valibotResolver(trackerSchema),
 	});
+
+	const handleSubmit = (values: typeof form.values) => {
+		submit(values, { method: 'POST' });
+	};
 
 	return (
 		<>
 			<Section
 				title="Tracker Configuration"
 				description="Choose what features you want to enable in the tracker."
-				onSubmit={handleSubmit}
+				onSubmit={form.onSubmit(handleSubmit)}
 			>
-				<Field name="_setting">{() => <input type="hidden" />}</Field>
-				<Flex style={{ gap: 8 }}>
-					<Field name="script_type" mode="array">
-						{(field) => (
-							<>
-								{Object.entries(SCRIPT_TYPES).map(([key, value]) => (
-									<CheckBox
-										key={value}
-										label={key}
-										value={value}
-										checked={field.state.value.includes(value)}
-										disabled={value === SCRIPT_TYPES.Default}
-										onCheckedChange={(checked) => {
-											if (checked) {
-												field.setValue([...field.state.value, value]);
-											} else {
-												field.setValue(
-													field.state.value.filter((v) => v !== value),
-												);
-											}
-										}}
-									/>
-								))}
-							</>
-						)}
-					</Field>
-				</Flex>
+				<input
+					type="hidden"
+					key={form.key('_setting')}
+					{...form.getInputProps('_setting')}
+				/>
+				<Flex style={{ gap: 8 }}>fa</Flex>
 			</Section>
 			<Flex>fa</Flex>
 		</>

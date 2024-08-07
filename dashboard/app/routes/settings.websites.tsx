@@ -1,3 +1,4 @@
+import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -7,8 +8,7 @@ import {
 	useSearchParams,
 	useSubmit,
 } from '@remix-run/react';
-import { useForm } from '@tanstack/react-form';
-import { valibotValidator } from '@tanstack/valibot-form-adapter';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useState } from 'react';
 import * as v from 'valibot';
 
@@ -115,25 +115,21 @@ export default function Index() {
 		),
 	});
 
-	const { handleSubmit, Field, reset } = useForm({
-		defaultValues: {
-			_setting: 'delete',
-			hostname: '',
-		},
-		validatorAdapter: valibotValidator(),
-		validators: {
-			onSubmit: deleteSchema,
-		},
-		onSubmit: (values) => {
-			submit(values.value, { method: 'POST' });
-			resetAndClose();
-			setWebsite(websites[0] ?? '');
-		},
+	const form = useForm({
+		mode: 'uncontrolled',
+		initialValues: { _setting: 'delete', hostname: '' },
+		validate: valibotResolver(deleteSchema),
 	});
 
 	const resetAndClose = () => {
 		close();
-		reset();
+		form.reset();
+	};
+
+	const handleSubmit = (values: typeof form.values) => {
+		submit(values, { method: 'POST' });
+		resetAndClose();
+		setWebsite(websites[0] ?? '');
 	};
 
 	if (!user) {
@@ -147,23 +143,17 @@ export default function Index() {
 				closeAriaLabel="Close delete website modal"
 				description="This website's analytics data will be permanently deleted."
 				submitLabel="Delete Website"
-				onSubmit={handleSubmit}
+				onSubmit={form.onSubmit(handleSubmit)}
 				close={resetAndClose}
 				isDanger
 			>
-				<Field name="hostname">
-					{(field) => (
-						<TextInput
-							label="Enter the domain name"
-							name={field.name}
-							value={field.state.value}
-							onBlur={field.handleBlur}
-							onChange={(e) => field.handleChange(e.target.value)}
-							autoComplete="off"
-							disabled={website === ''}
-						/>
-					)}
-				</Field>
+				<TextInput
+					label="Enter the domain name"
+					autoComplete="off"
+					disabled={website === ''}
+					key={form.key('hostname')}
+					{...form.getInputProps('hostname')}
+				/>
 			</ModalChild>
 		</ModalWrapper>
 	);
@@ -189,7 +179,11 @@ export default function Index() {
 				open={open}
 				disabled={websites.length === 0}
 			>
-				<Field name="_setting">{() => <input type="hidden" />}</Field>
+				<input
+					type="hidden"
+					key={form.key('_setting')}
+					{...form.getInputProps('_setting')}
+				/>
 			</SectionDanger>
 		</>
 	);

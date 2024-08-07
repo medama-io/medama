@@ -58,7 +58,7 @@
 	height: 40px;
 
 	color: var(--me-color-text-light);
-	background-color: var(--me-color-logo-green-dark);
+	background-color: var(--teal);
 
 	border-radius: 8px;
 }

@@ -1,4 +1,4 @@
-import { useForm, zodResolver } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -7,11 +7,13 @@ import {
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
-import { z } from 'zod';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
+import * as v from 'valibot';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
-import { PasswordInput, TextInput } from '@/components/settings/Input';
+import { TextInput } from '@/components/TextField';
+import { PasswordInput } from '@/components/settings/Input';
 import { Section } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
 
@@ -23,28 +25,27 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Account Settings | Medama' }];
 };
 
-const accountSchema = z.object({
-	_setting: z.literal('account'),
-	username: z
-		.string()
-		.max(48, {
-			message: 'Username should not exceed 36 characters.',
-		})
-		.trim()
-		.refine((value) => value.length === 0 || value.length >= 3, {
-			message: 'Username should include at least 3 characters.',
-		})
-		.optional(),
-	password: z
-		.string()
-		.max(128, {
-			message: 'Password should not be larger than 128 characters.',
-		})
-		.trim()
-		.refine((value) => value.length === 0 || value.length >= 5, {
-			message: 'Password should include at least 5 characters.',
-		})
-		.optional(),
+const accountSchema = v.object({
+	_setting: v.literal('account', 'Invalid setting type.'),
+	username: v.optional(
+		v.pipe(
+			v.string(),
+			v.trim(),
+			v.minLength(3, 'Username should not exceed 36 characters.'),
+			v.maxLength(36, 'Username should not exceed 36 characters.'),
+		),
+	),
+	password: v.optional(
+		v.pipe(
+			v.string(),
+			v.check(
+				(value) => value === '' || value.length >= 5,
+				'Password should include at least 5 characters.',
+			),
+			v.maxLength(128, 'Password should not be larger than 128 characters.'),
+			v.trim(),
+		),
+	),
 });
 
 export const clientLoader = async () => {
@@ -118,7 +119,7 @@ export default function Index() {
 			username: user.username,
 			password: '',
 		},
-		validate: zodResolver(accountSchema),
+		validate: valibotResolver(accountSchema),
 	});
 
 	const handleSubmit = (values: typeof account.values) => {

@@ -69,24 +69,6 @@
 
 .submit {
 	composes: button from global;
-	height: 40px;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	font-size: 14px;
-
-	padding: 0 16px;
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-grey-blue);
-	border: 1px solid var(--me-color-bg-grey-blue);
-	border-radius: 8px;
-	cursor: pointer;
-
-	&:hover {
-		background-color: var(--me-color-bg-grey-blue-dark);
-	}
 }
 
 .delete {
