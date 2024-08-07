@@ -1,4 +1,3 @@
-import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -8,13 +7,16 @@ import {
 	useSearchParams,
 	useSubmit,
 } from '@remix-run/react';
+import { useForm } from '@tanstack/react-form';
+import { valibotValidator } from '@tanstack/valibot-form-adapter';
 import { useState } from 'react';
-import { z } from 'zod';
+import * as v from 'valibot';
 
 import { userGet } from '@/api/user';
 import { websiteDelete, websiteList } from '@/api/websites';
+import { ModalChild, ModalWrapper } from '@/components/Modal';
+import { TextInput } from '@/components/TextField';
 import { Group } from '@/components/layout/Flex';
-import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
 import {
 	SectionDanger,
 	SectionTitle,
@@ -102,31 +104,36 @@ export default function Index() {
 		});
 	}, [website]);
 
-	const deleteSchema = z.object({
-		_setting: z.literal('delete'),
-		hostname: z.string().refine((hostname) => hostname === website, {
-			message: 'Domain name does not match.',
-		}),
+	const deleteSchema = v.object({
+		_setting: v.literal('delete', 'Invalid setting type.'),
+		hostname: v.pipe(
+			v.string('Hostname is not string.'),
+			v.check(
+				(hostname) => hostname === website,
+				'Domain name does not match.',
+			),
+		),
 	});
 
-	const form = useForm({
-		mode: 'uncontrolled',
-		initialValues: {
+	const { handleSubmit, Field, reset } = useForm({
+		defaultValues: {
 			_setting: 'delete',
 			hostname: '',
 		},
-		validate: zodResolver(deleteSchema),
+		validatorAdapter: valibotValidator(),
+		validators: {
+			onSubmit: deleteSchema,
+		},
+		onSubmit: (values) => {
+			submit(values.value, { method: 'POST' });
+			resetAndClose();
+			setWebsite(websites[0] ?? '');
+		},
 	});
 
 	const resetAndClose = () => {
 		close();
-		form.reset();
-	};
-
-	const handleSubmit = (values: typeof form.values) => {
-		submit(values, { method: 'POST' });
-		resetAndClose();
-		setWebsite(websites[0] ?? '');
+		reset();
 	};
 
 	if (!user) {
@@ -134,31 +141,29 @@ export default function Index() {
 	}
 
 	const modalChildren = (
-		<ModalWrapper opened={opened} onClose={close}>
+		<ModalWrapper opened={opened} close={close}>
 			<ModalChild
 				title="Delete website"
 				closeAriaLabel="Close delete website modal"
 				description="This website's analytics data will be permanently deleted."
 				submitLabel="Delete Website"
-				onSubmit={form.onSubmit(handleSubmit)}
-				resetForm={resetAndClose}
+				onSubmit={handleSubmit}
+				close={resetAndClose}
 				isDanger
 			>
-				<ModalInput
-					label={
-						<p style={{ fontSize: 13, marginBottom: 4 }}>
-							Enter the domain name{' '}
-							<span style={{ fontSize: 13, fontWeight: 600 }}>{website}</span>{' '}
-							to continue:
-						</p>
-					}
-					key={form.key('hostname')}
-					{...form.getInputProps('hostname')}
-					mt="md"
-					autoComplete="off"
-					data-autofocus
-					disabled={website === ''}
-				/>
+				<Field name="hostname">
+					{(field) => (
+						<TextInput
+							label="Enter the domain name"
+							name={field.name}
+							value={field.state.value}
+							onBlur={field.handleBlur}
+							onChange={(e) => field.handleChange(e.target.value)}
+							autoComplete="off"
+							disabled={website === ''}
+						/>
+					)}
+				</Field>
 			</ModalChild>
 		</ModalWrapper>
 	);
@@ -184,11 +189,7 @@ export default function Index() {
 				open={open}
 				disabled={websites.length === 0}
 			>
-				<input
-					type="hidden"
-					key={form.key('_setting')}
-					{...form.getInputProps('_setting')}
-				/>
+				<Field name="_setting">{() => <input type="hidden" />}</Field>
 			</SectionDanger>
 		</>
 	);

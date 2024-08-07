@@ -1,5 +1,5 @@
-import byteSize from 'byte-size';
 import * as Progress from '@radix-ui/react-progress';
+import byteSize from 'byte-size';
 
 import { Group } from '@/components/layout/Flex';
 

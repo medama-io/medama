@@ -8,7 +8,7 @@
 		"build": "remix vite:build",
 		"preview": "vite preview",
 		"generate": "openapi-typescript ../core/openapi.yaml -o ./app/api/types.d.ts --default-non-nullable false",
-		"lint": "biome check --write .",
+		"lint": "biome check --reporter=summary --write .",
 		"lint:ci": "biome check .",
 		"typecheck": "tsc"
 	},
@@ -22,6 +22,7 @@
 		"@radix-ui/react-checkbox": "^1.1.1",
 		"@radix-ui/react-dialog": "^1.1.1",
 		"@radix-ui/react-dropdown-menu": "^2.1.1",
+		"@radix-ui/react-label": "^2.1.0",
 		"@radix-ui/react-popover": "^1.1.1",
 		"@radix-ui/react-portal": "^1.1.1",
 		"@radix-ui/react-progress": "^1.1.0",

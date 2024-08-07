@@ -1,8 +1,8 @@
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { Check } from 'lucide-react';
 
-import { Group } from '@/components/layout/Flex';
 import { InfoTooltip } from '@/components/InfoTooltip';
+import { Group } from '@/components/layout/Flex';
 
 import classes from './Checkbox.module.css';
 
