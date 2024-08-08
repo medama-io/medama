@@ -5,7 +5,7 @@ import type React from 'react';
 import { IconButton } from '@/components/Button';
 import { useDisclosure } from '@/hooks/use-disclosure';
 
-import classes from './TextField.module.css';
+import classes from './Input.module.css';
 
 interface TextFieldProps {
 	label: string;

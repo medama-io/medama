@@ -18,7 +18,7 @@ import type { components } from '@/api/types';
 import { userLoggedIn } from '@/api/user';
 import { websiteCreate, websiteList } from '@/api/websites';
 import { Button } from '@/components/Button';
-import { TextInput } from '@/components/TextField';
+import { TextInput } from '@/components/Input';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';

@@ -5,7 +5,7 @@ import { valibotResolver } from 'mantine-form-valibot-resolver';
 import * as v from 'valibot';
 
 import { Button } from '@/components/Button';
-import { PasswordInput, TextInput } from '@/components/TextField';
+import { PasswordInput, TextInput } from '@/components/Input';
 import { Flex, Group } from '@/components/layout/Flex';
 
 import classes from './Login.module.css';
