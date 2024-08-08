@@ -6,10 +6,10 @@ import {
 	UnstyledButton,
 } from '@mantine/core';
 import { useParams, useSearchParams } from '@remix-run/react';
-import { CalendarFold } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
+import { CalendarIcon } from '@radix-ui/react-icons';
 
 import { DatePickerRange, datePickerClasses } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';
@@ -150,7 +150,7 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 						defaultValue="today"
 						defaultLabel="Custom range"
 						ariaLabel="Select date range"
-						icon={CalendarFold}
+						icon={CalendarIcon}
 						searchParamKey="period"
 						separatorValues={DATE_GROUP_END_VALUES}
 					/>

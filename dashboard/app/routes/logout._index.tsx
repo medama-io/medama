@@ -1,4 +1,3 @@
-import { Text } from '@mantine/core';
 import {
 	type MetaFunction,
 	json,
@@ -27,7 +26,7 @@ export const clientLoader = async () => {
 			throw new Error('Failed to logout.');
 		}
 		expireSession(true);
-		return json('You have been sucessfully logged out.');
+		return json('You have been successfully logged out.');
 	}
 
 	return redirect('/login');
@@ -49,7 +48,7 @@ export default function Index() {
 				<h1>Log out</h1>
 			</InnerHeader>
 			<main>
-				<Text>You have been logged out.</Text>
+				<p>You have been logged out.</p>
 			</main>
 		</>
 	);

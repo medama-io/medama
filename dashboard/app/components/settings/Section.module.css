@@ -38,6 +38,8 @@
 }
 
 .form {
+	composes: flex from global;
+
 	padding: 8px;
 	flex: 1;
 	gap: 16px;
@@ -66,27 +68,11 @@
 }
 
 .submit {
-	height: 40px;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	font-size: 14px;
-
-	padding: 0 16px;
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-grey-blue);
-	border: 1px solid var(--me-color-bg-grey-blue);
-	border-radius: 8px;
-	cursor: pointer;
-
-	&:hover {
-		background-color: var(--me-color-bg-grey-blue-dark);
-	}
+	composes: button from global;
 }
 
 .delete {
+	composes: submit;
 	background-color: var(--me-color-bg-red-danger);
 	border: 1px solid var(--me-color-bg-red-danger);
 	border-radius: 8px;

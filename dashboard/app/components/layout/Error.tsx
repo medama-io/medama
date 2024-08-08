@@ -1,4 +1,4 @@
-import { Anchor, Container, Text, Title } from '@mantine/core';
+import { Anchor, Container, Text } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import type { ReactNode } from 'react';
 import classes from './Error.module.css';
@@ -17,7 +17,7 @@ const ErrorPage = ({ label, title, description }: ErrorPageProps) => {
 	return (
 		<Container className={classes.root}>
 			<div className={classes.label}>{label}</div>
-			<Title className={classes.title}>{title}</Title>
+			<h3 className={classes.title}>{title}</h3>
 			<Text c="dimmed" size="lg" ta="center" className={classes.description}>
 				{description}
 			</Text>

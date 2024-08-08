@@ -1,5 +1,3 @@
-import { Group, Stack } from '@mantine/core';
-
 import { Sidebar } from './Sidebar';
 
 import classes from './Layout.module.css';
@@ -10,9 +8,9 @@ interface SettingsLayoutProps {
 
 export const SettingsLayout = ({ children }: SettingsLayoutProps) => {
 	return (
-		<Group className={classes.wrapper}>
+		<div className={classes.wrapper}>
 			<Sidebar />
-			<Stack flex={1}>{children}</Stack>
-		</Group>
+			<div className={classes.flex}>{children}</div>
+		</div>
 	);
 };

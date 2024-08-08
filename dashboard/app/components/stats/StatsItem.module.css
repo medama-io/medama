@@ -27,7 +27,7 @@
 }
 
 .bar {
-	border: 1px solid var(--me-color-border-violet);
+	border: 1px solid var(--violet);
 }
 
 .external {

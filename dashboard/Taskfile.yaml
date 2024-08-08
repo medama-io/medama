@@ -39,6 +39,8 @@ tasks:
       - ../core/client/**/*
 
   lint:
+    aliases:
+      - format
     cmds:
       - bun run lint
 

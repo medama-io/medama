@@ -1,11 +1,26 @@
 .wrapper {
+	composes: group from global;
 	width: 100%;
 	padding: 16px;
 
-	align-items: stretch;
+	align-items: flex-start;
 	gap: 16px;
 
 	background-color: var(--me-color-bg-grey);
 
 	border-radius: 8px;
+
+	@media (--lt-md) {
+		flex-direction: column;
+	}
+}
+
+.flex {
+	composes: flex from global;
+	flex: 1;
+	gap: 16px;
+
+	@media (--lt-md) {
+		width: 100%;
+	}
 }

@@ -142,4 +142,8 @@
 		opacity: 0.5;
 		background-color: var(--me-color-selected-snow);
 	}
+
+	svg {
+		color: var(--me-color-text-dark);
+	}
 }

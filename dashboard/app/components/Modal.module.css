@@ -18,6 +18,7 @@
 }
 
 .submit {
+	composes: button from global;
 	width: 100%;
 	justify-content: space-between;
 

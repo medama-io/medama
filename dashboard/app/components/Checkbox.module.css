@@ -1,0 +1,41 @@
+.root {
+	background-color: white;
+	width: 18px;
+	height: 18px;
+
+	border: 1px solid var(--me-color-border-light);
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:hover {
+		background-color: var(--violet-a3);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--me-color-focus-outline);
+	}
+
+	&[data-disabled] {
+		background-color: var(--black-a3);
+	}
+}
+
+.indicator {
+	color: var(--violet-indicator);
+
+	&[data-disabled] {
+		color: var(--me-color-text-disabled);
+	}
+
+	svg {
+		padding: 5px;
+	}
+}
+
+.label {
+	padding-left: 12px;
+	font-size: 15px;
+	line-height: 1;
+}

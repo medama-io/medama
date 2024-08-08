@@ -21,6 +21,8 @@
 }
 
 .login {
+	composes: button from global;
+
 	@media (--lt-xs) {
 		margin: 0 auto;
 		margin-top: 40px;
