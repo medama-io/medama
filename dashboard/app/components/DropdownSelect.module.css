@@ -8,6 +8,7 @@
 	justify-content: space-between;
 
 	padding-left: 16px;
+	padding-right: 12px;
 	color: var(--me-color-text-light);
 	background-color: var(--me-color-bg-grey-blue);
 	border: 1px solid var(--me-color-bg-grey-blue);
@@ -23,12 +24,12 @@
 	}
 
 	&:where([data-left="true"]) {
-		padding-left: 6px;
+		padding-left: 12px;
 
 		div {
 			display: flex;
 			align-items: center;
-			gap: 4px;
+			gap: 8px;
 		}
 	}
 
