@@ -12,9 +12,12 @@ import {
 } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { PlusIcon } from '@radix-ui/react-icons';
+import {
+	ChevronDownIcon,
+	ChevronUpIcon,
+	PlusIcon,
+} from '@radix-ui/react-icons';
 
-import { IconChevronDown } from '@/components/icons/chevrondown';
 import { useFilter } from '@/hooks/use-filter';
 
 import type { Filter, FilterOperator } from './types';
@@ -142,7 +145,9 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 					type="button"
 					pointer
 					className={classes.dropdown}
-					rightSection={<IconChevronDown />}
+					rightSection={
+						combobox.dropdownOpened ? <ChevronUpIcon /> : <ChevronDownIcon />
+					}
 					rightSectionPointerEvents="none"
 					onClick={() => {
 						combobox.toggleDropdown();

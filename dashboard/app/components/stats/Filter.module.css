@@ -16,6 +16,10 @@
 	width: 120px;
 	height: 40px;
 	border-radius: 8px;
+
+	svg {
+		color: var(--me-color-text-dark);
+	}
 }
 
 .dropdown-label {
