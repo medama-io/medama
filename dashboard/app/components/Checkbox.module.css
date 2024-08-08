@@ -1,7 +1,7 @@
 .root {
 	background-color: white;
-	width: 18px;
-	height: 18px;
+	width: 22px;
+	height: 22px;
 
 	border: 1px solid var(--me-color-border-light);
 	border-radius: 4px;
@@ -27,10 +27,6 @@
 
 	&[data-disabled] {
 		color: var(--me-color-text-disabled);
-	}
-
-	svg {
-		padding: 5px;
 	}
 }
 

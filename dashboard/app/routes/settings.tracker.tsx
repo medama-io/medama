@@ -8,6 +8,7 @@ import {
 	useSubmit,
 } from '@remix-run/react';
 import * as v from 'valibot';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
@@ -15,7 +16,6 @@ import { CheckBox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
 import { Section } from '@/components/settings/Section';
 import { getType } from '@/utils/form';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
 
 interface LoaderData {
 	user: components['schemas']['UserGet'];
@@ -25,17 +25,12 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Tracker Settings | Medama' }];
 };
 
-const SCRIPT_TYPES = {
-	Default: 'default',
-	'Tagged Events': 'tagged-events',
-} as const;
-
 const trackerSchema = v.strictObject({
 	_setting: v.literal('tracker', 'Invalid setting type.'),
-	script_type: v.array(
-		v.enum(SCRIPT_TYPES, 'Invalid script type.'),
-		'Invalid script type array.',
-	),
+	script_type: v.object({
+		default: v.boolean(),
+		'tagged-events': v.boolean(),
+	}),
 });
 
 export const clientLoader = async () => {
@@ -104,9 +99,10 @@ export default function Index() {
 		mode: 'uncontrolled',
 		initialValues: {
 			_setting: 'tracker',
-			script_type: user.settings.script_type
-				? [user.settings.script_type]
-				: ['default'],
+			script_type: {
+				default: user.settings.script_type === 'default',
+				'tagged-events': user.settings.script_type === 'tagged-events',
+			},
 		},
 		validate: valibotResolver(trackerSchema),
 	});
@@ -127,7 +123,17 @@ export default function Index() {
 					key={form.key('_setting')}
 					{...form.getInputProps('_setting')}
 				/>
-				<Flex style={{ gap: 8 }}>fa</Flex>
+				<Flex style={{ gap: 8, marginTop: 8 }}>
+					<CheckBox
+						label="Default"
+						value="default"
+						disabled
+						checked
+						key={form.key('script_type.default')}
+						{...form.getInputProps('script_type.default', { type: 'checkbox' })}
+					/>
+					<CheckBox label="Tagged Events" value="tagged-events" />
+				</Flex>
 			</Section>
 			<Flex>fa</Flex>
 		</>

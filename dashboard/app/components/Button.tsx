@@ -1,6 +1,6 @@
+import { Cross1Icon } from '@radix-ui/react-icons';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Link, type LinkProps } from '@remix-run/react';
-import { X } from 'lucide-react';
 import type React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -92,7 +92,7 @@ const IconButton = ({ children, label, ...rest }: IconButtonProps) => {
 const CloseButton = ({ label, ...rest }: CloseButtonProps) => {
 	return (
 		<IconButton label={label} {...rest}>
-			<X />
+			<Cross1Icon />
 		</IconButton>
 	);
 };

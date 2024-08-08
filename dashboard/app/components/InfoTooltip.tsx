@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover';
-import { Info } from 'lucide-react';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 import classes from './InfoTooltip.module.css';
 
@@ -8,7 +8,7 @@ const InfoTooltip = () => {
 		<Popover.Root>
 			<Popover.Trigger asChild>
 				<button type="button" className={classes.icon}>
-					<Info />
+					<InfoCircledIcon />
 				</button>
 			</Popover.Trigger>
 			<Popover.Portal>

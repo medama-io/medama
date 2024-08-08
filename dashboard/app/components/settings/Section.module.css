@@ -40,7 +40,7 @@
 .form {
 	composes: flex from global;
 
-	padding: 8px;
+	padding: 0 8px 8px 8px;
 	flex: 1;
 	gap: 4px;
 }

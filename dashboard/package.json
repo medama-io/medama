@@ -33,7 +33,6 @@
 		"byte-size": "^9.0.0",
 		"date-fns": "^3.6.0",
 		"isbot": "^5.1.14",
-		"lucide-react": "^0.424.0",
 		"mantine-datatable": "^7.11.3",
 		"mantine-form-valibot-resolver": "^2.0.1",
 		"react": "18.3.0-canary-8039e6d0b-20231026",
