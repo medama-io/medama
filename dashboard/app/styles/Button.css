@@ -57,6 +57,7 @@
 	color: var(--me-color-text-dark);
 	background-color: var(--me-color-bg-light);
 	border: 0;
+	cursor: pointer;
 
 	svg {
 		height: 20px;

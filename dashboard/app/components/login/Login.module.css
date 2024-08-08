@@ -12,6 +12,12 @@
 	}
 }
 
+.title {
+	font-size: 18px;
+	font-weight: 500;
+	margin-bottom: 12px;
+}
+
 .submit {
 	composes: button from global;
 

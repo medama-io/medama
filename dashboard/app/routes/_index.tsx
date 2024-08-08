@@ -1,6 +1,7 @@
 import { ModalChild, ModalWrapper } from '@/components/Modal';
-import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
+import { Paper, SimpleGrid, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { PlusIcon } from '@radix-ui/react-icons';
 import {
 	type ClientActionFunctionArgs,
 	type MetaFunction,
@@ -18,8 +19,8 @@ import { userLoggedIn } from '@/api/user';
 import { websiteCreate, websiteList } from '@/api/websites';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/TextField';
-import { IconPlus } from '@/components/icons/plus';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
+import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useDisclosure } from '@/hooks/use-disclosure';
 
@@ -118,15 +119,15 @@ export default function Index() {
 	return (
 		<>
 			<InnerHeader>
-				<Flex justify="space-between" align="center" py={8}>
+				<Group>
 					<h1>My Websites</h1>
 					<Button onClick={open} data-visible-from="xs">
-						<Group>
-							<IconPlus />
+						<Group style={{ gap: 8 }}>
+							<PlusIcon />
 							<span>Add Website</span>
 						</Group>
 					</Button>
-				</Flex>
+				</Group>
 			</InnerHeader>
 			<main>
 				{websites.length === 0 && (

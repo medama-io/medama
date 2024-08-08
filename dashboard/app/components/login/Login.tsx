@@ -1,18 +1,12 @@
-import {
-	Group,
-	Paper,
-	PasswordInput,
-	Stack,
-	Text,
-	UnstyledButton,
-} from '@mantine/core';
+import { Paper } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Form, useSubmit } from '@remix-run/react';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import * as v from 'valibot';
 
 import { Button } from '@/components/Button';
-import { TextInput } from '@/components/TextField';
+import { Flex, Group } from '@/components/layout/Flex';
+import { PasswordInput, TextInput } from '@/components/TextField';
 
 import classes from './Login.module.css';
 
@@ -43,16 +37,15 @@ export const Login = () => {
 
 	return (
 		<Paper className={classes.wrapper} withBorder>
-			<Text size="lg" fw={500} mb="lg">
-				Log in to your dashboard
-			</Text>
+			<h3 className={classes.title}>Log in to your dashboard</h3>
 			<Form onSubmit={form.onSubmit(handleSubmit)}>
-				<Stack gap="lg">
+				<Flex>
 					<TextInput
 						key={form.key('username')}
 						required
 						label="Username"
 						placeholder="Your username"
+						autoComplete="username"
 						{...form.getInputProps('username')}
 					/>
 					<PasswordInput
@@ -60,14 +53,13 @@ export const Login = () => {
 						required
 						label="Password"
 						placeholder="Your password"
-						radius="md"
 						{...form.getInputProps('password')}
 					/>
-				</Stack>
+				</Flex>
 
 				<Button className={classes.submit} type="submit">
-					<Group align="center" gap="xs">
-						<Text fz={14}>Log In</Text>
+					<Group style={{ gap: 4 }}>
+						<span>Log In</span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="18"

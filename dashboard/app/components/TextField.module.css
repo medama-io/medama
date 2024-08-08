@@ -18,7 +18,7 @@
 	text-align: inherit;
 
 	width: 100%;
-	height: 40px;
+	height: 36px;
 	margin-top: 4px;
 	padding: 0 16px;
 
@@ -74,6 +74,35 @@
 		/* Reliably removes native autofill colors */
 		background-clip: text;
 		-webkit-text-fill-color: var(--me-color-selected-light);
+	}
+}
+
+.password-input {
+	composes: input;
+
+	padding-right: 40px;
+}
+
+.password-button {
+	composes: button-icon from global;
+
+	position: absolute;
+	right: 6px;
+	top: calc(50% + 2px);
+	transform: translateY(-50%);
+
+	height: 26px;
+	padding: 6px;
+
+	border-radius: 8px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	svg {
+		height: 16px;
+		color: var(--me-color-text-disabled);
 	}
 }
 

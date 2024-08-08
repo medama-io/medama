@@ -12,8 +12,7 @@ import * as v from 'valibot';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
-import { TextInput } from '@/components/TextField';
-import { PasswordInput } from '@/components/settings/Input';
+import { PasswordInput, TextInput } from '@/components/TextField';
 import { Section } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
 
