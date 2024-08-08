@@ -5,11 +5,11 @@ import {
 	Tooltip,
 	UnstyledButton,
 } from '@mantine/core';
+import { CalendarIcon } from '@radix-ui/react-icons';
 import { useParams, useSearchParams } from '@remix-run/react';
 import type React from 'react';
 import { useState } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
-import { CalendarIcon } from '@radix-ui/react-icons';
 
 import { DatePickerRange, datePickerClasses } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';

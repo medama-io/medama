@@ -1,6 +1,6 @@
+import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import * as Label from '@radix-ui/react-label';
 import type React from 'react';
-import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 
 import { IconButton } from '@/components/Button';
 import { useDisclosure } from '@/hooks/use-disclosure';

@@ -1,8 +1,8 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { useNavigate, useSearchParams } from '@remix-run/react';
 import type React from 'react';
 import { Fragment, useMemo, useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 
 import { useDidUpdate } from '@/hooks/use-did-update';
 import { useDisclosure } from '@/hooks/use-disclosure';

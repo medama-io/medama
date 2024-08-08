@@ -1,4 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -7,7 +8,6 @@ import {
 	type DataTableSortStatus,
 } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
 import { useDidUpdate } from '@/hooks/use-did-update';
 import { useFilter } from '@/hooks/use-filter';

@@ -10,13 +10,13 @@ import {
 	UnstyledButton,
 	useCombobox,
 } from '@mantine/core';
-import { useSearchParams } from '@remix-run/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	ChevronDownIcon,
 	ChevronUpIcon,
 	PlusIcon,
 } from '@radix-ui/react-icons';
+import { useSearchParams } from '@remix-run/react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useFilter } from '@/hooks/use-filter';
 

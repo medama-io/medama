@@ -1,5 +1,5 @@
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { Check } from 'lucide-react';
+import { CheckIcon } from '@radix-ui/react-icons';
 
 import { InfoTooltip } from '@/components/InfoTooltip';
 import { Group } from '@/components/layout/Flex';
@@ -33,7 +33,7 @@ const CheckBox = ({
 			onCheckedChange={onCheckedChange}
 		>
 			<CheckboxPrimitive.Indicator className={classes.indicator}>
-				{icon ? icon : <Check />}
+				{icon ? icon : <CheckIcon />}
 			</CheckboxPrimitive.Indicator>
 		</CheckboxPrimitive.Root>
 		<label className={classes.label} htmlFor="c1">
