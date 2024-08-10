@@ -57,7 +57,6 @@ import {
 	MantineProvider,
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import * as Tooltip from '@radix-ui/react-tooltip';
 import {
 	Links,
 	Meta,
@@ -152,12 +151,10 @@ export const Document = ({ children }: DocumentProps) => {
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>
-					<Tooltip.Provider>
-						<Notifications />
-						<AppShell>{children}</AppShell>
-						<ScrollRestoration />
-						<Scripts />
-					</Tooltip.Provider>
+					<Notifications />
+					<AppShell>{children}</AppShell>
+					<ScrollRestoration />
+					<Scripts />
 				</MantineProvider>
 			</body>
 		</html>

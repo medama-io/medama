@@ -1,7 +1,8 @@
 .root {
-	max-width: 100%;
+	width: 100%;
 	overflow: hidden;
-	position: relative;
+
+	margin: 16px 0;
 
 	background-color: var(--me-color-bg-grey-disabled);
 	border-radius: 4px;
@@ -16,6 +17,10 @@
 		margin: 0;
 		padding: 12px 12px 12px 18px;
 		line-height: 1.5em;
+
+		@media (--gt-md) {
+			text-wrap: wrap;
+		}
 	}
 }
 

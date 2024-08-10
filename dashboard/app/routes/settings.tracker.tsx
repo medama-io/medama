@@ -12,6 +12,7 @@ import * as v from 'valibot';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
+import { Anchor } from '@/components/Anchor';
 import { CheckBox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
 import { CodeBlock } from '@/components/settings/Code';
@@ -103,7 +104,10 @@ export default function Index() {
 		return;
 	}
 
-	const code = getTrackingScript(location.hostname);
+	const code =
+		location.hostname === 'localhost'
+			? getTrackingScript('[your-analytics-server].com')
+			: getTrackingScript(location.hostname);
 
 	const form = useForm({
 		mode: 'uncontrolled',
@@ -148,13 +152,21 @@ export default function Index() {
 			<SectionWrapper>
 				<SectionTitle>
 					<h3>Copy Tracker Code</h3>
-					<p style={{ marginTop: 4, marginBottom: 12 }}>
+					<p style={{ marginTop: 4 }}>
 						Paste the following code in the <code>&lt;head&gt;</code> component
 						on your website:
 					</p>
 					<CodeBlock code={code} />
-					<p style={{ marginTop: 12 }}>
-						Learn more about configuring the tracker in our documentation.
+					<p>
+						Learn more about configuring the tracker in our{' '}
+						<Anchor
+							href="https://oss.medama.io/config/tracking-snippet"
+							isExternal
+							aria-label="Visit tracking snippet documentation"
+						>
+							documentation
+						</Anchor>
+						.
 					</p>
 				</SectionTitle>
 			</SectionWrapper>

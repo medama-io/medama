@@ -30,8 +30,8 @@
 	transition: border-color 100ms ease;
 
 	&:focus,
-	&:focus-within {
-		outline: 1px solid var(--me-color-focus-outline);
+	&:focus-visible {
+		outline: 2px solid var(--me-color-focus-outline);
 		outline-offset: -1px;
 	}
 
