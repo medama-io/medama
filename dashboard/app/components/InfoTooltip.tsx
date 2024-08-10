@@ -1,5 +1,5 @@
-import * as Popover from '@radix-ui/react-popover';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
+import * as Popover from '@radix-ui/react-popover';
 
 import classes from './InfoTooltip.module.css';
 

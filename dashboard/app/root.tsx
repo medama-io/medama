@@ -57,6 +57,7 @@ import {
 	MantineProvider,
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import * as Tooltip from '@radix-ui/react-tooltip';
 import {
 	Links,
 	Meta,
@@ -68,7 +69,6 @@ import {
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
-import * as Tooltip from '@radix-ui/react-tooltip';
 
 import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';

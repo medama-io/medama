@@ -7,20 +7,20 @@ import {
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
-import * as v from 'valibot';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
+import * as v from 'valibot';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
 import { CheckBox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
+import { CodeBlock } from '@/components/settings/Code';
 import {
 	Section,
 	SectionTitle,
 	SectionWrapper,
 } from '@/components/settings/Section';
 import { getType } from '@/utils/form';
-import { CodeBlock } from '@/components/settings/Code';
 
 interface LoaderData {
 	user: components['schemas']['UserGet'];
