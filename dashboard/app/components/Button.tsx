@@ -83,7 +83,12 @@ const ButtonLink = ({
 
 const IconButton = ({ children, label, ...rest }: IconButtonProps) => {
 	return (
-		<button className="button-icon" type="button" aria-label={label} {...rest}>
+		<button
+			className="button button-icon"
+			type="button"
+			aria-label={label}
+			{...rest}
+		>
 			{children}
 		</button>
 	);

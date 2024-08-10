@@ -84,7 +84,7 @@
 }
 
 .password-button {
-	composes: button-icon from global;
+	composes: button button-icon from global;
 
 	position: absolute;
 	right: 6px;
@@ -94,14 +94,7 @@
 	height: 26px;
 	padding: 6px;
 
-	border-radius: 8px;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
 	svg {
-		height: 16px;
 		color: var(--me-color-text-disabled);
 	}
 }

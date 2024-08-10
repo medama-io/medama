@@ -68,6 +68,7 @@ import {
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
@@ -151,10 +152,12 @@ export const Document = ({ children }: DocumentProps) => {
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>
-					<Notifications />
-					<AppShell>{children}</AppShell>
-					<ScrollRestoration />
-					<Scripts />
+					<Tooltip.Provider>
+						<Notifications />
+						<AppShell>{children}</AppShell>
+						<ScrollRestoration />
+						<Scripts />
+					</Tooltip.Provider>
 				</MantineProvider>
 			</body>
 		</html>

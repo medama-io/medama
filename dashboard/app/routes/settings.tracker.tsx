@@ -14,8 +14,13 @@ import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
 import { CheckBox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
-import { Section } from '@/components/settings/Section';
+import {
+	Section,
+	SectionTitle,
+	SectionWrapper,
+} from '@/components/settings/Section';
 import { getType } from '@/utils/form';
+import { CodeBlock } from '@/components/settings/Code';
 
 interface LoaderData {
 	user: components['schemas']['UserGet'];
@@ -32,6 +37,9 @@ const trackerSchema = v.strictObject({
 		'tagged-events': v.boolean(),
 	}),
 });
+
+const getTrackingScript = (hostname: string) =>
+	`<script defer src="https://${hostname}/script.js"></script>`;
 
 export const clientLoader = async () => {
 	const { data } = await userGet();
@@ -95,6 +103,8 @@ export default function Index() {
 		return;
 	}
 
+	const code = getTrackingScript(location.hostname);
+
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: {
@@ -135,7 +145,15 @@ export default function Index() {
 					<CheckBox label="Tagged Events" value="tagged-events" />
 				</Flex>
 			</Section>
-			<Flex>fa</Flex>
+			<SectionWrapper>
+				<SectionTitle>
+					<h3>Copy Tracker Code</h3>
+					<p style={{ marginTop: 4, marginBottom: 8 }}>
+						Learn more about configuring the tracker in our documentation.
+					</p>
+				</SectionTitle>
+				<CodeBlock code={code} />
+			</SectionWrapper>
 		</>
 	);
 }
