@@ -148,11 +148,15 @@ export default function Index() {
 			<SectionWrapper>
 				<SectionTitle>
 					<h3>Copy Tracker Code</h3>
-					<p style={{ marginTop: 4, marginBottom: 8 }}>
+					<p style={{ marginTop: 4, marginBottom: 12 }}>
+						Paste the following code in the <code>&lt;head&gt;</code> component
+						on your website:
+					</p>
+					<CodeBlock code={code} />
+					<p style={{ marginTop: 12 }}>
 						Learn more about configuring the tracker in our documentation.
 					</p>
 				</SectionTitle>
-				<CodeBlock code={code} />
 			</SectionWrapper>
 		</>
 	);
