@@ -37,7 +37,7 @@
 		"mantine-datatable": "^7.11.3",
 		"mantine-form-valibot-resolver": "^2.0.1",
 		"react": "18.3.0-canary-8039e6d0b-20231026",
-		"react-day-picker": "^9.0.7",
+		"react-day-picker": "^9.0.8",
 		"react-dom": "18.3.0-canary-8039e6d0b-20231026",
 		"react-indiana-drag-scroll": "^3.0.3-alpha",
 		"recharts": "^2.13.0-alpha.4",
@@ -59,6 +59,6 @@
 		"postcss-simple-vars": "^7.0.1",
 		"typescript": "^5.5.4",
 		"vite": "^5.4.0",
-		"vite-tsconfig-paths": "^4.3.2"
+		"vite-tsconfig-paths": "^5.0.1"
 	}
 }
