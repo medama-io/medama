@@ -3,7 +3,11 @@ import * as Popover from '@radix-ui/react-popover';
 
 import classes from './InfoTooltip.module.css';
 
-const InfoTooltip = () => {
+interface InfoTooltipProps {
+	children: React.ReactNode;
+}
+
+const InfoTooltip = ({ children }: InfoTooltipProps) => {
 	return (
 		<Popover.Root>
 			<Popover.Trigger asChild>
@@ -12,9 +16,8 @@ const InfoTooltip = () => {
 				</button>
 			</Popover.Trigger>
 			<Popover.Portal>
-				<Popover.Content className={classes.content} sideOffset={5}>
-					<Popover.Arrow className={classes.arrow} />
-					Tracker tracker tracker tracker tracker
+				<Popover.Content className={classes.content} sideOffset={5} asChild>
+					<div>{children}</div>
 				</Popover.Content>
 			</Popover.Portal>
 		</Popover.Root>

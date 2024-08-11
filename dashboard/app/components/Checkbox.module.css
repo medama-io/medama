@@ -2,6 +2,7 @@
 	background-color: white;
 	width: 22px;
 	height: 22px;
+	min-width: 22px;
 
 	border: 1px solid var(--me-color-border-light);
 	border-radius: 4px;
@@ -31,7 +32,7 @@
 }
 
 .label {
-	padding-left: 12px;
+	padding: 0 4px 0 12px;
 	font-size: 15px;
 	line-height: 1;
 }

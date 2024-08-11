@@ -137,16 +137,46 @@ export default function Index() {
 					key={form.key('_setting')}
 					{...form.getInputProps('_setting')}
 				/>
-				<Flex style={{ gap: 8, marginTop: 8 }}>
+				<Flex style={{ gap: 16, marginTop: 8 }}>
 					<CheckBox
 						label="Default"
 						value="default"
+						tooltip={
+							<>
+								<p>Enable default page view tracking functionality.</p>
+								<br />
+								<p>
+									Read our{' '}
+									<Anchor href="https://oss.medama.io/methodology/overview">
+										Methodology
+									</Anchor>{' '}
+									for more information.
+								</p>
+							</>
+						}
 						disabled
 						checked
 						key={form.key('script_type.default')}
 						{...form.getInputProps('script_type.default', { type: 'checkbox' })}
 					/>
-					<CheckBox label="Tagged Events" value="tagged-events" />
+					<CheckBox
+						label="Tagged Events"
+						value="tagged-events"
+						tooltip={
+							<>
+								<p>Enable tracking of tagged events on your website.</p>
+								<br />
+								<p>
+									Read our <Anchor>Tagged Events</Anchor> guide for more
+									information.
+								</p>
+							</>
+						}
+						key={form.key('script_type.tagged-events')}
+						{...form.getInputProps('script_type.tagged-events', {
+							type: 'checkbox',
+						})}
+					/>
 				</Flex>
 			</Section>
 			<SectionWrapper>
@@ -161,7 +191,6 @@ export default function Index() {
 						Learn more about configuring the tracker in our{' '}
 						<Anchor
 							href="https://oss.medama.io/config/tracking-snippet"
-							isExternal
 							aria-label="Visit tracking snippet documentation"
 						>
 							documentation

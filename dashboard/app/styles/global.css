@@ -34,7 +34,7 @@
 	--me-color-badge-negative: #ffd5b7;
 
 	--black-a1: color(display-p3 0 0 0 / 0.05); /* rgba(0, 0, 0, 0.05); */
-	/* --black-a2: color(display-p3 0 0 0 / 0.1); /* rgba(0, 0, 0, 0.1); */
+	--black-a2: color(display-p3 0 0 0 / 0.1); /* rgba(0, 0, 0, 0.1); */
 	--black-a3: color(display-p3 0 0 0 / 0.15); /* rgba(0, 0, 0, 0.15); */
 	--black-a4: color(display-p3 0 0 0 / 0.2); /* rgba(0, 0, 0, 0.2); */
 	--black-a5: color(display-p3 0 0 0 / 0.3); /* rgba(0, 0, 0, 0.3); */

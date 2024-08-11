@@ -50,7 +50,7 @@ export const Section = ({
 			<div className={classes.wrapper}>
 				<SectionTitle>
 					<h3>{title}</h3>
-					<p style={{ marginTop: 4 }}>{description}</p>
+					<p style={{ marginTop: 4, marginBottom: 8 }}>{description}</p>
 				</SectionTitle>
 				<div className={classes.form}>{children}</div>
 			</div>

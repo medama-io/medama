@@ -1,12 +1,11 @@
-import { is } from 'valibot';
 import classes from './Anchor.module.css';
 
 interface AnchorProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	children: React.ReactNode;
-	isExternal?: boolean;
 }
 
-const Anchor = ({ children, className, isExternal, ...rest }: AnchorProps) => {
+const Anchor = ({ children, className, ...rest }: AnchorProps) => {
+	const isExternal = rest.href?.toString().startsWith('http');
 	return (
 		<a
 			className={className ? className : classes.anchor}

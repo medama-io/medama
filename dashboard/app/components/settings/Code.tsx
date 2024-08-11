@@ -1,10 +1,10 @@
 import { CheckIcon, CopyIcon } from '@radix-ui/react-icons';
 
 import { IconButton } from '@/components/Button';
+import { ScrollArea } from '@/components/ScrollArea';
 import { useClipboard } from '@/hooks/use-clipboard';
 
 import classes from './Code.module.css';
-import { ScrollArea } from '../ScrollArea';
 
 interface CodeBlockProps {
 	code: string;
