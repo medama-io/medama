@@ -4,8 +4,6 @@ import {
 	Group,
 	Modal as MantineModal,
 	Text,
-	TextInput,
-	type TextInputProps,
 } from '@mantine/core';
 import { Form } from '@remix-run/react';
 import type React from 'react';
@@ -17,7 +15,7 @@ import classes from './Modal.module.css';
 
 interface ModalWrapperProps {
 	opened: boolean;
-	onClose: () => void;
+	close: () => void;
 }
 
 export interface ModalProps {
@@ -26,30 +24,26 @@ export interface ModalProps {
 	description: React.ReactNode;
 	submitLabel: string;
 
-	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	resetForm: () => void;
+	onSubmit: () => void;
+	close: () => void;
 
 	isDanger?: boolean;
 }
 
 export const ModalWrapper = ({
 	opened,
-	onClose,
+	close,
 	children,
 }: React.PropsWithChildren<ModalWrapperProps>) => (
 	<MantineModal
 		opened={opened}
-		onClose={onClose}
+		onClose={close}
 		withCloseButton={false}
 		centered
 		size="auto"
 	>
 		{children}
 	</MantineModal>
-);
-
-export const ModalInput = (props: TextInputProps) => (
-	<TextInput classNames={{ input: classes.input }} mt="md" {...props} />
 );
 
 export const ModalChild = ({
@@ -59,28 +53,25 @@ export const ModalChild = ({
 	description,
 	isDanger,
 	onSubmit,
-	resetForm,
 	children,
+	close,
 }: React.PropsWithChildren<ModalProps>) => {
-	const resetAndClose = () => {
-		resetForm();
-		close();
-	};
-
 	return (
 		<Box className={classes.wrapper}>
 			<Group justify="space-between" align="center">
 				<h2>{title}</h2>
-				<CloseButton
-					size="lg"
-					onClick={resetAndClose}
-					aria-label={closeAriaLabel}
-				/>
+				<CloseButton size="lg" onClick={close} aria-label={closeAriaLabel} />
 			</Group>
 			<Text size="sm" mt="xs">
 				{description}
 			</Text>
-			<Form onSubmit={onSubmit}>
+			<Form
+				onSubmit={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					onSubmit();
+				}}
+			>
 				{children}
 				<Button className={classes.submit} type="submit" data-danger={isDanger}>
 					<span>{submitLabel}</span>

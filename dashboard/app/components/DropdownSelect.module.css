@@ -1,4 +1,5 @@
 .trigger {
+	composes: button from global;
 	min-width: 192px;
 	height: 40px;
 
@@ -7,14 +8,15 @@
 	justify-content: space-between;
 
 	padding-left: 16px;
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-grey-blue);
-	border: 1px solid var(--me-color-bg-grey-blue);
+	padding-right: 12px;
+	color: var(--text-light);
+	background-color: var(--bg-grey-blue);
+	border: 1px solid var(--bg-grey-blue);
 	border-radius: 8px;
 	cursor: pointer;
 
 	&:hover {
-		background-color: var(--me-color-bg-grey-blue-dark);
+		background-color: var(--bg-grey-blue-dark);
 	}
 
 	&:focus-visible {
@@ -22,17 +24,17 @@
 	}
 
 	&:where([data-left="true"]) {
-		padding-left: 6px;
+		padding-left: 12px;
 
 		div {
 			display: flex;
 			align-items: center;
-			gap: 4px;
+			gap: 8px;
 		}
 	}
 
 	svg {
-		color: var(--me-color-text-disabled);
+		color: var(--text-disabled);
 		height: 15px;
 	}
 
@@ -43,8 +45,8 @@
 }
 
 .dropdown {
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-grey-blue);
+	color: var(--text-light);
+	background-color: var(--bg-grey-blue);
 	border: 0;
 	border-radius: 8px;
 	padding: 0;
@@ -59,7 +61,7 @@
 
 .separator {
 	border-bottom: 1px solid transparent;
-	border-bottom-color: var(--me-color-text-grey);
+	border-bottom-color: var(--text-grey);
 }
 
 .option {
@@ -79,15 +81,15 @@
 	}
 
 	&:hover {
-		background-color: var(--me-color-bg-grey-blue-dark);
+		background-color: var(--bg-grey-blue-dark);
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--me-color-focus-outline);
+		outline: 2px solid var(--focus-outline);
 	}
 
 	&[data-state="checked"] {
-		color: var(--me-color-logo-green);
+		color: var(--logo-green);
 		font-weight: 600;
 	}
 }

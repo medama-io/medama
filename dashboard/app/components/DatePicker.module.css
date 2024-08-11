@@ -4,6 +4,7 @@
 }
 
 .header {
+	composes: group from global;
 	padding-bottom: 4px;
 }
 
@@ -20,7 +21,7 @@
 }
 
 .content {
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 	border-radius: 6px;
 	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
 		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
@@ -39,6 +40,7 @@
 }
 
 .apply {
+	composes: button from global;
 	margin-top: 20px;
 	width: 100%;
 }
@@ -48,8 +50,8 @@
 .root {
 	margin-top: 8px;
 
-	--rdp-accent-color: var(--me-color-border-violet);
-	--rdp-accent-background-color: var(--me-color-selected-snow);
+	--rdp-accent-color: var(--violet);
+	--rdp-accent-background-color: var(--selected-snow);
 	--rdp-font-family: var(--default-font-family);
 
 	--rdp-day-font: 400 16px var(--rdp-font-family);

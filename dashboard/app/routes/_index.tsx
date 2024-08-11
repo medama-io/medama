@@ -1,6 +1,7 @@
-import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
-import { Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
+import { ModalChild, ModalWrapper } from '@/components/Modal';
+import { Paper, SimpleGrid, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { PlusIcon } from '@radix-ui/react-icons';
 import {
 	type ClientActionFunctionArgs,
 	type MetaFunction,
@@ -9,16 +10,17 @@ import {
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
-import { zodResolver } from 'mantine-form-zod-resolver';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
+import * as v from 'valibot';
 import isFQDN from 'validator/lib/isFQDN';
-import { z } from 'zod';
 
 import type { components } from '@/api/types';
 import { userLoggedIn } from '@/api/user';
 import { websiteCreate, websiteList } from '@/api/websites';
 import { Button } from '@/components/Button';
-import { IconPlus } from '@/components/icons/plus';
+import { TextInput } from '@/components/Input';
 import { WebsiteCard } from '@/components/index/WebsiteCard';
+import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useDisclosure } from '@/hooks/use-disclosure';
 
@@ -84,24 +86,24 @@ export default function Index() {
 	const [opened, { open, close }] = useDisclosure(false);
 	const submit = useSubmit();
 
-	const addWebsiteSchema = z.object({
-		hostname: z
-			.string()
-			.refine((value) => value === 'localhost' || isFQDN(value), {
-				message: 'Please enter a valid domain name.',
-			})
-			.refine(
-				(value) => !websites.find((website) => website.hostname === value),
-				{
-					message: 'Website already exists.',
-				},
+	const addWebsiteSchema = v.object({
+		hostname: v.pipe(
+			v.string('Hostname is not a string'),
+			v.check(
+				(value) => value === 'localhost' || isFQDN(value),
+				'Please enter a valid domain name.',
 			),
+			v.check(
+				(value) => !websites.find((website) => website.hostname === value),
+				'Website already exists.',
+			),
+		),
 	});
 
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: { hostname: '' },
-		validate: zodResolver(addWebsiteSchema),
+		validate: valibotResolver(addWebsiteSchema),
 	});
 
 	const resetAndClose = () => {
@@ -117,15 +119,15 @@ export default function Index() {
 	return (
 		<>
 			<InnerHeader>
-				<Flex justify="space-between" align="center" py={8}>
+				<Group>
 					<h1>My Websites</h1>
 					<Button onClick={open} data-visible-from="xs">
-						<Group>
-							<IconPlus />
+						<Group style={{ gap: 8 }}>
+							<PlusIcon />
 							<span>Add Website</span>
 						</Group>
 					</Button>
-				</Flex>
+				</Group>
 			</InnerHeader>
 			<main>
 				{websites.length === 0 && (
@@ -138,25 +140,23 @@ export default function Index() {
 						<WebsiteCard key={website.hostname} website={website} />
 					))}
 				</SimpleGrid>
-				<ModalWrapper opened={opened} onClose={close}>
+				<ModalWrapper opened={opened} close={close}>
 					<ModalChild
 						title="Let's add your website"
 						closeAriaLabel="Close add website modal"
 						description="Tell us more about your website so we can add it to your dashboard."
 						submitLabel="Add Website"
 						onSubmit={form.onSubmit(handleSubmit)}
-						resetForm={resetAndClose}
+						close={resetAndClose}
 					>
-						<ModalInput
+						<TextInput
 							label="Domain Name"
 							placeholder="yourwebsite.com"
 							description="The domain or subdomain name of your website."
+							required
+							autoComplete="off"
 							key={form.key('hostname')}
 							{...form.getInputProps('hostname')}
-							required
-							mt="md"
-							autoComplete="off"
-							data-autofocus
 						/>
 					</ModalChild>
 				</ModalWrapper>

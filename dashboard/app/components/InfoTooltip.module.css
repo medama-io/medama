@@ -1,0 +1,99 @@
+.content {
+	padding: 18px;
+	min-width: fit-content;
+	width: 380px;
+	max-width: 380px;
+	background-color: var(--bg-light);
+
+	border: 1px solid var(--border-muted);
+	border-radius: 4px;
+
+	box-shadow: 0 4px 8px var(--black-a2);
+
+	animation-duration: 300ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform, opacity;
+
+	&:focus {
+		outline: none;
+	}
+
+	&[data-state="open"][data-side="top"] {
+		animation-name: slideDownAndFade;
+	}
+	&[data-state="open"][data-side="right"] {
+		animation-name: slideLeftAndFade;
+	}
+	&[data-state="open"][data-side="bottom"] {
+		animation-name: slideUpAndFade;
+	}
+	&[data-state="open"][data-side="left"] {
+		animation-name: slideRightAndFade;
+	}
+}
+
+.icon {
+	all: unset;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 4px;
+	border-radius: 4px;
+	cursor: pointer;
+
+	color: var(--text-grey);
+
+	&:hover {
+		background-color: var(--violet-3);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--focus-outline);
+	}
+}
+
+@keyframes slideUpAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideRightAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideDownAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideLeftAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}

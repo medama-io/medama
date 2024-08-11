@@ -1,4 +1,5 @@
 import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { Link, useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
@@ -8,8 +9,6 @@ import {
 } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
 
-import { IconChevronLeft } from '@/components/icons/chevronleft';
-import { IconChevronRight } from '@/components/icons/chevronright';
 import { useDidUpdate } from '@/hooks/use-did-update';
 import { useFilter } from '@/hooks/use-filter';
 import { useMediaQuery } from '@/hooks/use-media-query';
@@ -158,7 +157,7 @@ const BackButton = () => {
 			}}
 			className={classes.back}
 		>
-			<IconChevronLeft />
+			<ChevronLeftIcon />
 			<span>Go back</span>
 		</UnstyledButton>
 	);
@@ -302,7 +301,7 @@ const TablePagination = ({
 					onClick={() => onPageChange(page - 1)}
 					disabled={page <= 1}
 				>
-					<IconChevronLeft />
+					<ChevronLeftIcon />
 				</ActionIcon>
 				<span>
 					Page {page} of {totalPages}
@@ -313,7 +312,7 @@ const TablePagination = ({
 					onClick={() => onPageChange(page + 1)}
 					disabled={page >= totalPages}
 				>
-					<IconChevronRight />
+					<ChevronRightIcon />
 				</ActionIcon>
 			</Group>
 		</Group>

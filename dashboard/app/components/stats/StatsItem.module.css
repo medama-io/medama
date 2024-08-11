@@ -13,7 +13,7 @@
 	}
 
 	&:hover {
-		background-color: var(--me-color-bg-grey);
+		background-color: var(--bg-grey);
 	}
 
 	span {
@@ -27,13 +27,13 @@
 }
 
 .bar {
-	border: 1px solid var(--me-color-border-violet);
+	border: 1px solid var(--violet);
 }
 
 .external {
 	svg {
 		margin-bottom: -2px;
-		color: var(--me-color-text-muted);
+		color: var(--text-muted);
 		width: 17px;
 		height: 17px;
 	}

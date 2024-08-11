@@ -10,16 +10,20 @@ import {
 	UnstyledButton,
 	useCombobox,
 } from '@mantine/core';
+import {
+	ChevronDownIcon,
+	ChevronUpIcon,
+	PlusIcon,
+} from '@radix-ui/react-icons';
 import { useSearchParams } from '@remix-run/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { IconChevronDown } from '@/components/icons/chevrondown';
-import { IconPlus } from '@/components/icons/plus';
 import { useFilter } from '@/hooks/use-filter';
 
 import type { Filter, FilterOperator } from './types';
 
 import classes from './Filter.module.css';
+
 interface FilterChoices {
 	label: string;
 	placeholder?: string;
@@ -141,7 +145,9 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 					type="button"
 					pointer
 					className={classes.dropdown}
-					rightSection={<IconChevronDown />}
+					rightSection={
+						combobox.dropdownOpened ? <ChevronUpIcon /> : <ChevronDownIcon />
+					}
 					rightSectionPointerEvents="none"
 					onClick={() => {
 						combobox.toggleDropdown();
@@ -244,8 +250,8 @@ export const Filters = () => {
 							setOpened(!opened);
 						}}
 					>
-						<Group gap="xs" justify="center">
-							<IconPlus />
+						<Group gap={8} justify="center">
+							<PlusIcon />
 							<Text fz={14} fw={600}>
 								Add filter
 							</Text>

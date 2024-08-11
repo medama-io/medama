@@ -1,6 +1,6 @@
 .header {
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-dark);
+	color: var(--text-light);
+	background-color: var(--bg-dark);
 }
 
 .inner {

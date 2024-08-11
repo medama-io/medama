@@ -1,10 +1,12 @@
 .wrapper {
+	composes: flex from global;
+
 	width: 250px;
 	height: 100%;
 	padding: 8px;
 	gap: 8px;
 
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 
 	border-radius: 8px;
 
@@ -16,12 +18,18 @@
 
 		font-size: 14px;
 
+		text-decoration: none;
+
 		&:hover {
-			background-color: var(--me-color-bg-grey);
+			background-color: var(--bg-grey);
+		}
+
+		&:visited {
+			color: var(--text-dark);
 		}
 
 		&[data-active="true"] {
-			background-color: var(--me-color-bg-grey);
+			background-color: var(--bg-grey);
 			font-weight: 600;
 		}
 	}

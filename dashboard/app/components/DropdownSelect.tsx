@@ -1,6 +1,6 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { useNavigate, useSearchParams } from '@remix-run/react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import type React from 'react';
 import { Fragment, useMemo, useState } from 'react';
 
@@ -107,7 +107,7 @@ const DropdownSelect = ({
 						{Icon && <Icon />}
 						<span>{labelComp}</span>
 					</div>
-					{open ? <ChevronUp /> : <ChevronDown />}
+					{open ? <ChevronUpIcon /> : <ChevronDownIcon />}
 				</button>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Portal>

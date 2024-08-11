@@ -1,5 +1,4 @@
-import { Group, Text, Title } from '@mantine/core';
-import { useForm, zodResolver } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -9,12 +8,15 @@ import {
 	useSearchParams,
 	useSubmit,
 } from '@remix-run/react';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useState } from 'react';
-import { z } from 'zod';
+import * as v from 'valibot';
 
 import { userGet } from '@/api/user';
 import { websiteDelete, websiteList } from '@/api/websites';
-import { ModalChild, ModalInput, ModalWrapper } from '@/components/Modal';
+import { TextInput } from '@/components/Input';
+import { ModalChild, ModalWrapper } from '@/components/Modal';
+import { Group } from '@/components/layout/Flex';
 import {
 	SectionDanger,
 	SectionTitle,
@@ -26,7 +28,7 @@ import { useDisclosure } from '@/hooks/use-disclosure';
 import { getString, getType } from '@/utils/form';
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'Account Settings | Medama' }];
+	return [{ title: 'Website Settings | Medama' }];
 };
 
 export const clientLoader = async () => {
@@ -102,20 +104,21 @@ export default function Index() {
 		});
 	}, [website]);
 
-	const deleteSchema = z.object({
-		_setting: z.literal('delete'),
-		hostname: z.string().refine((hostname) => hostname === website, {
-			message: 'Domain name does not match.',
-		}),
+	const deleteSchema = v.object({
+		_setting: v.literal('delete', 'Invalid setting type.'),
+		hostname: v.pipe(
+			v.string('Hostname is not string.'),
+			v.check(
+				(hostname) => hostname === website,
+				'Domain name does not match.',
+			),
+		),
 	});
 
 	const form = useForm({
 		mode: 'uncontrolled',
-		initialValues: {
-			_setting: 'delete',
-			hostname: '',
-		},
-		validate: zodResolver(deleteSchema),
+		initialValues: { _setting: 'delete', hostname: '' },
+		validate: valibotResolver(deleteSchema),
 	});
 
 	const resetAndClose = () => {
@@ -134,32 +137,22 @@ export default function Index() {
 	}
 
 	const modalChildren = (
-		<ModalWrapper opened={opened} onClose={close}>
+		<ModalWrapper opened={opened} close={close}>
 			<ModalChild
 				title="Delete website"
 				closeAriaLabel="Close delete website modal"
 				description="This website's analytics data will be permanently deleted."
 				submitLabel="Delete Website"
 				onSubmit={form.onSubmit(handleSubmit)}
-				resetForm={resetAndClose}
+				close={resetAndClose}
 				isDanger
 			>
-				<ModalInput
-					label={
-						<Text fz={13} mb={4}>
-							Enter the domain name{' '}
-							<Text fz={13} fw={600} component="span">
-								{website}
-							</Text>{' '}
-							to continue:
-						</Text>
-					}
+				<TextInput
+					label="Enter the domain name"
+					autoComplete="off"
+					disabled={website === ''}
 					key={form.key('hostname')}
 					{...form.getInputProps('hostname')}
-					mt="md"
-					autoComplete="off"
-					data-autofocus
-					disabled={website === ''}
 				/>
 			</ModalChild>
 		</ModalWrapper>
@@ -168,9 +161,9 @@ export default function Index() {
 	return (
 		<>
 			<SectionWrapper>
-				<Group justify="space-between">
+				<Group>
 					<SectionTitle>
-						<Title order={3}>Choose Website</Title>
+						<h3>Choose Website</h3>
 					</SectionTitle>
 					<WebsiteSelector
 						websites={websites}

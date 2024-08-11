@@ -1,8 +1,3 @@
-import { authLogin } from '@/api/auth';
-import { userGet } from '@/api/user';
-import { InnerHeader } from '@/components/layout/InnerHeader';
-import { Login } from '@/components/login/Login';
-import { LOGGED_IN_COOKIE, hasSession } from '@/utils/cookies';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -10,6 +5,12 @@ import {
 	json,
 	redirect,
 } from '@remix-run/react';
+
+import { authLogin } from '@/api/auth';
+import { userGet } from '@/api/user';
+import { InnerHeader } from '@/components/layout/InnerHeader';
+import { Login } from '@/components/login/Login';
+import { LOGGED_IN_COOKIE, hasSession } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [

@@ -1,13 +1,12 @@
 import * as Dialog from '@radix-ui/react-dialog';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { useSearchParams } from '@remix-run/react';
 import { formatISO, parseISO, sub } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { type DateRange, DayPicker } from 'react-day-picker';
 
 import { Button, CloseButton } from '@/components/Button';
-import { Group } from '@/components/layout/Flex';
 import { useDidUpdate } from '@/hooks/use-did-update';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
@@ -61,14 +60,14 @@ const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 			<Dialog.Portal>
 				<Dialog.Overlay className={classes.overlay} />
 				<Dialog.Content className={classes.content}>
-					<Group className={classes.header}>
+					<div className={classes.header}>
 						<Dialog.Title className={classes.title}>
 							Select a date range
 						</Dialog.Title>
 						<Dialog.Close asChild>
 							<CloseButton label="Close date picker" />
 						</Dialog.Close>
-					</Group>
+					</div>
 					<VisuallyHidden.Root asChild>
 						<Dialog.Description>
 							Select the start and end date for the date range.
@@ -83,9 +82,9 @@ const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 						components={{
 							Chevron: (props) => {
 								if (props.orientation === 'left') {
-									return <ChevronLeft {...props} />;
+									return <ChevronLeftIcon {...props} />;
 								}
-								return <ChevronRight {...props} />;
+								return <ChevronRightIcon {...props} />;
 							},
 						}}
 						defaultMonth={sub(new Date(), { months: 1 })}

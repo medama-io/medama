@@ -1,34 +1,26 @@
-import {
-	Group,
-	Paper,
-	PasswordInput,
-	Stack,
-	Text,
-	TextInput,
-	UnstyledButton,
-} from '@mantine/core';
-import { useForm, zodResolver } from '@mantine/form';
+import { Paper } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { Form, useSubmit } from '@remix-run/react';
-import { z } from 'zod';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
+import * as v from 'valibot';
+
+import { Button } from '@/components/Button';
+import { PasswordInput, TextInput } from '@/components/Input';
+import { Flex, Group } from '@/components/layout/Flex';
 
 import classes from './Login.module.css';
 
-const loginSchema = z.object({
-	username: z
-		.string()
-		.min(3, {
-			message: 'Username should include at least 3 characters.',
-		})
-		.max(48, {
-			message: 'Username should not exceed 36 characters.',
-		})
-		.trim(),
-	password: z
-		.string()
-		.min(5, {
-			message: 'Password should include at least 5 characters.',
-		})
-		.trim(),
+const loginSchema = v.object({
+	username: v.pipe(
+		v.string(),
+		v.trim(),
+		v.minLength(3, 'Username should include at least 3 characters.'),
+	),
+	password: v.pipe(
+		v.string(),
+		v.trim(),
+		v.minLength(5, 'Password should include at least 5 characters.'),
+	),
 });
 
 export const Login = () => {
@@ -36,7 +28,7 @@ export const Login = () => {
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: { username: '', password: '' },
-		validate: zodResolver(loginSchema),
+		validate: valibotResolver(loginSchema),
 	});
 
 	const handleSubmit = (values: typeof form.values) => {
@@ -45,17 +37,15 @@ export const Login = () => {
 
 	return (
 		<Paper className={classes.wrapper} withBorder>
-			<Text size="lg" fw={500} mb="lg">
-				Log in to your dashboard
-			</Text>
+			<h3 className={classes.title}>Log in to your dashboard</h3>
 			<Form onSubmit={form.onSubmit(handleSubmit)}>
-				<Stack gap="lg">
+				<Flex>
 					<TextInput
 						key={form.key('username')}
 						required
 						label="Username"
 						placeholder="Your username"
-						radius="md"
+						autoComplete="username"
 						{...form.getInputProps('username')}
 					/>
 					<PasswordInput
@@ -63,14 +53,13 @@ export const Login = () => {
 						required
 						label="Password"
 						placeholder="Your password"
-						radius="md"
 						{...form.getInputProps('password')}
 					/>
-				</Stack>
+				</Flex>
 
-				<UnstyledButton mt="xl" className={classes.submit} type="submit">
-					<Group align="center" gap="xs">
-						<Text fz={14}>Log In</Text>
+				<Button className={classes.submit} type="submit">
+					<Group style={{ gap: 4 }}>
+						<span>Log In</span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="18"
@@ -88,7 +77,7 @@ export const Login = () => {
 							<line x1="15" x2="3" y1="12" y2="12" />
 						</svg>
 					</Group>
-				</UnstyledButton>
+				</Button>
 			</Form>
 		</Paper>
 	);

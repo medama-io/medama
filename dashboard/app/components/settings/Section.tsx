@@ -1,9 +1,10 @@
-import { Stack, Text, Title, UnstyledButton } from '@mantine/core';
 import { Form } from '@remix-run/react';
-import clsx from 'clsx';
 import type React from 'react';
 
+import { Button } from '@/components/Button';
+
 import classes from './Section.module.css';
+
 interface SectionWrapperProps {
 	children: React.ReactNode;
 }
@@ -39,19 +40,25 @@ export const Section = ({
 	onSubmit,
 }: SectionProps) => {
 	return (
-		<Form onSubmit={onSubmit}>
+		<Form
+			onSubmit={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				onSubmit?.();
+			}}
+		>
 			<div className={classes.wrapper}>
 				<SectionTitle>
-					<Title order={3}>{title}</Title>
-					<Text mt="xs">{description}</Text>
+					<h3>{title}</h3>
+					<p style={{ marginTop: 4, marginBottom: 8 }}>{description}</p>
 				</SectionTitle>
-				<Stack className={classes.form}>{children}</Stack>
+				<div className={classes.form}>{children}</div>
 			</div>
 			<div className={classes.divider}>
-				<Text>{submitDescription}</Text>
-				<UnstyledButton className={classes.submit} type="submit">
+				<p>{submitDescription}</p>
+				<Button className={classes.submit} type="submit">
 					Save
-				</UnstyledButton>
+				</Button>
 			</div>
 		</Form>
 	);
@@ -72,20 +79,16 @@ export const SectionDanger = ({
 		<Form onSubmit={onSubmit}>
 			<div className={classes.wrapper}>
 				<SectionTitle>
-					<Title order={3}>{title}</Title>
-					<Text mt="xs">{description}</Text>
+					<h3>{title}</h3>
+					<p style={{ marginTop: 4 }}>{description}</p>
 				</SectionTitle>
-				<Stack className={classes.form}>{children}</Stack>
+				<div className={classes.form}>{children}</div>
 			</div>
 			<div className={classes.divider}>
-				<Text>{submitDescription}</Text>
-				<UnstyledButton
-					className={clsx(classes.submit, classes.delete)}
-					onClick={open}
-					disabled={disabled}
-				>
+				<p>{submitDescription}</p>
+				<Button className={classes.delete} onClick={open} disabled={disabled}>
 					Delete Website
-				</UnstyledButton>
+				</Button>
 			</div>
 			{modalChildren}
 		</Form>

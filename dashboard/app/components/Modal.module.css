@@ -11,24 +11,25 @@
 	width: 100%;
 	height: 40px;
 	padding: 0 16px;
-	color: var(--me-color-text-dark);
+	color: var(--text-dark);
 
-	border: 1px solid var(--me-color-border-light);
+	border: 1px solid var(--border-light);
 	border-radius: 8px;
 }
 
 .submit {
+	composes: button from global;
 	width: 100%;
 	justify-content: space-between;
 
 	margin-top: 24px;
 
 	&[data-danger="true"] {
-		background-color: var(--me-color-bg-red-danger);
-		border: 1px solid var(--me-color-bg-red-danger);
+		background-color: var(--bg-red-danger);
+		border: 1px solid var(--bg-red-danger);
 
 		&:hover {
-			background-color: var(--me-color-bg-red-danger-dark);
+			background-color: var(--bg-red-danger-dark);
 		}
 	}
 }

@@ -1,0 +1,134 @@
+.root {
+	display: flex;
+	align-items: stretch;
+
+	font-family: var(--default-font-family);
+	font-weight: 400;
+	font-style: normal;
+	text-align: start;
+}
+
+.input {
+	-webkit-tap-highlight-color: transparent;
+	appearance: none;
+	resize: none;
+
+	display: flex;
+	align-items: center;
+	text-align: inherit;
+
+	width: 100%;
+	height: 36px;
+	margin-top: 4px;
+	padding: 0 16px;
+
+	color: var(--text-dark);
+
+	border: 1px solid var(--border-light);
+	border-radius: 4px;
+
+	transition: border-color 100ms ease;
+
+	&:focus,
+	&:focus-visible {
+		outline: 2px solid var(--focus-outline);
+		outline-offset: -1px;
+	}
+
+	&::placeholder {
+		color: var(--text-disabled);
+		opacity: 1;
+	}
+
+	&[data-error="true"]::placeholder {
+		color: var(--bg-red-danger);
+	}
+
+	&:disabled,
+	&[data-disabled] {
+		cursor: not-allowed;
+		opacity: 0.6;
+		background-color: var(--bg-grey-disabled);
+		color: var(--text-disabled);
+	}
+
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button,
+	&::-webkit-search-decoration,
+	&::-webkit-search-cancel-button,
+	&::-webkit-search-results-button,
+	&::-webkit-search-results-decoration {
+		appearance: none;
+	}
+
+	&[type="number"] {
+		-moz-appearance: textfield;
+	}
+
+	/* Remove the native cancel button */
+	&::-webkit-search-cancel-button {
+		appearance: none;
+	}
+
+	&:where(:autofill, [data-com-onepassword-filled]) {
+		/* Reliably removes native autofill colors */
+		background-clip: text;
+		-webkit-text-fill-color: var(--selected-light);
+	}
+}
+
+.password-input {
+	composes: input;
+
+	padding-right: 40px;
+}
+
+.password-button {
+	composes: button button-icon from global;
+
+	position: absolute;
+	right: 6px;
+	top: calc(50% + 2px);
+	transform: translateY(-50%);
+
+	height: 26px;
+	padding: 6px;
+
+	svg {
+		color: var(--text-disabled);
+	}
+}
+
+.label {
+	margin-top: 4px;
+	display: inline-block;
+	font-weight: 500;
+	word-break: break-word;
+	cursor: default;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.required {
+	color: var(--bg-red-danger);
+}
+
+.error,
+.description {
+	word-wrap: break-word;
+	line-height: 1.2;
+	display: block;
+	font-size: 12px;
+
+	margin: 0;
+	padding: 0;
+}
+
+.description {
+	margin-bottom: 2px;
+	color: var(--text-muted);
+}
+
+.error {
+	margin-top: 4px;
+	color: var(--bg-red-danger);
+}

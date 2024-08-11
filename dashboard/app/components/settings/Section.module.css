@@ -1,7 +1,7 @@
 .wrapper {
 	width: 100%;
 	padding: 32px 24px 8px 24px;
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 
 	border-radius: 8px 8px 0 0;
 
@@ -17,13 +17,13 @@
 .sectionWrapper {
 	width: 100%;
 	padding: 32px 24px;
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 
 	border-radius: 8px;
 }
 
 .title {
-	padding: 8px;
+	padding: 0 8px;
 	flex: 1;
 
 	h3 {
@@ -38,9 +38,11 @@
 }
 
 .form {
-	padding: 8px;
+	composes: flex from global;
+
+	padding: 0 8px 8px 8px;
 	flex: 1;
-	gap: 16px;
+	gap: 4px;
 }
 
 .divider {
@@ -51,7 +53,7 @@
 
 	padding: 15px 24px;
 
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 	border-radius: 0 0 8px 8px;
 
 	p {
@@ -66,33 +68,17 @@
 }
 
 .submit {
-	height: 40px;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	font-size: 14px;
-
-	padding: 0 16px;
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-grey-blue);
-	border: 1px solid var(--me-color-bg-grey-blue);
-	border-radius: 8px;
-	cursor: pointer;
-
-	&:hover {
-		background-color: var(--me-color-bg-grey-blue-dark);
-	}
+	composes: button from global;
 }
 
 .delete {
-	background-color: var(--me-color-bg-red-danger);
-	border: 1px solid var(--me-color-bg-red-danger);
+	composes: submit;
+	background-color: var(--bg-red-danger);
+	border: 1px solid var(--bg-red-danger);
 	border-radius: 8px;
 	cursor: pointer;
 
 	&:hover {
-		background-color: var(--me-color-bg-red-danger-dark);
+		background-color: var(--bg-red-danger-dark);
 	}
 }

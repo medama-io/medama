@@ -1,0 +1,40 @@
+.root {
+	width: 100%;
+	overflow: hidden;
+
+	margin: 16px 0;
+
+	background-color: var(--bg-grey-disabled);
+	border-radius: 4px;
+
+	pre {
+		max-width: 100%;
+		font-size: inherit;
+
+		color: var(--violet-10);
+
+		border: none;
+		margin: 0;
+		padding: 12px 12px 12px 18px;
+		line-height: 1.5em;
+
+		@media (--gt-md) {
+			text-wrap: wrap;
+		}
+	}
+}
+
+.copy {
+	composes: button button-icon from global;
+
+	height: 32px;
+	margin-left: 8px;
+
+	background-color: var(--bg-grey-disabled);
+
+	border-radius: 4px;
+
+	&:hover {
+		background-color: var(--selected-light);
+	}
+}
