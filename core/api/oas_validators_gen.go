@@ -1167,15 +1167,33 @@ func (s *UserSettings) Validate() error {
 		})
 	}
 	if err := func() error {
-		if value, ok := s.ScriptType.Get(); ok {
+		if err := (validate.Array{
+			MinLength:    0,
+			MinLengthSet: false,
+			MaxLength:    0,
+			MaxLengthSet: false,
+		}).ValidateLength(len(s.ScriptType)); err != nil {
+			return errors.Wrap(err, "array")
+		}
+		if err := validate.UniqueItems(s.ScriptType); err != nil {
+			return errors.Wrap(err, "array")
+		}
+		var failures []validate.FieldError
+		for i, elem := range s.ScriptType {
 			if err := func() error {
-				if err := value.Validate(); err != nil {
+				if err := elem.Validate(); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return err
+				failures = append(failures, validate.FieldError{
+					Name:  fmt.Sprintf("[%d]", i),
+					Error: err,
+				})
 			}
+		}
+		if len(failures) > 0 {
+			return &validate.Error{Fields: failures}
 		}
 		return nil
 	}(); err != nil {
@@ -1199,7 +1217,7 @@ func (s UserSettingsLanguage) Validate() error {
 	}
 }
 
-func (s UserSettingsScriptType) Validate() error {
+func (s UserSettingsScriptTypeItem) Validate() error {
 	switch s {
 	case "default":
 		return nil

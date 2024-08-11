@@ -489,7 +489,7 @@ export interface components {
             g: string;
             /** @description Custom event properties. */
             d: {
-                [key: string]: (string | number | boolean) | undefined;
+                [key: string]: string | number | boolean;
             };
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -534,11 +534,7 @@ export interface components {
              * @enum {string}
              */
             language?: "en";
-            /**
-             * @default default
-             * @enum {string}
-             */
-            script_type?: "default" | "tagged-events";
+            script_type?: ("default" | "tagged-events")[];
         };
         /**
          * UserGet

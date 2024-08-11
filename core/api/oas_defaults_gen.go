@@ -56,8 +56,4 @@ func (s *UserSettings) setDefaults() {
 		val := UserSettingsLanguage("en")
 		s.Language.SetTo(val)
 	}
-	{
-		val := UserSettingsScriptType("default")
-		s.ScriptType.SetTo(val)
-	}
 }

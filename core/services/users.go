@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
@@ -32,11 +33,17 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 		return nil, errors.Wrap(err, "services")
 	}
 
+	// Convert user settings to API format.
+	scriptFeatures := []api.UserSettingsScriptTypeItem{}
+	for _, v := range strings.Split(user.Settings.ScriptType, ",") {
+		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
+	}
+
 	return &api.UserGet{
 		Username: user.Username,
 		Settings: api.UserSettings{
 			Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
-			ScriptType: api.NewOptUserSettingsScriptType(api.UserSettingsScriptType(user.Settings.ScriptType)),
+			ScriptType: scriptFeatures,
 		},
 		DateCreated: user.DateCreated,
 		DateUpdated: user.DateUpdated,
@@ -164,8 +171,14 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		if req.Settings.Value.Language.IsSet() {
 			settings.Language = string(req.Settings.Value.Language.Value)
 		}
-		if req.Settings.Value.ScriptType.IsSet() {
-			settings.ScriptType = string(req.Settings.Value.ScriptType.Value)
+
+		if req.Settings.Value.ScriptType != nil {
+			// Convert to string slice.
+			var features []string
+			for _, v := range req.Settings.Value.ScriptType {
+				features = append(features, string(v))
+			}
+			settings.ScriptType = strings.Join(features, ",")
 		}
 
 		err = h.db.UpdateSettings(ctx, user.ID, settings)
@@ -182,11 +195,17 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 		}
 	}
 
+	// Convert user settings to API format.
+	scriptFeatures := []api.UserSettingsScriptTypeItem{}
+	for _, v := range strings.Split(user.Settings.ScriptType, ",") {
+		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
+	}
+
 	return &api.UserGet{
 		Username: user.Username,
 		Settings: api.UserSettings{
 			Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
-			ScriptType: api.NewOptUserSettingsScriptType(api.UserSettingsScriptType(user.Settings.ScriptType)),
+			ScriptType: scriptFeatures,
 		},
 		DateCreated: user.DateCreated,
 		DateUpdated: user.DateUpdated,

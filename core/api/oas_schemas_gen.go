@@ -1390,52 +1390,6 @@ func (o OptUserSettingsLanguage) Or(d UserSettingsLanguage) UserSettingsLanguage
 	return d
 }
 
-// NewOptUserSettingsScriptType returns new OptUserSettingsScriptType with value set to v.
-func NewOptUserSettingsScriptType(v UserSettingsScriptType) OptUserSettingsScriptType {
-	return OptUserSettingsScriptType{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptUserSettingsScriptType is optional UserSettingsScriptType.
-type OptUserSettingsScriptType struct {
-	Value UserSettingsScriptType
-	Set   bool
-}
-
-// IsSet returns true if OptUserSettingsScriptType was set.
-func (o OptUserSettingsScriptType) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptUserSettingsScriptType) Reset() {
-	var v UserSettingsScriptType
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptUserSettingsScriptType) SetTo(v UserSettingsScriptType) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptUserSettingsScriptType) Get() (v UserSettingsScriptType, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptUserSettingsScriptType) Or(d UserSettingsScriptType) UserSettingsScriptType {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebsiteGetSummary returns new OptWebsiteGetSummary with value set to v.
 func NewOptWebsiteGetSummary(v WebsiteGetSummary) OptWebsiteGetSummary {
 	return OptWebsiteGetSummary{
@@ -2641,8 +2595,8 @@ func (s *UserPatch) SetSettings(val OptUserSettings) {
 // Response body for getting user settings.
 // Ref: #/components/schemas/UserSettings
 type UserSettings struct {
-	Language   OptUserSettingsLanguage   `json:"language"`
-	ScriptType OptUserSettingsScriptType `json:"script_type"`
+	Language   OptUserSettingsLanguage      `json:"language"`
+	ScriptType []UserSettingsScriptTypeItem `json:"script_type"`
 }
 
 // GetLanguage returns the value of Language.
@@ -2651,7 +2605,7 @@ func (s *UserSettings) GetLanguage() OptUserSettingsLanguage {
 }
 
 // GetScriptType returns the value of ScriptType.
-func (s *UserSettings) GetScriptType() OptUserSettingsScriptType {
+func (s *UserSettings) GetScriptType() []UserSettingsScriptTypeItem {
 	return s.ScriptType
 }
 
@@ -2661,7 +2615,7 @@ func (s *UserSettings) SetLanguage(val OptUserSettingsLanguage) {
 }
 
 // SetScriptType sets the value of ScriptType.
-func (s *UserSettings) SetScriptType(val OptUserSettingsScriptType) {
+func (s *UserSettings) SetScriptType(val []UserSettingsScriptTypeItem) {
 	s.ScriptType = val
 }
 
@@ -2699,27 +2653,27 @@ func (s *UserSettingsLanguage) UnmarshalText(data []byte) error {
 	}
 }
 
-type UserSettingsScriptType string
+type UserSettingsScriptTypeItem string
 
 const (
-	UserSettingsScriptTypeDefault      UserSettingsScriptType = "default"
-	UserSettingsScriptTypeTaggedEvents UserSettingsScriptType = "tagged-events"
+	UserSettingsScriptTypeItemDefault      UserSettingsScriptTypeItem = "default"
+	UserSettingsScriptTypeItemTaggedEvents UserSettingsScriptTypeItem = "tagged-events"
 )
 
-// AllValues returns all UserSettingsScriptType values.
-func (UserSettingsScriptType) AllValues() []UserSettingsScriptType {
-	return []UserSettingsScriptType{
-		UserSettingsScriptTypeDefault,
-		UserSettingsScriptTypeTaggedEvents,
+// AllValues returns all UserSettingsScriptTypeItem values.
+func (UserSettingsScriptTypeItem) AllValues() []UserSettingsScriptTypeItem {
+	return []UserSettingsScriptTypeItem{
+		UserSettingsScriptTypeItemDefault,
+		UserSettingsScriptTypeItemTaggedEvents,
 	}
 }
 
 // MarshalText implements encoding.TextMarshaler.
-func (s UserSettingsScriptType) MarshalText() ([]byte, error) {
+func (s UserSettingsScriptTypeItem) MarshalText() ([]byte, error) {
 	switch s {
-	case UserSettingsScriptTypeDefault:
+	case UserSettingsScriptTypeItemDefault:
 		return []byte(s), nil
-	case UserSettingsScriptTypeTaggedEvents:
+	case UserSettingsScriptTypeItemTaggedEvents:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -2727,13 +2681,13 @@ func (s UserSettingsScriptType) MarshalText() ([]byte, error) {
 }
 
 // UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UserSettingsScriptType) UnmarshalText(data []byte) error {
-	switch UserSettingsScriptType(data) {
-	case UserSettingsScriptTypeDefault:
-		*s = UserSettingsScriptTypeDefault
+func (s *UserSettingsScriptTypeItem) UnmarshalText(data []byte) error {
+	switch UserSettingsScriptTypeItem(data) {
+	case UserSettingsScriptTypeItemDefault:
+		*s = UserSettingsScriptTypeItemDefault
 		return nil
-	case UserSettingsScriptTypeTaggedEvents:
-		*s = UserSettingsScriptTypeTaggedEvents
+	case UserSettingsScriptTypeItemTaggedEvents:
+		*s = UserSettingsScriptTypeItemTaggedEvents
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
