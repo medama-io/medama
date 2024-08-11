@@ -146,7 +146,6 @@ export default function Index() {
 			<PasswordInput
 				label="Password"
 				placeholder="New password"
-				type="password"
 				key={account.key('password')}
 				{...account.getInputProps('password')}
 			/>
