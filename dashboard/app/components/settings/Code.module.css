@@ -4,7 +4,7 @@
 
 	margin: 16px 0;
 
-	background-color: var(--me-color-bg-grey-disabled);
+	background-color: var(--bg-grey-disabled);
 	border-radius: 4px;
 
 	pre {
@@ -30,11 +30,11 @@
 	height: 32px;
 	margin-left: 8px;
 
-	background-color: var(--me-color-bg-grey-disabled);
+	background-color: var(--bg-grey-disabled);
 
 	border-radius: 4px;
 
 	&:hover {
-		background-color: var(--me-color-selected-light);
+		background-color: var(--selected-light);
 	}
 }

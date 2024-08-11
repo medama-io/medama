@@ -4,7 +4,7 @@
 	height: 22px;
 	min-width: 22px;
 
-	border: 1px solid var(--me-color-border-light);
+	border: 1px solid var(--border-light);
 	border-radius: 4px;
 	display: flex;
 	align-items: center;
@@ -15,7 +15,7 @@
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--me-color-focus-outline);
+		outline: 2px solid var(--focus-outline);
 	}
 
 	&[data-disabled] {
@@ -27,7 +27,7 @@
 	color: var(--violet-indicator);
 
 	&[data-disabled] {
-		color: var(--me-color-text-disabled);
+		color: var(--text-disabled);
 	}
 }
 

@@ -1,37 +1,36 @@
 :root {
 	/* Text Colors */
-	--me-color-text-light: #fcfcfc;
-	--me-color-text-dark: #111111;
-	--me-color-text-disabled: #8e9cb4;
-	--me-color-text-grey: #39414e;
-	--me-color-text-muted: #7e8c94;
+	--text-light: #fcfcfc;
+	--text-dark: #111111;
+	--text-disabled: #8e9cb4;
+	--text-grey: #39414e;
+	--text-muted: #7e8c94;
 
 	/* Background Colors */
-	--me-color-bg-light: #fcfdfe;
-	--me-color-bg-grey: #f3f3f3;
-	--me-color-bg-grey-dark: #e9ecef;
-	--me-color-bg-grey-disabled: #f1f3f5;
-	--me-color-bg-dark: #111111;
-	--me-color-bg-grey-blue: #262a31;
-	--me-color-bg-grey-blue-dark: #1b1e24;
-	--me-color-bg-red-faded: rgba(255, 0, 0, 0.1);
-	--me-color-bg-red-danger: #eb5757;
-	--me-color-bg-red-danger-dark: #c53030;
+	--bg-light: #fcfdfe;
+	--bg-grey: #f3f3f3;
+	--bg-grey-dark: #e9ecef;
+	--bg-grey-disabled: #f1f3f5;
+	--bg-dark: #111111;
+	--bg-grey-blue: #262a31;
+	--bg-grey-blue-dark: #1b1e24;
+	--bg-red-danger: #eb5757;
+	--bg-red-danger-dark: #c53030;
 
 	/* Selected Colors */
-	--me-color-selected-light: #e8e7e7;
-	--me-color-selected-snow: #eff2f7;
-	--me-color-focus-outline: #228be6;
+	--selected-light: #e8e7e7;
+	--selected-snow: #eff2f7;
+	--focus-outline: #228be6;
 
 	/* Border Colors */
-	--me-color-border-light: #cad4e3;
-	--me-color-border-dark: #39414e;
-	--me-color-border-muted: #d3dce6;
+	--border-light: #cad4e3;
+	--border-dark: #39414e;
+	--border-muted: #d3dce6;
 
 	/* Logo Color */
-	--me-color-logo-green: #17cd8c;
-	--me-color-badge-positive: #dfffb7;
-	--me-color-badge-negative: #ffd5b7;
+	--logo-green: #17cd8c;
+	--badge-positive: #dfffb7;
+	--badge-negative: #ffd5b7;
 
 	--black-a1: color(display-p3 0 0 0 / 0.05); /* rgba(0, 0, 0, 0.05); */
 	--black-a2: color(display-p3 0 0 0 / 0.1); /* rgba(0, 0, 0, 0.1); */

@@ -3,9 +3,9 @@
 	min-width: fit-content;
 	width: 380px;
 	max-width: 380px;
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 
-	border: 1px solid var(--me-color-border-muted);
+	border: 1px solid var(--border-muted);
 	border-radius: 4px;
 
 	box-shadow: 0 4px 8px var(--black-a2);
@@ -43,14 +43,14 @@
 	border-radius: 4px;
 	cursor: pointer;
 
-	color: var(--me-color-text-grey);
+	color: var(--text-grey);
 
 	&:hover {
 		background-color: var(--violet-3);
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--me-color-focus-outline);
+		outline: 2px solid var(--focus-outline);
 	}
 }
 

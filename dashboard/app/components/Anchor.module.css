@@ -5,7 +5,7 @@
 	padding: 0;
 	margin: 0;
 
-	color: var(--me-color-text-dark);
+	color: var(--text-dark);
 	background-color: transparent;
 
 	border-radius: 4px;
@@ -14,11 +14,11 @@
 	text-decoration: underline;
 
 	&:focus-visible {
-		outline: 2px solid var(--me-color-focus-outline);
+		outline: 2px solid var(--focus-outline);
 		outline-offset: 2px;
 	}
 
 	&:visited {
-		color: var(--me-color-text-dark);
+		color: var(--text-dark);
 	}
 }

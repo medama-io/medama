@@ -1,7 +1,7 @@
 .header {
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-dark);
-	border-bottom: 1px solid var(--me-color-border-dark);
+	color: var(--text-light);
+	background-color: var(--bg-dark);
+	border-bottom: 1px solid var(--border-dark);
 }
 
 .inner {
@@ -36,7 +36,7 @@
 	position: relative;
 	font-size: 14px;
 	font-weight: 400;
-	color: var(--me-color-text-light);
+	color: var(--text-light);
 
 	&[data-active="true"] {
 		font-weight: 600;
@@ -50,7 +50,7 @@
 		transform: translateX(-50%);
 		width: 60%;
 		height: 2px;
-		border-bottom: 2px solid var(--me-color-logo-green);
+		border-bottom: 2px solid var(--logo-green);
 		border-radius: 8px;
 	}
 
@@ -58,7 +58,7 @@
 		font-size: 20px;
 		padding: 22px 24px;
 
-		border-bottom: 1px solid var(--me-color-border-dark);
+		border-bottom: 1px solid var(--border-dark);
 
 		&:hover {
 			font-weight: 600;
@@ -73,14 +73,14 @@
 			width: 2px;
 			height: 40%;
 			border-bottom: initial;
-			border-right: 2px solid var(--me-color-logo-green);
+			border-right: 2px solid var(--logo-green);
 			border-radius: 8px;
 		}
 	}
 }
 
 .burger {
-	--burger-color: var(--me-color-text-light);
+	--burger-color: var(--text-light);
 
 	@media (--gt-xs) {
 		display: none;
@@ -99,9 +99,9 @@
 .drawer {
 	margin-top: 72px;
 	height: 100%;
-	background-color: var(--me-color-bg-dark);
+	background-color: var(--bg-dark);
 
-	border-top: 1px solid var(--me-color-border-dark);
+	border-top: 1px solid var(--border-dark);
 
 	@media (--gt-xs) {
 		display: none;

@@ -1,16 +1,16 @@
 .tabRoot {
-	background-color: var(--me-color-bg-grey);
+	background-color: var(--bg-grey);
 
 	padding: 16px;
 	border-radius: 8px;
 }
 
 .tab {
-	color: var(--me-color-text-disabled);
+	color: var(--text-disabled);
 	font-size: 14px;
 
 	&[data-active] {
-		color: var(--me-color-text-dark);
+		color: var(--text-dark);
 		font-weight: 600;
 	}
 }
@@ -20,7 +20,7 @@
 }
 
 .listWrapper {
-	background-color: var(--me-color-text-light);
+	background-color: var(--text-light);
 	border-radius: 8px;
 	width: 220px;
 	padding: 12px;
@@ -31,7 +31,7 @@
 }
 
 .tableWrapper {
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 	border-radius: 8px;
 	padding: 4px;
 }
@@ -41,7 +41,7 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 7px 12px 12px 12px;
-	border-bottom: 1px solid var(--me-color-border-light);
+	border-bottom: 1px solid var(--border-light);
 }
 
 .dataHeader {
@@ -64,14 +64,14 @@
 	width: 100%;
 	padding: 4px 12px 12px 12px;
 
-	color: var(--me-color-text-dark);
+	color: var(--text-dark);
 	font-size: 14px;
 	text-decoration: none;
 
-	border-bottom: 1px solid var(--me-color-border-light);
+	border-bottom: 1px solid var(--border-light);
 
 	&:visited {
-		color: var(--me-color-text-dark);
+		color: var(--text-dark);
 	}
 
 	@media (--lt-lg) {
@@ -95,7 +95,7 @@
 }
 .viewspan {
 	font-size: 12px;
-	color: var(--me-color-text-muted);
+	color: var(--text-muted);
 }
 
 .pageSize {
@@ -106,22 +106,22 @@
 
 	font-size: 14px;
 	font-weight: 400;
-	color: var(--me-color-text-dark);
+	color: var(--text-dark);
 
 	&:disabled {
 		opacity: 0.5;
-		color: var(--me-color-text-disabled);
-		background-color: var(--me-color-bg-light);
+		color: var(--text-disabled);
+		background-color: var(--bg-light);
 	}
 
 	&[data-active="true"] {
-		color: var(--me-color-text-dark);
-		background-color: var(--me-color-selected-snow);
+		color: var(--text-dark);
+		background-color: var(--selected-snow);
 		opacity: 1;
 	}
 
 	&:not([disabled]):hover {
-		background-color: var(--me-color-selected-snow);
+		background-color: var(--selected-snow);
 	}
 }
 
@@ -130,20 +130,20 @@
 	align-items: center;
 	justify-content: center;
 
-	background-color: var(--me-color-bg-light);
-	border: 1px solid var(--me-color-border-muted);
+	background-color: var(--bg-light);
+	border: 1px solid var(--border-muted);
 	border-radius: 8px;
 
 	&:hover {
-		background-color: var(--me-color-selected-snow);
+		background-color: var(--selected-snow);
 	}
 
 	&:disabled {
 		opacity: 0.5;
-		background-color: var(--me-color-selected-snow);
+		background-color: var(--selected-snow);
 	}
 
 	svg {
-		color: var(--me-color-text-dark);
+		color: var(--text-dark);
 	}
 }

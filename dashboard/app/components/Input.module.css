@@ -22,34 +22,34 @@
 	margin-top: 4px;
 	padding: 0 16px;
 
-	color: var(--me-color-text-dark);
+	color: var(--text-dark);
 
-	border: 1px solid var(--me-color-border-light);
+	border: 1px solid var(--border-light);
 	border-radius: 4px;
 
 	transition: border-color 100ms ease;
 
 	&:focus,
 	&:focus-visible {
-		outline: 2px solid var(--me-color-focus-outline);
+		outline: 2px solid var(--focus-outline);
 		outline-offset: -1px;
 	}
 
 	&::placeholder {
-		color: var(--me-color-text-disabled);
+		color: var(--text-disabled);
 		opacity: 1;
 	}
 
 	&[data-error="true"]::placeholder {
-		color: var(--me-color-bg-red-danger);
+		color: var(--bg-red-danger);
 	}
 
 	&:disabled,
 	&[data-disabled] {
 		cursor: not-allowed;
 		opacity: 0.6;
-		background-color: var(--me-color-bg-grey-disabled);
-		color: var(--me-color-text-disabled);
+		background-color: var(--bg-grey-disabled);
+		color: var(--text-disabled);
 	}
 
 	&::-webkit-inner-spin-button,
@@ -73,7 +73,7 @@
 	&:where(:autofill, [data-com-onepassword-filled]) {
 		/* Reliably removes native autofill colors */
 		background-clip: text;
-		-webkit-text-fill-color: var(--me-color-selected-light);
+		-webkit-text-fill-color: var(--selected-light);
 	}
 }
 
@@ -95,7 +95,7 @@
 	padding: 6px;
 
 	svg {
-		color: var(--me-color-text-disabled);
+		color: var(--text-disabled);
 	}
 }
 
@@ -109,7 +109,7 @@
 }
 
 .required {
-	color: var(--me-color-bg-red-danger);
+	color: var(--bg-red-danger);
 }
 
 .error,
@@ -125,10 +125,10 @@
 
 .description {
 	margin-bottom: 2px;
-	color: var(--me-color-text-muted);
+	color: var(--text-muted);
 }
 
 .error {
 	margin-top: 4px;
-	color: var(--me-color-bg-red-danger);
+	color: var(--bg-red-danger);
 }

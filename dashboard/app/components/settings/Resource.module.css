@@ -1,7 +1,7 @@
 .panel {
 	padding: 16px;
 
-	border: 1px solid var(--me-color-border-muted);
+	border: 1px solid var(--border-muted);
 	border-radius: 8px;
 
 	p {
@@ -33,7 +33,7 @@
 
 	height: 16px;
 
-	background: var(--me-color-bg-grey-dark);
+	background: var(--bg-grey-dark);
 	border-radius: 4px;
 
 	/* Fix overflow clipping in Safari */

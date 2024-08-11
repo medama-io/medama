@@ -13,9 +13,9 @@
 	text-align: center;
 
 	padding: 0 16px;
-	color: var(--me-color-text-light);
-	background-color: var(--me-color-bg-grey-blue);
-	border: 1px solid var(--me-color-bg-grey-blue);
+	color: var(--text-light);
+	background-color: var(--bg-grey-blue);
+	border: 1px solid var(--bg-grey-blue);
 	border-radius: 8px;
 
 	text-decoration: none;
@@ -25,11 +25,11 @@
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--me-color-focus-outline);
+		outline: 2px solid var(--focus-outline);
 	}
 
 	&:visited {
-		color: var(--me-color-text-light);
+		color: var(--text-light);
 	}
 
 	&:where([data-visible-from="xs"]) {
@@ -40,11 +40,11 @@
 }
 
 .button-outline {
-	border: 1px solid var(--me-color-border-dark);
-	background: var(--me-color-bg-dark);
+	border: 1px solid var(--border-dark);
+	background: var(--bg-dark);
 
 	&:hover {
-		background-color: var(--me-color-bg-grey-blue);
+		background-color: var(--bg-grey-blue);
 	}
 }
 
@@ -52,8 +52,8 @@
 	position: relative;
 	padding: 8px;
 
-	color: var(--me-color-text-dark);
-	background-color: var(--me-color-bg-light);
+	color: var(--text-dark);
+	background-color: var(--bg-light);
 	border: 0;
 	cursor: pointer;
 
@@ -62,6 +62,6 @@
 	}
 
 	&:hover {
-		background-color: var(--me-color-selected-snow);
+		background-color: var(--selected-snow);
 	}
 }

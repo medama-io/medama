@@ -13,7 +13,7 @@
 	}
 
 	&:hover {
-		background-color: var(--me-color-bg-grey);
+		background-color: var(--bg-grey);
 	}
 
 	span {
@@ -33,7 +33,7 @@
 .external {
 	svg {
 		margin-bottom: -2px;
-		color: var(--me-color-text-muted);
+		color: var(--text-muted);
 		width: 17px;
 		height: 17px;
 	}

@@ -1,6 +1,6 @@
 .grid {
 	width: 100%;
-	background-color: var(--me-color-bg-grey);
+	background-color: var(--bg-grey);
 
 	padding: 16px;
 	gap: 16px;
@@ -10,21 +10,21 @@
 
 .root {
 	min-height: 393px;
-	background-color: var(--me-color-text-light);
+	background-color: var(--text-light);
 	border-radius: 8px;
 }
 
 .list {
 	padding: 8px;
-	border-bottom: 1px solid var(--me-color-border-light);
+	border-bottom: 1px solid var(--border-light);
 }
 
 .tab {
-	color: var(--me-color-text-disabled);
+	color: var(--text-disabled);
 	font-size: 14px;
 
 	&[data-active] {
-		color: var(--me-color-text-dark);
+		color: var(--text-dark);
 		font-weight: 600;
 	}
 }
@@ -40,7 +40,7 @@
 		justify-content: center;
 		align-items: center;
 
-		border: 1px solid var(--me-color-border-light);
+		border: 1px solid var(--border-light);
 		border-radius: 8px;
 
 		font-size: 14px;

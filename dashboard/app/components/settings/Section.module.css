@@ -1,7 +1,7 @@
 .wrapper {
 	width: 100%;
 	padding: 32px 24px 8px 24px;
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 
 	border-radius: 8px 8px 0 0;
 
@@ -17,7 +17,7 @@
 .sectionWrapper {
 	width: 100%;
 	padding: 32px 24px;
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 
 	border-radius: 8px;
 }
@@ -53,7 +53,7 @@
 
 	padding: 15px 24px;
 
-	background-color: var(--me-color-bg-light);
+	background-color: var(--bg-light);
 	border-radius: 0 0 8px 8px;
 
 	p {
@@ -73,12 +73,12 @@
 
 .delete {
 	composes: submit;
-	background-color: var(--me-color-bg-red-danger);
-	border: 1px solid var(--me-color-bg-red-danger);
+	background-color: var(--bg-red-danger);
+	border: 1px solid var(--bg-red-danger);
 	border-radius: 8px;
 	cursor: pointer;
 
 	&:hover {
-		background-color: var(--me-color-bg-red-danger-dark);
+		background-color: var(--bg-red-danger-dark);
 	}
 }
