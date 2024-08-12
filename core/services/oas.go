@@ -129,7 +129,7 @@ func convertScriptType(scriptType string) ScriptType {
 		switch feature {
 		case "default":
 			types.Default = true
-		case "tagged_event":
+		case "tagged-events":
 			types.TaggedEvent = true
 		}
 	}

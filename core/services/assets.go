@@ -83,12 +83,12 @@ func (h *SPAHandler) serveFile(w http.ResponseWriter, r *http.Request, filePath 
 	if etag, ok := h.fileETags[filePath]; ok {
 		w.Header().Set("ETag", etag)
 
-		// 1 year for most asset files.
-		cacheControl := "public, max-age=31536000, immutable" // 1 year
+		// 6 hours, 24 hours for root favicon files and tracker script.
+		cacheControl := "public, max-age=21600, stale-while-revalidate=86400"
 
-		// 24 hours for root favicon files and tracker script.
-		if isScriptFile(filePath) || isRootFile(strings.TrimPrefix(filePath, "/")) {
-			cacheControl = "public, max-age=21600, stale-while-revalidate=86400" // 6 hours, 24 hours
+		if !isScriptFile(filePath) && !isRootFile(strings.TrimPrefix(filePath, "/")) {
+			// 1 year for most asset files.
+			cacheControl = "public, max-age=31536000, immutable"
 		}
 		w.Header().Set("Cache-Control", cacheControl)
 
@@ -125,6 +125,9 @@ func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		} else {
 			scriptFile = uPath
 		}
+
+		// Update the request URL to match the actual file being served
+		r.URL.Path = scriptFile
 		h.serveFile(w, r, scriptFile)
 		return
 	}
