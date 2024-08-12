@@ -20,15 +20,17 @@ type SPAHandler struct {
 	indexFile    []byte
 	indexETag    string
 	fileETags    map[string]string
+
+	runtimeConfig *RuntimeConfig
 }
 
-func SetupAssetHandler(mux *http.ServeMux) error {
+func SetupAssetHandler(mux *http.ServeMux, runtimeConfig *RuntimeConfig) error {
 	client, err := generate.SPAClient()
 	if err != nil {
 		return errors.Wrap(err, "failed to create spa client")
 	}
 
-	handler, err := NewSPAHandler(client)
+	handler, err := NewSPAHandler(client, runtimeConfig)
 	if err != nil {
 		return err
 	}
@@ -37,7 +39,7 @@ func SetupAssetHandler(mux *http.ServeMux) error {
 	return nil
 }
 
-func NewSPAHandler(client fs.FS) (*SPAHandler, error) {
+func NewSPAHandler(client fs.FS, runtimeConfig *RuntimeConfig) (*SPAHandler, error) {
 	clientServer := http.FileServer(http.FS(client))
 
 	indexFile, err := readFile(client, "index.html")
@@ -50,6 +52,8 @@ func NewSPAHandler(client fs.FS) (*SPAHandler, error) {
 		indexFile:    indexFile,
 		indexETag:    generateETag(indexFile),
 		fileETags:    make(map[string]string),
+
+		runtimeConfig: runtimeConfig,
 	}
 
 	if err := handler.precomputeFileETags(client); err != nil {
@@ -64,7 +68,7 @@ func (h *SPAHandler) precomputeFileETags(client fs.FS) error {
 		if err != nil {
 			return err
 		}
-		if !d.IsDir() && (isAssetPath("/"+path) || isRootFile(path)) {
+		if !d.IsDir() && (isAssetPath("/"+path) || isRootFile(path) || isScriptFile(path)) {
 			content, err := readFile(client, path)
 			if err != nil {
 				return err
@@ -80,11 +84,11 @@ func (h *SPAHandler) serveFile(w http.ResponseWriter, r *http.Request, filePath 
 		w.Header().Set("ETag", etag)
 
 		// 1 year for most asset files.
-		cacheControl := "public, max-age=31536000, immutable"
+		cacheControl := "public, max-age=31536000, immutable" // 1 year
 
 		// 24 hours for root favicon files and tracker script.
-		if isRootFile(strings.TrimPrefix(filePath, "/")) {
-			cacheControl = "public, max-age=86400, must-revalidate"
+		if isScriptFile(filePath) || isRootFile(strings.TrimPrefix(filePath, "/")) {
+			cacheControl = "public, max-age=21600, stale-while-revalidate=86400" // 6 hours, 24 hours
 		}
 		w.Header().Set("Cache-Control", cacheControl)
 
@@ -116,6 +120,18 @@ func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check if the request is for script.js
+	if uPath == "/script.js" {
+		var scriptFile string
+		if h.runtimeConfig.ScriptType.TaggedEvent {
+			scriptFile = "/scripts/tagged-events.js"
+		} else {
+			scriptFile = "/scripts/default.js"
+		}
+		h.serveFile(w, r, scriptFile)
+		return
+	}
+
 	h.serveFile(w, r, uPath)
 }
 
@@ -142,6 +158,10 @@ func isAssetPath(path string) bool {
 
 func isRootFile(path string) bool {
 	return !strings.Contains(path, "/") && path != "index.html"
+}
+
+func isScriptFile(path string) bool {
+	return strings.HasPrefix(path, "/scripts/")
 }
 
 func readFile(filesystem fs.FS, file string) ([]byte, error) {

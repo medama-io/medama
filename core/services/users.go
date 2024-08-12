@@ -187,8 +187,8 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 			return nil, errors.Wrap(err, "services")
 		}
 
-		// Also update live runtime config.
-		err = h.runtimeConfig.UpdateConfig(ctx, h.db, settings)
+		// Also update live runtime config to dynamically update script type.
+		err = h.RuntimeConfig.UpdateConfig(ctx, h.db, settings)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to update runtime config")
 			return nil, errors.Wrap(err, "services")
