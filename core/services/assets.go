@@ -68,7 +68,7 @@ func (h *SPAHandler) precomputeFileETags(client fs.FS) error {
 		if err != nil {
 			return err
 		}
-		if !d.IsDir() && (isAssetPath("/"+path) || isRootFile(path) || isScriptFile(path)) {
+		if !d.IsDir() && (isAssetPath("/"+path) || isRootFile(path) || isScriptFile("/"+path)) {
 			content, err := readFile(client, path)
 			if err != nil {
 				return err
@@ -112,27 +112,31 @@ func (h *SPAHandler) serveFile(w http.ResponseWriter, r *http.Request, filePath 
 
 func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	uPath := path.Clean(r.URL.Path)
-	_, exists := h.fileETags[uPath]
 
-	// Serve index.html to all routes that are not /api.
-	if uPath == "/" || !exists {
-		h.serveIndexHTML(w, r)
-		return
-	}
-
-	// Check if the request is for script.js
-	if uPath == "/script.js" {
+	// Check if the request is for script.js or any file in the /scripts/ directory
+	if uPath == "/script.js" || strings.HasPrefix(uPath, "/scripts/") {
 		var scriptFile string
-		if h.runtimeConfig.ScriptType.TaggedEvent {
-			scriptFile = "/scripts/tagged-events.js"
+		if uPath == "/script.js" {
+			if h.runtimeConfig.ScriptType.TaggedEvent {
+				scriptFile = "/scripts/tagged-events.js"
+			} else {
+				scriptFile = "/scripts/default.js"
+			}
 		} else {
-			scriptFile = "/scripts/default.js"
+			scriptFile = uPath
 		}
 		h.serveFile(w, r, scriptFile)
 		return
 	}
 
-	h.serveFile(w, r, uPath)
+	// Check if the file exists in our precomputed ETags
+	if _, exists := h.fileETags[uPath]; exists {
+		h.serveFile(w, r, uPath)
+		return
+	}
+
+	// Serve index.html for all other routes that are not /api
+	h.serveIndexHTML(w, r)
 }
 
 func (h *SPAHandler) serveIndexHTML(w http.ResponseWriter, r *http.Request) {
