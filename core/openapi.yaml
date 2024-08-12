@@ -1455,9 +1455,11 @@ components:
           enum: [en]
           default: en
         script_type:
-          type: string
-          enum: [default, tagged-events]
-          default: default
+          type: array
+          items:
+            type: string
+            enum: [default, tagged-events]
+          uniqueItems: true
     UserGet:
       type: object
       title: UserGet

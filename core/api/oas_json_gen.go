@@ -2112,39 +2112,6 @@ func (s *OptUserSettingsLanguage) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes UserSettingsScriptType as json.
-func (o OptUserSettingsScriptType) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Str(string(o.Value))
-}
-
-// Decode decodes UserSettingsScriptType from json.
-func (o *OptUserSettingsScriptType) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptUserSettingsScriptType to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptUserSettingsScriptType) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptUserSettingsScriptType) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebsiteGetSummary as json.
 func (o OptWebsiteGetSummary) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -5646,9 +5613,13 @@ func (s *UserSettings) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.ScriptType.Set {
+		if s.ScriptType != nil {
 			e.FieldStart("script_type")
-			s.ScriptType.Encode(e)
+			e.ArrStart()
+			for _, elem := range s.ScriptType {
+				elem.Encode(e)
+			}
+			e.ArrEnd()
 		}
 	}
 }
@@ -5679,8 +5650,15 @@ func (s *UserSettings) Decode(d *jx.Decoder) error {
 			}
 		case "script_type":
 			if err := func() error {
-				s.ScriptType.Reset()
-				if err := s.ScriptType.Decode(d); err != nil {
+				s.ScriptType = make([]UserSettingsScriptTypeItem, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem UserSettingsScriptTypeItem
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.ScriptType = append(s.ScriptType, elem)
+					return nil
+				}); err != nil {
 					return err
 				}
 				return nil
@@ -5749,42 +5727,42 @@ func (s *UserSettingsLanguage) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes UserSettingsScriptType as json.
-func (s UserSettingsScriptType) Encode(e *jx.Encoder) {
+// Encode encodes UserSettingsScriptTypeItem as json.
+func (s UserSettingsScriptTypeItem) Encode(e *jx.Encoder) {
 	e.Str(string(s))
 }
 
-// Decode decodes UserSettingsScriptType from json.
-func (s *UserSettingsScriptType) Decode(d *jx.Decoder) error {
+// Decode decodes UserSettingsScriptTypeItem from json.
+func (s *UserSettingsScriptTypeItem) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode UserSettingsScriptType to nil")
+		return errors.New("invalid: unable to decode UserSettingsScriptTypeItem to nil")
 	}
 	v, err := d.StrBytes()
 	if err != nil {
 		return err
 	}
 	// Try to use constant string.
-	switch UserSettingsScriptType(v) {
-	case UserSettingsScriptTypeDefault:
-		*s = UserSettingsScriptTypeDefault
-	case UserSettingsScriptTypeTaggedEvents:
-		*s = UserSettingsScriptTypeTaggedEvents
+	switch UserSettingsScriptTypeItem(v) {
+	case UserSettingsScriptTypeItemDefault:
+		*s = UserSettingsScriptTypeItemDefault
+	case UserSettingsScriptTypeItemTaggedEvents:
+		*s = UserSettingsScriptTypeItemTaggedEvents
 	default:
-		*s = UserSettingsScriptType(v)
+		*s = UserSettingsScriptTypeItem(v)
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s UserSettingsScriptType) MarshalJSON() ([]byte, error) {
+func (s UserSettingsScriptTypeItem) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UserSettingsScriptType) UnmarshalJSON(data []byte) error {
+func (s *UserSettingsScriptTypeItem) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

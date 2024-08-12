@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/go-referrer-parser"
@@ -11,19 +12,21 @@ import (
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util"
+	"github.com/medama-io/medama/util/logger"
 )
+
+type ScriptType struct {
+	// Default script that collects page view data.
+	Default bool
+	// Script that collects page view data and custom event properties.
+	TaggedEvent bool
+}
 
 // This is a runtime config that is read from user settings in the database.
 type RuntimeConfig struct {
 	// Tracker settings.
-	// Choose what type of script to serve from /script.js.
-	//
-	// Options:
-	//
-	// - "default" - Default script that collects page view data.
-	//
-	// - "tagged-events" - Script that collects page view data and custom event properties.
-	ScriptType string
+	// Choose what features of script to serve from /script.js.
+	ScriptType ScriptType
 }
 
 type Handler struct {
@@ -41,7 +44,7 @@ type Handler struct {
 	hostnames *util.CacheStore
 
 	// Runtime config
-	runtimeConfig *RuntimeConfig
+	RuntimeConfig *RuntimeConfig
 }
 
 // NewService returns a new instance of the ogen service handler.
@@ -85,7 +88,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 		timezoneMap:    &tzMap,
 		codeCountryMap: &codeCountryMap,
 		hostnames:      &hostnameCache,
-		runtimeConfig:  runtimeConfig,
+		RuntimeConfig:  runtimeConfig,
 	}, nil
 }
 
@@ -98,7 +101,7 @@ func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, analytics *duckd
 	}
 
 	return &RuntimeConfig{
-		ScriptType: settings.ScriptType,
+		ScriptType: convertScriptType(settings.ScriptType),
 	}, nil
 }
 
@@ -108,8 +111,28 @@ func (r *RuntimeConfig) UpdateConfig(ctx context.Context, meta *sqlite.Client, s
 		if err != nil {
 			return errors.Wrap(err, "script type update config")
 		}
-		r.ScriptType = settings.ScriptType
+		r.ScriptType = convertScriptType(settings.ScriptType)
+
+		log := logger.Get()
+		log.Warn().Str("script_type", settings.ScriptType).Msg("updated script type")
 	}
 
 	return nil
+}
+
+// Convert array of script type features split by comma to a ScriptType struct.
+func convertScriptType(scriptType string) ScriptType {
+	features := strings.Split(scriptType, ",")
+
+	types := ScriptType{}
+	for _, feature := range features {
+		switch feature {
+		case "default":
+			types.Default = true
+		case "tagged-events":
+			types.TaggedEvent = true
+		}
+	}
+
+	return types
 }

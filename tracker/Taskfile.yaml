@@ -19,13 +19,13 @@ tasks:
   embed:
     deps: [build:default]
     cmds:
-      - mkdir -p ../core/client
-      - cp ./dist/default.min.js ../core/client/script.js # TODO: Rename to default.js
-      - cp ./dist/tagged-events.min.js ../core/client/tagged-events.js
+      - mkdir -p ../core/client/scripts
+      - cp ./dist/default.min.js ../core/client/scripts/default.js
+      - cp ./dist/tagged-events.min.js ../core/client/scripts/tagged-events.js
     sources:
       - ./dist/*.min.js
     generates:
-      - ../core/client/script.js
+      - ../core/client/scripts/*.js
 
   test:
     deps: [build:default]

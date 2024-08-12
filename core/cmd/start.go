@@ -151,7 +151,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	mux.Handle("/api/", http.StripPrefix("/api", apiHandler))
 
 	// SPA client.
-	err = services.SetupAssetHandler(mux)
+	err = services.SetupAssetHandler(mux, service.RuntimeConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup asset handler")
 	}

@@ -1,4 +1,4 @@
-import { useForm } from '@mantine/form';
+import { type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -8,6 +8,7 @@ import {
 	useSubmit,
 } from '@remix-run/react';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
+import { useState } from 'react';
 import * as v from 'valibot';
 
 import type { components } from '@/api/types';
@@ -21,7 +22,7 @@ import {
 	SectionTitle,
 	SectionWrapper,
 } from '@/components/settings/Section';
-import { getType } from '@/utils/form';
+import { getString, getType } from '@/utils/form';
 
 interface LoaderData {
 	user: components['schemas']['UserGet'];
@@ -59,6 +60,7 @@ export const clientLoader = async () => {
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	const body = await request.formData();
 	const type = getType(body);
+	const scriptType = getString(body, 'script_type');
 
 	let res: Response | undefined;
 	switch (type) {
@@ -66,7 +68,9 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			const update = await userUpdate({
 				body: {
 					settings: {
-						script_type: 'default',
+						script_type: scriptType?.split(
+							',',
+						) as components['schemas']['UserGet']['settings']['script_type'],
 					},
 				},
 				noThrow: true,
@@ -104,6 +108,10 @@ export default function Index() {
 		return;
 	}
 
+	const [taggedEvents, setTaggedEvents] = useState(
+		Boolean(user.settings.script_type?.includes('tagged-events')),
+	);
+
 	const code =
 		location.hostname === 'localhost'
 			? getTrackingScript('[your-analytics-server].com')
@@ -114,14 +122,29 @@ export default function Index() {
 		initialValues: {
 			_setting: 'tracker',
 			script_type: {
-				default: user.settings.script_type === 'default',
-				'tagged-events': user.settings.script_type === 'tagged-events',
+				default: true,
+				'tagged-events': taggedEvents,
 			},
 		},
 		validate: valibotResolver(trackerSchema),
+		transformValues: (values) => {
+			// It's difficult to get Radix checkboxes to work with @mantine/form for now
+			values.script_type['tagged-events'] = taggedEvents;
+
+			// Convert object to comma-separated string
+			const scriptType = Object.entries(values.script_type)
+				.filter(([, value]) => value)
+				.map(([key]) => key)
+				.join(',');
+
+			return {
+				...values,
+				script_type: scriptType,
+			};
+		},
 	});
 
-	const handleSubmit = (values: typeof form.values) => {
+	const handleSubmit = (values: TransformedValues<typeof form>) => {
 		submit(values, { method: 'POST' });
 	};
 
@@ -172,6 +195,8 @@ export default function Index() {
 								</p>
 							</>
 						}
+						checked={taggedEvents}
+						onCheckedChange={() => setTaggedEvents(!taggedEvents)}
 						key={form.key('script_type.tagged-events')}
 						{...form.getInputProps('script_type.tagged-events', {
 							type: 'checkbox',

@@ -6,6 +6,7 @@
 	padding: 8px;
 	gap: 8px;
 
+	color: var(--text-dark);
 	background-color: var(--bg-light);
 
 	border-radius: 8px;
@@ -16,6 +17,7 @@
 
 		border-radius: 8px;
 
+		color: var(--text-dark);
 		font-size: 14px;
 
 		text-decoration: none;
