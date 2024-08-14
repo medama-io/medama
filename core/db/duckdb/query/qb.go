@@ -101,7 +101,7 @@ func (qb *QueryBuilder) Build() string {
 	query.WriteString(strings.Join(qb.fromClause, ", "))
 
 	if qb.leftJoinClause != "" {
-		query.WriteString(" LEFT JOIN ")
+		query.WriteString(" JOIN ")
 		query.WriteString(qb.leftJoinClause)
 	}
 

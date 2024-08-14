@@ -86,6 +86,12 @@ type Handler interface {
 	//
 	// GET /website/{hostname}/pages
 	GetWebsiteIDPages(ctx context.Context, params GetWebsiteIDPagesParams) (GetWebsiteIDPagesRes, error)
+	// GetWebsiteIDProperties implements get-website-id-properties operation.
+	//
+	// Get a list of custom properties and their stats.
+	//
+	// GET /website/{hostname}/properties
+	GetWebsiteIDProperties(ctx context.Context, params GetWebsiteIDPropertiesParams) (GetWebsiteIDPropertiesRes, error)
 	// GetWebsiteIDReferrers implements get-website-id-referrers operation.
 	//
 	// Get a list of referrers and their stats.

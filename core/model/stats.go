@@ -166,3 +166,10 @@ type StatsLanguages struct {
 	BounceRate float32 `db:"bounce_rate"`
 	Duration   int     `db:"duration"`
 }
+
+type StatsCustomProperties struct {
+	Name     string `db:"name"`
+	Value    string `db:"values"`
+	Events   int    `db:"events"`
+	Visitors int    `db:"visitors"`
+}

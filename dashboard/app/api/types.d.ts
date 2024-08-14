@@ -424,6 +424,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/website/{hostname}/properties": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Property Stats
+         * @description Get a list of custom properties and their stats.
+         */
+        get: operations["get-website-id-properties"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -854,6 +874,20 @@ export interface components {
             bounce_percentage?: number;
             /** @description Total time spent on page from language in milliseconds. */
             duration?: number;
+        }[];
+        /**
+         * StatsProperties
+         * @description List of custom properties and their stats.
+         */
+        StatsProperties: {
+            /** @description Custom property name. */
+            name: string;
+            /** @description Custom property value. */
+            value: string;
+            /** @description Number of events for custom property. */
+            events: number;
+            /** @description Number of unique visitors for custom property. */
+            visitors: number;
         }[];
     };
     responses: {
@@ -2124,6 +2158,66 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StatsLanguages"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-website-id-properties": {
+        parameters: {
+            query?: {
+                /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                start?: components["parameters"]["PeriodStart"];
+                /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
+                end?: components["parameters"]["PeriodEnd"];
+                /** @description Path of the page. */
+                path?: components["parameters"]["Path"];
+                /** @description Referrer URL of the page hit. */
+                referrer?: components["parameters"]["Referrer"];
+                /** @description UTM source of the page hit. */
+                utm_source?: components["parameters"]["UTMSource"];
+                /** @description UTM medium of the page hit. */
+                utm_medium?: components["parameters"]["UTMMedium"];
+                /** @description UTM campaign of the page hit. */
+                utm_campaign?: components["parameters"]["UTMCampaign"];
+                /** @description Browser name. */
+                browser?: components["parameters"]["Browser"];
+                /** @description Operating system name. */
+                os?: components["parameters"]["OS"];
+                /** @description Device type. */
+                device?: components["parameters"]["Device"];
+                /** @description Country name. */
+                country?: components["parameters"]["Country"];
+                /** @description Language code. */
+                language?: components["parameters"]["Language"];
+                /** @description Limit the number of results. */
+                limit?: components["parameters"]["Limit"];
+                /** @description Offset the results paired with the limit parameter. */
+                offset?: components["parameters"]["Offset"];
+            };
+            header?: never;
+            path: {
+                /** @description Hostname for the website. */
+                hostname: components["parameters"]["Hostname"];
+            };
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatsProperties"];
                 };
             };
             400: components["responses"]["BadRequestError"];

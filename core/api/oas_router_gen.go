@@ -443,26 +443,64 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							}
 
 							elem = origElem
-						case 'p': // Prefix: "pages"
+						case 'p': // Prefix: "p"
 							origElem := elem
-							if l := len("pages"); len(elem) >= l && elem[0:l] == "pages" {
+							if l := len("p"); len(elem) >= l && elem[0:l] == "p" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
 							if len(elem) == 0 {
-								// Leaf node.
-								switch r.Method {
-								case "GET":
-									s.handleGetWebsiteIDPagesRequest([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
-								default:
-									s.notAllowed(w, r, "GET")
+								break
+							}
+							switch elem[0] {
+							case 'a': // Prefix: "ages"
+								origElem := elem
+								if l := len("ages"); len(elem) >= l && elem[0:l] == "ages" {
+									elem = elem[l:]
+								} else {
+									break
 								}
 
-								return
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleGetWebsiteIDPagesRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+
+								elem = origElem
+							case 'r': // Prefix: "roperties"
+								origElem := elem
+								if l := len("roperties"); len(elem) >= l && elem[0:l] == "roperties" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleGetWebsiteIDPropertiesRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+
+								elem = origElem
 							}
 
 							elem = origElem
@@ -1169,28 +1207,68 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							}
 
 							elem = origElem
-						case 'p': // Prefix: "pages"
+						case 'p': // Prefix: "p"
 							origElem := elem
-							if l := len("pages"); len(elem) >= l && elem[0:l] == "pages" {
+							if l := len("p"); len(elem) >= l && elem[0:l] == "p" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
 							if len(elem) == 0 {
-								// Leaf node.
-								switch method {
-								case "GET":
-									r.name = "GetWebsiteIDPages"
-									r.summary = "Get Page Stats"
-									r.operationID = "get-website-id-pages"
-									r.pathPattern = "/website/{hostname}/pages"
-									r.args = args
-									r.count = 1
-									return r, true
-								default:
-									return
+								break
+							}
+							switch elem[0] {
+							case 'a': // Prefix: "ages"
+								origElem := elem
+								if l := len("ages"); len(elem) >= l && elem[0:l] == "ages" {
+									elem = elem[l:]
+								} else {
+									break
 								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "GET":
+										r.name = "GetWebsiteIDPages"
+										r.summary = "Get Page Stats"
+										r.operationID = "get-website-id-pages"
+										r.pathPattern = "/website/{hostname}/pages"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+
+								elem = origElem
+							case 'r': // Prefix: "roperties"
+								origElem := elem
+								if l := len("roperties"); len(elem) >= l && elem[0:l] == "roperties" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "GET":
+										r.name = "GetWebsiteIDProperties"
+										r.summary = "Get Property Stats"
+										r.operationID = "get-website-id-properties"
+										r.pathPattern = "/website/{hostname}/properties"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+
+								elem = origElem
 							}
 
 							elem = origElem

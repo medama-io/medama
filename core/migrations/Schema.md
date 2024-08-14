@@ -21,7 +21,7 @@ Stores user data. Currently, only a single `admin` user is supported.
 
 ```json
 {
-    "script_type": string, // 'default' or 'tagged-events'
+    "script_type": string, // Comma separated string of script features. Can only include 'default' or 'tagged-events'.
     "language": string, // Only supports 'en' for now
 }
 ```

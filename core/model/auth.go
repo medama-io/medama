@@ -11,5 +11,5 @@ const (
 	SessionCookieName = "_me_sess"
 	// SessionDuration is the duration of a session.
 	// TODO: Make this configurable.
-	SessionDuration = 12 * time.Hour
+	SessionDuration = 30 * 24 * time.Hour // 30 days
 )

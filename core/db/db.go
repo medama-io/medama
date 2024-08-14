@@ -86,4 +86,6 @@ type AnalyticsClient interface {
 	GetWebsiteUTMMediumsSummary(ctx context.Context, filter *Filters) ([]*model.StatsUTMMediumsSummary, error)
 	GetWebsiteUTMCampaigns(ctx context.Context, filter *Filters) ([]*model.StatsUTMCampaigns, error)
 	GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *Filters) ([]*model.StatsUTMCampaignsSummary, error)
+	// Custom Properties
+	GetWebsiteCustomProperties(ctx context.Context, filter *Filters) ([]*model.StatsCustomProperties, error)
 }

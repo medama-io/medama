@@ -51,29 +51,30 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 	s.Error = val
 }
 
-func (*BadRequestError) deleteUserRes()            {}
-func (*BadRequestError) deleteWebsitesIDRes()      {}
-func (*BadRequestError) getEventPingRes()          {}
-func (*BadRequestError) getUserRes()               {}
-func (*BadRequestError) getWebsiteIDBrowsersRes()  {}
-func (*BadRequestError) getWebsiteIDCampaignsRes() {}
-func (*BadRequestError) getWebsiteIDCountryRes()   {}
-func (*BadRequestError) getWebsiteIDDeviceRes()    {}
-func (*BadRequestError) getWebsiteIDLanguageRes()  {}
-func (*BadRequestError) getWebsiteIDMediumsRes()   {}
-func (*BadRequestError) getWebsiteIDOsRes()        {}
-func (*BadRequestError) getWebsiteIDPagesRes()     {}
-func (*BadRequestError) getWebsiteIDReferrersRes() {}
-func (*BadRequestError) getWebsiteIDSourcesRes()   {}
-func (*BadRequestError) getWebsiteIDSummaryRes()   {}
-func (*BadRequestError) getWebsiteIDTimeRes()      {}
-func (*BadRequestError) getWebsitesIDRes()         {}
-func (*BadRequestError) getWebsitesRes()           {}
-func (*BadRequestError) patchUserRes()             {}
-func (*BadRequestError) patchWebsitesIDRes()       {}
-func (*BadRequestError) postAuthLoginRes()         {}
-func (*BadRequestError) postEventHitRes()          {}
-func (*BadRequestError) postWebsitesRes()          {}
+func (*BadRequestError) deleteUserRes()             {}
+func (*BadRequestError) deleteWebsitesIDRes()       {}
+func (*BadRequestError) getEventPingRes()           {}
+func (*BadRequestError) getUserRes()                {}
+func (*BadRequestError) getWebsiteIDBrowsersRes()   {}
+func (*BadRequestError) getWebsiteIDCampaignsRes()  {}
+func (*BadRequestError) getWebsiteIDCountryRes()    {}
+func (*BadRequestError) getWebsiteIDDeviceRes()     {}
+func (*BadRequestError) getWebsiteIDLanguageRes()   {}
+func (*BadRequestError) getWebsiteIDMediumsRes()    {}
+func (*BadRequestError) getWebsiteIDOsRes()         {}
+func (*BadRequestError) getWebsiteIDPagesRes()      {}
+func (*BadRequestError) getWebsiteIDPropertiesRes() {}
+func (*BadRequestError) getWebsiteIDReferrersRes()  {}
+func (*BadRequestError) getWebsiteIDSourcesRes()    {}
+func (*BadRequestError) getWebsiteIDSummaryRes()    {}
+func (*BadRequestError) getWebsiteIDTimeRes()       {}
+func (*BadRequestError) getWebsitesIDRes()          {}
+func (*BadRequestError) getWebsitesRes()            {}
+func (*BadRequestError) patchUserRes()              {}
+func (*BadRequestError) patchWebsitesIDRes()        {}
+func (*BadRequestError) postAuthLoginRes()          {}
+func (*BadRequestError) postEventHitRes()           {}
+func (*BadRequestError) postWebsitesRes()           {}
 
 type BadRequestErrorError struct {
 	Code    int32  `json:"code"`
@@ -645,20 +646,21 @@ func (s *ForbiddenError) SetError(val ForbiddenErrorError) {
 	s.Error = val
 }
 
-func (*ForbiddenError) deleteUserRes()            {}
-func (*ForbiddenError) deleteWebsitesIDRes()      {}
-func (*ForbiddenError) getWebsiteIDBrowsersRes()  {}
-func (*ForbiddenError) getWebsiteIDCampaignsRes() {}
-func (*ForbiddenError) getWebsiteIDCountryRes()   {}
-func (*ForbiddenError) getWebsiteIDDeviceRes()    {}
-func (*ForbiddenError) getWebsiteIDLanguageRes()  {}
-func (*ForbiddenError) getWebsiteIDMediumsRes()   {}
-func (*ForbiddenError) getWebsiteIDOsRes()        {}
-func (*ForbiddenError) getWebsiteIDReferrersRes() {}
-func (*ForbiddenError) getWebsiteIDSourcesRes()   {}
-func (*ForbiddenError) patchUserRes()             {}
-func (*ForbiddenError) patchWebsitesIDRes()       {}
-func (*ForbiddenError) postWebsitesRes()          {}
+func (*ForbiddenError) deleteUserRes()             {}
+func (*ForbiddenError) deleteWebsitesIDRes()       {}
+func (*ForbiddenError) getWebsiteIDBrowsersRes()   {}
+func (*ForbiddenError) getWebsiteIDCampaignsRes()  {}
+func (*ForbiddenError) getWebsiteIDCountryRes()    {}
+func (*ForbiddenError) getWebsiteIDDeviceRes()     {}
+func (*ForbiddenError) getWebsiteIDLanguageRes()   {}
+func (*ForbiddenError) getWebsiteIDMediumsRes()    {}
+func (*ForbiddenError) getWebsiteIDOsRes()         {}
+func (*ForbiddenError) getWebsiteIDPropertiesRes() {}
+func (*ForbiddenError) getWebsiteIDReferrersRes()  {}
+func (*ForbiddenError) getWebsiteIDSourcesRes()    {}
+func (*ForbiddenError) patchUserRes()              {}
+func (*ForbiddenError) patchWebsitesIDRes()        {}
+func (*ForbiddenError) postWebsitesRes()           {}
 
 type ForbiddenErrorError struct {
 	Code    int32  `json:"code"`
@@ -819,31 +821,32 @@ func (s *InternalServerError) SetError(val InternalServerErrorError) {
 	s.Error = val
 }
 
-func (*InternalServerError) deleteUserRes()            {}
-func (*InternalServerError) deleteWebsitesIDRes()      {}
-func (*InternalServerError) getEventPingRes()          {}
-func (*InternalServerError) getUserRes()               {}
-func (*InternalServerError) getUserUsageRes()          {}
-func (*InternalServerError) getWebsiteIDBrowsersRes()  {}
-func (*InternalServerError) getWebsiteIDCampaignsRes() {}
-func (*InternalServerError) getWebsiteIDCountryRes()   {}
-func (*InternalServerError) getWebsiteIDDeviceRes()    {}
-func (*InternalServerError) getWebsiteIDLanguageRes()  {}
-func (*InternalServerError) getWebsiteIDMediumsRes()   {}
-func (*InternalServerError) getWebsiteIDOsRes()        {}
-func (*InternalServerError) getWebsiteIDPagesRes()     {}
-func (*InternalServerError) getWebsiteIDReferrersRes() {}
-func (*InternalServerError) getWebsiteIDSourcesRes()   {}
-func (*InternalServerError) getWebsiteIDSummaryRes()   {}
-func (*InternalServerError) getWebsiteIDTimeRes()      {}
-func (*InternalServerError) getWebsitesIDRes()         {}
-func (*InternalServerError) getWebsitesRes()           {}
-func (*InternalServerError) patchUserRes()             {}
-func (*InternalServerError) patchWebsitesIDRes()       {}
-func (*InternalServerError) postAuthLoginRes()         {}
-func (*InternalServerError) postAuthLogoutRes()        {}
-func (*InternalServerError) postEventHitRes()          {}
-func (*InternalServerError) postWebsitesRes()          {}
+func (*InternalServerError) deleteUserRes()             {}
+func (*InternalServerError) deleteWebsitesIDRes()       {}
+func (*InternalServerError) getEventPingRes()           {}
+func (*InternalServerError) getUserRes()                {}
+func (*InternalServerError) getUserUsageRes()           {}
+func (*InternalServerError) getWebsiteIDBrowsersRes()   {}
+func (*InternalServerError) getWebsiteIDCampaignsRes()  {}
+func (*InternalServerError) getWebsiteIDCountryRes()    {}
+func (*InternalServerError) getWebsiteIDDeviceRes()     {}
+func (*InternalServerError) getWebsiteIDLanguageRes()   {}
+func (*InternalServerError) getWebsiteIDMediumsRes()    {}
+func (*InternalServerError) getWebsiteIDOsRes()         {}
+func (*InternalServerError) getWebsiteIDPagesRes()      {}
+func (*InternalServerError) getWebsiteIDPropertiesRes() {}
+func (*InternalServerError) getWebsiteIDReferrersRes()  {}
+func (*InternalServerError) getWebsiteIDSourcesRes()    {}
+func (*InternalServerError) getWebsiteIDSummaryRes()    {}
+func (*InternalServerError) getWebsiteIDTimeRes()       {}
+func (*InternalServerError) getWebsitesIDRes()          {}
+func (*InternalServerError) getWebsitesRes()            {}
+func (*InternalServerError) patchUserRes()              {}
+func (*InternalServerError) patchWebsitesIDRes()        {}
+func (*InternalServerError) postAuthLoginRes()          {}
+func (*InternalServerError) postAuthLogoutRes()         {}
+func (*InternalServerError) postEventHitRes()           {}
+func (*InternalServerError) postWebsitesRes()           {}
 
 type InternalServerErrorError struct {
 	Code    int32  `json:"code"`
@@ -884,26 +887,27 @@ func (s *NotFoundError) SetError(val NotFoundErrorError) {
 	s.Error = val
 }
 
-func (*NotFoundError) deleteUserRes()            {}
-func (*NotFoundError) deleteWebsitesIDRes()      {}
-func (*NotFoundError) getUserRes()               {}
-func (*NotFoundError) getWebsiteIDBrowsersRes()  {}
-func (*NotFoundError) getWebsiteIDCampaignsRes() {}
-func (*NotFoundError) getWebsiteIDCountryRes()   {}
-func (*NotFoundError) getWebsiteIDDeviceRes()    {}
-func (*NotFoundError) getWebsiteIDLanguageRes()  {}
-func (*NotFoundError) getWebsiteIDMediumsRes()   {}
-func (*NotFoundError) getWebsiteIDOsRes()        {}
-func (*NotFoundError) getWebsiteIDPagesRes()     {}
-func (*NotFoundError) getWebsiteIDReferrersRes() {}
-func (*NotFoundError) getWebsiteIDSourcesRes()   {}
-func (*NotFoundError) getWebsiteIDSummaryRes()   {}
-func (*NotFoundError) getWebsiteIDTimeRes()      {}
-func (*NotFoundError) getWebsitesIDRes()         {}
-func (*NotFoundError) getWebsitesRes()           {}
-func (*NotFoundError) patchUserRes()             {}
-func (*NotFoundError) patchWebsitesIDRes()       {}
-func (*NotFoundError) postEventHitRes()          {}
+func (*NotFoundError) deleteUserRes()             {}
+func (*NotFoundError) deleteWebsitesIDRes()       {}
+func (*NotFoundError) getUserRes()                {}
+func (*NotFoundError) getWebsiteIDBrowsersRes()   {}
+func (*NotFoundError) getWebsiteIDCampaignsRes()  {}
+func (*NotFoundError) getWebsiteIDCountryRes()    {}
+func (*NotFoundError) getWebsiteIDDeviceRes()     {}
+func (*NotFoundError) getWebsiteIDLanguageRes()   {}
+func (*NotFoundError) getWebsiteIDMediumsRes()    {}
+func (*NotFoundError) getWebsiteIDOsRes()         {}
+func (*NotFoundError) getWebsiteIDPagesRes()      {}
+func (*NotFoundError) getWebsiteIDPropertiesRes() {}
+func (*NotFoundError) getWebsiteIDReferrersRes()  {}
+func (*NotFoundError) getWebsiteIDSourcesRes()    {}
+func (*NotFoundError) getWebsiteIDSummaryRes()    {}
+func (*NotFoundError) getWebsiteIDTimeRes()       {}
+func (*NotFoundError) getWebsitesIDRes()          {}
+func (*NotFoundError) getWebsitesRes()            {}
+func (*NotFoundError) patchUserRes()              {}
+func (*NotFoundError) patchWebsitesIDRes()        {}
+func (*NotFoundError) postEventHitRes()           {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`
@@ -1901,6 +1905,61 @@ func (s *StatsPagesItem) SetDuration(val OptInt) {
 	s.Duration = val
 }
 
+type StatsProperties []StatsPropertiesItem
+
+func (*StatsProperties) getWebsiteIDPropertiesRes() {}
+
+type StatsPropertiesItem struct {
+	// Custom property name.
+	Name string `json:"name"`
+	// Custom property value.
+	Value string `json:"value"`
+	// Number of events for custom property.
+	Events int `json:"events"`
+	// Number of unique visitors for custom property.
+	Visitors int `json:"visitors"`
+}
+
+// GetName returns the value of Name.
+func (s *StatsPropertiesItem) GetName() string {
+	return s.Name
+}
+
+// GetValue returns the value of Value.
+func (s *StatsPropertiesItem) GetValue() string {
+	return s.Value
+}
+
+// GetEvents returns the value of Events.
+func (s *StatsPropertiesItem) GetEvents() int {
+	return s.Events
+}
+
+// GetVisitors returns the value of Visitors.
+func (s *StatsPropertiesItem) GetVisitors() int {
+	return s.Visitors
+}
+
+// SetName sets the value of Name.
+func (s *StatsPropertiesItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetValue sets the value of Value.
+func (s *StatsPropertiesItem) SetValue(val string) {
+	s.Value = val
+}
+
+// SetEvents sets the value of Events.
+func (s *StatsPropertiesItem) SetEvents(val int) {
+	s.Events = val
+}
+
+// SetVisitors sets the value of Visitors.
+func (s *StatsPropertiesItem) SetVisitors(val int) {
+	s.Visitors = val
+}
+
 type StatsReferrers []StatsReferrersItem
 
 func (*StatsReferrers) getWebsiteIDReferrersRes() {}
@@ -2453,29 +2512,30 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 	s.Error = val
 }
 
-func (*UnauthorisedError) deleteUserRes()            {}
-func (*UnauthorisedError) deleteWebsitesIDRes()      {}
-func (*UnauthorisedError) getUserRes()               {}
-func (*UnauthorisedError) getUserUsageRes()          {}
-func (*UnauthorisedError) getWebsiteIDBrowsersRes()  {}
-func (*UnauthorisedError) getWebsiteIDCampaignsRes() {}
-func (*UnauthorisedError) getWebsiteIDCountryRes()   {}
-func (*UnauthorisedError) getWebsiteIDDeviceRes()    {}
-func (*UnauthorisedError) getWebsiteIDLanguageRes()  {}
-func (*UnauthorisedError) getWebsiteIDMediumsRes()   {}
-func (*UnauthorisedError) getWebsiteIDOsRes()        {}
-func (*UnauthorisedError) getWebsiteIDPagesRes()     {}
-func (*UnauthorisedError) getWebsiteIDReferrersRes() {}
-func (*UnauthorisedError) getWebsiteIDSourcesRes()   {}
-func (*UnauthorisedError) getWebsiteIDSummaryRes()   {}
-func (*UnauthorisedError) getWebsiteIDTimeRes()      {}
-func (*UnauthorisedError) getWebsitesIDRes()         {}
-func (*UnauthorisedError) getWebsitesRes()           {}
-func (*UnauthorisedError) patchUserRes()             {}
-func (*UnauthorisedError) patchWebsitesIDRes()       {}
-func (*UnauthorisedError) postAuthLoginRes()         {}
-func (*UnauthorisedError) postAuthLogoutRes()        {}
-func (*UnauthorisedError) postWebsitesRes()          {}
+func (*UnauthorisedError) deleteUserRes()             {}
+func (*UnauthorisedError) deleteWebsitesIDRes()       {}
+func (*UnauthorisedError) getUserRes()                {}
+func (*UnauthorisedError) getUserUsageRes()           {}
+func (*UnauthorisedError) getWebsiteIDBrowsersRes()   {}
+func (*UnauthorisedError) getWebsiteIDCampaignsRes()  {}
+func (*UnauthorisedError) getWebsiteIDCountryRes()    {}
+func (*UnauthorisedError) getWebsiteIDDeviceRes()     {}
+func (*UnauthorisedError) getWebsiteIDLanguageRes()   {}
+func (*UnauthorisedError) getWebsiteIDMediumsRes()    {}
+func (*UnauthorisedError) getWebsiteIDOsRes()         {}
+func (*UnauthorisedError) getWebsiteIDPagesRes()      {}
+func (*UnauthorisedError) getWebsiteIDPropertiesRes() {}
+func (*UnauthorisedError) getWebsiteIDReferrersRes()  {}
+func (*UnauthorisedError) getWebsiteIDSourcesRes()    {}
+func (*UnauthorisedError) getWebsiteIDSummaryRes()    {}
+func (*UnauthorisedError) getWebsiteIDTimeRes()       {}
+func (*UnauthorisedError) getWebsitesIDRes()          {}
+func (*UnauthorisedError) getWebsitesRes()            {}
+func (*UnauthorisedError) patchUserRes()              {}
+func (*UnauthorisedError) patchWebsitesIDRes()        {}
+func (*UnauthorisedError) postAuthLoginRes()          {}
+func (*UnauthorisedError) postAuthLogoutRes()         {}
+func (*UnauthorisedError) postWebsitesRes()           {}
 
 type UnauthorisedErrorError struct {
 	Code    int32  `json:"code"`

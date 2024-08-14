@@ -2094,6 +2094,189 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 	}
 }
 
+// handleGetWebsiteIDPropertiesRequest handles get-website-id-properties operation.
+//
+// Get a list of custom properties and their stats.
+//
+// GET /website/{hostname}/properties
+func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var (
+		err          error
+		opErrContext = ogenerrors.OperationContext{
+			Name: "GetWebsiteIDProperties",
+			ID:   "get-website-id-properties",
+		}
+	)
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDProperties", r)
+			if err != nil {
+				err = &ogenerrors.SecurityError{
+					OperationContext: opErrContext,
+					Security:         "CookieAuth",
+					Err:              err,
+				}
+				defer recordError("Security:CookieAuth", err)
+				s.cfg.ErrorHandler(ctx, w, r, err)
+				return
+			}
+			if ok {
+				satisfied[0] |= 1 << 0
+				ctx = sctx
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			err = &ogenerrors.SecurityError{
+				OperationContext: opErrContext,
+				Err:              ogenerrors.ErrSecurityRequirementIsNotSatisfied,
+			}
+			defer recordError("Security", err)
+			s.cfg.ErrorHandler(ctx, w, r, err)
+			return
+		}
+	}
+	params, err := decodeGetWebsiteIDPropertiesParams(args, argsEscaped, r)
+	if err != nil {
+		err = &ogenerrors.DecodeParamsError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		defer recordError("DecodeParams", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	var response GetWebsiteIDPropertiesRes
+	if m := s.cfg.Middleware; m != nil {
+		mreq := middleware.Request{
+			Context:          ctx,
+			OperationName:    "GetWebsiteIDProperties",
+			OperationSummary: "Get Property Stats",
+			OperationID:      "get-website-id-properties",
+			Body:             nil,
+			Params: middleware.Parameters{
+				{
+					Name: "_me_sess",
+					In:   "cookie",
+				}: params.MeSess,
+				{
+					Name: "hostname",
+					In:   "path",
+				}: params.Hostname,
+				{
+					Name: "start",
+					In:   "query",
+				}: params.Start,
+				{
+					Name: "end",
+					In:   "query",
+				}: params.End,
+				{
+					Name: "path",
+					In:   "query",
+				}: params.Path,
+				{
+					Name: "referrer",
+					In:   "query",
+				}: params.Referrer,
+				{
+					Name: "utm_source",
+					In:   "query",
+				}: params.UtmSource,
+				{
+					Name: "utm_medium",
+					In:   "query",
+				}: params.UtmMedium,
+				{
+					Name: "utm_campaign",
+					In:   "query",
+				}: params.UtmCampaign,
+				{
+					Name: "browser",
+					In:   "query",
+				}: params.Browser,
+				{
+					Name: "os",
+					In:   "query",
+				}: params.Os,
+				{
+					Name: "device",
+					In:   "query",
+				}: params.Device,
+				{
+					Name: "country",
+					In:   "query",
+				}: params.Country,
+				{
+					Name: "language",
+					In:   "query",
+				}: params.Language,
+				{
+					Name: "limit",
+					In:   "query",
+				}: params.Limit,
+				{
+					Name: "offset",
+					In:   "query",
+				}: params.Offset,
+			},
+			Raw: r,
+		}
+
+		type (
+			Request  = struct{}
+			Params   = GetWebsiteIDPropertiesParams
+			Response = GetWebsiteIDPropertiesRes
+		)
+		response, err = middleware.HookMiddleware[
+			Request,
+			Params,
+			Response,
+		](
+			m,
+			mreq,
+			unpackGetWebsiteIDPropertiesParams,
+			func(ctx context.Context, request Request, params Params) (response Response, err error) {
+				response, err = s.h.GetWebsiteIDProperties(ctx, params)
+				return response, err
+			},
+		)
+	} else {
+		response, err = s.h.GetWebsiteIDProperties(ctx, params)
+	}
+	if err != nil {
+		defer recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	if err := encodeGetWebsiteIDPropertiesResponse(response, w); err != nil {
+		defer recordError("EncodeResponse", err)
+		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
+			s.cfg.ErrorHandler(ctx, w, r, err)
+		}
+		return
+	}
+}
+
 // handleGetWebsiteIDReferrersRequest handles get-website-id-referrers operation.
 //
 // Get a list of referrers and their stats.
