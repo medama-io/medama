@@ -14,10 +14,10 @@
 	},
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.0.20",
-		"@mantine/charts": "^7.12.0",
-		"@mantine/core": "^7.12.0",
-		"@mantine/form": "^7.12.0",
-		"@mantine/notifications": "^7.12.0",
+		"@mantine/charts": "^7.12.1",
+		"@mantine/core": "^7.12.1",
+		"@mantine/form": "^7.12.1",
+		"@mantine/notifications": "^7.12.1",
 		"@radix-ui/react-accessible-icon": "^1.1.0",
 		"@radix-ui/react-checkbox": "^1.1.1",
 		"@radix-ui/react-dialog": "^1.1.1",
@@ -34,7 +34,7 @@
 		"@remix-run/serve": "^2.11.1",
 		"byte-size": "^9.0.0",
 		"date-fns": "^3.6.0",
-		"isbot": "^5.1.14",
+		"isbot": "^5.1.15",
 		"mantine-datatable": "^7.11.3",
 		"mantine-form-valibot-resolver": "^2.0.1",
 		"react": "18.3.0-canary-8039e6d0b-20231026",
@@ -55,11 +55,16 @@
 		"openapi-typescript": "^7.3.0",
 		"postcss": "^8.4.41",
 		"postcss-custom-media": "^11.0.0",
-		"postcss-lightningcss": "^1.0.0",
+		"postcss-lightningcss": "^1.0.1",
 		"postcss-preset-mantine": "^1.17.0",
 		"postcss-simple-vars": "^7.0.1",
 		"typescript": "^5.5.4",
-		"vite": "^5.4.0",
+		"vite": "^5.4.1",
 		"vite-tsconfig-paths": "^5.0.1"
+	},
+	"overrides": {
+		"react": "18.3.0-canary-8039e6d0b-20231026",
+		"react-dom": "18.3.0-canary-8039e6d0b-20231026",
+		"react-is": "18.3.0-canary-8039e6d0b-20231026"
 	}
 }

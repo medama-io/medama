@@ -64,6 +64,7 @@ tasks:
 
   lint:
     cmds:
+      - go vet ./...
       - golangci-lint run ./... --fix
 
   coverage:
