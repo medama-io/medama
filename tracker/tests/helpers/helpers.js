@@ -1,6 +1,6 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { loadTests } from './load';
+import { pageTests } from './page';
 
 /**
  * @typedef {('simple'|'history')} Tests
@@ -30,6 +30,8 @@ import { loadTests } from './load';
  * @property {import('@playwright/test').Request} request
  * @property {import('@playwright/test').Response} response
  */
+
+const TIMEOUT_DELAY = 1500;
 
 /**
  * Get the browser name from the page context.
@@ -199,8 +201,8 @@ const createURL = (name, path, relative = true) =>
  * @param {Tests} name
  */
 const createTests = (name) => {
-	test.describe(name, () => {
-		loadTests(name);
+	test.describe(name + ' page tests', () => {
+		pageTests(name);
 	});
 };
 
@@ -210,4 +212,5 @@ export {
 	createURL,
 	getBrowser,
 	matchRequests,
+	TIMEOUT_DELAY,
 };

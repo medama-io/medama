@@ -36,6 +36,10 @@ tasks:
     cmds:
       - bun run e2e:ui
 
+  test:setup:
+    cmds:
+      - bun playwright install --with-deps chromium firefox webkit chrome msedge
+
   serve:
     cmds:
       - bun run e2e:serve

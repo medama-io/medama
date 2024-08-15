@@ -1,15 +1,18 @@
 // @ts-check
 import { test } from '@playwright/test';
-import { addRequestListeners, createURL, matchRequests } from './helpers';
-
-const TIMEOUT_DELAY = 1000;
+import {
+	addRequestListeners,
+	createURL,
+	matchRequests,
+	TIMEOUT_DELAY,
+} from './helpers';
 
 /**
  * Create test block for all loading related tests.
  *
  * @param {import('./helpers').Tests} name
  */
-const loadTests = (name) => {
+const pageTests = (name) => {
 	test.describe('load', () => {
 		test('unique visitor load event', async ({ page }) => {
 			const expectedRequests = [
@@ -277,4 +280,4 @@ const loadTests = (name) => {
 	});
 };
 
-export { loadTests };
+export { pageTests };
