@@ -5,7 +5,12 @@
 	padding: 16px;
 	gap: 16px;
 
-	border-radius: 16px;
+	border-radius: 16px 16px 0 0;
+
+	&[data-end="true"] {
+		border-radius: 0 0 16px 16px;
+		padding: 0 16px 16px 16px;
+	}
 }
 
 .root {

@@ -107,7 +107,7 @@ export default function Index() {
 					<StatsDisplay key={group.label} data={group.data} />
 				))}
 			</SimpleGrid>
-			<div className={StatsDisplayClasses.grid}>
+			<div className={StatsDisplayClasses.grid} data-end="true">
 				<StatsDisplay data={properties.data} />
 			</div>
 		</>
