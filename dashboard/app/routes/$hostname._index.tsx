@@ -92,11 +92,24 @@ export default function Index() {
 		},
 	];
 
+	const properties: StatsGroups = {
+		label: 'properties',
+		data: [createStatsData('Properties', stats.properties, 'path')],
+	};
+
 	return (
-		<SimpleGrid cols={{ base: 1, lg: 2 }} className={StatsDisplayClasses.grid}>
-			{statsGroups.map((group) => (
-				<StatsDisplay key={group.label} data={group.data} />
-			))}
-		</SimpleGrid>
+		<>
+			<SimpleGrid
+				cols={{ base: 1, lg: 2 }}
+				className={StatsDisplayClasses.grid}
+			>
+				{statsGroups.map((group) => (
+					<StatsDisplay key={group.label} data={group.data} />
+				))}
+			</SimpleGrid>
+			<div className={StatsDisplayClasses.grid}>
+				<StatsDisplay data={properties.data} />
+			</div>
+		</>
 	);
 }

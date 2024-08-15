@@ -154,6 +154,9 @@ type Filters struct {
 	// Pagination
 	Limit  int
 	Offset int
+
+	// Type
+	IsEvent bool
 }
 
 // addCondition appends a condition to the query if the filter has a non-empty value.
@@ -200,10 +203,18 @@ func (f Filters) WhereString() string {
 
 	// Time period filters
 	if f.PeriodStart != "" {
-		query.WriteString(" AND date_created >= CAST(:start_period AS TIMESTAMPTZ)")
+		if f.IsEvent {
+			query.WriteString(" AND events.date_created >= CAST(:start_period AS TIMESTAMPTZ)")
+		} else {
+			query.WriteString(" AND views.date_created >= CAST(:start_period AS TIMESTAMPTZ)")
+		}
 	}
 	if f.PeriodEnd != "" {
-		query.WriteString(" AND date_created <= CAST(:end_period AS TIMESTAMPTZ)")
+		if f.IsEvent {
+			query.WriteString(" AND events.date_created <= CAST(:end_period AS TIMESTAMPTZ)")
+		} else {
+			query.WriteString(" AND views.date_created <= CAST(:end_period AS TIMESTAMPTZ)")
+		}
 	}
 
 	return query.String()

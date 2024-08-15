@@ -84,6 +84,13 @@ const statsLanguages = async (
 	return { data: await res.json(), res };
 };
 
+const statsProperties = async (
+	opts: ClientOptions<'StatsProperties'>,
+): Promise<DataResponse<'StatsProperties'>> => {
+	const res = await client('/website/{hostname}/properties', opts);
+	return { data: await res.json(), res };
+};
+
 export {
 	statsBrowsers,
 	statsCampaigns,
@@ -97,4 +104,5 @@ export {
 	statsSources,
 	statsSummary,
 	statsTime,
+	statsProperties,
 };

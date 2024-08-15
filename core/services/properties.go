@@ -20,6 +20,7 @@ func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebs
 
 	// Create filter for database query
 	filters := createFilters(params, params.Hostname)
+	filters.IsEvent = true
 
 	// Get the properties for the website
 	properties, err := h.analyticsDB.GetWebsiteCustomProperties(ctx, filters)

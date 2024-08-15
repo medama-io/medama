@@ -10,6 +10,7 @@ const DATASETS = [
 	'devices',
 	'countries',
 	'languages',
+	'properties',
 ] as const;
 
 type Dataset = (typeof DATASETS)[number];
@@ -47,6 +48,8 @@ interface DataRow {
 	country?: string;
 	// Languages
 	language?: string;
+	// Properties
+	property?: string;
 }
 
 interface StatsValue {

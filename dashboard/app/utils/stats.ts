@@ -9,31 +9,19 @@ import {
 	statsMediums,
 	statsOS,
 	statsPages,
+	statsProperties,
 	statsReferrers,
 	statsSources,
 	statsSummary,
 	statsTime,
 } from '@/api/stats';
+import { DATASETS, type Dataset } from '@/components/stats/types';
 
 import { generateFilters } from './filters';
 
-const datasets = [
-	'summary',
-	'pages',
-	'time',
-	'referrers',
-	'sources',
-	'mediums',
-	'campaigns',
-	'browsers',
-	'os',
-	'devices',
-	'countries',
-	'languages',
-] as const;
-
-type DatasetItem = (typeof datasets)[number];
-type Datasets = readonly DatasetItem[];
+const DataSetWithSummary = [...DATASETS, 'summary'] as const;
+type DatasetItem = (typeof DataSetWithSummary)[number];
+type Datasets = readonly Dataset[];
 
 interface FetchStatsOptions {
 	dataset?: Datasets;
@@ -43,14 +31,14 @@ interface FetchStatsOptions {
 }
 
 const isDatasetItem = (value: string): value is DatasetItem =>
-	datasets.includes(value as DatasetItem);
+	DataSetWithSummary.includes(value as DatasetItem);
 
 const fetchStats = async (
 	request: Request,
 	params: Params<string>,
 	options: FetchStatsOptions,
 ) => {
-	const { dataset = datasets, isSummary = false, limit } = options;
+	const { dataset = DataSetWithSummary, isSummary = false, limit } = options;
 	const set = new Set(dataset);
 	// Convert search params to filters
 	const searchParams = new URL(request.url).searchParams;
@@ -71,6 +59,7 @@ const fetchStats = async (
 		devices,
 		countries,
 		languages,
+		properties,
 	] = await Promise.all([
 		set.has('summary')
 			? statsSummary({
@@ -109,6 +98,7 @@ const fetchStats = async (
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
+						// If there is no referrer filter, group the data.
 						grouped: !searchParams.has('referrer[eq]'),
 						...filters,
 					},
@@ -193,6 +183,15 @@ const fetchStats = async (
 					},
 				})
 			: undefined,
+
+		set.has('properties')
+			? statsProperties({
+					pathKey: params.hostname,
+					query: {
+						...filters,
+					},
+				})
+			: undefined,
 	]);
 
 	return {
@@ -208,6 +207,7 @@ const fetchStats = async (
 		devices: devices?.data,
 		countries: countries?.data,
 		languages: languages?.data,
+		properties: properties?.data,
 	};
 };
 

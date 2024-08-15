@@ -291,7 +291,7 @@
 		// Find the closest element with a data-medama-* attribute.
 		const target =
 			event.target instanceof HTMLElement
-				? event.target.closest('[data-medama-*]')
+				? event.target.closest('[data-medama-]')
 				: null;
 		if (!target) return;
 
