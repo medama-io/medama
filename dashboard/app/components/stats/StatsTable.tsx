@@ -50,6 +50,7 @@ const LABEL_MAP: Record<Dataset, string> = {
 	devices: 'Devices',
 	countries: 'Countries',
 	languages: 'Languages',
+	properties: 'Properties',
 } as const;
 
 const ACCESSOR_MAP: Record<Dataset, keyof DataRow> = {
@@ -64,6 +65,7 @@ const ACCESSOR_MAP: Record<Dataset, keyof DataRow> = {
 	devices: 'device',
 	countries: 'country',
 	languages: 'language',
+	properties: 'property',
 } as const;
 
 const FILTER_MAP: Record<Dataset, Filter> = {
@@ -78,6 +80,7 @@ const FILTER_MAP: Record<Dataset, Filter> = {
 	devices: 'device',
 	countries: 'country',
 	languages: 'language',
+	properties: 'property',
 } as const;
 
 const PAGE_SIZES = [10, 25, 50, 100] as const;
@@ -414,6 +417,16 @@ const getColumnsForQuery = (
 				PRESET_COLUMNS.visitors_percentage,
 				PRESET_COLUMNS.bounce_percentage,
 				PRESET_COLUMNS.duration,
+			];
+		case 'properties':
+			return [
+				{
+					accessor: ACCESSOR_MAP[query],
+					title: 'Property',
+					width: '100%',
+					render: (record) => record.property || 'Unknown',
+				},
+				PRESET_COLUMNS.visitors,
 			];
 		default:
 			throw new Error(`Invalid query: ${query}`);

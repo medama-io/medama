@@ -93,6 +93,7 @@ const FILTERS = [
 	'device',
 	'country',
 	'language',
+	'property',
 ] as const;
 
 type Filter = (typeof FILTERS)[number];

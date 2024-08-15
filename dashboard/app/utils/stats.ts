@@ -21,7 +21,7 @@ import { generateFilters } from './filters';
 
 const DataSetWithSummary = [...DATASETS, 'summary'] as const;
 type DatasetItem = (typeof DataSetWithSummary)[number];
-type Datasets = readonly Dataset[];
+type Datasets = readonly DatasetItem[];
 
 interface FetchStatsOptions {
 	dataset?: Datasets;

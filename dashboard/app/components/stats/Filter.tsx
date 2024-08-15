@@ -92,6 +92,10 @@ const FILTER_OPTIONS: FilterOptions = {
 		label: 'Language',
 		placeholder: 'e.g. English',
 	},
+	property: {
+		label: 'Property',
+		placeholder: 'e.g. logged_in',
+	},
 };
 
 // Add this type guard function
