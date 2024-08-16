@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright with dependencies
-        run: bun playwright install --with-deps chromium firefox webkit chrome msedge
+        run: task test:setup
         working-directory: "./tracker"
 
       - name: Run Playwright tests

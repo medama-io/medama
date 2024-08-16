@@ -14,10 +14,6 @@ Bun.serve({
 			return new Response(null, { status: 200 });
 		}
 
-		if (url.pathname.endsWith('/script.js')) {
-			return new Response(Bun.file(__dirname + '/../../dist/default.js'));
-		}
-
 		for (const path of ACCEPTED_PATHS) {
 			if (url.pathname.startsWith(path)) {
 				const file = __dirname + url.pathname;
@@ -26,8 +22,18 @@ Bun.serve({
 			}
 		}
 
-		// reject all other routes
-		console.error('Not found:', url.pathname);
-		return new Response(null, { status: 404 });
+		// Proxy /script.js to serve local file in dist folder
+		if (url.pathname === '/script.js') {
+			console.log('Serving:', url.pathname);
+			return new Response(
+				Bun.file(__dirname + '/../../dist/tagged-events.min.js'),
+			);
+		}
+
+		// Proxy all other routes to API
+		console.log('Proxying:', url.pathname);
+		const newURL = new URL(req.url);
+		newURL.port = '8080';
+		return fetch(new Request(newURL, req));
 	},
 });

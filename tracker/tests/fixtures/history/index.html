@@ -23,7 +23,14 @@
 				>Contact</a
 			>
 		</nav>
-		<div id="content"></div>
+		<div id="content">
+
+		</div>
+		<div>
+			<button data-testid="tagged-left-click" data-medama-button="left">Tagged Event Left Click</button>
+			<button data-testid="tagged-middle-click" data-medama-button="middle">Tagged Event Middle Click</button>
+			<button data-testid="tagged-right-click" data-medama-button="right">Tagged Event Right Click</button>
+		</div>
 
 		<script>
 			function navigate(path) {
@@ -51,6 +58,6 @@
 			window.addEventListener("popstate", router);
 			router(); // Initial load
 		</script>
-		<script defer src="http://localhost:8080/script.js"></script>
+		<script defer src="http://localhost:3000/script.js"></script>
 	</body>
 </html>
