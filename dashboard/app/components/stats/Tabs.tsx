@@ -1,11 +1,14 @@
-import { Tabs, Text, UnstyledButton } from '@mantine/core';
-import { Link, useSearchParams } from '@remix-run/react';
+import * as Tabs from '@radix-ui/react-tabs';
+import { useSearchParams } from '@remix-run/react';
 
-import classes from './StatsDisplay.module.css';
+import { ButtonLink } from '@/components/Button';
+
 import { StatsItem } from './StatsItem';
 import type { StatsTab } from './types';
 
-interface StatsDisplayProps {
+import classes from './Tabs.module.css';
+
+interface TabSelectProps {
 	data: StatsTab[];
 }
 
@@ -14,59 +17,54 @@ interface LoadMoreButtonProps {
 	searchParams: URLSearchParams;
 }
 
-export const StatsDisplay = ({ data }: StatsDisplayProps) => {
+const TabSelect = ({ data }: TabSelectProps) => {
 	const [searchParams] = useSearchParams();
 
 	return (
-		<Tabs
-			variant="unstyled"
-			defaultValue={data[0]?.label}
-			classNames={{
-				root: classes.root,
-				tab: classes.tab,
-				list: classes.list,
-			}}
-		>
-			<Tabs.List>
+		<Tabs.Root className={classes.root} defaultValue={data[0]?.label}>
+			<Tabs.List className={classes.list} aria-label="Select tab options">
 				{data.map((tab) => (
-					<Tabs.Tab key={tab.label} value={tab.label} aria-label={tab.label}>
+					<Tabs.Trigger
+						key={tab.label}
+						className={classes.trigger}
+						value={tab.label}
+						aria-label={tab.label}
+					>
 						{tab.label}
-					</Tabs.Tab>
+					</Tabs.Trigger>
 				))}
 			</Tabs.List>
 			{data.map((tab) => (
-				<Tabs.Panel key={tab.label} value={tab.label}>
+				<Tabs.Content key={tab.label} value={tab.label}>
 					<div className={classes.items} data-empty={tab.items.length === 0}>
 						{tab.items.map((item) => (
 							<StatsItem key={item.label} tab={tab.label} {...item} />
 						))}
 						{tab.items.length === 0 && (
-							<Text c="gray" fz={14}>
-								No records found...
-							</Text>
+							<span className={classes.empty}>No records found...</span>
 						)}
 					</div>
 					<LoadMoreButton tab={tab} searchParams={searchParams} />
-				</Tabs.Panel>
+				</Tabs.Content>
 			))}
-		</Tabs>
+		</Tabs.Root>
 	);
 };
 
 const LoadMoreButton = ({ tab, searchParams }: LoadMoreButtonProps) => (
-	<div className={classes.more}>
-		<UnstyledButton
-			component={Link}
+	<div className={classes['more-wrapper']}>
+		<ButtonLink
+			className={classes['more-button']}
 			to={{
 				pathname: `./${tab.label.toLowerCase()}`,
 				search: searchParams.toString(),
 			}}
 			prefetch="intent"
-			preventScrollReset
-			className={classes.button}
 			aria-label={`Load more ${tab.label} stats.`}
 		>
 			Load More
-		</UnstyledButton>
+		</ButtonLink>
 	</div>
 );
+
+export { TabSelect };

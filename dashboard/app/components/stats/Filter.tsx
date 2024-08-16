@@ -253,6 +253,7 @@ export const Filters = () => {
 							}
 							setOpened(!opened);
 						}}
+						data-medama-filter="open"
 					>
 						<Group gap={8} justify="center">
 							<PlusIcon />
@@ -297,6 +298,7 @@ export const Filters = () => {
 							onClick={() => {
 								setOpened(false);
 							}}
+							data-medama-filter="cancel"
 						>
 							Cancel
 						</UnstyledButton>
@@ -307,6 +309,7 @@ export const Filters = () => {
 								handleAddFilters();
 							}}
 							disabled={value === ''}
+							data-medama-filter="apply"
 						>
 							Apply
 						</UnstyledButton>

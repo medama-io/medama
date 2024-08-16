@@ -6,7 +6,8 @@ import {
 	useLoaderData,
 } from '@remix-run/react';
 
-import { StatsDisplay } from '@/components/stats/StatsDisplay';
+import { TabSelect } from '@/components/stats/Tabs';
+import TabClasses from '@/components/stats/Tabs.module.css';
 import {
 	DATASETS,
 	type DataRow,
@@ -15,8 +16,6 @@ import {
 	type StatsValue,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';
-
-import StatsDisplayClasses from '@/components/stats/StatsDisplay.module.css';
 
 type StatsData = {
 	[K in Dataset]: DataRow[];
@@ -52,6 +51,7 @@ export const clientLoader = async ({
 		isSummary: true,
 		limit: 5, // Summaries should only show 5 items max
 	});
+	console.log(stats.properties);
 	return json(stats);
 };
 
@@ -94,21 +94,18 @@ export default function Index() {
 
 	const properties: StatsGroups = {
 		label: 'properties',
-		data: [createStatsData('Properties', stats.properties, 'path')],
+		data: [createStatsData('Properties', stats.properties, 'property')],
 	};
 
 	return (
 		<>
-			<SimpleGrid
-				cols={{ base: 1, lg: 2 }}
-				className={StatsDisplayClasses.grid}
-			>
+			<SimpleGrid cols={{ base: 1, lg: 2 }} className={TabClasses.grid}>
 				{statsGroups.map((group) => (
-					<StatsDisplay key={group.label} data={group.data} />
+					<TabSelect key={group.label} data={group.data} />
 				))}
 			</SimpleGrid>
-			<div className={StatsDisplayClasses.grid} data-end="true">
-				<StatsDisplay data={properties.data} />
+			<div className={TabClasses.grid} data-end="true">
+				<TabSelect data={properties.data} />
 			</div>
 		</>
 	);
