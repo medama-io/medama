@@ -1,11 +1,9 @@
 // @ts-check
 
-/** @typedef {('load'|'unload'|'custom')} EventType */
-
 /**
  * @typedef {Object} HitPayload
  * @property {string} b Beacon ID.
- * @property {EventType} e Event type.
+ * @property {'load'} e Event type.
  * @property {string} u Page URL.
  * @property {string} r Referrer URL.
  * @property {boolean} p If the user is unique or not.
@@ -16,7 +14,7 @@
 /**
  * @typedef {Object} DurationPayload
  * @property {string} b Beacon ID.
- * @property {EventType} e Event type.
+ * @property {'unload'} e Event type.
  * @property {number} m Time spent on page.
  */
 
@@ -24,7 +22,7 @@
  * @typedef {Object} CustomPayload
  * @property {string} b Beacon ID.
  * @property {string} g Group name of events. Currently, only uses the hostname.
- * @property {EventType} e Event type.
+ * @property {'custom'} e Event type.
  * @property {Object} d Event custom properties.
  */
 

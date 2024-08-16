@@ -1,6 +1,7 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
 import { pageTests } from './page';
+import { taggedEventTests } from './tagged-events';
 
 /**
  * @typedef {('simple'|'history')} Tests
@@ -9,10 +10,16 @@ import { pageTests } from './page';
 /**
  * @typedef PostData
  * @property {string} e - Event type
+ * Load Events
  * @property {string=} u - URL
  * @property {string=} r - Referrer
  * @property {boolean=} p - Unique visitor
  * @property {boolean=} q - Unique page view
+ * Unload Events
+ * @property {string=} m - Time spent on page
+ * Custom Events
+ * @property {string=} g - Custom event groupname
+ * @property {Object=} d - Custom event properties
  */
 
 /**
@@ -31,7 +38,7 @@ import { pageTests } from './page';
  * @property {import('@playwright/test').Response} response
  */
 
-const TIMEOUT_DELAY = 1500;
+const TIMEOUT_DELAY = 1250;
 
 /**
  * Get the browser name from the page context.
@@ -203,6 +210,7 @@ const createURL = (name, path, relative = true) =>
 const createTests = (name) => {
 	test.describe(name + ' page tests', () => {
 		pageTests(name);
+		// taggedEventTests(name);
 	});
 };
 

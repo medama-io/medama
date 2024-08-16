@@ -43,3 +43,7 @@ tasks:
   serve:
     cmds:
       - bun run e2e:serve
+
+  format:
+    cmds:
+      - bun run format

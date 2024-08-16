@@ -8,7 +8,7 @@ import {
 } from './helpers';
 
 /**
- * Create test block for all loading related tests.
+ * Create test block for all page loading related tests.
  *
  * @param {import('./helpers').Tests} name
  */
