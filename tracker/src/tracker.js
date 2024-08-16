@@ -1,11 +1,9 @@
 // @ts-check
 
-/** @typedef {('load'|'unload'|'custom')} EventType */
-
 /**
  * @typedef {Object} HitPayload
  * @property {string} b Beacon ID.
- * @property {EventType} e Event type.
+ * @property {'load'} e Event type.
  * @property {string} u Page URL.
  * @property {string} r Referrer URL.
  * @property {boolean} p If the user is unique or not.
@@ -16,7 +14,7 @@
 /**
  * @typedef {Object} DurationPayload
  * @property {string} b Beacon ID.
- * @property {EventType} e Event type.
+ * @property {'unload'} e Event type.
  * @property {number} m Time spent on page.
  */
 
@@ -24,7 +22,7 @@
  * @typedef {Object} CustomPayload
  * @property {string} b Beacon ID.
  * @property {string} g Group name of events. Currently, only uses the hostname.
- * @property {EventType} e Event type.
+ * @property {'custom'} e Event type.
  * @property {Object} d Event custom properties.
  */
 
@@ -289,21 +287,17 @@
 	 */
 	const clickTracker = (event) => {
 		// If event is not a left click or middle click, then bail out.
-		if (event.button > 1) return;
-
-		// Find the closest element with a data-medama-* attribute.
-		const target =
-			event.target instanceof HTMLElement
-				? event.target.closest('[data-medama-]')
-				: null;
-		if (!target) return;
+		// If the target is not an HTMLElement, then bail out.
+		if (event.button > 1 || !(event.target instanceof HTMLElement)) return;
 
 		// Extract all data-medama-* attributes and send them as custom properties.
-		const data = Object.fromEntries(
-			[...target.attributes]
-				.filter((attr) => attr.name.startsWith('data-medama-'))
-				.map((attr) => [attr.name.slice(12), attr.value]),
-		);
+		/** @type {Object<string, string>} */
+		const data = {};
+		for (const attr of event.target.attributes) {
+			if (attr.name.startsWith('data-medama-'))
+				data[attr.name.slice(12)] = attr.value;
+		}
+
 		if (Object.keys(data).length > 0) {
 			sendCustomBeacon(data);
 		}

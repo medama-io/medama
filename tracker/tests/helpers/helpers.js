@@ -1,6 +1,7 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { loadTests } from './load';
+import { pageTests } from './page';
+import { taggedEventTests } from './tagged-events';
 
 /**
  * @typedef {('simple'|'history')} Tests
@@ -9,10 +10,16 @@ import { loadTests } from './load';
 /**
  * @typedef PostData
  * @property {string} e - Event type
+ * Load Events
  * @property {string=} u - URL
  * @property {string=} r - Referrer
  * @property {boolean=} p - Unique visitor
  * @property {boolean=} q - Unique page view
+ * Unload Events
+ * @property {string=} m - Time spent on page
+ * Custom Events
+ * @property {string=} g - Custom event groupname
+ * @property {Object=} d - Custom event properties
  */
 
 /**
@@ -30,6 +37,8 @@ import { loadTests } from './load';
  * @property {import('@playwright/test').Request} request
  * @property {import('@playwright/test').Response} response
  */
+
+const TIMEOUT_DELAY = 1250;
 
 /**
  * Get the browser name from the page context.
@@ -57,7 +66,7 @@ const addRequestListeners = (page, expectedRequests) => {
 				'Timeout waiting for requests. Resolving with partial data.',
 			);
 			resolve(pairs);
-		}, 5000); // 5 second timeout
+		}, 4000); // 4 second timeout
 
 		page.on('request', (request) => {
 			const matchingExpected = expectedRequests.find(
@@ -199,8 +208,12 @@ const createURL = (name, path, relative = true) =>
  * @param {Tests} name
  */
 const createTests = (name) => {
-	test.describe(name, () => {
-		loadTests(name);
+	test.describe(name + ' page tests', () => {
+		pageTests(name);
+	});
+
+	test.describe(name + ' tagged event tests', () => {
+		taggedEventTests(name);
 	});
 };
 
@@ -210,4 +223,5 @@ export {
 	createURL,
 	getBrowser,
 	matchRequests,
+	TIMEOUT_DELAY,
 };
