@@ -284,21 +284,16 @@
 	 */
 	const clickTracker = (event) => {
 		// If event is not a left click or middle click, then bail out.
-		if (event.button > 1) return;
-
-		// Find the closest element with a data-medama-* attribute.
-		const target =
-			event.target instanceof HTMLElement
-				? event.target.closest('[data-medama-*]')
-				: null;
-		if (!target) return;
+		// If the target is not an HTMLElement, then bail out.
+		if (event.button > 1 || !(event.target instanceof HTMLElement)) return;
 
 		// Extract all data-medama-* attributes and send them as custom properties.
 		const data = Object.fromEntries(
-			[...target.attributes]
+			[...event.target.attributes]
 				.filter((attr) => attr.name.startsWith('data-medama-'))
 				.map((attr) => [attr.name.slice(12), attr.value]),
 		);
+
 		if (Object.keys(data).length > 0) {
 			sendCustomBeacon(data);
 		}
