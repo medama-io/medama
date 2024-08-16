@@ -66,7 +66,7 @@ const addRequestListeners = (page, expectedRequests) => {
 				'Timeout waiting for requests. Resolving with partial data.',
 			);
 			resolve(pairs);
-		}, 5000); // 5 second timeout
+		}, 4000); // 4 second timeout
 
 		page.on('request', (request) => {
 			const matchingExpected = expectedRequests.find(
@@ -210,7 +210,10 @@ const createURL = (name, path, relative = true) =>
 const createTests = (name) => {
 	test.describe(name + ' page tests', () => {
 		pageTests(name);
-		// taggedEventTests(name);
+	});
+
+	test.describe(name + ' tagged event tests', () => {
+		taggedEventTests(name);
 	});
 };
 

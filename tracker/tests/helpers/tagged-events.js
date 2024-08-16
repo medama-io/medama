@@ -18,7 +18,7 @@ const taggedEventTests = (name) => {
 					postData: {
 						e: 'custom',
 						d: {
-							foo: 'bar',
+							button: 'left',
 						},
 					},
 				},
@@ -29,14 +29,15 @@ const taggedEventTests = (name) => {
 					postData: {
 						e: 'custom',
 						d: {
-							foo: 'bar',
+							button: 'middle',
 						},
 					},
 				},
 			];
 
-			await page.goto(createURL(name, 'index.html'), { waitUntil: 'load' });
-			await page.waitForLoadState();
+			await page.goto(createURL(name, 'index.html'), {
+				waitUntil: 'networkidle',
+			});
 
 			const listeners = addRequestListeners(page, expectedRequests);
 
