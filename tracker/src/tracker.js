@@ -291,11 +291,12 @@
 		if (event.button > 1 || !(event.target instanceof HTMLElement)) return;
 
 		// Extract all data-medama-* attributes and send them as custom properties.
-		const data = Object.fromEntries(
-			[...event.target.attributes]
-				.filter((attr) => attr.name.startsWith('data-medama-'))
-				.map((attr) => [attr.name.slice(12), attr.value]),
-		);
+		/** @type {Object<string, string>} */
+		const data = {};
+		for (const attr of event.target.attributes) {
+			if (attr.name.startsWith('data-medama-'))
+				data[attr.name.slice(12)] = attr.value;
+		}
 
 		if (Object.keys(data).length > 0) {
 			sendCustomBeacon(data);
