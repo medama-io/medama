@@ -30,7 +30,6 @@ import '@mantine/core/styles/PasswordInput.css';
 // Navigation
 import '@mantine/core/styles/Burger.css';
 import '@mantine/core/styles/NavLink.css';
-import '@mantine/core/styles/Tabs.css';
 // Feedback
 import '@mantine/core/styles/Skeleton.css';
 import '@mantine/core/styles/Tooltip.css';
@@ -222,7 +221,7 @@ export const ErrorBoundary = () => {
 		// If the error is due to a loader mismatch, reload the page as it may be
 		// related to a bad cookie cache from the API restarting. This is probably
 		// a bug in Remix SPA mode.
-		if (error.message.startsWith('You defined a loader for route "routes')) {
+		if (error.message.includes('did not provide a `loader`')) {
 			document.cookie = EXPIRE_LOGGED_IN;
 			window.location.reload();
 			return HydrateFallback();

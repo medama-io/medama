@@ -15,11 +15,11 @@ import {
 	statsSummary,
 	statsTime,
 } from '@/api/stats';
-import { DATASETS, type Dataset } from '@/components/stats/types';
+import { DATASETS } from '@/components/stats/types';
 
 import { generateFilters } from './filters';
 
-const DataSetWithSummary = [...DATASETS, 'summary'] as const;
+const DataSetWithSummary = ['summary', ...DATASETS] as const;
 type DatasetItem = (typeof DataSetWithSummary)[number];
 type Datasets = readonly DatasetItem[];
 

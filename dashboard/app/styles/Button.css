@@ -50,6 +50,7 @@
 
 .button-icon {
 	position: relative;
+	height: inherit;
 	padding: 8px;
 
 	color: var(--text-dark);

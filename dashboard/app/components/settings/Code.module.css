@@ -35,6 +35,6 @@
 	border-radius: 4px;
 
 	&:hover {
-		background-color: var(--selected-light);
+		background-color: var(--black-a1);
 	}
 }

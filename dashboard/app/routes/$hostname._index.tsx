@@ -6,14 +6,14 @@ import {
 	useLoaderData,
 } from '@remix-run/react';
 
-import { TabSelect } from '@/components/stats/Tabs';
+import { TabProperties, TabSelect } from '@/components/stats/Tabs';
 import TabClasses from '@/components/stats/Tabs.module.css';
 import {
 	DATASETS,
 	type DataRow,
 	type Dataset,
-	type StatsGroups,
-	type StatsValue,
+	type PageViewValue,
+	type TabGroups,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';
 
@@ -24,7 +24,7 @@ type StatsData = {
 const mapItems = <T extends DataRow>(
 	data: T[],
 	accessor: keyof T,
-): StatsValue[] =>
+): PageViewValue[] =>
 	data.map((item) => ({
 		label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
 		count: item.visitors ?? item.duration ?? 0,
@@ -58,7 +58,7 @@ export const clientLoader = async ({
 export default function Index() {
 	const stats = useLoaderData<StatsData>();
 
-	const statsGroups: StatsGroups[] = [
+	const statsGroups: TabGroups[] = [
 		{
 			label: 'pages',
 			data: [
@@ -92,7 +92,7 @@ export default function Index() {
 		},
 	];
 
-	const properties: StatsGroups = {
+	const properties: TabGroups = {
 		label: 'properties',
 		data: [createStatsData('Properties', stats.properties, 'property')],
 	};
@@ -105,7 +105,7 @@ export default function Index() {
 				))}
 			</SimpleGrid>
 			<div className={TabClasses.grid} data-end="true">
-				<TabSelect data={properties.data} />
+				<TabProperties data={properties.data} />
 			</div>
 		</>
 	);

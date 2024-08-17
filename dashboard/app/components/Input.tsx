@@ -2,7 +2,7 @@ import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import * as Label from '@radix-ui/react-label';
 import type React from 'react';
 
-import { IconButton } from '@/components/Button';
+import { ButtonIcon } from '@/components/Button';
 import { useDisclosure } from '@/hooks/use-disclosure';
 
 import classes from './Input.module.css';
@@ -144,7 +144,7 @@ const PasswordInput = ({
 					type={visible ? 'text' : 'password'}
 					{...props}
 				/>
-				<IconButton
+				<ButtonIcon
 					className={classes['password-button']}
 					label="Toggle password visibility"
 					disabled={disabled}
@@ -161,7 +161,7 @@ const PasswordInput = ({
 					}}
 				>
 					{visible ? <EyeNoneIcon /> : <EyeOpenIcon />}
-				</IconButton>
+				</ButtonIcon>
 			</div>
 		</TextWrapper>
 	);

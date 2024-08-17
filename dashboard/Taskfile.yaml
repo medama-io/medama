@@ -10,6 +10,7 @@ tasks:
   build:
     deps: [generate]
     cmds:
+      - rm -rf ./build
       - bun run build
     sources:
       - "**/*.ts"

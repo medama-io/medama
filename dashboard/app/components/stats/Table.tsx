@@ -1,6 +1,6 @@
-import { ActionIcon, Group, Tabs, Text, UnstyledButton } from '@mantine/core';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { Link, useNavigate, useSearchParams } from '@remix-run/react';
+import * as Tabs from '@radix-ui/react-tabs';
+import { useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
 	type DataTableColumn,
@@ -9,6 +9,8 @@ import {
 } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
 
+import { ButtonIcon, ButtonLink } from '@/components/Button';
+import { Group } from '@/components/layout/Flex';
 import { useDidUpdate } from '@/hooks/use-did-update';
 import { useFilter } from '@/hooks/use-filter';
 import { useMediaQuery } from '@/hooks/use-media-query';
@@ -17,7 +19,7 @@ import { formatCount, formatDuration, formatPercentage } from './formatter';
 import type { DataRow, Dataset, Filter } from './types';
 import { sortBy } from './utils';
 
-import classes from './StatsTable.module.css';
+import classes from './Table.module.css';
 
 type DataRowClick = DataTableRowClickHandler<DataRow>;
 
@@ -152,8 +154,7 @@ const BackButton = () => {
 	const [searchParams] = useSearchParams();
 
 	return (
-		<UnstyledButton
-			component={Link}
+		<ButtonLink
 			to={{
 				pathname: '../',
 				search: searchParams.toString(),
@@ -162,7 +163,7 @@ const BackButton = () => {
 		>
 			<ChevronLeftIcon />
 			<span>Go back</span>
-		</UnstyledButton>
+		</ButtonLink>
 	);
 };
 
@@ -240,16 +241,14 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 	}, [query]);
 
 	return (
-		<div className={classes.tableWrapper}>
-			<div className={classes.tableHeader}>
-				<Text fz={14} fw={600} py={3}>
-					{LABEL_MAP[query]}
-				</Text>
+		<div className={classes['table-wrapper']}>
+			<div className={classes['table-header']}>
+				<span>{LABEL_MAP[query]}</span>
 			</div>
 			{isMobile && <BackButton />}
 			<DataTable
-				classNames={{ header: classes.dataHeader }}
-				minHeight={330}
+				classNames={{ header: classes['data-header'] }}
+				minHeight={365}
 				noRecordsText="No records found..."
 				highlightOnHover
 				withRowBorders={false}
@@ -281,44 +280,44 @@ const TablePagination = ({
 	const totalPages = Math.ceil(totalRecords / pageSize);
 
 	return (
-		<Group className={classes.pagination} px="lg" py="sm">
-			<Group visibleFrom="sm">
+		<div className={classes.pagination}>
+			<Group data-visible-from="sm" style={{ gap: 16 }}>
 				<span className={classes.viewspan}>View</span>
 				{PAGE_SIZES.map((size) => (
-					<ActionIcon
+					<ButtonIcon
 						key={size}
-						variant="transparent"
-						className={classes.pageSize}
+						label={`Show ${size} records`}
+						className={classes['page-size']}
 						onClick={() => onPageSizeChange(size)}
 						disabled={size === pageSize || totalRecords <= size}
 						data-active={size === pageSize}
 					>
 						{size}
-					</ActionIcon>
+					</ButtonIcon>
 				))}
 			</Group>
-			<Group>
-				<ActionIcon
-					variant="transparent"
-					className={classes.pageArrow}
+			<Group style={{ gap: 16 }}>
+				<ButtonIcon
+					label="Previous page"
+					className={classes['page-arrow']}
 					onClick={() => onPageChange(page - 1)}
 					disabled={page <= 1}
 				>
 					<ChevronLeftIcon />
-				</ActionIcon>
+				</ButtonIcon>
 				<span>
 					Page {page} of {totalPages}
 				</span>
-				<ActionIcon
-					variant="transparent"
-					className={classes.pageArrow}
+				<ButtonIcon
+					label="Next page"
+					className={classes['page-arrow']}
 					onClick={() => onPageChange(page + 1)}
 					disabled={page >= totalPages}
 				>
 					<ChevronRightIcon />
-				</ActionIcon>
+				</ButtonIcon>
 			</Group>
-		</Group>
+		</div>
 	);
 };
 
@@ -433,7 +432,7 @@ const getColumnsForQuery = (
 	}
 };
 
-export const StatsTable = ({ query, data }: StatsTableProps) => {
+export const Table = ({ query, data }: StatsTableProps) => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
@@ -453,34 +452,27 @@ export const StatsTable = ({ query, data }: StatsTableProps) => {
 	const isMobile = useMediaQuery('(max-width: 75em)');
 
 	return (
-		<Tabs
-			variant="unstyled"
+		<Tabs.Root
 			value={query}
-			classNames={{
-				root: classes.tabRoot,
-				tab: classes.tab,
-				list: classes.tabList,
-				panel: classes.tabPanel,
-			}}
+			className={classes.root}
 			orientation="vertical"
-			onChange={handleTabChange}
-			keepMounted={false}
+			onValueChange={handleTabChange}
 		>
 			{!isMobile && (
-				<Tabs.List>
-					<div className={classes.listWrapper}>
-						<BackButton />
+				<div className={classes.list}>
+					<BackButton />
+					<Tabs.List className={classes['list-triggers']}>
 						{Object.entries(LABEL_MAP).map(([key, label]) => (
-							<Tabs.Tab key={key} value={key}>
+							<Tabs.Trigger key={key} value={key} className={classes.trigger}>
 								{label}
-							</Tabs.Tab>
+							</Tabs.Trigger>
 						))}
-					</div>
-				</Tabs.List>
+					</Tabs.List>
+				</div>
 			)}
-			<Tabs.Panel value={query}>
+			<Tabs.Content value={query} className={classes.panel}>
 				<QueryTable query={query} data={data} isMobile={isMobile} />
-			</Tabs.Panel>
-		</Tabs>
+			</Tabs.Content>
+		</Tabs.Root>
 	);
 };

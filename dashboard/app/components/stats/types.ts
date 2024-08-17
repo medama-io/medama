@@ -52,20 +52,27 @@ interface DataRow {
 	property?: string;
 }
 
-interface StatsValue {
+interface PageViewValue {
 	label: string;
 	count?: number;
 	percentage?: number;
 }
 
-interface StatsTab {
+interface CustomEventValue {
 	label: string;
-	items: StatsValue[];
+	value?: string;
+	count?: number;
+	visitors?: number;
 }
 
-interface StatsGroups {
+interface TabData<T extends PageViewValue | CustomEventValue> {
 	label: string;
-	data: StatsTab[];
+	items: T[] | T[];
+}
+
+interface TabGroups {
+	label: string;
+	data: TabData<PageViewValue | CustomEventValue>[];
 }
 
 // Charts
@@ -120,9 +127,10 @@ export type {
 	DataRow,
 	Dataset,
 	StatHeaderData,
-	StatsGroups,
-	StatsTab,
-	StatsValue,
+	TabData,
+	TabGroups,
+	PageViewValue,
+	CustomEventValue,
 	Filter,
 	FilterOperator,
 	FilterKey,
