@@ -1,8 +1,8 @@
-import { Group, Text, UnstyledButton } from '@mantine/core';
 import React, { useMemo } from 'react';
 import isFQDN from 'validator/lib/isFQDN';
 
 import { IconExternal } from '@/components/icons/external';
+import { Group } from '@/components/layout/Flex';
 import { useFilter } from '@/hooks/use-filter';
 import { useHover } from '@/hooks/use-hover';
 
@@ -50,46 +50,38 @@ const StatsItem = ({
 	};
 
 	return (
-		<UnstyledButton
+		<button
 			className={classes.item}
+			type="button"
 			onClick={handleFilter}
 			aria-label={`Filter by ${label}`}
 			ref={ref}
 		>
-			<Group justify="space-between" pb={6} wrap="nowrap">
-				<Group gap="xs" style={{ overflow: 'hidden' }}>
-					<Text fz={14} truncate style={{ userSelect: 'text' }}>
-						{label}
-					</Text>
+			<Group style={{ paddingBottom: 6, flexWrap: 'nowrap' }}>
+				<Group style={{ overflow: 'hidden', gap: 8 }}>
+					<p className={classes.label}>{label}</p>
 					{tab === 'Referrers' && (
-						<UnstyledButton
+						<a
 							className={classes.external}
-							component="a"
+							aria-label={`Visit ${label}`}
 							href={`https://${label}`}
 							target="_blank"
 							rel="noreferrer noopener"
 							data-hidden={!isFQDN(label)}
 							onClick={(event) => event.stopPropagation()}
-							visibleFrom="xs"
 						>
 							<IconExternal />
-						</UnstyledButton>
+						</a>
 					)}
 				</Group>
-				<Group align="center" gap="xs" wrap="nowrap">
-					<Text
-						component="span"
-						fz={12}
-						c="gray"
-						mr={4}
+				<Group style={{ gap: 8, flexWrap: 'nowrap' }}>
+					<span
+						className={classes.percentage}
 						data-active={hovered ? 'true' : undefined}
-						visibleFrom="xs"
 					>
 						{(percentage * 100).toFixed(1)}%
-					</Text>
-					<Text fw={600} fz={14}>
-						{formattedValue}
-					</Text>
+					</span>
+					<p style={{ fontWeight: 600, fontSize: 14 }}>{formattedValue}</p>
 				</Group>
 			</Group>
 			<div
@@ -97,7 +89,7 @@ const StatsItem = ({
 				style={{ width: `${Math.min(percentage * 100, 100)}%` }}
 				aria-hidden="true"
 			/>
-		</UnstyledButton>
+		</button>
 	);
 };
 

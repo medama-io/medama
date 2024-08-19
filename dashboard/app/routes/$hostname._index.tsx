@@ -92,8 +92,6 @@ export default function Index() {
 		},
 	];
 
-	console.log(stats.properties);
-
 	return (
 		<>
 			<SimpleGrid cols={{ base: 1, lg: 2 }} className={TabClasses.grid}>
