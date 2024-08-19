@@ -49,7 +49,9 @@ interface DataRow {
 	// Languages
 	language?: string;
 	// Properties
-	property?: string;
+	name?: string;
+	value?: string;
+	events?: number;
 }
 
 interface PageViewValue {
@@ -58,21 +60,23 @@ interface PageViewValue {
 	percentage?: number;
 }
 
-interface CustomEventValue {
-	label: string;
-	value?: string;
-	count?: number;
-	visitors?: number;
+interface CustomPropertyValue {
+	name: string;
+	props: {
+		value: string;
+		count: number;
+		visitors: number;
+	}[];
 }
 
-interface TabData<T extends PageViewValue | CustomEventValue> {
+interface TabData {
 	label: string;
-	items: T[] | T[];
+	items: PageViewValue[];
 }
 
 interface TabGroups {
 	label: string;
-	data: TabData<PageViewValue | CustomEventValue>[];
+	data: TabData[];
 }
 
 // Charts
@@ -130,7 +134,7 @@ export type {
 	TabData,
 	TabGroups,
 	PageViewValue,
-	CustomEventValue,
+	CustomPropertyValue,
 	Filter,
 	FilterOperator,
 	FilterKey,

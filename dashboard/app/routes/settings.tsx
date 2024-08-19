@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from '@remix-run/react';
+import { Outlet } from '@remix-run/react';
 
 import { userLoggedIn } from '@/api/user';
 import { InnerHeader } from '@/components/layout/InnerHeader';
@@ -10,7 +10,6 @@ export const clientLoader = async () => {
 };
 
 export default function Index() {
-	useLoaderData();
 	return (
 		<>
 			<InnerHeader>

@@ -9,6 +9,7 @@ import {
 import { TabProperties, TabSelect } from '@/components/stats/Tabs';
 import TabClasses from '@/components/stats/Tabs.module.css';
 import {
+	CustomPropertyValue,
 	DATASETS,
 	type DataRow,
 	type Dataset,
@@ -51,7 +52,6 @@ export const clientLoader = async ({
 		isSummary: true,
 		limit: 5, // Summaries should only show 5 items max
 	});
-	console.log(stats.properties);
 	return json(stats);
 };
 
@@ -92,10 +92,7 @@ export default function Index() {
 		},
 	];
 
-	const properties: TabGroups = {
-		label: 'properties',
-		data: [createStatsData('Properties', stats.properties, 'property')],
-	};
+	console.log(stats.properties);
 
 	return (
 		<>
@@ -105,7 +102,7 @@ export default function Index() {
 				))}
 			</SimpleGrid>
 			<div className={TabClasses.grid} data-end="true">
-				<TabProperties data={properties.data} />
+				<TabProperties label="properties" items={[]} />
 			</div>
 		</>
 	);

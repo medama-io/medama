@@ -221,7 +221,7 @@ export const ErrorBoundary = () => {
 		// If the error is due to a loader mismatch, reload the page as it may be
 		// related to a bad cookie cache from the API restarting. This is probably
 		// a bug in Remix SPA mode.
-		if (error.message.includes('did not provide a `loader`')) {
+		if (error.message.startsWith('You defined a loader for route "routes')) {
 			document.cookie = EXPIRE_LOGGED_IN;
 			window.location.reload();
 			return HydrateFallback();

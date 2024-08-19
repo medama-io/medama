@@ -13,6 +13,7 @@
 		"typecheck": "tsc"
 	},
 	"dependencies": {
+		"@ariakit/react": "^0.4.8",
 		"@fontsource-variable/inter": "^5.0.20",
 		"@mantine/charts": "^7.12.1",
 		"@mantine/core": "^7.12.1",
@@ -28,6 +29,7 @@
 		"@radix-ui/react-portal": "^1.1.1",
 		"@radix-ui/react-progress": "^1.1.0",
 		"@radix-ui/react-scroll-area": "^1.1.0",
+		"@radix-ui/react-select": "^2.1.1",
 		"@radix-ui/react-tabs": "^1.1.0",
 		"@radix-ui/react-tooltip": "^1.1.2",
 		"@radix-ui/react-visually-hidden": "^1.1.0",
@@ -38,6 +40,7 @@
 		"isbot": "^5.1.15",
 		"mantine-datatable": "^7.11.3",
 		"mantine-form-valibot-resolver": "^2.0.1",
+		"match-sorter": "^6.3.4",
 		"react": "18.3.0-canary-8039e6d0b-20231026",
 		"react-day-picker": "^9.0.8",
 		"react-dom": "18.3.0-canary-8039e6d0b-20231026",
