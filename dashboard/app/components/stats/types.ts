@@ -50,8 +50,8 @@ interface DataRow {
 	language?: string;
 	// Properties
 	name?: string;
-	value?: string;
 	events?: number;
+	items?: CustomPropertyItem[];
 }
 
 interface PageViewValue {
@@ -60,13 +60,17 @@ interface PageViewValue {
 	percentage?: number;
 }
 
+interface CustomPropertyItem {
+	value: string;
+	events: number;
+	visitors: number;
+}
+
 interface CustomPropertyValue {
 	name: string;
-	props: {
-		value: string;
-		count: number;
-		visitors: number;
-	}[];
+	events: number;
+	visitors: number;
+	items: CustomPropertyItem[];
 }
 
 interface TabData {

@@ -1912,22 +1912,16 @@ func (*StatsProperties) getWebsiteIDPropertiesRes() {}
 type StatsPropertiesItem struct {
 	// Custom property name.
 	Name string `json:"name"`
-	// Custom property value.
-	Value string `json:"value"`
 	// Number of events for custom property.
 	Events int `json:"events"`
 	// Number of unique visitors for custom property.
-	Visitors int `json:"visitors"`
+	Visitors int                            `json:"visitors"`
+	Items    []StatsPropertiesItemItemsItem `json:"items"`
 }
 
 // GetName returns the value of Name.
 func (s *StatsPropertiesItem) GetName() string {
 	return s.Name
-}
-
-// GetValue returns the value of Value.
-func (s *StatsPropertiesItem) GetValue() string {
-	return s.Value
 }
 
 // GetEvents returns the value of Events.
@@ -1940,14 +1934,14 @@ func (s *StatsPropertiesItem) GetVisitors() int {
 	return s.Visitors
 }
 
+// GetItems returns the value of Items.
+func (s *StatsPropertiesItem) GetItems() []StatsPropertiesItemItemsItem {
+	return s.Items
+}
+
 // SetName sets the value of Name.
 func (s *StatsPropertiesItem) SetName(val string) {
 	s.Name = val
-}
-
-// SetValue sets the value of Value.
-func (s *StatsPropertiesItem) SetValue(val string) {
-	s.Value = val
 }
 
 // SetEvents sets the value of Events.
@@ -1957,6 +1951,50 @@ func (s *StatsPropertiesItem) SetEvents(val int) {
 
 // SetVisitors sets the value of Visitors.
 func (s *StatsPropertiesItem) SetVisitors(val int) {
+	s.Visitors = val
+}
+
+// SetItems sets the value of Items.
+func (s *StatsPropertiesItem) SetItems(val []StatsPropertiesItemItemsItem) {
+	s.Items = val
+}
+
+type StatsPropertiesItemItemsItem struct {
+	// Custom property value.
+	Value string `json:"value"`
+	// Number of events for custom property value.
+	Events int `json:"events"`
+	// Number of unique visitors for custom property value.
+	Visitors int `json:"visitors"`
+}
+
+// GetValue returns the value of Value.
+func (s *StatsPropertiesItemItemsItem) GetValue() string {
+	return s.Value
+}
+
+// GetEvents returns the value of Events.
+func (s *StatsPropertiesItemItemsItem) GetEvents() int {
+	return s.Events
+}
+
+// GetVisitors returns the value of Visitors.
+func (s *StatsPropertiesItemItemsItem) GetVisitors() int {
+	return s.Visitors
+}
+
+// SetValue sets the value of Value.
+func (s *StatsPropertiesItemItemsItem) SetValue(val string) {
+	s.Value = val
+}
+
+// SetEvents sets the value of Events.
+func (s *StatsPropertiesItemItemsItem) SetEvents(val int) {
+	s.Events = val
+}
+
+// SetVisitors sets the value of Visitors.
+func (s *StatsPropertiesItemItemsItem) SetVisitors(val int) {
 	s.Visitors = val
 }
 

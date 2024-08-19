@@ -9,7 +9,7 @@ import {
 import { TabProperties, TabSelect } from '@/components/stats/Tabs';
 import TabClasses from '@/components/stats/Tabs.module.css';
 import {
-	CustomPropertyValue,
+	type CustomPropertyValue,
 	DATASETS,
 	type DataRow,
 	type Dataset,
@@ -102,7 +102,10 @@ export default function Index() {
 				))}
 			</SimpleGrid>
 			<div className={TabClasses.grid} data-end="true">
-				<TabProperties label="properties" items={[]} />
+				<TabProperties
+					label="properties"
+					data={stats.properties as CustomPropertyValue[]}
+				/>
 			</div>
 		</>
 	);

@@ -29,15 +29,34 @@ func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebs
 		return ErrInternalServerError(model.ErrInternalServerError), nil
 	}
 
-	// Return the properties
-	resp := api.StatsProperties{}
+	// Return the properties in desired format
+	respMap := make(map[string]*api.StatsPropertiesItem)
+
 	for _, p := range properties {
-		resp = append(resp, api.StatsPropertiesItem{
-			Name:     p.Name,
+		item, exists := respMap[p.Name]
+		if !exists {
+			item = &api.StatsPropertiesItem{
+				Name:  p.Name,
+				Items: []api.StatsPropertiesItemItemsItem{},
+			}
+			respMap[p.Name] = item
+		}
+
+		// Aggregate the values
+		item.Events += p.Events
+		item.Visitors += p.Visitors
+
+		// Add the property
+		item.Items = append(item.Items, api.StatsPropertiesItemItemsItem{
 			Value:    p.Value,
 			Events:   p.Events,
 			Visitors: p.Visitors,
 		})
+	}
+
+	resp := make(api.StatsProperties, 0, len(respMap))
+	for _, item := range respMap {
+		resp = append(resp, *item)
 	}
 
 	return &resp, nil

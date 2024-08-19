@@ -882,12 +882,18 @@ export interface components {
         StatsProperties: {
             /** @description Custom property name. */
             name: string;
-            /** @description Custom property value. */
-            value: string;
             /** @description Number of events for custom property. */
             events: number;
             /** @description Number of unique visitors for custom property. */
             visitors: number;
+            items: {
+                /** @description Custom property value. */
+                value: string;
+                /** @description Number of events for custom property value. */
+                events: number;
+                /** @description Number of unique visitors for custom property value. */
+                visitors: number;
+            }[];
         }[];
     };
     responses: {

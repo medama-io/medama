@@ -57,7 +57,7 @@ const TabSelect = ({ data }: TabSelectProps) => {
 	);
 };
 
-const TabProperties = ({ label, data = [] }: TabPropertiesProps) => {
+const TabProperties = ({ label, data }: TabPropertiesProps) => {
 	const [searchParams] = useSearchParams();
 
 	return (
@@ -81,12 +81,15 @@ const TabProperties = ({ label, data = [] }: TabPropertiesProps) => {
 						choices={['logged_in', 'test-2']}
 					/>
 					{data.map((item) => (
-						<StatsItem
-							key={item.name}
-							tab={label}
-							label={item.name}
-							{...item}
-						/>
+						<>
+							{JSON.stringify(item)}
+							<StatsItem
+								key={item.name}
+								tab={label}
+								label={item.name}
+								{...item}
+							/>
+						</>
 					))}
 					{data.length === 0 && (
 						<span className={classes.empty}>No records found...</span>
