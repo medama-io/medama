@@ -26,7 +26,6 @@ import '@mantine/core/styles/CloseButton.css';
 // Inputs
 import '@mantine/core/styles/Checkbox.css';
 import '@mantine/core/styles/Combobox.css';
-import '@mantine/core/styles/PasswordInput.css';
 // Navigation
 import '@mantine/core/styles/Burger.css';
 import '@mantine/core/styles/NavLink.css';

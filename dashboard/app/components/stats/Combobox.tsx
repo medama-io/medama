@@ -25,11 +25,18 @@ interface ComboboxProps {
 	};
 
 	choices: string[];
+	value: string;
+	setValue: (value: string) => void;
 }
 
-const Combobox = ({ root, search, choices }: ComboboxProps) => {
+const Combobox = ({
+	root,
+	search,
+	choices,
+	value,
+	setValue,
+}: ComboboxProps) => {
 	const [open, setOpen] = useState(false);
-	const [value, setValue] = useState('');
 	const [searchValue, setSearchValue] = useState('');
 
 	const matches = useMemo(() => {

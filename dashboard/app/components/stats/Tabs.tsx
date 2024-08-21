@@ -58,7 +58,45 @@ const TabSelect = ({ data }: TabSelectProps) => {
 };
 
 const TabProperties = ({ label, data }: TabPropertiesProps) => {
-	const [searchParams] = useSearchParams();
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const choice = searchParams.get('property') ?? '';
+	const handleChoice = (value: string) => {
+		setSearchParams(
+			(params) => {
+				if (params.get('property') === value) {
+					params.delete('property');
+				} else {
+					params.set('property', value);
+				}
+				return params;
+			},
+			{ preventScrollReset: true },
+		);
+	};
+
+	const choices = data.map((item) => item.name);
+
+	const items =
+		choice !== ''
+			? data
+					.find((item) => item.name === choice)
+					?.items.map((item) => (
+						<StatsItem
+							key={item.value}
+							tab={label}
+							label={item.value}
+							count={item.events}
+						/>
+					))
+			: data.map((item) => (
+					<StatsItem
+						key={item.name}
+						tab={label}
+						label={item.name}
+						count={item.events}
+					/>
+				));
 
 	return (
 		<Tabs.Root className={classes.root} defaultValue={label}>
@@ -78,19 +116,11 @@ const TabProperties = ({ label, data }: TabPropertiesProps) => {
 					<Combobox
 						root={{ label: 'Select property', placeholder: 'Select property' }}
 						search={{ placeholder: 'Search properties...' }}
-						choices={['logged_in', 'test-2']}
+						choices={choices}
+						value={choice}
+						setValue={handleChoice}
 					/>
-					{data.map((item) => (
-						<>
-							{JSON.stringify(item)}
-							<StatsItem
-								key={item.name}
-								tab={label}
-								label={item.name}
-								{...item}
-							/>
-						</>
-					))}
+					{items}
 					{data.length === 0 && (
 						<span className={classes.empty}>No records found...</span>
 					)}
