@@ -33,6 +33,11 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 		OrderBy("visitors DESC", "browser ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -80,6 +85,11 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 		OrderBy("visitors DESC", "browser ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -120,6 +130,11 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 		GroupBy("os").
 		OrderBy("visitors DESC", "os ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
@@ -165,6 +180,11 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 		OrderBy("visitors DESC", "os ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -205,6 +225,11 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 		GroupBy("device").
 		OrderBy("visitors DESC", "device ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
@@ -249,6 +274,11 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 		GroupBy("device").
 		OrderBy("visitors DESC", "device ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {

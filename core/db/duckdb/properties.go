@@ -30,7 +30,7 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 			VisitorsStmt,
 		).
 		From("views").
-		LeftJoin("events USING (bid)").
+		LeftJoin(EventsJoinStmt).
 		Where(filter.WhereString()).
 		GroupBy("name", "value").
 		OrderBy("events DESC", "name ASC", "value ASC").

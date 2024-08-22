@@ -1,15 +1,18 @@
 package db
 
 import (
+	"reflect"
 	"strings"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/model"
 )
 
 // FilterField represents a mapping of the filter field to the database column.
 type FilterField string
 
 const (
+	// Views Table
 	FilterHostname        FilterField = "hostname"
 	FilterPathname        FilterField = "pathname"
 	FilterReferrer        FilterField = "referrer_host"
@@ -23,6 +26,10 @@ const (
 	FilterCountry         FilterField = "country"
 	FilterLanguage        FilterField = "language_base"
 	FilterLanguageDialect FilterField = "language_dialect"
+
+	// Events Table
+	FilterPropertyName  FilterField = "name"
+	FilterPropertyValue FilterField = "value"
 
 	// Custom operations not used in the filtering API
 	// but used in named queries.
@@ -146,6 +153,8 @@ type Filters struct {
 	Country         *Filter
 	Language        *Filter
 	LanguageDialect *Filter
+	PropertyName    *Filter
+	PropertyValue   *Filter
 
 	// Time Periods (in RFC3339 format 2017-07-21T17:32:28Z)
 	PeriodStart string
@@ -156,7 +165,98 @@ type Filters struct {
 	Offset int
 
 	// Type
-	IsEvent bool
+	SortByEventDates bool
+	IsCustomEvent    bool
+}
+
+// CreateFilters uses reflection to create a filter object from the code-generated API parameters.
+func CreateFilters(params interface{}, hostname string) *Filters {
+	filters := &Filters{
+		Hostname: hostname,
+	}
+
+	v := reflect.ValueOf(params)
+	t := v.Type()
+
+	for i := 0; i < v.NumField(); i++ {
+		field := v.Field(i)
+		fieldName := t.Field(i).Name
+
+		switch fieldName {
+		case "Path":
+			if field.IsValid() && !field.IsZero() {
+				filters.Pathname = NewFilter(FilterPathname, field.Interface().(api.OptFilterString))
+			}
+		case "Referrer":
+			if field.IsValid() && !field.IsZero() {
+				filters.Referrer = NewFilter(FilterReferrer, field.Interface().(api.OptFilterString))
+				filters.ReferrerGroup = NewFilter(FilterReferrerGroup, field.Interface().(api.OptFilterString))
+			}
+		case "UtmSource":
+			if field.IsValid() && !field.IsZero() {
+				filters.UTMSource = NewFilter(FilterUTMSource, field.Interface().(api.OptFilterString))
+			}
+		case "UtmMedium":
+			if field.IsValid() && !field.IsZero() {
+				filters.UTMMedium = NewFilter(FilterUTMMedium, field.Interface().(api.OptFilterString))
+			}
+		case "UtmCampaign":
+			if field.IsValid() && !field.IsZero() {
+				filters.UTMCampaign = NewFilter(FilterUTMCampaign, field.Interface().(api.OptFilterString))
+			}
+		case "Browser":
+			if field.IsValid() && !field.IsZero() {
+				filters.Browser = NewFilter(FilterBrowser, field.Interface().(api.OptFilterString))
+			}
+		case "Os":
+			if field.IsValid() && !field.IsZero() {
+				filters.OS = NewFilter(FilterOS, field.Interface().(api.OptFilterString))
+			}
+		case "Device":
+			if field.IsValid() && !field.IsZero() {
+				filters.Device = NewFilter(FilterDevice, field.Interface().(api.OptFilterString))
+			}
+		case "Country":
+			if field.IsValid() && !field.IsZero() {
+				filters.Country = NewFilter(FilterCountry, field.Interface().(api.OptFilterString))
+			}
+		case "Language":
+			if field.IsValid() && !field.IsZero() {
+				filters.Language = NewFilter(FilterLanguage, field.Interface().(api.OptFilterString))
+				filters.LanguageDialect = NewFilter(FilterLanguageDialect, field.Interface().(api.OptFilterString))
+			}
+		case "PropName":
+			if field.IsValid() && !field.IsZero() {
+				filters.PropertyName = NewFilter(FilterLanguage, field.Interface().(api.OptFilterString))
+				filters.IsCustomEvent = true
+			}
+		case "PropValue":
+			if field.IsValid() && !field.IsZero() {
+				filters.PropertyValue = NewFilter(FilterLanguage, field.Interface().(api.OptFilterString))
+				filters.IsCustomEvent = true
+			}
+		case "Start":
+			if field.IsValid() && !field.IsZero() {
+				startTime := field.Interface().(api.OptDateTime).Value
+				filters.PeriodStart = startTime.Format(model.DateFormat)
+			}
+		case "End":
+			if field.IsValid() && !field.IsZero() {
+				endTime := field.Interface().(api.OptDateTime).Value
+				filters.PeriodEnd = endTime.Format(model.DateFormat)
+			}
+		case "Limit":
+			if field.IsValid() && !field.IsZero() {
+				filters.Limit = field.Interface().(api.OptInt).Value
+			}
+		case "Offset":
+			if field.IsValid() && !field.IsZero() {
+				filters.Offset = field.Interface().(api.OptInt).Value
+			}
+		}
+	}
+
+	return filters
 }
 
 // addCondition appends a condition to the query if the filter has a non-empty value.
@@ -203,14 +303,14 @@ func (f Filters) WhereString() string {
 
 	// Time period filters
 	if f.PeriodStart != "" {
-		if f.IsEvent {
+		if f.SortByEventDates {
 			query.WriteString(" AND events.date_created >= CAST(:start_period AS TIMESTAMPTZ)")
 		} else {
 			query.WriteString(" AND views.date_created >= CAST(:start_period AS TIMESTAMPTZ)")
 		}
 	}
 	if f.PeriodEnd != "" {
-		if f.IsEvent {
+		if f.SortByEventDates {
 			query.WriteString(" AND events.date_created <= CAST(:end_period AS TIMESTAMPTZ)")
 		} else {
 			query.WriteString(" AND views.date_created <= CAST(:end_period AS TIMESTAMPTZ)")
@@ -265,6 +365,9 @@ func (f Filters) Args(customMap *map[string]interface{}) map[string]interface{} 
 		FilterCountry:         f.Country,
 		FilterLanguage:        f.Language,
 		FilterLanguageDialect: f.LanguageDialect,
+
+		FilterPropertyName:  f.PropertyName,
+		FilterPropertyValue: f.PropertyValue,
 	}
 
 	// Add non-empty filter values to args

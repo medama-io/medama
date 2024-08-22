@@ -1033,6 +1033,10 @@ export interface components {
         Country: components["schemas"]["FilterString"];
         /** @description Language code. */
         Language: components["schemas"]["FilterString"];
+        /** @description Name of the property. */
+        PropertyName: components["schemas"]["FilterString"];
+        /** @description Value of the property. */
+        PropertyValue: components["schemas"]["FilterString"];
         /** @description Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
         PeriodStart: string;
         /** @description Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z). */
@@ -1461,6 +1465,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
             };
             header?: never;
             path: {
@@ -1518,6 +1526,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -1579,6 +1591,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -1642,6 +1658,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -1704,6 +1724,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -1766,6 +1790,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -1828,6 +1856,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -1890,6 +1922,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -1952,6 +1988,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -2014,6 +2054,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -2076,6 +2120,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -2140,6 +2188,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */
@@ -2200,6 +2252,10 @@ export interface operations {
                 country?: components["parameters"]["Country"];
                 /** @description Language code. */
                 language?: components["parameters"]["Language"];
+                /** @description Name of the property. */
+                prop_name?: components["parameters"]["PropertyName"];
+                /** @description Value of the property. */
+                prop_value?: components["parameters"]["PropertyValue"];
                 /** @description Limit the number of results. */
                 limit?: components["parameters"]["Limit"];
                 /** @description Offset the results paired with the limit parameter. */

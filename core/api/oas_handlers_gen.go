@@ -734,6 +734,14 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Language,
 				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -920,6 +928,14 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 					Name: "language",
 					In:   "query",
 				}: params.Language,
+				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1108,6 +1124,14 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 					In:   "query",
 				}: params.Language,
 				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -1294,6 +1318,14 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 					Name: "language",
 					In:   "query",
 				}: params.Language,
+				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1486,6 +1518,14 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 					In:   "query",
 				}: params.Language,
 				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -1672,6 +1712,14 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 					Name: "language",
 					In:   "query",
 				}: params.Language,
+				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
 				{
 					Name: "limit",
 					In:   "query",
@@ -1860,6 +1908,14 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 					In:   "query",
 				}: params.Language,
 				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -2047,6 +2103,14 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 					In:   "query",
 				}: params.Language,
 				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -2229,6 +2293,14 @@ func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped
 					Name: "language",
 					In:   "query",
 				}: params.Language,
+				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
 				{
 					Name: "limit",
 					In:   "query",
@@ -2421,6 +2493,14 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 					In:   "query",
 				}: params.Language,
 				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
+				{
 					Name: "limit",
 					In:   "query",
 				}: params.Limit,
@@ -2607,6 +2687,14 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 					Name: "language",
 					In:   "query",
 				}: params.Language,
+				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
 				{
 					Name: "limit",
 					In:   "query",
@@ -2798,6 +2886,14 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 					Name: "language",
 					In:   "query",
 				}: params.Language,
+				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
 			},
 			Raw: r,
 		}
@@ -2977,6 +3073,14 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 					Name: "language",
 					In:   "query",
 				}: params.Language,
+				{
+					Name: "prop_name",
+					In:   "query",
+				}: params.PropName,
+				{
+					Name: "prop_value",
+					In:   "query",
+				}: params.PropValue,
 				{
 					Name: "limit",
 					In:   "query",

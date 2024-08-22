@@ -56,6 +56,11 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 		OrderBy("visitors DESC", "pathname ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -116,6 +121,11 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 		Having("visitors > 0").
 		OrderBy("visitors DESC", "pageviews DESC", "pathname ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {

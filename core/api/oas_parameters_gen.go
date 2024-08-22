@@ -458,6 +458,10 @@ type GetWebsiteIDBrowsersParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -594,6 +598,24 @@ func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetW
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -1153,6 +1175,68 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -1318,6 +1402,10 @@ type GetWebsiteIDCampaignsParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -1454,6 +1542,24 @@ func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params Get
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -2013,6 +2119,68 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -2178,6 +2346,10 @@ type GetWebsiteIDCountryParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -2314,6 +2486,24 @@ func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -2873,6 +3063,68 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -3038,6 +3290,10 @@ type GetWebsiteIDDeviceParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -3174,6 +3430,24 @@ func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWeb
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -3733,6 +4007,68 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -3900,6 +4236,10 @@ type GetWebsiteIDLanguageParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -4045,6 +4385,24 @@ func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetW
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -4650,6 +5008,68 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -4815,6 +5235,10 @@ type GetWebsiteIDMediumsParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -4951,6 +5375,24 @@ func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -5510,6 +5952,68 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -5675,6 +6179,10 @@ type GetWebsiteIDOsParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -5811,6 +6319,24 @@ func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsite
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -6370,6 +6896,68 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -6535,6 +7123,10 @@ type GetWebsiteIDPagesParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -6671,6 +7263,24 @@ func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebs
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -7230,6 +7840,68 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -7393,6 +8065,10 @@ type GetWebsiteIDPropertiesParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -7520,6 +8196,24 @@ func unpackGetWebsiteIDPropertiesParams(packed middleware.Parameters) (params Ge
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -8033,6 +8727,68 @@ func decodeGetWebsiteIDPropertiesParams(args [1]string, argsEscaped bool, r *htt
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -8200,6 +8956,10 @@ type GetWebsiteIDReferrersParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -8345,6 +9105,24 @@ func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params Get
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -8950,6 +9728,68 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -9115,6 +9955,10 @@ type GetWebsiteIDSourcesParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -9251,6 +10095,24 @@ func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -9810,6 +10672,68 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: limit.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
@@ -9979,6 +10903,10 @@ type GetWebsiteIDSummaryParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 }
 
 func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWebsiteIDSummaryParams) {
@@ -10120,6 +11048,24 @@ func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWe
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	return params
@@ -10717,6 +11663,68 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			Err:  err,
 		}
 	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	return params, nil
 }
 
@@ -10752,6 +11760,10 @@ type GetWebsiteIDTimeParams struct {
 	Country OptFilterString
 	// Language code.
 	Language OptFilterString
+	// Name of the property.
+	PropName OptFilterString
+	// Value of the property.
+	PropValue OptFilterString
 	// Limit the number of results.
 	Limit OptInt
 	// Offset the results paired with the limit parameter.
@@ -10888,6 +11900,24 @@ func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsi
 		}
 		if v, ok := packed[key]; ok {
 			params.Language = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_name",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropName = v.(OptFilterString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "prop_value",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PropValue = v.(OptFilterString)
 		}
 	}
 	{
@@ -11443,6 +12473,68 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "language",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_name.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_name",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropNameVal FilterString
+				if err := func() error {
+					return paramsDotPropNameVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropName.SetTo(paramsDotPropNameVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_name",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: prop_value.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "prop_value",
+			Style:   uri.QueryStyleDeepObject,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "eq", Required: false}, {Name: "neq", Required: false}, {Name: "contains", Required: false}, {Name: "not_contains", Required: false}, {Name: "starts_with", Required: false}, {Name: "not_starts_with", Required: false}, {Name: "ends_with", Required: false}, {Name: "not_ends_with", Required: false}, {Name: "in", Required: false}, {Name: "not_in", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPropValueVal FilterString
+				if err := func() error {
+					return paramsDotPropValueVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.PropValue.SetTo(paramsDotPropValueVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "prop_value",
 			In:   "query",
 			Err:  err,
 		}

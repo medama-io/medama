@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"reflect"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
@@ -22,7 +21,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Get summary
 	currentSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filters)
@@ -105,7 +104,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	}
 
 	// Create filter for database query.
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary.
 	switch params.Summary.Value {
@@ -173,7 +172,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
@@ -240,7 +239,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
@@ -306,7 +305,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -368,7 +367,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -433,7 +432,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -498,7 +497,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -563,7 +562,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -628,7 +627,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -693,7 +692,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -758,7 +757,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -810,84 +809,4 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
-}
-
-// createFilters uses reflection to create a filter object from the code-generated API parameters.
-func createFilters(params interface{}, hostname string) *db.Filters {
-	filters := &db.Filters{
-		Hostname: hostname,
-	}
-
-	v := reflect.ValueOf(params)
-	t := v.Type()
-
-	for i := 0; i < v.NumField(); i++ {
-		field := v.Field(i)
-		fieldName := t.Field(i).Name
-
-		switch fieldName {
-		case "Path":
-			if field.IsValid() && !field.IsZero() {
-				filters.Pathname = db.NewFilter(db.FilterPathname, field.Interface().(api.OptFilterString))
-			}
-		case "Referrer":
-			if field.IsValid() && !field.IsZero() {
-				filters.Referrer = db.NewFilter(db.FilterReferrer, field.Interface().(api.OptFilterString))
-				filters.ReferrerGroup = db.NewFilter(db.FilterReferrerGroup, field.Interface().(api.OptFilterString))
-			}
-		case "UtmSource":
-			if field.IsValid() && !field.IsZero() {
-				filters.UTMSource = db.NewFilter(db.FilterUTMSource, field.Interface().(api.OptFilterString))
-			}
-		case "UtmMedium":
-			if field.IsValid() && !field.IsZero() {
-				filters.UTMMedium = db.NewFilter(db.FilterUTMMedium, field.Interface().(api.OptFilterString))
-			}
-		case "UtmCampaign":
-			if field.IsValid() && !field.IsZero() {
-				filters.UTMCampaign = db.NewFilter(db.FilterUTMCampaign, field.Interface().(api.OptFilterString))
-			}
-		case "Browser":
-			if field.IsValid() && !field.IsZero() {
-				filters.Browser = db.NewFilter(db.FilterBrowser, field.Interface().(api.OptFilterString))
-			}
-		case "Os":
-			if field.IsValid() && !field.IsZero() {
-				filters.OS = db.NewFilter(db.FilterOS, field.Interface().(api.OptFilterString))
-			}
-		case "Device":
-			if field.IsValid() && !field.IsZero() {
-				filters.Device = db.NewFilter(db.FilterDevice, field.Interface().(api.OptFilterString))
-			}
-		case "Country":
-			if field.IsValid() && !field.IsZero() {
-				filters.Country = db.NewFilter(db.FilterCountry, field.Interface().(api.OptFilterString))
-			}
-		case "Language":
-			if field.IsValid() && !field.IsZero() {
-				filters.Language = db.NewFilter(db.FilterLanguage, field.Interface().(api.OptFilterString))
-				filters.LanguageDialect = db.NewFilter(db.FilterLanguageDialect, field.Interface().(api.OptFilterString))
-			}
-		case "Start":
-			if field.IsValid() && !field.IsZero() {
-				startTime := field.Interface().(api.OptDateTime).Value
-				filters.PeriodStart = startTime.Format(model.DateFormat)
-			}
-		case "End":
-			if field.IsValid() && !field.IsZero() {
-				endTime := field.Interface().(api.OptDateTime).Value
-				filters.PeriodEnd = endTime.Format(model.DateFormat)
-			}
-		case "Limit":
-			if field.IsValid() && !field.IsZero() {
-				filters.Limit = field.Interface().(api.OptInt).Value
-			}
-		case "Offset":
-			if field.IsValid() && !field.IsZero() {
-				filters.Offset = field.Interface().(api.OptInt).Value
-			}
-		}
-	}
-
-	return filters
 }

@@ -460,6 +460,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
       responses:
         "200":
           description: OK
@@ -500,6 +502,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -542,6 +546,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -590,6 +596,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -634,6 +642,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -678,6 +688,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -722,6 +734,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -766,6 +780,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -810,6 +826,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -854,6 +872,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -898,6 +918,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -948,6 +970,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -991,6 +1015,8 @@ paths:
         - $ref: "#/components/parameters/Device"
         - $ref: "#/components/parameters/Country"
         - $ref: "#/components/parameters/Language"
+        - $ref: "#/components/parameters/PropertyName"
+        - $ref: "#/components/parameters/PropertyValue"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:
@@ -1140,6 +1166,26 @@ components:
       name: language
       in: query
       description: Language code.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterString"
+    PropertyName:
+      name: prop_name
+      in: query
+      description: Name of the property.
+      required: false
+      style: deepObject
+      explode: true
+      allowReserved: true
+      schema:
+        $ref: "#/components/schemas/FilterString"
+    PropertyValue:
+      name: prop_value
+      in: query
+      description: Value of the property.
       required: false
       style: deepObject
       explode: true

@@ -36,6 +36,11 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 		From("views").
 		Where(filter.WhereString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -83,6 +88,23 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 	// handle month boundaries that have varying days.
 	var query *qb.QueryBuilder
 	if isMonthly {
+		statsQuery := qb.New().
+			Select(
+				"date_trunc('month', date_created) AS interval",
+				VisitorsStmt,
+				PageviewsStmt,
+				BounceRateStmt,
+				DurationStmt,
+			).
+			From("views").
+			Where(filter.WhereString()).
+			GroupBy("interval")
+
+		if filter.IsCustomEvent {
+			statsQuery = statsQuery.
+				LeftJoin(EventsJoinStmt)
+		}
+
 		query = qb.New().
 			WithMaterialized(
 				qb.NewCTE("intervals", qb.New().
@@ -90,21 +112,25 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 					From("generate_series(date_trunc('month', CAST(:start_period AS TIMESTAMPTZ)), date_trunc('month', CAST(:end_period AS TIMESTAMPTZ)), INTERVAL '1 MONTH')"),
 				),
 			).
-			WithMaterialized(
-				qb.NewCTE("stats", qb.New().
-					Select(
-						"date_trunc('month', date_created) AS interval",
-						VisitorsStmt,
-						PageviewsStmt,
-						BounceRateStmt,
-						DurationStmt,
-					).
-					From("views").
-					Where(filter.WhereString()).
-					GroupBy("interval"),
-				),
-			)
+			WithMaterialized(qb.NewCTE("stats", statsQuery))
 	} else {
+		statsQuery := qb.New().
+			Select(
+				"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
+				VisitorsStmt,
+				PageviewsStmt,
+				BounceRateStmt,
+				DurationStmt,
+			).
+			From("views").
+			Where(filter.WhereString()).
+			GroupBy("interval")
+
+		if filter.IsCustomEvent {
+			statsQuery = statsQuery.
+				LeftJoin(EventsJoinStmt)
+		}
+
 		query = qb.New().
 			WithMaterialized(
 				qb.NewCTE("intervals", qb.New().
@@ -112,20 +138,7 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 					From("generate_series(CAST(:start_period AS TIMESTAMPTZ), CAST(:end_period AS TIMESTAMPTZ), CAST(:interval_query AS INTERVAL))"),
 				),
 			).
-			WithMaterialized(
-				qb.NewCTE("stats", qb.New().
-					Select(
-						"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
-						VisitorsStmt,
-						PageviewsStmt,
-						BounceRateStmt,
-						DurationStmt,
-					).
-					From("views").
-					Where(filter.WhereString()).
-					GroupBy("interval"),
-				),
-			)
+			WithMaterialized(qb.NewCTE("stats", statsQuery))
 	}
 
 	query = query.

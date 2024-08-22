@@ -32,6 +32,11 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 		OrderBy("visitors DESC", "source ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -80,6 +85,11 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 		OrderBy("visitors DESC", "source ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -120,6 +130,11 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 		GroupBy("utm_medium").
 		OrderBy("visitors DESC", "medium ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
@@ -169,6 +184,11 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 		OrderBy("visitors DESC", "medium ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -209,6 +229,11 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 		GroupBy("utm_campaign").
 		OrderBy("visitors DESC", "campaign ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
@@ -257,6 +282,11 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 		GroupBy("utm_campaign").
 		OrderBy("visitors DESC", "campaign ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
 )
@@ -19,8 +20,8 @@ func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebs
 	}
 
 	// Create filter for database query
-	filters := createFilters(params, params.Hostname)
-	filters.IsEvent = true
+	filters := db.CreateFilters(params, params.Hostname)
+	filters.SortByEventDates = true
 
 	// Get the properties for the website
 	properties, err := h.analyticsDB.GetWebsiteCustomProperties(ctx, filters)
@@ -32,6 +33,8 @@ func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebs
 	// Return the properties in desired format
 	respMap := make(map[string]*api.StatsPropertiesItem)
 
+	// To match the OpenAPI spec, we need to return an array of items as well
+	// as group the properties by name with their aggregate values
 	for _, p := range properties {
 		item, exists := respMap[p.Name]
 		if !exists {

@@ -39,6 +39,11 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, f
 		OrderBy("visitors DESC", "referrer ASC").
 		Pagination(filter.PaginationString())
 
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -92,6 +97,11 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *
 		GroupBy("referrer").
 		OrderBy("visitors DESC", "referrer ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
