@@ -12,7 +12,7 @@ import (
 type FilterField string
 
 const (
-	// Views Table
+	// Views Table.
 	FilterHostname        FilterField = "hostname"
 	FilterPathname        FilterField = "pathname"
 	FilterReferrer        FilterField = "referrer_host"
@@ -27,7 +27,7 @@ const (
 	FilterLanguage        FilterField = "language_base"
 	FilterLanguageDialect FilterField = "language_dialect"
 
-	// Events Table
+	// Events Table.
 	FilterPropertyName  FilterField = "name"
 	FilterPropertyValue FilterField = "value"
 

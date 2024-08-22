@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"math"
 	"strings"
 
 	"github.com/go-faster/errors"
@@ -91,14 +92,22 @@ func (h *Handler) GetUserUsage(ctx context.Context, params api.GetUserUsageParam
 			Threads: cpuThreads,
 		},
 		Memory: api.UserUsageGetMemory{
-			Used:  int64(vmStat.Used),
-			Total: int64(vmStat.Total),
+			Used:  safeConvertUint64ToInt64(vmStat.Used),
+			Total: safeConvertUint64ToInt64(vmStat.Total),
 		},
 		Disk: api.UserUsageGetDisk{
-			Used:  int64(diskStat.Used),
-			Total: int64(diskStat.Total),
+			Used:  safeConvertUint64ToInt64(diskStat.Used),
+			Total: safeConvertUint64ToInt64(diskStat.Total),
 		},
 	}, nil
+}
+
+func safeConvertUint64ToInt64(value uint64) int64 {
+	if value <= math.MaxInt64 {
+		//nolint:gosec // safe to convert.
+		return int64(value)
+	}
+	return math.MaxInt64 // or another sentinel value or error handling
 }
 
 func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.PatchUserParams) (api.PatchUserRes, error) {
