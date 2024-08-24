@@ -28,6 +28,8 @@ const FILTER_MAP: Record<string, Filter> = {
 	Devices: 'device',
 	Countries: 'country',
 	Languages: 'language',
+	PropName: 'prop_name',
+	PropValue: 'prop_value',
 };
 
 const StatsItem = ({
@@ -36,7 +38,7 @@ const StatsItem = ({
 	percentage = 0,
 	tab,
 }: StatsItemProps) => {
-	const { addFilter } = useFilter();
+	const { addFilter, isFilterActiveEq } = useFilter();
 	const { hovered, ref } = useHover<HTMLButtonElement>();
 
 	const formattedValue = useMemo(
@@ -45,7 +47,13 @@ const StatsItem = ({
 	);
 
 	const handleFilter = () => {
-		const filter = FILTER_MAP[tab] ?? 'path';
+		let key = tab;
+		// Properties tab has two types of filters
+		if (tab === 'properties') {
+			key = isFilterActiveEq('prop_name') ? 'PropValue' : 'PropName';
+		}
+
+		const filter = FILTER_MAP[key] ?? 'path';
 		addFilter(filter, 'eq', label);
 	};
 

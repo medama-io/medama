@@ -92,9 +92,13 @@ const FILTER_OPTIONS: FilterOptions = {
 		label: 'Language',
 		placeholder: 'e.g. English',
 	},
-	property: {
-		label: 'Property',
+	prop_name: {
+		label: 'Property Name',
 		placeholder: 'e.g. logged_in',
+	},
+	prop_value: {
+		label: 'Property Value',
+		placeholder: 'e.g. true',
 	},
 };
 
@@ -224,6 +228,8 @@ export const Filters = () => {
 					'UTM Source': 'utm_source',
 					'UTM Medium': 'utm_medium',
 					'UTM Campaign': 'utm_campaign',
+					'Property Name': 'prop_name',
+					'Property Value': 'prop_value',
 				};
 				const filterKey = filterMap[label] ?? label.toLowerCase();
 				removeFilter(filterKey as Filter, type, value);

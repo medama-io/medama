@@ -43,7 +43,7 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 		// If the property name is not empty, return the property name with its
 		// values, events and visitors.
 		query = query.Select(
-			"name",
+			"'' AS name",
 			"value",
 			"COUNT(*) AS events",
 			VisitorsStmt,

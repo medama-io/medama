@@ -90,7 +90,7 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 	if isMonthly {
 		statsQuery := qb.New().
 			Select(
-				"date_trunc('month', date_created) AS interval",
+				"date_trunc('month', views.date_created) AS interval",
 				VisitorsStmt,
 				PageviewsStmt,
 				BounceRateStmt,
@@ -116,7 +116,7 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 	} else {
 		statsQuery := qb.New().
 			Select(
-				"time_bucket(CAST(:interval_query AS INTERVAL), date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
+				"time_bucket(CAST(:interval_query AS INTERVAL), views.date_created, CAST(:start_period AS TIMESTAMPTZ)) AS interval",
 				VisitorsStmt,
 				PageviewsStmt,
 				BounceRateStmt,
