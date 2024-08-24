@@ -88,7 +88,8 @@ type Handler interface {
 	GetWebsiteIDPages(ctx context.Context, params GetWebsiteIDPagesParams) (GetWebsiteIDPagesRes, error)
 	// GetWebsiteIDProperties implements get-website-id-properties operation.
 	//
-	// Get a list of custom properties and their stats.
+	// Get a list of custom properties and their stats. If a property name is provided, it will return
+	// the stats for that property instead.
 	//
 	// GET /website/{hostname}/properties
 	GetWebsiteIDProperties(ctx context.Context, params GetWebsiteIDPropertiesParams) (GetWebsiteIDPropertiesRes, error)

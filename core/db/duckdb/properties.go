@@ -22,19 +22,39 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 	// Events is the number of events for the custom property
 	//
 	// Visitors is the number of unique visitors for the custom property.
-	query := qb.New().
-		Select(
+	query := qb.New()
+
+	// If the property name is empty, return only the property names with their
+	// aggregated events and visitors. No values.
+	if filter.PropertyName == nil || filter.PropertyName.Value == "" {
+		query = query.Select(
 			"name",
-			"value",
-			"COUNT(*) FILTER(value IS NOT NULL) AS events",
+			"'' AS value",
+			"COUNT(*) AS events",
 			VisitorsStmt,
 		).
-		From("views").
-		LeftJoin(EventsJoinStmt).
-		Where(filter.WhereString()).
-		GroupBy("name", "value").
-		OrderBy("events DESC", "name ASC", "value ASC").
-		Pagination(filter.PaginationString())
+			From("views").
+			LeftJoin(EventsJoinStmt).
+			Where(filter.WhereString()).
+			GroupBy("name").
+			OrderBy("events DESC", "name ASC").
+			Pagination(filter.PaginationString())
+	} else {
+		// If the property name is not empty, return the property name with its
+		// values, events and visitors.
+		query = query.Select(
+			"name",
+			"value",
+			"COUNT(*) AS events",
+			VisitorsStmt,
+		).
+			From("views").
+			LeftJoin(EventsJoinStmt).
+			Where(filter.WhereString()).
+			GroupBy("name", "value").
+			OrderBy("events DESC", "name ASC", "value ASC").
+			Pagination(filter.PaginationString())
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {

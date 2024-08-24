@@ -2160,7 +2160,8 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 
 // handleGetWebsiteIDPropertiesRequest handles get-website-id-properties operation.
 //
-// Get a list of custom properties and their stats.
+// Get a list of custom properties and their stats. If a property name is provided, it will return
+// the stats for that property instead.
 //
 // GET /website/{hostname}/properties
 func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {

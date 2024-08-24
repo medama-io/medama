@@ -998,7 +998,7 @@ paths:
       security:
         - CookieAuth: []
       summary: Get Property Stats
-      description: Get a list of custom properties and their stats.
+      description: Get a list of custom properties and their stats. If a property name is provided, it will return the stats for that property instead.
       operationId: get-website-id-properties
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
@@ -2006,32 +2006,15 @@ components:
           name:
             type: string
             description: Custom property name.
+          value:
+            type: string
+            description: Custom property value.
           events:
             type: integer
             description: Number of events for custom property.
           visitors:
             type: integer
             description: Number of unique visitors for custom property.
-          items:
-            type: array
-            items:
-              type: object
-              properties:
-                value:
-                  type: string
-                  description: Custom property value.
-                events:
-                  type: integer
-                  description: Number of events for custom property value.
-                visitors:
-                  type: integer
-                  description: Number of unique visitors for custom property value.
-              required:
-                - value
-                - events
-                - visitors
         required:
-          - name
           - events
           - visitors
-          - items

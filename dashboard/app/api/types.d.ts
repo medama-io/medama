@@ -433,7 +433,7 @@ export interface paths {
         };
         /**
          * Get Property Stats
-         * @description Get a list of custom properties and their stats.
+         * @description Get a list of custom properties and their stats. If a property name is provided, it will return the stats for that property instead.
          */
         get: operations["get-website-id-properties"];
         put?: never;
@@ -881,19 +881,13 @@ export interface components {
          */
         StatsProperties: {
             /** @description Custom property name. */
-            name: string;
+            name?: string;
+            /** @description Custom property value. */
+            value?: string;
             /** @description Number of events for custom property. */
             events: number;
             /** @description Number of unique visitors for custom property. */
             visitors: number;
-            items: {
-                /** @description Custom property value. */
-                value: string;
-                /** @description Number of events for custom property value. */
-                events: number;
-                /** @description Number of unique visitors for custom property value. */
-                visitors: number;
-            }[];
         }[];
     };
     responses: {

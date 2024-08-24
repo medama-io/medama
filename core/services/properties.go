@@ -30,36 +30,22 @@ func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebs
 		return ErrInternalServerError(model.ErrInternalServerError), nil
 	}
 
-	// Return the properties in desired format
-	respMap := make(map[string]*api.StatsPropertiesItem)
-
-	// To match the OpenAPI spec, we need to return an array of items as well
-	// as group the properties by name with their aggregate values
+	resp := make(api.StatsProperties, 0, len(properties))
 	for _, p := range properties {
-		item, exists := respMap[p.Name]
-		if !exists {
-			item = &api.StatsPropertiesItem{
-				Name:  p.Name,
-				Items: []api.StatsPropertiesItemItemsItem{},
-			}
-			respMap[p.Name] = item
-		}
-
-		// Aggregate the values
-		item.Events += p.Events
-		item.Visitors += p.Visitors
-
-		// Add the property
-		item.Items = append(item.Items, api.StatsPropertiesItemItemsItem{
-			Value:    p.Value,
+		item := api.StatsPropertiesItem{
 			Events:   p.Events,
 			Visitors: p.Visitors,
-		})
-	}
+		}
 
-	resp := make(api.StatsProperties, 0, len(respMap))
-	for _, item := range respMap {
-		resp = append(resp, *item)
+		if p.Name != "" {
+			item.Name = api.NewOptString(p.Name)
+		}
+
+		if p.Value != "" {
+			item.Value = api.NewOptString(p.Value)
+		}
+
+		resp = append(resp, item)
 	}
 
 	return &resp, nil
