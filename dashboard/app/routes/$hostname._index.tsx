@@ -7,34 +7,32 @@ import {
 } from '@remix-run/react';
 
 import { TabProperties, TabSelect } from '@/components/stats/Tabs';
-import TabClasses from '@/components/stats/Tabs.module.css';
 import {
 	type CustomPropertyValue,
 	DATASETS,
 	type DataRow,
-	type Dataset,
 	type PageViewValue,
 	type TabGroups,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';
 
-type StatsData = {
-	[K in Dataset]: DataRow[];
-};
+import TabClasses from '@/components/stats/Tabs.module.css';
 
 const mapItems = <T extends DataRow>(
-	data: T[],
+	data: T[] | undefined,
 	accessor: keyof T,
 ): PageViewValue[] =>
-	data.map((item) => ({
-		label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
-		count: item.visitors ?? item.duration ?? 0,
-		percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
-	}));
+	data
+		? data.map((item) => ({
+				label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
+				count: item.visitors ?? item.duration ?? 0,
+				percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
+			}))
+		: [];
 
 const createStatsData = <T extends DataRow>(
 	label: string,
-	data: T[],
+	data: T[] | undefined,
 	accessor: keyof T,
 ) => ({
 	label,
@@ -56,7 +54,7 @@ export const clientLoader = async ({
 };
 
 export default function Index() {
-	const stats = useLoaderData<StatsData>();
+	const stats = useLoaderData<typeof clientLoader>();
 
 	const statsGroups: TabGroups[] = [
 		{
@@ -92,6 +90,11 @@ export default function Index() {
 		},
 	];
 
+	// Filter out property choices from an unfiltered property list to preserve property names
+	const propertyChoices = stats.propertiesUnfiltered?.map(
+		(item) => item.name ?? 'Unknown',
+	);
+
 	return (
 		<>
 			<SimpleGrid cols={{ base: 1, lg: 2 }} className={TabClasses.grid}>
@@ -102,6 +105,7 @@ export default function Index() {
 			<div className={TabClasses.grid} data-end="true">
 				<TabProperties
 					label="properties"
+					choices={propertyChoices ?? []}
 					data={stats.properties as CustomPropertyValue[]}
 				/>
 			</div>

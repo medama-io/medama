@@ -60,17 +60,11 @@ interface PageViewValue {
 	percentage?: number;
 }
 
-interface CustomPropertyItem {
-	value: string;
-	events: number;
-	visitors: number;
-}
-
 interface CustomPropertyValue {
-	name: string;
+	name?: string;
+	value?: string;
 	events: number;
 	visitors: number;
-	items: CustomPropertyItem[];
 }
 
 interface TabData {

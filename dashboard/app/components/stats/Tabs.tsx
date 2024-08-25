@@ -2,6 +2,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import { useSearchParams } from '@remix-run/react';
 
 import { ButtonLink } from '@/components/Button';
+import { useFilter } from '@/hooks/use-filter';
 
 import { Combobox } from './Combobox';
 import { StatsItem } from './StatsItem';
@@ -15,6 +16,7 @@ interface TabSelectProps {
 
 interface TabPropertiesProps {
 	label: string;
+	choices: string[];
 	data: CustomPropertyValue[];
 }
 
@@ -57,46 +59,23 @@ const TabSelect = ({ data }: TabSelectProps) => {
 	);
 };
 
-const TabProperties = ({ label, data }: TabPropertiesProps) => {
-	const [searchParams, setSearchParams] = useSearchParams();
+const TabProperties = ({ label, choices, data }: TabPropertiesProps) => {
+	const [searchParams] = useSearchParams();
+	const { addFilter, getFilterEq } = useFilter();
 
-	const choice = searchParams.get('property') ?? '';
+	const choice = getFilterEq('prop_name') ?? '';
 	const handleChoice = (value: string) => {
-		setSearchParams(
-			(params) => {
-				if (params.get('property') === value) {
-					params.delete('property');
-				} else {
-					params.set('property', value);
-				}
-				return params;
-			},
-			{ preventScrollReset: true },
-		);
+		addFilter('prop_name', 'eq', value);
 	};
 
-	const choices = data.map((item) => item.name);
-
-	const items =
-		choice !== ''
-			? data
-					.find((item) => item.name === choice)
-					?.items.map((item) => (
-						<StatsItem
-							key={item.value}
-							tab={label}
-							label={item.value}
-							count={item.events}
-						/>
-					))
-			: data.map((item) => (
-					<StatsItem
-						key={item.name}
-						tab={label}
-						label={item.name}
-						count={item.events}
-					/>
-				));
+	const items = data.map((item) => (
+		<StatsItem
+			key={item.name ?? item.value ?? 'Unknown'}
+			tab={label}
+			label={item.name ?? item.value ?? 'Unknown'}
+			count={item.events}
+		/>
+	));
 
 	return (
 		<Tabs.Root className={classes.root} defaultValue={label}>

@@ -44,6 +44,14 @@ const fetchStats = async (
 	const searchParams = new URL(request.url).searchParams;
 	const [filters, interval] = generateFilters(searchParams, { limit });
 
+	// Remove any prop_name and prop_value filters for unfiltered properties.
+	const noPropertyFilters = structuredClone(filters); // Shallow clone with spread operator. structuredClone is too new.
+	for (const key of Object.keys(noPropertyFilters)) {
+		if (key.startsWith('prop_name') || key.startsWith('prop_value')) {
+			delete noPropertyFilters[key];
+		}
+	}
+
 	// Depending on what data is requested, we can make multiple requests in
 	// parallel to speed up the loading time.
 	const [
@@ -60,6 +68,7 @@ const fetchStats = async (
 		countries,
 		languages,
 		properties,
+		propertiesUnfiltered, // This is used to get the list of property names for the search dropdown.
 	] = await Promise.all([
 		set.has('summary')
 			? statsSummary({
@@ -192,6 +201,15 @@ const fetchStats = async (
 					},
 				})
 			: undefined,
+
+		set.has('properties')
+			? statsProperties({
+					pathKey: params.hostname,
+					query: {
+						...noPropertyFilters,
+					},
+				})
+			: undefined,
 	]);
 
 	return {
@@ -208,6 +226,7 @@ const fetchStats = async (
 		countries: countries?.data,
 		languages: languages?.data,
 		properties: properties?.data,
+		propertiesUnfiltered: propertiesUnfiltered?.data,
 	};
 };
 
