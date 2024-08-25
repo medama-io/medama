@@ -1916,8 +1916,6 @@ type StatsPropertiesItem struct {
 	Value OptString `json:"value"`
 	// Number of events for custom property.
 	Events int `json:"events"`
-	// Number of unique visitors for custom property.
-	Visitors int `json:"visitors"`
 }
 
 // GetName returns the value of Name.
@@ -1935,11 +1933,6 @@ func (s *StatsPropertiesItem) GetEvents() int {
 	return s.Events
 }
 
-// GetVisitors returns the value of Visitors.
-func (s *StatsPropertiesItem) GetVisitors() int {
-	return s.Visitors
-}
-
 // SetName sets the value of Name.
 func (s *StatsPropertiesItem) SetName(val OptString) {
 	s.Name = val
@@ -1953,11 +1946,6 @@ func (s *StatsPropertiesItem) SetValue(val OptString) {
 // SetEvents sets the value of Events.
 func (s *StatsPropertiesItem) SetEvents(val int) {
 	s.Events = val
-}
-
-// SetVisitors sets the value of Visitors.
-func (s *StatsPropertiesItem) SetVisitors(val int) {
-	s.Visitors = val
 }
 
 type StatsReferrers []StatsReferrersItem

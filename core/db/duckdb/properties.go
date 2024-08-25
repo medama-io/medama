@@ -31,7 +31,6 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 			"name",
 			"'' AS value",
 			"COUNT(*) AS events",
-			VisitorsStmt,
 		).
 			From("views").
 			LeftJoin(EventsJoinStmt).
@@ -46,7 +45,6 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 			"'' AS name",
 			"value",
 			"COUNT(*) AS events",
-			VisitorsStmt,
 		).
 			From("views").
 			LeftJoin(EventsJoinStmt).

@@ -1,6 +1,6 @@
 .select-wrapper {
 	width: 100%;
-	padding: 12px 8px;
+	padding: 12px 8px 2px 8px;
 }
 
 .select {
@@ -15,7 +15,7 @@
 	border-color: var(--border-muted);
 
 	&:hover {
-		background-color: var(--selected-snow);
+		background-color: var(--black-a1);
 	}
 
 	&[data-disabled] {

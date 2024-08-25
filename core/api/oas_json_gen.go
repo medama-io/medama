@@ -3538,17 +3538,12 @@ func (s *StatsPropertiesItem) encodeFields(e *jx.Encoder) {
 		e.FieldStart("events")
 		e.Int(s.Events)
 	}
-	{
-		e.FieldStart("visitors")
-		e.Int(s.Visitors)
-	}
 }
 
-var jsonFieldsNameOfStatsPropertiesItem = [4]string{
+var jsonFieldsNameOfStatsPropertiesItem = [3]string{
 	0: "name",
 	1: "value",
 	2: "events",
-	3: "visitors",
 }
 
 // Decode decodes StatsPropertiesItem from json.
@@ -3592,18 +3587,6 @@ func (s *StatsPropertiesItem) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"events\"")
 			}
-		case "visitors":
-			requiredBitSet[0] |= 1 << 3
-			if err := func() error {
-				v, err := d.Int()
-				s.Visitors = int(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"visitors\"")
-			}
 		default:
 			return d.Skip()
 		}
@@ -3614,7 +3597,7 @@ func (s *StatsPropertiesItem) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00001100,
+		0b00000100,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

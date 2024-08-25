@@ -16,6 +16,7 @@ interface StatsItemProps {
 	count?: number;
 	percentage?: number;
 	tab: string;
+	bar?: boolean;
 }
 
 const FILTER_MAP: Record<string, Filter> = {
@@ -37,6 +38,7 @@ const StatsItem = ({
 	count = 0,
 	percentage = 0,
 	tab,
+	bar = true,
 }: StatsItemProps) => {
 	const { addFilter, isFilterActiveEq } = useFilter();
 	const { hovered, ref } = useHover<HTMLButtonElement>();
@@ -65,7 +67,7 @@ const StatsItem = ({
 			aria-label={`Filter by ${label}`}
 			ref={ref}
 		>
-			<Group style={{ paddingBottom: 6, flexWrap: 'nowrap' }}>
+			<Group style={{ paddingBottom: bar ? 6 : 0, flexWrap: 'nowrap' }}>
 				<Group style={{ overflow: 'hidden', gap: 8 }}>
 					<p className={classes.label}>{label}</p>
 					{tab === 'Referrers' && (
@@ -83,20 +85,24 @@ const StatsItem = ({
 					)}
 				</Group>
 				<Group style={{ gap: 8, flexWrap: 'nowrap' }}>
-					<span
-						className={classes.percentage}
-						data-active={hovered ? 'true' : undefined}
-					>
-						{(percentage * 100).toFixed(1)}%
-					</span>
+					{bar && (
+						<span
+							className={classes.percentage}
+							data-active={hovered ? 'true' : undefined}
+						>
+							{(percentage * 100).toFixed(1)}%
+						</span>
+					)}
 					<p style={{ fontWeight: 600, fontSize: 14 }}>{formattedValue}</p>
 				</Group>
 			</Group>
-			<div
-				className={classes.bar}
-				style={{ width: `${Math.min(percentage * 100, 100)}%` }}
-				aria-hidden="true"
-			/>
+			{bar && (
+				<div
+					className={classes.bar}
+					style={{ width: `${Math.min(percentage * 100, 100)}%` }}
+					aria-hidden="true"
+				/>
+			)}
 		</button>
 	);
 };

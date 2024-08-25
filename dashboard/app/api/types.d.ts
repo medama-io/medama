@@ -886,8 +886,6 @@ export interface components {
             value?: string;
             /** @description Number of events for custom property. */
             events: number;
-            /** @description Number of unique visitors for custom property. */
-            visitors: number;
         }[];
     };
     responses: {

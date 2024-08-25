@@ -445,7 +445,6 @@ const getColumnsForQuery = (
 					title: 'Events',
 					sortable: true,
 				},
-				PRESET_COLUMNS.visitors,
 			];
 		default:
 			throw new Error(`Invalid query: ${query}`);

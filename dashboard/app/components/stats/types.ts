@@ -64,7 +64,6 @@ interface CustomPropertyValue {
 	name?: string;
 	value?: string;
 	events: number;
-	visitors: number;
 }
 
 interface TabData {

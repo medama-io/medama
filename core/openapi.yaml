@@ -2012,9 +2012,5 @@ components:
           events:
             type: integer
             description: Number of events for custom property.
-          visitors:
-            type: integer
-            description: Number of unique visitors for custom property.
         required:
           - events
-          - visitors
