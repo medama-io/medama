@@ -21,7 +21,7 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 	//
 	// VisitorsPercentage is the percentage the browser contributes to the total visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"ua_browser AS browser",
 			VisitorsStmt,
@@ -71,7 +71,7 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 	//
 	// Duration is the median duration of the page.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"ua_browser AS browser",
 			VisitorsStmt,
@@ -119,7 +119,7 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 	//
 	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"ua_os AS os",
 			VisitorsStmt,
@@ -166,7 +166,7 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 	//
 	// VisitorsPercentage is the percentage the operating contributes to the total visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"ua_os AS os",
 			VisitorsStmt,
@@ -214,7 +214,7 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 	//
 	// VisitorsPercentage is the percentage the device contributes to the total visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"ua_device_type AS device",
 			VisitorsStmt,
@@ -261,7 +261,7 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 	//
 	// VisitorsPercentage is the percentage the device contributes to the total visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"ua_device_type AS device",
 			VisitorsStmt,

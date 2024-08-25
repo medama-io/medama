@@ -27,7 +27,7 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, f
 	//
 	// VisitorsPercentage is the percentage the referrer contributes to the total visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			referrerStmt,
 			VisitorsStmt,
@@ -84,7 +84,7 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *
 	//
 	// Duration is the median duration the user spent on the page in milliseconds.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			referrerStmt,
 			VisitorsStmt,

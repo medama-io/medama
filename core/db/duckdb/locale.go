@@ -21,7 +21,7 @@ func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filt
 	//
 	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"country",
 			VisitorsStmt,
@@ -68,7 +68,7 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 	//
 	// VisitorsPercentage is the percentage the country contributes to the total unique visits.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"country",
 			VisitorsStmt,
@@ -122,7 +122,7 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, 
 	//
 	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			languageSelect,
 			VisitorsStmt,
@@ -174,7 +174,7 @@ func (c *Client) GetWebsiteLanguages(ctx context.Context, isLocale bool, filter 
 	//
 	// VisitorsPercentage is the percentage the language contributes to the total unique visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			languageSelect,
 			VisitorsStmt,

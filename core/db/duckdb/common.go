@@ -28,9 +28,16 @@ const (
 )
 
 // TotalVisitorsCTE declares a materialized CTE to calculate the total number of unique visitors.
-func TotalVisitorsCTE(whereClause string) qb.CTE {
-	return qb.NewCTE("total", qb.New().
+func TotalVisitorsCTE(whereClause string, isCustomEvent bool) qb.CTE {
+	query := qb.New().
 		Select("COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors").
 		From("views").
-		Where(whereClause))
+		Where(whereClause)
+
+	if isCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
+	return qb.NewCTE("total", query)
 }

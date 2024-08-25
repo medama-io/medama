@@ -20,7 +20,7 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 	//
 	// VisitorsPercentage is the percentage the utm source contributes to the total unique visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"utm_source AS source",
 			VisitorsStmt,
@@ -71,7 +71,7 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 	//
 	// Duration is the median duration of the unique visitors for the utm source.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"utm_source AS source",
 			VisitorsStmt,
@@ -119,7 +119,7 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 	//
 	// VisitorsPercentage is the percentage the utm medium contributes to the total unique visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"utm_medium AS medium",
 			VisitorsStmt,
@@ -170,7 +170,7 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 	//
 	// Duration is the median duration of the unique visitors for the utm medium.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"utm_medium AS medium",
 			VisitorsStmt,
@@ -218,7 +218,7 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 	//
 	// VisitorsPercentage is the percentage the utm campaign contributes to the total unique visitors.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"utm_campaign AS campaign",
 			VisitorsStmt,
@@ -269,7 +269,7 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 	//
 	// Duration is the median duration of the unique visitors for the utm campaign.
 	query := qb.New().
-		WithMaterialized(TotalVisitorsCTE(filter.WhereString())).
+		WithMaterialized(TotalVisitorsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"utm_campaign AS campaign",
 			VisitorsStmt,

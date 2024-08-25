@@ -28,8 +28,8 @@ const (
 	FilterLanguageDialect FilterField = "language_dialect"
 
 	// Events Table.
-	FilterPropertyName  FilterField = "name"
-	FilterPropertyValue FilterField = "value"
+	FilterPropertyName  FilterField = "events.name"
+	FilterPropertyValue FilterField = "events.value"
 
 	// Custom operations not used in the filtering API
 	// but used in named queries.
@@ -227,12 +227,12 @@ func CreateFilters(params interface{}, hostname string) *Filters {
 			}
 		case "PropName":
 			if field.IsValid() && !field.IsZero() {
-				filters.PropertyName = NewFilter(FilterLanguage, field.Interface().(api.OptFilterString))
+				filters.PropertyName = NewFilter(FilterPropertyName, field.Interface().(api.OptFilterString))
 				filters.IsCustomEvent = true
 			}
 		case "PropValue":
 			if field.IsValid() && !field.IsZero() {
-				filters.PropertyValue = NewFilter(FilterLanguage, field.Interface().(api.OptFilterString))
+				filters.PropertyValue = NewFilter(FilterPropertyValue, field.Interface().(api.OptFilterString))
 				filters.IsCustomEvent = true
 			}
 		case "Start":
@@ -300,6 +300,10 @@ func (f Filters) WhereString() string {
 	addCondition(&query, f.Device)
 	addCondition(&query, f.Country)
 	orCondition(&query, f.Language, f.LanguageDialect)
+
+	// Custom events
+	addCondition(&query, f.PropertyName)
+	addCondition(&query, f.PropertyValue)
 
 	// Time period filters
 	if f.PeriodStart != "" {
