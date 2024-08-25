@@ -4,11 +4,7 @@ import {
 	ComboboxProvider,
 	Combobox as ComboboxRoot,
 } from '@ariakit/react';
-import {
-	CheckIcon,
-	ChevronDownIcon,
-	MagnifyingGlassIcon,
-} from '@radix-ui/react-icons';
+import { ChevronDownIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import * as RadixSelect from '@radix-ui/react-select';
 import { matchSorter } from 'match-sorter';
 import { startTransition, useMemo, useState } from 'react';
@@ -19,6 +15,7 @@ interface ComboboxProps {
 	root: {
 		label: string;
 		placeholder: string;
+		emptyPlaceholder: string;
 	};
 	search: {
 		placeholder: string;
@@ -49,10 +46,16 @@ const Combobox = ({
 		// make sure to include it in the list of matches.
 		const selectedResult = choices.find((res) => res === value);
 		if (selectedResult && !matches.includes(selectedResult)) {
-			matches.push(selectedResult);
+			matches.unshift(selectedResult);
 		}
+
 		return matches;
 	}, [searchValue, value, choices]);
+
+	const isEmpty = choices.length === 0;
+	if (isEmpty) {
+		value = '';
+	}
 
 	return (
 		<RadixSelect.Root
@@ -76,8 +79,11 @@ const Combobox = ({
 					<RadixSelect.Trigger
 						aria-label={root.label}
 						className={classes.select}
+						disabled={isEmpty}
 					>
-						<RadixSelect.Value placeholder={root.placeholder} />
+						<RadixSelect.Value
+							placeholder={isEmpty ? root.emptyPlaceholder : root.placeholder}
+						/>
 						<RadixSelect.Icon className={classes['select-icon']}>
 							<ChevronDownIcon />
 						</RadixSelect.Icon>
@@ -123,11 +129,6 @@ const Combobox = ({
 							>
 								<ComboboxItem>
 									<RadixSelect.ItemText>{label}</RadixSelect.ItemText>
-									<RadixSelect.ItemIndicator
-										className={classes['item-indicator']}
-									>
-										<CheckIcon />
-									</RadixSelect.ItemIndicator>
 								</ComboboxItem>
 							</RadixSelect.Item>
 						))}

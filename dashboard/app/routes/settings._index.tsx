@@ -10,3 +10,7 @@ export const meta: MetaFunction = () => {
 export const clientLoader = async () => {
 	return redirect('/settings/account');
 };
+
+export const ErrorBoundary = () => {
+	return redirect('/settings/account');
+};

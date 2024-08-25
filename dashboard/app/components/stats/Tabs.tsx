@@ -61,10 +61,14 @@ const TabSelect = ({ data }: TabSelectProps) => {
 
 const TabProperties = ({ label, choices, data }: TabPropertiesProps) => {
 	const [searchParams] = useSearchParams();
-	const { addFilter, getFilterEq } = useFilter();
+	const { addFilter, getFilterEq, removeFilter } = useFilter();
 
 	const choice = getFilterEq('prop_name') ?? '';
 	const handleChoice = (value: string) => {
+		// Replace any existing prop name filters if selected from combobox
+		if (choice) {
+			removeFilter('prop_name', 'eq', choice);
+		}
 		addFilter('prop_name', 'eq', value);
 	};
 
@@ -91,18 +95,24 @@ const TabProperties = ({ label, choices, data }: TabPropertiesProps) => {
 			</Tabs.List>
 
 			<Tabs.Content value={label}>
-				<div className={classes.items} data-empty={data.length === 0}>
+				<div>
 					<Combobox
-						root={{ label: 'Select property', placeholder: 'Select property' }}
+						root={{
+							label: 'Select property',
+							placeholder: 'Select property',
+							emptyPlaceholder: 'No properties found...',
+						}}
 						search={{ placeholder: 'Search properties...' }}
 						choices={choices}
 						value={choice}
 						setValue={handleChoice}
 					/>
-					{items}
-					{data.length === 0 && (
-						<span className={classes.empty}>No records found...</span>
-					)}
+					<div className={classes.items} data-empty={data.length === 0}>
+						{items}
+						{data.length === 0 && (
+							<span className={classes.empty}>No records found...</span>
+						)}
+					</div>
 				</div>
 				<LoadMoreButton label={label} searchParams={searchParams} />
 			</Tabs.Content>
