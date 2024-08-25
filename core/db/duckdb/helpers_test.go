@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -52,10 +53,13 @@ type TestCase struct {
 }
 
 func TestMain(m *testing.M) {
-	m.Run()
+	code := m.Run()
 
 	// After all tests have run `go-snaps` will sort snapshots
 	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+
+	// Exit with the same code as the test runner
+	os.Exit(code)
 }
 
 func NewSnapRecords(slice interface{}) SnapRecords {

@@ -6,35 +6,33 @@ import {
 	useLoaderData,
 } from '@remix-run/react';
 
-import { StatsDisplay } from '@/components/stats/StatsDisplay';
+import { TabProperties, TabSelect } from '@/components/stats/Tabs';
 import {
+	type CustomPropertyValue,
 	DATASETS,
 	type DataRow,
-	type Dataset,
-	type StatsGroups,
-	type StatsValue,
+	type PageViewValue,
+	type TabGroups,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';
 
-import StatsDisplayClasses from '@/components/stats/StatsDisplay.module.css';
-
-type StatsData = {
-	[K in Dataset]: DataRow[];
-};
+import TabClasses from '@/components/stats/Tabs.module.css';
 
 const mapItems = <T extends DataRow>(
-	data: T[],
+	data: T[] | undefined,
 	accessor: keyof T,
-): StatsValue[] =>
-	data.map((item) => ({
-		label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
-		count: item.visitors ?? item.duration ?? 0,
-		percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
-	}));
+): PageViewValue[] =>
+	data
+		? data.map((item) => ({
+				label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
+				count: item.visitors ?? item.duration ?? 0,
+				percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
+			}))
+		: [];
 
 const createStatsData = <T extends DataRow>(
 	label: string,
-	data: T[],
+	data: T[] | undefined,
 	accessor: keyof T,
 ) => ({
 	label,
@@ -56,9 +54,9 @@ export const clientLoader = async ({
 };
 
 export default function Index() {
-	const stats = useLoaderData<StatsData>();
+	const stats = useLoaderData<typeof clientLoader>();
 
-	const statsGroups: StatsGroups[] = [
+	const statsGroups: TabGroups[] = [
 		{
 			label: 'pages',
 			data: [
@@ -92,11 +90,25 @@ export default function Index() {
 		},
 	];
 
+	// Filter out property choices from an unfiltered property list to preserve property names
+	const propertyChoices = stats.propertiesUnfiltered?.map(
+		(item) => item.name ?? 'Unknown',
+	);
+
 	return (
-		<SimpleGrid cols={{ base: 1, lg: 2 }} className={StatsDisplayClasses.grid}>
-			{statsGroups.map((group) => (
-				<StatsDisplay key={group.label} data={group.data} />
-			))}
-		</SimpleGrid>
+		<>
+			<SimpleGrid cols={{ base: 1, lg: 2 }} className={TabClasses.grid}>
+				{statsGroups.map((group) => (
+					<TabSelect key={group.label} data={group.data} />
+				))}
+			</SimpleGrid>
+			<div className={TabClasses.grid} data-end="true">
+				<TabProperties
+					label="properties"
+					choices={propertyChoices ?? []}
+					data={stats.properties as CustomPropertyValue[]}
+				/>
+			</div>
+		</>
 	);
 }

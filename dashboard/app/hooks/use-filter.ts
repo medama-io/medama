@@ -36,6 +36,28 @@ const useFilter = () => {
 		[searchParams, setSearchParams],
 	);
 
+	const getFilterEq = useCallback(
+		(filter: Filter): string | null => {
+			const key = getKey(filter, 'eq');
+			return searchParams.get(key);
+		},
+		[searchParams],
+	);
+
+	const isFilterActive = useCallback(
+		(filter: Filter) => {
+			const keys = searchParams.keys();
+			for (const key of keys) {
+				if (key.startsWith(filter)) {
+					return true;
+				}
+			}
+
+			return false;
+		},
+		[searchParams],
+	);
+
 	const isFilterActiveEq = useCallback(
 		(filter: Filter) => {
 			const key = getKey(filter, 'eq');
@@ -48,7 +70,9 @@ const useFilter = () => {
 		searchParams,
 		addFilter,
 		removeFilter,
+		isFilterActive,
 		isFilterActiveEq,
+		getFilterEq,
 	};
 };
 

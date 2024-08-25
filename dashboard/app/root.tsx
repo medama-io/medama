@@ -26,11 +26,9 @@ import '@mantine/core/styles/CloseButton.css';
 // Inputs
 import '@mantine/core/styles/Checkbox.css';
 import '@mantine/core/styles/Combobox.css';
-import '@mantine/core/styles/PasswordInput.css';
 // Navigation
 import '@mantine/core/styles/Burger.css';
 import '@mantine/core/styles/NavLink.css';
-import '@mantine/core/styles/Tabs.css';
 // Feedback
 import '@mantine/core/styles/Skeleton.css';
 import '@mantine/core/styles/Tooltip.css';
@@ -69,7 +67,6 @@ import {
 	useRouteError,
 } from '@remix-run/react';
 
-import { API_BASE } from '@/api/client';
 import { AppShell } from '@/components/layout/AppShell';
 import {
 	BadRequestError,
@@ -96,12 +93,7 @@ export const clientLoader = () => {
 export const Document = ({ children }: DocumentProps) => {
 	// While end users will have their API servers at a fixed domain, development mode will have the API server
 	// running on localhost.
-	let isLocalhost = false;
-	let scriptSrc = '/script.js';
-	if (API_BASE === 'localhost') {
-		isLocalhost = true;
-		scriptSrc = 'http://localhost:8080/script.js';
-	}
+	const isLocalhost = import.meta.env.DEV;
 
 	return (
 		<html lang="en">
@@ -147,7 +139,7 @@ export const Document = ({ children }: DocumentProps) => {
 				<Meta />
 				<Links />
 				<ColorSchemeScript />
-				{isLocalhost && <script defer src={scriptSrc} />}
+				{isLocalhost && <script defer src="http://localhost:8080/script.js" />}
 			</head>
 			<body>
 				<MantineProvider classNamesPrefix="me" theme={theme}>

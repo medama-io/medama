@@ -21,26 +21,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Get summary
 	currentSummary, err := h.analyticsDB.GetWebsiteSummary(ctx, filters)
@@ -123,30 +104,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	}
 
 	// Create filter for database query.
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary.
 	switch params.Summary.Value {
@@ -214,30 +172,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
@@ -304,30 +239,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary
 	switch params.Summary.Value {
@@ -393,30 +305,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -478,30 +367,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -566,30 +432,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -654,30 +497,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -742,30 +562,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -830,30 +627,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -918,30 +692,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:
@@ -1006,30 +757,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	}
 
 	// Create filter for database query
-	filters := &db.Filters{
-		Hostname: params.Hostname,
-
-		Pathname:        db.NewFilter(db.FilterPathname, params.Path),
-		Referrer:        db.NewFilter(db.FilterReferrer, params.Referrer),
-		ReferrerGroup:   db.NewFilter(db.FilterReferrerGroup, params.Referrer),
-		UTMSource:       db.NewFilter(db.FilterUTMSource, params.UtmSource),
-		UTMMedium:       db.NewFilter(db.FilterUTMMedium, params.UtmMedium),
-		UTMCampaign:     db.NewFilter(db.FilterUTMCampaign, params.UtmCampaign),
-		Browser:         db.NewFilter(db.FilterBrowser, params.Browser),
-		OS:              db.NewFilter(db.FilterOS, params.Os),
-		Device:          db.NewFilter(db.FilterDevice, params.Device),
-		Country:         db.NewFilter(db.FilterCountry, params.Country),
-		Language:        db.NewFilter(db.FilterLanguage, params.Language),
-		LanguageDialect: db.NewFilter(db.FilterLanguageDialect, params.Language),
-
-		// YYYY-MM-DD
-		PeriodStart: params.Start.Value.Format(model.DateFormat),
-		PeriodEnd:   params.End.Value.Format(model.DateFormat),
-
-		// Pagination
-		Limit:  params.Limit.Value,
-		Offset: params.Offset.Value,
-	}
+	filters := db.CreateFilters(params, params.Hostname)
 
 	switch params.Summary.Value {
 	case true:

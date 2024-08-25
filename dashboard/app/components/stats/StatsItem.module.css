@@ -4,6 +4,8 @@
 	padding: 7px 16px;
 	width: calc(100% - 16px);
 
+	background-color: transparent;
+	border: none;
 	border-radius: 8px;
 
 	cursor: pointer;
@@ -30,6 +32,22 @@
 	border: 1px solid var(--violet);
 }
 
+.label {
+	font-size: 14px;
+	text-overflow: ellipsis;
+	user-select: text;
+}
+
+.percentage {
+	font-size: 12px;
+	color: var(--text-muted);
+	margin-right: 4px;
+
+	@media (--lt-xs) {
+		display: none;
+	}
+}
+
 .external {
 	svg {
 		margin-bottom: -2px;
@@ -39,6 +57,10 @@
 	}
 
 	&[data-hidden="true"] {
+		display: none;
+	}
+
+	@media (--lt-xs) {
 		display: none;
 	}
 }

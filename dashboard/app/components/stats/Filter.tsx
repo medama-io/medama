@@ -92,6 +92,14 @@ const FILTER_OPTIONS: FilterOptions = {
 		label: 'Language',
 		placeholder: 'e.g. English',
 	},
+	prop_name: {
+		label: 'Property Name',
+		placeholder: 'e.g. logged_in',
+	},
+	prop_value: {
+		label: 'Property Value',
+		placeholder: 'e.g. true',
+	},
 };
 
 // Add this type guard function
@@ -220,6 +228,8 @@ export const Filters = () => {
 					'UTM Source': 'utm_source',
 					'UTM Medium': 'utm_medium',
 					'UTM Campaign': 'utm_campaign',
+					'Property Name': 'prop_name',
+					'Property Value': 'prop_value',
 				};
 				const filterKey = filterMap[label] ?? label.toLowerCase();
 				removeFilter(filterKey as Filter, type, value);
@@ -249,6 +259,7 @@ export const Filters = () => {
 							}
 							setOpened(!opened);
 						}}
+						data-medama-filter="open"
 					>
 						<Group gap={8} justify="center">
 							<PlusIcon />
@@ -293,6 +304,7 @@ export const Filters = () => {
 							onClick={() => {
 								setOpened(false);
 							}}
+							data-medama-filter="cancel"
 						>
 							Cancel
 						</UnstyledButton>
@@ -303,6 +315,7 @@ export const Filters = () => {
 								handleAddFilters();
 							}}
 							disabled={value === ''}
+							data-medama-filter="apply"
 						>
 							Apply
 						</UnstyledButton>

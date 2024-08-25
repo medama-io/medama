@@ -1,59 +1,80 @@
-.tabRoot {
+.root {
 	background-color: var(--bg-grey);
+
+	display: inline-flex;
 
 	padding: 16px;
 	border-radius: 8px;
 }
 
-.tab {
-	color: var(--text-disabled);
-	font-size: 14px;
+.list {
+	padding: 12px;
+	margin-right: 16px;
 
-	&[data-active] {
+	background-color: var(--text-light);
+	border-radius: 8px;
+}
+
+.list-triggers {
+	composes: flex from global;
+
+	width: 192px;
+
+	padding: 8px 0 0 0;
+}
+
+.trigger {
+	composes: button from global;
+
+	height: 34px;
+	width: 100%;
+	justify-content: flex-start;
+	padding: 0 12px 0 16px;
+
+	background-color: transparent;
+	color: var(--text-disabled);
+	border: none;
+
+	&:hover {
+		background-color: var(--black-a1);
+	}
+
+	&[data-state="active"] {
 		color: var(--text-dark);
 		font-weight: 600;
 	}
 }
 
-.tabList {
-	padding-right: 16px;
+.panel {
+	width: 100%;
+	overflow-x: auto;
 }
 
-.listWrapper {
-	background-color: var(--text-light);
-	border-radius: 8px;
-	width: 220px;
-	padding: 12px;
-
-	@media (--lt-lg) {
-		width: 100%;
-	}
-}
-
-.tableWrapper {
+.table-wrapper {
 	background-color: var(--bg-light);
 	border-radius: 8px;
 	padding: 4px;
 }
 
-.tableHeader {
+.table-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 7px 12px 12px 12px;
 	border-bottom: 1px solid var(--border-light);
+
+	span {
+		font-weight: 600;
+		padding: 3px 0;
+	}
 }
 
-.dataHeader {
+.data-header {
 	font-size: 13px;
 
 	th {
 		padding: 10px 8px;
 	}
-}
-
-.tabPanel {
-	overflow-x: auto;
 }
 
 .back {
@@ -87,7 +108,9 @@
 
 /* Pagination */
 .pagination {
-	justify-content: space-between;
+	composes: group from global;
+
+	padding: 12px 20px;
 
 	@media (--lt-sm) {
 		justify-content: center;
@@ -98,10 +121,12 @@
 	color: var(--text-muted);
 }
 
-.pageSize {
-	display: flex;
-	align-items: center;
-	padding: 10px;
+.page-size {
+	composes: button button-icon from global;
+
+	height: 30px;
+	width: 30px;
+	padding: 8px;
 	border-radius: 8px;
 
 	font-size: 14px;
@@ -125,10 +150,9 @@
 	}
 }
 
-.pageArrow {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+.page-arrow {
+	composes: button button-icon from global;
+	padding: 5px;
 
 	background-color: var(--bg-light);
 	border: 1px solid var(--border-muted);
@@ -145,5 +169,6 @@
 
 	svg {
 		color: var(--text-dark);
+		height: inherit;
 	}
 }

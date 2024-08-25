@@ -9,30 +9,18 @@ import {
 	statsMediums,
 	statsOS,
 	statsPages,
+	statsProperties,
 	statsReferrers,
 	statsSources,
 	statsSummary,
 	statsTime,
 } from '@/api/stats';
+import { DATASETS } from '@/components/stats/types';
 
 import { generateFilters } from './filters';
 
-const datasets = [
-	'summary',
-	'pages',
-	'time',
-	'referrers',
-	'sources',
-	'mediums',
-	'campaigns',
-	'browsers',
-	'os',
-	'devices',
-	'countries',
-	'languages',
-] as const;
-
-type DatasetItem = (typeof datasets)[number];
+const DataSetWithSummary = ['summary', ...DATASETS] as const;
+type DatasetItem = (typeof DataSetWithSummary)[number];
 type Datasets = readonly DatasetItem[];
 
 interface FetchStatsOptions {
@@ -43,18 +31,26 @@ interface FetchStatsOptions {
 }
 
 const isDatasetItem = (value: string): value is DatasetItem =>
-	datasets.includes(value as DatasetItem);
+	DataSetWithSummary.includes(value as DatasetItem);
 
 const fetchStats = async (
 	request: Request,
 	params: Params<string>,
 	options: FetchStatsOptions,
 ) => {
-	const { dataset = datasets, isSummary = false, limit } = options;
+	const { dataset = DataSetWithSummary, isSummary = false, limit } = options;
 	const set = new Set(dataset);
 	// Convert search params to filters
 	const searchParams = new URL(request.url).searchParams;
 	const [filters, interval] = generateFilters(searchParams, { limit });
+
+	// Remove any prop_name and prop_value filters for unfiltered properties.
+	const noPropertyFilters = structuredClone(filters); // Shallow clone with spread operator. structuredClone is too new.
+	for (const key of Object.keys(noPropertyFilters)) {
+		if (key.startsWith('prop_name') || key.startsWith('prop_value')) {
+			delete noPropertyFilters[key];
+		}
+	}
 
 	// Depending on what data is requested, we can make multiple requests in
 	// parallel to speed up the loading time.
@@ -71,6 +67,8 @@ const fetchStats = async (
 		devices,
 		countries,
 		languages,
+		properties,
+		propertiesUnfiltered, // This is used to get the list of property names for the search dropdown.
 	] = await Promise.all([
 		set.has('summary')
 			? statsSummary({
@@ -109,6 +107,7 @@ const fetchStats = async (
 					pathKey: params.hostname,
 					query: {
 						summary: isSummary,
+						// If there is no referrer filter, group the data.
 						grouped: !searchParams.has('referrer[eq]'),
 						...filters,
 					},
@@ -193,6 +192,24 @@ const fetchStats = async (
 					},
 				})
 			: undefined,
+
+		set.has('properties')
+			? statsProperties({
+					pathKey: params.hostname,
+					query: {
+						...filters,
+					},
+				})
+			: undefined,
+
+		set.has('properties')
+			? statsProperties({
+					pathKey: params.hostname,
+					query: {
+						...noPropertyFilters,
+					},
+				})
+			: undefined,
 	]);
 
 	return {
@@ -208,6 +225,8 @@ const fetchStats = async (
 		devices: devices?.data,
 		countries: countries?.data,
 		languages: languages?.data,
+		properties: properties?.data,
+		propertiesUnfiltered: propertiesUnfiltered?.data,
 	};
 };
 

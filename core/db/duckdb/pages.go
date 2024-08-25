@@ -16,15 +16,21 @@ const (
 
 // TotalPageviewsCTE declares a materialized CTE to calculate the total number of unique visitors
 // per page and pageviews.
-func totalPageviewsCTE(whereClause string) qb.CTE {
-	return qb.NewCTE("total", qb.New().
+func totalPageviewsCTE(whereClause string, isCustomEvent bool) qb.CTE {
+	query := qb.New().
 		Select(
 			"COUNT(*) FILTER (WHERE is_unique_page = true) AS total_visitors",
 			"COUNT(*) AS total_pageviews",
 		).
 		From("views").
-		Where(whereClause),
-	)
+		Where(whereClause)
+
+	if isCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
+	return qb.NewCTE("total", query)
 }
 
 // GetWebsitePagesSummary returns a summary of the pages for the given hostname.
@@ -42,7 +48,7 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 	//
 	// This is ordered by the number of unique visitors in descending order.
 	query := qb.New().
-		WithMaterialized(totalPageviewsCTE(filter.WhereString())).
+		WithMaterialized(totalPageviewsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"pathname",
 			// Different from VisitorsStmt due to is_unique_page
@@ -55,6 +61,11 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 		Having("visitors > 0").
 		OrderBy("visitors DESC", "pathname ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {
@@ -99,7 +110,7 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 	//
 	// This is ordered by the number of unique visitors in descending order.
 	query := qb.New().
-		WithMaterialized(totalPageviewsCTE(filter.WhereString())).
+		WithMaterialized(totalPageviewsCTE(filter.WhereString(), filter.IsCustomEvent)).
 		Select(
 			"pathname",
 			// Different from VisitorsStmt due to is_unique_page
@@ -116,6 +127,11 @@ func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*mo
 		Having("visitors > 0").
 		OrderBy("visitors DESC", "pageviews DESC", "pathname ASC").
 		Pagination(filter.PaginationString())
+
+	if filter.IsCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
 
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(nil))
 	if err != nil {

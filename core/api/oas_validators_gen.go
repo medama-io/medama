@@ -564,6 +564,14 @@ func (s *StatsPagesItem) Validate() error {
 	return nil
 }
 
+func (s StatsProperties) Validate() error {
+	alias := ([]StatsPropertiesItem)(s)
+	if alias == nil {
+		return errors.New("nil is invalid value")
+	}
+	return nil
+}
+
 func (s StatsReferrers) Validate() error {
 	alias := ([]StatsReferrersItem)(s)
 	if alias == nil {

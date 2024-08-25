@@ -10,6 +10,7 @@ const DATASETS = [
 	'devices',
 	'countries',
 	'languages',
+	'properties',
 ] as const;
 
 type Dataset = (typeof DATASETS)[number];
@@ -47,22 +48,32 @@ interface DataRow {
 	country?: string;
 	// Languages
 	language?: string;
+	// Properties
+	name?: string;
+	value?: string;
+	events?: number;
 }
 
-interface StatsValue {
+interface PageViewValue {
 	label: string;
 	count?: number;
 	percentage?: number;
 }
 
-interface StatsTab {
-	label: string;
-	items: StatsValue[];
+interface CustomPropertyValue {
+	name?: string;
+	value?: string;
+	events: number;
 }
 
-interface StatsGroups {
+interface TabData {
 	label: string;
-	data: StatsTab[];
+	items: PageViewValue[];
+}
+
+interface TabGroups {
+	label: string;
+	data: TabData[];
 }
 
 // Charts
@@ -78,7 +89,6 @@ interface StatHeaderData {
 }
 
 // Filters
-
 const FILTERS = [
 	'path',
 	'referrer',
@@ -90,6 +100,8 @@ const FILTERS = [
 	'device',
 	'country',
 	'language',
+	'prop_name',
+	'prop_value',
 ] as const;
 
 type Filter = (typeof FILTERS)[number];
@@ -116,9 +128,10 @@ export type {
 	DataRow,
 	Dataset,
 	StatHeaderData,
-	StatsGroups,
-	StatsTab,
-	StatsValue,
+	TabData,
+	TabGroups,
+	PageViewValue,
+	CustomPropertyValue,
 	Filter,
 	FilterOperator,
 	FilterKey,

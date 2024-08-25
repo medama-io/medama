@@ -9,4 +9,10 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+
+	&:where([data-visible-from="sm"]) {
+		@media (--lt-sm) {
+			display: none;
+		}
+	}
 }

@@ -6,7 +6,7 @@ import {
 	useParams,
 } from '@remix-run/react';
 
-import { StatsTable } from '@/components/stats/StatsTable';
+import { Table } from '@/components/stats/Table';
 import type { DataRow } from '@/components/stats/types';
 import { type DatasetItem, fetchStats, isDatasetItem } from '@/utils/stats';
 
@@ -37,5 +37,5 @@ export default function Index() {
 	const query = params.query as keyof typeof data;
 	const stats = data[query] as DataRow[];
 
-	return <StatsTable query={query} data={stats} />;
+	return <Table query={query} data={stats} />;
 }

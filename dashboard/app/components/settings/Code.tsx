@@ -1,6 +1,6 @@
 import { CheckIcon, CopyIcon } from '@radix-ui/react-icons';
 
-import { IconButton } from '@/components/Button';
+import { ButtonIcon } from '@/components/Button';
 import { ScrollArea } from '@/components/ScrollArea';
 import { useClipboard } from '@/hooks/use-clipboard';
 
@@ -18,13 +18,13 @@ const CodeBlock = ({ code }: CodeBlockProps) => {
 			<ScrollArea horizontal>
 				<pre className="group">
 					<code>{code}</code>
-					<IconButton
+					<ButtonIcon
 						className={classes.copy}
 						label="Copy tracking script code"
 						onClick={() => copy(code)}
 					>
 						{copied ? <CheckIcon /> : <CopyIcon />}
-					</IconButton>
+					</ButtonIcon>
 				</pre>
 			</ScrollArea>
 		</div>

@@ -180,6 +180,13 @@ h6 {
 	line-height: 2;
 }
 
+a,
+a:visited,
+a:hover,
+a:active {
+	color: inherit;
+}
+
 /* StatsTable.tsx */
 .mantine-datatable-empty-state-icon {
 	background: none;

@@ -1,8 +1,8 @@
-import { Group, Text, UnstyledButton } from '@mantine/core';
 import React, { useMemo } from 'react';
 import isFQDN from 'validator/lib/isFQDN';
 
 import { IconExternal } from '@/components/icons/external';
+import { Group } from '@/components/layout/Flex';
 import { useFilter } from '@/hooks/use-filter';
 import { useHover } from '@/hooks/use-hover';
 
@@ -16,6 +16,7 @@ interface StatsItemProps {
 	count?: number;
 	percentage?: number;
 	tab: string;
+	bar?: boolean;
 }
 
 const FILTER_MAP: Record<string, Filter> = {
@@ -28,6 +29,8 @@ const FILTER_MAP: Record<string, Filter> = {
 	Devices: 'device',
 	Countries: 'country',
 	Languages: 'language',
+	PropName: 'prop_name',
+	PropValue: 'prop_value',
 };
 
 const StatsItem = ({
@@ -35,8 +38,9 @@ const StatsItem = ({
 	count = 0,
 	percentage = 0,
 	tab,
+	bar = true,
 }: StatsItemProps) => {
-	const { addFilter } = useFilter();
+	const { addFilter, isFilterActiveEq } = useFilter();
 	const { hovered, ref } = useHover<HTMLButtonElement>();
 
 	const formattedValue = useMemo(
@@ -45,59 +49,61 @@ const StatsItem = ({
 	);
 
 	const handleFilter = () => {
-		const filter = FILTER_MAP[tab] ?? 'path';
+		let key = tab;
+		// Properties tab has two types of filters
+		if (tab === 'properties') {
+			key = isFilterActiveEq('prop_name') ? 'PropValue' : 'PropName';
+		}
+
+		const filter = FILTER_MAP[key] ?? 'path';
 		addFilter(filter, 'eq', label);
 	};
 
 	return (
-		<UnstyledButton
+		<button
 			className={classes.item}
+			type="button"
 			onClick={handleFilter}
 			aria-label={`Filter by ${label}`}
 			ref={ref}
 		>
-			<Group justify="space-between" pb={6} wrap="nowrap">
-				<Group gap="xs" style={{ overflow: 'hidden' }}>
-					<Text fz={14} truncate style={{ userSelect: 'text' }}>
-						{label}
-					</Text>
+			<Group style={{ paddingBottom: bar ? 6 : 0, flexWrap: 'nowrap' }}>
+				<Group style={{ overflow: 'hidden', gap: 8 }}>
+					<p className={classes.label}>{label}</p>
 					{tab === 'Referrers' && (
-						<UnstyledButton
+						<a
 							className={classes.external}
-							component="a"
+							aria-label={`Visit ${label}`}
 							href={`https://${label}`}
 							target="_blank"
 							rel="noreferrer noopener"
 							data-hidden={!isFQDN(label)}
 							onClick={(event) => event.stopPropagation()}
-							visibleFrom="xs"
 						>
 							<IconExternal />
-						</UnstyledButton>
+						</a>
 					)}
 				</Group>
-				<Group align="center" gap="xs" wrap="nowrap">
-					<Text
-						component="span"
-						fz={12}
-						c="gray"
-						mr={4}
-						data-active={hovered ? 'true' : undefined}
-						visibleFrom="xs"
-					>
-						{(percentage * 100).toFixed(1)}%
-					</Text>
-					<Text fw={600} fz={14}>
-						{formattedValue}
-					</Text>
+				<Group style={{ gap: 8, flexWrap: 'nowrap' }}>
+					{bar && (
+						<span
+							className={classes.percentage}
+							data-active={hovered ? 'true' : undefined}
+						>
+							{(percentage * 100).toFixed(1)}%
+						</span>
+					)}
+					<p style={{ fontWeight: 600, fontSize: 14 }}>{formattedValue}</p>
 				</Group>
 			</Group>
-			<div
-				className={classes.bar}
-				style={{ width: `${Math.min(percentage * 100, 100)}%` }}
-				aria-hidden="true"
-			/>
-		</UnstyledButton>
+			{bar && (
+				<div
+					className={classes.bar}
+					style={{ width: `${Math.min(percentage * 100, 100)}%` }}
+					aria-hidden="true"
+				/>
+			)}
+		</button>
 	);
 };
 

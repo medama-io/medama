@@ -22,12 +22,22 @@ const (
             NULLIF(COUNT(*) FILTER (WHERE is_unique_user = true AND duration_ms IS NOT NULL), 0)
         , 4), 0)
 		ELSE 0 END AS bounce_rate`
+
+	// EventsJoinStmt is the join statement to join the events table.
+	EventsJoinStmt = "events USING (bid)"
 )
 
 // TotalVisitorsCTE declares a materialized CTE to calculate the total number of unique visitors.
-func TotalVisitorsCTE(whereClause string) qb.CTE {
-	return qb.NewCTE("total", qb.New().
+func TotalVisitorsCTE(whereClause string, isCustomEvent bool) qb.CTE {
+	query := qb.New().
 		Select("COUNT(*) FILTER (WHERE is_unique_user = true) AS total_visitors").
 		From("views").
-		Where(whereClause))
+		Where(whereClause)
+
+	if isCustomEvent {
+		query = query.
+			LeftJoin(EventsJoinStmt)
+	}
+
+	return qb.NewCTE("total", query)
 }

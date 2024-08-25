@@ -53,6 +53,10 @@ type GetWebsiteIDPagesRes interface {
 	getWebsiteIDPagesRes()
 }
 
+type GetWebsiteIDPropertiesRes interface {
+	getWebsiteIDPropertiesRes()
+}
+
 type GetWebsiteIDReferrersRes interface {
 	getWebsiteIDReferrersRes()
 }
