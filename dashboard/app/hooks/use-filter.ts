@@ -36,6 +36,20 @@ const useFilter = () => {
 		[searchParams, setSearchParams],
 	);
 
+	const isFilterActive = useCallback(
+		(filter: Filter) => {
+			const keys = searchParams.keys();
+			for (const key of keys) {
+				if (key.startsWith(filter)) {
+					return true;
+				}
+			}
+
+			return false;
+		},
+		[searchParams],
+	);
+
 	const isFilterActiveEq = useCallback(
 		(filter: Filter) => {
 			const key = getKey(filter, 'eq');
@@ -48,6 +62,7 @@ const useFilter = () => {
 		searchParams,
 		addFilter,
 		removeFilter,
+		isFilterActive,
 		isFilterActiveEq,
 	};
 };

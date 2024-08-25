@@ -67,7 +67,7 @@ const ACCESSOR_MAP: Record<Dataset, keyof DataRow> = {
 	devices: 'device',
 	countries: 'country',
 	languages: 'language',
-	properties: 'property',
+	properties: 'name',
 } as const;
 
 const FILTER_MAP: Record<Dataset, Filter> = {
@@ -82,7 +82,7 @@ const FILTER_MAP: Record<Dataset, Filter> = {
 	devices: 'device',
 	countries: 'country',
 	languages: 'language',
-	properties: 'property',
+	properties: 'prop_name',
 } as const;
 
 const PAGE_SIZES = [10, 25, 50, 100] as const;
@@ -174,15 +174,24 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 
 	// Sorting
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<DataRow>>({
-		columnAccessor: 'visitors',
+		columnAccessor: query === 'properties' ? 'events' : 'visitors',
 		direction: 'desc',
 	});
 
+	// Reset sort status when query changes.
+	useDidUpdate(() => {
+		setSortStatus({
+			columnAccessor: query === 'properties' ? 'events' : 'visitors',
+			direction: 'desc',
+		});
+	}, [query]);
+
 	const { isFilterActiveEq } = useFilter();
-	const showLocales = isFilterActiveEq('language');
+	const isActiveFilter =
+		isFilterActiveEq('language') || isFilterActiveEq('prop_name');
 	const columns = useMemo(
-		() => getColumnsForQuery(query, showLocales),
-		[query, showLocales],
+		() => getColumnsForQuery(query, isActiveFilter),
+		[query, isActiveFilter],
 	);
 
 	const records = useMemo(() => {
@@ -213,32 +222,31 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 		[],
 	);
 
-	const { addFilter } = useFilter();
-
-	const handleFilter: DataRowClick = (row) => {
-		const { record } = row;
-		const filter = FILTER_MAP[query] ?? 'path';
-
-		const value =
-			query === 'time'
-				? record.path
-				: record[ACCESSOR_MAP[query]] || 'Direct/None';
-		addFilter(filter, 'eq', String(value));
-	};
-
 	// Reset page when query or data length changes (from filters).
 	useDidUpdate(() => {
 		setPage(1);
 		setPageSize(10);
 	}, [query, data.length]);
 
-	// Reset sort status when query changes.
-	useDidUpdate(() => {
-		setSortStatus({
-			columnAccessor: 'visitors',
-			direction: 'desc',
-		});
-	}, [query]);
+	// Filter
+	const { addFilter } = useFilter();
+
+	const handleFilter: DataRowClick = (row) => {
+		const { record } = row;
+		let filter = FILTER_MAP[query] ?? 'path';
+
+		let value = record[ACCESSOR_MAP[query]] || 'Direct/None';
+		// Time query uses path as the accessor and main sort.
+		if (query === 'time' && record.path) {
+			value = record.path;
+			// If value exists, prop_name is set and we should access values now.
+		} else if (query === 'properties' && record.value) {
+			filter = 'prop_value';
+			value = record.value;
+		}
+
+		addFilter(filter, 'eq', String(value));
+	};
 
 	return (
 		<div className={classes['table-wrapper']}>
@@ -252,7 +260,14 @@ const QueryTable = ({ query, data, isMobile }: QueryTableProps) => {
 				noRecordsText="No records found..."
 				highlightOnHover
 				withRowBorders={false}
-				idAccessor={(record) => String(record[ACCESSOR_MAP[query]] ?? 'path')}
+				idAccessor={(record) =>
+					String(
+						record[ACCESSOR_MAP[query]] ??
+							record.name ??
+							record.value ??
+							'path',
+					)
+				}
 				records={records}
 				columns={columns}
 				sortStatus={sortStatus}
@@ -420,10 +435,15 @@ const getColumnsForQuery = (
 		case 'properties':
 			return [
 				{
-					accessor: ACCESSOR_MAP[query],
-					title: 'Property',
+					accessor: filterActive ? 'value' : 'name',
+					title: 'Name',
 					width: '100%',
-					render: (record) => record.property || 'Unknown',
+					render: (record) => record.name || record.value || 'Unknown',
+				},
+				{
+					accessor: 'events',
+					title: 'Events',
+					sortable: true,
 				},
 				PRESET_COLUMNS.visitors,
 			];

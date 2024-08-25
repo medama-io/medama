@@ -50,8 +50,8 @@ interface DataRow {
 	language?: string;
 	// Properties
 	name?: string;
+	value?: string;
 	events?: number;
-	items?: CustomPropertyItem[];
 }
 
 interface PageViewValue {
@@ -96,7 +96,6 @@ interface StatHeaderData {
 }
 
 // Filters
-
 const FILTERS = [
 	'path',
 	'referrer',
@@ -108,7 +107,8 @@ const FILTERS = [
 	'device',
 	'country',
 	'language',
-	'property',
+	'prop_name',
+	'prop_value',
 ] as const;
 
 type Filter = (typeof FILTERS)[number];
