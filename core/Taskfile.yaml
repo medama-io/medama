@@ -87,7 +87,6 @@ tasks:
       - go build -o ./bin/main -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
     env:
       CGO_ENABLED: "1"
-      GOEXPERIMENT: "newinliner"
 
   release:linux:amd64:
     cmds:
@@ -96,7 +95,6 @@ tasks:
       - echo "linux/amd64 build done"
     env:
       CGO_ENABLED: "1"
-      GOEXPERIMENT: "newinliner"
       GOOS: "linux"
       GOARCH: "amd64"
 
@@ -109,7 +107,6 @@ tasks:
       CC: "aarch64-linux-gnu-gcc"
       CXX: "aarch64-linux-gnu-g++"
       CGO_ENABLED: "1"
-      GOEXPERIMENT: "newinliner"
       GOOS: "linux"
       GOARCH: "arm64"
 
@@ -120,7 +117,6 @@ tasks:
       - echo "darwin/amd64 build done"
     env:
       CGO_ENABLED: "1"
-      GOEXPERIMENT: "newinliner"
       GOOS: "darwin"
       GOARCH: "amd64"
 
@@ -131,6 +127,5 @@ tasks:
       - echo "darwin/arm64 build done"
     env:
       CGO_ENABLED: "1"
-      GOEXPERIMENT: "newinliner"
       GOOS: "darwin"
       GOARCH: "arm64"
