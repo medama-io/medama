@@ -5,8 +5,9 @@ FROM jdxcode/mise:latest AS build
 # Install unzip dependency for bun
 # Also combine RUN commands to reduce layers
 RUN apt-get update && apt-get install -y unzip && \
-	mise use -g bun@latest && \
-	mise use -g go@1.22 && \
+	mise install && \
+	mise use -g go && \
+	mise use -g bun && \
 	sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/bin
 
 # Cache build dependencies
