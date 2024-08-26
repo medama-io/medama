@@ -2,32 +2,35 @@
 
 FROM jdxcode/mise:latest AS build
 
+WORKDIR /app
+
 # Install unzip dependency for bun
-# Also combine RUN commands to reduce layers
-RUN apt-get update && apt-get install -y unzip && \
-	mise install && \
-	mise use -g go && \
-	mise use -g bun && \
-	sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/bin
+RUN apt-get update && apt-get install -y unzip
+# Install Taskfile
+RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/bin
+
+# Install language runtimes from .mise.toml
+COPY /.mise.toml ./.mise.toml
+RUN mise install && mise activate --shims bash
 
 # Cache build dependencies
 ENV GOCACHE=/root/.cache/go-build
 
 # Cache Go modules
-WORKDIR /app
 COPY core/go.mod core/go.sum ./core/
 COPY package.json bun.lockb ./
 COPY dashboard/package.json ./dashboard/
 COPY tracker/package.json ./tracker/
 
-RUN --mount=type=cache,target=/root/.cache/go-build \
+RUN --mount=type=cache,target=${GOCACHE} \
 	--mount=type=cache,target=/go/pkg/mod \
-	cd core && go mod download && cd .. && \
-	bun install --frozen-lockfile
+	cd core && go mod download && cd ..
+
+RUN bun install --frozen-lockfile
 
 # Copy the rest of the source code
 COPY . .
-RUN --mount=type=cache,target="/root/.cache/go-build" ~/bin/task core:release
+RUN --mount=type=cache,target=${GOCACHE} ~/bin/task core:release
 
 # Build the final image
 FROM gcr.io/distroless/cc-debian12
