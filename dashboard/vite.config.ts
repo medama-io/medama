@@ -4,7 +4,9 @@ import { browserslistToTargets } from 'lightningcss';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-const targets = browserslistToTargets(browserslist('defaults'));
+const targets = browserslistToTargets(
+	browserslist('defaults and fully supports es6-module'),
+);
 
 export default defineConfig({
 	build: {
