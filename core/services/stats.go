@@ -78,7 +78,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		resp.Interval = []api.StatsSummaryIntervalItem{}
+		resp.Interval = make([]api.StatsSummaryIntervalItem, 0, len(interval))
 		for _, i := range interval {
 			resp.Interval = append(resp.Interval, api.StatsSummaryIntervalItem{
 				Date:             i.Interval,
@@ -119,17 +119,16 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response.
-		res := api.StatsPages{}
+		resp := make(api.StatsPages, 0, len(pages))
 		for _, page := range pages {
-			res = append(res, api.StatsPagesItem{
+			resp = append(resp, api.StatsPagesItem{
 				Path:               page.Pathname,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get pages
 		pages, err := h.analyticsDB.GetWebsitePages(ctx, filters)
@@ -141,10 +140,9 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsPages{}
+		resp := make(api.StatsPages, 0, len(pages))
 		for _, page := range pages {
-			res = append(res, api.StatsPagesItem{
+			resp = append(resp, api.StatsPagesItem{
 				Path:                page.Pathname,
 				Visitors:            page.Visitors,
 				VisitorsPercentage:  page.VisitorsPercentage,
@@ -155,7 +153,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -187,17 +185,16 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsTime{}
+		resp := make(api.StatsTime, 0, len(times))
 		for _, page := range times {
-			res = append(res, api.StatsTimeItem{
+			resp = append(resp, api.StatsTimeItem{
 				Path:               page.Pathname,
 				Duration:           page.Duration,
 				DurationPercentage: page.DurationPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get time
 		times, err := h.analyticsDB.GetWebsiteTime(ctx, filters)
@@ -209,10 +206,9 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsTime{}
+		resp := make(api.StatsTime, 0, len(times))
 		for _, page := range times {
-			res = append(res, api.StatsTimeItem{
+			resp = append(resp, api.StatsTimeItem{
 				Path:                  page.Pathname,
 				Duration:              page.Duration,
 				DurationPercentage:    page.DurationPercentage,
@@ -222,7 +218,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -254,17 +250,16 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsReferrers{}
+		resp := make(api.StatsReferrers, 0, len(referrers))
 		for _, page := range referrers {
-			res = append(res, api.StatsReferrersItem{
+			resp = append(resp, api.StatsReferrersItem{
 				Referrer:           page.Referrer,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get referrers
 		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, params.Grouped.Value, filters)
@@ -276,10 +271,9 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsReferrers{}
+		resp := make(api.StatsReferrers, 0, len(referrers))
 		for _, page := range referrers {
-			res = append(res, api.StatsReferrersItem{
+			resp = append(resp, api.StatsReferrersItem{
 				Referrer:           page.Referrer,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -288,7 +282,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -319,17 +313,16 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMSources{}
+		resp := make(api.StatsUTMSources, 0, len(sources))
 		for _, page := range sources {
-			res = append(res, api.StatsUTMSourcesItem{
+			resp = append(resp, api.StatsUTMSourcesItem{
 				Source:             page.Source,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get sources
 		sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, filters)
@@ -338,10 +331,9 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMSources{}
+		resp := make(api.StatsUTMSources, 0, len(sources))
 		for _, page := range sources {
-			res = append(res, api.StatsUTMSourcesItem{
+			resp = append(resp, api.StatsUTMSourcesItem{
 				Source:             page.Source,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -350,7 +342,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -381,17 +373,16 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMMediums{}
+		resp := make(api.StatsUTMMediums, 0, len(mediums))
 		for _, page := range mediums {
-			res = append(res, api.StatsUTMMediumsItem{
+			resp = append(resp, api.StatsUTMMediumsItem{
 				Medium:             page.Medium,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get mediums
 		mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, filters)
@@ -403,10 +394,9 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMMediums{}
+		resp := make(api.StatsUTMMediums, 0, len(mediums))
 		for _, page := range mediums {
-			res = append(res, api.StatsUTMMediumsItem{
+			resp = append(resp, api.StatsUTMMediumsItem{
 				Medium:             page.Medium,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -415,7 +405,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -446,17 +436,16 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMCampaigns{}
+		resp := make(api.StatsUTMCampaigns, 0, len(campaigns))
 		for _, page := range campaigns {
-			res = append(res, api.StatsUTMCampaignsItem{
+			resp = append(resp, api.StatsUTMCampaignsItem{
 				Campaign:           page.Campaign,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get campaigns
 		campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, filters)
@@ -468,10 +457,9 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMCampaigns{}
+		resp := make(api.StatsUTMCampaigns, 0, len(campaigns))
 		for _, page := range campaigns {
-			res = append(res, api.StatsUTMCampaignsItem{
+			resp = append(resp, api.StatsUTMCampaignsItem{
 				Campaign:           page.Campaign,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -480,7 +468,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -511,17 +499,16 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsBrowsers{}
+		resp := make(api.StatsBrowsers, 0, len(browsers))
 		for _, page := range browsers {
-			res = append(res, api.StatsBrowsersItem{
+			resp = append(resp, api.StatsBrowsersItem{
 				Browser:            page.Browser,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get browsers
 		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filters)
@@ -533,10 +520,9 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsBrowsers{}
+		resp := make(api.StatsBrowsers, 0, len(browsers))
 		for _, page := range browsers {
-			res = append(res, api.StatsBrowsersItem{
+			resp = append(resp, api.StatsBrowsersItem{
 				Browser:            page.Browser,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -545,7 +531,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -576,17 +562,16 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsOS{}
+		resp := make(api.StatsOS, 0, len(os))
 		for _, page := range os {
-			res = append(res, api.StatsOSItem{
+			resp = append(resp, api.StatsOSItem{
 				Os:                 page.OS,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get OS
 		os, err := h.analyticsDB.GetWebsiteOS(ctx, filters)
@@ -598,10 +583,9 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsOS{}
+		resp := make(api.StatsOS, 0, len(os))
 		for _, page := range os {
-			res = append(res, api.StatsOSItem{
+			resp = append(resp, api.StatsOSItem{
 				Os:                 page.OS,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -610,7 +594,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -641,17 +625,16 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsDevices{}
+		resp := make(api.StatsDevices, 0, len(devices))
 		for _, page := range devices {
-			res = append(res, api.StatsDevicesItem{
+			resp = append(resp, api.StatsDevicesItem{
 				Device:             page.Device,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get devices
 		devices, err := h.analyticsDB.GetWebsiteDevices(ctx, filters)
@@ -663,10 +646,9 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsDevices{}
+		resp := make(api.StatsDevices, 0, len(devices))
 		for _, page := range devices {
-			res = append(res, api.StatsDevicesItem{
+			resp = append(resp, api.StatsDevicesItem{
 				Device:             page.Device,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -675,7 +657,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -706,17 +688,16 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsLanguages{}
+		resp := make(api.StatsLanguages, 0, len(languages))
 		for _, page := range languages {
-			res = append(res, api.StatsLanguagesItem{
+			resp = append(resp, api.StatsLanguagesItem{
 				Language:           page.Language,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get languages
 		languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, params.Locale.Value, filters)
@@ -728,10 +709,9 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsLanguages{}
+		resp := make(api.StatsLanguages, 0, len(languages))
 		for _, page := range languages {
-			res = append(res, api.StatsLanguagesItem{
+			resp = append(resp, api.StatsLanguagesItem{
 				Language:           page.Language,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -740,7 +720,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
@@ -771,17 +751,16 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsCountries{}
+		resp := make(api.StatsCountries, 0, len(countries))
 		for _, page := range countries {
-			res = append(res, api.StatsCountriesItem{
+			resp = append(resp, api.StatsCountriesItem{
 				Country:            page.Country,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	case false:
 		// Get countries
 		countries, err := h.analyticsDB.GetWebsiteCountries(ctx, filters)
@@ -793,10 +772,9 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsCountries{}
+		resp := make(api.StatsCountries, 0, len(countries))
 		for _, page := range countries {
-			res = append(res, api.StatsCountriesItem{
+			resp = append(resp, api.StatsCountriesItem{
 				Country:            page.Country,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
@@ -805,7 +783,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 			})
 		}
 
-		return &res, nil
+		return &resp, nil
 	default:
 		return ErrBadRequest(model.ErrInvalidParameter), nil
 	}
