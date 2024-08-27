@@ -1,3 +1,5 @@
+@import "../../styles/_media.css";
+
 .wrapper {
 	composes: flex from global;
 
