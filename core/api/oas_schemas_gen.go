@@ -1488,7 +1488,7 @@ type StatsBrowsersItem struct {
 	Browser string `json:"browser"`
 	// Number of unique visitors from browser.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from browser.
+	// Percentage of unique visitors from browser relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from browser.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -1555,7 +1555,7 @@ type StatsCountriesItem struct {
 	Country string `json:"country"`
 	// Number of unique visitors from country.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from country.
+	// Percentage of unique visitors from country relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from country.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -1622,7 +1622,7 @@ type StatsDevicesItem struct {
 	Device string `json:"device"`
 	// Number of unique visitors from device.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from device.
+	// Percentage of unique visitors from device relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from device.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -1689,7 +1689,7 @@ type StatsLanguagesItem struct {
 	Language string `json:"language"`
 	// Number of unique visitors for language.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors for language.
+	// Percentage of unique visitors for language relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage for language.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -1756,7 +1756,7 @@ type StatsOSItem struct {
 	Os string `json:"os"`
 	// Number of unique visitors from OS.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from OS.
+	// Percentage of unique visitors from OS relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from OS.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -1823,11 +1823,11 @@ type StatsPagesItem struct {
 	Path string `json:"path"`
 	// Number of unique visitors for given page.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors for given page.
+	// Percentage of unique visitors for given page relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Number of page views.
 	Pageviews OptInt `json:"pageviews"`
-	// Percentage of page views.
+	// Percentage of page views relative to all pages.
 	PageviewsPercentage OptFloat32 `json:"pageviews_percentage"`
 	// Bounce rate percentage.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -1916,6 +1916,8 @@ type StatsPropertiesItem struct {
 	Value OptString `json:"value"`
 	// Number of events for custom property.
 	Events int `json:"events"`
+	// Percentage of events for custom property relative to all events.
+	EventsPercentage float32 `json:"events_percentage"`
 }
 
 // GetName returns the value of Name.
@@ -1933,6 +1935,11 @@ func (s *StatsPropertiesItem) GetEvents() int {
 	return s.Events
 }
 
+// GetEventsPercentage returns the value of EventsPercentage.
+func (s *StatsPropertiesItem) GetEventsPercentage() float32 {
+	return s.EventsPercentage
+}
+
 // SetName sets the value of Name.
 func (s *StatsPropertiesItem) SetName(val OptString) {
 	s.Name = val
@@ -1948,6 +1955,11 @@ func (s *StatsPropertiesItem) SetEvents(val int) {
 	s.Events = val
 }
 
+// SetEventsPercentage sets the value of EventsPercentage.
+func (s *StatsPropertiesItem) SetEventsPercentage(val float32) {
+	s.EventsPercentage = val
+}
+
 type StatsReferrers []StatsReferrersItem
 
 func (*StatsReferrers) getWebsiteIDReferrersRes() {}
@@ -1957,7 +1969,7 @@ type StatsReferrersItem struct {
 	Referrer string `json:"referrer"`
 	// Number of unique visitors from referrer.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from referrer.
+	// Percentage of unique visitors from referrer relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from referrer.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -2221,7 +2233,7 @@ type StatsTimeItem struct {
 	DurationUpperQuartile OptInt `json:"duration_upper_quartile"`
 	// Total time spent on page in milliseconds for the lower quartile (25%).
 	DurationLowerQuartile OptInt `json:"duration_lower_quartile"`
-	// Percentage of time contributing to the total time spent on the website.
+	// Percentage of time contributing to the total time spent on the website relative to all pages.
 	DurationPercentage float32 `json:"duration_percentage"`
 }
 
@@ -2294,7 +2306,7 @@ type StatsUTMCampaignsItem struct {
 	Campaign string `json:"campaign"`
 	// Number of unique visitors from UTM campaign.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from UTM campaign.
+	// Percentage of unique visitors from UTM campaign relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from UTM campaign.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -2361,7 +2373,7 @@ type StatsUTMMediumsItem struct {
 	Medium string `json:"medium"`
 	// Number of unique visitors from UTM medium.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from UTM medium.
+	// Percentage of unique visitors from UTM medium relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from UTM medium.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
@@ -2428,7 +2440,7 @@ type StatsUTMSourcesItem struct {
 	Source string `json:"source"`
 	// Number of unique visitors from UTM source.
 	Visitors int `json:"visitors"`
-	// Percentage of unique visitors from UTM source.
+	// Percentage of unique visitors from UTM source relative to all visitors.
 	VisitorsPercentage float32 `json:"visitors_percentage"`
 	// Bounce rate percentage from UTM source.
 	BouncePercentage OptFloat32 `json:"bounce_percentage"`
