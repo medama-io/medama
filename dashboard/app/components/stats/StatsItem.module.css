@@ -1,3 +1,5 @@
+@import "../../styles/_media.css";
+
 .item {
 	height: 50px;
 	margin: 6px 8px;

@@ -1,3 +1,5 @@
+@import "../../styles/_media.css";
+
 .grid {
 	width: 100%;
 	background-color: var(--bg-grey);

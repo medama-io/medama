@@ -1,3 +1,5 @@
+@import "../../styles/_media.css";
+
 .root {
 	background-color: var(--bg-grey);
 

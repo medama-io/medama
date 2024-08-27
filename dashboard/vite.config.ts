@@ -3,9 +3,15 @@ import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-	server: {
-		watch: {
-			usePolling: true,
+	build: {
+		cssMinify: 'lightningcss',
+	},
+	css: {
+		transformer: 'lightningcss',
+		lightningcss: {
+			drafts: {
+				customMedia: true,
+			},
 		},
 	},
 	plugins: [
@@ -14,4 +20,9 @@ export default defineConfig({
 		}),
 		tsconfigPaths(),
 	],
+	server: {
+		watch: {
+			usePolling: true,
+		},
+	},
 });

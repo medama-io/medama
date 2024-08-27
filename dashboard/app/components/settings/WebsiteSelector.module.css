@@ -1,3 +1,5 @@
+@import "../../styles/_media.css";
+
 .target {
 	min-width: 192px;
 	height: 40px;

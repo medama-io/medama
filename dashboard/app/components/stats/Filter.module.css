@@ -1,3 +1,5 @@
+@import "../../styles/_media.css";
+
 .popover {
 	padding: 16px 16px 12px 16px;
 	gap: 16px;

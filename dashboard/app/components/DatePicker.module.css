@@ -1,3 +1,5 @@
+@import "../styles/_media.css";
+
 .button {
 	composes: dropdown option from "./DropdownSelect.module.css";
 	text-align: left;
