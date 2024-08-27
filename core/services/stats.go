@@ -78,7 +78,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		resp.Interval = []api.StatsSummaryIntervalItem{}
+		resp.Interval = make([]api.StatsSummaryIntervalItem, 0, len(interval))
 		for _, i := range interval {
 			resp.Interval = append(resp.Interval, api.StatsSummaryIntervalItem{
 				Date:             i.Interval,
@@ -107,8 +107,7 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary.
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary.
 		pages, err := h.analyticsDB.GetWebsitePagesSummary(ctx, filters)
 		if err != nil {
@@ -119,46 +118,42 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response.
-		res := api.StatsPages{}
+		resp := make(api.StatsPages, 0, len(pages))
 		for _, page := range pages {
-			res = append(res, api.StatsPagesItem{
+			resp = append(resp, api.StatsPagesItem{
 				Path:               page.Pathname,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get pages
-		pages, err := h.analyticsDB.GetWebsitePages(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website pages")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsPages{}
-		for _, page := range pages {
-			res = append(res, api.StatsPagesItem{
-				Path:                page.Pathname,
-				Visitors:            page.Visitors,
-				VisitorsPercentage:  page.VisitorsPercentage,
-				Pageviews:           api.NewOptInt(page.Pageviews),
-				PageviewsPercentage: api.NewOptFloat32(page.PageviewsPercentage),
-				BouncePercentage:    api.NewOptFloat32(page.BounceRate),
-				Duration:            api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get pages
+	pages, err := h.analyticsDB.GetWebsitePages(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website pages")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsPages, 0, len(pages))
+	for _, page := range pages {
+		resp = append(resp, api.StatsPagesItem{
+			Path:                page.Pathname,
+			Visitors:            page.Visitors,
+			VisitorsPercentage:  page.VisitorsPercentage,
+			Pageviews:           api.NewOptInt(page.Pageviews),
+			PageviewsPercentage: api.NewOptFloat32(page.PageviewsPercentage),
+			BouncePercentage:    api.NewOptFloat32(page.BounceRate),
+			Duration:            api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
@@ -175,8 +170,7 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		times, err := h.analyticsDB.GetWebsiteTimeSummary(ctx, filters)
 		if err != nil {
@@ -187,45 +181,41 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsTime{}
+		resp := make(api.StatsTime, 0, len(times))
 		for _, page := range times {
-			res = append(res, api.StatsTimeItem{
+			resp = append(resp, api.StatsTimeItem{
 				Path:               page.Pathname,
 				Duration:           page.Duration,
 				DurationPercentage: page.DurationPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get time
-		times, err := h.analyticsDB.GetWebsiteTime(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website time")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsTime{}
-		for _, page := range times {
-			res = append(res, api.StatsTimeItem{
-				Path:                  page.Pathname,
-				Duration:              page.Duration,
-				DurationPercentage:    page.DurationPercentage,
-				DurationUpperQuartile: api.NewOptInt(page.DurationUpperQuartile),
-				DurationLowerQuartile: api.NewOptInt(page.DurationLowerQuartile),
-				Visitors:              api.NewOptInt(page.Visitors),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get time
+	times, err := h.analyticsDB.GetWebsiteTime(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website time")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsTime, 0, len(times))
+	for _, page := range times {
+		resp = append(resp, api.StatsTimeItem{
+			Path:                  page.Pathname,
+			Duration:              page.Duration,
+			DurationPercentage:    page.DurationPercentage,
+			DurationUpperQuartile: api.NewOptInt(page.DurationUpperQuartile),
+			DurationLowerQuartile: api.NewOptInt(page.DurationLowerQuartile),
+			Visitors:              api.NewOptInt(page.Visitors),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
@@ -242,8 +232,7 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	filters := db.CreateFilters(params, params.Hostname)
 
 	// Check parameter if it is asking for summary
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, params.Grouped.Value, filters)
 		if err != nil {
@@ -254,44 +243,40 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsReferrers{}
+		resp := make(api.StatsReferrers, 0, len(referrers))
 		for _, page := range referrers {
-			res = append(res, api.StatsReferrersItem{
+			resp = append(resp, api.StatsReferrersItem{
 				Referrer:           page.Referrer,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get referrers
-		referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, params.Grouped.Value, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website referrers")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsReferrers{}
-		for _, page := range referrers {
-			res = append(res, api.StatsReferrersItem{
-				Referrer:           page.Referrer,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get referrers
+	referrers, err := h.analyticsDB.GetWebsiteReferrers(ctx, params.Grouped.Value, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website referrers")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsReferrers, 0, len(referrers))
+	for _, page := range referrers {
+		resp = append(resp, api.StatsReferrersItem{
+			Referrer:           page.Referrer,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
@@ -307,8 +292,7 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		sources, err := h.analyticsDB.GetWebsiteUTMSourcesSummary(ctx, filters)
 		if err != nil {
@@ -319,41 +303,37 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMSources{}
+		resp := make(api.StatsUTMSources, 0, len(sources))
 		for _, page := range sources {
-			res = append(res, api.StatsUTMSourcesItem{
+			resp = append(resp, api.StatsUTMSourcesItem{
 				Source:             page.Source,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get sources
-		sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, filters)
-		if err != nil {
-			log.Error().Err(err).Msg("failed to get website utm sources")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsUTMSources{}
-		for _, page := range sources {
-			res = append(res, api.StatsUTMSourcesItem{
-				Source:             page.Source,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get sources
+	sources, err := h.analyticsDB.GetWebsiteUTMSources(ctx, filters)
+	if err != nil {
+		log.Error().Err(err).Msg("failed to get website utm sources")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsUTMSources, 0, len(sources))
+	for _, page := range sources {
+		resp = append(resp, api.StatsUTMSourcesItem{
+			Source:             page.Source,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
@@ -369,8 +349,7 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		mediums, err := h.analyticsDB.GetWebsiteUTMMediumsSummary(ctx, filters)
 		if err != nil {
@@ -381,44 +360,40 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMMediums{}
+		resp := make(api.StatsUTMMediums, 0, len(mediums))
 		for _, page := range mediums {
-			res = append(res, api.StatsUTMMediumsItem{
+			resp = append(resp, api.StatsUTMMediumsItem{
 				Medium:             page.Medium,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get mediums
-		mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website utm mediums")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsUTMMediums{}
-		for _, page := range mediums {
-			res = append(res, api.StatsUTMMediumsItem{
-				Medium:             page.Medium,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get mediums
+	mediums, err := h.analyticsDB.GetWebsiteUTMMediums(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website utm mediums")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsUTMMediums, 0, len(mediums))
+	for _, page := range mediums {
+		resp = append(resp, api.StatsUTMMediumsItem{
+			Medium:             page.Medium,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
@@ -434,8 +409,7 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		campaigns, err := h.analyticsDB.GetWebsiteUTMCampaignsSummary(ctx, filters)
 		if err != nil {
@@ -446,44 +420,40 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsUTMCampaigns{}
+		resp := make(api.StatsUTMCampaigns, 0, len(campaigns))
 		for _, page := range campaigns {
-			res = append(res, api.StatsUTMCampaignsItem{
+			resp = append(resp, api.StatsUTMCampaignsItem{
 				Campaign:           page.Campaign,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get campaigns
-		campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website utm campaigns")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsUTMCampaigns{}
-		for _, page := range campaigns {
-			res = append(res, api.StatsUTMCampaignsItem{
-				Campaign:           page.Campaign,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get campaigns
+	campaigns, err := h.analyticsDB.GetWebsiteUTMCampaigns(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website utm campaigns")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsUTMCampaigns, 0, len(campaigns))
+	for _, page := range campaigns {
+		resp = append(resp, api.StatsUTMCampaignsItem{
+			Campaign:           page.Campaign,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
@@ -499,8 +469,7 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		browsers, err := h.analyticsDB.GetWebsiteBrowsersSummary(ctx, filters)
 		if err != nil {
@@ -511,44 +480,40 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsBrowsers{}
+		resp := make(api.StatsBrowsers, 0, len(browsers))
 		for _, page := range browsers {
-			res = append(res, api.StatsBrowsersItem{
+			resp = append(resp, api.StatsBrowsersItem{
 				Browser:            page.Browser,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get browsers
-		browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website browsers")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsBrowsers{}
-		for _, page := range browsers {
-			res = append(res, api.StatsBrowsersItem{
-				Browser:            page.Browser,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get browsers
+	browsers, err := h.analyticsDB.GetWebsiteBrowsers(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website browsers")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsBrowsers, 0, len(browsers))
+	for _, page := range browsers {
+		resp = append(resp, api.StatsBrowsersItem{
+			Browser:            page.Browser,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
@@ -564,8 +529,7 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		os, err := h.analyticsDB.GetWebsiteOSSummary(ctx, filters)
 		if err != nil {
@@ -576,44 +540,40 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsOS{}
+		resp := make(api.StatsOS, 0, len(os))
 		for _, page := range os {
-			res = append(res, api.StatsOSItem{
+			resp = append(resp, api.StatsOSItem{
 				Os:                 page.OS,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get OS
-		os, err := h.analyticsDB.GetWebsiteOS(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website os")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsOS{}
-		for _, page := range os {
-			res = append(res, api.StatsOSItem{
-				Os:                 page.OS,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get OS
+	os, err := h.analyticsDB.GetWebsiteOS(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website os")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsOS, 0, len(os))
+	for _, page := range os {
+		resp = append(resp, api.StatsOSItem{
+			Os:                 page.OS,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
@@ -629,8 +589,7 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		devices, err := h.analyticsDB.GetWebsiteDevicesSummary(ctx, filters)
 		if err != nil {
@@ -641,44 +600,40 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsDevices{}
+		resp := make(api.StatsDevices, 0, len(devices))
 		for _, page := range devices {
-			res = append(res, api.StatsDevicesItem{
+			resp = append(resp, api.StatsDevicesItem{
 				Device:             page.Device,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get devices
-		devices, err := h.analyticsDB.GetWebsiteDevices(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website devices")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsDevices{}
-		for _, page := range devices {
-			res = append(res, api.StatsDevicesItem{
-				Device:             page.Device,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get devices
+	devices, err := h.analyticsDB.GetWebsiteDevices(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website devices")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsDevices, 0, len(devices))
+	for _, page := range devices {
+		resp = append(resp, api.StatsDevicesItem{
+			Device:             page.Device,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
@@ -694,8 +649,7 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		languages, err := h.analyticsDB.GetWebsiteLanguagesSummary(ctx, params.Locale.Value, filters)
 		if err != nil {
@@ -706,44 +660,40 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsLanguages{}
+		resp := make(api.StatsLanguages, 0, len(languages))
 		for _, page := range languages {
-			res = append(res, api.StatsLanguagesItem{
+			resp = append(resp, api.StatsLanguagesItem{
 				Language:           page.Language,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get languages
-		languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, params.Locale.Value, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website languages")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsLanguages{}
-		for _, page := range languages {
-			res = append(res, api.StatsLanguagesItem{
-				Language:           page.Language,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get languages
+	languages, err := h.analyticsDB.GetWebsiteLanguages(ctx, params.Locale.Value, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website languages")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsLanguages, 0, len(languages))
+	for _, page := range languages {
+		resp = append(resp, api.StatsLanguagesItem{
+			Language:           page.Language,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
 
 func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
@@ -759,8 +709,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 	// Create filter for database query
 	filters := db.CreateFilters(params, params.Hostname)
 
-	switch params.Summary.Value {
-	case true:
+	if params.Summary.Value {
 		// Get summary
 		countries, err := h.analyticsDB.GetWebsiteCountriesSummary(ctx, filters)
 		if err != nil {
@@ -771,42 +720,38 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 			return ErrInternalServerError(err), nil
 		}
 
-		// Create API response
-		res := api.StatsCountries{}
+		resp := make(api.StatsCountries, 0, len(countries))
 		for _, page := range countries {
-			res = append(res, api.StatsCountriesItem{
+			resp = append(resp, api.StatsCountriesItem{
 				Country:            page.Country,
 				Visitors:           page.Visitors,
 				VisitorsPercentage: page.VisitorsPercentage,
 			})
 		}
 
-		return &res, nil
-	case false:
-		// Get countries
-		countries, err := h.analyticsDB.GetWebsiteCountries(ctx, filters)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Bool("summary", params.Summary.Value).
-				Msg("failed to get website countries")
-			return ErrInternalServerError(err), nil
-		}
-
-		// Create API response
-		res := api.StatsCountries{}
-		for _, page := range countries {
-			res = append(res, api.StatsCountriesItem{
-				Country:            page.Country,
-				Visitors:           page.Visitors,
-				VisitorsPercentage: page.VisitorsPercentage,
-				BouncePercentage:   api.NewOptFloat32(page.BounceRate),
-				Duration:           api.NewOptInt(page.Duration),
-			})
-		}
-
-		return &res, nil
-	default:
-		return ErrBadRequest(model.ErrInvalidParameter), nil
+		return &resp, nil
 	}
+
+	// Get countries
+	countries, err := h.analyticsDB.GetWebsiteCountries(ctx, filters)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Bool("summary", params.Summary.Value).
+			Msg("failed to get website countries")
+		return ErrInternalServerError(err), nil
+	}
+
+	resp := make(api.StatsCountries, 0, len(countries))
+	for _, page := range countries {
+		resp = append(resp, api.StatsCountriesItem{
+			Country:            page.Country,
+			Visitors:           page.Visitors,
+			VisitorsPercentage: page.VisitorsPercentage,
+			BouncePercentage:   api.NewOptFloat32(page.BounceRate),
+			Duration:           api.NewOptInt(page.Duration),
+		})
+	}
+
+	return &resp, nil
 }
