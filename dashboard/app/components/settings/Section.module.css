@@ -74,7 +74,7 @@
 }
 
 .delete {
-	composes: submit;
+	composes: button from global;
 	background-color: var(--bg-red-danger);
 	border: 1px solid var(--bg-red-danger);
 	border-radius: 8px;
