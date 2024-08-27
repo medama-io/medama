@@ -1,6 +1,10 @@
 import { vitePlugin as remix } from '@remix-run/dev';
+import browserslist from 'browserslist';
+import { browserslistToTargets } from 'lightningcss';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+
+const targets = browserslistToTargets(browserslist('defaults'));
 
 export default defineConfig({
 	build: {
@@ -9,6 +13,7 @@ export default defineConfig({
 	css: {
 		transformer: 'lightningcss',
 		lightningcss: {
+			targets,
 			drafts: {
 				customMedia: true,
 			},
