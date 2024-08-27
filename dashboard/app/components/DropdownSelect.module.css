@@ -22,7 +22,7 @@
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--mantine-color-blue-outline);
+		outline: 2px solid var(--focus-outline);
 	}
 
 	&:where([data-left="true"]) {

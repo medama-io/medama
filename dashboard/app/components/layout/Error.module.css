@@ -7,29 +7,31 @@
 .label {
 	text-align: center;
 	font-weight: 900;
-	font-size: rem(38px);
+	font-size: 38px;
 	line-height: 1;
-	margin-bottom: var(--mantine-spacing-xs);
+	margin-bottom: 4px;
 	color: var(--border-light);
 
 	@media (--lt-sm) {
-		font-size: rem(32px);
+		font-size: 32px;
 	}
 }
 
 .description {
-	max-width: rem(500px);
+	max-width: 500px;
 	margin: auto;
-	margin-bottom: calc(1.5 * var(--mantine-spacing-xl));
+	margin-bottom: 30px;
 }
 
 .title {
 	text-align: center;
 	font-weight: 900;
-	font-size: rem(38px);
+	font-size: 38px;
 
 	@media (--lt-sm) {
-		font-size: rem(32px);
+		margin: 12px 0;
+		font-size: 28px;
+		line-height: 1.4;
 	}
 }
 

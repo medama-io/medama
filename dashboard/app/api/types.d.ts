@@ -662,14 +662,14 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors for given page.
+             * @description Percentage of unique visitors for given page relative to all visitors.
              */
             visitors_percentage: number;
             /** @description Number of page views. */
             pageviews?: number;
             /**
              * Format: float
-             * @description Percentage of page views.
+             * @description Percentage of page views relative to all pages.
              */
             pageviews_percentage?: number;
             /**
@@ -694,7 +694,7 @@ export interface components {
             duration_lower_quartile?: number;
             /**
              * Format: float
-             * @description Percentage of time contributing to the total time spent on the website.
+             * @description Percentage of time contributing to the total time spent on the website relative to all pages.
              */
             duration_percentage: number;
         }[];
@@ -706,7 +706,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from referrer.
+             * @description Percentage of unique visitors from referrer relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -725,7 +725,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from UTM source.
+             * @description Percentage of unique visitors from UTM source relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -744,7 +744,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from UTM medium.
+             * @description Percentage of unique visitors from UTM medium relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -763,7 +763,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from UTM campaign.
+             * @description Percentage of unique visitors from UTM campaign relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -782,7 +782,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from browser.
+             * @description Percentage of unique visitors from browser relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -801,7 +801,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from OS.
+             * @description Percentage of unique visitors from OS relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -820,7 +820,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from device.
+             * @description Percentage of unique visitors from device relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -839,7 +839,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors from country.
+             * @description Percentage of unique visitors from country relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -864,7 +864,7 @@ export interface components {
             visitors: number;
             /**
              * Format: float
-             * @description Percentage of unique visitors for language.
+             * @description Percentage of unique visitors for language relative to all visitors.
              */
             visitors_percentage: number;
             /**
@@ -886,6 +886,11 @@ export interface components {
             value?: string;
             /** @description Number of events for custom property. */
             events: number;
+            /**
+             * Format: float
+             * @description Percentage of events for custom property relative to all events.
+             */
+            events_percentage: number;
         }[];
     };
     responses: {
