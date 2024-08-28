@@ -1,5 +1,3 @@
-@import "./_media.css";
-
 .flex {
 	display: flex;
 	flex-direction: column;

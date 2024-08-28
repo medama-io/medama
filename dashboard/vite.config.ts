@@ -1,12 +1,15 @@
 import { vitePlugin as remix } from '@remix-run/dev';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
+import fs from 'node:fs';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 const targets = browserslistToTargets(
 	browserslist('defaults and fully supports es6-module'),
 );
+
+const customMedia = fs.readFileSync('./app/styles/_media.css', 'utf-8');
 
 export default defineConfig({
 	build: {
@@ -22,6 +25,15 @@ export default defineConfig({
 		},
 	},
 	plugins: [
+		{
+			name: 'css-additional-data',
+			enforce: 'pre',
+			transform(code, id) {
+				if (id.endsWith('.css')) {
+					return `${customMedia}\n${code}`;
+				}
+			},
+		},
 		remix({
 			ssr: false,
 		}),

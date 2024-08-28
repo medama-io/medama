@@ -1,5 +1,3 @@
-@import "../../styles/_media.css";
-
 .wrapper {
 	composes: group from global;
 	width: 100%;
