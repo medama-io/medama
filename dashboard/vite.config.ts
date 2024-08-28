@@ -1,7 +1,7 @@
+import fs from 'node:fs';
 import { vitePlugin as remix } from '@remix-run/dev';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
-import fs from 'node:fs';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
