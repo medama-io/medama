@@ -206,6 +206,13 @@
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
 		).then((isFirstVisit) => {
+			let data = {};
+			for (const elem of document.querySelectorAll('[data-m\\:load]')) {
+				data = {
+					...data,
+					...extractDataAttributes(elem, 'data-m:load'),
+				};
+			}
 
 			// We use fetch here because it is more reliable than XHR.
 			fetch(host + 'event/hit', {
@@ -228,6 +235,7 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
+						"d": data,
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -242,6 +250,13 @@
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
+			let data = {};
+			for (const elem of document.querySelectorAll('[data-m\\:unload]')) {
+				data = {
+					...data,
+					...extractDataAttributes(elem, 'data-m:unload'),
+				};
+			}
 
 			// We use sendBeacon here because it is more reliable than fetch on page unloads.
 			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
@@ -263,6 +278,7 @@
 						"b": uid,
 						"e": "unload",
 						"m": Date.now() - hiddenTotalTime,
+						"d": data,
 					}),
 				),
 			);
@@ -272,48 +288,6 @@
 		isUnloadCalled = true;
 	};
 
-	/**
-	 * Click event listener to track custom events.
-	 * @param {MouseEvent} event The click event.
-	 * @returns {void}
-	 */
-	const clickTracker = (event) => {
-		// If event is not a left click or middle click, then bail out.
-		// If the target is not an HTMLElement, then bail out.
-		if (event.button > 1 || !(event.target instanceof HTMLElement)) return;
-
-		// Extract all data-m:click attributes and send them as custom properties.
-		const data = extractDataAttributes(event.target, 'data-m:click');
-
-		if (Object.keys(data).length > 0) {
-			// We use fetch here because it is more reliable than XHR.
-			fetch(host + 'event/hit', {
-				method: 'POST',
-				body: JSON.stringify(
-					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
-					/**
-					 * Payload to send to the server.
-					 * @type {CustomPayload}
-					 */ ({
-						"b": uid,
-						"e": "custom",
-						"g": location.hostname,
-						"d": data,
-					}),
-				),
-				// Will make the response opaque, but we don't need it.
-				mode: 'no-cors',
-			});
-		}
-	};
-
-	// Add event listeners to all elements with data-m:click attributes.
-	for (const elem of document.querySelectorAll('[data-m\\:click]')) {
-		// Click event listener only listens to primary left clicks.
-		elem.addEventListener('click', clickTracker);
-		// Auxclick event listener listens to middle clicks and right clicks.
-		elem.addEventListener('auxclick', clickTracker);
-	}
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.

@@ -35,3 +35,12 @@ await build('click-events', {
 	DATA_ATTRIBUTES: true,
 	CLICK_EVENTS: true,
 });
+await build('page-events', {
+	DATA_ATTRIBUTES: true,
+	PAGE_EVENTS: true,
+});
+await build('click-events.page-events', {
+	DATA_ATTRIBUTES: true,
+	PAGE_EVENTS: true,
+	CLICK_EVENTS: true,
+});

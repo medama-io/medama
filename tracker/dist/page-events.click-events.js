@@ -206,6 +206,13 @@
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
 		).then((isFirstVisit) => {
+			let data = {};
+			for (const elem of document.querySelectorAll('[data-m\\:load]')) {
+				data = {
+					...data,
+					...extractDataAttributes(elem, 'data-m:load'),
+				};
+			}
 
 			// We use fetch here because it is more reliable than XHR.
 			fetch(host + 'event/hit', {
@@ -228,6 +235,7 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
+						"d": data,
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -242,6 +250,13 @@
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
+			let data = {};
+			for (const elem of document.querySelectorAll('[data-m\\:unload]')) {
+				data = {
+					...data,
+					...extractDataAttributes(elem, 'data-m:unload'),
+				};
+			}
 
 			// We use sendBeacon here because it is more reliable than fetch on page unloads.
 			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
@@ -263,6 +278,7 @@
 						"b": uid,
 						"e": "unload",
 						"m": Date.now() - hiddenTotalTime,
+						"d": data,
 					}),
 				),
 			);

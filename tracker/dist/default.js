@@ -151,6 +151,7 @@
 			}
 		};
 
+
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
 	 * if the user is unique or not.
@@ -189,6 +190,7 @@
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
 		).then((isFirstVisit) => {
+
 			// We use fetch here because it is more reliable than XHR.
 			fetch(host + 'event/hit', {
 				method: 'POST',
@@ -224,6 +226,7 @@
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
+
 			// We use sendBeacon here because it is more reliable than fetch on page unloads.
 			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
 			// Firefox on top of that. Previous experiements also seemed to indicate that
@@ -252,7 +255,6 @@
 		// Ensure unload is only called once.
 		isUnloadCalled = true;
 	};
-
 
 
 	// Prefer pagehide if available because it's more reliable than unload.

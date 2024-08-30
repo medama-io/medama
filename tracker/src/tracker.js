@@ -151,6 +151,25 @@
 			}
 		};
 
+	// @ifdef DATA_ATTRIBUTES
+	/**
+	 * Extracts key-value pairs from a given data attribute.
+	 * @param {Element} target The target element from which to extract data.
+	 * @param {string} attrName The name of the data attribute to extract (e.g., 'data-m:click').
+	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
+	 */
+	const extractDataAttributes = (target, attrName) =>
+		(target.getAttribute(attrName) || '')
+			.split(';') // Split the attribute value into individual key-value pairs.
+			.reduce((acc, pair) => {
+				// Split each pair by '=' and trim whitespace.
+				const [k, v] = pair.split('=').map((s) => s.trim());
+				// If both key and value exist, add them to the accumulator object.
+				if (k && v) acc[k] = v;
+				return acc;
+			}, {});
+	// @endif
+
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
 	 * if the user is unique or not.
@@ -189,6 +208,16 @@
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
 		).then((isFirstVisit) => {
+			// @ifdef PAGE_EVENTS
+			let data = {};
+			for (const elem of document.querySelectorAll('[data-m\\:load]')) {
+				data = {
+					...data,
+					...extractDataAttributes(elem, 'data-m:load'),
+				};
+			}
+			// @endif
+
 			// We use fetch here because it is more reliable than XHR.
 			fetch(host + 'event/hit', {
 				method: 'POST',
@@ -210,6 +239,9 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
+						// @ifdef PAGE_EVENTS
+						"d": data,
+						// @endif
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -224,6 +256,16 @@
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
+			// @ifdef PAGE_EVENTS
+			let data = {};
+			for (const elem of document.querySelectorAll('[data-m\\:unload]')) {
+				data = {
+					...data,
+					...extractDataAttributes(elem, 'data-m:unload'),
+				};
+			}
+			// @endif
+
 			// We use sendBeacon here because it is more reliable than fetch on page unloads.
 			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
 			// Firefox on top of that. Previous experiements also seemed to indicate that
@@ -244,6 +286,9 @@
 						"b": uid,
 						"e": "unload",
 						"m": Date.now() - hiddenTotalTime,
+						// @ifdef PAGE_EVENTS
+						"d": data,
+						// @endif
 					}),
 				),
 			);
@@ -252,25 +297,6 @@
 		// Ensure unload is only called once.
 		isUnloadCalled = true;
 	};
-
-	// @ifdef DATA_ATTRIBUTES
-	/**
-	 * Extracts key-value pairs from a given data attribute.
-	 * @param {HTMLElement} target The target element from which to extract data.
-	 * @param {string} attrName The name of the data attribute to extract (e.g., 'data-m:click').
-	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
-	 */
-	const extractDataAttributes = (target, attrName) =>
-		(target.getAttribute(attrName) || '')
-			.split(';') // Split the attribute value into individual key-value pairs.
-			.reduce((acc, pair) => {
-				// Split each pair by '=' and trim whitespace.
-				const [k, v] = pair.split('=').map((s) => s.trim());
-				// If both key and value exist, add them to the accumulator object.
-				if (k && v) acc[k] = v;
-				return acc;
-			}, {});
-	// @endif
 
 	// @ifdef CLICK_EVENTS
 	/**
