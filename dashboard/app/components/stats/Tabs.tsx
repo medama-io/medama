@@ -78,7 +78,7 @@ const TabProperties = ({ label, choices, data }: TabPropertiesProps) => {
 			tab={label}
 			label={item.name ?? item.value ?? 'Unknown'}
 			count={item.events}
-			bar={false}
+			percentage={item.events_percentage}
 		/>
 	));
 

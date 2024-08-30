@@ -36,7 +36,7 @@ const FILTER_MAP: Record<string, Filter> = {
 const StatsItem = ({
 	label,
 	count = 0,
-	percentage = 0,
+	percentage,
 	tab,
 	bar = true,
 }: StatsItemProps) => {
@@ -58,6 +58,12 @@ const StatsItem = ({
 		const filter = FILTER_MAP[key] ?? 'path';
 		addFilter(filter, 'eq', label);
 	};
+
+	// If percentage is not defined, don't show the percentage bar
+	if (percentage === undefined) {
+		bar = false;
+		percentage = 0;
+	}
 
 	return (
 		<button

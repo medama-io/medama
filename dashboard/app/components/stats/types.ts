@@ -52,6 +52,7 @@ interface DataRow {
 	name?: string;
 	value?: string;
 	events?: number;
+	events_percentage?: number;
 }
 
 interface PageViewValue {
@@ -64,6 +65,7 @@ interface CustomPropertyValue {
 	name?: string;
 	value?: string;
 	events: number;
+	events_percentage: number;
 }
 
 interface TabData {
