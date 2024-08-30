@@ -1,7 +1,7 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
 import { pageTests } from './page';
-import { taggedEventTests } from './tagged-events';
+import { clickEventTests } from './click-events';
 
 /**
  * @typedef {('simple'|'history')} Tests
@@ -213,7 +213,7 @@ const createTests = (name) => {
 	});
 
 	test.describe(name + ' tagged event tests', () => {
-		taggedEventTests(name);
+		clickEventTests(name);
 	});
 };
 

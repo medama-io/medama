@@ -9,6 +9,7 @@
  * @property {boolean} p If the user is unique or not.
  * @property {boolean} q If this is the first time the user has visited this specific page.
  * @property {string} t Timezone of the user.
+ * @property {Object=} d Event custom properties.
  */
 
 /**
@@ -16,6 +17,7 @@
  * @property {string} b Beacon ID.
  * @property {'unload'} e Event type.
  * @property {number} m Time spent on page.
+ * @property {Object=} d Event custom properties.
  */
 
 /**
@@ -251,35 +253,26 @@
 		isUnloadCalled = true;
 	};
 
-	// @ifdef TAGGED_EVENTS
+	// @ifdef DATA_ATTRIBUTES
 	/**
-	 * Send a custom beacon event to the server.
-	 * @param {Object.<string, string>} properties Event custom properties.
-	 * @returns {void}
+	 * Extracts key-value pairs from a given data attribute.
+	 * @param {HTMLElement} target The target element from which to extract data.
+	 * @param {string} attrName The name of the data attribute to extract (e.g., 'data-m:click').
+	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
 	 */
-	const sendCustomBeacon = (properties) => {
-		// We use fetch here because it is more reliable than XHR.
-		fetch(host + 'event/hit', {
-			method: 'POST',
-			body: JSON.stringify(
-				// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
-				/**
-				 * Payload to send to the server.
-				 * @type {CustomPayload}
-				 */ ({
-						"b": uid,
-						"e": "custom",
-						"g": location.hostname,
-						"d": properties,
-					}),
-			),
-			// Will make the response opaque, but we don't need it.
-			mode: 'no-cors',
-		});
-	};
+	const extractDataAttributes = (target, attrName) =>
+		(target.getAttribute(attrName) || '')
+			.split(';') // Split the attribute value into individual key-value pairs.
+			.reduce((acc, pair) => {
+				// Split each pair by '=' and trim whitespace.
+				const [k, v] = pair.split('=').map((s) => s.trim());
+				// If both key and value exist, add them to the accumulator object.
+				if (k && v) acc[k] = v;
+				return acc;
+			}, {});
 	// @endif
 
-	// @ifdef TAGGED_EVENTS
+	// @ifdef CLICK_EVENTS
 	/**
 	 * Click event listener to track custom events.
 	 * @param {MouseEvent} event The click event.
@@ -290,23 +283,38 @@
 		// If the target is not an HTMLElement, then bail out.
 		if (event.button > 1 || !(event.target instanceof HTMLElement)) return;
 
-		// Extract all data-medama-* attributes and send them as custom properties.
-		/** @type {Object<string, string>} */
-		const data = {};
-		for (const attr of event.target.attributes) {
-			if (attr.name.startsWith('data-medama-'))
-				data[attr.name.slice(12)] = attr.value;
-		}
+		// Extract all data-m:click attributes and send them as custom properties.
+		const data = extractDataAttributes(event.target, 'data-m:click');
 
 		if (Object.keys(data).length > 0) {
-			sendCustomBeacon(data);
+			// We use fetch here because it is more reliable than XHR.
+			fetch(host + 'event/hit', {
+				method: 'POST',
+				body: JSON.stringify(
+					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
+					/**
+					 * Payload to send to the server.
+					 * @type {CustomPayload}
+					 */ ({
+						"b": uid,
+						"e": "custom",
+						"g": location.hostname,
+						"d": data,
+					}),
+				),
+				// Will make the response opaque, but we don't need it.
+				mode: 'no-cors',
+			});
 		}
 	};
 
-	// Click event listener only listens to primary left clicks.
-	addEventListener('click', clickTracker);
-	// Auxclick event listener listens to middle clicks and right clicks.
-	addEventListener('auxclick', clickTracker);
+	// Add event listeners to all elements with data-m:click attributes.
+	for (const elem of document.querySelectorAll('[data-m\\:click]')) {
+		// Click event listener only listens to primary left clicks.
+		elem.addEventListener('click', clickTracker);
+		// Auxclick event listener listens to middle clicks and right clicks.
+		elem.addEventListener('auxclick', clickTracker);
+	}
 	// @endif
 
 	// Prefer pagehide if available because it's more reliable than unload.

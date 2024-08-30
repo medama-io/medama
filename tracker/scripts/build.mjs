@@ -31,4 +31,7 @@ const build = async (file, opts) => {
 };
 
 await build('default', {});
-await build('tagged-events', { TAGGED_EVENTS: true });
+await build('click-events', {
+	DATA_ATTRIBUTES: true,
+	CLICK_EVENTS: true,
+});

@@ -1,63 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>History API Router Example</title>
-	</head>
-	<body>
-		<h1>History API Router Example</h1>
-		<nav>
-			<a
-				href="/history/index.html"
-				onclick="navigate('/history/index.html'); return false;"
-				>Home</a
-			>
-			<a
-				href="/history/about.html"
-				onclick="navigate('/history/about.html'); return false;"
-				>About</a
-			>
-			<a
-				href="/history/contact.html"
-				onclick="navigate('/history/contact.html'); return false;"
-				>Contact</a
-			>
-		</nav>
-		<div id="content">
 
-		</div>
-		<div>
-			<button data-testid="tagged-left-click" data-medama-button="left">Tagged Event Left Click</button>
-			<button data-testid="tagged-middle-click" data-medama-button="middle">Tagged Event Middle Click</button>
-			<button data-testid="tagged-right-click" data-medama-button="right">Tagged Event Right Click</button>
-		</div>
+<head>
+	<meta charset="UTF-8" />
+	<title>History API Router Example</title>
+</head>
 
-		<script>
-			function navigate(path) {
-				history.pushState(null, "", path);
-				router();
+<body>
+	<h1>History API Router Example</h1>
+	<nav>
+		<a href="/history/index.html" onclick="navigate('/history/index.html'); return false;">Home</a>
+		<a href="/history/about.html" onclick="navigate('/history/about.html'); return false;">About</a>
+		<a href="/history/contact.html" onclick="navigate('/history/contact.html'); return false;">Contact</a>
+	</nav>
+	<div id="content">
+
+	</div>
+	<div>
+		<button data-testid="tagged-left-click" data-m:click="button=left">Tagged Event Left Click</button>
+		<button data-testid="tagged-middle-click" data-m:click="button=middle">Tagged Event Middle Click</button>
+		<button data-testid="tagged-right-click" data-m:click="button=right">Tagged Event Right Click</button>
+	</div>
+
+	<script>
+		function navigate(path) {
+			history.pushState(null, "", path);
+			router();
+		}
+
+		function router() {
+			const content = document.getElementById("content");
+			const path = window.location.pathname;
+
+			switch (path) {
+				case "/history/index.html":
+					content.innerHTML = "<p>This is the home page.</p>";
+					break;
+				case "/history/about.html":
+					content.innerHTML = "<p>This is the about page.</p>";
+					break;
+				case "/history/contact.html":
+					content.innerHTML = "<p>This is the contact page.</p>";
+					break;
 			}
+		}
 
-			function router() {
-				const content = document.getElementById("content");
-				const path = window.location.pathname;
+		window.addEventListener("popstate", router);
+		router(); // Initial load
+	</script>
+	<script defer src="http://localhost:3000/script.js"></script>
+</body>
 
-				switch (path) {
-					case "/history/index.html":
-						content.innerHTML = "<p>This is the home page.</p>";
-						break;
-					case "/history/about.html":
-						content.innerHTML = "<p>This is the about page.</p>";
-						break;
-					case "/history/contact.html":
-						content.innerHTML = "<p>This is the contact page.</p>";
-						break;
-				}
-			}
-
-			window.addEventListener("popstate", router);
-			router(); // Initial load
-		</script>
-		<script defer src="http://localhost:3000/script.js"></script>
-	</body>
 </html>

@@ -4,11 +4,13 @@ version: "3"
 tasks:
   build:
     cmds:
-      - bun run build:default
+      - task: build:default
       - bun run build:size
 
   build:default:
     cmds:
+      - rm -rf ./dist
+      - mkdir -p ./dist
       - bun run build:default
     sources:
       - ./src/*.js
@@ -21,7 +23,7 @@ tasks:
     cmds:
       - mkdir -p ../core/client/scripts
       - cp ./dist/default.min.js ../core/client/scripts/default.js
-      - cp ./dist/tagged-events.min.js ../core/client/scripts/tagged-events.js
+      - cp ./dist/click-events.min.js ../core/client/scripts/click-events.js
     sources:
       - ./dist/*.min.js
     generates:

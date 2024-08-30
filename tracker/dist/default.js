@@ -9,6 +9,7 @@
  * @property {boolean} p If the user is unique or not.
  * @property {boolean} q If this is the first time the user has visited this specific page.
  * @property {string} t Timezone of the user.
+ * @property {Object=} d Event custom properties.
  */
 
 /**
@@ -16,6 +17,7 @@
  * @property {string} b Beacon ID.
  * @property {'unload'} e Event type.
  * @property {number} m Time spent on page.
+ * @property {Object=} d Event custom properties.
  */
 
 /**
