@@ -168,7 +168,8 @@ type StatsLanguages struct {
 }
 
 type StatsCustomProperties struct {
-	Name   string `db:"name"`
-	Value  string `db:"value"`
-	Events int    `db:"events"`
+	Name             string  `db:"name"`
+	Value            string  `db:"value"`
+	Events           int     `db:"events"`
+	EventsPercentage float32 `db:"events_percentage"`
 }

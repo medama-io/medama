@@ -9,6 +9,11 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
+const (
+	EventsCountStmt      = "COUNT(*) AS events"
+	EventsPercentageStmt = "ifnull(ROUND(COUNT(*) / (SELECT total_events FROM total), 4), 0) AS events_percentage"
+)
+
 // GetWebsiteReferrersSummary returns a summary of the referrers for the given filters.
 func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filters) ([]*model.StatsCustomProperties, error) {
 	var properties []*model.StatsCustomProperties
@@ -21,8 +26,13 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 	//
 	// Events is the number of events for the custom property
 	//
-	// Visitors is the number of unique visitors for the custom property.
-	query := qb.New()
+	// Events percentage is the percentage of events for the custom property
+	query := qb.New().WithMaterialized(
+		qb.NewCTE("total", qb.New().
+			Select("COUNT(*) FILTER (WHERE name IS NOT NULL) AS total_events").
+			From("views").
+			LeftJoin(EventsJoinStmt).
+			Where(filter.WhereString())))
 
 	// If the property name is empty, return only the property names with their
 	// aggregated events and visitors. No values.
@@ -30,7 +40,8 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 		query = query.Select(
 			"name",
 			"'' AS value",
-			"COUNT(*) AS events",
+			EventsCountStmt,
+			EventsPercentageStmt,
 		).
 			From("views").
 			LeftJoin(EventsJoinStmt).
@@ -44,7 +55,8 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 		query = query.Select(
 			"'' AS name",
 			"value",
-			"COUNT(*) AS events",
+			EventsCountStmt,
+			EventsPercentageStmt,
 		).
 			From("views").
 			LeftJoin(EventsJoinStmt).

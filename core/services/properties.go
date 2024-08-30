@@ -33,7 +33,8 @@ func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebs
 	resp := make(api.StatsProperties, 0, len(properties))
 	for _, p := range properties {
 		item := api.StatsPropertiesItem{
-			Events: p.Events,
+			Events:           p.Events,
+			EventsPercentage: p.EventsPercentage,
 		}
 
 		if p.Name != "" {

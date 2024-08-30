@@ -102,7 +102,12 @@ type PresetDataKeys =
 
 const PRESET_COLUMNS: Record<PresetDataKeys, DataTableColumn<DataRow>> = {
 	path: { accessor: 'path', title: 'Path', width: '100%' },
-	visitors: { accessor: 'visitors', title: 'Visitors', sortable: true },
+	visitors: {
+		accessor: 'visitors',
+		title: 'Visitors',
+		sortable: true,
+		render: (record) => formatCount(record.visitors ?? 0),
+	},
 	visitors_percentage: {
 		accessor: 'visitors_percentage',
 		title: 'Visitors %',
@@ -444,6 +449,13 @@ const getColumnsForQuery = (
 					accessor: 'events',
 					title: 'Events',
 					sortable: true,
+					render: (record) => formatCount(record.events ?? 0),
+				},
+				{
+					accessor: 'events_percentage',
+					title: 'Events %',
+					sortable: true,
+					render: (record) => formatPercentage(record.events_percentage ?? 0),
 				},
 			];
 		default:

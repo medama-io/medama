@@ -1,6 +1,7 @@
 import { Anchor, Container, Text } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import type { ReactNode } from 'react';
+
 import classes from './Error.module.css';
 
 interface ErrorPageProps {
