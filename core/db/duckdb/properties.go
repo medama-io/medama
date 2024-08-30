@@ -11,7 +11,7 @@ import (
 
 const (
 	EventsCountStmt      = "COUNT(*) AS events"
-	EventsPercentageStmt = "ifnull(ROUND(events / (SELECT total_events FROM total), 4), 0) AS events_percentage"
+	EventsPercentageStmt = "ifnull(ROUND(COUNT(*) / (SELECT total_events FROM total), 4), 0) AS events_percentage"
 )
 
 // GetWebsiteReferrersSummary returns a summary of the referrers for the given filters.
@@ -29,8 +29,9 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 	// Events percentage is the percentage of events for the custom property
 	query := qb.New().WithMaterialized(
 		qb.NewCTE("total", qb.New().
-			Select("COUNT(*) AS total_events").
-			From("events").
+			Select("COUNT(*) FILTER (WHERE name IS NOT NULL) AS total_events").
+			From("views").
+			LeftJoin(EventsJoinStmt).
 			Where(filter.WhereString())))
 
 	// If the property name is empty, return only the property names with their

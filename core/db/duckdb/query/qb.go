@@ -13,6 +13,7 @@ type QueryBuilder struct {
 	cteClauses       []CTE
 	selectClauses    []string
 	fromClause       []string
+	joinClause       string
 	leftJoinClause   string
 	whereClause      string
 	groupByClause    []string
@@ -44,6 +45,11 @@ func (qb *QueryBuilder) Select(columns ...string) *QueryBuilder {
 
 func (qb *QueryBuilder) From(tables ...string) *QueryBuilder {
 	qb.fromClause = append(qb.fromClause, tables...)
+	return qb
+}
+
+func (qb *QueryBuilder) Join(query string) *QueryBuilder {
+	qb.joinClause = query
 	return qb
 }
 
@@ -99,6 +105,11 @@ func (qb *QueryBuilder) Build() string {
 
 	query.WriteString(" FROM ")
 	query.WriteString(strings.Join(qb.fromClause, ", "))
+
+	if qb.joinClause != "" {
+		query.WriteString(" JOIN ")
+		query.WriteString(qb.joinClause)
+	}
 
 	if qb.leftJoinClause != "" {
 		query.WriteString(" LEFT JOIN ")
