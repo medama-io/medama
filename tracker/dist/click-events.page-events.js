@@ -169,6 +169,21 @@
 			}, {});
 
 	/**
+	 * Helper function to extract data attributes and merge them.
+	 * @param {string} eventType
+	 * @returns {Object<string, string>}
+	 */
+	const extractAndMergeDataAttributes = (eventType) => {
+		return [...document.querySelectorAll(`[data-m\\:${eventType}]`)].reduce(
+			(acc, elem) => ({
+				...acc,
+				...extractDataAttributes(elem, `data-m:${eventType}`),
+			}),
+			{},
+		);
+	};
+
+	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
 	 * if the user is unique or not.
 	 *
@@ -206,14 +221,6 @@
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
 		).then((isFirstVisit) => {
-			let data = {};
-			for (const elem of document.querySelectorAll('[data-m\\:load]')) {
-				data = {
-					...data,
-					...extractDataAttributes(elem, 'data-m:load'),
-				};
-			}
-
 			// We use fetch here because it is more reliable than XHR.
 			fetch(host + 'event/hit', {
 				method: 'POST',
@@ -235,7 +242,7 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
-						"d": data,
+						"d": extractAndMergeDataAttributes('load'),
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -250,14 +257,6 @@
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
-			let data = {};
-			for (const elem of document.querySelectorAll('[data-m\\:unload]')) {
-				data = {
-					...data,
-					...extractDataAttributes(elem, 'data-m:unload'),
-				};
-			}
-
 			// We use sendBeacon here because it is more reliable than fetch on page unloads.
 			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
 			// Firefox on top of that. Previous experiements also seemed to indicate that
@@ -278,7 +277,7 @@
 						"b": uid,
 						"e": "unload",
 						"m": Date.now() - hiddenTotalTime,
-						"d": data,
+						"d": extractAndMergeDataAttributes('unload'),
 					}),
 				),
 			);

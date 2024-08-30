@@ -170,6 +170,23 @@
 			}, {});
 	// @endif
 
+	// @ifdef PAGE_EVENTS
+	/**
+	 * Helper function to extract data attributes and merge them.
+	 * @param {string} eventType
+	 * @returns {Object<string, string>}
+	 */
+	const extractAndMergeDataAttributes = (eventType) => {
+		return [...document.querySelectorAll(`[data-m\\:${eventType}]`)].reduce(
+			(acc, elem) => ({
+				...acc,
+				...extractDataAttributes(elem, `data-m:${eventType}`),
+			}),
+			{},
+		);
+	};
+	// @endif
+
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
 	 * if the user is unique or not.
@@ -208,16 +225,6 @@
 				'event/ping?u=' +
 				encodeURIComponent(location.host + location.pathname),
 		).then((isFirstVisit) => {
-			// @ifdef PAGE_EVENTS
-			let data = {};
-			for (const elem of document.querySelectorAll('[data-m\\:load]')) {
-				data = {
-					...data,
-					...extractDataAttributes(elem, 'data-m:load'),
-				};
-			}
-			// @endif
-
 			// We use fetch here because it is more reliable than XHR.
 			fetch(host + 'event/hit', {
 				method: 'POST',
@@ -240,7 +247,7 @@
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
 						// @ifdef PAGE_EVENTS
-						"d": data,
+						"d": extractAndMergeDataAttributes('load'),
 						// @endif
 					}),
 				),
@@ -256,16 +263,6 @@
 	 */
 	const sendUnloadBeacon = () => {
 		if (!isUnloadCalled) {
-			// @ifdef PAGE_EVENTS
-			let data = {};
-			for (const elem of document.querySelectorAll('[data-m\\:unload]')) {
-				data = {
-					...data,
-					...extractDataAttributes(elem, 'data-m:unload'),
-				};
-			}
-			// @endif
-
 			// We use sendBeacon here because it is more reliable than fetch on page unloads.
 			// The Fetch API keepalive flag has a few caveats and doesn't work very well on
 			// Firefox on top of that. Previous experiements also seemed to indicate that
@@ -287,7 +284,7 @@
 						"e": "unload",
 						"m": Date.now() - hiddenTotalTime,
 						// @ifdef PAGE_EVENTS
-						"d": data,
+						"d": extractAndMergeDataAttributes('unload'),
 						// @endif
 					}),
 				),

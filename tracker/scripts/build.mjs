@@ -30,6 +30,7 @@ const build = async (file, opts) => {
 	await terser(file);
 };
 
+// ENSURE MULTIPLE FEATURE NAMES ARE ALPHABETICALLY ORDERED FOR THE OUTPUT FILE
 await build('default', {});
 await build('click-events', {
 	DATA_ATTRIBUTES: true,
