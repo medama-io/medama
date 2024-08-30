@@ -12,8 +12,8 @@ const Flex = ({ children, style }: FlexProps) => (
 	</div>
 );
 
-const Group = ({ children, style }: FlexProps) => (
-	<div className="group" style={style}>
+const Group = ({ children, style, ...rest }: FlexProps) => (
+	<div className="group" style={style} {...rest}>
 		{children}
 	</div>
 );
