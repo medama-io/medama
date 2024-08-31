@@ -158,7 +158,7 @@
 	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
 	 */
 	const extractDataAttributes = (target, attrName) =>
-		(target.getAttribute(attrName) || '')
+		(target.getAttribute(`data-m:${attrName}`) || '')
 			.split(';') // Split the attribute value into individual key-value pairs.
 			.reduce((acc, pair) => {
 				// Split each pair by '=' and trim whitespace.
@@ -177,7 +177,7 @@
 		return [...document.querySelectorAll(`[data-m\\:${eventType}]`)].reduce(
 			(acc, elem) => ({
 				...acc,
-				...extractDataAttributes(elem, `data-m:${eventType}`),
+				...extractDataAttributes(elem, eventType),
 			}),
 			{},
 		);
@@ -298,7 +298,7 @@
 		if (event.button > 1 || !(event.target instanceof HTMLElement)) return;
 
 		// Extract all data-m:click attributes and send them as custom properties.
-		const data = extractDataAttributes(event.target, 'data-m:click');
+		const data = extractDataAttributes(event.target, 'click');
 
 		if (Object.keys(data).length > 0) {
 			// We use fetch here because it is more reliable than XHR.

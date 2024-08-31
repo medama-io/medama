@@ -158,7 +158,7 @@
 	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
 	 */
 	const extractDataAttributes = (target, attrName) =>
-		(target.getAttribute(attrName) || '')
+		(target.getAttribute(`data-m:${attrName}`) || '')
 			.split(';') // Split the attribute value into individual key-value pairs.
 			.reduce((acc, pair) => {
 				// Split each pair by '=' and trim whitespace.
@@ -177,7 +177,7 @@
 		return [...document.querySelectorAll(`[data-m\\:${eventType}]`)].reduce(
 			(acc, elem) => ({
 				...acc,
-				...extractDataAttributes(elem, `data-m:${eventType}`),
+				...extractDataAttributes(elem, eventType),
 			}),
 			{},
 		);
@@ -286,6 +286,7 @@
 		// Ensure unload is only called once.
 		isUnloadCalled = true;
 	};
+
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.
