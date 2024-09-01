@@ -3049,15 +3049,17 @@ func (s *UserSettingsLanguage) UnmarshalText(data []byte) error {
 type UserSettingsScriptTypeItem string
 
 const (
-	UserSettingsScriptTypeItemDefault      UserSettingsScriptTypeItem = "default"
-	UserSettingsScriptTypeItemTaggedEvents UserSettingsScriptTypeItem = "tagged-events"
+	UserSettingsScriptTypeItemDefault     UserSettingsScriptTypeItem = "default"
+	UserSettingsScriptTypeItemClickEvents UserSettingsScriptTypeItem = "click-events"
+	UserSettingsScriptTypeItemPageEvents  UserSettingsScriptTypeItem = "page-events"
 )
 
 // AllValues returns all UserSettingsScriptTypeItem values.
 func (UserSettingsScriptTypeItem) AllValues() []UserSettingsScriptTypeItem {
 	return []UserSettingsScriptTypeItem{
 		UserSettingsScriptTypeItemDefault,
-		UserSettingsScriptTypeItemTaggedEvents,
+		UserSettingsScriptTypeItemClickEvents,
+		UserSettingsScriptTypeItemPageEvents,
 	}
 }
 
@@ -3066,7 +3068,9 @@ func (s UserSettingsScriptTypeItem) MarshalText() ([]byte, error) {
 	switch s {
 	case UserSettingsScriptTypeItemDefault:
 		return []byte(s), nil
-	case UserSettingsScriptTypeItemTaggedEvents:
+	case UserSettingsScriptTypeItemClickEvents:
+		return []byte(s), nil
+	case UserSettingsScriptTypeItemPageEvents:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -3079,8 +3083,11 @@ func (s *UserSettingsScriptTypeItem) UnmarshalText(data []byte) error {
 	case UserSettingsScriptTypeItemDefault:
 		*s = UserSettingsScriptTypeItemDefault
 		return nil
-	case UserSettingsScriptTypeItemTaggedEvents:
-		*s = UserSettingsScriptTypeItemTaggedEvents
+	case UserSettingsScriptTypeItemClickEvents:
+		*s = UserSettingsScriptTypeItemClickEvents
+		return nil
+	case UserSettingsScriptTypeItemPageEvents:
+		*s = UserSettingsScriptTypeItemPageEvents
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)

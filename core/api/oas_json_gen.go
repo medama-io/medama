@@ -6305,8 +6305,10 @@ func (s *UserSettingsScriptTypeItem) Decode(d *jx.Decoder) error {
 	switch UserSettingsScriptTypeItem(v) {
 	case UserSettingsScriptTypeItemDefault:
 		*s = UserSettingsScriptTypeItemDefault
-	case UserSettingsScriptTypeItemTaggedEvents:
-		*s = UserSettingsScriptTypeItemTaggedEvents
+	case UserSettingsScriptTypeItemClickEvents:
+		*s = UserSettingsScriptTypeItemClickEvents
+	case UserSettingsScriptTypeItemPageEvents:
+		*s = UserSettingsScriptTypeItemPageEvents
 	default:
 		*s = UserSettingsScriptTypeItem(v)
 	}

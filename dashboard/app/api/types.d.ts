@@ -496,7 +496,7 @@ export interface components {
             b: string;
             /** @description Time spent on page in milliseconds. */
             m: number;
-            /** @description Optional group name of events for custom properties. Currently, only the hostname is supported. */
+            /** @description Group name of events. This must be set if passing custom event properties. Currently, only the hostname is supported. */
             g?: string;
             /** @description Custom event properties. */
             d?: {
@@ -564,7 +564,7 @@ export interface components {
              * @enum {string}
              */
             language?: "en";
-            script_type?: ("default" | "tagged-events")[];
+            script_type?: ("default" | "click-events" | "page-events")[];
         };
         /**
          * UserGet

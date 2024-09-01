@@ -1521,7 +1521,7 @@ components:
           type: array
           items:
             type: string
-            enum: [default, tagged-events]
+            enum: [default, click-events, page-events]
           uniqueItems: true
     UserGet:
       type: object

@@ -36,7 +36,8 @@ const trackerSchema = v.strictObject({
 	_setting: v.literal('tracker', 'Invalid setting type.'),
 	script_type: v.object({
 		default: v.boolean(),
-		'tagged-events': v.boolean(),
+		'click-events': v.boolean(),
+		'page-events': v.boolean(),
 	}),
 });
 
@@ -108,8 +109,11 @@ export default function Index() {
 		return;
 	}
 
-	const [taggedEvents, setTaggedEvents] = useState(
-		Boolean(user.settings.script_type?.includes('tagged-events')),
+	const [clickEvents, setClickEvents] = useState(
+		Boolean(user.settings.script_type?.includes('click-events')),
+	);
+	const [pageEvents, setPageEvents] = useState(
+		Boolean(user.settings.script_type?.includes('page-events')),
 	);
 
 	const code =
@@ -123,13 +127,15 @@ export default function Index() {
 			_setting: 'tracker',
 			script_type: {
 				default: true,
-				'tagged-events': taggedEvents,
+				'click-events': clickEvents,
+				'page-events': pageEvents,
 			},
 		},
 		validate: valibotResolver(trackerSchema),
 		transformValues: (values) => {
 			// It's difficult to get Radix checkboxes to work with @mantine/form for now
-			values.script_type['tagged-events'] = taggedEvents;
+			values.script_type['click-events'] = clickEvents;
+			values.script_type['page-events'] = pageEvents;
 
 			// Convert object to comma-separated string
 			const scriptType = Object.entries(values.script_type)
@@ -166,7 +172,7 @@ export default function Index() {
 						value="default"
 						tooltip={
 							<>
-								<p>Enable default page view tracking functionality.</p>
+								<p>The default page view tracking functionality.</p>
 								<br />
 								<p>
 									Read our{' '}
@@ -183,22 +189,59 @@ export default function Index() {
 						{...form.getInputProps('script_type.default', { type: 'checkbox' })}
 					/>
 					<CheckBox
-						label="Tagged Events"
-						value="tagged-events"
+						label="Click Events"
+						value="click-events"
 						tooltip={
 							<>
-								<p>Enable tracking of tagged events on your website.</p>
+								<p>
+									Enable custom properties tracking of click events on your
+									website.
+								</p>
 								<br />
 								<p>
-									Read our <Anchor>Tagged Events</Anchor> guide for more
-									information.
+									Read our{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/overview">
+										Custom Properties
+									</Anchor>{' '}
+									and{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/click-events">
+										Click Events
+									</Anchor>{' '}
+									guide for more information.
 								</p>
 							</>
 						}
-						checked={taggedEvents}
-						onCheckedChange={() => setTaggedEvents(!taggedEvents)}
-						key={form.key('script_type.tagged-events')}
-						{...form.getInputProps('script_type.tagged-events', {
+						checked={clickEvents}
+						onCheckedChange={() => setClickEvents(!clickEvents)}
+						key={form.key('script_type.click-events')}
+						{...form.getInputProps('script_type.click-events', {
+							type: 'checkbox',
+						})}
+					/>
+					<CheckBox
+						label="Page View Events"
+						value="page-events"
+						tooltip={
+							<>
+								<p>Enable tracking of page view events on your website.</p>
+								<br />
+								<p>
+									Read our{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/overview">
+										Custom Properties
+									</Anchor>{' '}
+									and{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/page-events">
+										Page Events
+									</Anchor>{' '}
+									guide for more information.
+								</p>
+							</>
+						}
+						checked={pageEvents}
+						onCheckedChange={() => setPageEvents(!pageEvents)}
+						key={form.key('script_type.page-events')}
+						{...form.getInputProps('script_type.page-events', {
 							type: 'checkbox',
 						})}
 					/>

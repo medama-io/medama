@@ -21,10 +21,10 @@ type SPAHandler struct {
 	indexETag    string
 	fileETags    map[string]string
 
-	runtimeConfig *RuntimeConfig
+	runtimeConfig RuntimeConfig
 }
 
-func SetupAssetHandler(mux *http.ServeMux, runtimeConfig *RuntimeConfig) error {
+func SetupAssetHandler(mux *http.ServeMux, runtimeConfig RuntimeConfig) error {
 	client, err := generate.SPAClient()
 	if err != nil {
 		return errors.Wrap(err, "failed to create spa client")
@@ -39,7 +39,7 @@ func SetupAssetHandler(mux *http.ServeMux, runtimeConfig *RuntimeConfig) error {
 	return nil
 }
 
-func NewSPAHandler(client fs.FS, runtimeConfig *RuntimeConfig) (*SPAHandler, error) {
+func NewSPAHandler(client fs.FS, runtimeConfig RuntimeConfig) (*SPAHandler, error) {
 	clientServer := http.FileServer(http.FS(client))
 
 	indexFile, err := readFile(client, "index.html")
@@ -115,14 +115,9 @@ func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the request is for script.js or any file in the /scripts/ directory
 	if uPath == "/script.js" || strings.HasPrefix(uPath, "/scripts/") {
-		var scriptFile string
-		if uPath == "/script.js" {
-			if h.runtimeConfig.ScriptType.TaggedEvent {
-				scriptFile = "/scripts/tagged-events.js"
-			} else {
-				scriptFile = "/scripts/default.js"
-			}
-		} else {
+		scriptFile := h.runtimeConfig.ScriptFileName
+
+		if uPath != "/script.js" {
 			scriptFile = uPath
 		}
 
