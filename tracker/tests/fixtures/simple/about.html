@@ -6,8 +6,8 @@
 	<title>Normal Webpage</title>
 </head>
 
-<body>
-	<h1>Normal Webpage</h1>
+<body data-m:load="load=test;load2=test2">
+	<h1 data-m:unload="unload=test">Normal Webpage</h1>
 	<nav>
 		<a href="index.html">Home</a>
 		<a href="about.html">About</a>
@@ -15,9 +15,10 @@
 	</nav>
 	<div id="content">
 		<p>This is the home page.</p>
-		<button data-testid="tagged-left-click" data-m:click="button=left">Tagged Event Left Click</button>
-		<button data-testid="tagged-middle-click" data-m:click="button=middle">Tagged Event Middle Click</button>
-		<button data-testid="tagged-right-click" data-m:click="button=right">Tagged Event Right Click</button>
+		<button data-testid="tagged-left-click" data-m:click="button=left;action=button">Tagged Event Left Click</button>
+		<button data-testid="tagged-middle-click" data-m:click="button=middle;action=button">Tagged Event Middle
+			Click</button>
+		<button data-testid="tagged-right-click" data-m:click="button=right;action=button">Tagged Event Right Click</button>
 	</div>
 	<script defer src="http://localhost:3000/script.js"></script>
 </body>
