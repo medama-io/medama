@@ -53,7 +53,7 @@ type AnalyticsClient interface {
 	// Events
 	AddEvents(ctx context.Context, event *[]model.EventHit) error
 	AddPageView(ctx context.Context, event *model.PageViewHit, events *[]model.EventHit) error
-	UpdatePageView(ctx context.Context, event *model.PageViewDuration, events *[]model.EventHit) error
+	UpdatePageView(ctx context.Context, event *model.PageViewDuration) error
 	// Pages
 	GetWebsitePages(ctx context.Context, filter *Filters) ([]*model.StatsPages, error)
 	GetWebsitePagesSummary(ctx context.Context, filter *Filters) ([]*model.StatsPagesSummary, error)

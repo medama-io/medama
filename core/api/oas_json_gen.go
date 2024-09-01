@@ -865,18 +865,6 @@ func (s EventHit) encodeFields(e *jx.Encoder) {
 				e.FieldStart("m")
 				e.Int(s.M)
 			}
-			{
-				if s.G.Set {
-					e.FieldStart("g")
-					s.G.Encode(e)
-				}
-			}
-			{
-				if s.D.Set {
-					e.FieldStart("d")
-					s.D.Encode(e)
-				}
-			}
 		}
 	}
 }
@@ -1286,25 +1274,11 @@ func (s *EventUnload) encodeFields(e *jx.Encoder) {
 		e.FieldStart("m")
 		e.Int(s.M)
 	}
-	{
-		if s.G.Set {
-			e.FieldStart("g")
-			s.G.Encode(e)
-		}
-	}
-	{
-		if s.D.Set {
-			e.FieldStart("d")
-			s.D.Encode(e)
-		}
-	}
 }
 
-var jsonFieldsNameOfEventUnload = [4]string{
+var jsonFieldsNameOfEventUnload = [2]string{
 	0: "b",
 	1: "m",
-	2: "g",
-	3: "d",
 }
 
 // Decode decodes EventUnload from json.
@@ -1339,26 +1313,6 @@ func (s *EventUnload) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"m\"")
-			}
-		case "g":
-			if err := func() error {
-				s.G.Reset()
-				if err := s.G.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"g\"")
-			}
-		case "d":
-			if err := func() error {
-				s.D.Reset()
-				if err := s.D.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"d\"")
 			}
 		default:
 			return d.Skip()
@@ -1412,119 +1366,6 @@ func (s *EventUnload) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *EventUnload) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s EventUnloadD) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields implements json.Marshaler.
-func (s EventUnloadD) encodeFields(e *jx.Encoder) {
-	for k, elem := range s {
-		e.FieldStart(k)
-
-		elem.Encode(e)
-	}
-}
-
-// Decode decodes EventUnloadD from json.
-func (s *EventUnloadD) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode EventUnloadD to nil")
-	}
-	m := s.init()
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		var elem EventUnloadDItem
-		if err := func() error {
-			if err := elem.Decode(d); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrapf(err, "decode field %q", k)
-		}
-		m[string(k)] = elem
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode EventUnloadD")
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s EventUnloadD) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *EventUnloadD) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes EventUnloadDItem as json.
-func (s EventUnloadDItem) Encode(e *jx.Encoder) {
-	switch s.Type {
-	case StringEventUnloadDItem:
-		e.Str(s.String)
-	case IntEventUnloadDItem:
-		e.Int(s.Int)
-	case BoolEventUnloadDItem:
-		e.Bool(s.Bool)
-	}
-}
-
-// Decode decodes EventUnloadDItem from json.
-func (s *EventUnloadDItem) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode EventUnloadDItem to nil")
-	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Bool:
-		v, err := d.Bool()
-		s.Bool = bool(v)
-		if err != nil {
-			return err
-		}
-		s.Type = BoolEventUnloadDItem
-	case jx.Number:
-		v, err := d.Int()
-		s.Int = int(v)
-		if err != nil {
-			return err
-		}
-		s.Type = IntEventUnloadDItem
-	case jx.String:
-		v, err := d.Str()
-		s.String = string(v)
-		if err != nil {
-			return err
-		}
-		s.Type = StringEventUnloadDItem
-	default:
-		return errors.Errorf("unexpected json type %q", t)
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s EventUnloadDItem) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *EventUnloadDItem) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -2233,40 +2074,6 @@ func (s OptEventLoadD) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptEventLoadD) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes EventUnloadD as json.
-func (o OptEventUnloadD) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes EventUnloadD from json.
-func (o *OptEventUnloadD) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptEventUnloadD to nil")
-	}
-	o.Set = true
-	o.Value = make(EventUnloadD)
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptEventUnloadD) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptEventUnloadD) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

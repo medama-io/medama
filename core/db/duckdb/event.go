@@ -99,7 +99,7 @@ const updatePageViewStmt = `--sql
 		UPDATE views SET duration_ms = ? WHERE bid = ?`
 
 // UpdatePageView updates a page view in the database.
-func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDuration, events *[]model.EventHit) error {
+func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDuration) error {
 	return c.executeInTransaction(ctx, func(tx *sqlx.Tx) error {
 		stmt, err := c.GetPreparedStmt(ctx, updatePageViewName, updatePageViewStmt)
 		if err != nil {
@@ -112,7 +112,7 @@ func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDurati
 			return errors.Wrap(err, "duckdb: execute statement")
 		}
 
-		return c.addEventsWithinTransaction(ctx, tx, events)
+		return nil
 	})
 }
 

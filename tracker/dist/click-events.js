@@ -17,7 +17,6 @@
  * @property {string} b Beacon ID.
  * @property {'unload'} e Event type.
  * @property {number} m Time spent on page.
- * @property {Object=} d Event custom properties.
  */
 
 /**
@@ -133,12 +132,12 @@
 		/**
 		 * @this {History}
 		 * @param {*} _state - The state object.
-		 * @param {string} _unused - The title (unused).
+		 * @param {string} _title - The title.
 		 * @param {(string | URL)=} url - The URL to navigate to.
 		 * @returns {void}
 		 */
 	) =>
-		function (_state, _unused, url) {
+		function (_state, _title, url) {
 			if (url && location.pathname !== new URL(url, location.href).pathname) {
 				sendUnloadBeacon();
 				// If the event is a history change, then we need to reset the id and timers
@@ -167,7 +166,6 @@
 				if (k && v) acc[k] = v;
 				return acc;
 			}, {});
-
 
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine

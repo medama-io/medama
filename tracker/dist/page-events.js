@@ -17,7 +17,6 @@
  * @property {string} b Beacon ID.
  * @property {'unload'} e Event type.
  * @property {number} m Time spent on page.
- * @property {Object=} d Event custom properties.
  */
 
 /**
@@ -133,12 +132,12 @@
 		/**
 		 * @this {History}
 		 * @param {*} _state - The state object.
-		 * @param {string} _unused - The title (unused).
+		 * @param {string} _title - The title.
 		 * @param {(string | URL)=} url - The URL to navigate to.
 		 * @returns {void}
 		 */
 	) =>
-		function (_state, _unused, url) {
+		function (_state, _title, url) {
 			if (url && location.pathname !== new URL(url, location.href).pathname) {
 				sendUnloadBeacon();
 				// If the event is a history change, then we need to reset the id and timers
@@ -167,21 +166,6 @@
 				if (k && v) acc[k] = v;
 				return acc;
 			}, {});
-
-	/**
-	 * Helper function to extract data attributes and merge them.
-	 * @param {string} eventType
-	 * @returns {Object<string, string>}
-	 */
-	const extractAndMergeDataAttributes = (eventType) => {
-		return [...document.querySelectorAll(`[data-m\\:${eventType}]`)].reduce(
-			(acc, elem) => ({
-				...acc,
-				...extractDataAttributes(elem, eventType),
-			}),
-			{},
-		);
-	};
 
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
@@ -242,7 +226,14 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
-						"d": extractAndMergeDataAttributes('load'),
+						// Helper function to extract data attributes and merge them.
+						"d":  [...document.querySelectorAll('[data-m\\:load]')].reduce(
+								(acc, elem) => ({
+									...acc,
+									...extractDataAttributes(elem, 'load'),
+								}),
+								{},
+							),
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -277,7 +268,6 @@
 						"b": uid,
 						"e": "unload",
 						"m": Date.now() - hiddenTotalTime,
-						"d": extractAndMergeDataAttributes('unload'),
 					}),
 				),
 			);

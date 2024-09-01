@@ -1426,17 +1426,6 @@ components:
           description: Time spent on page in milliseconds.
           minimum: 0
           exclusiveMinimum: true
-        g:
-          type: string
-          description: Group name of events. This must be set if passing custom event properties. Currently, only the hostname is supported.
-        d:
-          type: object
-          description: Custom event properties.
-          additionalProperties:
-            oneOf:
-              - type: string
-              - type: integer
-              - type: boolean
       required:
         - b
         - m

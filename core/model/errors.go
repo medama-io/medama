@@ -20,8 +20,8 @@ var (
 	ErrSessionNotFound = errors.New("session not found")
 
 	// Events
-	// ErrInvalidScreenSize is returned when a screen size is invalid.
-	ErrInvalidScreenSize = errors.New("screen height or width is too large")
+	// ErrInvalidProperties is returned when a given custom property is invalid.
+	ErrInvalidProperties = errors.New("invalid custom property")
 	// ErrInvalidTimezone is returned when a given timezone is invalid.
 	ErrInvalidTimezone = errors.New("invalid country code")
 	// ErrInvalidTrackerEvent is returned when a given tracker event is invalid.

@@ -261,19 +261,45 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			Str("device_type", event.DeviceType).
 			Logger()
 
-		if req.EventUnload.D.IsSet() {
-			events, err := customEventToEventHit(event.BID, hostname, req.EventCustom.D)
+		if req.EventLoad.D.IsSet() {
+			// Generate batch ID to group all the properties of the same event.
+			batchIDType, err := typeid.WithPrefix("event")
 			if err != nil {
-				log.Error().Msg("hit: " + err.Error())
-				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
+				return nil, errors.Wrap(err, "typeid custom event")
+			}
+			batchID := batchIDType.String()
+
+			events := make([]model.EventHit, 0, len(req.EventLoad.D.Value))
+
+			for name, item := range req.EventLoad.D.Value {
+				var value string
+
+				switch item.Type {
+				case api.StringEventLoadDItem:
+					value = item.String
+				case api.IntEventLoadDItem:
+					value = strconv.Itoa(item.Int)
+				case api.BoolEventLoadDItem:
+					value = strconv.FormatBool(item.Bool)
+				default:
+					return nil, errors.New("invalid custom event property type: " + string(item.Type))
+				}
+
+				events = append(events, model.EventHit{
+					BID:     event.BID,
+					BatchID: batchID,
+					Group:   hostname,
+					Name:    name,
+					Value:   value,
+				})
 			}
 
 			log = log.With().
 				Str("event_type", string(req.Type)).
-				Int("event_count", len(*events)).
+				Int("event_count", len(events)).
 				Logger()
 
-			err = h.analyticsDB.AddPageView(ctx, event, events)
+			err = h.analyticsDB.AddPageView(ctx, event, &events)
 			if err != nil {
 				log.Error().Err(err).Msg("hit: failed to add page view")
 				return ErrInternalServerError(err), nil
@@ -300,45 +326,20 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			Int("duration_ms", event.DurationMs).
 			Logger()
 
-		if req.EventUnload.D.IsSet() && req.EventUnload.G.IsSet() {
-			group := req.EventUnload.G.Value
-			log = log.With().Str("group_name", group).Logger()
-
-			// Verify hostname exists as hostname is used as the group name.
-			if !h.hostnames.Has(group) {
-				log.Warn().Msg("hit: website not found")
-				return ErrNotFound(model.ErrWebsiteNotFound), nil
-			}
-
-			events, err := customEventToEventHit(req.EventCustom.B.Or(""), group, req.EventCustom.D)
-			if err != nil {
-				log.Error().Msg("hit: " + err.Error())
-				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
-			}
-
-			log = log.With().
-				Str("event_type", string(req.Type)).
-				Str("group", group).
-				Int("event_count", len(*events)).
-				Logger()
-
-			err = h.analyticsDB.UpdatePageView(ctx, event, events)
-			if err != nil {
-				log.Error().Err(err).Msg("hit: failed to update page view")
-				return ErrInternalServerError(err), nil
-			}
-		} else {
-			err := h.analyticsDB.UpdatePageView(ctx, event, nil)
-			if err != nil {
-				log.Error().Err(err).Msg("hit: failed to update page view")
-				return ErrInternalServerError(err), nil
-			}
+		err := h.analyticsDB.UpdatePageView(ctx, event)
+		if err != nil {
+			log.Error().Err(err).Msg("hit: failed to update page view")
+			return ErrInternalServerError(err), nil
 		}
 
 		// Log success
 		log.Debug().Msg("hit: updated page view")
 
 	case api.EventCustomEventHit:
+		if (len(req.EventCustom.D)) == 0 {
+			return ErrBadRequest(model.ErrInvalidProperties), nil
+		}
+
 		group := req.EventCustom.G
 		log = log.With().Str("group_name", group).Logger()
 
@@ -348,7 +349,38 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			return ErrNotFound(model.ErrWebsiteNotFound), nil
 		}
 
-		events, err := customEventToEventHit(req.EventCustom.B.Or(""), group, req.EventCustom.D)
+		// Generate batch ID to group all the properties of the same event.
+		batchIDType, err := typeid.WithPrefix("event")
+		if err != nil {
+			return nil, errors.Wrap(err, "typeid custom event")
+		}
+		batchID := batchIDType.String()
+
+		events := make([]model.EventHit, 0, len(req.EventCustom.D))
+
+		for name, item := range req.EventCustom.D {
+			var value string
+
+			switch item.Type {
+			case api.StringEventCustomDItem:
+				value = item.String
+			case api.IntEventCustomDItem:
+				value = strconv.Itoa(item.Int)
+			case api.BoolEventCustomDItem:
+				value = strconv.FormatBool(item.Bool)
+			default:
+				return nil, errors.New("invalid custom event property type: " + string(item.Type))
+			}
+
+			events = append(events, model.EventHit{
+				BID:     req.EventCustom.B.Or(""),
+				BatchID: batchID,
+				Group:   group,
+				Name:    name,
+				Value:   value,
+			})
+		}
+
 		if err != nil {
 			log.Error().Msg("hit: " + err.Error())
 			return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
@@ -357,10 +389,10 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 		log = log.With().
 			Str("event_type", string(req.Type)).
 			Str("group", group).
-			Int("event_count", len(*events)).
+			Int("event_count", len(events)).
 			Logger()
 
-		err = h.analyticsDB.AddEvents(ctx, events)
+		err = h.analyticsDB.AddEvents(ctx, &events)
 		if err != nil {
 			log.Error().Err(err).Msg("hit: failed to add event")
 			return ErrInternalServerError(err), nil
@@ -373,45 +405,4 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 	}
 
 	return &api.PostEventHitNoContent{}, nil
-}
-
-func customEventToEventHit(bid string, group string, items api.EventCustomD) (*[]model.EventHit, error) {
-	if len(items) == 0 {
-		//nolint: nilnil // It saves us an extra error check.
-		return nil, nil
-	}
-
-	// Generate batch ID to group all the properties of the same event.
-	batchIDType, err := typeid.WithPrefix("event")
-	if err != nil {
-		return nil, errors.Wrap(err, "typeid custom event")
-	}
-	batchID := batchIDType.String()
-
-	events := make([]model.EventHit, 0, len(items))
-
-	for name, item := range items {
-		var value string
-
-		switch item.Type {
-		case api.StringEventCustomDItem:
-			value = item.String
-		case api.IntEventCustomDItem:
-			value = strconv.Itoa(item.Int)
-		case api.BoolEventCustomDItem:
-			value = strconv.FormatBool(item.Bool)
-		default:
-			return nil, errors.New("invalid custom event property type: " + string(item.Type))
-		}
-
-		events = append(events, model.EventHit{
-			BID:     bid,
-			BatchID: batchID,
-			Group:   group,
-			Name:    name,
-			Value:   value,
-		})
-	}
-
-	return &events, nil
 }

@@ -496,12 +496,6 @@ export interface components {
             b: string;
             /** @description Time spent on page in milliseconds. */
             m: number;
-            /** @description Group name of events. This must be set if passing custom event properties. Currently, only the hostname is supported. */
-            g?: string;
-            /** @description Custom event properties. */
-            d?: {
-                [key: string]: string | number | boolean;
-            };
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
