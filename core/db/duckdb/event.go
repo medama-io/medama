@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-faster/errors"
+	"github.com/jmoiron/sqlx"
 	"github.com/medama-io/medama/model"
 )
 
@@ -15,63 +16,12 @@ const (
 
 // AddEvent adds an event with a custom property to the database.
 func (c *Client) AddEvents(ctx context.Context, events *[]model.EventHit) error {
-	exec := `--sql
-		INSERT INTO events (
-			bid,
-			batch_id,
-			group_name,
-			name,
-			value,
-			date_created
-		) VALUES (
-			:bid,
-			:batch_id,
-			:group_name,
-			:name,
-			:value,
-			NOW()
-		)`
-
-	stmt, err := c.GetPreparedStmt(ctx, addEventName, exec)
-	if err != nil {
-		return errors.Wrap(err, "duckdb")
-	}
-
-	// Start a transaction for batch insert
-	tx, err := c.DB.BeginTxx(ctx, nil)
-	if err != nil {
-		return errors.Wrap(err, "duckdb: begin event hit transaction")
-	}
-	defer tx.Rollback() //nolint: errcheck // Called on defer
-
-	txStmt := tx.NamedStmtContext(ctx, stmt)
-
-	for _, event := range *events {
-		paramMap := map[string]interface{}{
-			"bid":        event.BID,
-			"batch_id":   event.BatchID,
-			"group_name": event.Group,
-			"name":       event.Name,
-			"value":      event.Value,
-		}
-
-		_, err = txStmt.ExecContext(ctx, paramMap)
-		if err != nil {
-			return errors.Wrap(err, "duckdb")
-		}
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		return errors.Wrap(err, "duckdb: commit event hit transaction")
-	}
-
-	return nil
+	return c.executeInTransaction(ctx, func(tx *sqlx.Tx) error {
+		return c.addEventsWithinTransaction(ctx, tx, events)
+	})
 }
 
-// AddPageView adds a page view to the database.
-func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) error {
-	exec := `--sql
+const addPageViewStmt = `--sql
 		INSERT INTO views (
 			bid,
 			hostname,
@@ -91,75 +41,134 @@ func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit) erro
 			utm_campaign,
 			date_created
 		) VALUES (
-			:bid,
-			:hostname,
-			:pathname,
-			:is_unique_user,
-			:is_unique_page,
-			:referrer_host,
-			:referrer_group,
-			:country,
-			:language_base,
-			:language_dialect,
-			:ua_browser,
-			:ua_os,
-			:ua_device_type,
-			:utm_source,
-			:utm_medium,
-			:utm_campaign,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
 			NOW()
 		)`
 
-	stmt, err := c.GetPreparedStmt(ctx, addPageViewName, exec)
+// AddPageView adds a page view to the database.
+func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit, events *[]model.EventHit) error {
+	return c.executeInTransaction(ctx, func(tx *sqlx.Tx) error {
+		stmt, err := c.GetPreparedStmt(ctx, addPageViewName, addPageViewStmt)
+		if err != nil {
+			return errors.Wrap(err, "duckdb")
+		}
+
+		txStmt := tx.StmtxContext(ctx, stmt)
+
+		_, err = txStmt.ExecContext(ctx,
+			event.BID,
+			event.Hostname,
+			event.Pathname,
+			event.IsUniqueUser,
+			event.IsUniquePage,
+			event.ReferrerHost,
+			event.ReferrerGroup,
+			event.Country,
+			event.LanguageBase,
+			event.LanguageDialect,
+			event.BrowserName,
+			event.OS,
+			event.DeviceType,
+			event.UTMSource,
+			event.UTMMedium,
+			event.UTMCampaign)
+		if err != nil {
+			return errors.Wrap(err, "duckdb: execute statement")
+		}
+
+		return c.addEventsWithinTransaction(ctx, tx, events)
+	})
+}
+
+const updatePageViewStmt = `--sql
+		UPDATE views SET duration_ms = ? WHERE bid = ?`
+
+// UpdatePageView updates a page view in the database.
+func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDuration, events *[]model.EventHit) error {
+	return c.executeInTransaction(ctx, func(tx *sqlx.Tx) error {
+		stmt, err := c.GetPreparedStmt(ctx, updatePageViewName, updatePageViewStmt)
+		if err != nil {
+			return errors.Wrap(err, "duckdb")
+		}
+
+		txStmt := tx.StmtxContext(ctx, stmt)
+
+		if _, err := txStmt.ExecContext(ctx, event.DurationMs, event.BID); err != nil {
+			return errors.Wrap(err, "duckdb: execute statement")
+		}
+
+		return c.addEventsWithinTransaction(ctx, tx, events)
+	})
+}
+
+// executeInTransaction executes the given function within a transaction.
+func (c *Client) executeInTransaction(ctx context.Context, fn func(*sqlx.Tx) error) error {
+	tx, err := c.DB.BeginTxx(ctx, nil)
 	if err != nil {
-		return errors.Wrap(err, "duckdb")
+		return errors.Wrap(err, "duckdb: begin transaction")
+	}
+	defer tx.Rollback() //nolint: errcheck // Called on defer
+
+	if err := fn(tx); err != nil {
+		return err
 	}
 
-	paramMap := map[string]interface{}{
-		"bid":              event.BID,
-		"hostname":         event.Hostname,
-		"pathname":         event.Pathname,
-		"is_unique_user":   event.IsUniqueUser,
-		"is_unique_page":   event.IsUniquePage,
-		"referrer_host":    event.ReferrerHost,
-		"referrer_group":   event.ReferrerGroup,
-		"country":          event.Country,
-		"language_base":    event.LanguageBase,
-		"language_dialect": event.LanguageDialect,
-		"ua_browser":       event.BrowserName,
-		"ua_os":            event.OS,
-		"ua_device_type":   event.DeviceType,
-		"utm_source":       event.UTMSource,
-		"utm_medium":       event.UTMMedium,
-		"utm_campaign":     event.UTMCampaign,
+	if err := tx.Commit(); err != nil {
+		return errors.Wrap(err, "duckdb: commit transaction")
 	}
-
-	_, err = stmt.ExecContext(ctx, paramMap)
-	if err != nil {
-		return errors.Wrap(err, "db")
-	}
-
 	return nil
 }
 
-// UpdatePageView updates a page view in the database.
-func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDuration) error {
-	exec := `--sql
-		UPDATE views SET duration_ms = :duration_ms WHERE bid = :bid`
+const addEventStmt = `--sql
+		INSERT INTO events (
+			bid,
+			batch_id,
+			group_name,
+			name,
+			value,
+			date_created
+		) VALUES (
+			?,
+			?,
+			?,
+			?,
+			?,
+			NOW()
+		)`
 
-	stmt, err := c.GetPreparedStmt(ctx, updatePageViewName, exec)
-	if err != nil {
-		return errors.Wrap(err, "db")
+// addEventsWithinTransaction adds events within an existing transaction.
+func (c *Client) addEventsWithinTransaction(ctx context.Context, tx *sqlx.Tx, events *[]model.EventHit) error {
+	if events == nil || len(*events) == 0 {
+		return nil
 	}
 
-	paramMap := map[string]interface{}{
-		"bid":         event.BID,
-		"duration_ms": event.DurationMs,
+	stmt, err := c.GetPreparedStmt(ctx, addEventName, addEventStmt)
+	if err != nil {
+		return errors.Wrap(err, "duckdb: prepare statement")
 	}
 
-	_, err = stmt.ExecContext(ctx, paramMap)
-	if err != nil {
-		return errors.Wrap(err, "db")
+	txStmt := tx.StmtxContext(ctx, stmt)
+
+	for _, event := range *events {
+		_, err := txStmt.ExecContext(ctx, event.BID, event.BatchID, event.Group, event.Name, event.Value)
+		if err != nil {
+			return errors.Wrap(err, "duckdb: execute statement")
+		}
 	}
 
 	return nil

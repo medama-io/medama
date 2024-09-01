@@ -12,7 +12,7 @@ import (
 type Client struct {
 	*sqlx.DB
 	// Map of prepared statements.
-	statements *haxmap.Map[string, *sqlx.NamedStmt]
+	statements *haxmap.Map[string, *sqlx.Stmt]
 }
 
 // Compile time check for Client.
@@ -42,7 +42,7 @@ func NewClient(host string) (*Client, error) {
 
 	return &Client{
 		DB:         db,
-		statements: haxmap.New[string, *sqlx.NamedStmt](),
+		statements: haxmap.New[string, *sqlx.Stmt](),
 	}, nil
 }
 
@@ -57,13 +57,13 @@ func (c *Client) Close() error {
 
 // GetPreparedStmt returns a prepared statement by name. This is lazy loaded and cached after
 // the first call.
-func (c *Client) GetPreparedStmt(ctx context.Context, name string, query string) (*sqlx.NamedStmt, error) {
+func (c *Client) GetPreparedStmt(ctx context.Context, name string, query string) (*sqlx.Stmt, error) {
 	stmt, ok := c.statements.Get(name)
 	if ok {
 		return stmt, nil
 	}
 
-	stmt, err := c.DB.PrepareNamedContext(ctx, query)
+	stmt, err := c.DB.PreparexContext(ctx, query)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to create prepared statement")
 	}
@@ -73,7 +73,7 @@ func (c *Client) GetPreparedStmt(ctx context.Context, name string, query string)
 }
 
 func (c *Client) closeStatements() {
-	c.statements.ForEach(func(_ string, stmt *sqlx.NamedStmt) bool {
+	c.statements.ForEach(func(_ string, stmt *sqlx.Stmt) bool {
 		stmt.Close()
 		return true
 	})

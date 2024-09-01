@@ -417,6 +417,8 @@ type EventLoad struct {
 	Q bool `json:"q"`
 	// Timezone of the user.
 	T OptString `json:"t"`
+	// Custom event properties.
+	D OptEventLoadD `json:"d"`
 }
 
 // GetB returns the value of B.
@@ -449,6 +451,11 @@ func (s *EventLoad) GetT() OptString {
 	return s.T
 }
 
+// GetD returns the value of D.
+func (s *EventLoad) GetD() OptEventLoadD {
+	return s.D
+}
+
 // SetB sets the value of B.
 func (s *EventLoad) SetB(val string) {
 	s.B = val
@@ -479,6 +486,113 @@ func (s *EventLoad) SetT(val OptString) {
 	s.T = val
 }
 
+// SetD sets the value of D.
+func (s *EventLoad) SetD(val OptEventLoadD) {
+	s.D = val
+}
+
+// Custom event properties.
+type EventLoadD map[string]EventLoadDItem
+
+func (s *EventLoadD) init() EventLoadD {
+	m := *s
+	if m == nil {
+		m = map[string]EventLoadDItem{}
+		*s = m
+	}
+	return m
+}
+
+// EventLoadDItem represents sum type.
+type EventLoadDItem struct {
+	Type   EventLoadDItemType // switch on this field
+	String string
+	Int    int
+	Bool   bool
+}
+
+// EventLoadDItemType is oneOf type of EventLoadDItem.
+type EventLoadDItemType string
+
+// Possible values for EventLoadDItemType.
+const (
+	StringEventLoadDItem EventLoadDItemType = "string"
+	IntEventLoadDItem    EventLoadDItemType = "int"
+	BoolEventLoadDItem   EventLoadDItemType = "bool"
+)
+
+// IsString reports whether EventLoadDItem is string.
+func (s EventLoadDItem) IsString() bool { return s.Type == StringEventLoadDItem }
+
+// IsInt reports whether EventLoadDItem is int.
+func (s EventLoadDItem) IsInt() bool { return s.Type == IntEventLoadDItem }
+
+// IsBool reports whether EventLoadDItem is bool.
+func (s EventLoadDItem) IsBool() bool { return s.Type == BoolEventLoadDItem }
+
+// SetString sets EventLoadDItem to string.
+func (s *EventLoadDItem) SetString(v string) {
+	s.Type = StringEventLoadDItem
+	s.String = v
+}
+
+// GetString returns string and true boolean if EventLoadDItem is string.
+func (s EventLoadDItem) GetString() (v string, ok bool) {
+	if !s.IsString() {
+		return v, false
+	}
+	return s.String, true
+}
+
+// NewStringEventLoadDItem returns new EventLoadDItem from string.
+func NewStringEventLoadDItem(v string) EventLoadDItem {
+	var s EventLoadDItem
+	s.SetString(v)
+	return s
+}
+
+// SetInt sets EventLoadDItem to int.
+func (s *EventLoadDItem) SetInt(v int) {
+	s.Type = IntEventLoadDItem
+	s.Int = v
+}
+
+// GetInt returns int and true boolean if EventLoadDItem is int.
+func (s EventLoadDItem) GetInt() (v int, ok bool) {
+	if !s.IsInt() {
+		return v, false
+	}
+	return s.Int, true
+}
+
+// NewIntEventLoadDItem returns new EventLoadDItem from int.
+func NewIntEventLoadDItem(v int) EventLoadDItem {
+	var s EventLoadDItem
+	s.SetInt(v)
+	return s
+}
+
+// SetBool sets EventLoadDItem to bool.
+func (s *EventLoadDItem) SetBool(v bool) {
+	s.Type = BoolEventLoadDItem
+	s.Bool = v
+}
+
+// GetBool returns bool and true boolean if EventLoadDItem is bool.
+func (s EventLoadDItem) GetBool() (v bool, ok bool) {
+	if !s.IsBool() {
+		return v, false
+	}
+	return s.Bool, true
+}
+
+// NewBoolEventLoadDItem returns new EventLoadDItem from bool.
+func NewBoolEventLoadDItem(v bool) EventLoadDItem {
+	var s EventLoadDItem
+	s.SetBool(v)
+	return s
+}
+
 // Page view unload event.
 // Ref: #/components/schemas/EventUnload
 type EventUnload struct {
@@ -486,6 +600,11 @@ type EventUnload struct {
 	B string `json:"b"`
 	// Time spent on page in milliseconds.
 	M int `json:"m"`
+	// Group name of events. This must be set if passing custom event properties. Currently, only the
+	// hostname is supported.
+	G OptString `json:"g"`
+	// Custom event properties.
+	D OptEventUnloadD `json:"d"`
 }
 
 // GetB returns the value of B.
@@ -498,6 +617,16 @@ func (s *EventUnload) GetM() int {
 	return s.M
 }
 
+// GetG returns the value of G.
+func (s *EventUnload) GetG() OptString {
+	return s.G
+}
+
+// GetD returns the value of D.
+func (s *EventUnload) GetD() OptEventUnloadD {
+	return s.D
+}
+
 // SetB sets the value of B.
 func (s *EventUnload) SetB(val string) {
 	s.B = val
@@ -506,6 +635,118 @@ func (s *EventUnload) SetB(val string) {
 // SetM sets the value of M.
 func (s *EventUnload) SetM(val int) {
 	s.M = val
+}
+
+// SetG sets the value of G.
+func (s *EventUnload) SetG(val OptString) {
+	s.G = val
+}
+
+// SetD sets the value of D.
+func (s *EventUnload) SetD(val OptEventUnloadD) {
+	s.D = val
+}
+
+// Custom event properties.
+type EventUnloadD map[string]EventUnloadDItem
+
+func (s *EventUnloadD) init() EventUnloadD {
+	m := *s
+	if m == nil {
+		m = map[string]EventUnloadDItem{}
+		*s = m
+	}
+	return m
+}
+
+// EventUnloadDItem represents sum type.
+type EventUnloadDItem struct {
+	Type   EventUnloadDItemType // switch on this field
+	String string
+	Int    int
+	Bool   bool
+}
+
+// EventUnloadDItemType is oneOf type of EventUnloadDItem.
+type EventUnloadDItemType string
+
+// Possible values for EventUnloadDItemType.
+const (
+	StringEventUnloadDItem EventUnloadDItemType = "string"
+	IntEventUnloadDItem    EventUnloadDItemType = "int"
+	BoolEventUnloadDItem   EventUnloadDItemType = "bool"
+)
+
+// IsString reports whether EventUnloadDItem is string.
+func (s EventUnloadDItem) IsString() bool { return s.Type == StringEventUnloadDItem }
+
+// IsInt reports whether EventUnloadDItem is int.
+func (s EventUnloadDItem) IsInt() bool { return s.Type == IntEventUnloadDItem }
+
+// IsBool reports whether EventUnloadDItem is bool.
+func (s EventUnloadDItem) IsBool() bool { return s.Type == BoolEventUnloadDItem }
+
+// SetString sets EventUnloadDItem to string.
+func (s *EventUnloadDItem) SetString(v string) {
+	s.Type = StringEventUnloadDItem
+	s.String = v
+}
+
+// GetString returns string and true boolean if EventUnloadDItem is string.
+func (s EventUnloadDItem) GetString() (v string, ok bool) {
+	if !s.IsString() {
+		return v, false
+	}
+	return s.String, true
+}
+
+// NewStringEventUnloadDItem returns new EventUnloadDItem from string.
+func NewStringEventUnloadDItem(v string) EventUnloadDItem {
+	var s EventUnloadDItem
+	s.SetString(v)
+	return s
+}
+
+// SetInt sets EventUnloadDItem to int.
+func (s *EventUnloadDItem) SetInt(v int) {
+	s.Type = IntEventUnloadDItem
+	s.Int = v
+}
+
+// GetInt returns int and true boolean if EventUnloadDItem is int.
+func (s EventUnloadDItem) GetInt() (v int, ok bool) {
+	if !s.IsInt() {
+		return v, false
+	}
+	return s.Int, true
+}
+
+// NewIntEventUnloadDItem returns new EventUnloadDItem from int.
+func NewIntEventUnloadDItem(v int) EventUnloadDItem {
+	var s EventUnloadDItem
+	s.SetInt(v)
+	return s
+}
+
+// SetBool sets EventUnloadDItem to bool.
+func (s *EventUnloadDItem) SetBool(v bool) {
+	s.Type = BoolEventUnloadDItem
+	s.Bool = v
+}
+
+// GetBool returns bool and true boolean if EventUnloadDItem is bool.
+func (s EventUnloadDItem) GetBool() (v bool, ok bool) {
+	if !s.IsBool() {
+		return v, false
+	}
+	return s.Bool, true
+}
+
+// NewBoolEventUnloadDItem returns new EventUnloadDItem from bool.
+func NewBoolEventUnloadDItem(v bool) EventUnloadDItem {
+	var s EventUnloadDItem
+	s.SetBool(v)
+	return s
 }
 
 // Ref: #/components/schemas/FilterString
@@ -1020,6 +1261,98 @@ func (o OptDateTime) Get() (v time.Time, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptDateTime) Or(d time.Time) time.Time {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptEventLoadD returns new OptEventLoadD with value set to v.
+func NewOptEventLoadD(v EventLoadD) OptEventLoadD {
+	return OptEventLoadD{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptEventLoadD is optional EventLoadD.
+type OptEventLoadD struct {
+	Value EventLoadD
+	Set   bool
+}
+
+// IsSet returns true if OptEventLoadD was set.
+func (o OptEventLoadD) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptEventLoadD) Reset() {
+	var v EventLoadD
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptEventLoadD) SetTo(v EventLoadD) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptEventLoadD) Get() (v EventLoadD, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptEventLoadD) Or(d EventLoadD) EventLoadD {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptEventUnloadD returns new OptEventUnloadD with value set to v.
+func NewOptEventUnloadD(v EventUnloadD) OptEventUnloadD {
+	return OptEventUnloadD{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptEventUnloadD is optional EventUnloadD.
+type OptEventUnloadD struct {
+	Value EventUnloadD
+	Set   bool
+}
+
+// IsSet returns true if OptEventUnloadD was set.
+func (o OptEventUnloadD) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptEventUnloadD) Reset() {
+	var v EventUnloadD
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptEventUnloadD) SetTo(v EventUnloadD) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptEventUnloadD) Get() (v EventUnloadD, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptEventUnloadD) Or(d EventUnloadD) EventUnloadD {
 	if v, ok := o.Get(); ok {
 		return v
 	}

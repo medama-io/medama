@@ -78,14 +78,14 @@ func SetupDatabaseWithWebsites(t *testing.T) (*assert.Assertions, context.Contex
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	ids := []string{"website1", "website2", "website3"}
-	user_ids := []string{"test1", "test2", "test3"}
+	userIDs := []string{"test1", "test2", "test3"}
 
 	// 3 websites each for 3 users
 	for _, id := range ids {
-		for _, user_id := range user_ids {
+		for _, userID := range userIDs {
 			websiteCreate := model.NewWebsite(
-				user_id,
-				fmt.Sprintf("%s-%s.com", id, user_id),
+				userID,
+				fmt.Sprintf("%s-%s.com", id, userID),
 				1,
 				2,
 			)

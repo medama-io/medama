@@ -92,7 +92,7 @@ func GetVersion() string {
 	}
 
 	if Commit != "" {
-		return fmt.Sprintf("Medama Analytics commit=%s", Commit)
+		return "Medama Analytics commit=" + Commit
 	}
 
 	return "Medama Development Build"

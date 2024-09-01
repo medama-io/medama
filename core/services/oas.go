@@ -74,7 +74,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 	}
 	hostnameCache.AddAll(hostnames)
 
-	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite, duckdb)
+	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite)
 	if err != nil {
 		return nil, errors.Wrap(err, "services init")
 	}
@@ -93,7 +93,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 }
 
 // NewRuntimeConfig creates a new runtime config.
-func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, analytics *duckdb.Client) (*RuntimeConfig, error) {
+func NewRuntimeConfig(ctx context.Context, user *sqlite.Client) (*RuntimeConfig, error) {
 	// Load the script type from the database.
 	settings, err := user.GetSettings(ctx)
 	if err != nil {

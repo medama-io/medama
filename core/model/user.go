@@ -1,13 +1,13 @@
 package model
 
 type User struct {
-	ID       string `json:"id" db:"id"`
-	Username string `json:"username" db:"username"`
-	Password string `json:"password" db:"password"`
+	ID       string `db:"id"       json:"id"`
+	Username string `db:"username" json:"username"`
+	Password string `db:"password" json:"password"`
 
-	Settings    *UserSettings `json:"settings" db:"settings"`
-	DateCreated int64         `json:"date_created" db:"date_created"`
-	DateUpdated int64         `json:"date_updated" db:"date_updated"`
+	Settings    *UserSettings `db:"settings"     json:"settings"`
+	DateCreated int64         `db:"date_created" json:"date_created"`
+	DateUpdated int64         `db:"date_updated" json:"date_updated"`
 }
 
 // NewUser returns a new instance of User with the given values.

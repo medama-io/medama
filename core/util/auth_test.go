@@ -40,9 +40,9 @@ func TestAuthCreateAndRead(t *testing.T) {
 	assert.Equal(http.SameSiteLaxMode, cookie.SameSite)
 
 	// Decrypt cookie
-	userId, err := auth.ReadSession(ctx, cookie.Value)
+	userID, err := auth.ReadSession(ctx, cookie.Value)
 	require.NoError(err)
-	assert.Equal("test_user_id", userId)
+	assert.Equal("test_user_id", userID)
 }
 
 func TestAuthWithInvalidSession(t *testing.T) {
@@ -54,9 +54,9 @@ func TestAuthWithInvalidSession(t *testing.T) {
 	assert.NotNil(cookie)
 
 	// Decrypt cookie
-	userId, err := auth.ReadSession(ctx, "invalid_session")
+	userID, err := auth.ReadSession(ctx, "invalid_session")
 	require.ErrorIs(err, model.ErrInvalidSession)
-	assert.Equal("", userId)
+	assert.Equal("", userID)
 }
 
 func TestAuthWithExpiredSession(t *testing.T) {
@@ -69,13 +69,13 @@ func TestAuthWithExpiredSession(t *testing.T) {
 	// Delete from cache to simulate expired session
 	base64Decode, err := base64.URLEncoding.DecodeString(cookie.Value)
 	require.NoError(err)
-	sessionId, err := auth.DecryptSession(ctx, string(base64Decode))
+	sessionID, err := auth.DecryptSession(ctx, string(base64Decode))
 	require.NoError(err)
-	assert.NotEmpty(sessionId)
-	auth.Cache.Delete(sessionId)
+	assert.NotEmpty(sessionID)
+	auth.Cache.Delete(sessionID)
 
 	// Try to read from session with expired cookie
-	userId, err := auth.ReadSession(ctx, cookie.Value)
+	userID, err := auth.ReadSession(ctx, cookie.Value)
 	require.ErrorIs(err, model.ErrSessionNotFound)
-	assert.Equal("", userId)
+	assert.Equal("", userID)
 }

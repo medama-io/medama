@@ -30,7 +30,7 @@ var (
 
 // NewCache creates a new cache that asynchronously cleans
 // expired entries after the given time passes.
-func NewCache(ctx context.Context, cleaningInterval time.Duration) *Cache {
+func NewCache(_ctx context.Context, cleaningInterval time.Duration) *Cache {
 	cache := &Cache{
 		close: make(chan struct{}),
 	}
@@ -67,7 +67,7 @@ func NewCache(ctx context.Context, cleaningInterval time.Duration) *Cache {
 }
 
 // Get gets the value for the given key.
-func (c *Cache) Get(ctx context.Context, key interface{}) (interface{}, error) {
+func (c *Cache) Get(_ context.Context, key interface{}) (interface{}, error) {
 	obj, exists := c.items.Load(key)
 
 	if !exists {
@@ -111,7 +111,7 @@ func (c *Cache) Set(key interface{}, value interface{}, duration time.Duration) 
 
 // Range calls f sequentially for each key and value present in the cache.
 // If f returns false, range stops the iteration.
-func (c *Cache) Range(ctx context.Context, f func(key, value interface{}) bool) {
+func (c *Cache) Range(_ context.Context, f func(key, value interface{}) bool) {
 	now := time.Now().UnixNano()
 
 	fn := func(key, value interface{}) bool {

@@ -26,7 +26,7 @@ const (
 	Unknown = "Unknown"
 )
 
-func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
+func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
 	// Check if if-modified-since header is set
 	ifModified := params.IfModifiedSince.Value
 
@@ -89,7 +89,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	}, nil
 }
 
-func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
+func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params api.PostEventHitParams) (api.PostEventHitRes, error) {
 	log := logger.Get()
 
 	switch req.Type {
@@ -261,10 +261,29 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			Str("device_type", event.DeviceType).
 			Logger()
 
-		err = h.analyticsDB.AddPageView(ctx, event)
-		if err != nil {
-			log.Error().Err(err).Msg("hit: failed to add page view")
-			return ErrInternalServerError(err), nil
+		if req.EventUnload.D.IsSet() {
+			events, err := customEventToEventHit(event.BID, hostname, req.EventCustom.D)
+			if err != nil {
+				log.Error().Msg("hit: " + err.Error())
+				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
+			}
+
+			log = log.With().
+				Str("event_type", string(req.Type)).
+				Int("event_count", len(*events)).
+				Logger()
+
+			err = h.analyticsDB.AddPageView(ctx, event, events)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to add page view")
+				return ErrInternalServerError(err), nil
+			}
+		} else {
+			err = h.analyticsDB.AddPageView(ctx, event, nil)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to add page view")
+				return ErrInternalServerError(err), nil
+			}
 		}
 
 		// Log success
@@ -281,10 +300,39 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			Int("duration_ms", event.DurationMs).
 			Logger()
 
-		err := h.analyticsDB.UpdatePageView(ctx, event)
-		if err != nil {
-			log.Error().Err(err).Msg("hit: failed to update page view")
-			return ErrInternalServerError(err), nil
+		if req.EventUnload.D.IsSet() && req.EventUnload.G.IsSet() {
+			group := req.EventUnload.G.Value
+			log = log.With().Str("group_name", group).Logger()
+
+			// Verify hostname exists as hostname is used as the group name.
+			if !h.hostnames.Has(group) {
+				log.Warn().Msg("hit: website not found")
+				return ErrNotFound(model.ErrWebsiteNotFound), nil
+			}
+
+			events, err := customEventToEventHit(req.EventCustom.B.Or(""), group, req.EventCustom.D)
+			if err != nil {
+				log.Error().Msg("hit: " + err.Error())
+				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
+			}
+
+			log = log.With().
+				Str("event_type", string(req.Type)).
+				Str("group", group).
+				Int("event_count", len(*events)).
+				Logger()
+
+			err = h.analyticsDB.UpdatePageView(ctx, event, events)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to update page view")
+				return ErrInternalServerError(err), nil
+			}
+		} else {
+			err := h.analyticsDB.UpdatePageView(ctx, event, nil)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to update page view")
+				return ErrInternalServerError(err), nil
+			}
 		}
 
 		// Log success
@@ -292,54 +340,27 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 
 	case api.EventCustomEventHit:
 		group := req.EventCustom.G
-		log = log.With().Str("hostname", group).Logger()
+		log = log.With().Str("group_name", group).Logger()
 
-		// Verify hostname exists
+		// Verify hostname exists as hostname is used as the group name.
 		if !h.hostnames.Has(group) {
 			log.Warn().Msg("hit: website not found")
 			return ErrNotFound(model.ErrWebsiteNotFound), nil
 		}
 
-		events := []model.EventHit{}
-
-		// Generate batch ID to group all the properties of the same event.
-		batchIDType, err := typeid.WithPrefix("event")
+		events, err := customEventToEventHit(req.EventCustom.B.Or(""), group, req.EventCustom.D)
 		if err != nil {
-			return ErrInternalServerError(errors.Wrap(err, "services: typeid custom event")), nil
-		}
-		batchID := batchIDType.String()
-
-		for name, item := range req.EventCustom.D {
-			var value string
-
-			switch item.Type {
-			case api.StringEventCustomDItem:
-				value = item.String
-			case api.IntEventCustomDItem:
-				value = strconv.Itoa(item.Int)
-			case api.BoolEventCustomDItem:
-				value = strconv.FormatBool(item.Bool)
-			default:
-				log.Error().Str("type", string(item.Type)).Msg("hit: invalid custom event property type")
-				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
-			}
-
-			events = append(events, model.EventHit{
-				BID:     req.EventCustom.B.Or(""),
-				BatchID: batchID,
-				Group:   group,
-				Name:    name,
-				Value:   value,
-			})
+			log.Error().Msg("hit: " + err.Error())
+			return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
 		}
 
 		log = log.With().
 			Str("event_type", string(req.Type)).
 			Str("group", group).
-			Int("event_count", len(events)).
+			Int("event_count", len(*events)).
 			Logger()
 
-		err = h.analyticsDB.AddEvents(ctx, &events)
+		err = h.analyticsDB.AddEvents(ctx, events)
 		if err != nil {
 			log.Error().Err(err).Msg("hit: failed to add event")
 			return ErrInternalServerError(err), nil
@@ -352,4 +373,45 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 	}
 
 	return &api.PostEventHitNoContent{}, nil
+}
+
+func customEventToEventHit(bid string, group string, items api.EventCustomD) (*[]model.EventHit, error) {
+	if len(items) == 0 {
+		//nolint: nilnil // It saves us an extra error check.
+		return nil, nil
+	}
+
+	// Generate batch ID to group all the properties of the same event.
+	batchIDType, err := typeid.WithPrefix("event")
+	if err != nil {
+		return nil, errors.Wrap(err, "typeid custom event")
+	}
+	batchID := batchIDType.String()
+
+	events := make([]model.EventHit, 0, len(items))
+
+	for name, item := range items {
+		var value string
+
+		switch item.Type {
+		case api.StringEventCustomDItem:
+			value = item.String
+		case api.IntEventCustomDItem:
+			value = strconv.Itoa(item.Int)
+		case api.BoolEventCustomDItem:
+			value = strconv.FormatBool(item.Bool)
+		default:
+			return nil, errors.New("invalid custom event property type: " + string(item.Type))
+		}
+
+		events = append(events, model.EventHit{
+			BID:     bid,
+			BatchID: batchID,
+			Group:   group,
+			Name:    name,
+			Value:   value,
+		})
+	}
+
+	return &events, nil
 }

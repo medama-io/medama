@@ -477,6 +477,10 @@ export interface components {
             q: boolean;
             /** @description Timezone of the user. */
             t?: string;
+            /** @description Custom event properties. */
+            d?: {
+                [key: string]: string | number | boolean;
+            };
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -492,6 +496,12 @@ export interface components {
             b: string;
             /** @description Time spent on page in milliseconds. */
             m: number;
+            /** @description Optional group name of events for custom properties. Currently, only the hostname is supported. */
+            g?: string;
+            /** @description Custom event properties. */
+            d?: {
+                [key: string]: string | number | boolean;
+            };
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}

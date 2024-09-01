@@ -8,11 +8,11 @@ import (
 )
 
 func TestGetWebsiteSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 	summary, err := client.GetWebsiteSummary(ctx, &db.Filters{
-		Hostname:    MEDIUM_HOSTNAME,
-		PeriodStart: TIME_START,
-		PeriodEnd:   TIME_END,
+		Hostname:    MediumHostname,
+		PeriodStart: TimeStart,
+		PeriodEnd:   TimeEnd,
 	})
 	require.NoError(err)
 
@@ -20,12 +20,12 @@ func TestGetWebsiteSummary(t *testing.T) {
 }
 
 func TestGetWebsiteSummaryEmpty(t *testing.T) {
-	assert, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	assert, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
 	summary, err := client.GetWebsiteSummary(ctx, &db.Filters{
-		Hostname:    DOES_NOT_EXIST_HOSTNAME,
-		PeriodStart: TIME_START,
-		PeriodEnd:   TIME_END,
+		Hostname:    DoesNotExistHostname,
+		PeriodStart: TimeStart,
+		PeriodEnd:   TimeEnd,
 	})
 	require.NoError(err)
 
@@ -36,9 +36,9 @@ func TestGetWebsiteSummaryEmpty(t *testing.T) {
 }
 
 func TestGetWebsiteSummaryFilterAll(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	for _, filter := range generateFilterAll(MEDIUM_HOSTNAME) {
+	for _, filter := range generateFilterAll(MediumHostname) {
 		summary, err := client.GetWebsiteSummary(ctx, filter.Filters)
 		require.NoError(err)
 

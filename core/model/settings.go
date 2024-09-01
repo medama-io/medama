@@ -11,10 +11,10 @@ const (
 
 type UserSettings struct {
 	// Account
-	Language string `json:"language" db:"language"`
+	Language string `db:"language" json:"language"`
 
 	// Tracker
-	ScriptType string `json:"script_type" db:"script_type"`
+	ScriptType string `db:"script_type" json:"script_type"`
 }
 
 type WebsiteSettings struct{}

@@ -178,7 +178,7 @@ func CreateFilters(params interface{}, hostname string) *Filters {
 	v := reflect.ValueOf(params)
 	t := v.Type()
 
-	for i := 0; i < v.NumField(); i++ {
+	for i := range v.NumField() {
 		field := v.Field(i)
 		fieldName := t.Field(i).Name
 

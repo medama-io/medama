@@ -7,9 +7,9 @@ import (
 )
 
 func TestGetWebsiteReferrersSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -23,9 +23,9 @@ func TestGetWebsiteReferrersSummary(t *testing.T) {
 }
 
 func TestGetWebsiteReferrersSummaryGrouped(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -39,9 +39,9 @@ func TestGetWebsiteReferrersSummaryGrouped(t *testing.T) {
 }
 
 func TestGetWebsiteReferrers(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -55,9 +55,9 @@ func TestGetWebsiteReferrers(t *testing.T) {
 }
 
 func TestGetWebsiteReferrersGrouped(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {

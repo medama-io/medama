@@ -31,9 +31,9 @@ var (
 	// Generate a 1 month interval of data between 1st Jan 2024 and 1st Feb 2024.
 	//
 	//nolint:gochecknoglobals // Reason: These are used in every test.
-	TIME_START = time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	TimeStart = time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	//nolint:gochecknoglobals // Reason: These are used in every test.
-	TIME_END = time.Date(2024, 2, 1, 0, 0, 0, 0, time.UTC)
+	TimeEnd = time.Date(2024, 2, 1, 0, 0, 0, 0, time.UTC)
 )
 
 func main() {

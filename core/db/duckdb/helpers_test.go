@@ -29,18 +29,18 @@ import (
 type Fixture string
 
 const (
-	SIMPLE_FIXTURE Fixture = "./testdata/fixtures/simple.test.db"
+	SimpleFixture Fixture = "./testdata/fixtures/simple.test.db"
 
-	SMALL_HOSTNAME          = "small.example.com"
-	MEDIUM_HOSTNAME         = "medium.example.com"
-	DOES_NOT_EXIST_HOSTNAME = "does-not-exist.example.com"
+	SmallHostname        = "small.example.com"
+	MediumHostname       = "medium.example.com"
+	DoesNotExistHostname = "does-not-exist.example.com"
 )
 
 var (
 	//nolint:gochecknoglobals // Reason: These are used in every test.
-	TIME_START = time.Unix(0, 0).Format(model.DateFormat)
+	TimeStart = time.Unix(0, 0).Format(model.DateFormat)
 	//nolint:gochecknoglobals // Reason: These are used in every test.
-	TIME_END = time.Now().Add(24 * time.Hour).Format(model.DateFormat)
+	TimeEnd = time.Now().Add(24 * time.Hour).Format(model.DateFormat)
 )
 
 type SnapRecords struct {
@@ -69,7 +69,7 @@ func NewSnapRecords(slice interface{}) SnapRecords {
 	}
 
 	interfaceSlice := make([]interface{}, v.Len())
-	for i := 0; i < v.Len(); i++ {
+	for i := range v.Len() {
 		interfaceSlice[i] = v.Index(i).Interface()
 	}
 
@@ -162,8 +162,8 @@ func generateFilterAll(hostname string) []TestCase {
 
 	baseFilter := &db.Filters{
 		Hostname:    hostname,
-		PeriodStart: TIME_START,
-		PeriodEnd:   TIME_END,
+		PeriodStart: TimeStart,
+		PeriodEnd:   TimeEnd,
 	}
 
 	filterSteps := []struct {
@@ -217,22 +217,23 @@ func generateFilterAll(hostname string) []TestCase {
 	return filters
 }
 
-func getBaseTestCases(hostname string) []TestCase {
+func getBaseTestCases(_hostname string) []TestCase {
+	hostname := MediumHostname // For now we only have one hostname.
 	tc := []TestCase{
 		{
 			Name: "Base",
 			Filters: &db.Filters{
 				Hostname:    hostname,
-				PeriodStart: TIME_START,
-				PeriodEnd:   TIME_END,
+				PeriodStart: TimeStart,
+				PeriodEnd:   TimeEnd,
 			},
 		},
 		{
 			Name: "Empty",
 			Filters: &db.Filters{
-				Hostname:    DOES_NOT_EXIST_HOSTNAME,
-				PeriodStart: TIME_START,
-				PeriodEnd:   TIME_END,
+				Hostname:    DoesNotExistHostname,
+				PeriodStart: TimeStart,
+				PeriodEnd:   TimeEnd,
 			},
 		},
 	}
