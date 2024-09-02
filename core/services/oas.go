@@ -38,7 +38,7 @@ type Handler struct {
 	hostnames *util.CacheStore
 
 	// Runtime config
-	RuntimeConfig RuntimeConfig
+	RuntimeConfig *RuntimeConfig
 }
 
 // NewService returns a new instance of the ogen service handler.
@@ -82,7 +82,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 		timezoneMap:    &tzMap,
 		codeCountryMap: &codeCountryMap,
 		hostnames:      &hostnameCache,
-		RuntimeConfig:  runtimeConfig,
+		RuntimeConfig:  &runtimeConfig,
 	}, nil
 }
 
@@ -114,33 +114,30 @@ func (r *RuntimeConfig) UpdateConfig(ctx context.Context, meta *sqlite.Client, s
 	return nil
 }
 
-// Convert array of script type features split by comma to a ScriptType struct.
+// Convert array of script type features split by comma to a script file name.
 func convertScriptType(scriptType string) string {
 	features := strings.Split(scriptType, ",")
 
 	// Hot path for basic script.
 	if scriptType == "default" || len(features) == 0 {
-		return "/default.js"
+		return "/scripts/default.js"
+	}
+
+	filteredFeatures := make([]string, 0, len(features))
+
+	// Filter out the default feature.
+	for _, feature := range features {
+		if feature != "default" {
+			filteredFeatures = append(filteredFeatures, feature)
+		}
 	}
 
 	// Alphabetically sort the features as script files are named alphabetically.
-	slices.Sort(features)
+	slices.Sort(filteredFeatures)
 
 	var sb strings.Builder
 	sb.WriteString("/scripts/")
-	for idx, feature := range features {
-		if idx > 0 {
-			sb.WriteString(".")
-		}
-
-		switch feature {
-		case "click-events":
-			sb.WriteString("click-events")
-		case "page-events":
-			sb.WriteString("page-events")
-		}
-	}
-
+	sb.WriteString(strings.Join(filteredFeatures, "."))
 	sb.WriteString(".js")
 
 	return sb.String()

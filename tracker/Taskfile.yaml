@@ -23,8 +23,11 @@ tasks:
     deps: [build:default]
     cmds:
       - mkdir -p ../core/client/scripts
-      - cp ./dist/default.min.js ../core/client/scripts/default.js
-      - cp ./dist/click-events.min.js ../core/client/scripts/click-events.js
+      - |
+        files=("default" "click-events" "page-events" "click-events.page-events")
+        for file in "${files[@]}"; do
+          cp ./dist/$file.min.js ../core/client/scripts/$file.js
+        done
     sources:
       - ./dist/*.min.js
     generates:

@@ -217,7 +217,7 @@ func generateFilterAll(hostname string) []TestCase {
 	return filters
 }
 
-func getBaseTestCases(_hostname string) []TestCase {
+func getBaseTestCases(_ string) []TestCase {
 	hostname := MediumHostname // For now we only have one hostname.
 	tc := []TestCase{
 		{

@@ -381,11 +381,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			})
 		}
 
-		if err != nil {
-			log.Error().Msg("hit: " + err.Error())
-			return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
-		}
-
 		log = log.With().
 			Str("event_type", string(req.Type)).
 			Str("group", group).

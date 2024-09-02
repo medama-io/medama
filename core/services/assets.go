@@ -21,10 +21,10 @@ type SPAHandler struct {
 	indexETag    string
 	fileETags    map[string]string
 
-	runtimeConfig RuntimeConfig
+	runtimeConfig *RuntimeConfig
 }
 
-func SetupAssetHandler(mux *http.ServeMux, runtimeConfig RuntimeConfig) error {
+func SetupAssetHandler(mux *http.ServeMux, runtimeConfig *RuntimeConfig) error {
 	client, err := generate.SPAClient()
 	if err != nil {
 		return errors.Wrap(err, "failed to create spa client")
@@ -39,7 +39,7 @@ func SetupAssetHandler(mux *http.ServeMux, runtimeConfig RuntimeConfig) error {
 	return nil
 }
 
-func NewSPAHandler(client fs.FS, runtimeConfig RuntimeConfig) (*SPAHandler, error) {
+func NewSPAHandler(client fs.FS, runtimeConfig *RuntimeConfig) (*SPAHandler, error) {
 	clientServer := http.FileServer(http.FS(client))
 
 	indexFile, err := readFile(client, "index.html")
@@ -113,27 +113,30 @@ func (h *SPAHandler) serveFile(w http.ResponseWriter, r *http.Request, filePath 
 func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	uPath := path.Clean(r.URL.Path)
 
-	// Check if the request is for script.js or any file in the /scripts/ directory
-	if uPath == "/script.js" || strings.HasPrefix(uPath, "/scripts/") {
-		scriptFile := h.runtimeConfig.ScriptFileName
-
-		if uPath != "/script.js" {
-			scriptFile = uPath
-		}
-
-		// Update the request URL to match the actual file being served
-		r.URL.Path = scriptFile
-		h.serveFile(w, r, scriptFile)
+	// Check if the request is for script.js
+	if uPath == "/script.js" {
+		// Update the request URL to match the actual file being served.
+		r.URL.Path = h.runtimeConfig.ScriptFileName
+		h.serveFile(w, r, h.runtimeConfig.ScriptFileName)
 		return
 	}
 
-	// Check if the file exists in our precomputed ETags
+	// The path can also check for a file in the /scripts/ directory.
+	// This isn't typically used for normally serving files.
+	if strings.HasPrefix(uPath, "/scripts/") {
+		// Update the request URL to match the actual file being served.
+		r.URL.Path = uPath
+		h.serveFile(w, r, uPath)
+		return
+	}
+
+	// Check if the file exists in our precomputed ETags.
 	if _, exists := h.fileETags[uPath]; exists {
 		h.serveFile(w, r, uPath)
 		return
 	}
 
-	// Serve index.html for all other routes that are not /api
+	// Serve index.html for all other routes that are not /api.
 	h.serveIndexHTML(w, r)
 }
 

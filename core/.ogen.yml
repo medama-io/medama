@@ -3,12 +3,5 @@ generator:
     enable:
       - "paths/server"
       - "webhooks/server"
-      - "server/response/validation"
-    disable:
-      - "paths/client"
-      - "webhooks/client"
-      - "client/request/validation"
-      - "ogen/otel"
-      - "ogen/unimplemented"
-      - "debug/example_tests"
+    disable_all: true
   convenient_errors: false

@@ -230,14 +230,6 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *UserGet:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -305,14 +297,6 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *UserUsageGet:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -356,14 +340,6 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsBrowsers:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -443,14 +419,6 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsUTMCampaigns:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -530,14 +498,6 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsCountries:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -617,14 +577,6 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsDevices:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -704,14 +656,6 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsLanguages:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -791,14 +735,6 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsUTMMediums:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -878,14 +814,6 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsOS:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -965,14 +893,6 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsPages:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1040,14 +960,6 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsProperties:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1127,14 +1039,6 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsReferrers:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1214,14 +1118,6 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsUTMSources:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1301,14 +1197,6 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsSummary:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1376,14 +1264,6 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *StatsTime:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1451,14 +1331,6 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *GetWebsitesOKApplicationJSON:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1526,14 +1398,6 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *WebsiteGet:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1601,14 +1465,6 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *UserGet:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1700,14 +1556,6 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *WebsiteGet:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 
@@ -1951,14 +1799,6 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *WebsiteGet:
-		if err := func() error {
-			if err := response.Validate(); err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrap(err, "validate")
-		}
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(201)
 

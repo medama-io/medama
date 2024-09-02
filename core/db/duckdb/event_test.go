@@ -95,6 +95,6 @@ func TestUpdatePageView(t *testing.T) {
 		DurationMs: 100,
 	}
 
-	err = client.UpdatePageView(ctx, event2, nil)
+	err = client.UpdatePageView(ctx, event2)
 	assert.NoError(err)
 }

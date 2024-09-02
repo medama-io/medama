@@ -1510,7 +1510,10 @@ components:
           type: array
           items:
             type: string
-            enum: [default, click-events, page-events]
+            enum:
+              - default
+              - click-events
+              - page-events
           uniqueItems: true
     UserGet:
       type: object
