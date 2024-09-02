@@ -26,7 +26,7 @@ const (
 	Unknown = "Unknown"
 )
 
-func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
+func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
 	// Check if if-modified-since header is set
 	ifModified := params.IfModifiedSince.Value
 
@@ -89,7 +89,7 @@ func (h *Handler) GetEventPing(ctx context.Context, params api.GetEventPingParam
 	}, nil
 }
 
-func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api.PostEventHitParams) (api.PostEventHitRes, error) {
+func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params api.PostEventHitParams) (api.PostEventHitRes, error) {
 	log := logger.Get()
 
 	switch req.Type {
@@ -261,10 +261,55 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			Str("device_type", event.DeviceType).
 			Logger()
 
-		err = h.analyticsDB.AddPageView(ctx, event)
-		if err != nil {
-			log.Error().Err(err).Msg("hit: failed to add page view")
-			return ErrInternalServerError(err), nil
+		if req.EventLoad.D.IsSet() {
+			// Generate batch ID to group all the properties of the same event.
+			batchIDType, err := typeid.WithPrefix("event")
+			if err != nil {
+				return nil, errors.Wrap(err, "typeid custom event")
+			}
+			batchID := batchIDType.String()
+
+			events := make([]model.EventHit, 0, len(req.EventLoad.D.Value))
+
+			for name, item := range req.EventLoad.D.Value {
+				var value string
+
+				switch item.Type {
+				case api.StringEventLoadDItem:
+					value = item.String
+				case api.IntEventLoadDItem:
+					value = strconv.Itoa(item.Int)
+				case api.BoolEventLoadDItem:
+					value = strconv.FormatBool(item.Bool)
+				default:
+					return nil, errors.New("invalid custom event property type: " + string(item.Type))
+				}
+
+				events = append(events, model.EventHit{
+					BID:     event.BID,
+					BatchID: batchID,
+					Group:   hostname,
+					Name:    name,
+					Value:   value,
+				})
+			}
+
+			log = log.With().
+				Str("event_type", string(req.Type)).
+				Int("event_count", len(events)).
+				Logger()
+
+			err = h.analyticsDB.AddPageView(ctx, event, &events)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to add page view")
+				return ErrInternalServerError(err), nil
+			}
+		} else {
+			err = h.analyticsDB.AddPageView(ctx, event, nil)
+			if err != nil {
+				log.Error().Err(err).Msg("hit: failed to add page view")
+				return ErrInternalServerError(err), nil
+			}
 		}
 
 		// Log success
@@ -291,23 +336,27 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 		log.Debug().Msg("hit: updated page view")
 
 	case api.EventCustomEventHit:
-		group := req.EventCustom.G
-		log = log.With().Str("hostname", group).Logger()
+		if (len(req.EventCustom.D)) == 0 {
+			return ErrBadRequest(model.ErrInvalidProperties), nil
+		}
 
-		// Verify hostname exists
+		group := req.EventCustom.G
+		log = log.With().Str("group_name", group).Logger()
+
+		// Verify hostname exists as hostname is used as the group name.
 		if !h.hostnames.Has(group) {
 			log.Warn().Msg("hit: website not found")
 			return ErrNotFound(model.ErrWebsiteNotFound), nil
 		}
 
-		events := []model.EventHit{}
-
 		// Generate batch ID to group all the properties of the same event.
 		batchIDType, err := typeid.WithPrefix("event")
 		if err != nil {
-			return ErrInternalServerError(errors.Wrap(err, "services: typeid custom event")), nil
+			return nil, errors.Wrap(err, "typeid custom event")
 		}
 		batchID := batchIDType.String()
+
+		events := make([]model.EventHit, 0, len(req.EventCustom.D))
 
 		for name, item := range req.EventCustom.D {
 			var value string
@@ -320,8 +369,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, params api
 			case api.BoolEventCustomDItem:
 				value = strconv.FormatBool(item.Bool)
 			default:
-				log.Error().Str("type", string(item.Type)).Msg("hit: invalid custom event property type")
-				return ErrBadRequest(model.ErrInvalidTrackerEvent), nil
+				return nil, errors.New("invalid custom event property type: " + string(item.Type))
 			}
 
 			events = append(events, model.EventHit{

@@ -7,9 +7,9 @@ import (
 )
 
 func TestGetWebsiteCountriesSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -23,9 +23,9 @@ func TestGetWebsiteCountriesSummary(t *testing.T) {
 }
 
 func TestGetWebsiteCountries(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -39,9 +39,9 @@ func TestGetWebsiteCountries(t *testing.T) {
 }
 
 func TestGetWebsiteLanguagesSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -55,9 +55,9 @@ func TestGetWebsiteLanguagesSummary(t *testing.T) {
 }
 
 func TestGetWebsiteLanguagesLocaleSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -71,9 +71,9 @@ func TestGetWebsiteLanguagesLocaleSummary(t *testing.T) {
 }
 
 func TestGetWebsiteLanguages(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -87,9 +87,9 @@ func TestGetWebsiteLanguages(t *testing.T) {
 }
 
 func TestGetWebsiteLanguagesLocale(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {

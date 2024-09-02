@@ -477,6 +477,10 @@ export interface components {
             q: boolean;
             /** @description Timezone of the user. */
             t?: string;
+            /** @description Custom event properties. */
+            d?: {
+                [key: string]: string | number | boolean;
+            };
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -554,7 +558,7 @@ export interface components {
              * @enum {string}
              */
             language?: "en";
-            script_type?: ("default" | "tagged-events")[];
+            script_type?: ("default" | "click-events" | "page-events")[];
         };
         /**
          * UserGet

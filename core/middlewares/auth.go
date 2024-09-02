@@ -25,14 +25,14 @@ func NewAuthHandler(auth *util.AuthService) *Handler {
 // HandleCookieAuth handles cookie based authentication.
 func (h *Handler) HandleCookieAuth(ctx context.Context, _operationName string, t api.CookieAuth) (context.Context, error) {
 	// Decrypt and read session cookie
-	userId, err := h.auth.ReadSession(ctx, t.APIKey)
+	userID, err := h.auth.ReadSession(ctx, t.APIKey)
 	// If session does not exist, return error
 	if err != nil {
 		return nil, model.ErrUnauthorised
 	}
 
 	// We want to pass the validated user ID to the next handler
-	ctx = context.WithValue(ctx, model.ContextKeyUserID, userId)
+	ctx = context.WithValue(ctx, model.ContextKeyUserID, userID)
 
 	return ctx, nil
 }

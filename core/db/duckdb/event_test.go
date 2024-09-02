@@ -60,7 +60,7 @@ func TestAddPageView(t *testing.T) {
 		UTMCampaign:  "test_campaign",
 	}
 
-	err = client.AddPageView(ctx, event)
+	err = client.AddPageView(ctx, event, nil)
 	assert.NoError(err)
 
 	rows = client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
@@ -87,7 +87,7 @@ func TestUpdatePageView(t *testing.T) {
 		UTMCampaign:  "test_campaign",
 	}
 
-	err := client.AddPageView(ctx, event)
+	err := client.AddPageView(ctx, event, nil)
 	assert.NoError(err)
 
 	event2 := &model.PageViewDuration{

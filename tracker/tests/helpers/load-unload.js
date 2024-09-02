@@ -8,11 +8,11 @@ import {
 } from './helpers';
 
 /**
- * Create test block for all page loading related tests.
+ * Create test block for all page loading related tests. This also includes data-m:load custom properties.
  *
  * @param {import('./helpers').Tests} name
  */
-const pageTests = (name) => {
+const loadUnloadTests = (name) => {
 	test.describe('load', () => {
 		test('unique visitor load event', async ({ page }) => {
 			const expectedRequests = [
@@ -38,6 +38,11 @@ const pageTests = (name) => {
 						r: '',
 						p: true,
 						q: true,
+						d: {
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
+						},
 					},
 				},
 			];
@@ -83,6 +88,11 @@ const pageTests = (name) => {
 						r: '',
 						p: false, // Returning visitor
 						q: false, // Not a new page view
+						d: {
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
+						},
 					},
 				},
 			];
@@ -125,6 +135,11 @@ const pageTests = (name) => {
 						u: createURL(name, 'about', false),
 						p: false, // Returning visitor
 						q: true, // New page view
+						d: {
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
+						},
 					},
 				},
 			];
@@ -169,6 +184,11 @@ const pageTests = (name) => {
 						u: createURL(name, 'index', false),
 						p: false, // Returning visitor
 						q: false, // Returning page view
+						d: {
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
+						},
 					},
 					ignoreBrowsers: ['webkit'],
 				},
@@ -186,6 +206,11 @@ const pageTests = (name) => {
 						u: createURL(name, 'index', false),
 						p: name == 'simple' ? true : false, // Returning visitor
 						q: false, // Returning page view
+						d: {
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
+						},
 					},
 					ignoreBrowsers: ['firefox', 'chrome', 'msedge', 'chromium'],
 				},
@@ -237,6 +262,11 @@ const pageTests = (name) => {
 						u: createURL(name, 'index', false),
 						p: false, // Returning visitor
 						q: false, // Returning page view
+						d: {
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
+						},
 					},
 					ignoreBrowsers: ['webkit'],
 				},
@@ -254,6 +284,11 @@ const pageTests = (name) => {
 						u: createURL(name, 'index', false),
 						p: name == 'simple' ? true : false, // Returning visitor
 						q: false, // Returning page view
+						d: {
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
+						},
 					},
 					ignoreBrowsers: ['firefox', 'chrome', 'msedge', 'chromium'],
 				},
@@ -280,4 +315,4 @@ const pageTests = (name) => {
 	});
 };
 
-export { pageTests };
+export { loadUnloadTests };

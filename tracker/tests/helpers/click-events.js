@@ -7,7 +7,7 @@ import { addRequestListeners, createURL, matchRequests } from './helpers';
  *
  * @param {import('./helpers').Tests} name
  */
-const taggedEventTests = (name) => {
+const clickEventTests = (name) => {
 	test.describe('button click', () => {
 		test('click/auxclick event with data attribute', async ({ page }) => {
 			const expectedRequests = [
@@ -18,8 +18,10 @@ const taggedEventTests = (name) => {
 					postData: {
 						e: 'custom',
 						d: {
+							action: 'button',
 							button: 'left',
 						},
+						g: 'localhost',
 					},
 				},
 				{
@@ -29,8 +31,10 @@ const taggedEventTests = (name) => {
 					postData: {
 						e: 'custom',
 						d: {
+							action: 'button',
 							button: 'middle',
 						},
+						g: 'localhost',
 					},
 				},
 			];
@@ -51,4 +55,4 @@ const taggedEventTests = (name) => {
 	});
 };
 
-export { taggedEventTests };
+export { clickEventTests };

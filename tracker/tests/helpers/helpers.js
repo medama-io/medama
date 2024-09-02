@@ -1,7 +1,7 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { pageTests } from './page';
-import { taggedEventTests } from './tagged-events';
+import { loadUnloadTests } from './load-unload';
+import { clickEventTests } from './click-events';
 
 /**
  * @typedef {('simple'|'history')} Tests
@@ -208,12 +208,12 @@ const createURL = (name, path, relative = true) =>
  * @param {Tests} name
  */
 const createTests = (name) => {
-	test.describe(name + ' page tests', () => {
-		pageTests(name);
+	test.describe(name + ' load + unload tests', () => {
+		loadUnloadTests(name);
 	});
 
-	test.describe(name + ' tagged event tests', () => {
-		taggedEventTests(name);
+	test.describe(name + ' click event tests', () => {
+		clickEventTests(name);
 	});
 };
 

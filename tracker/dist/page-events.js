@@ -9,6 +9,7 @@
  * @property {boolean} p If the user is unique or not.
  * @property {boolean} q If this is the first time the user has visited this specific page.
  * @property {string} t Timezone of the user.
+ * @property {Object=} d Event custom properties.
  */
 
 /**
@@ -131,12 +132,12 @@
 		/**
 		 * @this {History}
 		 * @param {*} _state - The state object.
-		 * @param {string} _unused - The title (unused).
+		 * @param {string} _title - The title.
 		 * @param {(string | URL)=} url - The URL to navigate to.
 		 * @returns {void}
 		 */
 	) =>
-		function (_state, _unused, url) {
+		function (_state, _title, url) {
 			if (url && location.pathname !== new URL(url, location.href).pathname) {
 				sendUnloadBeacon();
 				// If the event is a history change, then we need to reset the id and timers
@@ -148,6 +149,23 @@
 				original.apply(this, arguments);
 			}
 		};
+
+	/**
+	 * Extracts key-value pairs from a given data attribute.
+	 * @param {Element} target The target element from which to extract data.
+	 * @param {string} attrName The name of the data attribute to extract (e.g., 'data-m:click').
+	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
+	 */
+	const extractDataAttributes = (target, attrName) =>
+		(target.getAttribute(`data-m:${attrName}`) || '')
+			.split(';') // Split the attribute value into individual key-value pairs.
+			.reduce((acc, pair) => {
+				// Split each pair by '=' and trim whitespace.
+				const [k, v] = pair.split('=').map((s) => s.trim());
+				// If both key and value exist, add them to the accumulator object.
+				if (k && v) acc[k] = v;
+				return acc;
+			}, {});
 
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
@@ -208,6 +226,14 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
+						// Helper function to extract data attributes and merge them.
+						"d":  [...document.querySelectorAll('[data-m\\:load]')].reduce(
+								(acc, elem) => ({
+									...acc,
+									...extractDataAttributes(elem, 'load'),
+								}),
+								{},
+							),
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -251,59 +277,6 @@
 		isUnloadCalled = true;
 	};
 
-	/**
-	 * Send a custom beacon event to the server.
-	 * @param {Object.<string, string>} properties Event custom properties.
-	 * @returns {void}
-	 */
-	const sendCustomBeacon = (properties) => {
-		// We use fetch here because it is more reliable than XHR.
-		fetch(host + 'event/hit', {
-			method: 'POST',
-			body: JSON.stringify(
-				// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
-				/**
-				 * Payload to send to the server.
-				 * @type {CustomPayload}
-				 */ ({
-						"b": uid,
-						"e": "custom",
-						"g": location.hostname,
-						"d": properties,
-					}),
-			),
-			// Will make the response opaque, but we don't need it.
-			mode: 'no-cors',
-		});
-	};
-
-	/**
-	 * Click event listener to track custom events.
-	 * @param {MouseEvent} event The click event.
-	 * @returns {void}
-	 */
-	const clickTracker = (event) => {
-		// If event is not a left click or middle click, then bail out.
-		// If the target is not an HTMLElement, then bail out.
-		if (event.button > 1 || !(event.target instanceof HTMLElement)) return;
-
-		// Extract all data-medama-* attributes and send them as custom properties.
-		/** @type {Object<string, string>} */
-		const data = {};
-		for (const attr of event.target.attributes) {
-			if (attr.name.startsWith('data-medama-'))
-				data[attr.name.slice(12)] = attr.value;
-		}
-
-		if (Object.keys(data).length > 0) {
-			sendCustomBeacon(data);
-		}
-	};
-
-	// Click event listener only listens to primary left clicks.
-	addEventListener('click', clickTracker);
-	// Auxclick event listener listens to middle clicks and right clicks.
-	addEventListener('auxclick', clickTracker);
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.

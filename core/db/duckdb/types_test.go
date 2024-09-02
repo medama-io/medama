@@ -7,9 +7,9 @@ import (
 )
 
 func TestGetWebsiteBrowsersSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -23,9 +23,9 @@ func TestGetWebsiteBrowsersSummary(t *testing.T) {
 }
 
 func TestGetWebsiteBrowsers(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -39,9 +39,9 @@ func TestGetWebsiteBrowsers(t *testing.T) {
 }
 
 func TestGetWebsiteOSSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -55,9 +55,9 @@ func TestGetWebsiteOSSummary(t *testing.T) {
 }
 
 func TestGetWebsiteOS(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -71,9 +71,9 @@ func TestGetWebsiteOS(t *testing.T) {
 }
 
 func TestGetWebsiteDevicesSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -87,9 +87,9 @@ func TestGetWebsiteDevicesSummary(t *testing.T) {
 }
 
 func TestGetWebsiteDevices(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {

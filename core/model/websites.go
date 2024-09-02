@@ -1,11 +1,11 @@
 package model
 
 type Website struct {
-	UserID   string `json:"user_id" db:"user_id"`
-	Hostname string `json:"hostname" db:"hostname"`
+	UserID   string `db:"user_id"  json:"user_id"`
+	Hostname string `db:"hostname" json:"hostname"`
 
-	DateCreated int64 `json:"date_created" db:"date_created"`
-	DateUpdated int64 `json:"date_updated" db:"date_updated"`
+	DateCreated int64 `db:"date_created" json:"date_created"`
+	DateUpdated int64 `db:"date_updated" json:"date_updated"`
 }
 
 // NewWebsite returns a new instance of Website with the given values.

@@ -1269,7 +1269,9 @@ func (s UserSettingsScriptTypeItem) Validate() error {
 	switch s {
 	case "default":
 		return nil
-	case "tagged-events":
+	case "click-events":
+		return nil
+	case "page-events":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)

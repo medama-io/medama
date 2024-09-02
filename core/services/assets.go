@@ -113,32 +113,30 @@ func (h *SPAHandler) serveFile(w http.ResponseWriter, r *http.Request, filePath 
 func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	uPath := path.Clean(r.URL.Path)
 
-	// Check if the request is for script.js or any file in the /scripts/ directory
-	if uPath == "/script.js" || strings.HasPrefix(uPath, "/scripts/") {
-		var scriptFile string
-		if uPath == "/script.js" {
-			if h.runtimeConfig.ScriptType.TaggedEvent {
-				scriptFile = "/scripts/tagged-events.js"
-			} else {
-				scriptFile = "/scripts/default.js"
-			}
-		} else {
-			scriptFile = uPath
-		}
-
-		// Update the request URL to match the actual file being served
-		r.URL.Path = scriptFile
-		h.serveFile(w, r, scriptFile)
+	// Check if the request is for script.js
+	if uPath == "/script.js" {
+		// Update the request URL to match the actual file being served.
+		r.URL.Path = h.runtimeConfig.ScriptFileName
+		h.serveFile(w, r, h.runtimeConfig.ScriptFileName)
 		return
 	}
 
-	// Check if the file exists in our precomputed ETags
+	// The path can also check for a file in the /scripts/ directory.
+	// This isn't typically used for normally serving files.
+	if strings.HasPrefix(uPath, "/scripts/") {
+		// Update the request URL to match the actual file being served.
+		r.URL.Path = uPath
+		h.serveFile(w, r, uPath)
+		return
+	}
+
+	// Check if the file exists in our precomputed ETags.
 	if _, exists := h.fileETags[uPath]; exists {
 		h.serveFile(w, r, uPath)
 		return
 	}
 
-	// Serve index.html for all other routes that are not /api
+	// Serve index.html for all other routes that are not /api.
 	h.serveIndexHTML(w, r)
 }
 

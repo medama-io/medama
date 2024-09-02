@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"slices"
 	"strings"
 
 	"github.com/go-faster/errors"
@@ -15,18 +16,11 @@ import (
 	"github.com/medama-io/medama/util/logger"
 )
 
-type ScriptType struct {
-	// Default script that collects page view data.
-	Default bool
-	// Script that collects page view data and custom event properties.
-	TaggedEvent bool
-}
-
 // This is a runtime config that is read from user settings in the database.
 type RuntimeConfig struct {
 	// Tracker settings.
 	// Choose what features of script to serve from /script.js.
-	ScriptType ScriptType
+	ScriptFileName string
 }
 
 type Handler struct {
@@ -74,7 +68,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 	}
 	hostnameCache.AddAll(hostnames)
 
-	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite, duckdb)
+	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite)
 	if err != nil {
 		return nil, errors.Wrap(err, "services init")
 	}
@@ -88,20 +82,20 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 		timezoneMap:    &tzMap,
 		codeCountryMap: &codeCountryMap,
 		hostnames:      &hostnameCache,
-		RuntimeConfig:  runtimeConfig,
+		RuntimeConfig:  &runtimeConfig,
 	}, nil
 }
 
 // NewRuntimeConfig creates a new runtime config.
-func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, analytics *duckdb.Client) (*RuntimeConfig, error) {
+func NewRuntimeConfig(ctx context.Context, user *sqlite.Client) (RuntimeConfig, error) {
 	// Load the script type from the database.
 	settings, err := user.GetSettings(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "runtime config")
+		return RuntimeConfig{}, errors.Wrap(err, "runtime config")
 	}
 
-	return &RuntimeConfig{
-		ScriptType: convertScriptType(settings.ScriptType),
+	return RuntimeConfig{
+		ScriptFileName: convertScriptType(settings.ScriptType),
 	}, nil
 }
 
@@ -111,7 +105,7 @@ func (r *RuntimeConfig) UpdateConfig(ctx context.Context, meta *sqlite.Client, s
 		if err != nil {
 			return errors.Wrap(err, "script type update config")
 		}
-		r.ScriptType = convertScriptType(settings.ScriptType)
+		r.ScriptFileName = convertScriptType(settings.ScriptType)
 
 		log := logger.Get()
 		log.Warn().Str("script_type", settings.ScriptType).Msg("updated script type")
@@ -120,19 +114,31 @@ func (r *RuntimeConfig) UpdateConfig(ctx context.Context, meta *sqlite.Client, s
 	return nil
 }
 
-// Convert array of script type features split by comma to a ScriptType struct.
-func convertScriptType(scriptType string) ScriptType {
+// Convert array of script type features split by comma to a script file name.
+func convertScriptType(scriptType string) string {
 	features := strings.Split(scriptType, ",")
 
-	types := ScriptType{}
+	// Hot path for basic script.
+	if scriptType == "default" || len(features) == 0 {
+		return "/scripts/default.js"
+	}
+
+	filteredFeatures := make([]string, 0, len(features))
+
+	// Filter out the default feature.
 	for _, feature := range features {
-		switch feature {
-		case "default":
-			types.Default = true
-		case "tagged-events":
-			types.TaggedEvent = true
+		if feature != "default" {
+			filteredFeatures = append(filteredFeatures, feature)
 		}
 	}
 
-	return types
+	// Alphabetically sort the features as script files are named alphabetically.
+	slices.Sort(filteredFeatures)
+
+	var sb strings.Builder
+	sb.WriteString("/scripts/")
+	sb.WriteString(strings.Join(filteredFeatures, "."))
+	sb.WriteString(".js")
+
+	return sb.String()
 }

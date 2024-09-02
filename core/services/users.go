@@ -14,14 +14,14 @@ import (
 	"github.com/shirou/gopsutil/v4/mem"
 )
 
-func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.GetUserRes, error) {
+func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.GetUserRes, error) {
 	// Get user id from request context and check if user exists
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
-	user, err := h.db.GetUser(ctx, userId)
+	user, err := h.db.GetUser(ctx, userID)
 	if err != nil {
 		log := logger.Get().With().Err(err).Logger()
 
@@ -51,7 +51,7 @@ func (h *Handler) GetUser(ctx context.Context, params api.GetUserParams) (api.Ge
 	}, nil
 }
 
-func (h *Handler) GetUserUsage(ctx context.Context, params api.GetUserUsageParams) (api.GetUserUsageRes, error) {
+func (h *Handler) GetUserUsage(ctx context.Context, _params api.GetUserUsageParams) (api.GetUserUsageRes, error) {
 	// CPU statistics.
 	cpuCores, err := cpu.CountsWithContext(ctx, false)
 	if err != nil {
@@ -110,7 +110,7 @@ func safeConvertUint64ToInt64(value uint64) int64 {
 	return math.MaxInt64 // or another sentinel value or error handling
 }
 
-func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.PatchUserParams) (api.PatchUserRes, error) {
+func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api.PatchUserParams) (api.PatchUserRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("patch user rejected in demo mode")
@@ -118,12 +118,12 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 	}
 
 	// Get user id from request context and check if user exists
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
-	user, err := h.db.GetUser(ctx, userId)
+	user, err := h.db.GetUser(ctx, userID)
 	if err != nil {
 		log := log.With().Err(err).Logger()
 
@@ -221,7 +221,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, params api.
 	}, nil
 }
 
-func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (api.DeleteUserRes, error) {
+func (h *Handler) DeleteUser(ctx context.Context, _params api.DeleteUserParams) (api.DeleteUserRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("delete user rejected in demo mode")
@@ -229,12 +229,12 @@ func (h *Handler) DeleteUser(ctx context.Context, params api.DeleteUserParams) (
 	}
 
 	// Get user id from request context and check if user exists
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
-	user, err := h.db.GetUser(ctx, userId)
+	user, err := h.db.GetUser(ctx, userID)
 	if err != nil {
 		log = log.With().Err(err).Logger()
 

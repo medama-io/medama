@@ -7,9 +7,9 @@ import (
 )
 
 func TestGetWebsiteUTMSourcesSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -23,9 +23,9 @@ func TestGetWebsiteUTMSourcesSummary(t *testing.T) {
 }
 
 func TestGetWebsiteUTMSources(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -39,9 +39,9 @@ func TestGetWebsiteUTMSources(t *testing.T) {
 }
 
 func TestGetWebsiteUTMMediumsSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -55,9 +55,9 @@ func TestGetWebsiteUTMMediumsSummary(t *testing.T) {
 }
 
 func TestGetWebsiteUTMMediums(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -71,9 +71,9 @@ func TestGetWebsiteUTMMediums(t *testing.T) {
 }
 
 func TestGetWebsiteUTMCampaignsSummary(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -87,9 +87,9 @@ func TestGetWebsiteUTMCampaignsSummary(t *testing.T) {
 }
 
 func TestGetWebsiteUTMCampaigns(t *testing.T) {
-	_, require, ctx, client := UseDatabaseFixture(t, SIMPLE_FIXTURE)
+	_, require, ctx, client := UseDatabaseFixture(t, SimpleFixture)
 
-	testCases := getBaseTestCases(MEDIUM_HOSTNAME)
+	testCases := getBaseTestCases(MediumHostname)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {

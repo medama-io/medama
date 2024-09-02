@@ -9,6 +9,7 @@
  * @property {boolean} p If the user is unique or not.
  * @property {boolean} q If this is the first time the user has visited this specific page.
  * @property {string} t Timezone of the user.
+ * @property {Object=} d Event custom properties.
  */
 
 /**
@@ -131,12 +132,12 @@
 		/**
 		 * @this {History}
 		 * @param {*} _state - The state object.
-		 * @param {string} _unused - The title (unused).
+		 * @param {string} _title - The title.
 		 * @param {(string | URL)=} url - The URL to navigate to.
 		 * @returns {void}
 		 */
 	) =>
-		function (_state, _unused, url) {
+		function (_state, _title, url) {
 			if (url && location.pathname !== new URL(url, location.href).pathname) {
 				sendUnloadBeacon();
 				// If the event is a history change, then we need to reset the id and timers
@@ -148,6 +149,7 @@
 				original.apply(this, arguments);
 			}
 		};
+
 
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
@@ -250,7 +252,6 @@
 		// Ensure unload is only called once.
 		isUnloadCalled = true;
 	};
-
 
 
 	// Prefer pagehide if available because it's more reliable than unload.

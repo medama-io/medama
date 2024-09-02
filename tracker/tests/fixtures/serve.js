@@ -26,7 +26,7 @@ Bun.serve({
 		if (url.pathname === '/script.js') {
 			console.log('Serving:', url.pathname);
 			return new Response(
-				Bun.file(__dirname + '/../../dist/tagged-events.min.js'),
+				Bun.file(__dirname + '/../../dist/click-events.page-events.min.js'),
 			);
 		}
 

@@ -1400,6 +1400,14 @@ components:
         t:
           type: string
           description: Timezone of the user.
+        d:
+          type: object
+          description: Custom event properties.
+          additionalProperties:
+            oneOf:
+              - type: string
+              - type: integer
+              - type: boolean
       required:
         - b
         - u
@@ -1502,7 +1510,10 @@ components:
           type: array
           items:
             type: string
-            enum: [default, tagged-events]
+            enum:
+              - default
+              - click-events
+              - page-events
           uniqueItems: true
     UserGet:
       type: object

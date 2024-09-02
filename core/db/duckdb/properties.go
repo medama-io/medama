@@ -70,7 +70,6 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

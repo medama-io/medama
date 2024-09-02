@@ -18,12 +18,12 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 	}
 
 	// Check if user owns website
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
-	websites, err := h.db.ListWebsites(ctx, userId)
+	websites, err := h.db.ListWebsites(ctx, userID)
 	if err != nil {
 		if errors.Is(err, model.ErrWebsiteNotFound) {
 			return ErrNotFound(err), nil
@@ -72,12 +72,12 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 
 func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams) (api.GetWebsitesRes, error) {
 	// Get user ID from context
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
 
-	websites, err := h.db.ListWebsites(ctx, userId)
+	websites, err := h.db.ListWebsites(ctx, userID)
 	if err != nil {
 		if errors.Is(err, model.ErrWebsiteNotFound) {
 			return ErrNotFound(err), nil
@@ -121,7 +121,7 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 
 func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDParams) (api.GetWebsitesIDRes, error) {
 	// Get user ID from context
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
@@ -135,7 +135,7 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 		return nil, errors.Wrap(err, "services")
 	}
 
-	if website.UserID != userId {
+	if website.UserID != userID {
 		return ErrUnauthorised(model.ErrWebsiteNotFound), nil
 	}
 
@@ -152,7 +152,7 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 	}
 
 	// Get user ID from context
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
@@ -166,7 +166,7 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 		return nil, errors.Wrap(err, "services")
 	}
 
-	if website.UserID != userId {
+	if website.UserID != userID {
 		return ErrUnauthorised(model.ErrWebsiteNotFound), nil
 	}
 
@@ -207,7 +207,7 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 	}
 
 	// Get user ID from context
-	userId, ok := ctx.Value(model.ContextKeyUserID).(string)
+	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
 		return ErrUnauthorised(model.ErrSessionNotFound), nil
 	}
@@ -215,7 +215,7 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 	// Create website
 	dateCreated := time.Now().Unix()
 	websiteCreate := model.NewWebsite(
-		userId,
+		userID,
 		req.Hostname,
 		dateCreated,
 		dateCreated,

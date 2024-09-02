@@ -72,7 +72,7 @@ func (a *AuthService) ComparePasswords(suppliedPassword string, storedHash strin
 }
 
 // EncryptSession encrypts a session token and stores it in the cache.
-func (a *AuthService) EncryptSession(ctx context.Context, sessionId string, duration time.Duration) (string, error) {
+func (a *AuthService) EncryptSession(_ context.Context, sessionID string, _duration time.Duration) (string, error) {
 	// Create a new AES cipher block.
 	block, err := aes.NewCipher(a.aes32Key)
 	if err != nil {
@@ -93,7 +93,7 @@ func (a *AuthService) EncryptSession(ctx context.Context, sessionId string, dura
 	}
 
 	// Authenticate cookie name and value with {name:value} format.
-	plaintext := fmt.Sprintf("%s:%s", model.SessionCookieName, sessionId)
+	plaintext := fmt.Sprintf("%s:%s", model.SessionCookieName, sessionID)
 
 	// Encrypt with nonce for variable ciphertext.
 	encryptedValue := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
@@ -103,7 +103,7 @@ func (a *AuthService) EncryptSession(ctx context.Context, sessionId string, dura
 }
 
 // DecryptSession decrypts a session cookie to return the session token.
-func (a *AuthService) DecryptSession(ctx context.Context, session string) (string, error) {
+func (a *AuthService) DecryptSession(_ context.Context, session string) (string, error) {
 	// Create a new AES cipher block.
 	block, err := aes.NewCipher(a.aes32Key)
 	if err != nil {
@@ -147,13 +147,13 @@ func (a *AuthService) DecryptSession(ctx context.Context, session string) (strin
 
 // CreateSession creates a new session token and stores it in the cache.
 // This returns an encrypted session token as a cookie.
-func (a *AuthService) CreateSession(ctx context.Context, userId string) (*http.Cookie, error) {
+func (a *AuthService) CreateSession(ctx context.Context, userID string) (*http.Cookie, error) {
 	// Generate session token.
-	sessionIdType, err := typeid.WithPrefix("sess")
+	sessionIDType, err := typeid.WithPrefix("sess")
 	if err != nil {
 		return nil, errors.Wrap(err, "auth: session")
 	}
-	sessionId := sessionIdType.String()
+	sessionID := sessionIDType.String()
 
 	// Create session cookie.
 	cookie := &http.Cookie{
@@ -165,14 +165,14 @@ func (a *AuthService) CreateSession(ctx context.Context, userId string) (*http.C
 	}
 
 	// Encrypt session token.
-	encryptedSession, err := a.EncryptSession(ctx, sessionId, model.SessionDuration)
+	encryptedSession, err := a.EncryptSession(ctx, sessionID, model.SessionDuration)
 
 	// Update cookie value with encrypted base64 enoded session token.
 	encodedSession := base64.URLEncoding.EncodeToString([]byte(encryptedSession))
 	cookie.Value = encodedSession
 
 	// Set session token in cache.
-	a.Cache.Set(sessionId, userId, model.SessionDuration)
+	a.Cache.Set(sessionID, userID, model.SessionDuration)
 
 	return cookie, err
 }
@@ -187,21 +187,21 @@ func (a *AuthService) ReadSession(ctx context.Context, session string) (string, 
 	}
 
 	// Decrypt session token.
-	sessionId, err := a.DecryptSession(ctx, string(encryptedSession))
+	sessionID, err := a.DecryptSession(ctx, string(encryptedSession))
 	if err != nil {
 		return "", errors.Wrap(err, "session")
 	}
 
 	// Check if session exists.
-	userId, err := a.Cache.Get(ctx, sessionId)
+	userID, err := a.Cache.Get(ctx, sessionID)
 	if err != nil {
 		return "", model.ErrSessionNotFound
 	}
 
-	return userId.(string), nil
+	return userID.(string), nil
 }
 
 // RevokeSession deletes a session token from the cache.
-func (a *AuthService) RevokeSession(ctx context.Context, sessionId string) {
-	a.Cache.Delete(sessionId)
+func (a *AuthService) RevokeSession(_ctx context.Context, sessionID string) {
+	a.Cache.Delete(sessionID)
 }

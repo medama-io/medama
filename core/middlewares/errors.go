@@ -13,7 +13,7 @@ import (
 )
 
 // ErrorHandler is a middleware that handles any unhandled errors by ogen.
-func ErrorHandler(ctx context.Context, w http.ResponseWriter, req *http.Request, err error) {
+func ErrorHandler(_ctx context.Context, w http.ResponseWriter, req *http.Request, err error) {
 	code := ogenerrors.ErrorCode(err)
 	errMessage := strings.ReplaceAll(err.Error(), "\"", "'")
 

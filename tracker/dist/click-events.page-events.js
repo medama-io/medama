@@ -150,7 +150,6 @@
 			}
 		};
 
-	// @ifdef DATA_ATTRIBUTES
 	/**
 	 * Extracts key-value pairs from a given data attribute.
 	 * @param {Element} target The target element from which to extract data.
@@ -167,7 +166,6 @@
 				if (k && v) acc[k] = v;
 				return acc;
 			}, {});
-	// @endif
 
 	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
@@ -228,7 +226,6 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
-						// @ifdef PAGE_EVENTS
 						// Helper function to extract data attributes and merge them.
 						"d":  [...document.querySelectorAll('[data-m\\:load]')].reduce(
 								(acc, elem) => ({
@@ -237,7 +234,6 @@
 								}),
 								{},
 							),
-						// @endif
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -281,7 +277,6 @@
 		isUnloadCalled = true;
 	};
 
-	// @ifdef CLICK_EVENTS
 	/**
 	 * Click event listener to track custom events.
 	 * @param {MouseEvent} event The click event.
@@ -324,7 +319,6 @@
 		// Auxclick event listener listens to middle clicks and right clicks.
 		elem.addEventListener('auxclick', clickTracker);
 	}
-	// @endif
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.
