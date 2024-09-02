@@ -39,7 +39,9 @@ const loadUnloadTests = (name) => {
 						p: true,
 						q: true,
 						d: {
-							test1: 'value1',
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
 						},
 					},
 				},
@@ -87,7 +89,9 @@ const loadUnloadTests = (name) => {
 						p: false, // Returning visitor
 						q: false, // Not a new page view
 						d: {
-							test1: 'value1',
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
 						},
 					},
 				},
@@ -132,7 +136,9 @@ const loadUnloadTests = (name) => {
 						p: false, // Returning visitor
 						q: true, // New page view
 						d: {
-							test1: 'value1',
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
 						},
 					},
 				},
@@ -179,7 +185,9 @@ const loadUnloadTests = (name) => {
 						p: false, // Returning visitor
 						q: false, // Returning page view
 						d: {
-							test1: 'value1',
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
 						},
 					},
 					ignoreBrowsers: ['webkit'],
@@ -199,7 +207,9 @@ const loadUnloadTests = (name) => {
 						p: name == 'simple' ? true : false, // Returning visitor
 						q: false, // Returning page view
 						d: {
-							test1: 'value1',
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
 						},
 					},
 					ignoreBrowsers: ['firefox', 'chrome', 'msedge', 'chromium'],
@@ -253,7 +263,9 @@ const loadUnloadTests = (name) => {
 						p: false, // Returning visitor
 						q: false, // Returning page view
 						d: {
-							test1: 'value1',
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
 						},
 					},
 					ignoreBrowsers: ['webkit'],
@@ -273,7 +285,9 @@ const loadUnloadTests = (name) => {
 						p: name == 'simple' ? true : false, // Returning visitor
 						q: false, // Returning page view
 						d: {
-							test1: 'value1',
+							load: 'test',
+							load2: 'test2',
+							load3: 'test2',
 						},
 					},
 					ignoreBrowsers: ['firefox', 'chrome', 'msedge', 'chromium'],
