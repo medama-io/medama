@@ -99,6 +99,7 @@
 .drawer {
 	margin-top: 72px;
 	height: 100%;
+	color: var(--text-light);
 	background-color: var(--bg-dark);
 
 	border-top: 1px solid var(--border-dark);
