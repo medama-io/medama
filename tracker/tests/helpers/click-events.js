@@ -18,8 +18,10 @@ const clickEventTests = (name) => {
 					postData: {
 						e: 'custom',
 						d: {
+							action: 'button',
 							button: 'left',
 						},
+						g: 'localhost',
 					},
 				},
 				{
@@ -29,8 +31,10 @@ const clickEventTests = (name) => {
 					postData: {
 						e: 'custom',
 						d: {
+							action: 'button',
 							button: 'middle',
 						},
+						g: 'localhost',
 					},
 				},
 			];

@@ -1,6 +1,6 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { pageTests } from './page';
+import { loadUnloadTests } from './load-unload';
 import { clickEventTests } from './click-events';
 
 /**
@@ -208,11 +208,11 @@ const createURL = (name, path, relative = true) =>
  * @param {Tests} name
  */
 const createTests = (name) => {
-	test.describe(name + ' page tests', () => {
-		pageTests(name);
+	test.describe(name + ' load + unload tests', () => {
+		loadUnloadTests(name);
 	});
 
-	test.describe(name + ' tagged event tests', () => {
+	test.describe(name + ' click event tests', () => {
 		clickEventTests(name);
 	});
 };
