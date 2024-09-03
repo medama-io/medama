@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/go-faster/errors"
@@ -24,7 +25,33 @@ const (
 	NoCache = "no-cache"
 	// Unknown is the default value for unknown fields.
 	Unknown = "Unknown"
+
+	// Constants for unique user tracking.
+	Zero = "0"
+	One  = "1"
+
+	// Cache control max-age prefix.
+	maxAgePrefix       = "max-age="
+	int64MaxBufferSize = 20
+	base10             = 10
 )
+
+// readerPool is a pool of strings.Reader to reduce memory allocations.
+var readerPool = sync.Pool{
+	New: func() interface{} {
+		return new(strings.Reader)
+	},
+}
+
+func getReader(s string) *strings.Reader {
+	r := readerPool.Get().(*strings.Reader)
+	r.Reset(s)
+	return r
+}
+
+func putReader(r *strings.Reader) {
+	readerPool.Put(r)
+}
 
 func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
 	// Check if if-modified-since header is set
@@ -35,8 +62,9 @@ func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingPara
 
 	// If it is not set, it is a unique user.
 	if ifModified == "" {
-		// Return body to activate caching.
-		body := strings.NewReader("0")
+		// Return "0" response body to activate caching.
+		body := getReader(Zero)
+		defer putReader(body)
 
 		lastModified := currentDay.Format(http.TimeFormat)
 
@@ -58,31 +86,35 @@ func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingPara
 	// If the last modified time is one day ago, we want to reset the cache
 	// and mark as a unique user.
 	if lastModifiedTime.Before(currentDay) {
-		lastModifiedTime = currentDay
-
-		// Return body to activate caching.
-		body := strings.NewReader("0")
-		lastModified := lastModifiedTime.Format(http.TimeFormat)
+		// Return "0" body to activate caching.
+		body := getReader(Zero)
+		defer putReader(body)
 
 		return &api.GetEventPingOKHeaders{
-			LastModified: lastModified,
+			LastModified: currentDay.Format(http.TimeFormat),
 			CacheControl: NoCache, // Keep no-cache for unique users
 			Response:     api.GetEventPingOK{Data: body},
 		}, nil
 	}
 
 	// Otherwise, this is not a unique user.
-	body := strings.NewReader("1")
+	body := getReader(One)
+	defer putReader(body)
 
 	// Calculate time until lastModifiedTime + OneDay
 	nextResetTime := lastModifiedTime.Add(OneDay)
 	secondsUntilReset := int(time.Until(nextResetTime).Seconds())
-	cacheControl := "max-age=" + strconv.Itoa(secondsUntilReset)
+
+	// Preallocate cache control header with max length and then append the max age.
+	maxLen := len(maxAgePrefix) + int64MaxBufferSize // 20 digits is enough for int64.MaxValue
+	cacheControl := make([]byte, 0, maxLen)
+	cacheControl = append(cacheControl, maxAgePrefix...)
+	cacheControl = strconv.AppendInt(cacheControl, int64(secondsUntilReset), base10)
 
 	// Return not modified if the last modified time is today (not unique user).
 	return &api.GetEventPingOKHeaders{
 		LastModified: ifModified,
-		CacheControl: cacheControl,
+		CacheControl: string(cacheControl),
 		Response: api.GetEventPingOK{
 			Data: body,
 		},
