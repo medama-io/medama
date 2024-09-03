@@ -39,6 +39,7 @@ linters:
     - exhaustruct
     - forcetypeassert
     - godox
+    - gochecknoglobals
     - interfacebloat
     - ireturn
     - lll
