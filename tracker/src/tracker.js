@@ -81,15 +81,10 @@
 	let isUnique = true;
 
 	/**
-	 * A temporary variable to store the start time of the page when it is hidden.
-	 */
-	let hiddenStartTime = 0;
-
-	/**
 	 * The total time the user has had the page hidden.
 	 * It also signifies the start epoch time of the page.
 	 */
-	let hiddenTotalTime = Date.now();
+	let startTime = Date.now();
 
 	/**
 	 * Ensure only the unload beacon is called once.
@@ -117,8 +112,7 @@
 		// However, isFirstVisit will be called on each page load, so we don't need to reset it.
 		isUnique = false;
 		uid = generateUid();
-		hiddenStartTime = 0;
-		hiddenTotalTime = Date.now();
+		startTime = Date.now();
 		isUnloadCalled = false;
 	};
 
@@ -271,7 +265,7 @@
 					({
 						"b": uid,
 						"e": "unload",
-						"m": Date.now() - hiddenTotalTime,
+						"m": Date.now() - startTime,
 					}),
 				),
 			);
@@ -345,19 +339,15 @@
 	addEventListener(
 		'visibilitychange',
 		() => {
-			if (document.visibilityState == 'hidden') {
+			if (document.hidden) {
 				// Page is hidden, record the current time.
-				hiddenStartTime = Date.now();
-			} else {
-				// Page is visible, subtract the hidden time to calculate the total time hidden.
-				hiddenTotalTime += Date.now() - hiddenStartTime;
-				hiddenStartTime = 0;
+				sendUnloadBeacon();
 			}
 		},
 		{ capture: true },
 	);
 
-	pingCache(host + 'event/ping?root').then((response) => {
+	pingCache(host + 'event/ping').then((response) => {
 		// The response is a boolean indicating if the user is unique or not.
 		isUnique = response;
 
