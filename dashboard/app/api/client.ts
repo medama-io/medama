@@ -105,6 +105,20 @@ const client = async (
 		});
 	}
 
+	// Check X-API-Commit header to see if the server commit sha is different from the client commit sha stored in local storage
+	const commit = res.headers.get('x-api-commit');
+	if (commit) {
+		const clientCommit = window.localStorage.getItem('medama-version');
+		// If the client commit is null, it means that the client is running for the first time.
+		if (clientCommit === null) {
+			window.localStorage.setItem('medama-version', commit);
+		} else if (clientCommit !== commit) {
+			window.localStorage.setItem('medama-version', commit);
+			// Hard reload the page to update the client with the latest changes.
+			window.location.reload();
+		}
+	}
+
 	return res;
 };
 

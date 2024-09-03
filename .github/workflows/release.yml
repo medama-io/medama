@@ -26,7 +26,7 @@ jobs:
       - name: Save GitHub tag and commit sha to environment
         run: |
           echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Install ARM64 toolchain
         if: matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64'

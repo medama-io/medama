@@ -49,6 +49,8 @@ paths:
                 type: string
               description: Set the cookie for the session.
               required: true
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -73,6 +75,8 @@ paths:
                 type: string
               description: Destroy the cookie for the session.
               required: true
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
         "500":
@@ -167,6 +171,9 @@ paths:
       responses:
         "200":
           description: User Found
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -199,6 +206,9 @@ paths:
       responses:
         "200":
           description: Success
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -228,6 +238,9 @@ paths:
       responses:
         "204":
           description: Success No Content
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -252,6 +265,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -275,6 +291,9 @@ paths:
       responses:
         "200":
           description: Returns a list of websites.
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -306,6 +325,9 @@ paths:
       responses:
         "201":
           description: Created
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -348,6 +370,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -381,6 +406,9 @@ paths:
       responses:
         "200":
           description: Success
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -409,6 +437,9 @@ paths:
       responses:
         "204":
           description: Success No Content
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
@@ -465,6 +496,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -509,6 +543,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -553,6 +590,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -603,6 +643,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -649,6 +692,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -695,6 +741,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -741,6 +790,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -787,6 +839,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -833,6 +888,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -879,6 +937,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -925,6 +986,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -977,6 +1041,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -1022,6 +1089,9 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            X-API-Commit:
+              $ref: "#/components/headers/X-API-Commit"
           content:
             application/json:
               schema:
@@ -1043,6 +1113,12 @@ components:
       in: cookie
       type: apiKey
       description: Session token for authentication.
+  headers:
+    X-API-Commit:
+      description: A custom header used to identify the commit of the API. This can be used to force reload the client if the API has been updated.
+      schema:
+        type: string
+        example: "97dd2ae"
   parameters:
     # Authentication
     SessionAuth:
@@ -1227,6 +1303,9 @@ components:
   responses:
     BadRequestError:
       description: 400 Bad Request.
+      headers:
+        X-API-Commit:
+          $ref: "#/components/headers/X-API-Commit"
       content:
         application/json:
           schema:
@@ -1249,6 +1328,9 @@ components:
               - error
     UnauthorisedError:
       description: 401 Unauthorised.
+      headers:
+        X-API-Commit:
+          $ref: "#/components/headers/X-API-Commit"
       content:
         application/json:
           schema:
@@ -1271,6 +1353,9 @@ components:
               - error
     ForbiddenError:
       description: 403 Forbidden.
+      headers:
+        X-API-Commit:
+          $ref: "#/components/headers/X-API-Commit"
       content:
         application/json:
           schema:
@@ -1293,6 +1378,9 @@ components:
               - error
     NotFoundError:
       description: 404 Not Found.
+      headers:
+        X-API-Commit:
+          $ref: "#/components/headers/X-API-Commit"
       content:
         application/json:
           schema:
@@ -1316,6 +1404,9 @@ components:
               - error
     ConflictError:
       description: 409 Conflict Found.
+      headers:
+        X-API-Commit:
+          $ref: "#/components/headers/X-API-Commit"
       content:
         application/json:
           schema:
@@ -1338,6 +1429,9 @@ components:
               - error
     InternalServerError:
       description: 500 Unexpected Internal Server Error.
+      headers:
+        X-API-Commit:
+          $ref: "#/components/headers/X-API-Commit"
       content:
         application/json:
           schema:

@@ -30,8 +30,8 @@ type StartCommand struct {
 }
 
 // NewStartCommand creates a new start command.
-func NewStartCommand(useEnv bool) (*StartCommand, error) {
-	serverConfig, err := NewServerConfig(useEnv)
+func NewStartCommand(useEnv bool, version string, commit string) (*StartCommand, error) {
+	serverConfig, err := NewServerConfig(useEnv, version, commit)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create server config")
 	}
@@ -125,7 +125,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}
 
 	// Setup handlers
-	service, err := services.NewService(ctx, auth, sqlite, duckdb)
+	service, err := services.NewService(ctx, auth, sqlite, duckdb, s.Server.Commit)
 	if err != nil {
 		return errors.Wrap(err, "failed to create handlers")
 	}
@@ -158,6 +158,8 @@ func (s *StartCommand) Run(ctx context.Context) error {
 
 	// Apply custom CORS middleware to the mux handler
 	handler := middlewares.CORSAllowedOriginsMiddleware(s.Server.CORSAllowedOrigins)(mux)
+	// X-API-Commit header for client-side cache busting.
+	handler = middlewares.XAPICommitMiddleware(s.Server.Commit)(handler)
 
 	srv := &http.Server{
 		Addr:         ":" + strconv.FormatInt(s.Server.Port, 10),

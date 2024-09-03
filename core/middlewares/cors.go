@@ -17,6 +17,8 @@ func CORSAllowedOriginsMiddleware(allowedOrigins []string) func(http.Handler) ht
 		AllowedOrigins:   allowedOrigins,
 		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE"},
+		// CORS blocks the custom headers by default, so we need to allow them explicitly
+		ExposedHeaders: []string{"x-api-commit"},
 	})
 
 	// Create a default CORS handler

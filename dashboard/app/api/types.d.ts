@@ -901,6 +901,7 @@ export interface components {
         /** @description 400 Bad Request. */
         BadRequestError: {
             headers: {
+                "X-API-Commit": components["headers"]["X-API-Commit"];
                 [name: string]: unknown;
             };
             content: {
@@ -919,6 +920,7 @@ export interface components {
         /** @description 401 Unauthorised. */
         UnauthorisedError: {
             headers: {
+                "X-API-Commit": components["headers"]["X-API-Commit"];
                 [name: string]: unknown;
             };
             content: {
@@ -937,6 +939,7 @@ export interface components {
         /** @description 403 Forbidden. */
         ForbiddenError: {
             headers: {
+                "X-API-Commit": components["headers"]["X-API-Commit"];
                 [name: string]: unknown;
             };
             content: {
@@ -955,6 +958,7 @@ export interface components {
         /** @description 404 Not Found. */
         NotFoundError: {
             headers: {
+                "X-API-Commit": components["headers"]["X-API-Commit"];
                 [name: string]: unknown;
             };
             content: {
@@ -973,6 +977,7 @@ export interface components {
         /** @description 409 Conflict Found. */
         ConflictError: {
             headers: {
+                "X-API-Commit": components["headers"]["X-API-Commit"];
                 [name: string]: unknown;
             };
             content: {
@@ -991,6 +996,7 @@ export interface components {
         /** @description 500 Unexpected Internal Server Error. */
         InternalServerError: {
             headers: {
+                "X-API-Commit": components["headers"]["X-API-Commit"];
                 [name: string]: unknown;
             };
             content: {
@@ -1048,7 +1054,10 @@ export interface components {
         Offset: number;
     };
     requestBodies: never;
-    headers: never;
+    headers: {
+        /** @description A custom header used to identify the commit of the API. This can be used to force reload the client if the API has been updated. */
+        "X-API-Commit": string;
+    };
     pathItems: never;
 }
 export type $defs = Record<string, never>;
@@ -1072,6 +1081,7 @@ export interface operations {
                 headers: {
                     /** @description Set the cookie for the session. */
                     "Set-Cookie": string;
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -1098,6 +1108,7 @@ export interface operations {
                 headers: {
                     /** @description Destroy the cookie for the session. */
                     "Set-Cookie": string;
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -1184,6 +1195,7 @@ export interface operations {
             /** @description User Found */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1211,6 +1223,7 @@ export interface operations {
             /** @description Success No Content */
             204: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -1242,6 +1255,7 @@ export interface operations {
             /** @description Success */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1271,6 +1285,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1299,6 +1314,7 @@ export interface operations {
             /** @description Returns a list of websites. */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1327,6 +1343,7 @@ export interface operations {
             /** @description Created */
             201: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1358,6 +1375,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1388,6 +1406,7 @@ export interface operations {
             /** @description Success No Content */
             204: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -1422,6 +1441,7 @@ export interface operations {
             /** @description Success */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1486,6 +1506,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1551,6 +1572,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1616,6 +1638,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1683,6 +1706,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1749,6 +1773,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1815,6 +1840,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1881,6 +1907,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -1947,6 +1974,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -2013,6 +2041,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -2079,6 +2108,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -2145,6 +2175,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -2213,6 +2244,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -2277,6 +2309,7 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    "X-API-Commit": components["headers"]["X-API-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
