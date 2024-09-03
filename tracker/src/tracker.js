@@ -347,7 +347,7 @@
 		{ capture: true },
 	);
 
-	pingCache(host + 'event/ping?root').then((response) => {
+	pingCache(host + 'event/ping').then((response) => {
 		// The response is a boolean indicating if the user is unique or not.
 		isUnique = response;
 
