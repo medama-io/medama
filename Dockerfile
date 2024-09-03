@@ -2,6 +2,12 @@
 
 FROM jdxcode/mise:latest AS build
 
+ARG VERSION=development
+ARG COMMIT=development
+
+ENV VERSION=${VERSION}
+ENV COMMIT_SHA=${COMMIT}
+
 WORKDIR /app
 
 # Install unzip dependency for bun
@@ -30,7 +36,7 @@ RUN bun install --frozen-lockfile
 
 # Copy the rest of the source code
 COPY . .
-RUN --mount=type=cache,target=${GOCACHE} ~/bin/task core:release
+RUN --mount=type=cache,target=${GOCACHE} ~/bin/task core:release:docker
 
 # Build the final image
 FROM gcr.io/distroless/cc-debian12

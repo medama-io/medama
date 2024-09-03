@@ -88,6 +88,16 @@ tasks:
     env:
       CGO_ENABLED: "1"
 
+  # Centralise Docker release command into here for simpler maintenance instead of specifying
+  # within Dockerfile
+  release:docker:
+    cmds:
+      - go build -o ./bin/main -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - chmod +x ./bin/main
+      - echo "docker build done"
+    env:
+      CGO_ENABLED: "1"
+
   release:linux:amd64:
     cmds:
       - go build -o ./bin/medama_linux_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
