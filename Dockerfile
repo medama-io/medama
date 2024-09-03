@@ -3,10 +3,10 @@
 FROM jdxcode/mise:latest AS build
 
 ARG VERSION=development
-ARG COMMIT=development
+ARG COMMIT_SHA=development
 
 ENV VERSION=${VERSION}
-ENV COMMIT_SHA=${COMMIT}
+ENV COMMIT_SHA=${COMMIT_SHA}
 
 WORKDIR /app
 
@@ -33,6 +33,9 @@ RUN --mount=type=cache,target=${GOCACHE} \
 	cd core && go mod download && cd ..
 
 RUN bun install --frozen-lockfile
+
+# Verify environment variables
+RUN echo "VERSION=${VERSION}" && echo "COMMIT_SHA=${COMMIT_SHA}"
 
 # Copy the rest of the source code
 COPY . .
