@@ -58,7 +58,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		case 'delete': {
 			const deleteWebsite = await websiteDelete({
 				pathKey: getString(body, 'hostname'),
-				noThrow: true,
+				shouldThrow: false,
 			});
 
 			res = deleteWebsite.res;

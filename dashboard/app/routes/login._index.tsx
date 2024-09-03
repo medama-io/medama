@@ -30,7 +30,7 @@ export const clientLoader = async () => {
 				username: 'admin',
 				password: 'CHANGE_ME_ON_FIRST_LOGIN',
 			},
-			noThrow: true,
+			shouldThrow: false,
 		});
 
 		if (!res.ok) {
@@ -46,7 +46,7 @@ export const clientLoader = async () => {
 	// If the user is already logged in, redirect them to the dashboard.
 	if (hasSession()) {
 		// Check if session hasn't been revoked
-		await userGet({ noRedirect: true });
+		await userGet({ shouldRedirect: false });
 		return redirect('/');
 	}
 
@@ -74,7 +74,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			username,
 			password,
 		},
-		noThrow: true,
+		shouldThrow: false,
 	});
 
 	if (!res.ok) {
@@ -97,6 +97,13 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 
 	// Set logged in cookie
 	document.cookie = LOGGED_IN_COOKIE;
+
+	// If user has redirect query param, redirect them to that URL
+	const url = new URL(request.url);
+	const redirectPathname = url.searchParams.get('redirect');
+	if (redirectPathname) {
+		return redirect(redirectPathname);
+	}
 
 	return redirect('/');
 };

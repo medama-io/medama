@@ -8,7 +8,6 @@ import {
 } from '@remix-run/react';
 import { useMemo } from 'react';
 
-import { userLoggedIn } from '@/api/user';
 import { websiteList } from '@/api/websites';
 import { Chart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
@@ -25,8 +24,6 @@ export const clientLoader = async ({
 	request,
 	params,
 }: ClientLoaderFunctionArgs) => {
-	await userLoggedIn();
-
 	// Check chart param for the chart data to display
 	const searchParams = new URL(request.url).searchParams;
 	const chart = searchParams.get('chart[stat]');
