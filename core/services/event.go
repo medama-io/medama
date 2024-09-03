@@ -121,8 +121,21 @@ func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingPara
 	}, nil
 }
 
+const (
+	// IsBotThreshold is the threshold of unknown metrics for determining if a
+	// user agent is a bot.
+	IsBotThreshold = 2
+)
+
 func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params api.PostEventHitParams) (api.PostEventHitRes, error) {
 	log := logger.Get()
+
+	// If this counter exceeds 2, we want to return early as the event is likely
+	// a bot.
+	//
+	// Ensure all functions that increment this counter occur at the beginning
+	// rather than the end of the function.
+	unknownCounter := 0
 
 	switch req.Type {
 	case api.EventLoadEventHit:
@@ -161,11 +174,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 		uaBrowser := ua.Browser
 		if uaBrowser == "" {
 			uaBrowser = Unknown
+			unknownCounter++
 		}
 
 		uaOS := ua.OS
 		if uaOS == "" {
 			uaOS = Unknown
+			unknownCounter++
 		}
 
 		uaDevice := Unknown
@@ -178,15 +193,54 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			uaDevice = "Tablet"
 		case ua.TV:
 			uaDevice = "TV"
+		default:
+			unknownCounter++
 		}
 
-		if ua.Browser == "" || ua.OS == "" || uaDevice == Unknown {
+		if uaBrowser == Unknown || uaOS == Unknown || uaDevice == Unknown {
 			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: unknown user agent")
+			if unknownCounter >= IsBotThreshold {
+				return &api.PostEventHitNoContent{}, nil
+			}
 		}
 
-		if ua.Browser == "" && ua.OS == "" && uaDevice == Unknown {
-			// Do not log the event if every element of the user agent is unknown.
-			return &api.PostEventHitNoContent{}, nil
+		// Get country code from user's timezone. This is used as a best effort
+		// to determine the country of the user's location without compromising
+		// their privacy using IP addresses.
+		countryName, err := h.timezoneCountryMap.GetCountry(req.EventLoad.T.Value)
+		if err != nil {
+			log.Debug().Err(err).Msg("hit: failed to get country name from timezone")
+			countryName = Unknown
+		}
+
+		if countryName == "" {
+			unknownCounter++
+			if unknownCounter >= IsBotThreshold {
+				return &api.PostEventHitNoContent{}, nil
+			}
+		}
+
+		// Get users language from Accept-Language header
+		languages, _, err := language.ParseAcceptLanguage(reqBody.Header.Get("Accept-Language"))
+		if err != nil {
+			log.Debug().Err(err).Msg("hit: failed to parse accept language header")
+		}
+
+		// Get the first language from the list which is the most preferred and convert it to a language name
+		languageBase := Unknown
+		languageDialect := Unknown
+		if len(languages) > 0 {
+			// Narrow down the language to the base language (e.g. en-US -> en)
+			base, _ := languages[0].Base()
+			languageBase = display.English.Tags().Name(language.Make(base.String()))
+			languageDialect = display.English.Tags().Name(languages[0])
+		}
+
+		if languageBase == Unknown {
+			unknownCounter++
+			if unknownCounter >= IsBotThreshold {
+				return &api.PostEventHitNoContent{}, nil
+			}
 		}
 
 		// Parse referrer URL and remove any query parameters or self-referencing
@@ -211,41 +265,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 		if referrerHost != "" {
 			// Get the referrer group from the referrer URL.
 			referrerGroup = h.referrer.Parse(referrerHost)
-		}
-
-		// Get country code from user's timezone. This is used as a best effort
-		// to determine the country of the user's location without compromising
-		// their privacy using IP addresses.
-		var countryName string
-		countryCode, err := h.timezoneMap.GetCode(req.EventLoad.T.Value)
-		if err != nil {
-			log.Debug().Err(err).Msg("hit: failed to get country code from timezone")
-			countryCode = ""
-			countryName = Unknown
-		}
-
-		if countryCode != "" {
-			countryName, err = h.codeCountryMap.GetCountry(countryCode)
-			if err != nil {
-				log.Debug().Err(err).Msg("hit: failed to get country name from country code")
-				countryName = Unknown
-			}
-		}
-
-		// Get users language from Accept-Language header
-		languages, _, err := language.ParseAcceptLanguage(reqBody.Header.Get("Accept-Language"))
-		if err != nil {
-			log.Debug().Err(err).Msg("hit: failed to parse accept language header")
-		}
-
-		// Get the first language from the list which is the most preferred and convert it to a language name
-		languageBase := Unknown
-		languageDialect := Unknown
-		if len(languages) > 0 {
-			// Narrow down the language to the base language (e.g. en-US -> en)
-			base, _ := languages[0].Base()
-			languageBase = display.English.Tags().Name(language.Make(base.String()))
-			languageDialect = display.English.Tags().Name(languages[0])
 		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
