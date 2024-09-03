@@ -74,7 +74,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 						) as components['schemas']['UserGet']['settings']['script_type'],
 					},
 				},
-				noThrow: true,
+				shouldThrow: false,
 			});
 			res = update.res;
 			break;

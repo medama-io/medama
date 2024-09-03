@@ -44,8 +44,8 @@ export type ClientOptions<
 	body: Body extends ComponentSchema ? components['schemas'][Body] : undefined;
 	query: Record<string, string | number | boolean | undefined>;
 	method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
-	noRedirect: boolean;
-	noThrow: boolean;
+	shouldRedirect: boolean;
+	shouldThrow: boolean;
 	pathKey: string;
 }>;
 
@@ -54,8 +54,8 @@ const client = async (
 	{
 		body,
 		method = 'GET',
-		noRedirect,
-		noThrow = false,
+		shouldRedirect = true,
+		shouldThrow = true,
 		pathKey,
 		query,
 	}: ClientOptions,
@@ -88,15 +88,15 @@ const client = async (
 		...(body !== undefined && { body: JSON.stringify(body) }),
 	});
 
-	if (!res.ok && !noThrow) {
+	if (!res.ok && shouldThrow) {
 		// If the user is not logged in, redirect to the login page
-		if (res.status === 401 && !noRedirect) {
-			throw expireSession(noRedirect);
+		if (res.status === 401 && shouldRedirect) {
+			throw expireSession(shouldRedirect);
 		}
 
 		// If it is 401 and noRedirect is true, do not throw anything but expire the invalid session
-		if (res.status === 401 && noRedirect) {
-			expireSession(noRedirect);
+		if (res.status === 401 && !shouldRedirect) {
+			expireSession(!shouldRedirect);
 			return res;
 		}
 

@@ -15,7 +15,6 @@ import * as v from 'valibot';
 import isFQDN from 'validator/lib/isFQDN';
 
 import type { components } from '@/api/types';
-import { userLoggedIn } from '@/api/user';
 import { websiteCreate, websiteList } from '@/api/websites';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/Input';
@@ -36,8 +35,6 @@ export const meta: MetaFunction = () => {
 };
 
 export const clientLoader = async () => {
-	await userLoggedIn();
-
 	const { data, res } = await websiteList({ query: { summary: true } });
 
 	if (!res.ok || !data) {

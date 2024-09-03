@@ -15,9 +15,20 @@ const hasSession = () =>
 		.split(';')
 		.some((c) => c.trim().startsWith(`${LOGGED_IN_NAME}=`));
 
-const expireSession = (noRedirect?: boolean) => {
+const expireSession = (shouldRedirect = true) => {
+	// Expire the logged-in cookie
 	document.cookie = EXPIRE_LOGGED_IN;
-	if (!noRedirect) redirect('/login');
+
+	// Check if we should redirect the user to the login page
+	// and whether to include the current path as a redirect parameter
+	if (shouldRedirect) {
+		const currentPath = window.location.pathname;
+		if (currentPath !== '/' && currentPath !== '/login') {
+			return redirect(`/login?redirect=${currentPath}`);
+		}
+
+		return redirect('/login');
+	}
 };
 
 export { EXPIRE_LOGGED_IN, expireSession, hasSession, LOGGED_IN_COOKIE };

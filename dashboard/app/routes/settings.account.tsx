@@ -76,7 +76,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 						language: 'en',
 					},
 				},
-				noThrow: true,
+				shouldThrow: false,
 			});
 			res = update.res;
 			break;

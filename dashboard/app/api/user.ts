@@ -1,5 +1,3 @@
-import { hasSession } from '@/utils/cookies';
-import { redirect } from '@remix-run/react';
 import { type ClientOptions, type DataResponse, client } from './client';
 
 const userGet = async (
@@ -23,17 +21,4 @@ const userUpdate = async (
 	return { data: await res.json(), res };
 };
 
-const userLoggedIn = async () => {
-	// If the user is already logged in, redirect them to the dashboard.
-	if (hasSession()) {
-		// Check if session hasn't been revoked.
-		const res = await client('/user', { method: 'GET' });
-		if (res.ok) {
-			return;
-		}
-	}
-
-	throw redirect('/login');
-};
-
-export { userGet, userLoggedIn, userUpdate, userUsageGet };
+export { userGet, userUpdate, userUsageGet };
