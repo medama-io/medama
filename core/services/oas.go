@@ -21,6 +21,10 @@ type RuntimeConfig struct {
 	// Tracker settings.
 	// Choose what features of script to serve from /script.js.
 	ScriptFileName string
+
+	// Short Git commit SHA. Used when returning the version of the server in
+	// X-API-Commit header for client-side cache busting.
+	Commit string
 }
 
 type Handler struct {
@@ -42,7 +46,7 @@ type Handler struct {
 }
 
 // NewService returns a new instance of the ogen service handler.
-func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Client, duckdb *duckdb.Client) (*Handler, error) {
+func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Client, duckdb *duckdb.Client, commit string) (*Handler, error) {
 	// Load timezone and country maps
 	tzMap, err := tz.NewTimezoneCodeMap()
 	if err != nil {
@@ -68,7 +72,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 	}
 	hostnameCache.AddAll(hostnames)
 
-	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite)
+	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite, commit)
 	if err != nil {
 		return nil, errors.Wrap(err, "services init")
 	}
@@ -87,7 +91,7 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 }
 
 // NewRuntimeConfig creates a new runtime config.
-func NewRuntimeConfig(ctx context.Context, user *sqlite.Client) (RuntimeConfig, error) {
+func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, commit string) (RuntimeConfig, error) {
 	// Load the script type from the database.
 	settings, err := user.GetSettings(ctx)
 	if err != nil {
@@ -96,6 +100,7 @@ func NewRuntimeConfig(ctx context.Context, user *sqlite.Client) (RuntimeConfig, 
 
 	return RuntimeConfig{
 		ScriptFileName: convertScriptType(settings.ScriptType),
+		Commit:         commit,
 	}, nil
 }
 

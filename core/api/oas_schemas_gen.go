@@ -51,31 +51,6 @@ func (s *BadRequestError) SetError(val BadRequestErrorError) {
 	s.Error = val
 }
 
-func (*BadRequestError) deleteUserRes()             {}
-func (*BadRequestError) deleteWebsitesIDRes()       {}
-func (*BadRequestError) getEventPingRes()           {}
-func (*BadRequestError) getUserRes()                {}
-func (*BadRequestError) getWebsiteIDBrowsersRes()   {}
-func (*BadRequestError) getWebsiteIDCampaignsRes()  {}
-func (*BadRequestError) getWebsiteIDCountryRes()    {}
-func (*BadRequestError) getWebsiteIDDeviceRes()     {}
-func (*BadRequestError) getWebsiteIDLanguageRes()   {}
-func (*BadRequestError) getWebsiteIDMediumsRes()    {}
-func (*BadRequestError) getWebsiteIDOsRes()         {}
-func (*BadRequestError) getWebsiteIDPagesRes()      {}
-func (*BadRequestError) getWebsiteIDPropertiesRes() {}
-func (*BadRequestError) getWebsiteIDReferrersRes()  {}
-func (*BadRequestError) getWebsiteIDSourcesRes()    {}
-func (*BadRequestError) getWebsiteIDSummaryRes()    {}
-func (*BadRequestError) getWebsiteIDTimeRes()       {}
-func (*BadRequestError) getWebsitesIDRes()          {}
-func (*BadRequestError) getWebsitesRes()            {}
-func (*BadRequestError) patchUserRes()              {}
-func (*BadRequestError) patchWebsitesIDRes()        {}
-func (*BadRequestError) postAuthLoginRes()          {}
-func (*BadRequestError) postEventHitRes()           {}
-func (*BadRequestError) postWebsitesRes()           {}
-
 type BadRequestErrorError struct {
 	Code    int32  `json:"code"`
 	Message string `json:"message"`
@@ -101,6 +76,57 @@ func (s *BadRequestErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
+// BadRequestErrorHeaders wraps BadRequestError with response headers.
+type BadRequestErrorHeaders struct {
+	XAPICommit OptString
+	Response   BadRequestError
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *BadRequestErrorHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *BadRequestErrorHeaders) GetResponse() BadRequestError {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *BadRequestErrorHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *BadRequestErrorHeaders) SetResponse(val BadRequestError) {
+	s.Response = val
+}
+
+func (*BadRequestErrorHeaders) deleteUserRes()             {}
+func (*BadRequestErrorHeaders) deleteWebsitesIDRes()       {}
+func (*BadRequestErrorHeaders) getEventPingRes()           {}
+func (*BadRequestErrorHeaders) getUserRes()                {}
+func (*BadRequestErrorHeaders) getWebsiteIDBrowsersRes()   {}
+func (*BadRequestErrorHeaders) getWebsiteIDCampaignsRes()  {}
+func (*BadRequestErrorHeaders) getWebsiteIDCountryRes()    {}
+func (*BadRequestErrorHeaders) getWebsiteIDDeviceRes()     {}
+func (*BadRequestErrorHeaders) getWebsiteIDLanguageRes()   {}
+func (*BadRequestErrorHeaders) getWebsiteIDMediumsRes()    {}
+func (*BadRequestErrorHeaders) getWebsiteIDOsRes()         {}
+func (*BadRequestErrorHeaders) getWebsiteIDPagesRes()      {}
+func (*BadRequestErrorHeaders) getWebsiteIDPropertiesRes() {}
+func (*BadRequestErrorHeaders) getWebsiteIDReferrersRes()  {}
+func (*BadRequestErrorHeaders) getWebsiteIDSourcesRes()    {}
+func (*BadRequestErrorHeaders) getWebsiteIDSummaryRes()    {}
+func (*BadRequestErrorHeaders) getWebsiteIDTimeRes()       {}
+func (*BadRequestErrorHeaders) getWebsitesIDRes()          {}
+func (*BadRequestErrorHeaders) getWebsitesRes()            {}
+func (*BadRequestErrorHeaders) patchUserRes()              {}
+func (*BadRequestErrorHeaders) patchWebsitesIDRes()        {}
+func (*BadRequestErrorHeaders) postAuthLoginRes()          {}
+func (*BadRequestErrorHeaders) postEventHitRes()           {}
+func (*BadRequestErrorHeaders) postWebsitesRes()           {}
+
 type ConflictError struct {
 	Error ConflictErrorError `json:"error"`
 }
@@ -114,9 +140,6 @@ func (s *ConflictError) GetError() ConflictErrorError {
 func (s *ConflictError) SetError(val ConflictErrorError) {
 	s.Error = val
 }
-
-func (*ConflictError) patchUserRes()    {}
-func (*ConflictError) postWebsitesRes() {}
 
 type ConflictErrorError struct {
 	Code    int32  `json:"code"`
@@ -143,6 +166,35 @@ func (s *ConflictErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
+// ConflictErrorHeaders wraps ConflictError with response headers.
+type ConflictErrorHeaders struct {
+	XAPICommit OptString
+	Response   ConflictError
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *ConflictErrorHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *ConflictErrorHeaders) GetResponse() ConflictError {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *ConflictErrorHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *ConflictErrorHeaders) SetResponse(val ConflictError) {
+	s.Response = val
+}
+
+func (*ConflictErrorHeaders) patchUserRes()    {}
+func (*ConflictErrorHeaders) postWebsitesRes() {}
+
 type CookieAuth struct {
 	APIKey string
 }
@@ -158,12 +210,36 @@ func (s *CookieAuth) SetAPIKey(val string) {
 }
 
 // DeleteUserNoContent is response for DeleteUser operation.
-type DeleteUserNoContent struct{}
+type DeleteUserNoContent struct {
+	XAPICommit OptString
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *DeleteUserNoContent) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *DeleteUserNoContent) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
 
 func (*DeleteUserNoContent) deleteUserRes() {}
 
 // DeleteWebsitesIDNoContent is response for DeleteWebsitesID operation.
-type DeleteWebsitesIDNoContent struct{}
+type DeleteWebsitesIDNoContent struct {
+	XAPICommit OptString
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *DeleteWebsitesIDNoContent) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *DeleteWebsitesIDNoContent) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
 
 func (*DeleteWebsitesIDNoContent) deleteWebsitesIDRes() {}
 
@@ -760,22 +836,6 @@ func (s *ForbiddenError) SetError(val ForbiddenErrorError) {
 	s.Error = val
 }
 
-func (*ForbiddenError) deleteUserRes()             {}
-func (*ForbiddenError) deleteWebsitesIDRes()       {}
-func (*ForbiddenError) getWebsiteIDBrowsersRes()   {}
-func (*ForbiddenError) getWebsiteIDCampaignsRes()  {}
-func (*ForbiddenError) getWebsiteIDCountryRes()    {}
-func (*ForbiddenError) getWebsiteIDDeviceRes()     {}
-func (*ForbiddenError) getWebsiteIDLanguageRes()   {}
-func (*ForbiddenError) getWebsiteIDMediumsRes()    {}
-func (*ForbiddenError) getWebsiteIDOsRes()         {}
-func (*ForbiddenError) getWebsiteIDPropertiesRes() {}
-func (*ForbiddenError) getWebsiteIDReferrersRes()  {}
-func (*ForbiddenError) getWebsiteIDSourcesRes()    {}
-func (*ForbiddenError) patchUserRes()              {}
-func (*ForbiddenError) patchWebsitesIDRes()        {}
-func (*ForbiddenError) postWebsitesRes()           {}
-
 type ForbiddenErrorError struct {
 	Code    int32  `json:"code"`
 	Message string `json:"message"`
@@ -800,6 +860,48 @@ func (s *ForbiddenErrorError) SetCode(val int32) {
 func (s *ForbiddenErrorError) SetMessage(val string) {
 	s.Message = val
 }
+
+// ForbiddenErrorHeaders wraps ForbiddenError with response headers.
+type ForbiddenErrorHeaders struct {
+	XAPICommit OptString
+	Response   ForbiddenError
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *ForbiddenErrorHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *ForbiddenErrorHeaders) GetResponse() ForbiddenError {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *ForbiddenErrorHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *ForbiddenErrorHeaders) SetResponse(val ForbiddenError) {
+	s.Response = val
+}
+
+func (*ForbiddenErrorHeaders) deleteUserRes()             {}
+func (*ForbiddenErrorHeaders) deleteWebsitesIDRes()       {}
+func (*ForbiddenErrorHeaders) getWebsiteIDBrowsersRes()   {}
+func (*ForbiddenErrorHeaders) getWebsiteIDCampaignsRes()  {}
+func (*ForbiddenErrorHeaders) getWebsiteIDCountryRes()    {}
+func (*ForbiddenErrorHeaders) getWebsiteIDDeviceRes()     {}
+func (*ForbiddenErrorHeaders) getWebsiteIDLanguageRes()   {}
+func (*ForbiddenErrorHeaders) getWebsiteIDMediumsRes()    {}
+func (*ForbiddenErrorHeaders) getWebsiteIDOsRes()         {}
+func (*ForbiddenErrorHeaders) getWebsiteIDPropertiesRes() {}
+func (*ForbiddenErrorHeaders) getWebsiteIDReferrersRes()  {}
+func (*ForbiddenErrorHeaders) getWebsiteIDSourcesRes()    {}
+func (*ForbiddenErrorHeaders) patchUserRes()              {}
+func (*ForbiddenErrorHeaders) patchWebsitesIDRes()        {}
+func (*ForbiddenErrorHeaders) postWebsitesRes()           {}
 
 // This is set to 0 if the user is a unique user, otherwise 1.
 type GetEventPingOK struct {
@@ -917,9 +1019,33 @@ func (s *GetWebsiteIDSummaryInterval) UnmarshalText(data []byte) error {
 	}
 }
 
-type GetWebsitesOKApplicationJSON []WebsiteGet
+// GetWebsitesOKHeaders wraps []WebsiteGet with response headers.
+type GetWebsitesOKHeaders struct {
+	XAPICommit OptString
+	Response   []WebsiteGet
+}
 
-func (*GetWebsitesOKApplicationJSON) getWebsitesRes() {}
+// GetXAPICommit returns the value of XAPICommit.
+func (s *GetWebsitesOKHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *GetWebsitesOKHeaders) GetResponse() []WebsiteGet {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *GetWebsitesOKHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *GetWebsitesOKHeaders) SetResponse(val []WebsiteGet) {
+	s.Response = val
+}
+
+func (*GetWebsitesOKHeaders) getWebsitesRes() {}
 
 type InternalServerError struct {
 	Error InternalServerErrorError `json:"error"`
@@ -934,33 +1060,6 @@ func (s *InternalServerError) GetError() InternalServerErrorError {
 func (s *InternalServerError) SetError(val InternalServerErrorError) {
 	s.Error = val
 }
-
-func (*InternalServerError) deleteUserRes()             {}
-func (*InternalServerError) deleteWebsitesIDRes()       {}
-func (*InternalServerError) getEventPingRes()           {}
-func (*InternalServerError) getUserRes()                {}
-func (*InternalServerError) getUserUsageRes()           {}
-func (*InternalServerError) getWebsiteIDBrowsersRes()   {}
-func (*InternalServerError) getWebsiteIDCampaignsRes()  {}
-func (*InternalServerError) getWebsiteIDCountryRes()    {}
-func (*InternalServerError) getWebsiteIDDeviceRes()     {}
-func (*InternalServerError) getWebsiteIDLanguageRes()   {}
-func (*InternalServerError) getWebsiteIDMediumsRes()    {}
-func (*InternalServerError) getWebsiteIDOsRes()         {}
-func (*InternalServerError) getWebsiteIDPagesRes()      {}
-func (*InternalServerError) getWebsiteIDPropertiesRes() {}
-func (*InternalServerError) getWebsiteIDReferrersRes()  {}
-func (*InternalServerError) getWebsiteIDSourcesRes()    {}
-func (*InternalServerError) getWebsiteIDSummaryRes()    {}
-func (*InternalServerError) getWebsiteIDTimeRes()       {}
-func (*InternalServerError) getWebsitesIDRes()          {}
-func (*InternalServerError) getWebsitesRes()            {}
-func (*InternalServerError) patchUserRes()              {}
-func (*InternalServerError) patchWebsitesIDRes()        {}
-func (*InternalServerError) postAuthLoginRes()          {}
-func (*InternalServerError) postAuthLogoutRes()         {}
-func (*InternalServerError) postEventHitRes()           {}
-func (*InternalServerError) postWebsitesRes()           {}
 
 type InternalServerErrorError struct {
 	Code    int32  `json:"code"`
@@ -987,6 +1086,59 @@ func (s *InternalServerErrorError) SetMessage(val string) {
 	s.Message = val
 }
 
+// InternalServerErrorHeaders wraps InternalServerError with response headers.
+type InternalServerErrorHeaders struct {
+	XAPICommit OptString
+	Response   InternalServerError
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *InternalServerErrorHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *InternalServerErrorHeaders) GetResponse() InternalServerError {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *InternalServerErrorHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *InternalServerErrorHeaders) SetResponse(val InternalServerError) {
+	s.Response = val
+}
+
+func (*InternalServerErrorHeaders) deleteUserRes()             {}
+func (*InternalServerErrorHeaders) deleteWebsitesIDRes()       {}
+func (*InternalServerErrorHeaders) getEventPingRes()           {}
+func (*InternalServerErrorHeaders) getUserRes()                {}
+func (*InternalServerErrorHeaders) getUserUsageRes()           {}
+func (*InternalServerErrorHeaders) getWebsiteIDBrowsersRes()   {}
+func (*InternalServerErrorHeaders) getWebsiteIDCampaignsRes()  {}
+func (*InternalServerErrorHeaders) getWebsiteIDCountryRes()    {}
+func (*InternalServerErrorHeaders) getWebsiteIDDeviceRes()     {}
+func (*InternalServerErrorHeaders) getWebsiteIDLanguageRes()   {}
+func (*InternalServerErrorHeaders) getWebsiteIDMediumsRes()    {}
+func (*InternalServerErrorHeaders) getWebsiteIDOsRes()         {}
+func (*InternalServerErrorHeaders) getWebsiteIDPagesRes()      {}
+func (*InternalServerErrorHeaders) getWebsiteIDPropertiesRes() {}
+func (*InternalServerErrorHeaders) getWebsiteIDReferrersRes()  {}
+func (*InternalServerErrorHeaders) getWebsiteIDSourcesRes()    {}
+func (*InternalServerErrorHeaders) getWebsiteIDSummaryRes()    {}
+func (*InternalServerErrorHeaders) getWebsiteIDTimeRes()       {}
+func (*InternalServerErrorHeaders) getWebsitesIDRes()          {}
+func (*InternalServerErrorHeaders) getWebsitesRes()            {}
+func (*InternalServerErrorHeaders) patchUserRes()              {}
+func (*InternalServerErrorHeaders) patchWebsitesIDRes()        {}
+func (*InternalServerErrorHeaders) postAuthLoginRes()          {}
+func (*InternalServerErrorHeaders) postAuthLogoutRes()         {}
+func (*InternalServerErrorHeaders) postEventHitRes()           {}
+func (*InternalServerErrorHeaders) postWebsitesRes()           {}
+
 type NotFoundError struct {
 	Error NotFoundErrorError `json:"error"`
 }
@@ -1000,28 +1152,6 @@ func (s *NotFoundError) GetError() NotFoundErrorError {
 func (s *NotFoundError) SetError(val NotFoundErrorError) {
 	s.Error = val
 }
-
-func (*NotFoundError) deleteUserRes()             {}
-func (*NotFoundError) deleteWebsitesIDRes()       {}
-func (*NotFoundError) getUserRes()                {}
-func (*NotFoundError) getWebsiteIDBrowsersRes()   {}
-func (*NotFoundError) getWebsiteIDCampaignsRes()  {}
-func (*NotFoundError) getWebsiteIDCountryRes()    {}
-func (*NotFoundError) getWebsiteIDDeviceRes()     {}
-func (*NotFoundError) getWebsiteIDLanguageRes()   {}
-func (*NotFoundError) getWebsiteIDMediumsRes()    {}
-func (*NotFoundError) getWebsiteIDOsRes()         {}
-func (*NotFoundError) getWebsiteIDPagesRes()      {}
-func (*NotFoundError) getWebsiteIDPropertiesRes() {}
-func (*NotFoundError) getWebsiteIDReferrersRes()  {}
-func (*NotFoundError) getWebsiteIDSourcesRes()    {}
-func (*NotFoundError) getWebsiteIDSummaryRes()    {}
-func (*NotFoundError) getWebsiteIDTimeRes()       {}
-func (*NotFoundError) getWebsitesIDRes()          {}
-func (*NotFoundError) getWebsitesRes()            {}
-func (*NotFoundError) patchUserRes()              {}
-func (*NotFoundError) patchWebsitesIDRes()        {}
-func (*NotFoundError) postEventHitRes()           {}
 
 type NotFoundErrorError struct {
 	Code    int32  `json:"code"`
@@ -1047,6 +1177,54 @@ func (s *NotFoundErrorError) SetCode(val int32) {
 func (s *NotFoundErrorError) SetMessage(val string) {
 	s.Message = val
 }
+
+// NotFoundErrorHeaders wraps NotFoundError with response headers.
+type NotFoundErrorHeaders struct {
+	XAPICommit OptString
+	Response   NotFoundError
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *NotFoundErrorHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *NotFoundErrorHeaders) GetResponse() NotFoundError {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *NotFoundErrorHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *NotFoundErrorHeaders) SetResponse(val NotFoundError) {
+	s.Response = val
+}
+
+func (*NotFoundErrorHeaders) deleteUserRes()             {}
+func (*NotFoundErrorHeaders) deleteWebsitesIDRes()       {}
+func (*NotFoundErrorHeaders) getUserRes()                {}
+func (*NotFoundErrorHeaders) getWebsiteIDBrowsersRes()   {}
+func (*NotFoundErrorHeaders) getWebsiteIDCampaignsRes()  {}
+func (*NotFoundErrorHeaders) getWebsiteIDCountryRes()    {}
+func (*NotFoundErrorHeaders) getWebsiteIDDeviceRes()     {}
+func (*NotFoundErrorHeaders) getWebsiteIDLanguageRes()   {}
+func (*NotFoundErrorHeaders) getWebsiteIDMediumsRes()    {}
+func (*NotFoundErrorHeaders) getWebsiteIDOsRes()         {}
+func (*NotFoundErrorHeaders) getWebsiteIDPagesRes()      {}
+func (*NotFoundErrorHeaders) getWebsiteIDPropertiesRes() {}
+func (*NotFoundErrorHeaders) getWebsiteIDReferrersRes()  {}
+func (*NotFoundErrorHeaders) getWebsiteIDSourcesRes()    {}
+func (*NotFoundErrorHeaders) getWebsiteIDSummaryRes()    {}
+func (*NotFoundErrorHeaders) getWebsiteIDTimeRes()       {}
+func (*NotFoundErrorHeaders) getWebsitesIDRes()          {}
+func (*NotFoundErrorHeaders) getWebsitesRes()            {}
+func (*NotFoundErrorHeaders) patchUserRes()              {}
+func (*NotFoundErrorHeaders) patchWebsitesIDRes()        {}
+func (*NotFoundErrorHeaders) postEventHitRes()           {}
 
 // NewOptBool returns new OptBool with value set to v.
 func NewOptBool(v bool) OptBool {
@@ -1602,7 +1780,8 @@ func (o OptWebsiteGetSummary) Or(d WebsiteGetSummary) WebsiteGetSummary {
 
 // PostAuthLoginOK is response for PostAuthLogin operation.
 type PostAuthLoginOK struct {
-	SetCookie string
+	SetCookie  string
+	XAPICommit OptString
 }
 
 // GetSetCookie returns the value of SetCookie.
@@ -1610,16 +1789,27 @@ func (s *PostAuthLoginOK) GetSetCookie() string {
 	return s.SetCookie
 }
 
+// GetXAPICommit returns the value of XAPICommit.
+func (s *PostAuthLoginOK) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
 // SetSetCookie sets the value of SetCookie.
 func (s *PostAuthLoginOK) SetSetCookie(val string) {
 	s.SetCookie = val
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *PostAuthLoginOK) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
 }
 
 func (*PostAuthLoginOK) postAuthLoginRes() {}
 
 // PostAuthLogoutNoContent is response for PostAuthLogout operation.
 type PostAuthLogoutNoContent struct {
-	SetCookie string
+	SetCookie  string
+	XAPICommit OptString
 }
 
 // GetSetCookie returns the value of SetCookie.
@@ -1627,9 +1817,19 @@ func (s *PostAuthLogoutNoContent) GetSetCookie() string {
 	return s.SetCookie
 }
 
+// GetXAPICommit returns the value of XAPICommit.
+func (s *PostAuthLogoutNoContent) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
 // SetSetCookie sets the value of SetCookie.
 func (s *PostAuthLogoutNoContent) SetSetCookie(val string) {
 	s.SetCookie = val
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *PostAuthLogoutNoContent) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
 }
 
 func (*PostAuthLogoutNoContent) postAuthLogoutRes() {}
@@ -1641,7 +1841,33 @@ func (*PostEventHitNoContent) postEventHitRes() {}
 
 type StatsBrowsers []StatsBrowsersItem
 
-func (*StatsBrowsers) getWebsiteIDBrowsersRes() {}
+// StatsBrowsersHeaders wraps StatsBrowsers with response headers.
+type StatsBrowsersHeaders struct {
+	XAPICommit OptString
+	Response   StatsBrowsers
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsBrowsersHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsBrowsersHeaders) GetResponse() StatsBrowsers {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsBrowsersHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsBrowsersHeaders) SetResponse(val StatsBrowsers) {
+	s.Response = val
+}
+
+func (*StatsBrowsersHeaders) getWebsiteIDBrowsersRes() {}
 
 type StatsBrowsersItem struct {
 	// Browser name.
@@ -1708,7 +1934,33 @@ func (s *StatsBrowsersItem) SetDuration(val OptInt) {
 
 type StatsCountries []StatsCountriesItem
 
-func (*StatsCountries) getWebsiteIDCountryRes() {}
+// StatsCountriesHeaders wraps StatsCountries with response headers.
+type StatsCountriesHeaders struct {
+	XAPICommit OptString
+	Response   StatsCountries
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsCountriesHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsCountriesHeaders) GetResponse() StatsCountries {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsCountriesHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsCountriesHeaders) SetResponse(val StatsCountries) {
+	s.Response = val
+}
+
+func (*StatsCountriesHeaders) getWebsiteIDCountryRes() {}
 
 type StatsCountriesItem struct {
 	// Country name.
@@ -1775,7 +2027,33 @@ func (s *StatsCountriesItem) SetDuration(val OptInt) {
 
 type StatsDevices []StatsDevicesItem
 
-func (*StatsDevices) getWebsiteIDDeviceRes() {}
+// StatsDevicesHeaders wraps StatsDevices with response headers.
+type StatsDevicesHeaders struct {
+	XAPICommit OptString
+	Response   StatsDevices
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsDevicesHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsDevicesHeaders) GetResponse() StatsDevices {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsDevicesHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsDevicesHeaders) SetResponse(val StatsDevices) {
+	s.Response = val
+}
+
+func (*StatsDevicesHeaders) getWebsiteIDDeviceRes() {}
 
 type StatsDevicesItem struct {
 	// Device name.
@@ -1842,7 +2120,33 @@ func (s *StatsDevicesItem) SetDuration(val OptInt) {
 
 type StatsLanguages []StatsLanguagesItem
 
-func (*StatsLanguages) getWebsiteIDLanguageRes() {}
+// StatsLanguagesHeaders wraps StatsLanguages with response headers.
+type StatsLanguagesHeaders struct {
+	XAPICommit OptString
+	Response   StatsLanguages
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsLanguagesHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsLanguagesHeaders) GetResponse() StatsLanguages {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsLanguagesHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsLanguagesHeaders) SetResponse(val StatsLanguages) {
+	s.Response = val
+}
+
+func (*StatsLanguagesHeaders) getWebsiteIDLanguageRes() {}
 
 type StatsLanguagesItem struct {
 	// Language name.
@@ -1909,7 +2213,33 @@ func (s *StatsLanguagesItem) SetDuration(val OptInt) {
 
 type StatsOS []StatsOSItem
 
-func (*StatsOS) getWebsiteIDOsRes() {}
+// StatsOSHeaders wraps StatsOS with response headers.
+type StatsOSHeaders struct {
+	XAPICommit OptString
+	Response   StatsOS
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsOSHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsOSHeaders) GetResponse() StatsOS {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsOSHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsOSHeaders) SetResponse(val StatsOS) {
+	s.Response = val
+}
+
+func (*StatsOSHeaders) getWebsiteIDOsRes() {}
 
 type StatsOSItem struct {
 	// OS name.
@@ -1976,7 +2306,33 @@ func (s *StatsOSItem) SetDuration(val OptInt) {
 
 type StatsPages []StatsPagesItem
 
-func (*StatsPages) getWebsiteIDPagesRes() {}
+// StatsPagesHeaders wraps StatsPages with response headers.
+type StatsPagesHeaders struct {
+	XAPICommit OptString
+	Response   StatsPages
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsPagesHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsPagesHeaders) GetResponse() StatsPages {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsPagesHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsPagesHeaders) SetResponse(val StatsPages) {
+	s.Response = val
+}
+
+func (*StatsPagesHeaders) getWebsiteIDPagesRes() {}
 
 type StatsPagesItem struct {
 	// Pathname of the page.
@@ -2067,7 +2423,33 @@ func (s *StatsPagesItem) SetDuration(val OptInt) {
 
 type StatsProperties []StatsPropertiesItem
 
-func (*StatsProperties) getWebsiteIDPropertiesRes() {}
+// StatsPropertiesHeaders wraps StatsProperties with response headers.
+type StatsPropertiesHeaders struct {
+	XAPICommit OptString
+	Response   StatsProperties
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsPropertiesHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsPropertiesHeaders) GetResponse() StatsProperties {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsPropertiesHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsPropertiesHeaders) SetResponse(val StatsProperties) {
+	s.Response = val
+}
+
+func (*StatsPropertiesHeaders) getWebsiteIDPropertiesRes() {}
 
 type StatsPropertiesItem struct {
 	// Custom property name.
@@ -2122,7 +2504,33 @@ func (s *StatsPropertiesItem) SetEventsPercentage(val float32) {
 
 type StatsReferrers []StatsReferrersItem
 
-func (*StatsReferrers) getWebsiteIDReferrersRes() {}
+// StatsReferrersHeaders wraps StatsReferrers with response headers.
+type StatsReferrersHeaders struct {
+	XAPICommit OptString
+	Response   StatsReferrers
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsReferrersHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsReferrersHeaders) GetResponse() StatsReferrers {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsReferrersHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsReferrersHeaders) SetResponse(val StatsReferrers) {
+	s.Response = val
+}
+
+func (*StatsReferrersHeaders) getWebsiteIDReferrersRes() {}
 
 type StatsReferrersItem struct {
 	// Referrer URL.
@@ -2224,8 +2632,6 @@ func (s *StatsSummary) SetInterval(val []StatsSummaryIntervalItem) {
 	s.Interval = val
 }
 
-func (*StatsSummary) getWebsiteIDSummaryRes() {}
-
 type StatsSummaryCurrent struct {
 	Visitors         int     `json:"visitors"`
 	Pageviews        int     `json:"pageviews"`
@@ -2272,6 +2678,34 @@ func (s *StatsSummaryCurrent) SetBouncePercentage(val float32) {
 func (s *StatsSummaryCurrent) SetDuration(val int) {
 	s.Duration = val
 }
+
+// StatsSummaryHeaders wraps StatsSummary with response headers.
+type StatsSummaryHeaders struct {
+	XAPICommit OptString
+	Response   StatsSummary
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsSummaryHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsSummaryHeaders) GetResponse() StatsSummary {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsSummaryHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsSummaryHeaders) SetResponse(val StatsSummary) {
+	s.Response = val
+}
+
+func (*StatsSummaryHeaders) getWebsiteIDSummaryRes() {}
 
 type StatsSummaryIntervalItem struct {
 	Date             string     `json:"date"`
@@ -2380,7 +2814,33 @@ func (s *StatsSummaryPrevious) SetDuration(val int) {
 
 type StatsTime []StatsTimeItem
 
-func (*StatsTime) getWebsiteIDTimeRes() {}
+// StatsTimeHeaders wraps StatsTime with response headers.
+type StatsTimeHeaders struct {
+	XAPICommit OptString
+	Response   StatsTime
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsTimeHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsTimeHeaders) GetResponse() StatsTime {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsTimeHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsTimeHeaders) SetResponse(val StatsTime) {
+	s.Response = val
+}
+
+func (*StatsTimeHeaders) getWebsiteIDTimeRes() {}
 
 type StatsTimeItem struct {
 	// Pathname of the page.
@@ -2459,7 +2919,33 @@ func (s *StatsTimeItem) SetDurationPercentage(val float32) {
 
 type StatsUTMCampaigns []StatsUTMCampaignsItem
 
-func (*StatsUTMCampaigns) getWebsiteIDCampaignsRes() {}
+// StatsUTMCampaignsHeaders wraps StatsUTMCampaigns with response headers.
+type StatsUTMCampaignsHeaders struct {
+	XAPICommit OptString
+	Response   StatsUTMCampaigns
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsUTMCampaignsHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsUTMCampaignsHeaders) GetResponse() StatsUTMCampaigns {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsUTMCampaignsHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsUTMCampaignsHeaders) SetResponse(val StatsUTMCampaigns) {
+	s.Response = val
+}
+
+func (*StatsUTMCampaignsHeaders) getWebsiteIDCampaignsRes() {}
 
 type StatsUTMCampaignsItem struct {
 	// UTM campaign.
@@ -2526,7 +3012,33 @@ func (s *StatsUTMCampaignsItem) SetDuration(val OptInt) {
 
 type StatsUTMMediums []StatsUTMMediumsItem
 
-func (*StatsUTMMediums) getWebsiteIDMediumsRes() {}
+// StatsUTMMediumsHeaders wraps StatsUTMMediums with response headers.
+type StatsUTMMediumsHeaders struct {
+	XAPICommit OptString
+	Response   StatsUTMMediums
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsUTMMediumsHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsUTMMediumsHeaders) GetResponse() StatsUTMMediums {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsUTMMediumsHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsUTMMediumsHeaders) SetResponse(val StatsUTMMediums) {
+	s.Response = val
+}
+
+func (*StatsUTMMediumsHeaders) getWebsiteIDMediumsRes() {}
 
 type StatsUTMMediumsItem struct {
 	// UTM medium.
@@ -2593,7 +3105,33 @@ func (s *StatsUTMMediumsItem) SetDuration(val OptInt) {
 
 type StatsUTMSources []StatsUTMSourcesItem
 
-func (*StatsUTMSources) getWebsiteIDSourcesRes() {}
+// StatsUTMSourcesHeaders wraps StatsUTMSources with response headers.
+type StatsUTMSourcesHeaders struct {
+	XAPICommit OptString
+	Response   StatsUTMSources
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *StatsUTMSourcesHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *StatsUTMSourcesHeaders) GetResponse() StatsUTMSources {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *StatsUTMSourcesHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *StatsUTMSourcesHeaders) SetResponse(val StatsUTMSources) {
+	s.Response = val
+}
+
+func (*StatsUTMSourcesHeaders) getWebsiteIDSourcesRes() {}
 
 type StatsUTMSourcesItem struct {
 	// UTM source.
@@ -2672,31 +3210,6 @@ func (s *UnauthorisedError) SetError(val UnauthorisedErrorError) {
 	s.Error = val
 }
 
-func (*UnauthorisedError) deleteUserRes()             {}
-func (*UnauthorisedError) deleteWebsitesIDRes()       {}
-func (*UnauthorisedError) getUserRes()                {}
-func (*UnauthorisedError) getUserUsageRes()           {}
-func (*UnauthorisedError) getWebsiteIDBrowsersRes()   {}
-func (*UnauthorisedError) getWebsiteIDCampaignsRes()  {}
-func (*UnauthorisedError) getWebsiteIDCountryRes()    {}
-func (*UnauthorisedError) getWebsiteIDDeviceRes()     {}
-func (*UnauthorisedError) getWebsiteIDLanguageRes()   {}
-func (*UnauthorisedError) getWebsiteIDMediumsRes()    {}
-func (*UnauthorisedError) getWebsiteIDOsRes()         {}
-func (*UnauthorisedError) getWebsiteIDPagesRes()      {}
-func (*UnauthorisedError) getWebsiteIDPropertiesRes() {}
-func (*UnauthorisedError) getWebsiteIDReferrersRes()  {}
-func (*UnauthorisedError) getWebsiteIDSourcesRes()    {}
-func (*UnauthorisedError) getWebsiteIDSummaryRes()    {}
-func (*UnauthorisedError) getWebsiteIDTimeRes()       {}
-func (*UnauthorisedError) getWebsitesIDRes()          {}
-func (*UnauthorisedError) getWebsitesRes()            {}
-func (*UnauthorisedError) patchUserRes()              {}
-func (*UnauthorisedError) patchWebsitesIDRes()        {}
-func (*UnauthorisedError) postAuthLoginRes()          {}
-func (*UnauthorisedError) postAuthLogoutRes()         {}
-func (*UnauthorisedError) postWebsitesRes()           {}
-
 type UnauthorisedErrorError struct {
 	Code    int32  `json:"code"`
 	Message string `json:"message"`
@@ -2721,6 +3234,57 @@ func (s *UnauthorisedErrorError) SetCode(val int32) {
 func (s *UnauthorisedErrorError) SetMessage(val string) {
 	s.Message = val
 }
+
+// UnauthorisedErrorHeaders wraps UnauthorisedError with response headers.
+type UnauthorisedErrorHeaders struct {
+	XAPICommit OptString
+	Response   UnauthorisedError
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *UnauthorisedErrorHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *UnauthorisedErrorHeaders) GetResponse() UnauthorisedError {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *UnauthorisedErrorHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *UnauthorisedErrorHeaders) SetResponse(val UnauthorisedError) {
+	s.Response = val
+}
+
+func (*UnauthorisedErrorHeaders) deleteUserRes()             {}
+func (*UnauthorisedErrorHeaders) deleteWebsitesIDRes()       {}
+func (*UnauthorisedErrorHeaders) getUserRes()                {}
+func (*UnauthorisedErrorHeaders) getUserUsageRes()           {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDBrowsersRes()   {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDCampaignsRes()  {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDCountryRes()    {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDDeviceRes()     {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDLanguageRes()   {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDMediumsRes()    {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDOsRes()         {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDPagesRes()      {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDPropertiesRes() {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDReferrersRes()  {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDSourcesRes()    {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDSummaryRes()    {}
+func (*UnauthorisedErrorHeaders) getWebsiteIDTimeRes()       {}
+func (*UnauthorisedErrorHeaders) getWebsitesIDRes()          {}
+func (*UnauthorisedErrorHeaders) getWebsitesRes()            {}
+func (*UnauthorisedErrorHeaders) patchUserRes()              {}
+func (*UnauthorisedErrorHeaders) patchWebsitesIDRes()        {}
+func (*UnauthorisedErrorHeaders) postAuthLoginRes()          {}
+func (*UnauthorisedErrorHeaders) postAuthLogoutRes()         {}
+func (*UnauthorisedErrorHeaders) postWebsitesRes()           {}
 
 // Response body for getting a user.
 // Ref: #/components/schemas/UserGet
@@ -2771,8 +3335,34 @@ func (s *UserGet) SetDateUpdated(val int64) {
 	s.DateUpdated = val
 }
 
-func (*UserGet) getUserRes()   {}
-func (*UserGet) patchUserRes() {}
+// UserGetHeaders wraps UserGet with response headers.
+type UserGetHeaders struct {
+	XAPICommit OptString
+	Response   UserGet
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *UserGetHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *UserGetHeaders) GetResponse() UserGet {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *UserGetHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *UserGetHeaders) SetResponse(val UserGet) {
+	s.Response = val
+}
+
+func (*UserGetHeaders) getUserRes()   {}
+func (*UserGetHeaders) patchUserRes() {}
 
 // Request body for updating a user.
 // Ref: #/components/schemas/UserPatch
@@ -2959,8 +3549,6 @@ func (s *UserUsageGet) SetDisk(val UserUsageGetDisk) {
 	s.Disk = val
 }
 
-func (*UserUsageGet) getUserUsageRes() {}
-
 type UserUsageGetCPU struct {
 	Usage   float32 `json:"usage"`
 	Cores   int     `json:"cores"`
@@ -3021,6 +3609,34 @@ func (s *UserUsageGetDisk) SetUsed(val int64) {
 func (s *UserUsageGetDisk) SetTotal(val int64) {
 	s.Total = val
 }
+
+// UserUsageGetHeaders wraps UserUsageGet with response headers.
+type UserUsageGetHeaders struct {
+	XAPICommit OptString
+	Response   UserUsageGet
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *UserUsageGetHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *UserUsageGetHeaders) GetResponse() UserUsageGet {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *UserUsageGetHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *UserUsageGetHeaders) SetResponse(val UserUsageGet) {
+	s.Response = val
+}
+
+func (*UserUsageGetHeaders) getUserUsageRes() {}
 
 type UserUsageGetMemory struct {
 	Used  int64 `json:"used"`
@@ -3090,9 +3706,35 @@ func (s *WebsiteGet) SetSummary(val OptWebsiteGetSummary) {
 	s.Summary = val
 }
 
-func (*WebsiteGet) getWebsitesIDRes()   {}
-func (*WebsiteGet) patchWebsitesIDRes() {}
-func (*WebsiteGet) postWebsitesRes()    {}
+// WebsiteGetHeaders wraps WebsiteGet with response headers.
+type WebsiteGetHeaders struct {
+	XAPICommit OptString
+	Response   WebsiteGet
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *WebsiteGetHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *WebsiteGetHeaders) GetResponse() WebsiteGet {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *WebsiteGetHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *WebsiteGetHeaders) SetResponse(val WebsiteGet) {
+	s.Response = val
+}
+
+func (*WebsiteGetHeaders) getWebsitesIDRes()   {}
+func (*WebsiteGetHeaders) patchWebsitesIDRes() {}
+func (*WebsiteGetHeaders) postWebsitesRes()    {}
 
 type WebsiteGetSummary struct {
 	Visitors int `json:"visitors"`

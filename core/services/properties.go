@@ -48,5 +48,7 @@ func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebs
 		resp = append(resp, item)
 	}
 
-	return &resp, nil
+	return &api.StatsPropertiesHeaders{
+		Response: resp,
+	}, nil
 }

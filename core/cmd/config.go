@@ -28,6 +28,11 @@ type ServerConfig struct {
 	// Misc settings.
 	UseEnvironment bool
 	DemoMode       bool `env:"DEMO_MODE"`
+
+	// Short Git commit SHA. Used when returning the version of the server in
+	// X-API-Commit header for client-side cache busting.
+	Commit  string
+	Version string
 }
 
 type AppDBConfig struct {
@@ -63,7 +68,14 @@ const (
 )
 
 // NewServerConfig creates a new server config.
-func NewServerConfig(useEnv bool) (*ServerConfig, error) {
+func NewServerConfig(useEnv bool, version string, commit string) (*ServerConfig, error) {
+	if version == "" {
+		version = "development"
+	}
+	if commit == "" {
+		commit = "development"
+	}
+
 	config := &ServerConfig{
 		Port:                 DefaultPort,
 		CacheCleanupInterval: DefaultCacheCleanupInterval,
@@ -74,6 +86,8 @@ func NewServerConfig(useEnv bool) (*ServerConfig, error) {
 		TimeoutIdle:          DefaultTimeoutIdle,
 		UseEnvironment:       useEnv,
 		DemoMode:             DefaultDemoMode,
+		Version:              version,
+		Commit:               commit,
 	}
 
 	// Load config from environment variables.

@@ -30,7 +30,7 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		return ErrInternalServerError(err), nil
 	}
 
-	resp := &api.StatsSummary{
+	resp := api.StatsSummary{
 		Current: api.StatsSummaryCurrent{
 			Visitors:         currentSummary.Visitors,
 			Pageviews:        currentSummary.Pageviews,
@@ -90,7 +90,9 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 		}
 	}
 
-	return resp, nil
+	return &api.StatsSummaryHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteIDPagesParams) (api.GetWebsiteIDPagesRes, error) {
@@ -127,7 +129,9 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsPagesHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get pages
@@ -153,7 +157,9 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsPagesHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
@@ -190,7 +196,9 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsTimeHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get time
@@ -215,7 +223,9 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsTimeHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
@@ -252,7 +262,9 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsReferrersHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get referrers
@@ -276,7 +288,9 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsReferrersHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
@@ -312,7 +326,9 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsUTMSourcesHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get sources
@@ -333,7 +349,9 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsUTMSourcesHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
@@ -369,7 +387,9 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsUTMMediumsHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get mediums
@@ -393,7 +413,9 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsUTMMediumsHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
@@ -429,7 +451,9 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsUTMCampaignsHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get campaigns
@@ -453,7 +477,9 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsUTMCampaignsHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
@@ -489,7 +515,9 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsBrowsersHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get browsers
@@ -513,7 +541,9 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsBrowsersHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
@@ -549,7 +579,9 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsOSHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get OS
@@ -573,7 +605,9 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsOSHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
@@ -609,7 +643,9 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsDevicesHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get devices
@@ -633,7 +669,9 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsDevicesHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
@@ -669,7 +707,9 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsLanguagesHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get languages
@@ -693,7 +733,9 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsLanguagesHeaders{
+		Response: resp,
+	}, nil
 }
 
 func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
@@ -729,7 +771,9 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 			})
 		}
 
-		return &resp, nil
+		return &api.StatsCountriesHeaders{
+			Response: resp,
+		}, nil
 	}
 
 	// Get countries
@@ -753,5 +797,7 @@ func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsite
 		})
 	}
 
-	return &resp, nil
+	return &api.StatsCountriesHeaders{
+		Response: resp,
+	}, nil
 }

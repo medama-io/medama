@@ -62,7 +62,7 @@ func run(ctx context.Context, args []string) error {
 		}
 
 		// Create start command
-		s, err := NewStartCommand(useEnv)
+		s, err := NewStartCommand(useEnv, Version, Commit)
 		if err != nil {
 			return err
 		}

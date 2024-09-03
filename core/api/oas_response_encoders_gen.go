@@ -16,64 +16,178 @@ import (
 func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *DeleteUserNoContent:
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(204)
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -88,64 +202,178 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *DeleteWebsitesIDNoContent:
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(204)
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -198,24 +426,62 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -229,60 +495,155 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 
 func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *UserGet:
+	case *UserGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -296,36 +657,93 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 
 func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *UserUsageGet:
+	case *UserUsageGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -339,72 +757,186 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 
 func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsBrowsers:
+	case *StatsBrowsersHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -418,72 +950,186 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 
 func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsUTMCampaigns:
+	case *StatsUTMCampaignsHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -497,72 +1143,186 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 
 func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsCountries:
+	case *StatsCountriesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -576,72 +1336,186 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 
 func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsDevices:
+	case *StatsDevicesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -655,72 +1529,186 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 
 func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsLanguages:
+	case *StatsLanguagesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -734,72 +1722,186 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 
 func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsUTMMediums:
+	case *StatsUTMMediumsHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -813,72 +1915,186 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 
 func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsOS:
+	case *StatsOSHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -892,60 +2108,155 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 
 func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsPages:
+	case *StatsPagesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -959,72 +2270,186 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 
 func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsProperties:
+	case *StatsPropertiesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1038,72 +2463,186 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 
 func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsReferrers:
+	case *StatsReferrersHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1117,72 +2656,186 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 
 func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsUTMSources:
+	case *StatsUTMSourcesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1196,60 +2849,155 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 
 func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsSummary:
+	case *StatsSummaryHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1263,60 +3011,155 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 
 func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *StatsTime:
+	case *StatsTimeHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1330,60 +3173,159 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 
 func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *GetWebsitesOKApplicationJSON:
+	case *GetWebsitesOKHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		e.ArrStart()
+		for _, elem := range response.Response {
+			elem.Encode(e)
+		}
+		e.ArrEnd()
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1397,60 +3339,155 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 
 func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *WebsiteGet:
+	case *WebsiteGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1464,84 +3501,217 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 
 func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *UserGet:
+	case *UserGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ConflictError:
+	case *ConflictErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(409)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1555,72 +3725,186 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 
 func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *WebsiteGet:
+	case *WebsiteGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1650,41 +3934,113 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 					return errors.Wrap(err, "encode Set-Cookie header")
 				}
 			}
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
 		}
 		w.WriteHeader(200)
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1714,29 +4070,82 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 					return errors.Wrap(err, "encode Set-Cookie header")
 				}
 			}
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
 		}
 		w.WriteHeader(204)
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1755,36 +4164,93 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *NotFoundError:
+	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -1798,72 +4264,186 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 
 func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *WebsiteGet:
+	case *WebsiteGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(201)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *BadRequestError:
+	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(400)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *UnauthorisedError:
+	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(401)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ForbiddenError:
+	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(403)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *ConflictError:
+	case *ConflictErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(409)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *InternalServerError:
+	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "X-API-Commit" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "X-API-Commit",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.XAPICommit.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode X-API-Commit header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}

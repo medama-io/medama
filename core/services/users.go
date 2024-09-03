@@ -40,14 +40,16 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 
-	return &api.UserGet{
-		Username: user.Username,
-		Settings: api.UserSettings{
-			Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
-			ScriptType: scriptFeatures,
+	return &api.UserGetHeaders{
+		Response: api.UserGet{
+			Username: user.Username,
+			Settings: api.UserSettings{
+				Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
+				ScriptType: scriptFeatures,
+			},
+			DateCreated: user.DateCreated,
+			DateUpdated: user.DateUpdated,
 		},
-		DateCreated: user.DateCreated,
-		DateUpdated: user.DateUpdated,
 	}, nil
 }
 
@@ -85,19 +87,21 @@ func (h *Handler) GetUserUsage(ctx context.Context, _params api.GetUserUsagePara
 		return nil, err
 	}
 
-	return &api.UserUsageGet{
-		CPU: api.UserUsageGetCPU{
-			Usage:   float32(cpuUsage),
-			Cores:   cpuCores,
-			Threads: cpuThreads,
-		},
-		Memory: api.UserUsageGetMemory{
-			Used:  safeConvertUint64ToInt64(vmStat.Used),
-			Total: safeConvertUint64ToInt64(vmStat.Total),
-		},
-		Disk: api.UserUsageGetDisk{
-			Used:  safeConvertUint64ToInt64(diskStat.Used),
-			Total: safeConvertUint64ToInt64(diskStat.Total),
+	return &api.UserUsageGetHeaders{
+		Response: api.UserUsageGet{
+			CPU: api.UserUsageGetCPU{
+				Usage:   float32(cpuUsage),
+				Cores:   cpuCores,
+				Threads: cpuThreads,
+			},
+			Memory: api.UserUsageGetMemory{
+				Used:  safeConvertUint64ToInt64(vmStat.Used),
+				Total: safeConvertUint64ToInt64(vmStat.Total),
+			},
+			Disk: api.UserUsageGetDisk{
+				Used:  safeConvertUint64ToInt64(diskStat.Used),
+				Total: safeConvertUint64ToInt64(diskStat.Total),
+			},
 		},
 	}, nil
 }
@@ -210,14 +214,16 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 
-	return &api.UserGet{
-		Username: user.Username,
-		Settings: api.UserSettings{
-			Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
-			ScriptType: scriptFeatures,
+	return &api.UserGetHeaders{
+		Response: api.UserGet{
+			Username: user.Username,
+			Settings: api.UserSettings{
+				Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
+				ScriptType: scriptFeatures,
+			},
+			DateCreated: user.DateCreated,
+			DateUpdated: user.DateUpdated,
 		},
-		DateCreated: user.DateCreated,
-		DateUpdated: user.DateUpdated,
 	}, nil
 }
 

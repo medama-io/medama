@@ -1578,56 +1578,6 @@ func (s *ForbiddenErrorError) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes GetWebsitesOKApplicationJSON as json.
-func (s GetWebsitesOKApplicationJSON) Encode(e *jx.Encoder) {
-	unwrapped := []WebsiteGet(s)
-
-	e.ArrStart()
-	for _, elem := range unwrapped {
-		elem.Encode(e)
-	}
-	e.ArrEnd()
-}
-
-// Decode decodes GetWebsitesOKApplicationJSON from json.
-func (s *GetWebsitesOKApplicationJSON) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode GetWebsitesOKApplicationJSON to nil")
-	}
-	var unwrapped []WebsiteGet
-	if err := func() error {
-		unwrapped = make([]WebsiteGet, 0)
-		if err := d.Arr(func(d *jx.Decoder) error {
-			var elem WebsiteGet
-			if err := elem.Decode(d); err != nil {
-				return err
-			}
-			unwrapped = append(unwrapped, elem)
-			return nil
-		}); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		return errors.Wrap(err, "alias")
-	}
-	*s = GetWebsitesOKApplicationJSON(unwrapped)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s GetWebsitesOKApplicationJSON) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *GetWebsitesOKApplicationJSON) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode implements json.Marshaler.
 func (s *InternalServerError) Encode(e *jx.Encoder) {
 	e.ObjStart()

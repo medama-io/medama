@@ -86,7 +86,7 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 	}
 
 	// Map to API response
-	websitesGet := &api.GetWebsitesOKApplicationJSON{}
+	websitesGet := make([]api.WebsiteGet, 0, len(websites))
 
 	// If summary is requested, include visitors per website
 	if ok := params.Summary.Or(false); ok {
@@ -100,7 +100,7 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 				return nil, errors.Wrap(err, w.Hostname)
 			}
 
-			*websitesGet = append(*websitesGet, api.WebsiteGet{
+			websitesGet = append(websitesGet, api.WebsiteGet{
 				Hostname: w.Hostname,
 				Summary: api.NewOptWebsiteGetSummary(api.WebsiteGetSummary{
 					Visitors: views.Visitors,
@@ -110,13 +110,15 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 		// Otherwise, return only hostnames
 	} else {
 		for _, w := range websites {
-			*websitesGet = append(*websitesGet, api.WebsiteGet{
+			websitesGet = append(websitesGet, api.WebsiteGet{
 				Hostname: w.Hostname,
 			})
 		}
 	}
 
-	return websitesGet, nil
+	return &api.GetWebsitesOKHeaders{
+		Response: websitesGet,
+	}, nil
 }
 
 func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDParams) (api.GetWebsitesIDRes, error) {
@@ -139,8 +141,10 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 		return ErrUnauthorised(model.ErrWebsiteNotFound), nil
 	}
 
-	return &api.WebsiteGet{
-		Hostname: website.Hostname,
+	return &api.WebsiteGetHeaders{
+		Response: api.WebsiteGet{
+			Hostname: website.Hostname,
+		},
 	}, nil
 }
 
@@ -194,8 +198,10 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 		h.hostnames.Add(req.Hostname.Value)
 	}
 
-	return &api.WebsiteGet{
-		Hostname: website.Hostname,
+	return &api.WebsiteGetHeaders{
+		Response: api.WebsiteGet{
+			Hostname: website.Hostname,
+		},
 	}, nil
 }
 
@@ -233,7 +239,9 @@ func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api
 	// Add hostname to cache
 	h.hostnames.Add(req.Hostname)
 
-	return &api.WebsiteGet{
-		Hostname: req.Hostname,
+	return &api.WebsiteGetHeaders{
+		Response: api.WebsiteGet{
+			Hostname: req.Hostname,
+		},
 	}, nil
 }
