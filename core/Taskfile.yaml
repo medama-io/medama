@@ -88,7 +88,19 @@ tasks:
     env:
       CGO_ENABLED: "1"
 
+  # Centralise Docker release command into here for simpler maintenance instead of specifying
+  # within Dockerfile
+  release:docker:
+    deps: [generate]
+    cmds:
+      - go build -o ./bin/main -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - chmod +x ./bin/main
+      - echo "docker build done"
+    env:
+      CGO_ENABLED: "1"
+
   release:linux:amd64:
+    deps: [generate]
     cmds:
       - go build -o ./bin/medama_linux_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - chmod +x ./bin/medama_linux_amd64
@@ -99,6 +111,7 @@ tasks:
       GOARCH: "amd64"
 
   release:linux:arm64:
+    deps: [generate]
     cmds:
       - go build -o ./bin/medama_linux_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - chmod +x ./bin/medama_linux_arm64
@@ -111,6 +124,7 @@ tasks:
       GOARCH: "arm64"
 
   release:darwin:amd64:
+    deps: [generate]
     cmds:
       - go build -o ./bin/medama_darwin_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - chmod +x ./bin/medama_darwin_amd64
@@ -121,6 +135,7 @@ tasks:
       GOARCH: "amd64"
 
   release:darwin:arm64:
+    deps: [generate]
     cmds:
       - go build -o ./bin/medama_darwin_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
       - chmod +x ./bin/medama_darwin_arm64
