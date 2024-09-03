@@ -12,7 +12,7 @@ func XAPICommitMiddleware(commit string) func(http.Handler) http.Handler {
 			// Include all routes except for /event routes.
 			// Only apply to GET requests.
 			if r.Method == http.MethodGet && !strings.HasPrefix(r.URL.Path, "/api/event") {
-				w.Header().Set("x-api-commit", commit)
+				w.Header().Set("X-Api-Commit", commit)
 			}
 
 			next.ServeHTTP(w, r)
