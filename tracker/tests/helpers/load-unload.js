@@ -18,7 +18,7 @@ const loadUnloadTests = (name) => {
 			const expectedRequests = [
 				{
 					method: 'GET',
-					url: '/api/event/ping?root',
+					url: '/api/event/ping',
 					status: 200,
 					responseBody: '0',
 				},
@@ -64,11 +64,10 @@ const loadUnloadTests = (name) => {
 					postData: {
 						e: 'unload',
 					},
-					ignoreBrowsers: ['firefox'], // TODO: Investigate why this request is not sent in Firefox (works outside Playwright)
 				},
 				{
 					method: 'GET',
-					url: '/api/event/ping?root',
+					url: '/api/event/ping',
 					status: 200,
 					responseBody: '1',
 				},
