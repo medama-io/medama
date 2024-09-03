@@ -11,14 +11,14 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/marcboeker/go-duckdb v1.7.1
-	github.com/medama-io/go-referrer-parser v0.0.0-20240706151617-0106555291e7
-	github.com/medama-io/go-timezone-country v0.0.0-20240125021558-8a6127efd8f7
-	github.com/medama-io/go-useragent v0.0.0-20240707203018-4bd80a87eb23
-	github.com/ncruces/go-sqlite3 v0.18.0
+	github.com/medama-io/go-referrer-parser v0.0.0-20240903120234-0a63376371c3
+	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
+	github.com/medama-io/go-useragent v0.0.0-20240903122205-1e1d5231c715
+	github.com/ncruces/go-sqlite3 v0.18.1
 	github.com/ogen-go/ogen v1.3.0
-	github.com/rs/cors v1.11.0
+	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.33.0
-	github.com/shirou/gopsutil/v4 v4.24.7
+	github.com/shirou/gopsutil/v4 v4.24.8
 	github.com/stretchr/testify v1.9.0
 	go.jetify.com/typeid v1.3.0
 	go.uber.org/multierr v1.11.0
@@ -74,7 +74,7 @@ require (
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
-	golang.org/x/xerrors v0.0.0-20240716161551-93cc26a95ae9 // indirect
+	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

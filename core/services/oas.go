@@ -33,10 +33,9 @@ type Handler struct {
 	analyticsDB *duckdb.Client
 
 	// Parsing libraries
-	useragent      *useragent.Parser
-	referrer       *referrer.Parser
-	timezoneMap    *tz.TimezoneCodeMap
-	codeCountryMap *tz.CodeCountryMap
+	useragent          *useragent.Parser
+	referrer           *referrer.Parser
+	timezoneCountryMap *tz.TimezoneCountryMap
 
 	// Cache store for hostnames
 	hostnames *util.CacheStore
@@ -48,12 +47,7 @@ type Handler struct {
 // NewService returns a new instance of the ogen service handler.
 func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Client, duckdb *duckdb.Client, commit string) (*Handler, error) {
 	// Load timezone and country maps
-	tzMap, err := tz.NewTimezoneCodeMap()
-	if err != nil {
-		return nil, errors.Wrap(err, "services init")
-	}
-
-	codeCountryMap, err := tz.NewCodeCountryMap()
+	tzMap, err := tz.NewTimezoneCountryMap()
 	if err != nil {
 		return nil, errors.Wrap(err, "services init")
 	}
@@ -78,15 +72,14 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 	}
 
 	return &Handler{
-		auth:           auth,
-		db:             sqlite,
-		analyticsDB:    duckdb,
-		useragent:      useragent.NewParser(),
-		referrer:       referrerParser,
-		timezoneMap:    &tzMap,
-		codeCountryMap: &codeCountryMap,
-		hostnames:      &hostnameCache,
-		RuntimeConfig:  &runtimeConfig,
+		auth:               auth,
+		db:                 sqlite,
+		analyticsDB:        duckdb,
+		useragent:          useragent.NewParser(),
+		referrer:           referrerParser,
+		timezoneCountryMap: &tzMap,
+		hostnames:          &hostnameCache,
+		RuntimeConfig:      &runtimeConfig,
 	}, nil
 }
 
