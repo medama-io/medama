@@ -11,8 +11,14 @@ jobs:
     name: Deploy app
     runs-on: ubuntu-latest
     concurrency: deploy-group # ensure only one action runs at a time
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Wait for Docker Edge image to be updated in registry
+        run: sleep 15s
+        shell: bash
+
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:
