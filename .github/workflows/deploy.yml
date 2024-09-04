@@ -1,8 +1,11 @@
 name: Demo Deploy
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Docker Edge Publish]
+    types: [completed]
+    branches: [main]
+
 jobs:
   deploy:
     name: Deploy app

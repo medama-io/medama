@@ -12,12 +12,10 @@ import (
 	_ "github.com/ncruces/go-sqlite3/embed"
 )
 
-// Build information.
+// Build information. Populated at build time.
 var (
-	//nolint: gochecknoglobals // These variables are populated at build time.
 	Version = ""
-	//nolint: gochecknoglobals // These variables are populated at build time.
-	Commit = ""
+	Commit  = ""
 )
 
 const (
