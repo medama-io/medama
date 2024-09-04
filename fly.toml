@@ -5,7 +5,10 @@
 app = 'medama'
 primary_region = 'lhr'
 
+swap_size_mb = 1024
+
 [build]
+image = 'ghcr.io/medama-io/medama:edge'
 
 [env]
 ANALYTICS_DATABASE_HOST = '/db/analytics.db'
@@ -24,6 +27,9 @@ force_https = true
 auto_start_machines = true
 min_machines_running = 1
 processes = ['app']
+
+[http_service.concurrency]
+type = "requests"
 
 [[vm]]
 memory = '512mb'
