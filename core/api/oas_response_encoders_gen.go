@@ -19,10 +19,10 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -31,7 +31,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -44,10 +44,10 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -56,7 +56,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -75,10 +75,10 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -87,7 +87,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -106,10 +106,10 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -118,7 +118,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -137,10 +137,10 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -149,7 +149,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -168,10 +168,10 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -180,7 +180,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -205,10 +205,10 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -217,7 +217,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -230,10 +230,10 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -242,7 +242,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -261,10 +261,10 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -273,7 +273,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -292,10 +292,10 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -304,7 +304,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -323,10 +323,10 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -335,7 +335,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -354,10 +354,10 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -366,7 +366,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -431,10 +431,10 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -443,7 +443,7 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -462,10 +462,10 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -474,7 +474,7 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -500,10 +500,10 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -512,7 +512,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -531,10 +531,10 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -543,7 +543,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -562,10 +562,10 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -574,7 +574,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -593,10 +593,10 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -605,7 +605,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -624,10 +624,10 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -636,7 +636,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -662,10 +662,10 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -674,7 +674,7 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -693,10 +693,10 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -705,7 +705,7 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -724,10 +724,10 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -736,7 +736,7 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -762,10 +762,10 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -774,7 +774,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -793,10 +793,10 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -805,7 +805,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -824,10 +824,10 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -836,7 +836,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -855,10 +855,10 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -867,7 +867,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -886,10 +886,10 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -898,7 +898,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -917,10 +917,10 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -929,7 +929,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -955,10 +955,10 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -967,7 +967,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -986,10 +986,10 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -998,7 +998,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1017,10 +1017,10 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1029,7 +1029,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1048,10 +1048,10 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1060,7 +1060,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1079,10 +1079,10 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1091,7 +1091,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1110,10 +1110,10 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1122,7 +1122,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1148,10 +1148,10 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1160,7 +1160,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1179,10 +1179,10 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1191,7 +1191,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1210,10 +1210,10 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1222,7 +1222,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1241,10 +1241,10 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1253,7 +1253,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1272,10 +1272,10 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1284,7 +1284,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1303,10 +1303,10 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1315,7 +1315,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1341,10 +1341,10 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1353,7 +1353,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1372,10 +1372,10 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1384,7 +1384,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1403,10 +1403,10 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1415,7 +1415,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1434,10 +1434,10 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1446,7 +1446,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1465,10 +1465,10 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1477,7 +1477,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1496,10 +1496,10 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1508,7 +1508,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1534,10 +1534,10 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1546,7 +1546,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1565,10 +1565,10 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1577,7 +1577,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1596,10 +1596,10 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1608,7 +1608,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1627,10 +1627,10 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1639,7 +1639,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1658,10 +1658,10 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1670,7 +1670,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1689,10 +1689,10 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1701,7 +1701,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1727,10 +1727,10 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1739,7 +1739,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1758,10 +1758,10 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1770,7 +1770,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1789,10 +1789,10 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1801,7 +1801,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1820,10 +1820,10 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1832,7 +1832,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1851,10 +1851,10 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1863,7 +1863,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1882,10 +1882,10 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1894,7 +1894,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1920,10 +1920,10 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1932,7 +1932,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1951,10 +1951,10 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1963,7 +1963,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -1982,10 +1982,10 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -1994,7 +1994,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2013,10 +2013,10 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2025,7 +2025,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2044,10 +2044,10 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2056,7 +2056,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2075,10 +2075,10 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2087,7 +2087,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2113,10 +2113,10 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2125,7 +2125,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2144,10 +2144,10 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2156,7 +2156,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2175,10 +2175,10 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2187,7 +2187,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2206,10 +2206,10 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2218,7 +2218,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2237,10 +2237,10 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2249,7 +2249,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2275,10 +2275,10 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2287,7 +2287,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2306,10 +2306,10 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2318,7 +2318,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2337,10 +2337,10 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2349,7 +2349,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2368,10 +2368,10 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2380,7 +2380,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2399,10 +2399,10 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2411,7 +2411,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2430,10 +2430,10 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2442,7 +2442,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2468,10 +2468,10 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2480,7 +2480,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2499,10 +2499,10 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2511,7 +2511,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2530,10 +2530,10 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2542,7 +2542,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2561,10 +2561,10 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2573,7 +2573,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2592,10 +2592,10 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2604,7 +2604,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2623,10 +2623,10 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2635,7 +2635,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2661,10 +2661,10 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2673,7 +2673,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2692,10 +2692,10 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2704,7 +2704,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2723,10 +2723,10 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2735,7 +2735,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2754,10 +2754,10 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2766,7 +2766,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2785,10 +2785,10 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2797,7 +2797,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2816,10 +2816,10 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2828,7 +2828,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2854,10 +2854,10 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2866,7 +2866,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2885,10 +2885,10 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2897,7 +2897,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2916,10 +2916,10 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2928,7 +2928,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2947,10 +2947,10 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2959,7 +2959,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -2978,10 +2978,10 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -2990,7 +2990,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3016,10 +3016,10 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3028,7 +3028,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3047,10 +3047,10 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3059,7 +3059,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3078,10 +3078,10 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3090,7 +3090,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3109,10 +3109,10 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3121,7 +3121,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3140,10 +3140,10 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3152,7 +3152,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3178,10 +3178,10 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3190,7 +3190,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3213,10 +3213,10 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3225,7 +3225,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3244,10 +3244,10 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3256,7 +3256,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3275,10 +3275,10 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3287,7 +3287,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3306,10 +3306,10 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3318,7 +3318,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3344,10 +3344,10 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3356,7 +3356,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3375,10 +3375,10 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3387,7 +3387,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3406,10 +3406,10 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3418,7 +3418,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3437,10 +3437,10 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3449,7 +3449,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3468,10 +3468,10 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3480,7 +3480,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3506,10 +3506,10 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3518,7 +3518,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3537,10 +3537,10 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3549,7 +3549,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3568,10 +3568,10 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3580,7 +3580,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3599,10 +3599,10 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3611,7 +3611,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3630,10 +3630,10 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3642,7 +3642,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3661,10 +3661,10 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3673,7 +3673,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3692,10 +3692,10 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3704,7 +3704,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3730,10 +3730,10 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3742,7 +3742,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3761,10 +3761,10 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3773,7 +3773,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3792,10 +3792,10 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3804,7 +3804,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3823,10 +3823,10 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3835,7 +3835,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3854,10 +3854,10 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3866,7 +3866,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3885,10 +3885,10 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3897,7 +3897,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3934,10 +3934,10 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 					return errors.Wrap(err, "encode Set-Cookie header")
 				}
 			}
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3946,7 +3946,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3959,10 +3959,10 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -3971,7 +3971,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -3990,10 +3990,10 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4002,7 +4002,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4021,10 +4021,10 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4033,7 +4033,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4070,10 +4070,10 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 					return errors.Wrap(err, "encode Set-Cookie header")
 				}
 			}
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4082,7 +4082,7 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4095,10 +4095,10 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4107,7 +4107,7 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4126,10 +4126,10 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4138,7 +4138,7 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4169,10 +4169,10 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4181,7 +4181,7 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4200,10 +4200,10 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4212,7 +4212,7 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4231,10 +4231,10 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4243,7 +4243,7 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4269,10 +4269,10 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4281,7 +4281,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4300,10 +4300,10 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4312,7 +4312,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4331,10 +4331,10 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4343,7 +4343,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4362,10 +4362,10 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4374,7 +4374,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4393,10 +4393,10 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4405,7 +4405,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
@@ -4424,10 +4424,10 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "X-API-Commit" header.
+			// Encode "X-Api-Commit" header.
 			{
 				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "X-API-Commit",
+					Name:    "X-Api-Commit",
 					Explode: false,
 				}
 				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
@@ -4436,7 +4436,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 					}
 					return nil
 				}); err != nil {
-					return errors.Wrap(err, "encode X-API-Commit header")
+					return errors.Wrap(err, "encode X-Api-Commit header")
 				}
 			}
 		}
