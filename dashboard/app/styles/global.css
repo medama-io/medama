@@ -171,7 +171,9 @@ h6 {
 a,
 a:visited,
 a:hover,
-a:active {
+a:active,
+button,
+button:visited {
 	color: inherit;
 }
 
