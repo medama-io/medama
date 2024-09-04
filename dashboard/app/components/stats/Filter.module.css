@@ -12,21 +12,71 @@
 	border-top: 1px solid var(--border-light);
 }
 
-.dropdown {
+.trigger {
+	composes: button from global;
+
 	width: 120px;
-	height: 40px;
-	border-radius: 8px;
+	height: 36px;
+	padding: 0 10px 0 14px;
+	justify-content: space-between;
+
+	color: var(--text-dark);
+	background-color: white;
+
+	border: 1px solid var(--border-light);
+	border-radius: 4px;
+
+	&:hover {
+		background-color: var(--text-light);
+	}
+
+	&:focus,
+	&:focus-visible {
+		outline: 1px solid var(--focus-outline);
+		outline-offset: -1px;
+	}
 
 	svg {
+		margin-left: 4px;
 		color: var(--text-dark);
 	}
 }
 
-.dropdown-label {
+.label {
 	display: block;
 	white-space: nowrap;
 	overflow: hidden;
-	text-overflow: clip;
+	text-overflow: ellipsis;
+}
+
+.dropdown {
+	width: var(--radix-dropdown-menu-trigger-width);
+	padding: 4px;
+
+	background-color: white;
+
+	border: 1px solid var(--border-light);
+	border-radius: 4px;
+}
+
+.item {
+	composes: button from global;
+
+	padding: 4px 8px;
+	height: fit-content;
+	width: 100%;
+	text-align: left;
+	justify-content: flex-start;
+
+	color: var(--text-dark);
+	background-color: white;
+
+	border: none;
+	border-radius: 4px;
+
+	&:hover {
+		background-color: var(--black-a1);
+	}
 }
 
 .cancel {

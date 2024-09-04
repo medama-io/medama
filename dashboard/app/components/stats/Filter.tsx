@@ -1,24 +1,18 @@
 import {
 	CloseButton,
-	Combobox,
 	Group,
-	InputBase,
 	Popover,
-	ScrollArea,
 	Text,
 	TextInput,
 	UnstyledButton,
-	useCombobox,
 } from '@mantine/core';
-import {
-	ChevronDownIcon,
-	ChevronUpIcon,
-	PlusIcon,
-} from '@radix-ui/react-icons';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { ChevronDownIcon, PlusIcon } from '@radix-ui/react-icons';
 import { useSearchParams } from '@remix-run/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useFilter } from '@/hooks/use-filter';
+import { ScrollArea } from '@/components/ScrollArea';
 
 import type { Filter, FilterOperator } from './types';
 
@@ -114,67 +108,31 @@ interface FilterDropdownProps {
 }
 
 const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
-	const combobox = useCombobox({
-		onDropdownClose: () => {
-			combobox.resetSelectedOption();
-		},
-		onDropdownOpen: (eventSource) => {
-			if (eventSource === 'keyboard') {
-				combobox.selectActiveOption();
-			} else {
-				combobox.updateSelectedOptionIndex('active');
-			}
-		},
-	});
-
 	const label = isFilterType(choices)
 		? choices[value as FilterOperator]?.label
 		: choices[value as Filter]?.label;
 
 	const options = Object.entries(choices).map(([key, filter]) => (
-		<Combobox.Option key={key} value={key} active={key === value}>
-			{filter.label}
-		</Combobox.Option>
+		<DropdownMenu.Item key={key} onSelect={() => setValue(key)} asChild>
+			<button type="button" className={classes.item}>
+				{filter.label}
+			</button>
+		</DropdownMenu.Item>
 	));
 
 	return (
-		<Combobox
-			onOptionSubmit={(option) => {
-				setValue(option);
-				combobox.updateSelectedOptionIndex('active');
-				combobox.closeDropdown();
-			}}
-			store={combobox}
-			withinPortal={false}
-		>
-			<Combobox.Target>
-				<InputBase
-					component="button"
-					type="button"
-					pointer
-					className={classes.dropdown}
-					rightSection={
-						combobox.dropdownOpened ? <ChevronUpIcon /> : <ChevronDownIcon />
-					}
-					rightSectionPointerEvents="none"
-					onClick={() => {
-						combobox.toggleDropdown();
-					}}
-				>
-					<span className={classes['dropdown-label']}>
-						{label ?? 'Unknown'}
-					</span>
-				</InputBase>
-			</Combobox.Target>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild>
+				<button type="button" className={classes.trigger}>
+					<span className={classes.label}>{label ?? 'Unknown'}</span>
+					<ChevronDownIcon />
+				</button>
+			</DropdownMenu.Trigger>
 
-			<Combobox.Dropdown>
-				<Combobox.Options>
-					<ScrollArea.Autosize mah={200} type="scroll">
-						{options}
-					</ScrollArea.Autosize>
-				</Combobox.Options>
-			</Combobox.Dropdown>
-		</Combobox>
+			<DropdownMenu.Content className={classes.dropdown}>
+				<ScrollArea vertical>{options}</ScrollArea>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	);
 };
 

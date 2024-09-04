@@ -109,6 +109,7 @@
 }
 
 body {
+	margin: 0;
 	display: flex;
 	min-height: 100vh;
 	flex-direction: column;
@@ -116,6 +117,24 @@ body {
 
 	font-size: 14px;
 	font-family: var(--default-font-family);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+button,
+select {
+	text-transform: none;
 }
 
 main {
