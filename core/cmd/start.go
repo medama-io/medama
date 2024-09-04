@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"net/http"
+	"net/http/pprof"
 	"os"
 	"os/signal"
 	"strconv"
@@ -67,6 +68,7 @@ func (s *StartCommand) ParseFlags(args []string) error {
 	fs.StringVar(&s.AnalyticsDB.Host, "analyticsdb", s.AnalyticsDB.Host, "Path to analytics database.")
 
 	// Misc settings.
+	fs.BoolVar(&s.Server.Profiler, "profiler", s.Server.Profiler, "Enable debug profiling.")
 	fs.BoolVar(&s.Server.UseEnvironment, "env", false, "Opt-in to allow environment variables to be used for configuration. Flags will still override environment variables.")
 	fs.BoolVar(&s.Server.DemoMode, "demo", s.Server.DemoMode, "Enable demo mode restricting all POST/PATCH/DELETE actions (except login).")
 
@@ -149,6 +151,16 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	mux := http.NewServeMux()
 	mux.Handle("/openapi.yaml", http.FileServer(http.FS(generate.OpenAPIDocument)))
 	mux.Handle("/api/", http.StripPrefix("/api", apiHandler))
+
+	// Start CPU profiling if enabled.
+	if s.Server.Profiler {
+		log.Warn().Msg("Enabling debug profiler...")
+		mux.HandleFunc("/debug/pprof/", pprof.Index)
+		mux.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+		mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
+		mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+		mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
+	}
 
 	// SPA client.
 	err = services.SetupAssetHandler(mux, service.RuntimeConfig)
