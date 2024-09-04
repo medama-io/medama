@@ -26,6 +26,8 @@ type ServerConfig struct {
 	TimeoutIdle  time.Duration
 
 	// Misc settings.
+	// Enable /debug/pprof endpoints.
+	Profiler       bool `env:"PROFILER"`
 	UseEnvironment bool
 	DemoMode       bool `env:"DEMO_MODE"`
 
@@ -64,6 +66,7 @@ const (
 	DefaultLoggerLevel = "info"
 
 	// Misc constants.
+	DefaultProfiler = false
 	DefaultDemoMode = false
 )
 
@@ -84,6 +87,7 @@ func NewServerConfig(useEnv bool, version string, commit string) (*ServerConfig,
 		TimeoutRead:          DefaultTimeoutRead,
 		TimeoutWrite:         DefaultTimeoutWrite,
 		TimeoutIdle:          DefaultTimeoutIdle,
+		Profiler:             DefaultProfiler,
 		UseEnvironment:       useEnv,
 		DemoMode:             DefaultDemoMode,
 		Version:              version,

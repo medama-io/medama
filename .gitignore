@@ -39,3 +39,6 @@
 core/**/main
 core/**/bin
 core/**/client
+
+# Output of pprof files
+**/*.prof
