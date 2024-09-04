@@ -16,6 +16,7 @@ APP_DATABASE_HOST = '/db/app.db'
 PORT = '8080'
 LEVEL = 'debug'
 DEMO_MODE = 'true'
+PROFILER = 'true'
 
 [[mounts]]
 source = 'medama_db'
