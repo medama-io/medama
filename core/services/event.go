@@ -166,18 +166,18 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 		ua := h.useragent.Parse(rawUserAgent)
 
 		// If the user agent is a bot, we want to ignore it.
-		if ua.Bot {
+		if ua.IsBot() {
 			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: user agent is a bot")
 			return &api.PostEventHitNoContent{}, nil
 		}
 
-		uaBrowser := ua.Browser
+		uaBrowser := ua.GetBrowser()
 		if uaBrowser == "" {
 			uaBrowser = Unknown
 			unknownCounter++
 		}
 
-		uaOS := ua.OS
+		uaOS := ua.GetOS()
 		if uaOS == "" {
 			uaOS = Unknown
 			unknownCounter++
@@ -185,13 +185,13 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 
 		uaDevice := Unknown
 		switch {
-		case ua.Desktop:
+		case ua.IsDesktop():
 			uaDevice = "Desktop"
-		case ua.Mobile:
+		case ua.IsMobile():
 			uaDevice = "Mobile"
-		case ua.Tablet:
+		case ua.IsTablet():
 			uaDevice = "Tablet"
-		case ua.TV:
+		case ua.IsTV():
 			uaDevice = "TV"
 		default:
 			unknownCounter++
