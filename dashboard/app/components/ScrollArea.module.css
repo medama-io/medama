@@ -1,7 +1,8 @@
 .root {
+	height: 100%;
 	width: 100%;
 	overflow: hidden;
-	--scrollbar-size: 10px;
+	--scrollbar-size: 11px;
 }
 
 .viewport {
@@ -17,11 +18,11 @@
 	/* disable browser handling of all panning and zooming gestures on touch devices */
 	touch-action: none;
 	padding: 2px;
-	background: var(--black-a1);
+	background: transparent;
 	transition: background 160ms ease-out;
 
 	&:hover {
-		background: var(--black-a3);
+		background: var(--black-a1);
 	}
 
 	&[data-orientation="vertical"] {
@@ -36,7 +37,7 @@
 
 .thumb {
 	flex: 1;
-	background: var(--black-a3);
+	background: #0006;
 	border-radius: var(--scrollbar-size);
 	position: relative;
 

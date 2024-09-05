@@ -129,7 +129,7 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 				</button>
 			</DropdownMenu.Trigger>
 
-			<DropdownMenu.Content className={classes.dropdown}>
+			<DropdownMenu.Content className={classes.dropdown} sideOffset={8}>
 				<ScrollArea vertical>{options}</ScrollArea>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
@@ -199,7 +199,7 @@ export const Filters = () => {
 	return (
 		<Group mt={-40}>
 			<Popover
-				width={442}
+				width={454}
 				trapFocus
 				position="bottom-start"
 				opened={opened}

@@ -50,19 +50,18 @@
 }
 
 .dropdown {
+	height: 200px;
 	width: var(--radix-dropdown-menu-trigger-width);
-	padding: 4px;
 
 	background-color: white;
-
-	border: 1px solid var(--border-light);
+	border: 1px solid var(--border-muted);
 	border-radius: 4px;
 }
 
 .item {
 	composes: button from global;
 
-	padding: 4px 8px;
+	padding: 6px 14px;
 	height: fit-content;
 	width: 100%;
 	text-align: left;
@@ -76,6 +75,7 @@
 
 	&:hover {
 		background-color: var(--black-a1);
+		border-radius: 0;
 	}
 }
 
