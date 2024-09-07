@@ -1,21 +1,34 @@
+.root {
+	composes: group from global;
+
+	margin-top: -40px;
+	justify-content: flex-start;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
 .popover {
+	width: 494px;
 	padding: 16px 16px 12px 16px;
 	gap: 16px;
 
+	background-color: var(--bg-light);
+
 	border: 1px solid var(--border-light);
 	border-radius: 8px;
-}
 
-.select {
-	margin: 16px -16px 0 -16px;
-	padding: 12px 16px 0 16px;
-	border-top: 1px solid var(--border-light);
+	h5 {
+		font-size: 16px;
+		font-weight: 600;
+		padding-bottom: 8px;
+	}
 }
 
 .trigger {
 	composes: button from global;
 
-	width: 120px;
+	flex: 1 1 0;
+	width: 0;
 	height: 36px;
 	padding: 0 10px 0 14px;
 	justify-content: space-between;
@@ -42,11 +55,40 @@
 	}
 }
 
+.input {
+	flex: 1 1 0;
+	width: 0;
+	height: 36px;
+	padding: 0 10px 0 14px;
+
+	color: var(--text-dark);
+	background-color: white;
+
+	border: 1px solid var(--border-light);
+	border-radius: 4px;
+
+	&:hover {
+		background-color: var(--text-light);
+	}
+
+	&:focus,
+	&:focus-visible {
+		outline: 1px solid var(--focus-outline);
+		outline-offset: -1px;
+	}
+}
+
 .label {
-	display: block;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	line-height: normal;
+}
+
+.dropdown-list {
+	composes: group from global;
+
+	gap: 8px;
 }
 
 .dropdown {
@@ -73,30 +115,24 @@
 	border: none;
 	border-radius: 4px;
 
+	&:focus-visible {
+		background-color: var(--black-a1);
+		border-radius: 0;
+		outline: none;
+	}
+
 	&:hover {
 		background-color: var(--black-a1);
 		border-radius: 0;
 	}
 }
 
-.cancel {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	width: 80px;
-	height: 40px;
-
-	font-size: 14px;
-	font-weight: 600;
-
-	border: 1px solid var(--border-light);
-	border-radius: 8px;
-}
-
 .filter-item {
-	height: 40px;
+	composes: group from global;
+
+	min-height: 40px;
 	padding: 0 8px 0 16px;
+	gap: 0;
 
 	color: var(--text-grey);
 	background-color: var(--selected-light);
@@ -104,32 +140,100 @@
 	border-radius: 8px;
 
 	cursor: default;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: normal;
+
+	span {
+		padding: 8px 0;
+	}
+
+	div {
+		display: inline-flex;
+		align-items: center;
+
+		margin-left: 4px;
+		padding: 6px;
+
+		border-radius: 7px;
+
+		cursor: pointer;
+
+		&:hover {
+			background-color: var(--black-a1);
+		}
+
+		svg {
+			height: 15px;
+			width: 15px;
+		}
+	}
 }
 
 /* Buttons */
 .add {
+	composes: button from global;
+
 	width: 120px;
 	height: 40px;
+	align-items: center;
+	gap: 8px;
 
 	color: var(--text-light);
 	background-color: var(--teal);
 
-	border-radius: 8px;
+	border: none;
+
+	&:hover {
+		background-color: var(--teal);
+	}
+
+	span {
+		font-weight: 600;
+	}
+}
+
+.select {
+	composes: group from global;
+
+	margin: 16px -16px 0 -16px;
+	padding: 12px 16px 0 16px;
+	gap: 12px;
+
+	justify-content: flex-end;
+
+	border-top: 1px solid var(--border-light);
 }
 
 .apply {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
+	composes: button from global;
 	width: 80px;
-	height: 40px;
-
-	font-size: 14px;
 	font-weight: 600;
 
 	color: var(--text-light);
 	background-color: var(--logo-green);
 
+	border: 1px solid transparent;
 	border-radius: 8px;
+
+	&:hover {
+		background-color: var(--logo-green);
+	}
+}
+
+.cancel {
+	composes: button from global;
+	width: 80px;
+	font-weight: 600;
+
+	color: var(--text-dark);
+	background-color: var(--bg-light);
+
+	border: 1px solid var(--border-light);
+	border-radius: 8px;
+
+	&:hover {
+		background-color: var(--bg-light);
+	}
 }
