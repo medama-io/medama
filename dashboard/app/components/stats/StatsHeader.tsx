@@ -1,20 +1,16 @@
-import {
-	Flex,
-	FloatingIndicator,
-	Group,
-	Tooltip,
-	UnstyledButton,
-} from '@mantine/core';
 import { CalendarIcon } from '@radix-ui/react-icons';
+import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import { useParams, useSearchParams } from '@remix-run/react';
 import type React from 'react';
-import { useState } from 'react';
+import { Fragment } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
 
 import { DatePickerRange, datePickerClasses } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';
+import { Tooltip, TooltipProvider } from '@/components/Tooltip';
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
+import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useChartType } from '@/hooks/use-chart-type';
 import { useDisclosure } from '@/hooks/use-disclosure';
@@ -47,12 +43,6 @@ const CHART_TYPES = [
 ] as const;
 
 const SegmentedChartControl = () => {
-	// Segmented control for chart type
-	const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
-	const [controlsRefs, setControlsRefs] = useState<
-		Record<string, HTMLButtonElement | null>
-	>({});
-
 	const { setChartType, getChartType } = useChartType();
 	const chartType = getChartType();
 
@@ -60,36 +50,40 @@ const SegmentedChartControl = () => {
 		setChartType(value);
 	};
 
-	const setControlRef = (type: ChartType) => (node: HTMLButtonElement) => {
-		controlsRefs[type] = node;
-		setControlsRefs(controlsRefs);
-	};
-
 	const chartTypes = CHART_TYPES.map((item) => (
-		<Tooltip key={item.value} label={item.label} withArrow>
-			<UnstyledButton
-				key={item.value}
-				className={classes.control}
-				ref={setControlRef(item.value)}
-				aria-label={item.label}
-				onClick={() => handleChartChange(item.value)}
-				data-active={chartType === item.value}
-			>
-				<span className={classes.controlLabel}>{item.icon}</span>
-			</UnstyledButton>
-		</Tooltip>
+		<Fragment key={item.value}>
+			<Tooltip content={item.label}>
+				<ToggleGroup.Item value={item.value} asChild>
+					<button
+						type="submit"
+						className={classes.control}
+						aria-label={item.label}
+						onClick={() => handleChartChange(item.value)}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') {
+								handleChartChange(item.value);
+							}
+						}}
+						data-active={chartType === item.value}
+					>
+						<span className={classes.controlLabel}>{item.icon}</span>
+					</button>
+				</ToggleGroup.Item>
+			</Tooltip>
+		</Fragment>
 	));
 
 	return (
-		<div className={classes.toggle} ref={setRootRef}>
-			<Tooltip.Group openDelay={1000}>{chartTypes}</Tooltip.Group>
-			<FloatingIndicator
-				component="span"
-				className={classes.indicator}
-				target={controlsRefs[chartType]}
-				parent={rootRef}
-			/>
-		</div>
+		<ToggleGroup.Root
+			type="single"
+			value={chartType}
+			onValueChange={handleChartChange}
+			asChild
+		>
+			<div className={classes.toggle}>
+				<TooltipProvider delayDuration={500}>{chartTypes}</TooltipProvider>
+			</div>
+		</ToggleGroup.Root>
 	);
 };
 
@@ -133,9 +127,9 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 
 	return (
 		<InnerHeader>
-			<Flex className={classes.title}>
+			<div className={classes.title}>
 				<h1>Dashboard</h1>
-				<Group className={classes.dropdowns}>
+				<div className={classes.dropdowns}>
 					{!hideWebsiteSelector && (
 						<DropdownSelect
 							records={websitesRecord}
@@ -155,11 +149,16 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 						separatorValues={DATE_GROUP_END_VALUES}
 					/>
 					<DatePickerRange open={dateOpened} setOpen={toggleDate} />
-				</Group>
-			</Flex>
-			<ScrollContainer>
-				<Group justify="space-between" align="flex-end" mt="xs">
-					<Group wrap="nowrap" p={4}>
+				</div>
+			</div>
+			<ScrollContainer className={classes.scrollcontainer}>
+				<Group
+					style={{
+						alignItems: 'flex-end',
+						marginTop: 8,
+					}}
+				>
+					<div className={classes.scrollgroup}>
 						{stats.map((stat) => (
 							<HeaderDataBox
 								key={stat.label}
@@ -167,7 +166,7 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 								isActive={chart === stat.chart}
 							/>
 						))}
-					</Group>
+					</div>
 					<SegmentedChartControl />
 				</Group>
 			</ScrollContainer>

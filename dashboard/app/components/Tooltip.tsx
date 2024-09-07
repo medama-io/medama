@@ -4,23 +4,50 @@ import classes from './Tooltip.module.css';
 
 interface TooltipProps {
 	children: React.ReactNode;
-	label: string;
+	content: string;
+	open?: boolean;
+	defaultOpen?: boolean;
+	onOpenChange?: (open: boolean) => void;
+
+	contentClassname?: string;
+	arrowClassname?: string;
 }
 
-const Tooltip = ({ children, label }: TooltipProps) => {
+const Tooltip = ({
+	children,
+	content,
+	open,
+	defaultOpen,
+	onOpenChange,
+	contentClassname,
+	arrowClassname,
+	...props
+}: TooltipProps) => {
 	return (
-		<TooltipPrimitive.Provider>
-			<TooltipPrimitive.Root>
-				<TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-				<TooltipPrimitive.Portal>
-					<TooltipPrimitive.Content className={classes.content} sideOffset={5}>
-						{label}
-						<TooltipPrimitive.Arrow className={classes.arrow} />
-					</TooltipPrimitive.Content>
-				</TooltipPrimitive.Portal>
-			</TooltipPrimitive.Root>
-		</TooltipPrimitive.Provider>
+		<TooltipPrimitive.Root
+			open={open}
+			defaultOpen={defaultOpen}
+			onOpenChange={onOpenChange}
+		>
+			<TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
+			<TooltipPrimitive.Content
+				className={contentClassname ?? classes.content}
+				sideOffset={5}
+				side="top"
+				align="center"
+				{...props}
+			>
+				{content}
+				<TooltipPrimitive.Arrow
+					className={arrowClassname ?? classes.arrow}
+					width={11}
+					height={5}
+				/>
+			</TooltipPrimitive.Content>
+		</TooltipPrimitive.Root>
 	);
 };
 
-export { Tooltip };
+const TooltipProvider = TooltipPrimitive.Provider;
+
+export { Tooltip, TooltipProvider };
