@@ -1,4 +1,3 @@
-import { Paper } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Form, useSubmit } from '@remix-run/react';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
@@ -36,7 +35,7 @@ export const Login = () => {
 	};
 
 	return (
-		<Paper className={classes.wrapper} withBorder>
+		<div className={classes.wrapper}>
 			<h3 className={classes.title}>Log in to your dashboard</h3>
 			<Form onSubmit={form.onSubmit(handleSubmit)}>
 				<Flex>
@@ -79,6 +78,6 @@ export const Login = () => {
 					</Group>
 				</Button>
 			</Form>
-		</Paper>
+		</div>
 	);
 };

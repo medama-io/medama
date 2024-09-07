@@ -1,11 +1,11 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { ChevronDownIcon, Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
 import * as Popover from '@radix-ui/react-popover';
-import { ChevronDownIcon, PlusIcon, Cross1Icon } from '@radix-ui/react-icons';
 import { useSearchParams } from '@remix-run/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useFilter } from '@/hooks/use-filter';
 import { ScrollArea } from '@/components/ScrollArea';
+import { useFilter } from '@/hooks/use-filter';
 
 import type { Filter, FilterOperator } from './types';
 

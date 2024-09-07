@@ -1,17 +1,22 @@
 .databox {
+	display: block;
 	height: 132px;
 	width: 192px;
 	padding: 12px 24px 24px 24px;
 	position: relative;
+
 	color: var(--text-disabled);
+	background-color: transparent;
+
 	border: 1px solid transparent;
-	cursor: pointer;
+	border-radius: 8px;
 
 	/* Used to prevent wrapping on overflow */
 	flex: "0 0 auto";
+	text-align: left;
 
-	border-radius: 8px;
 	transition: all 0.1s ease;
+	cursor: pointer;
 
 	&[data-active="true"] {
 		color: var(--text-light);
@@ -21,6 +26,11 @@
 	&:hover {
 		color: var(--text-light);
 		border: 1px solid var(--border-dark);
+	}
+
+	&:focus-visible {
+		outline-offset: -1px;
+		outline: 2px solid var(--focus-outline);
 	}
 }
 
@@ -70,4 +80,42 @@
 	&[data-status="zero"] {
 		background-color: var(--badge-negative);
 	}
+}
+
+.tooltip-content {
+	padding: 8px 12px;
+
+	color: var(--text-light);
+	background-color: var(--bg-grey-blue);
+	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+
+	border: 1px solid var(--bg-grey-blue-dark);
+	border-radius: 4px;
+
+	line-height: 1;
+	user-select: none;
+	animation-duration: 400ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform, opacity;
+
+	&[data-state="delayed-open"][data-side="top"] {
+		animation-name: slideDownAndFade;
+	}
+
+	&[data-state="delayed-open"][data-side="right"] {
+		animation-name: slideLeftAndFade;
+	}
+
+	&[data-state="delayed-open"][data-side="bottom"] {
+		animation-name: slideUpAndFade;
+	}
+
+	&[data-state="delayed-open"][data-side="left"] {
+		animation-name: slideRightAndFade;
+	}
+}
+
+.tooltip-arrow {
+	fill: var(--bg-grey-blue);
 }
