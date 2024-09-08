@@ -13,6 +13,8 @@ import {
 	sub,
 } from 'date-fns';
 
+import { StatusError } from '@/components/layout/Error';
+
 interface FilterOptions {
 	start?: string;
 	end?: string;
@@ -94,7 +96,7 @@ const generatePeriods = (searchParams: URLSearchParams) => {
 				startPeriod = startOfHour(sub(currentDate, { hours }));
 				endPeriod = endOfHour(currentDate);
 			} else {
-				throw new Error(`Invalid period: ${period}`);
+				throw new StatusError(400, `Invalid time period: ${period}`);
 			}
 		}
 	}

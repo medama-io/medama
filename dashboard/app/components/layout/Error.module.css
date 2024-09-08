@@ -19,6 +19,12 @@
 	max-width: 500px;
 	margin: auto;
 	margin-bottom: 30px;
+
+	color: var(--text-muted);
+	font-size: 18px;
+	text-align: center;
+
+	line-height: 1.5;
 }
 
 .title {
@@ -41,4 +47,11 @@
 	&:focus {
 		color: var(--text-dark);
 	}
+}
+
+.error {
+	font-size: 18px;
+	color: var(--text-red);
+
+	line-height: 1.5;
 }
