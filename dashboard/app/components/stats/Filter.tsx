@@ -105,13 +105,15 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 		? choices[value as FilterOperator]?.label
 		: choices[value as Filter]?.label;
 
-	const options = Object.entries(choices).map(([key, filter]) => (
-		<DropdownMenu.Item key={key} onSelect={() => setValue(key)} asChild>
-			<button type="button" className={classes.item}>
-				{filter.label}
-			</button>
-		</DropdownMenu.Item>
-	));
+	const options = useMemo(() => {
+		return Object.entries(choices).map(([key, filter]) => (
+			<DropdownMenu.Item key={key} onSelect={() => setValue(key)} asChild>
+				<button type="button" className={classes.item}>
+					{filter.label}
+				</button>
+			</DropdownMenu.Item>
+		));
+	}, [choices, setValue]);
 
 	return (
 		<DropdownMenu.Root>
