@@ -1,0 +1,22 @@
+.tooltip {
+	padding: 22px 16px;
+
+	background-color: var(--bg-light);
+	border: 1px solid var(--border-light);
+	border-radius: 8px;
+
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.swatch {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+.date {
+	font-weight: 500;
+	line-height: 1;
+	margin-bottom: 16px;
+}

@@ -73,6 +73,7 @@ const ButtonLink = ({
 						? 'button-outline'
 						: 'button-link'
 			}
+			prefetch="intent"
 			role="button"
 			{...rest}
 		>

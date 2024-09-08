@@ -34,7 +34,6 @@ import '@mantine/core/styles/Skeleton.css';
 import '@mantine/core/styles/Tooltip.css';
 // Misc
 import '@mantine/core/styles/Modal.css';
-import '@mantine/core/styles/ColorSwatch.css';
 import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';
@@ -74,6 +73,7 @@ import {
 	ForbiddenError,
 	InternalServerError,
 	NotFoundError,
+	isStatusError,
 } from '@/components/layout/Error';
 import theme from '@/styles/theme';
 import { EXPIRE_LOGGED_IN, hasSession } from '@/utils/cookies';
@@ -212,6 +212,45 @@ export const ErrorBoundary = () => {
 		return (
 			<Document>
 				<InternalServerError error={error.data ?? error.statusText} />
+			</Document>
+		);
+	}
+
+	if (isStatusError(error)) {
+		switch (error.status) {
+			case 400: {
+				return (
+					<Document>
+						<BadRequestError message={error.message} />
+					</Document>
+				);
+			}
+			case 403: {
+				return (
+					<Document>
+						<ForbiddenError />
+					</Document>
+				);
+			}
+			case 404: {
+				return (
+					<Document>
+						<NotFoundError />
+					</Document>
+				);
+			}
+			case 409: {
+				return (
+					<Document>
+						<ConflictError message={error.message} />
+					</Document>
+				);
+			}
+		}
+
+		return (
+			<Document>
+				<InternalServerError error={error.message} />
 			</Document>
 		);
 	}

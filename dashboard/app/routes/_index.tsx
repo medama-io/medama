@@ -1,5 +1,5 @@
 import { ModalChild, ModalWrapper } from '@/components/Modal';
-import { Paper, SimpleGrid, Text } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PlusIcon } from '@radix-ui/react-icons';
 import {
@@ -128,9 +128,18 @@ export default function Index() {
 			</InnerHeader>
 			<main>
 				{websites.length === 0 && (
-					<Paper w="100%" p={16} radius={8} withBorder>
-						<Text ta="center">No websites found. Please add a website!</Text>
-					</Paper>
+					<div
+						style={{
+							width: '100%',
+							padding: 16,
+							borderRadius: 8,
+							border: '1px solid var(--border-muted)',
+						}}
+					>
+						<p style={{ textAlign: 'center' }}>
+							No websites found. Please add a website!
+						</p>
+					</div>
 				)}
 				<SimpleGrid cols={{ base: 1, xs: 2, md: 3 }}>
 					{websites.map((website) => (

@@ -1,5 +1,8 @@
-import { Combobox, InputBase, ScrollArea, useCombobox } from '@mantine/core';
-import { useCallback, useMemo } from 'react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { useMemo } from 'react';
+
+import { ScrollArea } from '@/components/ScrollArea';
 
 import classes from './WebsiteSelector.module.css';
 
@@ -14,71 +17,48 @@ export const WebsiteSelector = ({
 	website,
 	setWebsite,
 }: WebsiteListComboboxProps) => {
-	const combobox = useCombobox({
-		onDropdownClose: () => {
-			combobox.resetSelectedOption();
-		},
-		onDropdownOpen: (eventSource) => {
-			if (eventSource === 'keyboard') {
-				combobox.selectActiveOption();
-			} else {
-				combobox.updateSelectedOptionIndex('active');
-			}
-		},
-	});
-
-	const handleOptionSubmit = useCallback(
-		(value: string) => {
-			setWebsite(value);
-			combobox.toggleDropdown();
-		},
-		[setWebsite, combobox.toggleDropdown],
-	);
-
 	const options = useMemo(
 		() =>
 			websites.map((value) => (
-				<Combobox.Option
+				<DropdownMenu.Item
 					key={value}
-					value={value}
-					active={value === website}
-					role="option"
-					aria-selected={value === website}
+					onSelect={() => setWebsite(value)}
+					asChild
 				>
-					{value}
-				</Combobox.Option>
+					<button
+						type="button"
+						className={classes.item}
+						aria-selected={value === website}
+						data-active={value === website}
+					>
+						{value}
+					</button>
+				</DropdownMenu.Item>
 			)),
-		[websites, website],
+		[websites, website, setWebsite],
 	);
 
 	return (
-		<Combobox
-			classNames={{ dropdown: classes.dropdown, option: classes.option }}
-			store={combobox}
-			resetSelectionOnOptionHover
-			onOptionSubmit={handleOptionSubmit}
-		>
-			<Combobox.Target>
-				<InputBase
-					classNames={{ input: classes.target }}
-					className={classes.targetWrapper}
-					component="button"
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild>
+				<button
 					type="button"
-					pointer
-					rightSection={<Combobox.Chevron />}
-					rightSectionPointerEvents="none"
-					onClick={() => combobox.toggleDropdown()}
+					className={classes.trigger}
 					aria-label="Select website hostname"
 					disabled={websites.length === 0}
 				>
-					{website ?? 'No websites'}
-				</InputBase>
-			</Combobox.Target>
-			<Combobox.Dropdown>
-				<ScrollArea.Autosize mah={200}>
-					<Combobox.Options>{options}</Combobox.Options>
-				</ScrollArea.Autosize>
-			</Combobox.Dropdown>
-		</Combobox>
+					<span className={classes.label}>{website ?? 'No websites'}</span>
+					<ChevronDownIcon />
+				</button>
+			</DropdownMenu.Trigger>
+
+			<DropdownMenu.Content
+				className={classes.dropdown}
+				sideOffset={8}
+				data-scroll={options.length > 5}
+			>
+				<ScrollArea vertical>{options}</ScrollArea>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	);
 };

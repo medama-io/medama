@@ -1,12 +1,22 @@
-.target {
+.trigger {
+	composes: button from global;
+
 	min-width: 192px;
 	height: 40px;
-	padding: 0 16px;
+	padding: 0 12px 0 16px;
 
+	background-color: var(--bg-light);
+	color: var(--text-dark);
+	border: 1px solid var(--border-light);
 	border-radius: 8px;
-}
 
-.targetWrapper {
+	flex-wrap: 1;
+	justify-content: space-between;
+
+	&:hover {
+		background-color: var(--bg-light);
+	}
+
 	@media (--lt-xs) {
 		width: 100%;
 		margin: 4px 0 16px 0;
@@ -14,13 +24,45 @@
 }
 
 .dropdown {
+	height: 100%;
+	width: var(--radix-dropdown-menu-trigger-width);
+
+	background-color: white;
+	border: 1px solid var(--border-muted);
 	border-radius: 8px;
+
+	&[data-scroll="true"] {
+		height: 180px;
+	}
 }
 
-.option {
-	padding: 8px 16px;
+.item {
+	composes: button from global;
 
-	&[data-combobox-active="true"] {
+	padding: 7px 14px;
+	height: fit-content;
+	width: 100%;
+	text-align: left;
+	justify-content: flex-start;
+
+	color: var(--text-dark);
+	background-color: white;
+
+	border: none;
+	border-radius: 8px;
+
+	&:focus-visible {
+		background-color: var(--black-a1);
+		border-radius: 0;
+		outline: none;
+	}
+
+	&:hover {
+		background-color: var(--black-a1);
+		border-radius: 0;
+	}
+
+	&[data-active="true"] {
 		font-weight: 600;
 	}
 }

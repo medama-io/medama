@@ -1,17 +1,22 @@
 .databox {
+	display: block;
 	height: 132px;
 	width: 192px;
 	padding: 12px 24px 24px 24px;
 	position: relative;
+
 	color: var(--text-disabled);
+	background-color: transparent;
+
 	border: 1px solid transparent;
-	cursor: pointer;
+	border-radius: 8px;
 
 	/* Used to prevent wrapping on overflow */
 	flex: "0 0 auto";
+	text-align: left;
 
-	border-radius: 8px;
 	transition: all 0.1s ease;
+	cursor: pointer;
 
 	&[data-active="true"] {
 		color: var(--text-light);
@@ -21,6 +26,11 @@
 	&:hover {
 		color: var(--text-light);
 		border: 1px solid var(--border-dark);
+	}
+
+	&:focus-visible {
+		outline-offset: -1px;
+		outline: 2px solid var(--focus-outline);
 	}
 }
 

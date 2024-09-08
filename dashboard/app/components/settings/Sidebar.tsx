@@ -17,6 +17,7 @@ export const Sidebar = () => {
 		return (
 			<Link
 				key={setting.path}
+				prefetch="intent"
 				to={`/settings/${setting.path}`}
 				data-active={active}
 			>

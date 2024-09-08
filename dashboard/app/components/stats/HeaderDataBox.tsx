@@ -1,7 +1,8 @@
-import { Box, Group, Tooltip, UnstyledButton } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 import React, { useMemo } from 'react';
 
+import { Tooltip, TooltipProvider } from '@/components/Tooltip';
+import { Group } from '@/components/layout/Flex';
 import { useChartType } from '@/hooks/use-chart-type';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
@@ -86,36 +87,43 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 	};
 
 	return (
-		<Tooltip label={tooltipLabel} withArrow>
-			<UnstyledButton
-				className={classes.databox}
-				data-active={isActive}
-				aria-label={`${stat.label}: ${formattedValue}. ${tooltipLabel}`}
-				role="region"
-				tabIndex={0}
-				onClick={handleClick}
-			>
-				<span className={classes.value}>{formattedValue}</span>
-				<Group gap="sm" mt={8}>
-					<p className={classes.label}>{stat.label}</p>
-					<Box
-						className={classes.badge}
-						data-status={
-							isPercentage
-								? status === 'positive'
-									? 'negative'
-									: 'positive'
-								: status
-						}
-						aria-label={`Change: ${change}%`}
-						role="status"
+		<TooltipProvider delayDuration={0}>
+			<Tooltip content={tooltipLabel}>
+				<button
+					type="submit"
+					className={classes.databox}
+					data-active={isActive}
+					aria-label={`${stat.label}: ${formattedValue}. ${tooltipLabel}`}
+					tabIndex={0}
+					onClick={handleClick}
+					onKeyDown={(event) => {
+						if (event.key === 'Enter') handleClick();
+					}}
+				>
+					<span className={classes.value}>{formattedValue}</span>
+					<Group
+						style={{ gap: 12, marginTop: 8, justifyContent: 'flex-start' }}
 					>
-						{status === 'positive' ? '+' : ''}
-						{isPercentage ? formatPercentage(change) : `${change}%`}
-					</Box>
-				</Group>
-			</UnstyledButton>
-		</Tooltip>
+						<p className={classes.label}>{stat.label}</p>
+						<div
+							className={classes.badge}
+							data-status={
+								isPercentage
+									? status === 'positive'
+										? 'negative'
+										: 'positive'
+									: status
+							}
+							aria-label={`Change: ${change}%`}
+							role="status"
+						>
+							{status === 'positive' ? '+' : ''}
+							{isPercentage ? formatPercentage(change) : `${change}%`}
+						</div>
+					</Group>
+				</button>
+			</Tooltip>
+		</TooltipProvider>
 	);
 });
 

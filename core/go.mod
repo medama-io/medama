@@ -13,9 +13,9 @@ require (
 	github.com/marcboeker/go-duckdb v1.7.1
 	github.com/medama-io/go-referrer-parser v0.0.0-20240903120234-0a63376371c3
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
-	github.com/medama-io/go-useragent v0.0.0-20240904185757-43ce2229c0b3
+	github.com/medama-io/go-useragent v1.0.0
 	github.com/ncruces/go-sqlite3 v0.18.2
-	github.com/ogen-go/ogen v1.3.0
+	github.com/ogen-go/ogen v1.4.0
 	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.33.0
 	github.com/shirou/gopsutil/v4 v4.24.8
@@ -67,10 +67,10 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/crypto v0.26.0 // indirect
-	golang.org/x/exp v0.0.0-20240823005443-9b4947da3948 // indirect
+	golang.org/x/crypto v0.27.0 // indirect
+	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e // indirect
 	golang.org/x/mod v0.21.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect

@@ -1,4 +1,3 @@
-import { Anchor, Container, Text } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import type { ReactNode } from 'react';
 
@@ -14,19 +13,34 @@ interface InternalServerErrorProps {
 	error?: string;
 }
 
+interface ErrorProps {
+	message?: string;
+}
+
+class StatusError extends Error {
+	status: number;
+
+	constructor(status: number, message: string) {
+		super(message);
+		this.status = status;
+	}
+}
+
+const isStatusError = (error: unknown): error is StatusError => {
+	return error instanceof StatusError;
+};
+
 const ErrorPage = ({ label, title, description }: ErrorPageProps) => {
 	return (
-		<Container className={classes.root}>
+		<div className={classes.root}>
 			<div className={classes.label}>{label}</div>
 			<h3 className={classes.title}>{title}</h3>
-			<Text c="dimmed" size="lg" ta="center" className={classes.description}>
-				{description}
-			</Text>
-		</Container>
+			<p className={classes.description}>{description}</p>
+		</div>
 	);
 };
 
-const BadRequestError = () => (
+const BadRequestError = ({ message }: ErrorProps) => (
 	<ErrorPage
 		label="400"
 		title="Your request is invalid."
@@ -34,14 +48,23 @@ const BadRequestError = () => (
 			<>
 				Please check the URL and try again. If you think this is an error,
 				please{' '}
-				<Anchor
-					component={Link}
-					to="https://github.com/medama-io/medama/issues"
+				<a
 					className={classes.anchor}
+					href="https://github.com/medama-io/medama/issues"
+					target="_blank"
+					rel="noreferrer"
 				>
 					report this issue
-				</Anchor>{' '}
+				</a>{' '}
 				to the developers.
+				{message && (
+					<div>
+						<br />
+						<span className={classes.error}>
+							{message ? `Error: ${message}` : ''}
+						</span>
+					</div>
+				)}
 			</>
 		}
 	/>
@@ -80,16 +103,16 @@ const NotFoundError = () => (
 		description={
 			<>
 				The page you're looking for isn't here. Feel free to return to the{' '}
-				<Anchor component={Link} to="/" className={classes.anchor}>
+				<Link to="/" className={classes.anchor}>
 					home page
-				</Anchor>{' '}
+				</Link>{' '}
 				or browse the docs to find what you need.
 			</>
 		}
 	/>
 );
 
-const ConflictError = () => (
+const ConflictError = ({ message }: ErrorProps) => (
 	<ErrorPage
 		label="409"
 		title="Conflict detected."
@@ -97,6 +120,14 @@ const ConflictError = () => (
 			<>
 				There was a conflict while processing your request. Did you try to
 				create something that already exists?
+				{message && (
+					<div>
+						<br />
+						<span className={classes.error}>
+							{message ? `Error: ${message}` : ''}
+						</span>
+					</div>
+				)}
 			</>
 		}
 	/>
@@ -109,18 +140,21 @@ const InternalServerError = ({ error }: InternalServerErrorProps) => (
 		description={
 			<>
 				We encountered an unexpected error while processing your request. Please{' '}
-				<Anchor
-					component={Link}
-					to="https://github.com/medama-io/medama/issues"
+				<a
 					className={classes.anchor}
+					href="https://github.com/medama-io/medama/issues"
+					target="_blank"
+					rel="noreferrer"
 				>
 					report this issue
-				</Anchor>{' '}
+				</a>{' '}
 				to the developers.
-				<br />
-				<Text component="span" c="red">
-					{error ? `Error: ${error}` : ''}
-				</Text>
+				<div>
+					<br />
+					<span className={classes.error}>
+						{error ? `Error: ${error}` : ''}
+					</span>
+				</div>
 			</>
 		}
 	/>
@@ -132,4 +166,6 @@ export {
 	ForbiddenError,
 	InternalServerError,
 	NotFoundError,
+	StatusError,
+	isStatusError,
 };

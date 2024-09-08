@@ -5,6 +5,7 @@
 	--text-disabled: #8e9cb4;
 	--text-grey: #39414e;
 	--text-muted: #7e8c94;
+	--text-red: #fa5252;
 
 	/* Background Colors */
 	--bg-light: #fcfdfe;
@@ -40,7 +41,7 @@
 	--black-a6: color(display-p3 0 0 0 / 0.4); /* rgba(0, 0, 0, 0.4); */
 	--black-a7: color(display-p3 0 0 0 / 0.5); /* rgba(0, 0, 0, 0.5); */
 	--black-a8: color(display-p3 0 0 0 / 0.6); /* rgba(0, 0, 0, 0.6); */
-	/* --black-a9: color(display-p3 0 0 0 / 0.7); /* rgba(0, 0, 0, 0.7); */
+	--black-a9: color(display-p3 0 0 0 / 0.7); /* rgba(0, 0, 0, 0.7); */
 	--black-a10: color(display-p3 0 0 0 / 0.8); /* rgba(0, 0, 0, 0.8); */
 	--black-a11: color(display-p3 0 0 0 / 0.9); /* rgba(0, 0, 0, 0.9); */
 	--black-a12: color(display-p3 0 0 0 / 0.95); /* rgba(0, 0, 0, 0.95);*/
@@ -109,6 +110,7 @@
 }
 
 body {
+	margin: 0;
 	display: flex;
 	min-height: 100vh;
 	flex-direction: column;
@@ -116,6 +118,24 @@ body {
 
 	font-size: 14px;
 	font-family: var(--default-font-family);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+button,
+select {
+	text-transform: none;
 }
 
 main {
@@ -171,7 +191,9 @@ h6 {
 a,
 a:visited,
 a:hover,
-a:active {
+a:active,
+button,
+button:visited {
 	color: inherit;
 }
 

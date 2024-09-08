@@ -1,4 +1,5 @@
 .title {
+	display: flex;
 	padding: 12px 0;
 
 	justify-content: space-between;
@@ -13,12 +14,31 @@
 }
 
 .dropdowns {
+	composes: group from global;
+
 	align-items: center;
+	gap: 16px;
 
 	@media (--lt-xs) {
+		flex-wrap: wrap;
 		gap: 8px;
 		width: 100%;
 	}
+}
+
+.scrollcontainer {
+	@media (--gt-lg) {
+		user-select: none;
+		cursor: default;
+	}
+}
+
+.scrollgroup {
+	composes: group from global;
+
+	flex-wrap: nowrap;
+	padding: 4px;
+	gap: 16px;
 }
 
 /* Chart Toggle */
@@ -37,13 +57,23 @@
 }
 
 .control {
-	color: var(--text-disabled);
 	width: 38px;
 	height: 38px;
+
+	color: var(--text-disabled);
+	background-color: transparent;
+	border: none;
+
+	cursor: pointer;
 
 	&[data-active="true"],
 	&:hover {
 		color: var(--text-light);
+	}
+
+	&[data-active="true"] {
+		background-color: var(--logo-green);
+		border-radius: 50%;
 	}
 }
 
@@ -59,9 +89,4 @@
 		width: 20px;
 		height: 20px;
 	}
-}
-
-.indicator {
-	background-color: var(--logo-green);
-	border-radius: 50%;
 }

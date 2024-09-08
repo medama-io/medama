@@ -1,23 +1,10 @@
-import {
-	CloseButton,
-	Combobox,
-	Group,
-	InputBase,
-	Popover,
-	ScrollArea,
-	Text,
-	TextInput,
-	UnstyledButton,
-	useCombobox,
-} from '@mantine/core';
-import {
-	ChevronDownIcon,
-	ChevronUpIcon,
-	PlusIcon,
-} from '@radix-ui/react-icons';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { ChevronDownIcon, Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
+import * as Popover from '@radix-ui/react-popover';
 import { useSearchParams } from '@remix-run/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ScrollArea } from '@/components/ScrollArea';
 import { useFilter } from '@/hooks/use-filter';
 
 import type { Filter, FilterOperator } from './types';
@@ -114,67 +101,33 @@ interface FilterDropdownProps {
 }
 
 const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
-	const combobox = useCombobox({
-		onDropdownClose: () => {
-			combobox.resetSelectedOption();
-		},
-		onDropdownOpen: (eventSource) => {
-			if (eventSource === 'keyboard') {
-				combobox.selectActiveOption();
-			} else {
-				combobox.updateSelectedOptionIndex('active');
-			}
-		},
-	});
-
 	const label = isFilterType(choices)
 		? choices[value as FilterOperator]?.label
 		: choices[value as Filter]?.label;
 
-	const options = Object.entries(choices).map(([key, filter]) => (
-		<Combobox.Option key={key} value={key} active={key === value}>
-			{filter.label}
-		</Combobox.Option>
-	));
+	const options = useMemo(() => {
+		return Object.entries(choices).map(([key, filter]) => (
+			<DropdownMenu.Item key={key} onSelect={() => setValue(key)} asChild>
+				<button type="button" className={classes.item}>
+					{filter.label}
+				</button>
+			</DropdownMenu.Item>
+		));
+	}, [choices, setValue]);
 
 	return (
-		<Combobox
-			onOptionSubmit={(option) => {
-				setValue(option);
-				combobox.updateSelectedOptionIndex('active');
-				combobox.closeDropdown();
-			}}
-			store={combobox}
-			withinPortal={false}
-		>
-			<Combobox.Target>
-				<InputBase
-					component="button"
-					type="button"
-					pointer
-					className={classes.dropdown}
-					rightSection={
-						combobox.dropdownOpened ? <ChevronUpIcon /> : <ChevronDownIcon />
-					}
-					rightSectionPointerEvents="none"
-					onClick={() => {
-						combobox.toggleDropdown();
-					}}
-				>
-					<span className={classes['dropdown-label']}>
-						{label ?? 'Unknown'}
-					</span>
-				</InputBase>
-			</Combobox.Target>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild>
+				<button type="button" className={classes.trigger}>
+					<span className={classes.label}>{label ?? 'Unknown'}</span>
+					<ChevronDownIcon />
+				</button>
+			</DropdownMenu.Trigger>
 
-			<Combobox.Dropdown>
-				<Combobox.Options>
-					<ScrollArea.Autosize mah={200} type="scroll">
-						{options}
-					</ScrollArea.Autosize>
-				</Combobox.Options>
-			</Combobox.Dropdown>
-		</Combobox>
+			<DropdownMenu.Content className={classes.dropdown} sideOffset={8}>
+				<ScrollArea vertical>{options}</ScrollArea>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	);
 };
 
@@ -239,16 +192,15 @@ export const Filters = () => {
 	);
 
 	return (
-		<Group mt={-40}>
-			<Popover
-				width={442}
-				trapFocus
-				position="bottom-start"
-				opened={opened}
-				onChange={setOpened}
+		<div className={classes.root}>
+			<Popover.Root
+				// width={454}
+				open={opened}
+				onOpenChange={setOpened}
 			>
-				<Popover.Target>
-					<UnstyledButton
+				<Popover.Trigger asChild>
+					<button
+						type="button"
 						className={classes.add}
 						onClick={() => {
 							// Reset all filters on open
@@ -261,85 +213,88 @@ export const Filters = () => {
 						}}
 						data-m:click="filter=open"
 					>
-						<Group gap={8} justify="center">
-							<PlusIcon />
-							<Text fz={14} fw={600}>
-								Add filter
-							</Text>
-						</Group>
-					</UnstyledButton>
-				</Popover.Target>
-				<Popover.Dropdown className={classes.popover}>
-					<Text fz={16} fw={600} pb="sm">
-						New filter
-					</Text>
-					<Group grow>
-						<FilterDropdown
-							choices={FILTER_OPTIONS}
-							value={filter}
-							setValue={setFilter as (value: string) => void}
-						/>
-						<FilterDropdown
-							choices={FILTER_TYPES}
-							value={type}
-							setValue={setType as (value: string) => void}
-						/>
-						<TextInput
-							h={40}
-							value={value}
-							onChange={(event) => {
-								setValue(event.currentTarget.value);
-							}}
-							onKeyDown={(event) => {
-								if (event.key === 'Enter' && value !== '') {
+						<PlusIcon />
+						<span>Add filter</span>
+					</button>
+				</Popover.Trigger>
+				<Popover.Portal>
+					<Popover.Content
+						className={classes.popover}
+						align="start"
+						sideOffset={8}
+					>
+						<h5>New filter</h5>
+						<div className={classes['dropdown-list']}>
+							<FilterDropdown
+								choices={FILTER_OPTIONS}
+								value={filter}
+								setValue={setFilter as (value: string) => void}
+							/>
+							<FilterDropdown
+								choices={FILTER_TYPES}
+								value={type}
+								setValue={setType as (value: string) => void}
+							/>
+							<input
+								className={classes.input}
+								value={value}
+								onChange={(event) => {
+									setValue(event.currentTarget.value);
+								}}
+								onKeyDown={(event) => {
+									if (event.key === 'Enter' && value !== '') {
+										handleAddFilters();
+									}
+								}}
+								placeholder={chosenFilter?.placeholder}
+							/>
+						</div>
+						<div className={classes.select}>
+							<button
+								type="reset"
+								className={classes.cancel}
+								onClick={() => {
+									setOpened(false);
+								}}
+								data-m:click="filter=cancel"
+							>
+								Cancel
+							</button>
+							<button
+								className={classes.apply}
+								type="submit"
+								onClick={() => {
 									handleAddFilters();
-								}
-							}}
-							placeholder={chosenFilter?.placeholder}
-						/>
-					</Group>
-					<Group justify="flex-end" className={classes.select}>
-						<UnstyledButton
-							className={classes.cancel}
-							onClick={() => {
-								setOpened(false);
-							}}
-							data-m:click="filter=cancel"
-						>
-							Cancel
-						</UnstyledButton>
-						<UnstyledButton
-							className={classes.apply}
-							type="submit"
-							onClick={() => {
-								handleAddFilters();
-							}}
-							disabled={value === ''}
-							data-m:click="filter=apply"
-						>
-							Apply
-						</UnstyledButton>
-					</Group>
-				</Popover.Dropdown>
-			</Popover>
+								}}
+								disabled={value === ''}
+								data-m:click="filter=apply"
+							>
+								Apply
+							</button>
+						</div>
+					</Popover.Content>
+				</Popover.Portal>
+			</Popover.Root>
 			{paramsArr.map(([label, type, value]) => {
 				return (
-					<Group
-						key={label + type + value}
-						className={classes['filter-item']}
-						gap={0}
-					>
-						<Text fz={14}>{label}&nbsp;</Text>
-						<Text fz={14} fw={700}>
+					<div key={label + type + value} className={classes['filter-item']}>
+						<span>{label}&nbsp;</span>
+						<span style={{ fontWeight: 700 }}>
 							{FILTER_TYPES[type as FilterOperator]?.label ?? 'Unknown'}&nbsp;
-						</Text>
-						<Text fz={14}>{value}</Text>
-						<CloseButton
-							onClick={handleRemoveFilter(label, type as FilterOperator, value)}
-						/>
-					</Group>
+						</span>
+						<span>{value}</span>
+						<div>
+							<Cross1Icon
+								onClick={handleRemoveFilter(
+									label,
+									type as FilterOperator,
+									value,
+								)}
+							/>
+						</div>
+					</div>
 				);
 			})}
-		</Group>
+		</div>
 	);
 };
