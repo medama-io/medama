@@ -34,7 +34,6 @@ import '@mantine/core/styles/Skeleton.css';
 import '@mantine/core/styles/Tooltip.css';
 // Misc
 import '@mantine/core/styles/Modal.css';
-import '@mantine/core/styles/ColorSwatch.css';
 import '@mantine/core/styles/Table.css';
 import '@mantine/core/styles/Text.css';
 import '@mantine/core/styles/Anchor.css';

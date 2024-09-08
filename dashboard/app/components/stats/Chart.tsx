@@ -4,12 +4,15 @@ import {
 	AreaChart as MantineAreaChart,
 	BarChart as MantineBarChart,
 } from '@mantine/charts';
-import { ColorSwatch, Group, Paper, Text } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 import { format, parseISO } from 'date-fns';
 import React, { useMemo } from 'react';
 
+import { Group } from '@/components/layout/Flex';
+
 import { formatCount, formatDuration, formatPercentage } from './formatter';
+
+import classes from './Chart.module.css';
 
 interface ChartData {
 	date: string;
@@ -122,18 +125,19 @@ const ChartTooltip = React.memo(
 		}, [dateTimeFormat, date, period]);
 
 		return (
-			<Paper px="md" py="md" withBorder shadow="md" radius="md">
-				<Text fw={500} mb="xs">
-					{dateLabel}
-				</Text>
-				<Group gap="xs" justify="space-between">
-					<Group gap="sm">
-						<ColorSwatch color={item.color} size={12} withShadow={false} />
-						<Text fz="sm">{label}</Text>
+			<div className={classes.tooltip}>
+				<h3 className={classes.date}>{dateLabel}</h3>
+				<Group>
+					<Group style={{ gap: 8 }}>
+						<div
+							className={classes.swatch}
+							style={{ backgroundColor: item.color }}
+						/>
+						<span>{label}</span>
 					</Group>
-					<Text fz="sm">{valueFormatter(item.value)}</Text>
+					<span>{valueFormatter(item.value)}</span>
 				</Group>
-			</Paper>
+			</div>
 		);
 	},
 );
