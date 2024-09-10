@@ -13,7 +13,7 @@ require (
 	github.com/marcboeker/go-duckdb v1.7.1
 	github.com/medama-io/go-referrer-parser v0.0.0-20240903120234-0a63376371c3
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
-	github.com/medama-io/go-useragent v1.0.0
+	github.com/medama-io/go-useragent v1.0.1
 	github.com/ncruces/go-sqlite3 v0.18.2
 	github.com/ogen-go/ogen v1.4.0
 	github.com/rs/cors v1.11.1
@@ -44,7 +44,7 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.8 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/lufia/plan9stats v0.0.0-20240819163618-b1d8f4d146e7 // indirect
+	github.com/lufia/plan9stats v0.0.0-20240909124753-873cd0166683 // indirect
 	github.com/maruel/natural v1.1.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -68,12 +68,12 @@ require (
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.27.0 // indirect
-	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e // indirect
+	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
-	golang.org/x/tools v0.24.0 // indirect
+	golang.org/x/tools v0.25.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
