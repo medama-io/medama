@@ -210,20 +210,24 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 		countryName, err := h.timezoneCountryMap.GetCountry(req.EventLoad.T.Value)
 		if err != nil {
 			log.Debug().Err(err).Msg("hit: failed to get country name from timezone")
-			countryName = Unknown
-		}
 
-		if countryName == "" {
 			unknownCounter++
 			if unknownCounter >= IsBotThreshold {
 				return &api.PostEventHitNoContent{}, nil
 			}
+
+			countryName = Unknown
 		}
 
 		// Get users language from Accept-Language header
 		languages, _, err := language.ParseAcceptLanguage(reqBody.Header.Get("Accept-Language"))
 		if err != nil {
 			log.Debug().Err(err).Msg("hit: failed to parse accept language header")
+
+			unknownCounter++
+			if unknownCounter >= IsBotThreshold {
+				return &api.PostEventHitNoContent{}, nil
+			}
 		}
 
 		// Get the first language from the list which is the most preferred and convert it to a language name
@@ -236,16 +240,10 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			languageDialect = display.English.Tags().Name(languages[0])
 		}
 
-		if languageBase == Unknown {
-			unknownCounter++
-			if unknownCounter >= IsBotThreshold {
-				return &api.PostEventHitNoContent{}, nil
-			}
-		}
-
 		// Parse referrer URL and remove any query parameters or self-referencing
 		// hostnames.
 		referrerHost := ""
+		referrerGroup := ""
 		if req.EventLoad.R.Value != "" {
 			referrer, err := url.Parse(req.EventLoad.R.Value)
 			if err != nil {
@@ -253,18 +251,15 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 				return ErrBadRequest(err), nil
 			}
 
+			referrerHost = referrer.Hostname()
+
 			// If the referrer hostname is the same as the current hostname, we
 			// want to remove it.
-			referrerHost = referrer.Hostname()
-			if referrerHost == hostname {
+			if referrerHost != hostname {
+				referrerGroup = h.referrer.Parse(referrerHost)
+			} else {
 				referrerHost = ""
 			}
-		}
-
-		referrerGroup := ""
-		if referrerHost != "" {
-			// Get the referrer group from the referrer URL.
-			referrerGroup = h.referrer.Parse(referrerHost)
 		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
