@@ -83,6 +83,7 @@ const StatsItem = ({
 							href={`https://${label}`}
 							target="_blank"
 							rel="noreferrer noopener"
+							data-hover={hovered ? 'true' : undefined}
 							data-hidden={!isFQDN(label)}
 							onClick={(event) => event.stopPropagation()}
 						>
