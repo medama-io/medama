@@ -50,15 +50,22 @@
 }
 
 .external {
+	opacity: 0;
+	transition: opacity 100ms cubic-bezier(0.65, 0, 0.35, 1);
+
 	svg {
 		margin-bottom: -2px;
 		color: var(--text-muted);
-		width: 17px;
-		height: 17px;
+		width: 16px;
+		height: 16px;
 	}
 
 	&[data-hidden="true"] {
 		display: none;
+	}
+
+	&[data-hover="true"] {
+		opacity: 1;
 	}
 
 	@media (--lt-xs) {

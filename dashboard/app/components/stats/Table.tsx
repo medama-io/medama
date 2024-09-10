@@ -8,11 +8,14 @@ import {
 	type DataTableSortStatus,
 } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
+import isFQDN from 'validator/lib/isFQDN';
 
 import { ButtonIcon, ButtonLink } from '@/components/Button';
+import { IconExternal } from '@/components/icons/external';
 import { Group } from '@/components/layout/Flex';
 import { useDidUpdate } from '@/hooks/use-did-update';
 import { useFilter } from '@/hooks/use-filter';
+import { useHover } from '@/hooks/use-hover';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
@@ -366,6 +369,44 @@ const getColumnsForQuery = (
 				PRESET_COLUMNS.duration_percentage,
 			];
 		case 'referrers':
+			return [
+				{
+					// Referrer, Source, Medium, Campaign
+					accessor: ACCESSOR_MAP[query],
+					title: LABEL_MAP[query].slice(0, -1),
+					width: '100%',
+					render: (record) => {
+						const label = record[ACCESSOR_MAP[query]];
+						const { ref, hovered } = useHover<HTMLDivElement>();
+
+						if (label) {
+							return (
+								<div ref={ref}>
+									{label}
+									<a
+										className={classes.external}
+										aria-label={`Visit ${label}`}
+										href={`https://${label}`}
+										target="_blank"
+										rel="noreferrer noopener"
+										data-hidden={!isFQDN(String(label))}
+										data-hover={hovered ? 'true' : undefined}
+										onClick={(event) => event.stopPropagation()}
+									>
+										<IconExternal />
+									</a>
+								</div>
+							);
+						}
+
+						return 'Direct/None';
+					},
+				},
+				PRESET_COLUMNS.visitors,
+				PRESET_COLUMNS.visitors_percentage,
+				PRESET_COLUMNS.bounce_percentage,
+				PRESET_COLUMNS.duration,
+			];
 		case 'sources':
 		case 'mediums':
 		case 'campaigns':
