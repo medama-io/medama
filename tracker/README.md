@@ -10,9 +10,9 @@ Our tracker is designed with compression in mind, given that web traffic is usua
 
 | File                  | Size                 | Compressed (gzip)   | Compressed (brotli) |
 | --------------------- | -------------------- | ------------------- | ------------------- |
-| `default.min.js`      | 1512 bytes (1.48 KB) | 766 bytes (0.75 KB) | 620 bytes (0.61 KB) |
-| `page-events.min.js`  | 1750 bytes (1.71 KB) | 890 bytes (0.87 KB) | 731 bytes (0.71 KB) |
-| `click-events.min.js` | 1991 bytes (1.94 KB) | 977 bytes (0.95 KB) | 792 bytes (0.77 KB) |
+| `default.min.js`      | 1513 bytes (1.48 KB) | 768 bytes (0.75 KB) | 621 bytes (0.61 KB) |
+| `page-events.min.js`  | 1751 bytes (1.71 KB) | 891 bytes (0.87 KB) | 732 bytes (0.71 KB) |
+| `click-events.min.js` | 1992 bytes (1.95 KB) | 973 bytes (0.95 KB) | 793 bytes (0.77 KB) |
 
 The listed sizes only show the size of the tracker itself with one specific feature. When combining multiple features, the size of the tracker will relatively increase (although some features may share code with each other).
 
