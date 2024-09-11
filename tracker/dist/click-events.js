@@ -54,7 +54,7 @@
 	 * src attribute to determine the host.
 	 */
 	const host = currentScript.getAttribute('data-api')
-		? `${location.protocol}//${currentScript.getAttribute('data-api')}`
+		? `${location.protocol}//${currentScript.getAttribute('data-api')}/`
 		: // @ts-ignore - We know this won't be an SVGScriptElement.
 			currentScript.src.replace(/[^\/]+$/, 'api/');
 

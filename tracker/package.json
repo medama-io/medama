@@ -4,11 +4,11 @@
 	"author": "Ayuhito",
 	"main": "dist/default.js",
 	"devDependencies": {
-		"@playwright/test": "^1.45.3",
+		"@playwright/test": "^1.47.0",
 		"brotli-size": "^4.0.0",
 		"gzip-size": "^7.0.0",
 		"preprocess": "^3.2.0",
-		"terser": "^5.31.3"
+		"terser": "^5.32.0"
 	},
 	"description": "Tracker script for Medama Analytics",
 	"license": "MIT",

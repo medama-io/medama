@@ -76,8 +76,7 @@ module.exports = defineConfig({
 			timeout: 2500,
 		},
 		{
-			command:
-				'task start -- start -logger=pretty -level=warn -corsorigins=http://localhost:8080,http://localhost:3000',
+			command: 'task dev -- start',
 			port: 8080,
 			reuseExistingServer: !process.env.CI,
 			cwd: '../core',
