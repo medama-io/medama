@@ -1,4 +1,4 @@
-const ACCEPTED_PATHS = ['/simple', '/history'];
+const ACCEPTED_PATHS = ['/simple', '/history', '/data-api'];
 
 console.log('Serving on http://localhost:3000');
 Bun.serve({
