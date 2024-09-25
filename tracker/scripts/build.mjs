@@ -30,24 +30,37 @@ const build = async (file, opts) => {
 	await terser(file);
 };
 
+const defaultOpts = (opts) => ({
+	PAGE_EVENTS: false,
+	CLICK_EVENTS: false,
+	OUTBOUND_LINKS: false,
+	...opts,
+});
+
 // ENSURE MULTIPLE FEATURE NAMES ARE ALPHABETICALLY ORDERED FOR THE OUTPUT FILE
-await build('default', {});
-await build('click-events', {
-	DATA_ATTRIBUTES: true,
-	CUSTOM_EVENTS: true,
-	CLICK_EVENTS: true,
-});
-await build('page-events', {
-	DATA_ATTRIBUTES: true,
-	PAGE_EVENTS: true,
-});
-await build('outbound-links', {
-	CUSTOM_EVENTS: true,
-	OUTBOUND_LINKS: true,
-});
-await build('click-events.page-events', {
-	DATA_ATTRIBUTES: true,
-	PAGE_EVENTS: true,
-	CUSTOM_EVENTS: true,
-	CLICK_EVENTS: true,
-});
+await build('default', defaultOpts({}));
+await build(
+	'click-events',
+	defaultOpts({
+		CLICK_EVENTS: true,
+	}),
+);
+await build(
+	'page-events',
+	defaultOpts({
+		PAGE_EVENTS: true,
+	}),
+);
+await build(
+	'outbound-links',
+	defaultOpts({
+		OUTBOUND_LINKS: true,
+	}),
+);
+await build(
+	'click-events.page-events',
+	defaultOpts({
+		CLICK_EVENTS: true,
+		PAGE_EVENTS: true,
+	}),
+);

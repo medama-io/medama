@@ -169,7 +169,7 @@
 			xhr.send();
 		});
 
-	// @ifdef DATA_ATTRIBUTES
+	// @if CLICK_EVENTS || PAGE_EVENTS
 	/**
 	 * Extracts key-value pairs from a given data attribute.
 	 * @param {Element} target The target element from which to extract data.
@@ -222,7 +222,7 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
-						// @ifdef PAGE_EVENTS
+						// @if PAGE_EVENTS
 						// Helper function to extract data attributes and merge them.
 						"d":  [...document.querySelectorAll('[data-m\\:load]')].reduce(
 								(acc, elem) => ({
@@ -275,7 +275,7 @@
 		isUnloadCalled = true;
 	};
 
-	// @ifdef CUSTOM_EVENTS
+	// @if CLICK_EVENTS || OUTBOUND_LINKS
 	/**
 	 * Send a custom beacon event to the server.
 	 * @param {Object} data Custom data to send to the server.
@@ -306,7 +306,7 @@
 	};
 	// @endif
 
-	// @ifdef CLICK_EVENTS
+	// @if CLICK_EVENTS
 	/**
 	 * Click event listener to track custom events.
 	 * @param {MouseEvent} event The click event.
@@ -331,7 +331,7 @@
 	addEventListener('auxclick', clickTracker, { capture: true });
 	// @endif
 
-	// @ifdef OUTBOUND_LINKS
+	// @if OUTBOUND_LINKS
 	/**
 	 * Tracks clicks on outbound links using a single event listener.
 	 * @param {MouseEvent} event The click event.
