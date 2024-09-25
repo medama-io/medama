@@ -34,14 +34,20 @@ const build = async (file, opts) => {
 await build('default', {});
 await build('click-events', {
 	DATA_ATTRIBUTES: true,
+	CUSTOM_EVENTS: true,
 	CLICK_EVENTS: true,
 });
 await build('page-events', {
 	DATA_ATTRIBUTES: true,
 	PAGE_EVENTS: true,
 });
+await build('outbound-links', {
+	CUSTOM_EVENTS: true,
+	OUTBOUND_LINKS: true,
+});
 await build('click-events.page-events', {
 	DATA_ATTRIBUTES: true,
 	PAGE_EVENTS: true,
+	CUSTOM_EVENTS: true,
 	CLICK_EVENTS: true,
 });
