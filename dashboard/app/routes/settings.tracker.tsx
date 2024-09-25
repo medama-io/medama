@@ -37,6 +37,7 @@ const trackerSchema = v.strictObject({
 	script_type: v.object({
 		default: v.boolean(),
 		'click-events': v.boolean(),
+		'outbound-links': v.boolean(),
 		'page-events': v.boolean(),
 	}),
 });
@@ -112,6 +113,9 @@ export default function Index() {
 	const [clickEvents, setClickEvents] = useState(
 		Boolean(user.settings.script_type?.includes('click-events')),
 	);
+	const [outboundLinks, setOutboundLinks] = useState(
+		Boolean(user.settings.script_type?.includes('outbound-links')),
+	);
 	const [pageEvents, setPageEvents] = useState(
 		Boolean(user.settings.script_type?.includes('page-events')),
 	);
@@ -128,6 +132,7 @@ export default function Index() {
 			script_type: {
 				default: true,
 				'click-events': clickEvents,
+				'outbound-links': outboundLinks,
 				'page-events': pageEvents,
 			},
 		},
@@ -215,6 +220,35 @@ export default function Index() {
 						onCheckedChange={() => setClickEvents(!clickEvents)}
 						key={form.key('script_type.click-events')}
 						{...form.getInputProps('script_type.click-events', {
+							type: 'checkbox',
+						})}
+					/>
+					<CheckBox
+						label="Outbound Links"
+						value="outbound-links"
+						tooltip={
+							<>
+								<p>
+									Enable automatic tracking of outbound links on your website.
+								</p>
+								<br />
+								<p>
+									Read our{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/overview">
+										Custom Properties
+									</Anchor>{' '}
+									and{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/outbound-links">
+										Outbound Links
+									</Anchor>{' '}
+									guide for more information.
+								</p>
+							</>
+						}
+						checked={outboundLinks}
+						onCheckedChange={() => setOutboundLinks(!outboundLinks)}
+						key={form.key('script_type.outbound-links')}
+						{...form.getInputProps('script_type.outbound-links', {
 							type: 'checkbox',
 						})}
 					/>

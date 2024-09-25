@@ -1608,6 +1608,8 @@ func (s UserSettingsScriptTypeItem) Validate() error {
 		return nil
 	case "click-events":
 		return nil
+	case "outbound-links":
+		return nil
 	case "page-events":
 		return nil
 	default:

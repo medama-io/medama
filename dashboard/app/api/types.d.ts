@@ -558,7 +558,7 @@ export interface components {
              * @enum {string}
              */
             language?: "en";
-            script_type?: ("default" | "click-events" | "page-events")[];
+            script_type?: ("default" | "click-events" | "outbound-links" | "page-events")[];
         };
         /**
          * UserGet

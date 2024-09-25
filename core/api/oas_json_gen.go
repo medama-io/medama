@@ -6064,6 +6064,8 @@ func (s *UserSettingsScriptTypeItem) Decode(d *jx.Decoder) error {
 		*s = UserSettingsScriptTypeItemDefault
 	case UserSettingsScriptTypeItemClickEvents:
 		*s = UserSettingsScriptTypeItemClickEvents
+	case UserSettingsScriptTypeItemOutboundLinks:
+		*s = UserSettingsScriptTypeItemOutboundLinks
 	case UserSettingsScriptTypeItemPageEvents:
 		*s = UserSettingsScriptTypeItemPageEvents
 	default:
