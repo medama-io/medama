@@ -799,7 +799,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						// Leaf node.
 						switch method {
 						case "POST":
-							r.name = "PostAuthLogin"
+							r.name = PostAuthLoginOperation
 							r.summary = "Login"
 							r.operationID = "post-auth-login"
 							r.pathPattern = "/auth/login"
@@ -824,7 +824,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						// Leaf node.
 						switch method {
 						case "POST":
-							r.name = "PostAuthLogout"
+							r.name = PostAuthLogoutOperation
 							r.summary = "Logout"
 							r.operationID = "post-auth-logout"
 							r.pathPattern = "/auth/logout"
@@ -864,7 +864,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						// Leaf node.
 						switch method {
 						case "POST":
-							r.name = "PostEventHit"
+							r.name = PostEventHitOperation
 							r.summary = "Send Hit Event"
 							r.operationID = "post-event-hit"
 							r.pathPattern = "/event/hit"
@@ -889,7 +889,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						// Leaf node.
 						switch method {
 						case "GET":
-							r.name = "GetEventPing"
+							r.name = GetEventPingOperation
 							r.summary = "Ping"
 							r.operationID = "get-event-ping"
 							r.pathPattern = "/event/ping"
@@ -916,7 +916,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				if len(elem) == 0 {
 					switch method {
 					case "DELETE":
-						r.name = "DeleteUser"
+						r.name = DeleteUserOperation
 						r.summary = "Delete User"
 						r.operationID = "delete-user"
 						r.pathPattern = "/user"
@@ -924,7 +924,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						r.count = 0
 						return r, true
 					case "GET":
-						r.name = "GetUser"
+						r.name = GetUserOperation
 						r.summary = "Get User Info"
 						r.operationID = "get-user"
 						r.pathPattern = "/user"
@@ -932,7 +932,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						r.count = 0
 						return r, true
 					case "PATCH":
-						r.name = "PatchUser"
+						r.name = PatchUserOperation
 						r.summary = "Update User Info"
 						r.operationID = "patch-user"
 						r.pathPattern = "/user"
@@ -956,7 +956,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						// Leaf node.
 						switch method {
 						case "GET":
-							r.name = "GetUserUsage"
+							r.name = GetUserUsageOperation
 							r.summary = "Get Resource Usage"
 							r.operationID = "get-user-usage"
 							r.pathPattern = "/user/usage"
@@ -1029,7 +1029,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								// Leaf node.
 								switch method {
 								case "GET":
-									r.name = "GetWebsiteIDBrowsers"
+									r.name = GetWebsiteIDBrowsersOperation
 									r.summary = "Get Browser Stats"
 									r.operationID = "get-website-id-browsers"
 									r.pathPattern = "/website/{hostname}/browsers"
@@ -1066,7 +1066,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									// Leaf node.
 									switch method {
 									case "GET":
-										r.name = "GetWebsiteIDCampaigns"
+										r.name = GetWebsiteIDCampaignsOperation
 										r.summary = "Get UTM Campaign Stats"
 										r.operationID = "get-website-id-campaigns"
 										r.pathPattern = "/website/{hostname}/campaigns"
@@ -1091,7 +1091,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									// Leaf node.
 									switch method {
 									case "GET":
-										r.name = "GetWebsiteIDCountry"
+										r.name = GetWebsiteIDCountryOperation
 										r.summary = "Get Country Stats"
 										r.operationID = "get-website-id-country"
 										r.pathPattern = "/website/{hostname}/countries"
@@ -1119,7 +1119,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								// Leaf node.
 								switch method {
 								case "GET":
-									r.name = "GetWebsiteIDDevice"
+									r.name = GetWebsiteIDDeviceOperation
 									r.summary = "Get Device Stats"
 									r.operationID = "get-website-id-device"
 									r.pathPattern = "/website/{hostname}/devices"
@@ -1144,7 +1144,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								// Leaf node.
 								switch method {
 								case "GET":
-									r.name = "GetWebsiteIDLanguage"
+									r.name = GetWebsiteIDLanguageOperation
 									r.summary = "Get Language Stats"
 									r.operationID = "get-website-id-language"
 									r.pathPattern = "/website/{hostname}/languages"
@@ -1169,7 +1169,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								// Leaf node.
 								switch method {
 								case "GET":
-									r.name = "GetWebsiteIDMediums"
+									r.name = GetWebsiteIDMediumsOperation
 									r.summary = "Get UTM Medium Stats"
 									r.operationID = "get-website-id-mediums"
 									r.pathPattern = "/website/{hostname}/mediums"
@@ -1194,7 +1194,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								// Leaf node.
 								switch method {
 								case "GET":
-									r.name = "GetWebsiteIDOs"
+									r.name = GetWebsiteIDOsOperation
 									r.summary = "Get OS Stats"
 									r.operationID = "get-website-id-os"
 									r.pathPattern = "/website/{hostname}/os"
@@ -1231,7 +1231,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									// Leaf node.
 									switch method {
 									case "GET":
-										r.name = "GetWebsiteIDPages"
+										r.name = GetWebsiteIDPagesOperation
 										r.summary = "Get Page Stats"
 										r.operationID = "get-website-id-pages"
 										r.pathPattern = "/website/{hostname}/pages"
@@ -1256,7 +1256,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									// Leaf node.
 									switch method {
 									case "GET":
-										r.name = "GetWebsiteIDProperties"
+										r.name = GetWebsiteIDPropertiesOperation
 										r.summary = "Get Property Stats"
 										r.operationID = "get-website-id-properties"
 										r.pathPattern = "/website/{hostname}/properties"
@@ -1284,7 +1284,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								// Leaf node.
 								switch method {
 								case "GET":
-									r.name = "GetWebsiteIDReferrers"
+									r.name = GetWebsiteIDReferrersOperation
 									r.summary = "Get Referrer Stats"
 									r.operationID = "get-website-id-referrers"
 									r.pathPattern = "/website/{hostname}/referrers"
@@ -1321,7 +1321,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									// Leaf node.
 									switch method {
 									case "GET":
-										r.name = "GetWebsiteIDSources"
+										r.name = GetWebsiteIDSourcesOperation
 										r.summary = "Get UTM Source Stats"
 										r.operationID = "get-website-id-sources"
 										r.pathPattern = "/website/{hostname}/sources"
@@ -1346,7 +1346,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									// Leaf node.
 									switch method {
 									case "GET":
-										r.name = "GetWebsiteIDSummary"
+										r.name = GetWebsiteIDSummaryOperation
 										r.summary = "Get Stat Summary"
 										r.operationID = "get-website-id-summary"
 										r.pathPattern = "/website/{hostname}/summary"
@@ -1374,7 +1374,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								// Leaf node.
 								switch method {
 								case "GET":
-									r.name = "GetWebsiteIDTime"
+									r.name = GetWebsiteIDTimeOperation
 									r.summary = "Get Time Stats"
 									r.operationID = "get-website-id-time"
 									r.pathPattern = "/website/{hostname}/time"
@@ -1404,7 +1404,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					if len(elem) == 0 {
 						switch method {
 						case "GET":
-							r.name = "GetWebsites"
+							r.name = GetWebsitesOperation
 							r.summary = "List Websites"
 							r.operationID = "get-websites"
 							r.pathPattern = "/websites"
@@ -1412,7 +1412,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.count = 0
 							return r, true
 						case "POST":
-							r.name = "PostWebsites"
+							r.name = PostWebsitesOperation
 							r.summary = "Add Website"
 							r.operationID = "post-websites"
 							r.pathPattern = "/websites"
@@ -1441,7 +1441,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							// Leaf node.
 							switch method {
 							case "DELETE":
-								r.name = "DeleteWebsitesID"
+								r.name = DeleteWebsitesIDOperation
 								r.summary = "Delete Website"
 								r.operationID = "delete-websites-id"
 								r.pathPattern = "/websites/{hostname}"
@@ -1449,7 +1449,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.count = 1
 								return r, true
 							case "GET":
-								r.name = "GetWebsitesID"
+								r.name = GetWebsitesIDOperation
 								r.summary = "Get Website"
 								r.operationID = "get-websites-id"
 								r.pathPattern = "/websites/{hostname}"
@@ -1457,7 +1457,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.count = 1
 								return r, true
 							case "PATCH":
-								r.name = "PatchWebsitesID"
+								r.name = PatchWebsitesIDOperation
 								r.summary = "Update Website"
 								r.operationID = "patch-websites-id"
 								r.pathPattern = "/websites/{hostname}"

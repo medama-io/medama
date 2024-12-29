@@ -16,7 +16,7 @@ import (
 type SecurityHandler interface {
 	// HandleCookieAuth handles CookieAuth security.
 	// Session token for authentication.
-	HandleCookieAuth(ctx context.Context, operationName string, t CookieAuth) (context.Context, error)
+	HandleCookieAuth(ctx context.Context, operationName OperationName, t CookieAuth) (context.Context, error)
 }
 
 func findAuthorization(h http.Header, prefix string) (string, bool) {
@@ -34,7 +34,7 @@ func findAuthorization(h http.Header, prefix string) (string, bool) {
 	return "", false
 }
 
-func (s *Server) securityCookieAuth(ctx context.Context, operationName string, req *http.Request) (context.Context, bool, error) {
+func (s *Server) securityCookieAuth(ctx context.Context, operationName OperationName, req *http.Request) (context.Context, bool, error) {
 	var t CookieAuth
 	const parameterName = "_me_sess"
 	var value string
