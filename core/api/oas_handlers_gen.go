@@ -13,6 +13,16 @@ import (
 	"github.com/ogen-go/ogen/ogenerrors"
 )
 
+type codeRecorder struct {
+	http.ResponseWriter
+	status int
+}
+
+func (c *codeRecorder) WriteHeader(status int) {
+	c.status = status
+	c.ResponseWriter.WriteHeader(status)
+}
+
 func recordError(string, error) {}
 
 // handleDeleteUserRequest handles delete-user operation.
@@ -21,12 +31,14 @@ func recordError(string, error) {}
 //
 // DELETE /user
 func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "DeleteUser",
+			Name: DeleteUserOperation,
 			ID:   "delete-user",
 		}
 	)
@@ -34,7 +46,7 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "DeleteUser", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, DeleteUserOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -89,7 +101,7 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "DeleteUser",
+			OperationName:    DeleteUserOperation,
 			OperationSummary: "Delete User",
 			OperationID:      "delete-user",
 			Body:             nil,
@@ -144,12 +156,14 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 //
 // DELETE /websites/{hostname}
 func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "DeleteWebsitesID",
+			Name: DeleteWebsitesIDOperation,
 			ID:   "delete-websites-id",
 		}
 	)
@@ -157,7 +171,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "DeleteWebsitesID", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, DeleteWebsitesIDOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -212,7 +226,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "DeleteWebsitesID",
+			OperationName:    DeleteWebsitesIDOperation,
 			OperationSummary: "Delete Website",
 			OperationID:      "delete-websites-id",
 			Body:             nil,
@@ -271,12 +285,14 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 //
 // GET /event/ping
 func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetEventPing",
+			Name: GetEventPingOperation,
 			ID:   "get-event-ping",
 		}
 	)
@@ -295,7 +311,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetEventPing",
+			OperationName:    GetEventPingOperation,
 			OperationSummary: "Ping",
 			OperationID:      "get-event-ping",
 			Body:             nil,
@@ -354,12 +370,14 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 //
 // GET /user
 func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetUser",
+			Name: GetUserOperation,
 			ID:   "get-user",
 		}
 	)
@@ -367,7 +385,7 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetUser", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetUserOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -422,7 +440,7 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetUser",
+			OperationName:    GetUserOperation,
 			OperationSummary: "Get User Info",
 			OperationID:      "get-user",
 			Body:             nil,
@@ -477,12 +495,14 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 //
 // GET /user/usage
 func (s *Server) handleGetUserUsageRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetUserUsage",
+			Name: GetUserUsageOperation,
 			ID:   "get-user-usage",
 		}
 	)
@@ -490,7 +510,7 @@ func (s *Server) handleGetUserUsageRequest(args [0]string, argsEscaped bool, w h
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetUserUsage", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetUserUsageOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -545,7 +565,7 @@ func (s *Server) handleGetUserUsageRequest(args [0]string, argsEscaped bool, w h
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetUserUsage",
+			OperationName:    GetUserUsageOperation,
 			OperationSummary: "Get Resource Usage",
 			OperationID:      "get-user-usage",
 			Body:             nil,
@@ -600,12 +620,14 @@ func (s *Server) handleGetUserUsageRequest(args [0]string, argsEscaped bool, w h
 //
 // GET /website/{hostname}/browsers
 func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDBrowsers",
+			Name: GetWebsiteIDBrowsersOperation,
 			ID:   "get-website-id-browsers",
 		}
 	)
@@ -613,7 +635,7 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDBrowsers", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDBrowsersOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -668,7 +690,7 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDBrowsers",
+			OperationName:    GetWebsiteIDBrowsersOperation,
 			OperationSummary: "Get Browser Stats",
 			OperationID:      "get-website-id-browsers",
 			Body:             nil,
@@ -795,12 +817,14 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 //
 // GET /website/{hostname}/campaigns
 func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDCampaigns",
+			Name: GetWebsiteIDCampaignsOperation,
 			ID:   "get-website-id-campaigns",
 		}
 	)
@@ -808,7 +832,7 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDCampaigns", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDCampaignsOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -863,7 +887,7 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDCampaigns",
+			OperationName:    GetWebsiteIDCampaignsOperation,
 			OperationSummary: "Get UTM Campaign Stats",
 			OperationID:      "get-website-id-campaigns",
 			Body:             nil,
@@ -990,12 +1014,14 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 //
 // GET /website/{hostname}/countries
 func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDCountry",
+			Name: GetWebsiteIDCountryOperation,
 			ID:   "get-website-id-country",
 		}
 	)
@@ -1003,7 +1029,7 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDCountry", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDCountryOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -1058,7 +1084,7 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDCountry",
+			OperationName:    GetWebsiteIDCountryOperation,
 			OperationSummary: "Get Country Stats",
 			OperationID:      "get-website-id-country",
 			Body:             nil,
@@ -1185,12 +1211,14 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 //
 // GET /website/{hostname}/devices
 func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDDevice",
+			Name: GetWebsiteIDDeviceOperation,
 			ID:   "get-website-id-device",
 		}
 	)
@@ -1198,7 +1226,7 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDDevice", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDDeviceOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -1253,7 +1281,7 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDDevice",
+			OperationName:    GetWebsiteIDDeviceOperation,
 			OperationSummary: "Get Device Stats",
 			OperationID:      "get-website-id-device",
 			Body:             nil,
@@ -1380,12 +1408,14 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 //
 // GET /website/{hostname}/languages
 func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDLanguage",
+			Name: GetWebsiteIDLanguageOperation,
 			ID:   "get-website-id-language",
 		}
 	)
@@ -1393,7 +1423,7 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDLanguage", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDLanguageOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -1448,7 +1478,7 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDLanguage",
+			OperationName:    GetWebsiteIDLanguageOperation,
 			OperationSummary: "Get Language Stats",
 			OperationID:      "get-website-id-language",
 			Body:             nil,
@@ -1579,12 +1609,14 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 //
 // GET /website/{hostname}/mediums
 func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDMediums",
+			Name: GetWebsiteIDMediumsOperation,
 			ID:   "get-website-id-mediums",
 		}
 	)
@@ -1592,7 +1624,7 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDMediums", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDMediumsOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -1647,7 +1679,7 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDMediums",
+			OperationName:    GetWebsiteIDMediumsOperation,
 			OperationSummary: "Get UTM Medium Stats",
 			OperationID:      "get-website-id-mediums",
 			Body:             nil,
@@ -1774,12 +1806,14 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 //
 // GET /website/{hostname}/os
 func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDOs",
+			Name: GetWebsiteIDOsOperation,
 			ID:   "get-website-id-os",
 		}
 	)
@@ -1787,7 +1821,7 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDOs", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDOsOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -1842,7 +1876,7 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDOs",
+			OperationName:    GetWebsiteIDOsOperation,
 			OperationSummary: "Get OS Stats",
 			OperationID:      "get-website-id-os",
 			Body:             nil,
@@ -1969,12 +2003,14 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 //
 // GET /website/{hostname}/pages
 func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDPages",
+			Name: GetWebsiteIDPagesOperation,
 			ID:   "get-website-id-pages",
 		}
 	)
@@ -1982,7 +2018,7 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDPages", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDPagesOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -2037,7 +2073,7 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDPages",
+			OperationName:    GetWebsiteIDPagesOperation,
 			OperationSummary: "Get Page Stats",
 			OperationID:      "get-website-id-pages",
 			Body:             nil,
@@ -2165,12 +2201,14 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 //
 // GET /website/{hostname}/properties
 func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDProperties",
+			Name: GetWebsiteIDPropertiesOperation,
 			ID:   "get-website-id-properties",
 		}
 	)
@@ -2178,7 +2216,7 @@ func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDProperties", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDPropertiesOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -2233,7 +2271,7 @@ func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDProperties",
+			OperationName:    GetWebsiteIDPropertiesOperation,
 			OperationSummary: "Get Property Stats",
 			OperationID:      "get-website-id-properties",
 			Body:             nil,
@@ -2356,12 +2394,14 @@ func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped
 //
 // GET /website/{hostname}/referrers
 func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDReferrers",
+			Name: GetWebsiteIDReferrersOperation,
 			ID:   "get-website-id-referrers",
 		}
 	)
@@ -2369,7 +2409,7 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDReferrers", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDReferrersOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -2424,7 +2464,7 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDReferrers",
+			OperationName:    GetWebsiteIDReferrersOperation,
 			OperationSummary: "Get Referrer Stats",
 			OperationID:      "get-website-id-referrers",
 			Body:             nil,
@@ -2555,12 +2595,14 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 //
 // GET /website/{hostname}/sources
 func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDSources",
+			Name: GetWebsiteIDSourcesOperation,
 			ID:   "get-website-id-sources",
 		}
 	)
@@ -2568,7 +2610,7 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDSources", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDSourcesOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -2623,7 +2665,7 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDSources",
+			OperationName:    GetWebsiteIDSourcesOperation,
 			OperationSummary: "Get UTM Source Stats",
 			OperationID:      "get-website-id-sources",
 			Body:             nil,
@@ -2750,12 +2792,14 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 //
 // GET /website/{hostname}/summary
 func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDSummary",
+			Name: GetWebsiteIDSummaryOperation,
 			ID:   "get-website-id-summary",
 		}
 	)
@@ -2763,7 +2807,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDSummary", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDSummaryOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -2818,7 +2862,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDSummary",
+			OperationName:    GetWebsiteIDSummaryOperation,
 			OperationSummary: "Get Stat Summary",
 			OperationID:      "get-website-id-summary",
 			Body:             nil,
@@ -2941,12 +2985,14 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 //
 // GET /website/{hostname}/time
 func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsiteIDTime",
+			Name: GetWebsiteIDTimeOperation,
 			ID:   "get-website-id-time",
 		}
 	)
@@ -2954,7 +3000,7 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsiteIDTime", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsiteIDTimeOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -3009,7 +3055,7 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsiteIDTime",
+			OperationName:    GetWebsiteIDTimeOperation,
 			OperationSummary: "Get Time Stats",
 			OperationID:      "get-website-id-time",
 			Body:             nil,
@@ -3136,12 +3182,14 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 //
 // GET /websites
 func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsites",
+			Name: GetWebsitesOperation,
 			ID:   "get-websites",
 		}
 	)
@@ -3149,7 +3197,7 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsites", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsitesOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -3204,7 +3252,7 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsites",
+			OperationName:    GetWebsitesOperation,
 			OperationSummary: "List Websites",
 			OperationID:      "get-websites",
 			Body:             nil,
@@ -3263,12 +3311,14 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 //
 // GET /websites/{hostname}
 func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "GetWebsitesID",
+			Name: GetWebsitesIDOperation,
 			ID:   "get-websites-id",
 		}
 	)
@@ -3276,7 +3326,7 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "GetWebsitesID", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetWebsitesIDOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -3331,7 +3381,7 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "GetWebsitesID",
+			OperationName:    GetWebsitesIDOperation,
 			OperationSummary: "Get Website",
 			OperationID:      "get-websites-id",
 			Body:             nil,
@@ -3390,12 +3440,14 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 //
 // PATCH /user
 func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "PatchUser",
+			Name: PatchUserOperation,
 			ID:   "patch-user",
 		}
 	)
@@ -3403,7 +3455,7 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "PatchUser", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, PatchUserOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -3473,7 +3525,7 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "PatchUser",
+			OperationName:    PatchUserOperation,
 			OperationSummary: "Update User Info",
 			OperationID:      "patch-user",
 			Body:             request,
@@ -3528,12 +3580,14 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 //
 // PATCH /websites/{hostname}
 func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "PatchWebsitesID",
+			Name: PatchWebsitesIDOperation,
 			ID:   "patch-websites-id",
 		}
 	)
@@ -3541,7 +3595,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "PatchWebsitesID", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, PatchWebsitesIDOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -3611,7 +3665,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "PatchWebsitesID",
+			OperationName:    PatchWebsitesIDOperation,
 			OperationSummary: "Update Website",
 			OperationID:      "patch-websites-id",
 			Body:             request,
@@ -3670,12 +3724,14 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 //
 // POST /auth/login
 func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "PostAuthLogin",
+			Name: PostAuthLoginOperation,
 			ID:   "post-auth-login",
 		}
 	)
@@ -3699,7 +3755,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "PostAuthLogin",
+			OperationName:    PostAuthLoginOperation,
 			OperationSummary: "Login",
 			OperationID:      "post-auth-login",
 			Body:             request,
@@ -3749,12 +3805,14 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 //
 // POST /auth/logout
 func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "PostAuthLogout",
+			Name: PostAuthLogoutOperation,
 			ID:   "post-auth-logout",
 		}
 	)
@@ -3773,7 +3831,7 @@ func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "PostAuthLogout",
+			OperationName:    PostAuthLogoutOperation,
 			OperationSummary: "Logout",
 			OperationID:      "post-auth-logout",
 			Body:             nil,
@@ -3828,12 +3886,14 @@ func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w
 //
 // POST /event/hit
 func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "PostEventHit",
+			Name: PostEventHitOperation,
 			ID:   "post-event-hit",
 		}
 	)
@@ -3867,7 +3927,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "PostEventHit",
+			OperationName:    PostEventHitOperation,
 			OperationSummary: "Send Hit Event",
 			OperationID:      "post-event-hit",
 			Body:             request,
@@ -3926,12 +3986,14 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 //
 // POST /websites
 func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	statusWriter := &codeRecorder{ResponseWriter: w}
+	w = statusWriter
 	ctx := r.Context()
 
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "PostWebsites",
+			Name: PostWebsitesOperation,
 			ID:   "post-websites",
 		}
 	)
@@ -3939,7 +4001,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, "PostWebsites", r)
+			sctx, ok, err := s.securityCookieAuth(ctx, PostWebsitesOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -3999,7 +4061,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "PostWebsites",
+			OperationName:    PostWebsitesOperation,
 			OperationSummary: "Add Website",
 			OperationID:      "post-websites",
 			Body:             request,
