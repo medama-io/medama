@@ -8,7 +8,7 @@
 		"build": "remix vite:build",
 		"preview": "vite preview",
 		"generate": "openapi-typescript ../core/openapi.yaml -o ./app/api/types.d.ts --default-non-nullable false",
-		"lint": "biome check --reporter=summary --write .",
+		"lint": "biome check --write .",
 		"lint:ci": "biome check .",
 		"typecheck": "tsc"
 	},

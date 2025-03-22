@@ -105,7 +105,7 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 						style={{ gap: 12, marginTop: 8, justifyContent: 'flex-start' }}
 					>
 						<p className={classes.label}>{stat.label}</p>
-						<div
+						<output
 							className={classes.badge}
 							data-status={
 								isPercentage
@@ -115,11 +115,10 @@ const HeaderDataBox = React.memo(({ stat, isActive }: HeaderDataBoxProps) => {
 									: status
 							}
 							aria-label={`Change: ${change}%`}
-							role="status"
 						>
 							{status === 'positive' ? '+' : ''}
 							{isPercentage ? formatPercentage(change) : `${change}%`}
-						</div>
+						</output>
 					</Group>
 				</button>
 			</Tooltip>
