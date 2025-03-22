@@ -16,14 +16,14 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - go run -tags "no_duckdb_arrow" ./cmd/ {{.CLI_ARGS}} -logger=pretty -level=debug -corsorigins=http://localhost:8080,http://localhost:5173
+      - go run ./cmd/ {{.CLI_ARGS}} -logger=pretty -level=debug -corsorigins=http://localhost:8080,http://localhost:5173
     env:
       CGO_ENABLED: "1"
 
   build:
     deps: [generate]
     cmds:
-      - go build -o ./bin/main -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/main ./cmd/
     env:
       CGO_ENABLED: "1"
 
@@ -84,7 +84,7 @@ tasks:
   release:
     deps: [generate]
     cmds:
-      - go build -o ./bin/main -ldflags "-s -w" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/main -ldflags "-s -w" -trimpath ./cmd/
     env:
       CGO_ENABLED: "1"
 
@@ -93,7 +93,7 @@ tasks:
   release:docker:
     deps: [generate]
     cmds:
-      - go build -o ./bin/main -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/main -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/
       - chmod +x ./bin/main
       - echo "docker build done"
     env:
@@ -102,7 +102,7 @@ tasks:
   release:linux:amd64:
     deps: [generate]
     cmds:
-      - go build -o ./bin/medama_linux_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/medama_linux_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/
       - chmod +x ./bin/medama_linux_amd64
       - echo "linux/amd64 build done"
     env:
@@ -113,7 +113,7 @@ tasks:
   release:linux:arm64:
     deps: [generate]
     cmds:
-      - go build -o ./bin/medama_linux_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/medama_linux_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/
       - chmod +x ./bin/medama_linux_arm64
       - echo "linux/arm64 build done"
     env:
@@ -126,7 +126,7 @@ tasks:
   release:darwin:amd64:
     deps: [generate]
     cmds:
-      - go build -o ./bin/medama_darwin_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/medama_darwin_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/
       - chmod +x ./bin/medama_darwin_amd64
       - echo "darwin/amd64 build done"
     env:
@@ -137,7 +137,7 @@ tasks:
   release:darwin:arm64:
     deps: [generate]
     cmds:
-      - go build -o ./bin/medama_darwin_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath -tags "no_duckdb_arrow" ./cmd/
+      - go build -o ./bin/medama_darwin_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/
       - chmod +x ./bin/medama_darwin_arm64
       - echo "darwin/arm64 build done"
     env:

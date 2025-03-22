@@ -7,7 +7,7 @@ import (
 	"log"
 	"testing"
 
-	_ "github.com/marcboeker/go-duckdb"
+	_ "github.com/marcboeker/go-duckdb/v2"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/migrations"
