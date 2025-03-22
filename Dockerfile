@@ -24,7 +24,7 @@ ENV GOCACHE=/root/.cache/go-build
 
 # Cache Go modules
 COPY core/go.mod core/go.sum ./core/
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 COPY dashboard/package.json ./dashboard/
 COPY tracker/package.json ./tracker/
 
@@ -59,4 +59,3 @@ COPY --from=build /app/core/bin/main /app/bin/main
 
 EXPOSE ${PORT}
 CMD ["/app/bin/main", "start", "-env"]
-

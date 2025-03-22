@@ -24,7 +24,7 @@ jobs:
       - name: Lint core
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.60
+          version: latest
           working-directory: core
 
       - name: Lint dashboard
