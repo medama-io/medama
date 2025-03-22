@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Generate handlers from the OpenAPI specification using ogen-go.
-go run github.com/ogen-go/ogen/cmd/ogen@latest --target api --clean openapi.yaml
+go tool github.com/ogen-go/ogen/cmd/ogen --target api --clean openapi.yaml
 
 # The browser Beacon API sends all content in text/plain even if the content is in JSON.
 # As ogen-go validates the Content-Type header from our OpenAPI specification, this is a
