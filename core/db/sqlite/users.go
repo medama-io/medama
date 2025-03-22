@@ -35,7 +35,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 		return errors.Wrap(err, "marshaling settings")
 	}
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"id":           user.ID,
 		"username":     user.Username,
 		"password":     user.Password,
@@ -128,7 +128,7 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 	exec := `--sql
 	UPDATE users SET username = :username, date_updated = :date_updated WHERE id = :id`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"id":           id,
 		"username":     username,
 		"date_updated": time.Now().Unix(),
@@ -153,7 +153,7 @@ func (c *Client) UpdateUserPassword(ctx context.Context, id string, password str
 	exec := `--sql
 	UPDATE users SET password = :password, date_updated = :date_updated WHERE id = :id`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"id":           id,
 		"password":     password,
 		"date_updated": time.Now().Unix(),

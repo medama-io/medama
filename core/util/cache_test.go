@@ -83,7 +83,7 @@ func TestRange(t *testing.T) {
 	c.Set("world", "World", time.Hour)
 	count := 0
 
-	c.Range(ctx, func(_key, _value interface{}) bool {
+	c.Range(ctx, func(_key, _value any) bool {
 		count++
 		return true
 	})
@@ -98,7 +98,7 @@ func TestRangeTimer(t *testing.T) {
 	c.Set("world", "World", time.Nanosecond)
 	time.Sleep(time.Microsecond)
 
-	c.Range(ctx, func(_key, _value interface{}) bool {
+	c.Range(ctx, func(_key, _value any) bool {
 		t.Log("Cache range mismatch")
 		t.FailNow()
 		return true

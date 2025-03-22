@@ -24,7 +24,7 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 		:date_updated
 	)`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"user_id":      website.UserID,
 		"hostname":     website.Hostname,
 		"date_created": website.DateCreated,
@@ -102,7 +102,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 	exec := `--sql
 	UPDATE websites SET hostname = :hostname, date_updated = :date_updated WHERE hostname = :hostname`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"hostname":     website.Hostname,
 		"date_updated": website.DateUpdated,
 	}

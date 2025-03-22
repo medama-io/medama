@@ -153,7 +153,7 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 		LeftJoin("stats USING (interval)").
 		OrderBy("interval ASC")
 
-	filterMap := map[string]interface{}{
+	filterMap := map[string]any{
 		"interval_query": intervalQuery,
 	}
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(&filterMap))
@@ -185,7 +185,7 @@ func (c *Client) GetWebsiteSummaryLast24Hours(ctx context.Context, hostname stri
 		From("views").
 		Where("hostname = :hostname AND date_created > now() - INTERVAL '1 DAY'")
 
-	filterMap := map[string]interface{}{
+	filterMap := map[string]any{
 		"hostname": hostname,
 	}
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filterMap)

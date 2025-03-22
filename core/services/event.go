@@ -38,7 +38,7 @@ const (
 
 // readerPool is a pool of strings.Reader to reduce memory allocations.
 var readerPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		return new(strings.Reader)
 	},
 }

@@ -36,7 +36,7 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 
 	// Convert user settings to API format.
 	scriptFeatures := []api.UserSettingsScriptTypeItem{}
-	for _, v := range strings.Split(user.Settings.ScriptType, ",") {
+	for v := range strings.SplitSeq(user.Settings.ScriptType, ",") {
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 
@@ -209,7 +209,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 
 	// Convert user settings to API format.
 	scriptFeatures := []api.UserSettingsScriptTypeItem{}
-	for _, v := range strings.Split(user.Settings.ScriptType, ",") {
+	for v := range strings.SplitSeq(user.Settings.ScriptType, ",") {
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 

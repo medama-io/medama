@@ -44,7 +44,7 @@ var (
 )
 
 type SnapRecords struct {
-	Records []interface{}
+	Records []any
 }
 
 type TestCase struct {
@@ -62,13 +62,13 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func NewSnapRecords(slice interface{}) SnapRecords {
+func NewSnapRecords(slice any) SnapRecords {
 	v := reflect.ValueOf(slice)
 	if v.Kind() != reflect.Slice {
 		panic(fmt.Errorf("expected a slice, got %T", slice))
 	}
 
-	interfaceSlice := make([]interface{}, v.Len())
+	interfaceSlice := make([]any, v.Len())
 	for i := range v.Len() {
 		interfaceSlice[i] = v.Index(i).Interface()
 	}

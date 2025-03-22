@@ -170,7 +170,7 @@ type Filters struct {
 }
 
 // CreateFilters uses reflection to create a filter object from the code-generated API parameters.
-func CreateFilters(params interface{}, hostname string) *Filters {
+func CreateFilters(params any, hostname string) *Filters {
 	filters := &Filters{
 		Hostname: hostname,
 	}
@@ -342,10 +342,10 @@ func (f Filters) PaginationString() string {
 // of the query to prevent SQL injection.
 //
 // The startValues are the values that are passed in addition to the filters.
-func (f Filters) Args(customMap *map[string]interface{}) map[string]interface{} {
+func (f Filters) Args(customMap *map[string]any) map[string]any {
 	// Initialize the args with the start map
 	if customMap == nil {
-		customMap = &map[string]interface{}{}
+		customMap = &map[string]any{}
 	}
 	args := *customMap
 

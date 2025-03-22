@@ -61,7 +61,7 @@ func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value
     SET settings = JSON_SET(settings, :key, :value),
         date_updated = :date_updated`
 
-	params := map[string]interface{}{
+	params := map[string]any{
 		"key":          "$." + string(key),
 		"value":        value,
 		"date_updated": time.Now().Unix(),
@@ -97,7 +97,7 @@ func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *mo
 		return errors.Wrap(err, "marshaling settings")
 	}
 
-	params := map[string]interface{}{
+	params := map[string]any{
 		"date_updated": time.Now().Unix(),
 		"settings":     string(settingsJSON),
 		"user_id":      userID,
