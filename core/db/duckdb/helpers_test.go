@@ -90,7 +90,7 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, *require.Assertions, conte
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
-	ctx := context.Background()
+	ctx := t.Context()
 	// Disable logging
 	log.SetOutput(io.Discard)
 
@@ -146,7 +146,7 @@ func UseDatabaseFixture(t *testing.T, fixture Fixture) (*assert.Assertions, *req
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	client, err := duckdb.NewClient(string(fixture))
 	require.NoError(err)

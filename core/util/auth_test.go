@@ -16,7 +16,7 @@ func SetupAuthTest(t *testing.T) (*assert.Assertions, *require.Assertions, conte
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	auth, err := util.NewAuthService(ctx, false)
 	require.NoError(err)

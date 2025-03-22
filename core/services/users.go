@@ -108,7 +108,6 @@ func (h *Handler) GetUserUsage(ctx context.Context, _params api.GetUserUsagePara
 
 func safeConvertUint64ToInt64(value uint64) int64 {
 	if value <= math.MaxInt64 {
-		//nolint:gosec // safe to convert.
 		return int64(value)
 	}
 	return math.MaxInt64 // or another sentinel value or error handling

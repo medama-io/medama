@@ -23,7 +23,7 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.C
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
-	ctx := context.Background()
+	ctx := t.Context()
 	// Disable logging
 	log.SetOutput(io.Discard)
 

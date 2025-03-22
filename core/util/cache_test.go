@@ -14,7 +14,7 @@ func SetupCacheTest(t *testing.T) (*assert.Assertions, *require.Assertions, cont
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
-	ctx := context.Background()
+	ctx := t.Context()
 	return assert, require, ctx
 }
 
