@@ -31,8 +31,9 @@ import (
 )
 
 const (
-	HTTPPort  = 80
-	HTTPSPort = 443
+	HTTPPort        = 80
+	HTTPSPort       = 443
+	shutdownTimeout = 5 * time.Second
 )
 
 type StartCommand struct {
@@ -274,16 +275,16 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 			ReadTimeout:       s.Server.TimeoutRead,
 			WriteTimeout:      s.Server.TimeoutWrite,
 			IdleTimeout:       s.Server.TimeoutIdle,
-			BaseContext:       func(listener net.Listener) context.Context { return ctx },
+			BaseContext:       func(_ net.Listener) context.Context { return ctx },
 		}
 	} else {
 		// The HTTP server solves the ACME challenges and redirects to HTTPS.
 		httpServer = &http.Server{
-			ReadHeaderTimeout: 5 * time.Second,
-			ReadTimeout:       5 * time.Second,
-			WriteTimeout:      5 * time.Second,
-			IdleTimeout:       5 * time.Second,
-			BaseContext:       func(listener net.Listener) context.Context { return ctx },
+			ReadHeaderTimeout: shutdownTimeout,
+			ReadTimeout:       shutdownTimeout,
+			WriteTimeout:      shutdownTimeout,
+			IdleTimeout:       shutdownTimeout,
+			BaseContext:       func(_ net.Listener) context.Context { return ctx },
 		}
 
 		if len(cfg.Issuers) > 0 {
@@ -299,7 +300,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 			ReadTimeout:       s.Server.TimeoutRead,
 			WriteTimeout:      s.Server.TimeoutWrite,
 			IdleTimeout:       s.Server.TimeoutIdle,
-			BaseContext:       func(listener net.Listener) context.Context { return ctx },
+			BaseContext:       func(_ net.Listener) context.Context { return ctx },
 		}
 	}
 
@@ -313,7 +314,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 		<-stop
 		log.Info().Msg("Shutting down server...")
 
-		shutdownCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+		shutdownCtx, cancel := context.WithTimeout(ctx, shutdownTimeout)
 		defer cancel()
 
 		if isSSL {
