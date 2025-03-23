@@ -185,6 +185,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 
 	// Apply custom CORS middleware to the mux handler
 	handler := middlewares.CORSAllowedOriginsMiddleware(s.Server.CORSAllowedOrigins)(mux)
+
 	// X-API-Commit header for client-side cache busting.
 	handler = middlewares.XAPICommitMiddleware(s.Server.Commit)(handler)
 
@@ -263,6 +264,9 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 	)
 
 	if !isSSL {
+		// If AutoSSL is not enabled, apply automatic redirection to HTTPS.
+		mux = middlewares.HTTPSRedirect(isSSL)(mux)
+
 		httpServer = &http.Server{
 			Addr:              ":" + strconv.FormatInt(s.Server.Port, 10),
 			Handler:           mux,
@@ -273,7 +277,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 			BaseContext:       func(listener net.Listener) context.Context { return ctx },
 		}
 	} else {
-		// The HTTP server solves the HTTP challenge and issues redirects to HTTPS.
+		// The HTTP server solves the ACME challenges and redirects to HTTPS.
 		httpServer = &http.Server{
 			ReadHeaderTimeout: 5 * time.Second,
 			ReadTimeout:       5 * time.Second,
@@ -284,7 +288,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 
 		if len(cfg.Issuers) > 0 {
 			if am, ok := cfg.Issuers[0].(*certmagic.ACMEIssuer); ok {
-				httpServer.Handler = am.HTTPChallengeHandler(middlewares.HTTPSRedirect())
+				httpServer.Handler = am.HTTPChallengeHandler(middlewares.HTTPSRedirectFunc(true))
 			}
 		}
 
