@@ -6,7 +6,7 @@ import (
 )
 
 // HTTPSRedirectFunc is a handler function that redirects HTTP requests to HTTPS.
-func HTTPSRedirectFunc(isSSL bool) http.HandlerFunc {
+func HTTPSRedirectFunc() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Remove the port from the host if it exists as we are redirecting to the default HTTPS port.
 		host, _, err := net.SplitHostPort(r.Host)

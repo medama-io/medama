@@ -286,7 +286,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 
 		if len(cfg.Issuers) > 0 {
 			if am, ok := cfg.Issuers[0].(*certmagic.ACMEIssuer); ok {
-				httpServer.Handler = am.HTTPChallengeHandler(middlewares.HTTPSRedirectFunc(true))
+				httpServer.Handler = am.HTTPChallengeHandler(middlewares.HTTPSRedirectFunc())
 			}
 		}
 
