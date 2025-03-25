@@ -7,16 +7,20 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
+concurrency:
+  group: docker-latest-group
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+  attestations: write
+  id-token: write
+
 jobs:
   publish-docker-latest:
     name: Publish Docker latest image
     runs-on: ubuntu-latest
-    concurrency: docker-latest-group # ensure only one action runs at a time
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
 
     steps:
       - name: Checkout code
