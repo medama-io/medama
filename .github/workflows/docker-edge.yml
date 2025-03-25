@@ -10,16 +10,20 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
+concurrency:
+  group: docker-edge-group
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+  attestations: write
+  id-token: write
+
 jobs:
   publish-docker-edge:
     name: Publish Docker edge image
     runs-on: ubuntu-latest
-    concurrency: docker-edge-group # ensure only one action runs at a time
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
 
     steps:
       - name: Checkout code
