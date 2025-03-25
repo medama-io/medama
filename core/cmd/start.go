@@ -265,9 +265,6 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 	)
 
 	if !isSSL {
-		// If AutoSSL is not enabled, apply automatic redirection to HTTPS.
-		mux = middlewares.HTTPSRedirect(isSSL)(mux)
-
 		httpServer = &http.Server{
 			Addr:              ":" + strconv.FormatInt(s.Server.Port, 10),
 			Handler:           mux,
