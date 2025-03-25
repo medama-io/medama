@@ -3,6 +3,7 @@ module github.com/medama-io/medama
 go 1.24.1
 
 require (
+	github.com/CAFxX/httpcompression v0.0.10-0.20241101105416-f754b5f26260
 	github.com/alexedwards/argon2id v1.0.0
 	github.com/alphadose/haxmap v1.4.1
 	github.com/caarlos0/env/v11 v11.3.1
@@ -27,6 +28,7 @@ require (
 )
 
 require (
+	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/apache/arrow-go/v18 v18.1.0 // indirect
 	github.com/boyter/go-string v1.0.5 // indirect
 	github.com/caddyserver/zerossl v0.1.3 // indirect
@@ -51,7 +53,7 @@ require (
 	github.com/gofrs/uuid/v5 v5.2.0 // indirect
 	github.com/google/flatbuffers v25.1.24+incompatible // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/klauspost/compress v1.17.11 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect

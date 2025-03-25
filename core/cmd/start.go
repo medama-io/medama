@@ -187,6 +187,9 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	// Apply custom CORS middleware to the mux handler
 	handler := middlewares.CORSAllowedOriginsMiddleware(s.Server.CORSAllowedOrigins)(mux)
 
+	// Compression middleware.
+	handler = middlewares.Compress()(handler)
+
 	// X-API-Commit header for client-side cache busting.
 	handler = middlewares.XAPICommitMiddleware(s.Server.Commit)(handler)
 
