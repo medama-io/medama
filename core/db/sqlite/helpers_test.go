@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strings"
 	"testing"
 
 	_ "github.com/marcboeker/go-duckdb/v2"
@@ -21,21 +22,25 @@ import (
 
 func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.Client) {
 	t.Helper()
+
 	assert := assert.New(t)
 	require := require.New(t)
 	ctx := t.Context()
-	// Disable logging
+
+	// Disable logging.
 	log.SetOutput(io.Discard)
 
-	// Generate new memory db per test
-	name := fmt.Sprintf("file:/%s.db?vfs=memdb", t.Name())
+	// Generate new memory db per test.
+	name := strings.ToLower(t.Name() + "_test")
+	host := fmt.Sprintf("file:/%s.db?vfs=memdb", name)
+
 	memdb.Create(name, []byte{})
-	client, err := sqlite.NewClient(name)
+	client, err := sqlite.NewClient(host)
 	require.NoError(err)
 	assert.NotNil(client)
 
 	// Empty duckdb client not used in tests
-	duckdbClient, err := duckdb.NewClient("")
+	duckdbClient, err := duckdb.NewClient(":memory:")
 	require.NoError(err)
 	assert.NotNil(duckdbClient)
 

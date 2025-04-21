@@ -13,5 +13,5 @@ go tool github.com/ogen-go/ogen/cmd/ogen --target api --clean openapi.yaml
 # in case the line number changes.
 #
 # perl is more portable across different systems compared to sed.
-# Line 256
-perl -i -pe 's/^.*$// if $. == 256; $. == 256 and print "    case ct == \"application/json\", ct == \"text/plain\":"' ./api/oas_request_decoders_gen.go
+# Line 255
+perl -i -pe 's/^.*$// if $. == 255; $. == 255 and print "    case ct == \"application/json\", ct == \"text/plain\":"' ./api/oas_request_decoders_gen.go

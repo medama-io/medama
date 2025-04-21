@@ -75,7 +75,7 @@ tasks:
   test:
     deps: [generate:go]
     cmds:
-      - go test -v ./...
+      - go test -v -shuffle on ./...
     env:
       CGO_ENABLED: "1"
 

@@ -171,29 +171,21 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			return &api.PostEventHitNoContent{}, nil
 		}
 
-		uaBrowser := ua.GetBrowser()
+		uaBrowser := ua.Browser()
 		if uaBrowser == "" {
 			uaBrowser = Unknown
 			unknownCounter++
 		}
 
-		uaOS := ua.GetOS()
+		uaOS := ua.OS()
 		if uaOS == "" {
 			uaOS = Unknown
 			unknownCounter++
 		}
 
-		uaDevice := Unknown
-		switch {
-		case ua.IsDesktop():
-			uaDevice = "Desktop"
-		case ua.IsMobile():
-			uaDevice = "Mobile"
-		case ua.IsTablet():
-			uaDevice = "Tablet"
-		case ua.IsTV():
-			uaDevice = "TV"
-		default:
+		uaDevice := ua.Device()
+		if uaDevice == "" {
+			uaDevice = Unknown
 			unknownCounter++
 		}
 
@@ -282,9 +274,9 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			LanguageBase:    languageBase,
 			LanguageDialect: languageDialect,
 
-			BrowserName: uaBrowser,
-			OS:          uaOS,
-			DeviceType:  uaDevice,
+			BrowserName: uaBrowser.String(),
+			OS:          uaOS.String(),
+			DeviceType:  uaDevice.String(),
 
 			UTMSource:   utmSource,
 			UTMMedium:   utmMedium,
