@@ -12,7 +12,7 @@ require (
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/marcboeker/go-duckdb/v2 v2.2.0
+	github.com/marcboeker/go-duckdb/v2 v2.1.0
 	github.com/medama-io/go-referrer-parser v0.0.0-20240903120234-0a63376371c3
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
 	github.com/medama-io/go-useragent v1.1.0

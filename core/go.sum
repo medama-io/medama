@@ -105,6 +105,8 @@ github.com/marcboeker/go-duckdb/arrowmapping v0.0.7 h1:6mq16sPGJPo8Tkkl6UIsXuaNv
 github.com/marcboeker/go-duckdb/arrowmapping v0.0.7/go.mod h1:FdvmqJOwVdfFZLpV+anBFlTUOzfU/NdIRET37mIEczY=
 github.com/marcboeker/go-duckdb/mapping v0.0.7 h1:t0BaNmLXj76RKs/x80A/ZTe+KzZDimO2Ji8ct4YnPu4=
 github.com/marcboeker/go-duckdb/mapping v0.0.7/go.mod h1:EH3RSabeePOUePoYDtF0LqfruXPtVB3M+g03QydZsck=
+github.com/marcboeker/go-duckdb/v2 v2.1.0 h1:mhAEwy+Ut9Iji+QvyjkB86HhhC/r/H0RRKpkwfANu88=
+github.com/marcboeker/go-duckdb/v2 v2.1.0/go.mod h1:W76KqN7EWTm8kpU2irA0V4f1R+6QEt3uLUVZ3wAtZ7M=
 github.com/marcboeker/go-duckdb/v2 v2.2.0 h1:xxruuYD7vWvybY52xWzV0vvHKa1IjpDDOq6T846ax/s=
 github.com/marcboeker/go-duckdb/v2 v2.2.0/go.mod h1:B7swJ38GcOEm9PI0IdfkZYqn5CtIjRUiQG4ZBr3hnyc=
 github.com/maruel/natural v1.1.1 h1:Hja7XhhmvEFhcByqDoHz9QZbkWey+COd9xWfCfn1ioo=
