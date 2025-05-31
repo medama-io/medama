@@ -1,4 +1,5 @@
 import {
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
 	useLoaderData,
@@ -17,7 +18,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	// If the user is already logged in, expire session cookie with success message.
 	if (hasSession()) {
 		const { res } = await authLogout();

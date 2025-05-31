@@ -2,6 +2,7 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	data as json,
 	useLoaderData,
@@ -31,7 +32,7 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Website Settings | Medama' }];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const [{ data: user }, { data: websites }] = await Promise.all([
 		userGet(),
 		websiteList(),

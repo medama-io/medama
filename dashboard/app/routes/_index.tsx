@@ -4,6 +4,7 @@ import { useForm } from '@mantine/form';
 import { PlusIcon } from '@radix-ui/react-icons';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	data as json,
 	redirect,
@@ -14,7 +15,6 @@ import { valibotResolver } from 'mantine-form-valibot-resolver';
 import * as v from 'valibot';
 import isFQDN from 'validator/lib/isFQDN';
 
-import type { components } from '@/api/types';
 import { websiteCreate, websiteList } from '@/api/websites';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/Input';
@@ -23,10 +23,6 @@ import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { useDisclosure } from '@/hooks/use-disclosure';
 
-interface LoaderData {
-	websites: Array<components['schemas']['WebsiteGet']>;
-}
-
 export const meta: MetaFunction = () => {
 	return [
 		{ title: 'Medama | Privacy Focused Web Analytics' },
@@ -34,7 +30,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const { data, res } = await websiteList({ query: { summary: true } });
 
 	if (!res.ok || !data) {
@@ -79,7 +75,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 };
 
 export default function Index() {
-	const { websites } = useLoaderData<LoaderData>();
+	const { websites } = useLoaderData<typeof clientLoader>();
 	const [opened, { open, close }] = useDisclosure(false);
 	const submit = useSubmit();
 

@@ -23,10 +23,10 @@ const mapItems = <T extends DataRow>(
 ): PageViewValue[] =>
 	data
 		? data.map((item) => ({
-			label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
-			count: item.visitors ?? item.duration ?? 0,
-			percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
-		}))
+				label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
+				count: item.visitors ?? item.duration ?? 0,
+				percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
+			}))
 		: [];
 
 const createStatsData = <T extends DataRow>(

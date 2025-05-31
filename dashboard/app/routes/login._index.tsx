@@ -1,6 +1,7 @@
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	data as json,
 	redirect,
@@ -19,7 +20,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	// If the user is in demo mode (hostname matches demo.medama.io or medama.fly.dev), automatically
 	// log them into the demo account.
 	const hostname = window.location.hostname;

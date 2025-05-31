@@ -1,5 +1,6 @@
 import { SimpleGrid } from '@mantine/core';
 import {
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	data as json,
 	useLoaderData,
@@ -19,7 +20,7 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Usage Settings | Medama' }];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const { data } = await userUsageGet();
 
 	if (!data) {

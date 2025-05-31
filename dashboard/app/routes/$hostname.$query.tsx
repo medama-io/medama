@@ -24,7 +24,7 @@ export const clientLoader = async ({
 
 	const stats = await fetchStats(request, params, { dataset: [query] });
 
-	return stats
+	return stats;
 };
 
 export default function Index() {

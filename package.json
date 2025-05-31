@@ -4,6 +4,12 @@
 	"dependencies": {
 		"@biomejs/biome": "^1.9.4"
 	},
-	"workspaces": ["dashboard", "tracker"],
-	"trustedDependencies": ["@biomejs/biome", "esbuild"]
+	"workspaces": [
+		"dashboard",
+		"tracker"
+	],
+	"trustedDependencies": [
+		"@biomejs/biome",
+		"esbuild"
+	]
 }

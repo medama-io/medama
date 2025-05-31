@@ -1,4 +1,8 @@
-import { type MetaFunction, redirect } from '@remix-run/react';
+import {
+	type ClientLoaderFunctionArgs,
+	type MetaFunction,
+	redirect,
+} from '@remix-run/react';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -7,7 +11,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	return redirect('/settings/account');
 };
 
