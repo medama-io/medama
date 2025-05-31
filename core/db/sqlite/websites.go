@@ -31,7 +31,7 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 		"date_updated": website.DateUpdated,
 	}
 
-	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		switch {
 		case errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY):
@@ -107,7 +107,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 		"date_updated": website.DateUpdated,
 	}
 
-	res, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	res, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrWebsiteExists
@@ -168,7 +168,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 	exec := `--sql
 	DELETE FROM websites WHERE hostname = ?`
 
-	res, err := c.DB.ExecContext(ctx, exec, hostname)
+	res, err := c.ExecContext(ctx, exec, hostname)
 	if err != nil {
 		log.Error().
 			Str("hostname", hostname).

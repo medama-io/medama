@@ -44,7 +44,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 		"date_updated": user.DateUpdated,
 	}
 
-	_, err = c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err = c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) || errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrUserExists
@@ -134,7 +134,7 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 		"date_updated": time.Now().Unix(),
 	}
 
-	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		switch {
 		case errors.Is(err, sqlite3.CONSTRAINT_UNIQUE),
@@ -159,7 +159,7 @@ func (c *Client) UpdateUserPassword(ctx context.Context, id string, password str
 		"date_updated": time.Now().Unix(),
 	}
 
-	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return model.ErrUserNotFound
@@ -175,7 +175,7 @@ func (c *Client) DeleteUser(ctx context.Context, id string) error {
 	exec := `--sql
 	DELETE FROM users WHERE id = ?`
 
-	res, err := c.DB.ExecContext(ctx, exec, id)
+	res, err := c.ExecContext(ctx, exec, id)
 	if err != nil {
 		return errors.Wrap(err, "db")
 	}

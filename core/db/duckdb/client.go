@@ -63,7 +63,7 @@ func (c *Client) GetPreparedStmt(ctx context.Context, name string, query string)
 		return stmt, nil
 	}
 
-	stmt, err := c.DB.PreparexContext(ctx, query)
+	stmt, err := c.PreparexContext(ctx, query)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to create prepared statement")
 	}
