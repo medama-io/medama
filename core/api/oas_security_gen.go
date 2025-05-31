@@ -34,6 +34,31 @@ func findAuthorization(h http.Header, prefix string) (string, bool) {
 	return "", false
 }
 
+var operationRolesCookieAuth = map[string][]string{
+	DeleteUserOperation:             []string{},
+	DeleteWebsitesIDOperation:       []string{},
+	GetUserOperation:                []string{},
+	GetUserUsageOperation:           []string{},
+	GetWebsiteIDBrowsersOperation:   []string{},
+	GetWebsiteIDCampaignsOperation:  []string{},
+	GetWebsiteIDCountryOperation:    []string{},
+	GetWebsiteIDDeviceOperation:     []string{},
+	GetWebsiteIDLanguageOperation:   []string{},
+	GetWebsiteIDMediumsOperation:    []string{},
+	GetWebsiteIDOsOperation:         []string{},
+	GetWebsiteIDPagesOperation:      []string{},
+	GetWebsiteIDPropertiesOperation: []string{},
+	GetWebsiteIDReferrersOperation:  []string{},
+	GetWebsiteIDSourcesOperation:    []string{},
+	GetWebsiteIDSummaryOperation:    []string{},
+	GetWebsiteIDTimeOperation:       []string{},
+	GetWebsitesOperation:            []string{},
+	GetWebsitesIDOperation:          []string{},
+	PatchUserOperation:              []string{},
+	PatchWebsitesIDOperation:        []string{},
+	PostWebsitesOperation:           []string{},
+}
+
 func (s *Server) securityCookieAuth(ctx context.Context, operationName OperationName, req *http.Request) (context.Context, bool, error) {
 	var t CookieAuth
 	const parameterName = "_me_sess"
@@ -47,6 +72,7 @@ func (s *Server) securityCookieAuth(ctx context.Context, operationName Operation
 		return nil, false, errors.Wrap(err, "get cookie value")
 	}
 	t.APIKey = value
+	t.Roles = operationRolesCookieAuth[operationName]
 	rctx, err := s.sec.HandleCookieAuth(ctx, operationName, t)
 	if errors.Is(err, ogenerrors.ErrSkipServerSecurity) {
 		return nil, false, nil
