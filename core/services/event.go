@@ -253,14 +253,17 @@ func (h *Handler) PostEventHit(
 
 			referrerHost = referrer.Hostname()
 
-			// If the referrer hostname is the same as the current hostname or is an IP address,
-			// we want to remove it.
-			if referrerHost == hostname {
+			switch {
+			// Remove any self-referencing hostnames.
+			case referrerHost == hostname:
 				referrerHost = ""
-			} else if isIPAddress(referrerHost) {
-				// Filter out IP addresses from referrer.
+
+			// Filter out IP addresses from referrer.
+			case isIPAddress(referrerHost):
 				referrerHost = ""
-			} else {
+
+			// Else, parse the referrer host to get the optional group name.
+			default:
 				referrerGroup = h.referrer.Parse(referrerHost)
 			}
 		}
@@ -453,7 +456,7 @@ func (h *Handler) PostEventHit(
 	return &api.PostEventHitNoContent{}, nil
 }
 
-// isIPAddress checks if a string is a valid IP address (either IPv4 or IPv6)
+// isIPAddress checks if a string is a valid IP address (either IPv4 or IPv6).
 func isIPAddress(host string) bool {
 	// Fast path to check if the host _might_ be an IP address
 	// by checking if it starts with a digit or contains a colon.
