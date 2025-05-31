@@ -1,8 +1,9 @@
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
-	json,
+	data as json,
 	redirect,
 } from '@remix-run/react';
 
@@ -19,7 +20,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	// If the user is in demo mode (hostname matches demo.medama.io or medama.fly.dev), automatically
 	// log them into the demo account.
 	const hostname = window.location.hostname;
@@ -85,9 +86,10 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 				withBorder: true,
 				color: 'red',
 			});
-			return json({
+
+			return {
 				message: 'Invalid username or password. Please try again.',
-			});
+			};
 		}
 
 		throw new Response('Failed to login.', {

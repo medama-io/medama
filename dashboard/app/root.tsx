@@ -55,13 +55,13 @@ import {
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import {
+	type ClientLoaderFunctionArgs,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
 	isRouteErrorResponse,
-	json,
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
@@ -78,16 +78,12 @@ import {
 import theme from '@/styles/theme';
 import { EXPIRE_LOGGED_IN, hasSession } from '@/utils/cookies';
 
-interface LoaderData {
-	isLoggedIn: boolean;
-}
-
 interface DocumentProps {
 	children: React.ReactNode;
 }
 
-export const clientLoader = () => {
-	return json<LoaderData>({ isLoggedIn: Boolean(hasSession()) });
+export const clientLoader = (_: ClientLoaderFunctionArgs) => {
+	return { isLoggedIn: Boolean(hasSession()) };
 };
 
 export const Document = ({ children }: DocumentProps) => {
@@ -155,7 +151,7 @@ export const Document = ({ children }: DocumentProps) => {
 
 export default function App() {
 	// Trigger loader for session check.
-	useLoaderData<LoaderData>();
+	useLoaderData<typeof clientLoader>();
 	return (
 		<Document>
 			<Outlet />

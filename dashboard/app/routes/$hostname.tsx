@@ -3,7 +3,6 @@ import {
 	type MetaFunction,
 	Outlet,
 	type ShouldRevalidateFunctionArgs,
-	json,
 	useLoaderData,
 } from '@remix-run/react';
 import { useMemo } from 'react';
@@ -36,7 +35,7 @@ export const clientLoader = async ({
 		websiteList(),
 	]);
 
-	return json({ stats, websites: websites.data });
+	return { stats, websites: websites.data };
 };
 
 const LABEL_MAP = {

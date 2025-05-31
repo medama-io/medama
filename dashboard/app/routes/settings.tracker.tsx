@@ -2,8 +2,9 @@ import { type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
-	json,
+	data as json,
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
@@ -24,10 +25,6 @@ import {
 } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
 
-interface LoaderData {
-	user: components['schemas']['UserGet'];
-}
-
 export const meta: MetaFunction = () => {
 	return [{ title: 'Tracker Settings | Medama' }];
 };
@@ -44,7 +41,7 @@ const trackerSchema = v.strictObject({
 const getTrackingScript = (hostname: string) =>
 	`<script defer src="https://${hostname}/script.js"></script>`;
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const { data } = await userGet();
 
 	if (!data) {
@@ -53,9 +50,9 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json<LoaderData>({
+	return {
 		user: data,
-	});
+	};
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
@@ -98,11 +95,12 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		withBorder: true,
 		color: '#17cd8c',
 	});
-	return json({ message });
+
+	return { message };
 };
 
 export default function Index() {
-	const { user } = useLoaderData<LoaderData>();
+	const { user } = useLoaderData<typeof clientLoader>();
 	const submit = useSubmit();
 
 	if (!user) {

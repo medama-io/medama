@@ -2,23 +2,19 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
 	type MetaFunction,
-	json,
+	data as json,
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import * as v from 'valibot';
 
-import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
 import { PasswordInput, TextInput } from '@/components/Input';
 import { Section } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
-
-interface LoaderData {
-	user: components['schemas']['UserGet'];
-}
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'Account Settings | Medama' }];
@@ -47,7 +43,7 @@ const accountSchema = v.object({
 	),
 });
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const { data } = await userGet();
 
 	if (!data) {
@@ -56,9 +52,9 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json<LoaderData>({
+	return {
 		user: data,
-	});
+	};
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
@@ -100,11 +96,12 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		withBorder: true,
 		color: '#17cd8c',
 	});
-	return json({ message });
+
+	return { message };
 };
 
 export default function Index() {
-	const { user } = useLoaderData<LoaderData>();
+	const { user } = useLoaderData<typeof clientLoader>();
 	const submit = useSubmit();
 
 	if (!user) {

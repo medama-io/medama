@@ -2,7 +2,6 @@ import { SimpleGrid } from '@mantine/core';
 import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
-	json,
 	useLoaderData,
 } from '@remix-run/react';
 
@@ -50,7 +49,8 @@ export const clientLoader = async ({
 		isSummary: true,
 		limit: 5, // Summaries should only show 5 items max
 	});
-	return json(stats);
+
+	return stats;
 };
 
 export default function Index() {
