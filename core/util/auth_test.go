@@ -12,7 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func SetupAuthTest(t *testing.T) (*assert.Assertions, *require.Assertions, context.Context, *util.AuthService) {
+func SetupAuthTest(
+	t *testing.T,
+) (*assert.Assertions, *require.Assertions, context.Context, *util.AuthService) {
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)

@@ -130,9 +130,18 @@ func (f Filter) String() string {
 	case FilterEquals, FilterNotEquals:
 		// e.g. "lower(hostname) = :hostname"
 		return string(f.Field) + " " + filterOperationMap[f.Operation] + " :" + string(f.Field)
-	case FilterContains, FilterNotContains, FilterStartsWith, FilterNotStartsWith, FilterEndsWith, FilterNotEndsWith:
+	case FilterContains,
+		FilterNotContains,
+		FilterStartsWith,
+		FilterNotStartsWith,
+		FilterEndsWith,
+		FilterNotEndsWith:
 		// e.g. "contains(hostname, :hostname)"
-		return filterOperationMap[f.Operation] + "(LOWER(" + string(f.Field) + "), LOWER(:" + string(f.Field) + "))"
+		return filterOperationMap[f.Operation] + "(LOWER(" + string(
+			f.Field,
+		) + "), LOWER(:" + string(
+			f.Field,
+		) + "))"
 	default:
 		return ""
 	}
@@ -185,24 +194,42 @@ func CreateFilters(params any, hostname string) *Filters {
 		switch fieldName {
 		case "Path":
 			if field.IsValid() && !field.IsZero() {
-				filters.Pathname = NewFilter(FilterPathname, field.Interface().(api.OptFilterString))
+				filters.Pathname = NewFilter(
+					FilterPathname,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "Referrer":
 			if field.IsValid() && !field.IsZero() {
-				filters.Referrer = NewFilter(FilterReferrer, field.Interface().(api.OptFilterString))
-				filters.ReferrerGroup = NewFilter(FilterReferrerGroup, field.Interface().(api.OptFilterString))
+				filters.Referrer = NewFilter(
+					FilterReferrer,
+					field.Interface().(api.OptFilterString),
+				)
+				filters.ReferrerGroup = NewFilter(
+					FilterReferrerGroup,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "UtmSource":
 			if field.IsValid() && !field.IsZero() {
-				filters.UTMSource = NewFilter(FilterUTMSource, field.Interface().(api.OptFilterString))
+				filters.UTMSource = NewFilter(
+					FilterUTMSource,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "UtmMedium":
 			if field.IsValid() && !field.IsZero() {
-				filters.UTMMedium = NewFilter(FilterUTMMedium, field.Interface().(api.OptFilterString))
+				filters.UTMMedium = NewFilter(
+					FilterUTMMedium,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "UtmCampaign":
 			if field.IsValid() && !field.IsZero() {
-				filters.UTMCampaign = NewFilter(FilterUTMCampaign, field.Interface().(api.OptFilterString))
+				filters.UTMCampaign = NewFilter(
+					FilterUTMCampaign,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "Browser":
 			if field.IsValid() && !field.IsZero() {
@@ -222,17 +249,29 @@ func CreateFilters(params any, hostname string) *Filters {
 			}
 		case "Language":
 			if field.IsValid() && !field.IsZero() {
-				filters.Language = NewFilter(FilterLanguage, field.Interface().(api.OptFilterString))
-				filters.LanguageDialect = NewFilter(FilterLanguageDialect, field.Interface().(api.OptFilterString))
+				filters.Language = NewFilter(
+					FilterLanguage,
+					field.Interface().(api.OptFilterString),
+				)
+				filters.LanguageDialect = NewFilter(
+					FilterLanguageDialect,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "PropName":
 			if field.IsValid() && !field.IsZero() {
-				filters.PropertyName = NewFilter(FilterPropertyName, field.Interface().(api.OptFilterString))
+				filters.PropertyName = NewFilter(
+					FilterPropertyName,
+					field.Interface().(api.OptFilterString),
+				)
 				filters.IsCustomEvent = true
 			}
 		case "PropValue":
 			if field.IsValid() && !field.IsZero() {
-				filters.PropertyValue = NewFilter(FilterPropertyValue, field.Interface().(api.OptFilterString))
+				filters.PropertyValue = NewFilter(
+					FilterPropertyValue,
+					field.Interface().(api.OptFilterString),
+				)
 				filters.IsCustomEvent = true
 			}
 		case "Start":

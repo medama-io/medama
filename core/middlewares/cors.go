@@ -28,7 +28,8 @@ func CORSAllowedOriginsMiddleware(allowedOrigins []string) func(http.Handler) ht
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			uPath := path.Clean(r.URL.Path)
 
-			if allowedOrigins != nil && strings.HasPrefix(uPath, "/api") && !strings.HasPrefix(uPath, "/api/event") {
+			if allowedOrigins != nil && strings.HasPrefix(uPath, "/api") &&
+				!strings.HasPrefix(uPath, "/api/event") {
 				// Apply modified CORS headers for API routes.
 				customCORS.Handler(next).ServeHTTP(w, r)
 			} else {

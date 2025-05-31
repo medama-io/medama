@@ -46,7 +46,8 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 
 	_, err = c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
-		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) || errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
+		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) ||
+			errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrUserExists
 		}
 

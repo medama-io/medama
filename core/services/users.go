@@ -44,7 +44,9 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 		Response: api.UserGet{
 			Username: user.Username,
 			Settings: api.UserSettings{
-				Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
+				Language: api.NewOptUserSettingsLanguage(
+					api.UserSettingsLanguage(user.Settings.Language),
+				),
 				ScriptType: scriptFeatures,
 			},
 			DateCreated: user.DateCreated,
@@ -53,7 +55,10 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 	}, nil
 }
 
-func (h *Handler) GetUserUsage(ctx context.Context, _params api.GetUserUsageParams) (api.GetUserUsageRes, error) {
+func (h *Handler) GetUserUsage(
+	ctx context.Context,
+	_params api.GetUserUsageParams,
+) (api.GetUserUsageRes, error) {
 	// CPU statistics.
 	cpuCores, err := cpu.CountsWithContext(ctx, false)
 	if err != nil {
@@ -113,7 +118,11 @@ func safeConvertUint64ToInt64(value uint64) int64 {
 	return math.MaxInt64 // or another sentinel value or error handling
 }
 
-func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api.PatchUserParams) (api.PatchUserRes, error) {
+func (h *Handler) PatchUser(
+	ctx context.Context,
+	req *api.UserPatch,
+	_params api.PatchUserParams,
+) (api.PatchUserRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("patch user rejected in demo mode")
@@ -217,7 +226,9 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 		Response: api.UserGet{
 			Username: user.Username,
 			Settings: api.UserSettings{
-				Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
+				Language: api.NewOptUserSettingsLanguage(
+					api.UserSettingsLanguage(user.Settings.Language),
+				),
 				ScriptType: scriptFeatures,
 			},
 			DateCreated: user.DateCreated,
@@ -226,7 +237,10 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 	}, nil
 }
 
-func (h *Handler) DeleteUser(ctx context.Context, _params api.DeleteUserParams) (api.DeleteUserRes, error) {
+func (h *Handler) DeleteUser(
+	ctx context.Context,
+	_params api.DeleteUserParams,
+) (api.DeleteUserRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("delete user rejected in demo mode")

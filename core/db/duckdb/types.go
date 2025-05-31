@@ -10,7 +10,10 @@ import (
 )
 
 // GetWebsiteBrowser returns the browsers for the given hostname.
-func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsBrowsersSummary, error) {
+func (c *Client) GetWebsiteBrowsersSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsBrowsersSummary, error) {
 	var browsers []*model.StatsBrowsersSummary
 
 	// Array of browsers
@@ -56,7 +59,10 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 	return browsers, nil
 }
 
-func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]*model.StatsBrowsers, error) {
+func (c *Client) GetWebsiteBrowsers(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsBrowsers, error) {
 	var browsers []*model.StatsBrowsers
 
 	// Array of browsers
@@ -108,7 +114,10 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 	return browsers, nil
 }
 
-func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsOSSummary, error) {
+func (c *Client) GetWebsiteOSSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsOSSummary, error) {
 	var os []*model.StatsOSSummary
 
 	// Array of operating systems
@@ -203,7 +212,10 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 	return os, nil
 }
 
-func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsDevicesSummary, error) {
+func (c *Client) GetWebsiteDevicesSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsDevicesSummary, error) {
 	var devices []*model.StatsDevicesSummary
 
 	// Array of devices
@@ -250,7 +262,10 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 }
 
 // GetWebsiteDevices returns the devices for the given hostname.
-func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*model.StatsDevices, error) {
+func (c *Client) GetWebsiteDevices(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsDevices, error) {
 	var devices []*model.StatsDevices
 
 	// Array of devices

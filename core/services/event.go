@@ -53,7 +53,10 @@ func putReader(r *strings.Reader) {
 	readerPool.Put(r)
 }
 
-func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
+func (h *Handler) GetEventPing(
+	_ctx context.Context,
+	params api.GetEventPingParams,
+) (api.GetEventPingRes, error) {
 	// Check if if-modified-since header is set
 	ifModified := params.IfModifiedSince.Value
 
@@ -127,7 +130,11 @@ const (
 	IsBotThreshold = 2
 )
 
-func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params api.PostEventHitParams) (api.PostEventHitRes, error) {
+func (h *Handler) PostEventHit(
+	ctx context.Context,
+	req api.EventHit,
+	_params api.PostEventHitParams,
+) (api.PostEventHitRes, error) {
 	log := logger.Get()
 
 	// If this counter exceeds 2, we want to return early as the event is likely
@@ -320,7 +327,9 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 				case api.BoolEventLoadDItem:
 					value = strconv.FormatBool(item.Bool)
 				default:
-					return nil, errors.New("invalid custom event property type: " + string(item.Type))
+					return nil, errors.New(
+						"invalid custom event property type: " + string(item.Type),
+					)
 				}
 
 				events = append(events, model.EventHit{

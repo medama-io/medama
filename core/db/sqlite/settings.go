@@ -85,7 +85,11 @@ func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value
 }
 
 // UpdateSettings updates a user's settings in the database.
-func (c *Client) UpdateSettings(ctx context.Context, userID string, settings *model.UserSettings) error {
+func (c *Client) UpdateSettings(
+	ctx context.Context,
+	userID string,
+	settings *model.UserSettings,
+) error {
 	query := `--sql
     UPDATE users
     SET settings = :settings,

@@ -73,23 +73,57 @@ func (s *StartCommand) ParseFlags(args []string) error {
 	// General settings.
 	fs.Int64Var(&s.Server.Port, "port", s.Server.Port, "Port to listen on.")
 	fs.StringVar(&s.Server.Logger, "logger", s.Server.Logger, "Logger format (json, pretty)")
-	fs.StringVar(&s.Server.Level, "level", s.Server.Level, "Logger level (debug, info, warn, error)")
+	fs.StringVar(
+		&s.Server.Level,
+		"level",
+		s.Server.Level,
+		"Logger level (debug, info, warn, error)",
+	)
 
 	// AutoSSL settings.
-	fs.StringVar(&s.Server.AutoSSLDomain, "autossl", s.Server.AutoSSLDomain, "Automatically provision SSL certificates for the specified domain and redirect HTTP requests to HTTPS.\n\nRequires the server to run on ports 80 and 443. The domain must be publicly accessible and resolve to the server.")
-	fs.StringVar(&s.Server.AutoSSLEmail, "autosslemail", s.Server.AutoSSLEmail, "Email address to optionally send SSL certificate notifications.")
+	fs.StringVar(
+		&s.Server.AutoSSLDomain,
+		"autossl",
+		s.Server.AutoSSLDomain,
+		"Automatically provision SSL certificates for the specified domain and redirect HTTP requests to HTTPS.\n\nRequires the server to run on ports 80 and 443. The domain must be publicly accessible and resolve to the server.",
+	)
+	fs.StringVar(
+		&s.Server.AutoSSLEmail,
+		"autosslemail",
+		s.Server.AutoSSLEmail,
+		"Email address to optionally send SSL certificate notifications.",
+	)
 
 	// Database settings.
 	fs.StringVar(&s.AppDB.Host, "appdb", s.AppDB.Host, "Path to app database.")
-	fs.StringVar(&s.AnalyticsDB.Host, "analyticsdb", s.AnalyticsDB.Host, "Path to analytics database.")
+	fs.StringVar(
+		&s.AnalyticsDB.Host,
+		"analyticsdb",
+		s.AnalyticsDB.Host,
+		"Path to analytics database.",
+	)
 
 	// Misc settings.
 	fs.BoolVar(&s.Server.Profiler, "profiler", s.Server.Profiler, "Enable debug profiling.")
-	fs.BoolVar(&s.Server.UseEnvironment, "env", false, "Opt-in to allow environment variables to be used for configuration. Flags will still override environment variables.")
-	fs.BoolVar(&s.Server.DemoMode, "demo", s.Server.DemoMode, "Enable demo mode restricting all POST/PATCH/DELETE actions (except login).")
+	fs.BoolVar(
+		&s.Server.UseEnvironment,
+		"env",
+		false,
+		"Opt-in to allow environment variables to be used for configuration. Flags will still override environment variables.",
+	)
+	fs.BoolVar(
+		&s.Server.DemoMode,
+		"demo",
+		s.Server.DemoMode,
+		"Enable demo mode restricting all POST/PATCH/DELETE actions (except login).",
+	)
 
 	// Handle array type flags.
-	corsAllowedOrigins := fs.String("corsorigins", strings.Join(s.Server.CORSAllowedOrigins, ","), "Comma separated list of allowed CORS origins on API routes. Useful for external dashboards that may host the frontend on a different domain.")
+	corsAllowedOrigins := fs.String(
+		"corsorigins",
+		strings.Join(s.Server.CORSAllowedOrigins, ","),
+		"Comma separated list of allowed CORS origins on API routes. Useful for external dashboards that may host the frontend on a different domain.",
+	)
 
 	// Parse flags.
 	err := fs.Parse(args)
@@ -341,7 +375,12 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 		return nil
 	}
 
-	log.Printf("Starting server with automatic SSL for %s configured.\n\nServing HTTP->HTTPS on %s and %s", s.Server.AutoSSLDomain, httpListener.Addr(), httpsListener.Addr())
+	log.Printf(
+		"Starting server with automatic SSL for %s configured.\n\nServing HTTP->HTTPS on %s and %s",
+		s.Server.AutoSSLDomain,
+		httpListener.Addr(),
+		httpsListener.Addr(),
+	)
 
 	go func() {
 		if err := httpServer.Serve(httpListener); err != http.ErrServerClosed {

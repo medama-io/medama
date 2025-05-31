@@ -34,7 +34,10 @@ func totalPageviewsCTE(whereClause string, isCustomEvent bool) qb.CTE {
 }
 
 // GetWebsitePagesSummary returns a summary of the pages for the given hostname.
-func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsPagesSummary, error) {
+func (c *Client) GetWebsitePagesSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsPagesSummary, error) {
 	var pages []*model.StatsPagesSummary
 
 	// Array of page paths and their relevant counts
@@ -86,7 +89,10 @@ func (c *Client) GetWebsitePagesSummary(ctx context.Context, filter *db.Filters)
 }
 
 // GetWebsitePages returns the pages statistics for the given hostname.
-func (c *Client) GetWebsitePages(ctx context.Context, filter *db.Filters) ([]*model.StatsPages, error) {
+func (c *Client) GetWebsitePages(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsPages, error) {
 	var pages []*model.StatsPages
 
 	// Array of page paths and their relevant counts

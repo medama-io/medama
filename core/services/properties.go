@@ -9,7 +9,10 @@ import (
 	"github.com/medama-io/medama/util/logger"
 )
 
-func (h *Handler) GetWebsiteIDProperties(ctx context.Context, params api.GetWebsiteIDPropertiesParams) (api.GetWebsiteIDPropertiesRes, error) {
+func (h *Handler) GetWebsiteIDProperties(
+	ctx context.Context,
+	params api.GetWebsiteIDPropertiesParams,
+) (api.GetWebsiteIDPropertiesRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
