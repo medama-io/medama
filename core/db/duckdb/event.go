@@ -118,7 +118,7 @@ func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDurati
 
 // executeInTransaction executes the given function within a transaction.
 func (c *Client) executeInTransaction(ctx context.Context, fn func(*sqlx.Tx) error) error {
-	tx, err := c.DB.BeginTxx(ctx, nil)
+	tx, err := c.BeginTxx(ctx, nil)
 	if err != nil {
 		return errors.Wrap(err, "duckdb: begin transaction")
 	}

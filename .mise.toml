@@ -1,6 +1,7 @@
 [tools]
-go = "1.24.2"
+go = "1.24.3"
 bun = "latest"
 task = "latest"
-golangci-lint = "latest"
 gofumpt = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+golangci-lint = "2"

@@ -29,19 +29,20 @@ export default defineConfig({
 			name: 'css-additional-data',
 			enforce: 'pre',
 			transform(code, id) {
-				if (id.endsWith('.css')) {
+				if (id.endsWith('.css') || id.endsWith('.css?inline')) {
 					return `${customMedia}\n${code}`;
 				}
 			},
 		},
 		remix({
 			ssr: false,
+			future: {
+				v3_fetcherPersist: true,
+				v3_relativeSplatPath: true,
+				v3_throwAbortReason: true,
+				v3_lazyRouteDiscovery: true,
+			},
 		}),
 		tsconfigPaths(),
 	],
-	server: {
-		watch: {
-			usePolling: true,
-		},
-	},
 });

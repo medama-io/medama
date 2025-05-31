@@ -56,7 +56,7 @@ func TestAuthWithInvalidSession(t *testing.T) {
 	// Decrypt cookie
 	userID, err := auth.ReadSession(ctx, "invalid_session")
 	require.ErrorIs(err, model.ErrInvalidSession)
-	assert.Equal("", userID)
+	assert.Empty(userID)
 }
 
 func TestAuthWithExpiredSession(t *testing.T) {
@@ -77,5 +77,5 @@ func TestAuthWithExpiredSession(t *testing.T) {
 	// Try to read from session with expired cookie
 	userID, err := auth.ReadSession(ctx, cookie.Value)
 	require.ErrorIs(err, model.ErrSessionNotFound)
-	assert.Equal("", userID)
+	assert.Empty(userID)
 }

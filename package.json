@@ -2,7 +2,7 @@
 	"name": "medama-analytics",
 	"private": true,
 	"dependencies": {
-		"@biomejs/biome": "^1.8.1"
+		"@biomejs/biome": "^1.9.4"
 	},
 	"workspaces": ["dashboard", "tracker"],
 	"trustedDependencies": ["@biomejs/biome", "esbuild"]
