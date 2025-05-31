@@ -54,6 +54,8 @@
 	},
 	"devDependencies": {
 		"@remix-run/dev": "^2.16.8",
+		"@remix-run/fs-routes": "^2.16.8",
+		"@remix-run/route-config": "^2.16.8",
 		"@types/byte-size": "^8.1.2",
 		"@types/react": "^18.3.5",
 		"@types/react-dom": "^18.3.0",
