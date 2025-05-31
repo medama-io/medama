@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"net/http"
+	"net/netip"
 	"net/url"
 	"strconv"
 	"strings"
@@ -252,12 +253,18 @@ func (h *Handler) PostEventHit(
 
 			referrerHost = referrer.Hostname()
 
-			// If the referrer hostname is the same as the current hostname, we
-			// want to remove it.
-			if referrerHost != hostname {
-				referrerGroup = h.referrer.Parse(referrerHost)
-			} else {
+			switch {
+			// Remove any self-referencing hostnames.
+			case referrerHost == hostname:
 				referrerHost = ""
+
+			// Filter out IP addresses from referrer.
+			case isIPAddress(referrerHost):
+				referrerHost = ""
+
+			// Else, parse the referrer host to get the optional group name.
+			default:
+				referrerGroup = h.referrer.Parse(referrerHost)
 			}
 		}
 
@@ -447,4 +454,16 @@ func (h *Handler) PostEventHit(
 	}
 
 	return &api.PostEventHitNoContent{}, nil
+}
+
+// isIPAddress checks if a string is a valid IP address (either IPv4 or IPv6).
+func isIPAddress(host string) bool {
+	// Fast path to check if the host _might_ be an IP address
+	// by checking if it starts with a digit or contains a colon.
+	if len(host) == 0 || (host[0] < '0' || host[0] > '9') && strings.IndexByte(host, ':') == -1 {
+		return false
+	}
+
+	_, err := netip.ParseAddr(host)
+	return err == nil
 }
