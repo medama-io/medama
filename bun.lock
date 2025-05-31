@@ -51,6 +51,8 @@
       },
       "devDependencies": {
         "@remix-run/dev": "^2.16.8",
+        "@remix-run/fs-routes": "^2.16.8",
+        "@remix-run/route-config": "^2.16.8",
         "@types/byte-size": "^8.1.2",
         "@types/react": "^18.3.5",
         "@types/react-dom": "^18.3.0",
@@ -366,9 +368,13 @@
 
     "@remix-run/express": ["@remix-run/express@2.16.8", "", { "dependencies": { "@remix-run/node": "2.16.8" }, "peerDependencies": { "express": "^4.20.0", "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-NNTosiAJ4jZCRDfWSjV+3Fyu7KoHPeEHruLZEPRNDuXO6Nm5EkRvIkMwdfwyJ+ajE5IPotu8MFtPyNtm3sw/gw=="],
 
+    "@remix-run/fs-routes": ["@remix-run/fs-routes@2.16.8", "", { "peerDependencies": { "@remix-run/dev": "^2.16.8", "@remix-run/route-config": "^2.16.8", "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-9/yD8d3s4UGI7WM17sgxfHBz7mtLFC2GRUtbcVukfIO8lpY1VNtx9Ap+CqXKTlHQcSSFpDLPEPCyF6f9xoe6yw=="],
+
     "@remix-run/node": ["@remix-run/node@2.16.8", "", { "dependencies": { "@remix-run/server-runtime": "2.16.8", "@remix-run/web-fetch": "^4.4.2", "@web3-storage/multipart-parser": "^1.0.0", "cookie-signature": "^1.1.0", "source-map-support": "^0.5.21", "stream-slice": "^0.1.2", "undici": "^6.21.2" }, "peerDependencies": { "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-foeYXU3mdaBJZnbtGbM8mNdHowz2+QnVGDRo7P3zgFkmsccMEflArGZNbkACGKd9xwDguTxxMJ6cuXBC4jIfgQ=="],
 
     "@remix-run/react": ["@remix-run/react@2.16.8", "", { "dependencies": { "@remix-run/router": "1.23.0", "@remix-run/server-runtime": "2.16.8", "react-router": "6.30.0", "react-router-dom": "6.30.0", "turbo-stream": "2.4.1" }, "peerDependencies": { "react": "^18.0.0", "react-dom": "^18.0.0", "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-JmoBUnEu/nPLkU6NGNIG7rfLM97gPpr1LYRJeV680hChr0/2UpfQQwcRLtHz03w1Gz1i/xONAAVOvRHVcXkRlA=="],
+
+    "@remix-run/route-config": ["@remix-run/route-config@2.16.8", "", { "dependencies": { "lodash": "^4.17.21" }, "peerDependencies": { "@remix-run/dev": "^2.16.8", "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-YEhm2N9LIyBtGNdo6efbFCxmLHG5qdQlYyoMZdR5CaLAMICpdXr3It12xft+SoQiNL6ALnEHM9oiisZijvFZcQ=="],
 
     "@remix-run/router": ["@remix-run/router@1.23.0", "", {}, "sha512-O3rHJzAQKamUz1fvE0Qaw0xSFqsA/yafi2iqeE0pvdFtCO1viYx8QL6f3Ln/aCCTLxs68SLf0KPM9eSeM8yBnA=="],
 
