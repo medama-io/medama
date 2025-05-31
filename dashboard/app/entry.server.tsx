@@ -21,24 +21,23 @@ export default function handleRequest(
 
 	return prohibitOutOfOrderStreaming
 		? handleBotRequest(
-			request,
-			responseStatusCode,
-			responseHeaders,
-			remixContext,
-		)
+				request,
+				responseStatusCode,
+				responseHeaders,
+				remixContext,
+			)
 		: handleBrowserRequest(
-			request,
-			responseStatusCode,
-			responseHeaders,
-			remixContext,
-		);
+				request,
+				responseStatusCode,
+				responseHeaders,
+				remixContext,
+			);
 }
 
 function isBotRequest(userAgent: string | null) {
 	if (!userAgent) {
 		return false;
 	}
-
 
 	return isbot(userAgent);
 }
@@ -52,10 +51,7 @@ function handleBotRequest(
 	return new Promise((resolve, reject) => {
 		let shellRendered = false;
 		const { pipe, abort } = renderToPipeableStream(
-			<RemixServer
-				context={remixContext}
-				url={request.url}
-			/>,
+			<RemixServer context={remixContext} url={request.url} />,
 			{
 				onAllReady() {
 					shellRendered = true;
@@ -89,7 +85,6 @@ function handleBotRequest(
 			},
 		);
 
-
 		// Automatically timeout the React renderer after 6 seconds, which ensures
 		// React has enough time to flush down the rejected boundary contents
 		setTimeout(abort, streamTimeout + 1000);
@@ -105,10 +100,7 @@ function handleBrowserRequest(
 	return new Promise((resolve, reject) => {
 		let shellRendered = false;
 		const { pipe, abort } = renderToPipeableStream(
-			<RemixServer
-				context={remixContext}
-				url={request.url}
-			/>,
+			<RemixServer context={remixContext} url={request.url} />,
 			{
 				onShellReady() {
 					shellRendered = true;
