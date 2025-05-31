@@ -5,7 +5,7 @@ import { browserslistToTargets } from 'lightningcss';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-declare module '@remix-run/node' {
+declare module '@remix-run/react' {
 	interface Future {
 		v3_singleFetch: true;
 	}
