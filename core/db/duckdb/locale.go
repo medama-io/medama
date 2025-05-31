@@ -10,7 +10,10 @@ import (
 )
 
 // GetWebsiteCountries returns the countries for the given hostname.
-func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsCountriesSummary, error) {
+func (c *Client) GetWebsiteCountriesSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsCountriesSummary, error) {
 	var countries []*model.StatsCountriesSummary
 
 	// Array of countries
@@ -57,7 +60,10 @@ func (c *Client) GetWebsiteCountriesSummary(ctx context.Context, filter *db.Filt
 }
 
 // GetWebsiteCountries returns the countries for the given hostname.
-func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([]*model.StatsCountries, error) {
+func (c *Client) GetWebsiteCountries(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsCountries, error) {
 	var countries []*model.StatsCountries
 
 	// Array of countries
@@ -106,7 +112,11 @@ func (c *Client) GetWebsiteCountries(ctx context.Context, filter *db.Filters) ([
 }
 
 // GetWebsiteLanguages returns the languages for the given hostname.
-func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, filter *db.Filters) ([]*model.StatsLanguagesSummary, error) {
+func (c *Client) GetWebsiteLanguagesSummary(
+	ctx context.Context,
+	isLocale bool,
+	filter *db.Filters,
+) ([]*model.StatsLanguagesSummary, error) {
 	var languages []*model.StatsLanguagesSummary
 
 	languageSelect := "language_base AS language"
@@ -158,7 +168,11 @@ func (c *Client) GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, 
 }
 
 // GetWebsiteLanguages returns the languages for the given hostname.
-func (c *Client) GetWebsiteLanguages(ctx context.Context, isLocale bool, filter *db.Filters) ([]*model.StatsLanguages, error) {
+func (c *Client) GetWebsiteLanguages(
+	ctx context.Context,
+	isLocale bool,
+	filter *db.Filters,
+) ([]*model.StatsLanguages, error) {
 	var languages []*model.StatsLanguages
 
 	languageSelect := "language_base AS language"

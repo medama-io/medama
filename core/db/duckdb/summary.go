@@ -11,7 +11,10 @@ import (
 )
 
 // GetWebsiteSummary returns the summary stats for the given website.
-func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*model.StatsSummarySingle, error) {
+func (c *Client) GetWebsiteSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) (*model.StatsSummarySingle, error) {
 	var summary model.StatsSummarySingle
 
 	// Visitors are determined by the number of is_unique_user values that are true.
@@ -58,7 +61,11 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 }
 
 // GetWebsiteIntervals returns the stats for the given website by intervals.
-func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error) {
+func (c *Client) GetWebsiteIntervals(
+	ctx context.Context,
+	filter *db.Filters,
+	interval api.GetWebsiteIDSummaryInterval,
+) ([]*model.StatsIntervals, error) {
 	var resp []*model.StatsIntervals
 	isMonthly := false
 
@@ -175,7 +182,10 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 }
 
 // GetWebsiteSummaryLast24Hours returns the summary stats for the given website in the last 24 hours.
-func (c *Client) GetWebsiteSummaryLast24Hours(ctx context.Context, hostname string) (*model.StatsSummaryLast24Hours, error) {
+func (c *Client) GetWebsiteSummaryLast24Hours(
+	ctx context.Context,
+	hostname string,
+) (*model.StatsSummaryLast24Hours, error) {
 	var summary model.StatsSummaryLast24Hours
 	// Visitors are determined by the number of is_unique_user values that are true.
 	query := qb.New().

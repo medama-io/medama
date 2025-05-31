@@ -72,7 +72,11 @@ func (a *AuthService) ComparePasswords(suppliedPassword string, storedHash strin
 }
 
 // EncryptSession encrypts a session token and stores it in the cache.
-func (a *AuthService) EncryptSession(_ context.Context, sessionID string, _duration time.Duration) (string, error) {
+func (a *AuthService) EncryptSession(
+	_ context.Context,
+	sessionID string,
+	_duration time.Duration,
+) (string, error) {
 	// Create a new AES cipher block.
 	block, err := aes.NewCipher(a.aes32Key)
 	if err != nil {

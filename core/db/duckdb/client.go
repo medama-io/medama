@@ -57,7 +57,11 @@ func (c *Client) Close() error {
 
 // GetPreparedStmt returns a prepared statement by name. This is lazy loaded and cached after
 // the first call.
-func (c *Client) GetPreparedStmt(ctx context.Context, name string, query string) (*sqlx.Stmt, error) {
+func (c *Client) GetPreparedStmt(
+	ctx context.Context,
+	name string,
+	query string,
+) (*sqlx.Stmt, error) {
 	stmt, ok := c.statements.Get(name)
 	if ok {
 		return stmt, nil

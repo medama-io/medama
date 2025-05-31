@@ -86,7 +86,9 @@ func (s SnapRecords) Snapshot() string {
 	return sb.String()
 }
 
-func SetupDatabase(t *testing.T) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
+func SetupDatabase(
+	t *testing.T,
+) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
@@ -142,7 +144,10 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, *require.Assertions, conte
 	return assert, require, ctx, duckdbClient
 }
 
-func UseDatabaseFixture(t *testing.T, fixture Fixture) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
+func UseDatabaseFixture(
+	t *testing.T,
+	fixture Fixture,
+) (*assert.Assertions, *require.Assertions, context.Context, *duckdb.Client) {
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
@@ -172,16 +177,76 @@ func generateFilterAll(hostname string) []TestCase {
 	}{
 		// Alphabetically sorted list of filters as snapshots are sorted. This lets us see the downward progression of
 		// each cumulative filter.
-		{"Browser", db.NewFilter(db.FilterBrowser, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Chrome")}))},
-		{"Country", db.NewFilter(db.FilterCountry, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("United Kingdom")}))},
-		{"Device", db.NewFilter(db.FilterDevice, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Desktop")}))},
-		{"Language", db.NewFilter(db.FilterLanguage, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("English")}))},
-		{"OS", db.NewFilter(db.FilterOS, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Windows")}))},
-		{"Pathname", db.NewFilter(db.FilterPathname, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")}))},
-		{"Referrer", db.NewFilter(db.FilterReferrer, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")}))},
-		{"UTMCampaign", db.NewFilter(db.FilterUTMCampaign, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("summer")}))},
-		{"UTMMedium", db.NewFilter(db.FilterUTMMedium, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("organic")}))},
-		{"UTMSource", db.NewFilter(db.FilterUTMSource, api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("bing")}))},
+		{
+			"Browser",
+			db.NewFilter(
+				db.FilterBrowser,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Chrome")}),
+			),
+		},
+		{
+			"Country",
+			db.NewFilter(
+				db.FilterCountry,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("United Kingdom")}),
+			),
+		},
+		{
+			"Device",
+			db.NewFilter(
+				db.FilterDevice,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Desktop")}),
+			),
+		},
+		{
+			"Language",
+			db.NewFilter(
+				db.FilterLanguage,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("English")}),
+			),
+		},
+		{
+			"OS",
+			db.NewFilter(
+				db.FilterOS,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("Windows")}),
+			),
+		},
+		{
+			"Pathname",
+			db.NewFilter(
+				db.FilterPathname,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("/")}),
+			),
+		},
+		{
+			"Referrer",
+			db.NewFilter(
+				db.FilterReferrer,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("medama.io")}),
+			),
+		},
+		{
+			"UTMCampaign",
+			db.NewFilter(
+				db.FilterUTMCampaign,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("summer")}),
+			),
+		},
+		{
+			"UTMMedium",
+			db.NewFilter(
+				db.FilterUTMMedium,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("organic")}),
+			),
+		},
+		{
+			"UTMSource",
+			db.NewFilter(
+				db.FilterUTMSource,
+				api.NewOptFilterString(api.FilterString{Eq: api.NewOptString("bing")}),
+			),
+		},
 	}
 
 	for _, step := range filterSteps {

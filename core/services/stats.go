@@ -10,7 +10,10 @@ import (
 	"github.com/medama-io/medama/util/logger"
 )
 
-func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsiteIDSummaryParams) (api.GetWebsiteIDSummaryRes, error) {
+func (h *Handler) GetWebsiteIDSummary(
+	ctx context.Context,
+	params api.GetWebsiteIDSummaryParams,
+) (api.GetWebsiteIDSummaryRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -95,7 +98,10 @@ func (h *Handler) GetWebsiteIDSummary(ctx context.Context, params api.GetWebsite
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteIDPagesParams) (api.GetWebsiteIDPagesRes, error) {
+func (h *Handler) GetWebsiteIDPages(
+	ctx context.Context,
+	params api.GetWebsiteIDPagesParams,
+) (api.GetWebsiteIDPagesRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists.
@@ -162,7 +168,10 @@ func (h *Handler) GetWebsiteIDPages(ctx context.Context, params api.GetWebsiteID
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDTimeParams) (api.GetWebsiteIDTimeRes, error) {
+func (h *Handler) GetWebsiteIDTime(
+	ctx context.Context,
+	params api.GetWebsiteIDTimeParams,
+) (api.GetWebsiteIDTimeRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -228,7 +237,10 @@ func (h *Handler) GetWebsiteIDTime(ctx context.Context, params api.GetWebsiteIDT
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsiteIDReferrersParams) (api.GetWebsiteIDReferrersRes, error) {
+func (h *Handler) GetWebsiteIDReferrers(
+	ctx context.Context,
+	params api.GetWebsiteIDReferrersParams,
+) (api.GetWebsiteIDReferrersRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -244,7 +256,11 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	// Check parameter if it is asking for summary
 	if params.Summary.Value {
 		// Get summary
-		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(ctx, params.Grouped.Value, filters)
+		referrers, err := h.analyticsDB.GetWebsiteReferrersSummary(
+			ctx,
+			params.Grouped.Value,
+			filters,
+		)
 		if err != nil {
 			log.Error().
 				Err(err).
@@ -293,7 +309,10 @@ func (h *Handler) GetWebsiteIDReferrers(ctx context.Context, params api.GetWebsi
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsiteIDSourcesParams) (api.GetWebsiteIDSourcesRes, error) {
+func (h *Handler) GetWebsiteIDSources(
+	ctx context.Context,
+	params api.GetWebsiteIDSourcesParams,
+) (api.GetWebsiteIDSourcesRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -354,7 +373,10 @@ func (h *Handler) GetWebsiteIDSources(ctx context.Context, params api.GetWebsite
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsiteIDMediumsParams) (api.GetWebsiteIDMediumsRes, error) {
+func (h *Handler) GetWebsiteIDMediums(
+	ctx context.Context,
+	params api.GetWebsiteIDMediumsParams,
+) (api.GetWebsiteIDMediumsRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -418,7 +440,10 @@ func (h *Handler) GetWebsiteIDMediums(ctx context.Context, params api.GetWebsite
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsiteIDCampaignsParams) (api.GetWebsiteIDCampaignsRes, error) {
+func (h *Handler) GetWebsiteIDCampaigns(
+	ctx context.Context,
+	params api.GetWebsiteIDCampaignsParams,
+) (api.GetWebsiteIDCampaignsRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -482,7 +507,10 @@ func (h *Handler) GetWebsiteIDCampaigns(ctx context.Context, params api.GetWebsi
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsiteIDBrowsersParams) (api.GetWebsiteIDBrowsersRes, error) {
+func (h *Handler) GetWebsiteIDBrowsers(
+	ctx context.Context,
+	params api.GetWebsiteIDBrowsersParams,
+) (api.GetWebsiteIDBrowsersRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -546,7 +574,10 @@ func (h *Handler) GetWebsiteIDBrowsers(ctx context.Context, params api.GetWebsit
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsParams) (api.GetWebsiteIDOsRes, error) {
+func (h *Handler) GetWebsiteIDOs(
+	ctx context.Context,
+	params api.GetWebsiteIDOsParams,
+) (api.GetWebsiteIDOsRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -610,7 +641,10 @@ func (h *Handler) GetWebsiteIDOs(ctx context.Context, params api.GetWebsiteIDOsP
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteIDDeviceParams) (api.GetWebsiteIDDeviceRes, error) {
+func (h *Handler) GetWebsiteIDDevice(
+	ctx context.Context,
+	params api.GetWebsiteIDDeviceParams,
+) (api.GetWebsiteIDDeviceRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -674,7 +708,10 @@ func (h *Handler) GetWebsiteIDDevice(ctx context.Context, params api.GetWebsiteI
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsiteIDLanguageParams) (api.GetWebsiteIDLanguageRes, error) {
+func (h *Handler) GetWebsiteIDLanguage(
+	ctx context.Context,
+	params api.GetWebsiteIDLanguageParams,
+) (api.GetWebsiteIDLanguageRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists
@@ -689,7 +726,11 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 
 	if params.Summary.Value {
 		// Get summary
-		languages, err := h.analyticsDB.GetWebsiteLanguagesSummary(ctx, params.Locale.Value, filters)
+		languages, err := h.analyticsDB.GetWebsiteLanguagesSummary(
+			ctx,
+			params.Locale.Value,
+			filters,
+		)
 		if err != nil {
 			log.Error().
 				Err(err).
@@ -738,7 +779,10 @@ func (h *Handler) GetWebsiteIDLanguage(ctx context.Context, params api.GetWebsit
 	}, nil
 }
 
-func (h *Handler) GetWebsiteIDCountry(ctx context.Context, params api.GetWebsiteIDCountryParams) (api.GetWebsiteIDCountryRes, error) {
+func (h *Handler) GetWebsiteIDCountry(
+	ctx context.Context,
+	params api.GetWebsiteIDCountryParams,
+) (api.GetWebsiteIDCountryRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
 	// Check if website exists

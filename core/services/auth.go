@@ -10,7 +10,10 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
-func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.PostAuthLoginRes, error) {
+func (h *Handler) PostAuthLogin(
+	ctx context.Context,
+	req *api.AuthLogin,
+) (api.PostAuthLoginRes, error) {
 	// Check email and password.
 	user, err := h.db.GetUserByUsername(ctx, req.Username)
 	if err != nil {
@@ -41,7 +44,10 @@ func (h *Handler) PostAuthLogin(ctx context.Context, req *api.AuthLogin) (api.Po
 	}, nil
 }
 
-func (h *Handler) PostAuthLogout(ctx context.Context, params api.PostAuthLogoutParams) (api.PostAuthLogoutRes, error) {
+func (h *Handler) PostAuthLogout(
+	ctx context.Context,
+	params api.PostAuthLogoutParams,
+) (api.PostAuthLogoutRes, error) {
 	h.auth.RevokeSession(ctx, params.MeSess)
 
 	// Expire cookie.

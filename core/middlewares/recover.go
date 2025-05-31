@@ -38,7 +38,9 @@ func Recovery() middleware.Middleware {
 		}()
 
 		if recovered {
-			return middleware.Response{}, errors.New("the server encountered a problem and could not process your request")
+			return middleware.Response{}, errors.New(
+				"the server encountered a problem and could not process your request",
+			)
 		}
 
 		return next(req)

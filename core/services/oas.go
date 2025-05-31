@@ -45,7 +45,13 @@ type Handler struct {
 }
 
 // NewService returns a new instance of the ogen service handler.
-func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Client, duckdb *duckdb.Client, commit string) (*Handler, error) {
+func NewService(
+	ctx context.Context,
+	auth *util.AuthService,
+	sqlite *sqlite.Client,
+	duckdb *duckdb.Client,
+	commit string,
+) (*Handler, error) {
 	// Load timezone and country maps
 	tzMap, err := tz.NewTimezoneCountryMap()
 	if err != nil {
@@ -84,7 +90,11 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 }
 
 // NewRuntimeConfig creates a new runtime config.
-func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, commit string) (RuntimeConfig, error) {
+func NewRuntimeConfig(
+	ctx context.Context,
+	user *sqlite.Client,
+	commit string,
+) (RuntimeConfig, error) {
 	// Load the script type from the database.
 	settings, err := user.GetSettings(ctx)
 	if err != nil {
@@ -97,7 +107,11 @@ func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, commit string) (
 	}, nil
 }
 
-func (r *RuntimeConfig) UpdateConfig(ctx context.Context, meta *sqlite.Client, settings *model.UserSettings) error {
+func (r *RuntimeConfig) UpdateConfig(
+	ctx context.Context,
+	meta *sqlite.Client,
+	settings *model.UserSettings,
+) error {
 	if settings.ScriptType != "" {
 		err := meta.UpdateSetting(ctx, model.SettingsKeyScriptType, settings.ScriptType)
 		if err != nil {

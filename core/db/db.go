@@ -59,33 +59,77 @@ type AnalyticsClient interface {
 	GetWebsitePagesSummary(ctx context.Context, filter *Filters) ([]*model.StatsPagesSummary, error)
 	// Locales
 	GetWebsiteCountries(ctx context.Context, filter *Filters) ([]*model.StatsCountries, error)
-	GetWebsiteCountriesSummary(ctx context.Context, filter *Filters) ([]*model.StatsCountriesSummary, error)
-	GetWebsiteLanguages(ctx context.Context, isLocale bool, filter *Filters) ([]*model.StatsLanguages, error)
-	GetWebsiteLanguagesSummary(ctx context.Context, isLocale bool, filter *Filters) ([]*model.StatsLanguagesSummary, error)
+	GetWebsiteCountriesSummary(
+		ctx context.Context,
+		filter *Filters,
+	) ([]*model.StatsCountriesSummary, error)
+	GetWebsiteLanguages(
+		ctx context.Context,
+		isLocale bool,
+		filter *Filters,
+	) ([]*model.StatsLanguages, error)
+	GetWebsiteLanguagesSummary(
+		ctx context.Context,
+		isLocale bool,
+		filter *Filters,
+	) ([]*model.StatsLanguagesSummary, error)
 	// Referrers
-	GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *Filters) ([]*model.StatsReferrers, error)
-	GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, filter *Filters) ([]*model.StatsReferrerSummary, error)
+	GetWebsiteReferrers(
+		ctx context.Context,
+		isGroup bool,
+		filter *Filters,
+	) ([]*model.StatsReferrers, error)
+	GetWebsiteReferrersSummary(
+		ctx context.Context,
+		isGroup bool,
+		filter *Filters,
+	) ([]*model.StatsReferrerSummary, error)
 	// Summary
 	GetWebsiteSummary(ctx context.Context, filter *Filters) (*model.StatsSummarySingle, error)
-	GetWebsiteIntervals(ctx context.Context, filter *Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error)
-	GetWebsiteSummaryLast24Hours(ctx context.Context, hostname string) (*model.StatsSummaryLast24Hours, error)
+	GetWebsiteIntervals(
+		ctx context.Context,
+		filter *Filters,
+		interval api.GetWebsiteIDSummaryInterval,
+	) ([]*model.StatsIntervals, error)
+	GetWebsiteSummaryLast24Hours(
+		ctx context.Context,
+		hostname string,
+	) (*model.StatsSummaryLast24Hours, error)
 	// Time
 	GetWebsiteTime(ctx context.Context, filter *Filters) ([]*model.StatsTime, error)
 	GetWebsiteTimeSummary(ctx context.Context, filter *Filters) ([]*model.StatsTimeSummary, error)
 	// Types
 	GetWebsiteBrowsers(ctx context.Context, filter *Filters) ([]*model.StatsBrowsers, error)
-	GetWebsiteBrowsersSummary(ctx context.Context, filter *Filters) ([]*model.StatsBrowsersSummary, error)
+	GetWebsiteBrowsersSummary(
+		ctx context.Context,
+		filter *Filters,
+	) ([]*model.StatsBrowsersSummary, error)
 	GetWebsiteOS(ctx context.Context, filter *Filters) ([]*model.StatsOS, error)
 	GetWebsiteOSSummary(ctx context.Context, filter *Filters) ([]*model.StatsOSSummary, error)
 	GetWebsiteDevices(ctx context.Context, filter *Filters) ([]*model.StatsDevices, error)
-	GetWebsiteDevicesSummary(ctx context.Context, filter *Filters) ([]*model.StatsDevicesSummary, error)
+	GetWebsiteDevicesSummary(
+		ctx context.Context,
+		filter *Filters,
+	) ([]*model.StatsDevicesSummary, error)
 	// UTM
 	GetWebsiteUTMSources(ctx context.Context, filter *Filters) ([]*model.StatsUTMSources, error)
-	GetWebsiteUTMSourcesSummary(ctx context.Context, filter *Filters) ([]*model.StatsUTMSourcesSummary, error)
+	GetWebsiteUTMSourcesSummary(
+		ctx context.Context,
+		filter *Filters,
+	) ([]*model.StatsUTMSourcesSummary, error)
 	GetWebsiteUTMMediums(ctx context.Context, filter *Filters) ([]*model.StatsUTMMediums, error)
-	GetWebsiteUTMMediumsSummary(ctx context.Context, filter *Filters) ([]*model.StatsUTMMediumsSummary, error)
+	GetWebsiteUTMMediumsSummary(
+		ctx context.Context,
+		filter *Filters,
+	) ([]*model.StatsUTMMediumsSummary, error)
 	GetWebsiteUTMCampaigns(ctx context.Context, filter *Filters) ([]*model.StatsUTMCampaigns, error)
-	GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *Filters) ([]*model.StatsUTMCampaignsSummary, error)
+	GetWebsiteUTMCampaignsSummary(
+		ctx context.Context,
+		filter *Filters,
+	) ([]*model.StatsUTMCampaignsSummary, error)
 	// Custom Properties
-	GetWebsiteCustomProperties(ctx context.Context, filter *Filters) ([]*model.StatsCustomProperties, error)
+	GetWebsiteCustomProperties(
+		ctx context.Context,
+		filter *Filters,
+	) ([]*model.StatsCustomProperties, error)
 }
