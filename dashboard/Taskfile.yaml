@@ -49,3 +49,4 @@ tasks:
     cmds:
       - bun run typecheck
       - bun run lint:ci
+      - task: build
