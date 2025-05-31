@@ -17,7 +17,7 @@ RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/bin
 
 # Install language runtimes from .mise.toml
 COPY /.mise.toml ./.mise.toml
-RUN mise trust -a -y && mise install && mise activate --shims bash
+RUN mise trust -a -y && mise settings set experimental true && mise install && mise activate --shims bash
 
 # Cache build dependencies
 ENV GOCACHE=/root/.cache/go-build

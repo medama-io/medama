@@ -5,7 +5,7 @@ import { PlusIcon } from '@radix-ui/react-icons';
 import {
 	type ClientActionFunctionArgs,
 	type MetaFunction,
-	json,
+	data as json,
 	redirect,
 	useLoaderData,
 	useSubmit,
@@ -39,7 +39,7 @@ export const clientLoader = async () => {
 
 	if (!res.ok || !data) {
 		if (res.status === 404) {
-			return json<LoaderData>({ websites: [] });
+			return { websites: [] };
 		}
 
 		throw json('Failed to fetch websites.', {
@@ -47,7 +47,7 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json<LoaderData>({ websites: data });
+	return { websites: data };
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {

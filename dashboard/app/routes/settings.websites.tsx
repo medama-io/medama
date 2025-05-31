@@ -3,7 +3,7 @@ import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type MetaFunction,
-	json,
+	data as json,
 	useLoaderData,
 	useSearchParams,
 	useSubmit,
@@ -43,10 +43,10 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json({
+	return {
 		user,
 		websites: websites.map((website) => website.hostname),
-	});
+	};
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
@@ -83,7 +83,8 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		withBorder: true,
 		color: '#17cd8c',
 	});
-	return json({ message });
+
+	return { message };
 };
 
 export default function Index() {

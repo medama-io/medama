@@ -1,6 +1,5 @@
 import {
 	type MetaFunction,
-	json,
 	redirect,
 	useLoaderData,
 	useRevalidator,
@@ -26,7 +25,7 @@ export const clientLoader = async () => {
 			throw new Error('Failed to logout.');
 		}
 		expireSession(true);
-		return json('You have been successfully logged out.');
+		return 'You have been successfully logged out.';
 	}
 
 	return redirect('/login');

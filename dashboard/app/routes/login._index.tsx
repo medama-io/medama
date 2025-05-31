@@ -2,7 +2,7 @@ import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type MetaFunction,
-	json,
+	data as json,
 	redirect,
 } from '@remix-run/react';
 
@@ -85,9 +85,10 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 				withBorder: true,
 				color: 'red',
 			});
-			return json({
+
+			return {
 				message: 'Invalid username or password. Please try again.',
-			});
+			};
 		}
 
 		throw new Response('Failed to login.', {

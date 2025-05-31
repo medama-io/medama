@@ -1,7 +1,7 @@
 import { SimpleGrid } from '@mantine/core';
 import {
 	type MetaFunction,
-	json,
+	data as json,
 	useLoaderData,
 	useRevalidator,
 } from '@remix-run/react';
@@ -28,9 +28,9 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json({
+	return {
 		usage: data,
-	});
+	};
 };
 
 export default function Index() {

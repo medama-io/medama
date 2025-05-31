@@ -61,7 +61,6 @@ import {
 	Scripts,
 	ScrollRestoration,
 	isRouteErrorResponse,
-	json,
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
@@ -87,7 +86,7 @@ interface DocumentProps {
 }
 
 export const clientLoader = () => {
-	return json<LoaderData>({ isLoggedIn: Boolean(hasSession()) });
+	return { isLoggedIn: Boolean(hasSession()) };
 };
 
 export const Document = ({ children }: DocumentProps) => {

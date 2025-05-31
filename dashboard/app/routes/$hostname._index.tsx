@@ -2,7 +2,6 @@ import { SimpleGrid } from '@mantine/core';
 import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
-	json,
 	useLoaderData,
 } from '@remix-run/react';
 
@@ -24,10 +23,10 @@ const mapItems = <T extends DataRow>(
 ): PageViewValue[] =>
 	data
 		? data.map((item) => ({
-				label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
-				count: item.visitors ?? item.duration ?? 0,
-				percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
-			}))
+			label: item[accessor] === '' ? 'Direct/None' : String(item[accessor]),
+			count: item.visitors ?? item.duration ?? 0,
+			percentage: item.visitors_percentage ?? item.duration_percentage ?? 0,
+		}))
 		: [];
 
 const createStatsData = <T extends DataRow>(
@@ -50,7 +49,8 @@ export const clientLoader = async ({
 		isSummary: true,
 		limit: 5, // Summaries should only show 5 items max
 	});
-	return json(stats);
+
+	return stats;
 };
 
 export default function Index() {

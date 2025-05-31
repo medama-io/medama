@@ -1,7 +1,6 @@
 import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
-	json,
 	useLoaderData,
 	useParams,
 } from '@remix-run/react';
@@ -25,7 +24,7 @@ export const clientLoader = async ({
 
 	const stats = await fetchStats(request, params, { dataset: [query] });
 
-	return json(stats);
+	return stats
 };
 
 export default function Index() {

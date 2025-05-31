@@ -3,7 +3,7 @@ import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type MetaFunction,
-	json,
+	data as json,
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
@@ -53,9 +53,9 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json<LoaderData>({
+	return {
 		user: data,
-	});
+	};
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
@@ -98,7 +98,8 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		withBorder: true,
 		color: '#17cd8c',
 	});
-	return json({ message });
+
+	return { message };
 };
 
 export default function Index() {
