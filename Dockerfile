@@ -25,7 +25,7 @@ RUN curl https://mise.run | sh
 WORKDIR /app
 
 # Install language runtimes from .mise.toml
-COPY /mise.toml ./mise.toml
+COPY mise.toml ./mise.toml
 RUN mise trust -a -y && mise settings set experimental true && mise install && mise activate --shims bash
 
 # Cache build dependencies
