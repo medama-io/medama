@@ -1552,6 +1552,9 @@ func (s *UserSettings) Validate() error {
 		})
 	}
 	if err := func() error {
+		if s.ScriptType == nil {
+			return nil // optional
+		}
 		if err := (validate.Array{
 			MinLength:    0,
 			MinLengthSet: false,

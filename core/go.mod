@@ -1,6 +1,6 @@
 module github.com/medama-io/medama
 
-go 1.24.3
+go 1.24.4
 
 require (
 	github.com/CAFxX/httpcompression v0.0.10-0.20241101105416-f754b5f26260
@@ -12,18 +12,18 @@ require (
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/marcboeker/go-duckdb/v2 v2.3.0
+	github.com/marcboeker/go-duckdb/v2 v2.3.1
 	github.com/medama-io/go-referrer-parser v0.0.0-20240903120234-0a63376371c3
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
 	github.com/medama-io/go-useragent v1.1.0
-	github.com/ncruces/go-sqlite3 v0.26.0
-	github.com/ogen-go/ogen v1.13.0
+	github.com/ncruces/go-sqlite3 v0.26.1
+	github.com/ogen-go/ogen v1.14.0
 	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.34.0
-	github.com/shirou/gopsutil/v4 v4.25.4
+	github.com/shirou/gopsutil/v4 v4.25.5
 	github.com/stretchr/testify v1.10.0
 	go.jetify.com/typeid v1.3.0
-	golang.org/x/text v0.25.0
+	golang.org/x/text v0.26.0
 )
 
 require (
@@ -85,13 +85,13 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.uber.org/zap/exp v0.3.0 // indirect
-	golang.org/x/crypto v0.38.0 // indirect
-	golang.org/x/exp v0.0.0-20250531010427-b6e5de432a8b // indirect
-	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.40.0 // indirect
-	golang.org/x/sync v0.14.0 // indirect
+	golang.org/x/crypto v0.39.0 // indirect
+	golang.org/x/exp v0.0.0-20250606033433-dcc06ee1d476 // indirect
+	golang.org/x/mod v0.25.0 // indirect
+	golang.org/x/net v0.41.0 // indirect
+	golang.org/x/sync v0.15.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/tools v0.33.0 // indirect
+	golang.org/x/tools v0.34.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
