@@ -2,16 +2,16 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"slices"
 	"strings"
 
-	"github.com/go-faster/errors"
-	"github.com/medama-io/go-referrer-parser"
 	tz "github.com/medama-io/go-timezone-country"
 	"github.com/medama-io/go-useragent"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/model"
+	"github.com/medama-io/medama/referrer"
 	"github.com/medama-io/medama/util"
 	"github.com/medama-io/medama/util/logger"
 )
@@ -55,26 +55,26 @@ func NewService(
 	// Load timezone and country maps
 	tzMap, err := tz.NewTimezoneCountryMap()
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to create timezone-country map: %w", err)
 	}
 
 	// Load referrer parser
 	referrerParser, err := referrer.NewParser()
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to create referrer parser: %w", err)
 	}
 
 	// Load hostname cache
 	hostnameCache := util.NewCacheStore()
 	hostnames, err := sqlite.ListAllHostnames(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to list hostnames: %w", err)
 	}
 	hostnameCache.AddAll(hostnames)
 
 	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite, commit)
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to create runtime config: %w", err)
 	}
 
 	return &Handler{
@@ -98,7 +98,7 @@ func NewRuntimeConfig(
 	// Load the script type from the database.
 	settings, err := user.GetSettings(ctx)
 	if err != nil {
-		return RuntimeConfig{}, errors.Wrap(err, "runtime config")
+		return RuntimeConfig{}, fmt.Errorf("failed to get user settings: %w", err)
 	}
 
 	return RuntimeConfig{
@@ -115,7 +115,7 @@ func (r *RuntimeConfig) UpdateConfig(
 	if settings.ScriptType != "" {
 		err := meta.UpdateSetting(ctx, model.SettingsKeyScriptType, settings.ScriptType)
 		if err != nil {
-			return errors.Wrap(err, "script type update config")
+			return fmt.Errorf("failed to update script type setting: %w", err)
 		}
 		r.ScriptFileName = convertScriptType(settings.ScriptType)
 
