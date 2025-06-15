@@ -3,8 +3,6 @@ package services
 import (
 	"context"
 	"net/http"
-	"net/netip"
-	"net/url"
 	"strconv"
 	"strings"
 	"sync"
@@ -240,32 +238,17 @@ func (h *Handler) PostEventHit(
 			languageDialect = display.English.Tags().Name(languages[0])
 		}
 
-		// Parse referrer URL and remove any query parameters or self-referencing
-		// hostnames.
-		referrerHost := ""
-		referrerGroup := ""
-		if req.EventLoad.R.Value != "" {
-			referrer, err := url.Parse(req.EventLoad.R.Value)
-			if err != nil {
-				log.Warn().Err(err).Msg("hit: failed to parse referrer URL")
-				return ErrBadRequest(err), nil
-			}
+		// Parse referrer URL and extract the host and group name.
+		referrer, err := h.referrer.Parse(req.EventLoad.R.Value, hostname)
+		if err != nil {
+			log.Warn().Err(err).Msg("hit: failed to parse referrer URL")
+			return ErrBadRequest(err), nil
+		}
 
-			referrerHost = referrer.Hostname()
-
-			switch {
-			// Remove any self-referencing hostnames.
-			case referrerHost == hostname:
-				referrerHost = ""
-
-			// Filter out IP addresses from referrer.
-			case isIPAddress(referrerHost):
-				referrerHost = ""
-
-			// Else, parse the referrer host to get the optional group name.
-			default:
-				referrerGroup = h.referrer.Parse(referrerHost)
-			}
+		// If the referrer is spam, we want to ignore it.
+		if referrer.IsSpam {
+			log.Debug().Str("referrer_host", referrer.Host).Msg("hit: referrer is spam")
+			return &api.PostEventHitNoContent{}, nil
 		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
@@ -282,8 +265,8 @@ func (h *Handler) PostEventHit(
 			IsUniqueUser: req.EventLoad.P,
 			IsUniquePage: req.EventLoad.Q,
 			// Optional
-			ReferrerHost:    referrerHost,
-			ReferrerGroup:   referrerGroup,
+			ReferrerHost:    referrer.Host,
+			ReferrerGroup:   referrer.Group,
 			Country:         countryName,
 			LanguageBase:    languageBase,
 			LanguageDialect: languageDialect,
@@ -454,16 +437,4 @@ func (h *Handler) PostEventHit(
 	}
 
 	return &api.PostEventHitNoContent{}, nil
-}
-
-// isIPAddress checks if a string is a valid IP address (either IPv4 or IPv6).
-func isIPAddress(host string) bool {
-	// Fast path to check if the host _might_ be an IP address
-	// by checking if it starts with a digit or contains a colon.
-	if len(host) == 0 || (host[0] < '0' || host[0] > '9') && strings.IndexByte(host, ':') == -1 {
-		return false
-	}
-
-	_, err := netip.ParseAddr(host)
-	return err == nil
 }
