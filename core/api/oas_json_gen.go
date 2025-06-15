@@ -792,26 +792,6 @@ func (s EventHit) Encode(e *jx.Encoder) {
 
 func (s EventHit) encodeFields(e *jx.Encoder) {
 	switch s.Type {
-	case EventCustomEventHit:
-		e.FieldStart("e")
-		e.Str("custom")
-		{
-			s := s.EventCustom
-			{
-				if s.B.Set {
-					e.FieldStart("b")
-					s.B.Encode(e)
-				}
-			}
-			{
-				e.FieldStart("g")
-				e.Str(s.G)
-			}
-			{
-				e.FieldStart("d")
-				s.D.Encode(e)
-			}
-		}
 	case EventLoadEventHit:
 		e.FieldStart("e")
 		e.Str("load")
@@ -866,6 +846,26 @@ func (s EventHit) encodeFields(e *jx.Encoder) {
 				e.Int(s.M)
 			}
 		}
+	case EventCustomEventHit:
+		e.FieldStart("e")
+		e.Str("custom")
+		{
+			s := s.EventCustom
+			{
+				if s.B.Set {
+					e.FieldStart("b")
+					s.B.Encode(e)
+				}
+			}
+			{
+				e.FieldStart("g")
+				e.Str(s.G)
+			}
+			{
+				e.FieldStart("d")
+				s.D.Encode(e)
+			}
+		}
 	}
 }
 
@@ -892,14 +892,14 @@ func (s *EventHit) Decode(d *jx.Decoder) error {
 					return err
 				}
 				switch typ {
-				case "custom":
-					s.Type = EventCustomEventHit
-					found = true
 				case "load":
 					s.Type = EventLoadEventHit
 					found = true
 				case "unload":
 					s.Type = EventUnloadEventHit
+					found = true
+				case "custom":
+					s.Type = EventCustomEventHit
 					found = true
 				default:
 					return errors.Errorf("unknown type %s", typ)

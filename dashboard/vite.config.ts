@@ -30,6 +30,11 @@ export default defineConfig({
 			},
 		},
 	},
+	resolve: {
+		alias: {
+			'react-dom/server': 'react-dom/server.node',
+		},
+	},
 	plugins: [
 		{
 			name: 'css-additional-data',
