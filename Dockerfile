@@ -10,7 +10,7 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 
 RUN apt-get update  \
     && apt-get -y --no-install-recommends install  \
-        sudo curl git ca-certificates build-essential unzip \
+        curl git ca-certificates build-essential unzip \
     && rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
