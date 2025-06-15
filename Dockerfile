@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-FROM ubuntu:latest AS build
+FROM debian:bookworm AS build
 
 ARG VERSION=development
 ARG COMMIT_SHA=development
