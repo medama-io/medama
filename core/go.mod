@@ -12,7 +12,7 @@ require (
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/marcboeker/go-duckdb/v2 v2.3.1
+	github.com/marcboeker/go-duckdb/v2 v2.3.2
 	github.com/medama-io/go-referrer-parser v0.0.0-20250615084737-7f9d2bca7402
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
 	github.com/medama-io/go-useragent v1.1.0
@@ -33,12 +33,12 @@ require (
 	github.com/caddyserver/zerossl v0.1.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
-	github.com/duckdb/duckdb-go-bindings v0.1.15 // indirect
-	github.com/duckdb/duckdb-go-bindings/darwin-amd64 v0.1.10 // indirect
-	github.com/duckdb/duckdb-go-bindings/darwin-arm64 v0.1.10 // indirect
-	github.com/duckdb/duckdb-go-bindings/linux-amd64 v0.1.10 // indirect
-	github.com/duckdb/duckdb-go-bindings/linux-arm64 v0.1.10 // indirect
-	github.com/duckdb/duckdb-go-bindings/windows-amd64 v0.1.10 // indirect
+	github.com/duckdb/duckdb-go-bindings v0.1.16 // indirect
+	github.com/duckdb/duckdb-go-bindings/darwin-amd64 v0.1.11 // indirect
+	github.com/duckdb/duckdb-go-bindings/darwin-arm64 v0.1.11 // indirect
+	github.com/duckdb/duckdb-go-bindings/linux-amd64 v0.1.11 // indirect
+	github.com/duckdb/duckdb-go-bindings/linux-arm64 v0.1.11 // indirect
+	github.com/duckdb/duckdb-go-bindings/windows-amd64 v0.1.11 // indirect
 	github.com/ebitengine/purego v0.8.4 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -46,7 +46,7 @@ require (
 	github.com/gkampitakis/go-diff v1.3.2 // indirect
 	github.com/go-faster/yaml v0.4.6 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
-	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/goccy/go-yaml v1.15.13 // indirect
 	github.com/gofrs/uuid/v5 v5.3.2 // indirect
@@ -58,8 +58,8 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/libdns/libdns v1.1.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20250317134145-8bc96cf8fc35 // indirect
-	github.com/marcboeker/go-duckdb/arrowmapping v0.0.8 // indirect
-	github.com/marcboeker/go-duckdb/mapping v0.0.9 // indirect
+	github.com/marcboeker/go-duckdb/arrowmapping v0.0.9 // indirect
+	github.com/marcboeker/go-duckdb/mapping v0.0.10 // indirect
 	github.com/maruel/natural v1.1.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
