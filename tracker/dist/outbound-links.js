@@ -247,8 +247,56 @@
 		isUnloadCalled = true;
 	};
 
+	/**
+	 * Send a custom beacon event to the server.
+	 * @param {Object} data Custom data to send to the server.
+	 * @returns {Promise<void>}
+	 */
+	const sendCustomBeacon = async (data) => {
+		if (Object.keys(data).length > 0) {
+			// We use fetch here because it is more reliable than XHR.
+			fetch(host + 'event/hit', {
+				method: 'POST',
+				body: JSON.stringify(
+					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
+					/**
+					 * Payload to send to the server.
+					 * @type {CustomPayload}
+					 */ ({
+						"b": uid,
+						"e": "custom",
+						"g": location.hostname,
+						"d": data,
+					}),
+				),
+				// Will make the response opaque, but we don't need it.
+				mode: 'no-cors',
+				keepalive: true,
+			});
+		}
+	};
 
 
+	/**
+	 * Tracks clicks on outbound links using a single event listener.
+	 * @param {MouseEvent} event The click event.
+	 */
+	const outboundLinkTracker = (event) => {
+		// If the target is not an anchor element, and the hostname is not the same as the current
+		// hostname, then it is an outbound link.
+		if (
+			event.target instanceof HTMLAnchorElement &&
+			event.target.href &&
+			// Button must be a left or middle click.
+			event.button < 2 &&
+			new URL(event.target.href, location.href).hostname !== location.hostname
+		) {
+			sendCustomBeacon({ outbound: event.target.href });
+		}
+	};
+
+	addEventListener('click', outboundLinkTracker, { capture: true });
+	addEventListener('auxclick', outboundLinkTracker, { capture: true });
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.
