@@ -227,6 +227,9 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	// X-API-Commit header for client-side cache busting.
 	handler = middlewares.XAPICommitMiddleware(s.Server.Commit)(handler)
 
+	// RateLimiter middleware to limit requests with coarse IP prefixes. Ensure this is applied last to the handler chain.
+	handler = middlewares.NewRateLimiter(handler)
+
 	return s.serve(ctx, log, handler)
 }
 
