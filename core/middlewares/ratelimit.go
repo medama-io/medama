@@ -25,7 +25,6 @@ type RateLimiter struct {
 	// The key is the IP prefix, and the value is an atomic integer for the request count.
 	visitors   *expirable.LRU[netip.Prefix, *atomic.Int64]
 	limit      int64
-	window     time.Duration
 	ipv4Prefix int
 	ipv6Prefix int
 }
@@ -35,16 +34,14 @@ func NewRateLimiter(next http.Handler) http.Handler {
 	rl := &RateLimiter{
 		visitors:   expirable.NewLRU[netip.Prefix, *atomic.Int64](cacheSize, nil, defaultWindow),
 		limit:      defaultLimit,
-		window:     defaultWindow,
 		ipv4Prefix: ipv4DefaultPrefix,
 		ipv6Prefix: ipv6DefaultPrefix,
 	}
 
-	return rl.Middleware(next)
+	return rl.middleware(next)
 }
 
-// Middleware is the HTTP middleware handler for rate limiting.
-func (rl *RateLimiter) Middleware(next http.Handler) http.Handler {
+func (rl *RateLimiter) middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log := logger.Get()
 
