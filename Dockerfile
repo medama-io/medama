@@ -1,6 +1,6 @@
-# syntax = docker/dockerfile:1
+# syntax = docker/dockerfile:1@sha256:38387523653efa0039f8e1c89bb74a30504e76ee9f565e25c9a09841f9427b05
 
-FROM debian:bookworm AS build
+FROM debian:bookworm@sha256:b6507e340c43553136f5078284c8c68d86ec8262b1724dde73c325e8d3dcdeba AS build
 
 ARG VERSION=development
 ARG COMMIT_SHA=development
@@ -51,7 +51,7 @@ COPY . .
 RUN --mount=type=cache,target=${GOCACHE} task core:release:docker
 
 # Build the final image
-FROM gcr.io/distroless/cc-debian12
+FROM gcr.io/distroless/cc-debian12@sha256:00cc20b928afcc8296b72525fa68f39ab332f758c4f2a9e8d90845d3e06f1dc4
 
 LABEL org.opencontainers.image.source=https://github.com/medama-io/medama \
 	org.opencontainers.image.description="Cookie-free, privacy-focused website analytics." \
