@@ -559,6 +559,12 @@ export interface components {
              */
             language?: "en";
             script_type?: ("default" | "click-events" | "page-events")[];
+            /** @description Block known abusive IP addresses. */
+            blockAbusiveIPs?: boolean;
+            /** @description Block traffic from Tor exit nodes. */
+            blockTorExitNodes?: boolean;
+            /** @description List of manually blocked IP addresses. */
+            blockedIPs?: string[];
         };
         /**
          * UserGet

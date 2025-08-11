@@ -3,10 +3,12 @@ package services
 import (
 	"context"
 	"math"
+	"strconv"
 	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
 	"github.com/shirou/gopsutil/v4/cpu"
@@ -40,6 +42,21 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 
+	blockedIPs, err := iputils.GetAddrList(user.Settings.BlockedIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse blocked IPs")
+	}
+
+	blockAbusiveIPs, err := strconv.ParseBool(user.Settings.BlockAbusiveIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block abusive IPs setting")
+	}
+
+	blockTorExitNodes, err := strconv.ParseBool(user.Settings.BlockTorExitNodes)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block Tor exit nodes setting")
+	}
+
 	return &api.UserGetHeaders{
 		Response: api.UserGet{
 			Username: user.Username,
@@ -47,7 +64,10 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 				Language: api.NewOptUserSettingsLanguage(
 					api.UserSettingsLanguage(user.Settings.Language),
 				),
-				ScriptType: scriptFeatures,
+				ScriptType:        scriptFeatures,
+				BlockAbusiveIPs:   api.NewOptBool(blockAbusiveIPs),
+				BlockTorExitNodes: api.NewOptBool(blockTorExitNodes),
+				BlockedIPs:        blockedIPs,
 			},
 			DateCreated: user.DateCreated,
 			DateUpdated: user.DateUpdated,
@@ -189,8 +209,8 @@ func (h *Handler) PatchUser(
 	// Settings
 	if req.Settings.IsSet() {
 		settings := user.Settings
-		if req.Settings.Value.Language.IsSet() {
-			settings.Language = string(req.Settings.Value.Language.Value)
+		if v, ok := req.Settings.Value.Language.Get(); ok {
+			settings.Language = string(v)
 		}
 
 		if req.Settings.Value.ScriptType != nil {
@@ -200,6 +220,18 @@ func (h *Handler) PatchUser(
 				features = append(features, string(v))
 			}
 			settings.ScriptType = strings.Join(features, ",")
+		}
+
+		if v, ok := req.Settings.Value.BlockAbusiveIPs.Get(); ok {
+			settings.BlockAbusiveIPs = strconv.FormatBool(v)
+		}
+
+		if v, ok := req.Settings.Value.BlockTorExitNodes.Get(); ok {
+			settings.BlockTorExitNodes = strconv.FormatBool(v)
+		}
+
+		if req.Settings.Value.BlockedIPs != nil {
+			settings.BlockedIPs = iputils.GetAddrListString(req.Settings.Value.BlockedIPs)
 		}
 
 		err = h.db.UpdateSettings(ctx, user.ID, settings)
@@ -222,6 +254,21 @@ func (h *Handler) PatchUser(
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 
+	blockedIPs, err := iputils.GetAddrList(user.Settings.BlockedIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse blocked IPs")
+	}
+
+	blockAbusiveIPs, err := strconv.ParseBool(user.Settings.BlockAbusiveIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block abusive IPs setting")
+	}
+
+	blockTorExitNodes, err := strconv.ParseBool(user.Settings.BlockTorExitNodes)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block Tor exit nodes setting")
+	}
+
 	return &api.UserGetHeaders{
 		Response: api.UserGet{
 			Username: user.Username,
@@ -229,7 +276,10 @@ func (h *Handler) PatchUser(
 				Language: api.NewOptUserSettingsLanguage(
 					api.UserSettingsLanguage(user.Settings.Language),
 				),
-				ScriptType: scriptFeatures,
+				ScriptType:        scriptFeatures,
+				BlockAbusiveIPs:   api.NewOptBool(blockAbusiveIPs),
+				BlockTorExitNodes: api.NewOptBool(blockTorExitNodes),
+				BlockedIPs:        blockedIPs,
 			},
 			DateCreated: user.DateCreated,
 			DateUpdated: user.DateUpdated,

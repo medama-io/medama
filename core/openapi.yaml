@@ -1609,6 +1609,19 @@ components:
               - click-events
               - page-events
           uniqueItems: true
+        blockAbusiveIPs:
+          type: boolean
+          description: Block known abusive IP addresses.
+        blockTorExitNodes:
+          type: boolean
+          description: Block traffic from Tor exit nodes.
+        blockedIPs:
+          type: array
+          description: List of manually blocked IP addresses.
+          items:
+            type: string
+            format: ipv4
+          uniqueItems: true
     UserGet:
       type: object
       title: UserGet

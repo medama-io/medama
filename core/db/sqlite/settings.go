@@ -39,7 +39,10 @@ func (c *Client) GetSettings(ctx context.Context) (*model.UserSettings, error) {
 	query := `--sql
 	SELECT
 		COALESCE(JSON_EXTRACT(settings, '$.language'), 'en') AS language,
-		COALESCE(JSON_EXTRACT(settings, '$.script_type'), 'default') AS script_type
+		COALESCE(JSON_EXTRACT(settings, '$.script_type'), 'default') AS script_type,
+		COALESCE(JSON_EXTRACT(settings, '$.block_abusive_ips'), 'false') AS block_abusive_ips,
+		COALESCE(JSON_EXTRACT(settings, '$.block_tor_exit_nodes'), 'false') AS block_tor_exit_nodes,
+		COALESCE(JSON_EXTRACT(settings, '$.blocked_ips'), '') AS blocked_ips
 	FROM users LIMIT 1`
 
 	settings := model.NewDefaultSettings()

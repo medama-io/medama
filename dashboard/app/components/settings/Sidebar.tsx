@@ -3,8 +3,9 @@ import classes from './Sidebar.module.css';
 
 const SETTINGS_MAP = [
 	{ label: 'Account', path: 'account' },
-	{ label: 'Tracker', path: 'tracker' },
 	{ label: 'Websites', path: 'websites' },
+	{ label: 'Spam', path: 'spam' },
+	{ label: 'Tracker', path: 'tracker' },
 	{ label: 'Usage', path: 'usage' },
 ] as const;
 

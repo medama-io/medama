@@ -42,3 +42,6 @@ core/**/client
 
 # Output of pprof files
 **/*.prof
+
+# AI
+AGENT.md

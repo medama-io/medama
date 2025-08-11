@@ -1,10 +1,11 @@
 [tools]
-go = "1.24.5"
+go = "latest"
 bun = "latest"
 gofumpt = "latest"
 "go:golang.org/x/tools/gopls" = "latest"
 golangci-lint = "2"
 task = "latest"
+flyctl = "latest"
 
 [env]
 CGO_ENABLED = "1"
