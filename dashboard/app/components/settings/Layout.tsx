@@ -1,6 +1,5 @@
-import { Sidebar } from './Sidebar';
-
 import classes from './Layout.module.css';
+import { Sidebar } from './Sidebar';
 
 interface SettingsLayoutProps {
 	children: React.ReactNode;

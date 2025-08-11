@@ -17,7 +17,7 @@ const attachMediaListener = (
 	try {
 		query.addEventListener('change', callback);
 		return () => query.removeEventListener('change', callback);
-	} catch (e) {
+	} catch (_e) {
 		query.addListener(callback);
 		return () => query.removeListener(callback);
 	}

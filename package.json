@@ -2,7 +2,7 @@
 	"name": "medama-analytics",
 	"private": true,
 	"dependencies": {
-		"@biomejs/biome": "^1.9.4"
+		"@biomejs/biome": "^2.1.4"
 	},
 	"workspaces": [
 		"dashboard",

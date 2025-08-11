@@ -106,7 +106,7 @@ const MobileDrawer = ({
 		{...props}
 	>
 		<Drawer.Content>
-			{/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
+			{/* biome-ignore lint/a11y/useSemanticElements: Explicit */}
 			<Drawer.Body role="navigation" aria-label="Main navigation">
 				{isLoggedIn && (
 					<Stack gap={0}>

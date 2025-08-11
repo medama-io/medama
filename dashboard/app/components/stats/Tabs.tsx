@@ -6,9 +6,8 @@ import { useFilter } from '@/hooks/use-filter';
 
 import { Combobox } from './Combobox';
 import { StatsItem } from './StatsItem';
-import type { CustomPropertyValue, TabData } from './types';
-
 import classes from './Tabs.module.css';
+import type { CustomPropertyValue, TabData } from './types';
 
 interface TabSelectProps {
 	data: TabData[];

@@ -6,10 +6,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ScrollArea } from '@/components/ScrollArea';
 import { useFilter } from '@/hooks/use-filter';
-
-import type { Filter, FilterOperator } from './types';
-
 import classes from './Filter.module.css';
+import type { Filter, FilterOperator } from './types';
 
 interface FilterChoices {
 	label: string;

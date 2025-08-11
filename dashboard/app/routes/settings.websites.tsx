@@ -3,8 +3,8 @@ import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
-	type MetaFunction,
 	data as json,
+	type MetaFunction,
 	useLoaderData,
 	useSearchParams,
 	useSubmit,
@@ -16,8 +16,8 @@ import * as v from 'valibot';
 import { userGet } from '@/api/user';
 import { websiteDelete, websiteList } from '@/api/websites';
 import { TextInput } from '@/components/Input';
-import { ModalChild, ModalWrapper } from '@/components/Modal';
 import { Group } from '@/components/layout/Flex';
+import { ModalChild, ModalWrapper } from '@/components/Modal';
 import {
 	SectionDanger,
 	SectionTitle,

@@ -75,17 +75,9 @@ const ForbiddenError = () => {
 	const hostname = window.location.hostname;
 	const isDemo = hostname === 'demo.medama.io' || hostname === 'medama.fly.dev';
 
-	const description = isDemo ? (
-		<>
-			You are currently in demo mode. You can't access this page or perform this
-			action.
-		</>
-	) : (
-		<>
-			You don't have permission to view this page or perform this action. Please
-			contact your administrator if you believe this is an error.
-		</>
-	);
+	const description = isDemo
+		? "You are currently in demo mode. You can't access this page or perform this action."
+		: "You don't have permission to view this page or perform this action. Please contact your administrator if you believe this is an error.";
 
 	return (
 		<ErrorPage
