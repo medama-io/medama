@@ -56,7 +56,10 @@ func TestMain(m *testing.M) {
 	code := m.Run()
 
 	// After all tests have run `go-snaps` will sort snapshots
-	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+	_, err := snaps.Clean(m, snaps.CleanOpts{Sort: true})
+	if err != nil {
+		log.Fatalf("error cleaning snapshots: %v", err)
+	}
 
 	// Exit with the same code as the test runner
 	os.Exit(code)
