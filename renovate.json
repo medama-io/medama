@@ -30,19 +30,25 @@
 			"rangeStrategy": "bump"
 		},
 		{
-			"matchManagers": [
-				"gomod"
+			"groupName": "all frontend non-major dependencies",
+			"groupSlug": "all-fe-minor-patch",
+			"matchDatasources": [
+				"npm"
 			],
-			"matchDepTypes": [
-				"indirect"
-			],
-			"enabled": true
+			"matchUpdateTypes": [
+				"minor",
+				"patch",
+				"digest"
+			]
 		},
 		{
 			"groupName": "all non-major dependencies",
 			"groupSlug": "all-minor-patch",
 			"matchPackageNames": [
 				"*"
+			],
+			"excludeDatasources": [
+				"npm"
 			],
 			"matchUpdateTypes": [
 				"minor",
