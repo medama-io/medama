@@ -3,6 +3,7 @@ import { vitePlugin as remix } from '@remix-run/dev';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import { defineConfig } from 'vite';
+import commonjs from 'vite-plugin-commonjs';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 declare module '@remix-run/react' {
@@ -31,6 +32,7 @@ export default defineConfig({
 		},
 	},
 	plugins: [
+		commonjs(),
 		{
 			name: 'css-additional-data',
 			enforce: 'pre',
