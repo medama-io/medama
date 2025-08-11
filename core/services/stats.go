@@ -74,6 +74,7 @@ func (h *Handler) GetWebsiteIDSummary(
 		interval, err := h.analyticsDB.GetWebsiteIntervals(ctx, filters, params.Interval.Value)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to get website intervals")
+
 			if errors.Is(err, model.ErrInvalidParameter) {
 				return ErrBadRequest(err), nil
 			}
@@ -123,6 +124,7 @@ func (h *Handler) GetWebsiteIDPages(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website pages summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -147,6 +149,7 @@ func (h *Handler) GetWebsiteIDPages(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website pages")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -193,6 +196,7 @@ func (h *Handler) GetWebsiteIDTime(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website time summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -217,6 +221,7 @@ func (h *Handler) GetWebsiteIDTime(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website time")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -266,6 +271,7 @@ func (h *Handler) GetWebsiteIDReferrers(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website referrers summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -290,6 +296,7 @@ func (h *Handler) GetWebsiteIDReferrers(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website referrers")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -333,6 +340,7 @@ func (h *Handler) GetWebsiteIDSources(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website sources summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -397,6 +405,7 @@ func (h *Handler) GetWebsiteIDMediums(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website mediums summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -421,6 +430,7 @@ func (h *Handler) GetWebsiteIDMediums(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website utm mediums")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -464,6 +474,7 @@ func (h *Handler) GetWebsiteIDCampaigns(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website utm campaigns summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -488,6 +499,7 @@ func (h *Handler) GetWebsiteIDCampaigns(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website utm campaigns")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -531,6 +543,7 @@ func (h *Handler) GetWebsiteIDBrowsers(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website browsers summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -555,6 +568,7 @@ func (h *Handler) GetWebsiteIDBrowsers(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website browsers")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -598,6 +612,7 @@ func (h *Handler) GetWebsiteIDOs(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website os summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -622,6 +637,7 @@ func (h *Handler) GetWebsiteIDOs(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website os")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -665,6 +681,7 @@ func (h *Handler) GetWebsiteIDDevice(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website devices summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -689,6 +706,7 @@ func (h *Handler) GetWebsiteIDDevice(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website devices")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -736,6 +754,7 @@ func (h *Handler) GetWebsiteIDLanguage(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website languages summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -760,6 +779,7 @@ func (h *Handler) GetWebsiteIDLanguage(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website languages")
+
 		return ErrInternalServerError(err), nil
 	}
 
@@ -803,6 +823,7 @@ func (h *Handler) GetWebsiteIDCountry(
 				Err(err).
 				Bool("summary", params.Summary.Value).
 				Msg("failed to get website countries summary")
+
 			return ErrInternalServerError(err), nil
 		}
 
@@ -827,6 +848,7 @@ func (h *Handler) GetWebsiteIDCountry(
 			Err(err).
 			Bool("summary", params.Summary.Value).
 			Msg("failed to get website countries")
+
 		return ErrInternalServerError(err), nil
 	}
 

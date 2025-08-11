@@ -56,10 +56,12 @@ func (c *Client) GetWebsiteReferrersSummary(
 
 	for rows.Next() {
 		var referrer model.StatsReferrerSummary
+
 		err := rows.StructScan(&referrer)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		referrers = append(referrers, &referrer)
 	}
 
@@ -119,10 +121,12 @@ func (c *Client) GetWebsiteReferrers(
 
 	for rows.Next() {
 		var referrer model.StatsReferrers
+
 		err := rows.StructScan(&referrer)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		referrers = append(referrers, &referrer)
 	}
 

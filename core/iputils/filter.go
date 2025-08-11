@@ -58,10 +58,12 @@ func (f *IPFilter) loadPresets() {
 			if prefix, err := netip.ParsePrefix(line); err == nil {
 				// Add the CIDR prefix to the Lite table
 				f.abusiveIPs.Insert(prefix)
+
 				count++
 			}
 		}
 	}
+
 	if err := scanner.Err(); err != nil {
 		l.Error().Err(err).Msg("error reading abusive IPs data")
 	}
@@ -80,6 +82,7 @@ func (f *IPFilter) loadPresets() {
 			}
 		}
 	}
+
 	if err := scanner.Err(); err != nil {
 		l.Error().Err(err).Msg("error reading tor exit nodes data")
 	}
@@ -92,6 +95,7 @@ func (f *IPFilter) LoadFromCommaSeparated(ips string) {
 	defer f.mu.Unlock()
 
 	f.manualIPs = make(map[netip.Addr]struct{})
+
 	if ips == "" {
 		return
 	}
@@ -106,12 +110,14 @@ func (f *IPFilter) LoadFromCommaSeparated(ips string) {
 func (f *IPFilter) SetBlockAbusiveIPs(block bool) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
+
 	f.blockAbusiveIPs = block
 }
 
 func (f *IPFilter) SetBlockTorExitNodes(block bool) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
+
 	f.blockTorExitNodes = block
 }
 

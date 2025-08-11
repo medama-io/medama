@@ -92,8 +92,10 @@ type Filter struct {
 
 // NewFilter creates a new filter.
 func NewFilter(field FilterField, param api.OptFilterString) *Filter {
-	var value string
-	var operation FilterOperation
+	var (
+		value     string
+		operation FilterOperation
+	)
 
 	if param.IsSet() {
 		value, operation = FilterStringToValues(param.Value)
@@ -331,6 +333,7 @@ func (f Filters) WhereString() string {
 	} else {
 		addCondition(&query, f.Referrer)
 	}
+
 	addCondition(&query, f.UTMSource)
 	addCondition(&query, f.UTMMedium)
 	addCondition(&query, f.UTMCampaign)
@@ -352,6 +355,7 @@ func (f Filters) WhereString() string {
 			query.WriteString(" AND views.date_created >= CAST(:start_period AS TIMESTAMPTZ)")
 		}
 	}
+
 	if f.PeriodEnd != "" {
 		if f.SortByEventDates {
 			query.WriteString(" AND events.date_created <= CAST(:end_period AS TIMESTAMPTZ)")
@@ -386,6 +390,7 @@ func (f Filters) Args(customMap *map[string]any) map[string]any {
 	if customMap == nil {
 		customMap = &map[string]any{}
 	}
+
 	args := *customMap
 
 	args[string(FilterHostname)] = f.Hostname

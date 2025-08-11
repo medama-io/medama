@@ -73,6 +73,7 @@ func (c *Client) GetPreparedStmt(
 	}
 
 	c.statements.Set(name, stmt)
+
 	return stmt, nil
 }
 

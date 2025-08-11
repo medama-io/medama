@@ -20,11 +20,13 @@ func (c *Client) GetSetting(ctx context.Context, key model.SettingsKey) (string,
     LIMIT 1`
 
 	var value sql.NullString
+
 	err := c.GetContext(ctx, &value, query, name, name)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return "", model.ErrSettingNotFound
 		}
+
 		return "", errors.Wrap(err, "db")
 	}
 
@@ -46,6 +48,7 @@ func (c *Client) GetSettings(ctx context.Context) (*model.UserSettings, error) {
 	FROM users LIMIT 1`
 
 	settings := model.NewDefaultSettings()
+
 	err := c.GetContext(ctx, settings, query)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, model.ErrSettingNotFound

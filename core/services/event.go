@@ -46,6 +46,7 @@ var readerPool = sync.Pool{
 func getReader(s string) *strings.Reader {
 	r := readerPool.Get().(*strings.Reader)
 	r.Reset(s)
+
 	return r
 }
 
@@ -83,6 +84,7 @@ func (h *Handler) GetEventPing(
 	if err != nil {
 		log := logger.Get()
 		log.Error().Err(err).Msg("failed to parse if-modified-since header")
+
 		return ErrBadRequest(err), nil
 	}
 
@@ -209,6 +211,7 @@ func (h *Handler) PostEventHit(
 
 		if uaBrowser == Unknown || uaOS == Unknown || uaDevice == Unknown {
 			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: unknown user agent")
+
 			if unknownCounter >= IsBotThreshold {
 				return &api.PostEventHitNoContent{}, nil
 			}
@@ -243,6 +246,7 @@ func (h *Handler) PostEventHit(
 		// Get the first language from the list which is the most preferred and convert it to a language name
 		languageBase := Unknown
 		languageDialect := Unknown
+
 		if len(languages) > 0 {
 			// Narrow down the language to the base language (e.g. en-US -> en)
 			base, _ := languages[0].Base()
@@ -314,6 +318,7 @@ func (h *Handler) PostEventHit(
 			if err != nil {
 				return nil, errors.Wrap(err, "typeid custom event")
 			}
+
 			batchID := batchIDType.String()
 
 			events := make([]model.EventHit, 0, len(req.EventLoad.D.Value))
@@ -403,6 +408,7 @@ func (h *Handler) PostEventHit(
 		if err != nil {
 			return nil, errors.Wrap(err, "typeid custom event")
 		}
+
 		batchID := batchIDType.String()
 
 		events := make([]model.EventHit, 0, len(req.EventCustom.D))

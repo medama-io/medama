@@ -36,6 +36,7 @@ func SetupAssetHandler(mux *http.ServeMux, runtimeConfig *RuntimeConfig) error {
 	}
 
 	mux.Handle("/", handler)
+
 	return nil
 }
 
@@ -68,13 +69,16 @@ func (h *SPAHandler) precomputeFileETags(client fs.FS) error {
 		if err != nil {
 			return err
 		}
+
 		if !d.IsDir() && (isAssetPath("/"+path) || isRootFile(path) || isScriptFile("/"+path)) {
 			content, err := readFile(client, path)
 			if err != nil {
 				return err
 			}
+
 			h.fileETags["/"+path] = generateETag(content)
 		}
+
 		return nil
 	})
 }
@@ -90,6 +94,7 @@ func (h *SPAHandler) serveFile(w http.ResponseWriter, r *http.Request, filePath 
 			// 1 year for most asset files.
 			cacheControl = "public, max-age=31536000, immutable"
 		}
+
 		w.Header().Set("Cache-Control", cacheControl)
 
 		// Return 304 if the ETag matches.
@@ -118,6 +123,7 @@ func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// Update the request URL to match the actual file being served.
 		r.URL.Path = h.runtimeConfig.ScriptFileName
 		h.serveFile(w, r, h.runtimeConfig.ScriptFileName)
+
 		return
 	}
 
@@ -127,6 +133,7 @@ func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// Update the request URL to match the actual file being served.
 		r.URL.Path = uPath
 		h.serveFile(w, r, uPath)
+
 		return
 	}
 
@@ -175,6 +182,7 @@ func readFile(filesystem fs.FS, file string) ([]byte, error) {
 		return nil, err
 	}
 	defer f.Close()
+
 	return io.ReadAll(f)
 }
 

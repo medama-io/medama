@@ -35,6 +35,7 @@ func SetupDatabase(t *testing.T) (*assert.Assertions, context.Context, *sqlite.C
 	host := fmt.Sprintf("file:/%s.db?vfs=memdb", name)
 
 	memdb.Create(name, []byte{})
+
 	client, err := sqlite.NewClient(host)
 	require.NoError(err)
 	assert.NotNil(client)

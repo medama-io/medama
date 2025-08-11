@@ -78,10 +78,12 @@ func (c *Client) GetWebsitePagesSummary(
 
 	for rows.Next() {
 		var page model.StatsPagesSummary
+
 		err := rows.StructScan(&page)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		pages = append(pages, &page)
 	}
 
@@ -147,10 +149,12 @@ func (c *Client) GetWebsitePages(
 
 	for rows.Next() {
 		var page model.StatsPages
+
 		err := rows.StructScan(&page)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		pages = append(pages, &page)
 	}
 

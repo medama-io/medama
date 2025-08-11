@@ -57,6 +57,7 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 
 func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Website, error) {
 	var websites []*model.Website
+
 	log := logger.Get()
 
 	query := `--sql
@@ -86,10 +87,12 @@ func (c *Client) ListAllHostnames(ctx context.Context) ([]string, error) {
 	SELECT hostname FROM websites`
 
 	var hostnames []string
+
 	err := c.SelectContext(ctx, &hostnames, query)
 	if err != nil {
 		log := logger.Get()
 		log.Error().Err(err).Msg("failed to list all hostnames")
+
 		return nil, errors.Wrap(err, "db")
 	}
 
@@ -143,6 +146,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Website, error) {
 	var website model.Website
+
 	log := logger.Get()
 
 	query := `--sql

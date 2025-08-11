@@ -62,10 +62,12 @@ func (c *Client) GetWebsiteTimeSummary(
 
 	for rows.Next() {
 		var time model.StatsTimeSummary
+
 		err := rows.StructScan(&time)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		times = append(times, &time)
 	}
 
@@ -110,6 +112,7 @@ func (c *Client) GetWebsiteTime(
 		durationsCTE = durationsCTE.
 			LeftJoin(EventsJoinStmt)
 	}
+
 	query := qb.New().WithMaterialized(qb.NewCTE("durations", durationsCTE)).
 		Select(
 			"pathname",
@@ -131,10 +134,12 @@ func (c *Client) GetWebsiteTime(
 
 	for rows.Next() {
 		var time model.StatsTime
+
 		err := rows.StructScan(&time)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		times = append(times, &time)
 	}
 

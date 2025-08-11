@@ -49,10 +49,12 @@ func (c *Client) GetWebsiteCountriesSummary(
 
 	for rows.Next() {
 		var country model.StatsCountriesSummary
+
 		err := rows.StructScan(&country)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		countries = append(countries, &country)
 	}
 
@@ -101,10 +103,12 @@ func (c *Client) GetWebsiteCountries(
 
 	for rows.Next() {
 		var country model.StatsCountries
+
 		err := rows.StructScan(&country)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		countries = append(countries, &country)
 	}
 
@@ -157,10 +161,12 @@ func (c *Client) GetWebsiteLanguagesSummary(
 
 	for rows.Next() {
 		var language model.StatsLanguagesSummary
+
 		err := rows.StructScan(&language)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		languages = append(languages, &language)
 	}
 
@@ -215,10 +221,12 @@ func (c *Client) GetWebsiteLanguages(
 
 	for rows.Next() {
 		var language model.StatsLanguages
+
 		err := rows.StructScan(&language)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		languages = append(languages, &language)
 	}
 

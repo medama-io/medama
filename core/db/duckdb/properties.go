@@ -77,10 +77,12 @@ func (c *Client) GetWebsiteCustomProperties(
 
 	for rows.Next() {
 		var property model.StatsCustomProperties
+
 		err := rows.StructScan(&property)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		properties = append(properties, &property)
 	}
 

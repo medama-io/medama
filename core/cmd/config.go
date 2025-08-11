@@ -81,6 +81,7 @@ func NewServerConfig(useEnv bool, version string, commit string) (*ServerConfig,
 	if version == "" {
 		version = "development"
 	}
+
 	if commit == "" {
 		commit = "development"
 	}

@@ -33,6 +33,7 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 		}
 
 		log.Error().Msg("failed to get user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -84,6 +85,7 @@ func (h *Handler) GetUserUsage(
 	if err != nil {
 		return nil, err
 	}
+
 	cpuThreads, err := cpu.CountsWithContext(ctx, true)
 	if err != nil {
 		return nil, err
@@ -98,6 +100,7 @@ func (h *Handler) GetUserUsage(
 	for _, v := range cpuUsageArr {
 		cpuUsage += v
 	}
+
 	cpuUsage /= float64(len(cpuUsageArr))
 
 	// Memory statistics.
@@ -135,6 +138,7 @@ func safeConvertUint64ToInt64(value uint64) int64 {
 	if value <= math.MaxInt64 {
 		return int64(value)
 	}
+
 	return math.MaxInt64 // or another sentinel value or error handling
 }
 
@@ -165,6 +169,7 @@ func (h *Handler) PatchUser(
 		}
 
 		log.Error().Msg("failed to get user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -172,6 +177,7 @@ func (h *Handler) PatchUser(
 	if req.Username.IsSet() {
 		username := req.Username.Value
 		user.Username = username
+
 		err = h.db.UpdateUserUsername(ctx, user.ID, username)
 		if err != nil {
 			log := log.With().Str("username", username).Err(err).Logger()
@@ -187,12 +193,14 @@ func (h *Handler) PatchUser(
 			}
 
 			log.Error().Msg("failed to update user email")
+
 			return nil, errors.Wrap(err, "services")
 		}
 	}
 
 	if req.Password.IsSet() {
 		password := req.Password.Value
+
 		pwdHash, err := h.auth.HashPassword(password)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to hash password")
@@ -219,6 +227,7 @@ func (h *Handler) PatchUser(
 			for _, v := range req.Settings.Value.ScriptType {
 				features = append(features, string(v))
 			}
+
 			settings.ScriptType = strings.Join(features, ",")
 		}
 
@@ -313,6 +322,7 @@ func (h *Handler) DeleteUser(
 		}
 
 		log.Error().Msg("failed to get user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -324,6 +334,7 @@ func (h *Handler) DeleteUser(
 			Int64("date_updated", user.DateUpdated).
 			Err(err).
 			Msg("failed to delete user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 

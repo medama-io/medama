@@ -49,6 +49,7 @@ func (rl *RateLimiter) middleware(next http.Handler) http.Handler {
 		if err != nil {
 			log.Warn().Err(err).Msg("rate limiter: could not get client address")
 			http.Error(w, "could not determine client address", http.StatusBadRequest)
+
 			return
 		}
 
@@ -61,8 +62,10 @@ func (rl *RateLimiter) middleware(next http.Handler) http.Handler {
 		if err != nil {
 			log.Warn().Err(err).Msg("rate limiter: could not get prefix for client address")
 			http.Error(w, "invalid client address", http.StatusBadRequest)
+
 			return
 		}
+
 		prefix = prefix.Masked()
 
 		// Get the current counter for this prefix, if it exists.

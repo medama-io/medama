@@ -9,7 +9,9 @@ import (
 func TestAddEvents(t *testing.T) {
 	assert, _, ctx, client := SetupDatabase(t)
 	rows := client.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
+
 	var count int
+
 	err := rows.Scan(&count)
 	assert.NoError(err)
 	assert.Equal(0, count)
@@ -38,7 +40,9 @@ func TestAddEvents(t *testing.T) {
 func TestAddPageView(t *testing.T) {
 	assert, _, ctx, client := SetupDatabase(t)
 	rows := client.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+
 	var count int
+
 	err := rows.Scan(&count)
 	assert.NoError(err)
 	assert.Equal(0, count)
