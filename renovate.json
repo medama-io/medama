@@ -30,18 +30,6 @@
 			"rangeStrategy": "bump"
 		},
 		{
-			"groupName": "all frontend non-major dependencies",
-			"groupSlug": "all-fe-minor-patch",
-			"matchDatasources": [
-				"npm"
-			],
-			"matchUpdateTypes": [
-				"minor",
-				"patch",
-				"digest"
-			]
-		},
-		{
 			"groupName": "all digests",
 			"groupSlug": "all-digests",
 			"matchUpdateTypes": [
@@ -50,10 +38,24 @@
 			]
 		},
 		{
+			"groupName": "all frontend non-major dependencies",
+			"groupSlug": "all-fe-minor-patch",
+			"matchDatasources": [
+				"npm"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			]
+		},
+		{
 			"groupName": "all non-major dependencies",
 			"groupSlug": "all-minor-patch",
 			"matchPackageNames": [
 				"*"
+			],
+			"matchDatasources": [
+				"!npm"
 			],
 			"matchUpdateTypes": [
 				"minor",
