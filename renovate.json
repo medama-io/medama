@@ -9,7 +9,7 @@
 	],
 	"timezone": "Asia/Tokyo",
 	"schedule": [
-		"0 10 * * 6"
+		"* 10 * * 6"
 	],
 	"rebaseWhen": "never",
 	"postUpdateOptions": [
