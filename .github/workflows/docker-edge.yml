@@ -10,10 +10,6 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
-concurrency:
-  group: docker-edge-group
-  cancel-in-progress: true
-
 permissions:
   contents: read
   packages: write
