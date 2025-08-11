@@ -67,9 +67,11 @@ func (c *Client) GetWebsiteIntervals(
 	interval api.GetWebsiteIDSummaryInterval,
 ) ([]*model.StatsIntervals, error) {
 	var resp []*model.StatsIntervals
+
 	isMonthly := false
 
 	var intervalQuery string
+
 	switch interval {
 	case api.GetWebsiteIDSummaryIntervalMinute:
 		intervalQuery = "1 MINUTE"
@@ -163,6 +165,7 @@ func (c *Client) GetWebsiteIntervals(
 	filterMap := map[string]any{
 		"interval_query": intervalQuery,
 	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(&filterMap))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -171,10 +174,12 @@ func (c *Client) GetWebsiteIntervals(
 
 	for rows.Next() {
 		var interval model.StatsIntervals
+
 		err := rows.StructScan(&interval)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		resp = append(resp, &interval)
 	}
 
@@ -198,6 +203,7 @@ func (c *Client) GetWebsiteSummaryLast24Hours(
 	filterMap := map[string]any{
 		"hostname": hostname,
 	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filterMap)
 	if err != nil {
 		return nil, errors.Wrap(err, "db: GetWebsiteSummaryLast24Hours")

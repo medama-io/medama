@@ -61,8 +61,10 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	query := `--sql
 	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE id = ?`
 
-	var user model.User
-	var settingsJSON string
+	var (
+		user         model.User
+		settingsJSON string
+	)
 
 	err := c.DB.QueryRowxContext(ctx, query, id).Scan(
 		&user.ID,
@@ -76,12 +78,14 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, model.ErrUserNotFound
 		}
+
 		return nil, errors.Wrap(err, "db")
 	}
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
 		user.Settings = model.NewDefaultSettings()
+
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to unmarshal settings")
@@ -95,8 +99,10 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 	query := `--sql
 	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE username = ?`
 
-	var user model.User
-	var settingsJSON string
+	var (
+		user         model.User
+		settingsJSON string
+	)
 
 	err := c.DB.QueryRowxContext(ctx, query, username).Scan(
 		&user.ID,
@@ -110,12 +116,14 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, model.ErrUserNotFound
 		}
+
 		return nil, errors.Wrap(err, "db")
 	}
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
 		user.Settings = model.NewDefaultSettings()
+
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to unmarshal settings")
@@ -144,6 +152,7 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 		case errors.Is(err, sql.ErrNoRows):
 			return model.ErrUserNotFound
 		}
+
 		return errors.Wrap(err, "db")
 	}
 

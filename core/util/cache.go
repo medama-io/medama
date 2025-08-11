@@ -138,5 +138,6 @@ func (c *Cache) Delete(key any) {
 // Close closes the cache and frees up resources.
 func (c *Cache) Close() {
 	c.close <- struct{}{}
+
 	c.items = sync.Map{}
 }

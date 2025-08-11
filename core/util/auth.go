@@ -39,6 +39,7 @@ func NewAuthService(ctx context.Context, isDemoMode bool) (*AuthService, error) 
 	// matter if the key doesn't persist as sessions will be
 	// invalidated when the server restarts.
 	key := make([]byte, DefaultCipherKeySize)
+
 	_, err := rand.Read(key)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to generate cipher key")
@@ -91,6 +92,7 @@ func (a *AuthService) EncryptSession(
 
 	// Create a random 12 byte nonce.
 	nonce := make([]byte, aesgcm.NonceSize())
+
 	_, err = io.ReadFull(rand.Reader, nonce)
 	if err != nil {
 		return "", errors.Wrap(err, "auth: encrypt")
@@ -157,6 +159,7 @@ func (a *AuthService) CreateSession(ctx context.Context, userID string) (*http.C
 	if err != nil {
 		return nil, errors.Wrap(err, "auth: session")
 	}
+
 	sessionID := sessionIDType.String()
 
 	// Create session cookie.

@@ -103,10 +103,12 @@ func GetAddrListString(addrs []netip.Addr) string {
 	}
 
 	var sb strings.Builder
+
 	for i, addr := range addrs {
 		if i > 0 {
 			sb.WriteString(",")
 		}
+
 		sb.WriteString(addr.String())
 	}
 

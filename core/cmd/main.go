@@ -52,6 +52,7 @@ func run(ctx context.Context, args []string) error {
 		// Check for --env flag to set configuration to also scan
 		// for environment variables. Ignore all other flags.
 		useEnv := false
+
 		for _, arg := range args {
 			switch arg {
 			case "--env", "-env":
@@ -69,6 +70,7 @@ func run(ctx context.Context, args []string) error {
 		if err := s.ParseFlags(args); err != nil {
 			return err
 		}
+
 		return s.Run(ctx)
 
 	case "version":
@@ -80,6 +82,7 @@ func run(ctx context.Context, args []string) error {
 		if cmd == "" {
 			return flag.ErrHelp
 		}
+
 		return fmt.Errorf("medama: unknown command %q", cmd)
 	}
 }

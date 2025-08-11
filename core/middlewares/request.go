@@ -19,6 +19,7 @@ func RequestContext() middleware.Middleware {
 			// Add the request to the context
 			req.Context = context.WithValue(req.Context, model.RequestKeyBody, req.Raw)
 		}
+
 		return next(req)
 	}
 }

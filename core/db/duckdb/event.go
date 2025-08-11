@@ -135,6 +135,7 @@ func (c *Client) executeInTransaction(ctx context.Context, fn func(*sqlx.Tx) err
 	if err := tx.Commit(); err != nil {
 		return errors.Wrap(err, "duckdb: commit transaction")
 	}
+
 	return nil
 }
 

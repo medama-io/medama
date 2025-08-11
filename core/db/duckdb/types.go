@@ -49,10 +49,12 @@ func (c *Client) GetWebsiteBrowsersSummary(
 
 	for rows.Next() {
 		var browser model.StatsBrowsersSummary
+
 		err := rows.StructScan(&browser)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		browsers = append(browsers, &browser)
 	}
 
@@ -104,10 +106,12 @@ func (c *Client) GetWebsiteBrowsers(
 
 	for rows.Next() {
 		var browser model.StatsBrowsers
+
 		err := rows.StructScan(&browser)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		browsers = append(browsers, &browser)
 	}
 
@@ -153,10 +157,12 @@ func (c *Client) GetWebsiteOSSummary(
 
 	for rows.Next() {
 		var o model.StatsOSSummary
+
 		err := rows.StructScan(&o)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		os = append(os, &o)
 	}
 
@@ -202,10 +208,12 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 
 	for rows.Next() {
 		var o model.StatsOS
+
 		err := rows.StructScan(&o)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		os = append(os, &o)
 	}
 
@@ -251,10 +259,12 @@ func (c *Client) GetWebsiteDevicesSummary(
 
 	for rows.Next() {
 		var device model.StatsDevicesSummary
+
 		err := rows.StructScan(&device)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		devices = append(devices, &device)
 	}
 
@@ -303,10 +313,12 @@ func (c *Client) GetWebsiteDevices(
 
 	for rows.Next() {
 		var device model.StatsDevices
+
 		err := rows.StructScan(&device)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		devices = append(devices, &device)
 	}
 

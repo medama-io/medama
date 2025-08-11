@@ -48,10 +48,12 @@ func (c *Client) GetWebsiteUTMSourcesSummary(
 
 	for rows.Next() {
 		var utm model.StatsUTMSourcesSummary
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -104,10 +106,12 @@ func (c *Client) GetWebsiteUTMSources(
 
 	for rows.Next() {
 		var utm model.StatsUTMSources
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -153,10 +157,12 @@ func (c *Client) GetWebsiteUTMMediumsSummary(
 
 	for rows.Next() {
 		var utm model.StatsUTMMediumsSummary
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -209,10 +215,12 @@ func (c *Client) GetWebsiteUTMMediums(
 
 	for rows.Next() {
 		var utm model.StatsUTMMediums
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -258,10 +266,12 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(
 
 	for rows.Next() {
 		var utm model.StatsUTMCampaignsSummary
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -314,10 +324,12 @@ func (c *Client) GetWebsiteUTMCampaigns(
 
 	for rows.Next() {
 		var utm model.StatsUTMCampaigns
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 

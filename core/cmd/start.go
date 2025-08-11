@@ -144,6 +144,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to setup logger")
 	}
+
 	log.Info().Msg(GetVersion())
 	log.Debug().Interface("config", s).Msg("")
 
@@ -165,6 +166,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to create migrations service")
 	}
+
 	err = m.AutoMigrate(ctx)
 	if err != nil {
 		return errors.Wrap(err, "could not run migrations")
@@ -187,6 +189,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		middlewares.RequestContext(),
 		middlewares.Recovery(),
 	}
+
 	apiHandler, err := api.NewServer(service,
 		middlewares.NewAuthHandler(auth),
 		api.WithMiddleware(mw...),
@@ -270,6 +273,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 	}
 
 	var lc net.ListenConfig
+
 	httpListener, err := lc.Listen(ctx, "tcp", httpPort)
 	if err != nil {
 		return errors.Wrap(err, "failed to create http listener")
@@ -295,6 +299,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 	go func() {
 		httpWg.Wait()
 		httpListener.Close()
+
 		if isSSL {
 			httpsListener.Close()
 		}
@@ -376,6 +381,7 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 		}
 
 		<-closed
+
 		return nil
 	}
 
@@ -397,5 +403,6 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 	}
 
 	<-closed
+
 	return nil
 }

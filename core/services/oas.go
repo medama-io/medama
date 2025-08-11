@@ -70,10 +70,12 @@ func NewService(
 
 	// Load hostname cache
 	hostnameCache := util.NewCacheStore()
+
 	hostnames, err := sqlite.ListAllHostnames(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list hostnames: %w", err)
 	}
+
 	hostnameCache.AddAll(hostnames)
 
 	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite, commit)
@@ -118,11 +120,13 @@ func (r *RuntimeConfig) UpdateConfig(
 	settings *model.UserSettings,
 ) error {
 	l := logger.Get()
+
 	if settings.ScriptType != "" {
 		err := meta.UpdateSetting(ctx, model.SettingsKeyScriptType, settings.ScriptType)
 		if err != nil {
 			return fmt.Errorf("failed to update script type setting: %w", err)
 		}
+
 		r.ScriptFileName = convertScriptType(settings.ScriptType)
 
 		l.Debug().Str("script_type", settings.ScriptType).Msg("updated script type")

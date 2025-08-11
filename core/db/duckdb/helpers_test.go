@@ -80,9 +80,11 @@ func NewSnapRecords(slice any) SnapRecords {
 func (s SnapRecords) Snapshot() string {
 	var sb strings.Builder
 	sb.WriteString("RECORDS:\n")
+
 	for _, record := range s.Records {
 		sb.WriteString(fmt.Sprintf("%+v\n", record))
 	}
+
 	return sb.String()
 }
 

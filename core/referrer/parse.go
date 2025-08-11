@@ -66,5 +66,6 @@ func isIPAddress(host string) bool {
 	}
 
 	_, err := netip.ParseAddr(host)
+
 	return err == nil
 }

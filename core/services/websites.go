@@ -36,6 +36,7 @@ func (h *Handler) DeleteWebsitesID(
 	}
 
 	var website *model.Website
+
 	for _, w := range websites {
 		if w.Hostname == params.Hostname {
 			website = w
@@ -88,6 +89,7 @@ func (h *Handler) GetWebsites(
 		if errors.Is(err, model.ErrWebsiteNotFound) {
 			return ErrNotFound(err), nil
 		}
+
 		return nil, errors.Wrap(err, "services")
 	}
 

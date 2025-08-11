@@ -29,6 +29,7 @@ func (h *Handler) PostAuthLogin(
 	if err != nil {
 		return ErrInternalServerError(err), nil
 	}
+
 	if !match {
 		return ErrUnauthorised(model.ErrUserNotFound), nil
 	}

@@ -75,6 +75,7 @@ linters:
     - usetesting
     - wastedassign
     - whitespace
+    - wsl_v5
     - zerologlint
   disable:
     - depguard
