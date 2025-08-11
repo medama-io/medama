@@ -8,7 +8,6 @@ import (
 	"sync"
 
 	"github.com/gaissmai/bart"
-
 	"github.com/medama-io/medama/util/logger"
 )
 

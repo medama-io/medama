@@ -59,7 +59,7 @@ func TestGetIP(t *testing.T) {
 					Header:     make(http.Header),
 					RemoteAddr: "10.0.0.1:12345",
 				}
-				req.Header.Set("CF-Connecting-IP", "192.168.1.100")
+				req.Header.Set("Cf-Connecting-Ip", "192.168.1.100")
 				return req
 			},
 			expectedIP: "192.168.1.100",
@@ -109,7 +109,13 @@ func TestGetIP(t *testing.T) {
 			}
 
 			require.NoError(t, err, "unexpected error for test case: %s", tt.name)
-			assert.Equal(t, tt.expectedIP, ip.String(), "expected IP to match for test case: %s", tt.name)
+			assert.Equal(
+				t,
+				tt.expectedIP,
+				ip.String(),
+				"expected IP to match for test case: %s",
+				tt.name,
+			)
 		})
 	}
 }

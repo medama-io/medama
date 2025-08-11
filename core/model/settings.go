@@ -23,9 +23,9 @@ type UserSettings struct {
 	ScriptType string `db:"script_type" json:"script_type"`
 
 	// Spam Protection
-	BlockAbusiveIPs   string `db:"block_abusive_ips" json:"block_abusive_ips"`
+	BlockAbusiveIPs   string `db:"block_abusive_ips"    json:"block_abusive_ips"`
 	BlockTorExitNodes string `db:"block_tor_exit_nodes" json:"block_tor_exit_nodes"`
-	BlockedIPs        string `db:"blocked_ips" json:"blocked_ips"`
+	BlockedIPs        string `db:"blocked_ips"          json:"blocked_ips"`
 }
 
 type WebsiteSettings struct{}

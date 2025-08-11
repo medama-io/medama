@@ -29,7 +29,7 @@ func GetIP(r *http.Request) (netip.Addr, error) {
 	}
 
 	// Check CF-Connecting-IP header (Cloudflare)
-	if cfip := r.Header.Get("CF-Connecting-IP"); cfip != "" {
+	if cfip := r.Header.Get("Cf-Connecting-Ip"); cfip != "" {
 		if addr, err := netip.ParseAddr(cfip); err == nil {
 			return addr, nil
 		}
@@ -43,14 +43,14 @@ func GetIP(r *http.Request) (netip.Addr, error) {
 	}
 
 	// Check X-Client-IP (common for Apache).
-	if xci := r.Header.Get("X-Client-IP"); xci != "" {
+	if xci := r.Header.Get("X-Client-Ip"); xci != "" {
 		if addr, err := netip.ParseAddr(xci); err == nil {
 			return addr, nil
 		}
 	}
 
 	// Check Fastly-Client-IP header (Fastly CDN).
-	if fci := r.Header.Get("Fastly-Client-IP"); fci != "" {
+	if fci := r.Header.Get("Fastly-Client-Ip"); fci != "" {
 		if addr, err := netip.ParseAddr(fci); err == nil {
 			return addr, nil
 		}
@@ -75,6 +75,7 @@ func GetAddrList(ips string) ([]netip.Addr, error) {
 		return []netip.Addr{}, nil
 	}
 
+	//nolint:prealloc // We don't know the number in advance.
 	var addrList []netip.Addr
 
 	for _, ipStr := range strings.Split(ips, ",") {

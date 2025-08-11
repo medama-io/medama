@@ -134,18 +134,26 @@ func (r *RuntimeConfig) UpdateConfig(
 			return fmt.Errorf("failed to update block abusive IPs setting: %w", err)
 		}
 
-		l.Debug().Str("block_abusive_ips", settings.BlockAbusiveIPs).Msg("updated block abusive IPs setting")
+		l.Debug().
+			Str("block_abusive_ips", settings.BlockAbusiveIPs).
+			Msg("updated block abusive IPs setting")
 
 		r.IPFilter.SetBlockAbusiveIPs(settings.BlockAbusiveIPs == "true")
 	}
 
 	if settings.BlockTorExitNodes != "" {
-		err := meta.UpdateSetting(ctx, model.SettingsKeyBlockTorExitNodes, settings.BlockTorExitNodes)
+		err := meta.UpdateSetting(
+			ctx,
+			model.SettingsKeyBlockTorExitNodes,
+			settings.BlockTorExitNodes,
+		)
 		if err != nil {
 			return fmt.Errorf("failed to update block Tor exit nodes setting: %w", err)
 		}
 
-		l.Debug().Str("block_tor_exit_nodes", settings.BlockTorExitNodes).Msg("updated block Tor exit nodes setting")
+		l.Debug().
+			Str("block_tor_exit_nodes", settings.BlockTorExitNodes).
+			Msg("updated block Tor exit nodes setting")
 
 		r.IPFilter.SetBlockTorExitNodes(settings.BlockTorExitNodes == "true")
 	}
