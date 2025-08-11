@@ -47,9 +47,6 @@
 			"matchPackageNames": [
 				"*"
 			],
-			"excludeDatasources": [
-				"npm"
-			],
 			"matchUpdateTypes": [
 				"minor",
 				"patch",
