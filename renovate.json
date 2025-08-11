@@ -42,6 +42,14 @@
 			]
 		},
 		{
+			"groupName": "all digests",
+			"groupSlug": "all-digests",
+			"matchUpdateTypes": [
+				"digest",
+				"pin"
+			]
+		},
+		{
 			"groupName": "all non-major dependencies",
 			"groupSlug": "all-minor-patch",
 			"matchPackageNames": [
@@ -49,8 +57,7 @@
 			],
 			"matchUpdateTypes": [
 				"minor",
-				"patch",
-				"digest"
+				"patch"
 			]
 		}
 	],
