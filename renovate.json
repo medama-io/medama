@@ -1,6 +1,68 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": [
-		"config:recommended"
+		"config:best-practices",
+		":dependencyDashboard"
+	],
+	"labels": [
+		"dependencies"
+	],
+	"timezone": "Asia/Tokyo",
+	"schedule": [
+		"0 10 * * 6"
+	],
+	"rebaseWhen": "never",
+	"postUpdateOptions": [
+		"gomodTidy",
+		"gomodUpdateImportPaths"
+	],
+	"packageRules": [
+		{
+			"matchManagers": [
+				"gomod"
+			],
+			"matchDepNames": [
+				"go"
+			],
+			"matchDepTypes": [
+				"golang"
+			],
+			"rangeStrategy": "bump"
+		},
+		{
+			"matchManagers": [
+				"gomod"
+			],
+			"matchDepTypes": [
+				"indirect"
+			],
+			"enabled": true
+		},
+		{
+			"groupName": "all non-major dependencies",
+			"groupSlug": "all-minor-patch",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch",
+				"digest"
+			]
+		}
+	],
+	"customManagers": [
+		{
+			"customType": "jsonata",
+			"datasourceTemplate": "npm",
+			"depNameTemplate": "@biomejs/biome",
+			"fileFormat": "json",
+			"managerFilePatterns": [
+				"/(^|/)biome.jsonc?$/"
+			],
+			"matchStrings": [
+				"{\"currentValue\": $split($.\"$schema\",(\"/\"))[-2]}"
+			]
+		}
 	]
 }
