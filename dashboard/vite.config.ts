@@ -31,6 +31,14 @@ export default defineConfig({
 			},
 		},
 	},
+	resolve:
+		process.env.NODE_ENV === 'development'
+			? {}
+			: {
+					alias: {
+						'react-dom/server': 'react-dom/server.node',
+					},
+				},
 	plugins: [
 		commonjs(),
 		{
@@ -52,7 +60,8 @@ export default defineConfig({
 				v3_singleFetch: true,
 				v3_routeConfig: true,
 			},
-		}),
+			// biome-ignore lint/suspicious/noExplicitAny: Issue until we migrate to Vite 7 and react-router.
+		}) as any,
 		tsconfigPaths(),
 	],
 });
