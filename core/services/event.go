@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
 	"go.jetify.com/typeid"
@@ -136,11 +137,29 @@ func (h *Handler) PostEventHit(
 ) (api.PostEventHitRes, error) {
 	log := logger.Get()
 
+	reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
+	if !ok {
+		log.Error().Msg("hit: failed to get request key from context")
+		return ErrInternalServerError(model.ErrRequestContext), nil
+	}
+
+	clientIP, err := iputils.GetIP(reqBody)
+	if err != nil {
+		log.Debug().Err(err).Msg("hit: failed to extract client IP")
+		return ErrBadRequest(err), nil
+	}
+
+	// Check if IP is blocked
+	if h.RuntimeConfig.IPFilter.HasIP(clientIP) {
+		log.Debug().Msg("hit: client IP is blocked")
+		return &api.PostEventHitNoContent{}, nil
+	}
+
 	// If this counter exceeds 2, we want to return early as the event is likely
 	// a bot.
 	//
 	// Ensure all functions that increment this counter occur at the beginning
-	// rather than the end of the function.
+	// rather than the end of the function to bail out early.
 	unknownCounter := 0
 
 	switch req.Type {
@@ -158,13 +177,6 @@ func (h *Handler) PostEventHit(
 		// Remove trailing slash if it exists
 		if pathname != "/" {
 			pathname = strings.TrimSuffix(pathname, "/")
-		}
-
-		// Get request from context
-		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
-		if !ok {
-			log.Error().Msg("hit: failed to get request key from context")
-			return ErrInternalServerError(model.ErrRequestContext), nil
 		}
 
 		// Parse user agent first to catch early if it is a bot.

@@ -132,3 +132,70 @@
 	margin-top: 4px;
 	color: var(--bg-red-danger);
 }
+
+.input-group {
+	composes: input;
+
+	display: flex;
+	align-items: stretch;
+	padding: 0;
+	overflow: hidden;
+
+	&:focus-within {
+		outline: 2px solid var(--focus-outline);
+		outline-offset: -1px;
+	}
+}
+
+.input-group-field {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	appearance: none;
+
+	flex-grow: 1;
+	width: 100%;
+	min-width: 0;
+
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	height: 100%;
+	padding: 0 16px;
+
+	&::placeholder {
+		color: var(--text-disabled);
+		opacity: 1;
+	}
+
+	&:where(:autofill, [data-com-onepassword-filled]) {
+		background-clip: text;
+		-webkit-text-fill-color: var(--selected-light);
+	}
+}
+
+.input-group-button {
+	appearance: none;
+	border: none;
+	background-color: transparent;
+
+	height: 100%;
+	flex-shrink: 0;
+	padding: 0 16px;
+	border-left: 1px solid var(--border-light);
+
+	font-family: var(--default-font-family);
+	font-weight: 500;
+	color: var(--text-dark);
+	cursor: pointer;
+	transition: background-color 100ms ease;
+
+	&:hover {
+		background-color: var(--bg-grey-disabled);
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		color: var(--text-disabled);
+	}
+}

@@ -4,6 +4,7 @@ package api
 
 import (
 	"math/bits"
+	"net/netip"
 	"strconv"
 
 	"github.com/go-faster/errors"
@@ -1990,6 +1991,41 @@ func (s *NotFoundErrorError) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *NotFoundErrorError) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes bool as json.
+func (o OptBool) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Bool(bool(o.Value))
+}
+
+// Decode decodes bool from json.
+func (o *OptBool) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptBool to nil")
+	}
+	o.Set = true
+	v, err := d.Bool()
+	if err != nil {
+		return err
+	}
+	o.Value = bool(v)
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptBool) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptBool) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -5939,11 +5975,36 @@ func (s *UserSettings) encodeFields(e *jx.Encoder) {
 			e.ArrEnd()
 		}
 	}
+	{
+		if s.BlockAbusiveIPs.Set {
+			e.FieldStart("blockAbusiveIPs")
+			s.BlockAbusiveIPs.Encode(e)
+		}
+	}
+	{
+		if s.BlockTorExitNodes.Set {
+			e.FieldStart("blockTorExitNodes")
+			s.BlockTorExitNodes.Encode(e)
+		}
+	}
+	{
+		if s.BlockedIPs != nil {
+			e.FieldStart("blockedIPs")
+			e.ArrStart()
+			for _, elem := range s.BlockedIPs {
+				json.EncodeIPv4(e, elem)
+			}
+			e.ArrEnd()
+		}
+	}
 }
 
-var jsonFieldsNameOfUserSettings = [2]string{
+var jsonFieldsNameOfUserSettings = [5]string{
 	0: "language",
 	1: "script_type",
+	2: "blockAbusiveIPs",
+	3: "blockTorExitNodes",
+	4: "blockedIPs",
 }
 
 // Decode decodes UserSettings from json.
@@ -5981,6 +6042,45 @@ func (s *UserSettings) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"script_type\"")
+			}
+		case "blockAbusiveIPs":
+			if err := func() error {
+				s.BlockAbusiveIPs.Reset()
+				if err := s.BlockAbusiveIPs.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"blockAbusiveIPs\"")
+			}
+		case "blockTorExitNodes":
+			if err := func() error {
+				s.BlockTorExitNodes.Reset()
+				if err := s.BlockTorExitNodes.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"blockTorExitNodes\"")
+			}
+		case "blockedIPs":
+			if err := func() error {
+				s.BlockedIPs = make([]netip.Addr, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem netip.Addr
+					v, err := json.DecodeIPv4(d)
+					elem = v
+					if err != nil {
+						return err
+					}
+					s.BlockedIPs = append(s.BlockedIPs, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"blockedIPs\"")
 			}
 		default:
 			return d.Skip()

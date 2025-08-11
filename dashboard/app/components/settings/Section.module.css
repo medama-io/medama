@@ -1,6 +1,6 @@
 .wrapper {
 	width: 100%;
-	padding: 32px 24px 8px 24px;
+	padding: 32px 32px 8px 32px;
 	background-color: var(--bg-light);
 
 	border-radius: 8px 8px 0 0;
@@ -16,14 +16,13 @@
 
 .sectionWrapper {
 	width: 100%;
-	padding: 32px 24px;
+	padding: 32px;
 	background-color: var(--bg-light);
 
 	border-radius: 8px;
 }
 
 .title {
-	padding: 0 8px;
 	flex: 1;
 
 	h3 {
@@ -37,6 +36,12 @@
 	}
 }
 
+.subtitle {
+	padding: 8px 0 8px 0;
+	font-weight: 500;
+	font-size: 16px;
+}
+
 .form {
 	composes: flex from global;
 
@@ -45,13 +50,33 @@
 	gap: 4px;
 }
 
+.wrapperStack {
+	width: 100%;
+	padding: 32px 32px 8px 32px;
+	background-color: var(--bg-light);
+
+	border-radius: 8px 8px 0 0;
+
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.formStack {
+	composes: flex from global;
+	flex-direction: column;
+
+	width: 100%;
+	gap: 16px;
+}
+
 .divider {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
 
-	padding: 15px 24px;
+	padding: 16px 32px;
 
 	background-color: var(--bg-light);
 	border-radius: 0 0 8px 8px;
@@ -65,10 +90,6 @@
 	@media (--lt-xs) {
 		padding: 0 16px 15px 16px;
 	}
-}
-
-.submit {
-	composes: button from global;
 }
 
 .delete {

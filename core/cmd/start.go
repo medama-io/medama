@@ -269,7 +269,8 @@ func (s *StartCommand) serve(ctx context.Context, log zerolog.Logger, mux http.H
 		httpPort = ":" + strconv.FormatInt(HTTPPort, 10)
 	}
 
-	httpListener, err := net.Listen("tcp", httpPort)
+	var lc net.ListenConfig
+	httpListener, err := lc.Listen(ctx, "tcp", httpPort)
 	if err != nil {
 		return errors.Wrap(err, "failed to create http listener")
 	}

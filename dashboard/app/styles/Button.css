@@ -11,6 +11,7 @@
 	font-family: var(--default-font-family);
 	font-style: normal;
 	text-align: center;
+	font-weight: 500;
 
 	padding: 0 16px;
 	color: var(--text-light);

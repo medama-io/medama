@@ -8,6 +8,7 @@ require (
 	github.com/alphadose/haxmap v1.4.1
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/caddyserver/certmagic v0.23.0
+	github.com/gaissmai/bart v0.24.0
 	github.com/gkampitakis/go-snaps v0.5.11
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
