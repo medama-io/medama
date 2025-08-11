@@ -56,12 +56,12 @@ import {
 import { Notifications } from '@mantine/notifications';
 import {
 	type ClientLoaderFunctionArgs,
+	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	isRouteErrorResponse,
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
@@ -72,8 +72,8 @@ import {
 	ConflictError,
 	ForbiddenError,
 	InternalServerError,
-	NotFoundError,
 	isStatusError,
+	NotFoundError,
 } from '@/components/layout/Error';
 import theme from '@/styles/theme';
 import { EXPIRE_LOGGED_IN, hasSession } from '@/utils/cookies';
@@ -256,6 +256,7 @@ export const ErrorBoundary = () => {
 		// related to a bad cookie cache from the API restarting. This is probably
 		// a bug in Remix SPA mode.
 		if (error.message.startsWith('You defined a loader for route "routes')) {
+			// biome-ignore lint/suspicious/noDocumentCookie: CookieStore API is not widely available
 			document.cookie = EXPIRE_LOGGED_IN;
 			window.location.reload();
 			return HydrateFallback();

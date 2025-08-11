@@ -6,6 +6,7 @@ import {
 } from '@remix-run/react';
 
 import { TabProperties, TabSelect } from '@/components/stats/Tabs';
+import TabClasses from '@/components/stats/Tabs.module.css';
 import {
 	type CustomPropertyValue,
 	DATASETS,
@@ -14,8 +15,6 @@ import {
 	type TabGroups,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';
-
-import TabClasses from '@/components/stats/Tabs.module.css';
 
 const mapItems = <T extends DataRow>(
 	data: T[] | undefined,

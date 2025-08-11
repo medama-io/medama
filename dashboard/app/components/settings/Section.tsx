@@ -29,13 +29,11 @@ export const SectionWrapper = ({ children }: SectionWrapperProps) => (
 	<div className={classes.sectionWrapper}>{children}</div>
 );
 
-export const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+export const SectionTitle = ({ children }: SectionWrapperProps) => (
 	<div className={classes.title}>{children}</div>
 );
 
-export const SectionSubtitle = ({
-	children,
-}: { children: React.ReactNode }) => (
+export const SectionSubtitle = ({ children }: SectionWrapperProps) => (
 	<p className={classes.subtitle}>{children}</p>
 );
 

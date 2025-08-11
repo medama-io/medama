@@ -7,19 +7,18 @@ import { ScrollContainer } from 'react-indiana-drag-scroll';
 
 import { DatePickerRange, datePickerClasses } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';
-import { Tooltip, TooltipProvider } from '@/components/Tooltip';
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
 import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';
+import { Tooltip, TooltipProvider } from '@/components/Tooltip';
 import { useChartType } from '@/hooks/use-chart-type';
 import { useDisclosure } from '@/hooks/use-disclosure';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { HeaderDataBox } from './HeaderDataBox';
-import type { ChartType, StatHeaderData } from './types';
-
 import classes from './StatsHeader.module.css';
+import type { ChartType, StatHeaderData } from './types';
 
 interface StatsHeaderProps {
 	stats: StatHeaderData[];

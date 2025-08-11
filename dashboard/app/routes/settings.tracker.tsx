@@ -3,8 +3,8 @@ import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
-	type MetaFunction,
 	data as json,
+	type MetaFunction,
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
@@ -102,10 +102,6 @@ export default function Index() {
 	const { user } = useLoaderData<typeof clientLoader>();
 	const submit = useSubmit();
 
-	if (!user) {
-		return;
-	}
-
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: {
@@ -113,10 +109,10 @@ export default function Index() {
 			script_type: {
 				default: true,
 				'click-events': Boolean(
-					user.settings.script_type?.includes('click-events'),
+					user?.settings.script_type?.includes('click-events'),
 				),
 				'page-events': Boolean(
-					user.settings.script_type?.includes('page-events'),
+					user?.settings.script_type?.includes('page-events'),
 				),
 			},
 		},
@@ -134,6 +130,10 @@ export default function Index() {
 			};
 		},
 	});
+
+	if (!user) {
+		return;
+	}
 
 	const handleSubmit = (values: TransformedValues<typeof form>) => {
 		submit(values, { method: 'POST' });

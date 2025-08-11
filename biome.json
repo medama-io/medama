@@ -1,25 +1,25 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.1.4/schema.json",
 	"files": {
-		"ignore": [
-			"types.d.ts",
-			"**/dist"
-		]
+		"includes": ["**", "!**/types.d.ts", "!**/dist"]
 	},
-	"organizeImports": {
-		"enabled": true
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
 	},
 	"linter": {
 		"enabled": true,
-		"ignore": [
-			"types.d.ts",
-			"*.js",
-			"bun.lock"
-		],
+		"includes": ["**", "!**/types.d.ts", "!**/*.js", "!**/bun.lock"],
 		"rules": {
 			"recommended": true,
 			"correctness": {
 				"noUnknownMediaFeatureName": "off"
+			},
+			"style": {
+				"noDescendingSpecificity": "off"
 			}
 		}
 	},

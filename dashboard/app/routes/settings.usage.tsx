@@ -1,8 +1,8 @@
 import { SimpleGrid } from '@mantine/core';
 import {
 	type ClientLoaderFunctionArgs,
-	type MetaFunction,
 	data as json,
+	type MetaFunction,
 	useLoaderData,
 	useRevalidator,
 } from '@remix-run/react';

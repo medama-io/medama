@@ -1,14 +1,12 @@
 import { useSearchParams } from '@remix-run/react';
 import React, { useMemo } from 'react';
-
-import { Tooltip, TooltipProvider } from '@/components/Tooltip';
 import { Group } from '@/components/layout/Flex';
+import { Tooltip, TooltipProvider } from '@/components/Tooltip';
 import { useChartType } from '@/hooks/use-chart-type';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
-import type { StatHeaderData } from './types';
-
 import classes from './HeaderDataBox.module.css';
+import type { StatHeaderData } from './types';
 
 interface HeaderDataBoxProps {
 	stat: StatHeaderData;

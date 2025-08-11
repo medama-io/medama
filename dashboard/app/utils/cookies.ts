@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noDocumentCookie: CookieStore API is not widely available */
 import { redirect } from '@remix-run/react';
 
 const LOGGED_IN_NAME = '_me_logged_in';

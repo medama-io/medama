@@ -3,8 +3,8 @@ import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
-	type MetaFunction,
 	data as json,
+	type MetaFunction,
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
@@ -104,19 +104,19 @@ export default function Index() {
 	const { user } = useLoaderData<typeof clientLoader>();
 	const submit = useSubmit();
 
-	if (!user) {
-		return;
-	}
-
 	const account = useForm({
 		mode: 'uncontrolled',
 		initialValues: {
 			_setting: 'account',
-			username: user.username,
+			username: user?.username || '',
 			password: '',
 		},
 		validate: valibotResolver(accountSchema),
 	});
+
+	if (!user) {
+		return;
+	}
 
 	const handleSubmit = (values: typeof account.values) => {
 		submit(values, { method: 'POST' });

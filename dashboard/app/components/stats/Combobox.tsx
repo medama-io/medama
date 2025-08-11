@@ -90,7 +90,6 @@ const Combobox = ({
 					</RadixSelect.Trigger>
 				</div>
 				<RadixSelect.Content
-					// biome-ignore lint/a11y/useSemanticElements: <explanation>
 					role="dialog"
 					aria-label={root.label}
 					position="popper"

@@ -4,7 +4,7 @@
     "": {
       "name": "medama-analytics",
       "dependencies": {
-        "@biomejs/biome": "^2.0.0",
+        "@biomejs/biome": "^2.1.4",
       },
     },
     "dashboard": {

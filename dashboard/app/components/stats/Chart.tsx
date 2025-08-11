@@ -9,10 +9,8 @@ import { format, parseISO } from 'date-fns';
 import React, { useMemo } from 'react';
 
 import { Group } from '@/components/layout/Flex';
-
-import { formatCount, formatDuration, formatPercentage } from './formatter';
-
 import classes from './Chart.module.css';
+import { formatCount, formatDuration, formatPercentage } from './formatter';
 
 interface ChartData {
 	date: string;
@@ -75,11 +73,6 @@ const intlFormatterAll = new Intl.DateTimeFormat('en', {
 
 const ChartTooltip = React.memo(
 	({ label, date, period, payload, valueFormatter }: ChartTooltipProps) => {
-		if (!payload || !label || !date) return null;
-
-		const item = payload[0];
-		if (!item) return null;
-
 		const dateTimeFormat = useMemo(() => {
 			if (
 				period === null ||
@@ -107,6 +100,8 @@ const ChartTooltip = React.memo(
 		}, [period]);
 
 		const dateLabel = useMemo(() => {
+			if (!date) return '';
+
 			const value = dateTimeFormat.format(parseISO(date));
 
 			if (period === PERIODS.QUARTER) {
@@ -123,6 +118,11 @@ const ChartTooltip = React.memo(
 
 			return value;
 		}, [dateTimeFormat, date, period]);
+
+		if (!payload || !label || !date) return null;
+
+		const item = payload[0];
+		if (!item) return null;
 
 		return (
 			<div className={classes.tooltip}>

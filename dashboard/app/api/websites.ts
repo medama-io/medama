@@ -1,8 +1,8 @@
 import {
 	type ClientOptions,
+	client,
 	type DataResponse,
 	type DataResponseArray,
-	client,
 } from './client';
 
 const websiteList = async (

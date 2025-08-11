@@ -28,7 +28,6 @@ export const WebsiteSelector = ({
 					<button
 						type="button"
 						className={classes.item}
-						aria-selected={value === website}
 						data-active={value === website}
 					>
 						{value}

@@ -1,9 +1,10 @@
+/** biome-ignore-all lint/suspicious/noDocumentCookie: CookieStore API is not widely available */
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
-	type MetaFunction,
 	data as json,
+	type MetaFunction,
 	redirect,
 } from '@remix-run/react';
 
@@ -11,7 +12,7 @@ import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { Login } from '@/components/login/Login';
-import { LOGGED_IN_COOKIE, hasSession } from '@/utils/cookies';
+import { hasSession, LOGGED_IN_COOKIE } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [

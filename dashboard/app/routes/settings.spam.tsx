@@ -4,8 +4,8 @@ import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
-	type MetaFunction,
 	data as json,
+	type MetaFunction,
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
@@ -20,7 +20,7 @@ import { Card } from '@/components/Card';
 import { Checkbox } from '@/components/Checkbox';
 import { InputWithButton } from '@/components/Input';
 import { SectionStack, SectionSubtitle } from '@/components/settings/Section';
-import { getBoolean, getString, getType } from '@/utils/form';
+import { getBoolean, getType } from '@/utils/form';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'Spam Settings | Medama' }];
