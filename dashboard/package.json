@@ -45,9 +45,9 @@
 		"mantine-datatable": "^7.12.4",
 		"mantine-form-valibot-resolver": "^3.0.1",
 		"match-sorter": "^8.0.2",
-		"react": "18.3.0-canary-8039e6d0b-20231026",
+		"react": "18.3.1",
 		"react-day-picker": "^9.7.0",
-		"react-dom": "18.3.0-canary-8039e6d0b-20231026",
+		"react-dom": "18.3.1",
 		"react-indiana-drag-scroll": "^3.0.3-alpha",
 		"recharts": "^2.13.0-alpha.4",
 		"valibot": "^1.1.0",
@@ -70,8 +70,8 @@
 		"vite-tsconfig-paths": "^5.0.1"
 	},
 	"overrides": {
-		"react": "18.3.0-canary-8039e6d0b-20231026",
-		"react-dom": "18.3.0-canary-8039e6d0b-20231026",
-		"react-is": "18.3.0-canary-8039e6d0b-20231026"
+		"react": "18.3.1",
+		"react-dom": "18.3.1",
+		"react-is": "18.3.1"
 	}
 }
