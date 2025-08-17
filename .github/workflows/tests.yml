@@ -65,5 +65,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
+      - name: Clear Go module cache
+        run: |
+          cd core
+          go clean -modcache
+          go mod download
+
       - name: Build
         run: task core:release:${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}:${{ matrix.arch }}
