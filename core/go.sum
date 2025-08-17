@@ -29,8 +29,6 @@ github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dlclark/regexp2 v1.11.5 h1:Q/sSnsKerHeCkc/jSTNq1oCm7KiVgUMZRDUoRu0JQZQ=
 github.com/dlclark/regexp2 v1.11.5/go.mod h1:DHkYz0B9wPfa6wondMfaivmHpzrQ3v9q8cnmRbL6yW8=
-github.com/duckdb/duckdb-go-bindings v0.1.12 h1:0zn2tg5oevB/F5RRqjDmcvEEM69rEP8TBejWyeEsjxs=
-github.com/duckdb/duckdb-go-bindings v0.1.12/go.mod h1:pBnfviMzANT/9hi4bg+zW4ykRZZPCXlVuvBWEcZofkc=
 github.com/duckdb/duckdb-go-bindings v0.1.17 h1:SjpRwrJ7v0vqnIvLeVFHlhuS72+Lp8xxQ5jIER2LZP4=
 github.com/duckdb/duckdb-go-bindings v0.1.17/go.mod h1:pBnfviMzANT/9hi4bg+zW4ykRZZPCXlVuvBWEcZofkc=
 github.com/duckdb/duckdb-go-bindings/darwin-amd64 v0.1.12 h1:8CLBnsq9YDhi2Gmt3sjSUeXxMzyMQAKefjqUy9zVPFk=
@@ -111,12 +109,8 @@ github.com/lufia/plan9stats v0.0.0-20250317134145-8bc96cf8fc35 h1:PpXWgLPs+Fqr32
 github.com/lufia/plan9stats v0.0.0-20250317134145-8bc96cf8fc35/go.mod h1:autxFIvghDt3jPTLoqZ9OZ7s9qTGNAWmYCjVFWPX/zg=
 github.com/marcboeker/go-duckdb/arrowmapping v0.0.10 h1:G1W+GVnUefR8uy7jHdNO+CRMsmFG5mFPIHVAespfFCA=
 github.com/marcboeker/go-duckdb/arrowmapping v0.0.10/go.mod h1:jccUb8TYD0p5TsEEeN4SXuslNJHo23QaKOqKD+U6uFU=
-github.com/marcboeker/go-duckdb/mapping v0.0.9 h1:c5z8PCAgLFuhqjML1ljQq+MFNA1jvXCi6xIW9DNO/4I=
-github.com/marcboeker/go-duckdb/mapping v0.0.9/go.mod h1:d4zwkzYK3ruLKqVKAIfrZM8pJw2rMrSRAt8fFKZhx7k=
 github.com/marcboeker/go-duckdb/mapping v0.0.11 h1:fusN1b1l7Myxafifp596I6dNLNhN5Uv/rw31qAqBwqw=
 github.com/marcboeker/go-duckdb/mapping v0.0.11/go.mod h1:aYBjFLgfKO0aJIbDtXPiaL5/avRQISveX/j9tMf9JhU=
-github.com/marcboeker/go-duckdb/v2 v2.2.0 h1:xxruuYD7vWvybY52xWzV0vvHKa1IjpDDOq6T846ax/s=
-github.com/marcboeker/go-duckdb/v2 v2.2.0/go.mod h1:B7swJ38GcOEm9PI0IdfkZYqn5CtIjRUiQG4ZBr3hnyc=
 github.com/marcboeker/go-duckdb/v2 v2.3.5 h1:dpLZdPppUPdwd37/kDEE025iVgQoRw2Q4qXFtXroNIo=
 github.com/marcboeker/go-duckdb/v2 v2.3.5/go.mod h1:8adNrftF4Ye29XMrpIl5NYNosTVsZu1mz3C82WdVvrk=
 github.com/maruel/natural v1.1.1 h1:Hja7XhhmvEFhcByqDoHz9QZbkWey+COd9xWfCfn1ioo=
@@ -138,8 +132,8 @@ github.com/medama-io/go-useragent v1.2.1 h1:rvC8oiKcXppcG0SotNiTDFzvVlXgX0VvWpzd
 github.com/medama-io/go-useragent v1.2.1/go.mod h1:H9GYWth4IN8vAFZh5LeARza7VwM4jK9uk7Tb9huVzLw=
 github.com/mholt/acmez/v3 v3.1.2 h1:auob8J/0FhmdClQicvJvuDavgd5ezwLBfKuYmynhYzc=
 github.com/mholt/acmez/v3 v3.1.2/go.mod h1:L1wOU06KKvq7tswuMDwKdcHeKpFFgkppZy/y0DFxagQ=
-github.com/miekg/dns v1.1.67 h1:kg0EHj0G4bfT5/oOys6HhZw4vmMlnoZ+gDu8tJ/AlI0=
-github.com/miekg/dns v1.1.67/go.mod h1:fujopn7TB3Pu3JM69XaawiU0wqjpL9/8xGop5UrTPps=
+github.com/miekg/dns v1.1.68 h1:jsSRkNozw7G/mnmXULynzMNIsgY2dHC8LO6U6Ij2JEA=
+github.com/miekg/dns v1.1.68/go.mod h1:fujopn7TB3Pu3JM69XaawiU0wqjpL9/8xGop5UrTPps=
 github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 h1:AMFGa4R4MiIpspGNG7Z948v4n35fFGB3RR3G/ry4FWs=
 github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8/go.mod h1:mC1jAcsrzbxHt8iiaC+zU4b1ylILSosueou12R++wfY=
 github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 h1:+n/aFZefKZp7spd8DFdX7uMikMLXX4oubIzJF4kv/wI=

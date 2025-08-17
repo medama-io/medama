@@ -22,6 +22,8 @@ tasks:
     deps: [generate]
     cmds:
       - go build -o ./bin/main ./cmd/
+    env:
+      CGO_ENABLED: "1"
 
   start:
     deps: [build]
@@ -82,6 +84,8 @@ tasks:
     deps: [generate]
     cmds:
       - go build -o ./bin/main -ldflags "-s -w" -trimpath ./cmd/
+    env:
+      CGO_ENABLED: "1"
 
   # Centralise Docker release command into here for simpler maintenance instead of specifying
   # within Dockerfile
@@ -91,6 +95,8 @@ tasks:
       - go build -o ./bin/main -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/
       - chmod +x ./bin/main
       - echo "docker build done"
+    env:
+      CGO_ENABLED: "1"
 
   release:linux:amd64:
     deps: [generate]
@@ -99,6 +105,7 @@ tasks:
       - chmod +x ./bin/medama_linux_amd64
       - echo "linux/amd64 build done"
     env:
+      CGO_ENABLED: "1"
       GOOS: "linux"
       GOARCH: "amd64"
 
@@ -109,6 +116,7 @@ tasks:
       - chmod +x ./bin/medama_linux_arm64
       - echo "linux/arm64 build done"
     env:
+      CGO_ENABLED: "1"
       CC: "aarch64-linux-gnu-gcc"
       CXX: "aarch64-linux-gnu-g++"
       GOOS: "linux"
@@ -121,6 +129,7 @@ tasks:
       - chmod +x ./bin/medama_darwin_amd64
       - echo "darwin/amd64 build done"
     env:
+      CGO_ENABLED: "1"
       GOOS: "darwin"
       GOARCH: "amd64"
 
@@ -131,5 +140,6 @@ tasks:
       - chmod +x ./bin/medama_darwin_arm64
       - echo "darwin/arm64 build done"
     env:
+      CGO_ENABLED: "1"
       GOOS: "darwin"
       GOARCH: "arm64"

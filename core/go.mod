@@ -14,7 +14,7 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/marcboeker/go-duckdb/v2 v2.2.0
+	github.com/marcboeker/go-duckdb/v2 v2.3.5
 	github.com/medama-io/go-referrer-parser v0.0.0-20250615084737-7f9d2bca7402
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
 	github.com/medama-io/go-useragent v1.2.1
@@ -66,7 +66,7 @@ require (
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mholt/acmez/v3 v3.1.2 // indirect
-	github.com/miekg/dns v1.1.67 // indirect
+	github.com/miekg/dns v1.1.68 // indirect
 	github.com/ncruces/julianday v1.0.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
