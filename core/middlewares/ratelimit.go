@@ -87,6 +87,7 @@ func (rl *RateLimiter) middleware(next http.Handler) http.Handler {
 		if counter.Add(1) > rl.limit {
 			log.Warn().Str("prefix", prefix.String()).Msg("rate limit exceeded for ip prefix")
 			http.Error(w, http.StatusText(http.StatusTooManyRequests), http.StatusTooManyRequests)
+
 			return
 		}
 
