@@ -25,15 +25,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - arch: amd64
+          - id: amd64
+            arch: amd64
             runner: ubuntu-latest
             platform: linux/amd64
-          - arch: arm64
+          - id: arm64
+            arch: arm64
             runner: ubuntu-24.04-arm64
             platform: linux/arm64
 
     outputs:
-      image-digest: ${{ steps.push.outputs.digest }}
+      digest: ${{ steps.push.outputs.digest }}
       metadata: ${{ steps.meta.outputs.json }}
 
     steps:
@@ -118,13 +120,13 @@ jobs:
       - name: Generate artifact attestation for AMD64
         uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ needs.build.outputs.amd64.image-digest }}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ needs.build.outputs.amd64.digest }}
           push-to-registry: true
 
       - name: Generate artifact attestation for ARM64
         uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ needs.build.outputs.arm64.image-digest }}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ needs.build.outputs.arm64.digest }}
           push-to-registry: true
