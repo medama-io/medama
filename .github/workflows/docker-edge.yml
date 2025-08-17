@@ -21,7 +21,6 @@ jobs:
     name: Build ${{ matrix.arch }} image
     runs-on: ${{ matrix.runner }}
     strategy:
-      fail-fast: false
       matrix:
         include:
           - id: amd64
