@@ -58,7 +58,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
-            latest=true
             suffix=-${{ matrix.arch }}
           tags: |
             type=ref,event=tag
