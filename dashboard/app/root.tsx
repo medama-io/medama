@@ -1,5 +1,5 @@
 import '@fontsource-variable/inter/wght.css';
-// Comman
+// Common
 import '@mantine/core/styles/global.css';
 import '@mantine/core/styles/ScrollArea.css';
 import '@mantine/core/styles/UnstyledButton.css';

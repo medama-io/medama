@@ -13,7 +13,12 @@ declare module '@remix-run/react' {
 }
 
 const targets = browserslistToTargets(
-	browserslist('defaults and fully supports es6-module'),
+	browserslist([
+		'chrome >= 107',
+		'edge >= 107',
+		'firefox >= 104',
+		'safari >= 16',
+	]),
 );
 
 const customMedia = fs.readFileSync('./app/styles/_media.css', 'utf-8');
@@ -60,7 +65,7 @@ export default defineConfig({
 				v3_singleFetch: true,
 				v3_routeConfig: true,
 			},
-			// biome-ignore lint/suspicious/noExplicitAny: Issue until we migrate to Vite 7 and react-router.
+			// biome-ignore lint/suspicious/noExplicitAny: Issue until we migrate to react-router.
 		}) as any,
 		tsconfigPaths(),
 	],
