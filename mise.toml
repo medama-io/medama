@@ -3,7 +3,7 @@ go = "latest"
 bun = "latest"
 gofumpt = "latest"
 "go:golang.org/x/tools/gopls" = "latest"
-golangci-lint = "2"
+golangci-lint = "2.4.0"
 task = "latest"
 flyctl = "latest"
 
