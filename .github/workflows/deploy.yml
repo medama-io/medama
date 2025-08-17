@@ -14,7 +14,7 @@ jobs:
     # Run only if Docker publish was successful or it is a manual workflow deployment.
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Wait for Docker Edge image to be updated in registry
         run: sleep 45s
