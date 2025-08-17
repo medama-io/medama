@@ -3,6 +3,7 @@ package middlewares
 import (
 	"net/http"
 	"net/netip"
+	"strings"
 	"sync/atomic"
 	"time"
 
@@ -14,8 +15,8 @@ import (
 const (
 	// Total number of unique IP prefixes to track.
 	cacheSize         = 65536
-	defaultLimit      = 10000
-	defaultWindow     = 5 * time.Minute
+	defaultLimit      = 150
+	defaultWindow     = 1 * time.Minute
 	ipv4DefaultPrefix = 24
 	ipv6DefaultPrefix = 48
 )
@@ -44,6 +45,12 @@ func NewRateLimiter(next http.Handler) http.Handler {
 func (rl *RateLimiter) middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log := logger.Get()
+
+		// If the route is not an event, skip rate limiting.
+		if !strings.HasPrefix(r.URL.Path, "/event") {
+			next.ServeHTTP(w, r)
+			return
+		}
 
 		ip, err := iputils.GetIP(r)
 		if err != nil {
@@ -78,6 +85,7 @@ func (rl *RateLimiter) middleware(next http.Handler) http.Handler {
 
 		// Atomically increment the counter and check if it exceeds the limit.
 		if counter.Add(1) > rl.limit {
+			log.Warn().Str("prefix", prefix.String()).Msg("rate limit exceeded for ip prefix")
 			http.Error(w, http.StatusText(http.StatusTooManyRequests), http.StatusTooManyRequests)
 			return
 		}
