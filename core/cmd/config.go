@@ -21,7 +21,6 @@ type ServerConfig struct {
 	CacheCleanupInterval time.Duration
 
 	// CORS Settings.
-	//nolint: tagalign // It removes the comma.
 	CORSAllowedOrigins []string `env:"CORS_ALLOWED_ORIGINS" envSeparator:","`
 
 	// Timeout settings.
