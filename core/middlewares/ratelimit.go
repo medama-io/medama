@@ -14,8 +14,8 @@ import (
 const (
 	// Total number of unique IP prefixes to track.
 	cacheSize         = 65536
-	defaultLimit      = 100
-	defaultWindow     = 1 * time.Minute
+	defaultLimit      = 10000
+	defaultWindow     = 5 * time.Minute
 	ipv4DefaultPrefix = 24
 	ipv6DefaultPrefix = 48
 )
