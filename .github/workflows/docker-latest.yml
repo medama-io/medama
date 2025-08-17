@@ -110,10 +110,16 @@ jobs:
 
       - name: Create and push multi-arch manifest
         run: |
-          for tag in $(echo '${{ steps.meta.outputs.tags }}' | tr ',' '\n'); do
-            echo "Creating manifest for tag: ${tag}"
-            docker buildx imagetools create \
-              --tag ${tag} \
-              ${tag}-amd64 \
-              ${tag}-arm64
-          done
+          VERSION=$(git describe --tags --abbrev=0)
+
+          # Create version specific manifest
+          docker buildx imagetools create \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION}-amd64 \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION}-arm64
+
+          # Create latest manifest
+          docker buildx imagetools create \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION}-amd64 \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION}-arm64
