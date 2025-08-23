@@ -138,8 +138,8 @@ github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 h1:AMFGa4R4MiIpsp
 github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8/go.mod h1:mC1jAcsrzbxHt8iiaC+zU4b1ylILSosueou12R++wfY=
 github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 h1:+n/aFZefKZp7spd8DFdX7uMikMLXX4oubIzJF4kv/wI=
 github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3/go.mod h1:RagcQ7I8IeTMnF8JTXieKnO4Z6JCsikNEzj0DwauVzE=
-github.com/ncruces/go-sqlite3 v0.27.1 h1:suqlM7xhSyDVMV9RgX99MCPqt9mB6YOCzHZuiI36K34=
-github.com/ncruces/go-sqlite3 v0.27.1/go.mod h1:gpF5s+92aw2MbDmZK0ZOnCdFlpe11BH20CTspVqri0c=
+github.com/ncruces/go-sqlite3 v0.28.0 h1:AQVTUPgfamONl09LS+4rGFbHmLKM8/QrJJJi1UukjEQ=
+github.com/ncruces/go-sqlite3 v0.28.0/go.mod h1:WqvLhYwtEiZzg1H8BIeahUv/DxbmR+3xG5jDHDiBAGk=
 github.com/ncruces/julianday v1.0.0 h1:fH0OKwa7NWvniGQtxdJRxAgkBMolni2BjDHaWTxqt7M=
 github.com/ncruces/julianday v1.0.0/go.mod h1:Dusn2KvZrrovOMJuOt0TNXL6tB7U2E8kvza5fFc9G7g=
 github.com/ogen-go/ogen v1.14.0 h1:TU1Nj4z9UBsAfTkf+IhuNNp7igdFQKqkk9+6/y4XuWg=
