@@ -30,18 +30,62 @@ const build = async (file, opts) => {
 	await terser(file);
 };
 
-// ENSURE MULTIPLE FEATURE NAMES ARE ALPHABETICALLY ORDERED FOR THE OUTPUT FILE
-await build('default', {});
-await build('click-events', {
-	DATA_ATTRIBUTES: true,
-	CLICK_EVENTS: true,
+const features = ['CLICK_EVENTS', 'PAGE_EVENTS', 'OUTBOUND_LINKS'];
+
+/**
+ * @param {Object} opts - Options to override defaults
+ * @returns {Object} - Final options object
+ */
+const defaultOpts = (opts) => ({
+	CLICK_EVENTS: false,
+	PAGE_EVENTS: false,
+	OUTBOUND_LINKS: false,
+	...opts,
 });
-await build('page-events', {
-	DATA_ATTRIBUTES: true,
-	PAGE_EVENTS: true,
-});
-await build('click-events.page-events', {
-	DATA_ATTRIBUTES: true,
-	PAGE_EVENTS: true,
-	CLICK_EVENTS: true,
-});
+
+/**
+ * Generates all possible combinations of features.
+ * @param {string[]} features - List of features
+ * @returns {string[][]} - All combinations of features
+ */
+const generateCombinations = (features) => {
+	const combinations = [[]];
+	for (const feature of features) {
+		const newCombos = combinations.map((combo) => [...combo, feature]);
+		combinations.push(...newCombos);
+	}
+	return combinations.slice(1); // Remove empty combination
+};
+
+/**
+ * Generates a filename from a combination of features
+ * @param {string[]} combination - A combination of features
+ * @returns {string} - Formatted filename
+ */
+const getFileName = (combination) => {
+	return combination
+		.map((feature) => feature.toLowerCase().replace('_', '-'))
+		.sort()
+		.join('.');
+};
+
+/**
+ * Builds all possible combinations of features
+ */
+const buildAllCombinations = async () => {
+	const combinations = generateCombinations(features);
+
+	for (const combination of combinations) {
+		const opts = {};
+		for (const feature of combination) {
+			opts[feature] = true;
+		}
+
+		const fileName = getFileName(combination);
+		await build(fileName, defaultOpts(opts));
+	}
+};
+
+// Run the builder
+await build('default', defaultOpts({}));
+buildAllCombinations();

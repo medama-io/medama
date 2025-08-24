@@ -3514,9 +3514,10 @@ func (s *UserSettingsLanguage) UnmarshalText(data []byte) error {
 type UserSettingsScriptTypeItem string
 
 const (
-	UserSettingsScriptTypeItemDefault     UserSettingsScriptTypeItem = "default"
-	UserSettingsScriptTypeItemClickEvents UserSettingsScriptTypeItem = "click-events"
-	UserSettingsScriptTypeItemPageEvents  UserSettingsScriptTypeItem = "page-events"
+	UserSettingsScriptTypeItemDefault       UserSettingsScriptTypeItem = "default"
+	UserSettingsScriptTypeItemClickEvents   UserSettingsScriptTypeItem = "click-events"
+	UserSettingsScriptTypeItemOutboundLinks UserSettingsScriptTypeItem = "outbound-links"
+	UserSettingsScriptTypeItemPageEvents    UserSettingsScriptTypeItem = "page-events"
 )
 
 // AllValues returns all UserSettingsScriptTypeItem values.
@@ -3524,6 +3525,7 @@ func (UserSettingsScriptTypeItem) AllValues() []UserSettingsScriptTypeItem {
 	return []UserSettingsScriptTypeItem{
 		UserSettingsScriptTypeItemDefault,
 		UserSettingsScriptTypeItemClickEvents,
+		UserSettingsScriptTypeItemOutboundLinks,
 		UserSettingsScriptTypeItemPageEvents,
 	}
 }
@@ -3534,6 +3536,8 @@ func (s UserSettingsScriptTypeItem) MarshalText() ([]byte, error) {
 	case UserSettingsScriptTypeItemDefault:
 		return []byte(s), nil
 	case UserSettingsScriptTypeItemClickEvents:
+		return []byte(s), nil
+	case UserSettingsScriptTypeItemOutboundLinks:
 		return []byte(s), nil
 	case UserSettingsScriptTypeItemPageEvents:
 		return []byte(s), nil
@@ -3550,6 +3554,9 @@ func (s *UserSettingsScriptTypeItem) UnmarshalText(data []byte) error {
 		return nil
 	case UserSettingsScriptTypeItemClickEvents:
 		*s = UserSettingsScriptTypeItemClickEvents
+		return nil
+	case UserSettingsScriptTypeItemOutboundLinks:
+		*s = UserSettingsScriptTypeItemOutboundLinks
 		return nil
 	case UserSettingsScriptTypeItemPageEvents:
 		*s = UserSettingsScriptTypeItemPageEvents

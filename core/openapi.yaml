@@ -1607,6 +1607,7 @@ components:
             enum:
               - default
               - click-events
+              - outbound-links
               - page-events
           uniqueItems: true
         blockAbusiveIPs:
