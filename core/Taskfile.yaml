@@ -16,7 +16,7 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - go run ./cmd/ start -logger=pretty -level=debug -corsorigins=http://localhost:8080,http://localhost:5173
+      - air -c .air.toml
 
   build:
     deps: [generate]
