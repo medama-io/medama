@@ -44,4 +44,6 @@ core/**/client
 **/*.prof
 
 # AI
+.zed
+.serena
 AGENT.md
