@@ -57,6 +57,7 @@ func RequestLogger() middleware.Middleware {
 				Logger()
 
 			msg := "success"
+
 			code := getCode(resp.Type)
 			if code != 0 {
 				log = log.With().Int("status_code", code).Logger()
@@ -83,12 +84,14 @@ func RequestLogger() middleware.Middleware {
 				case http.StatusInternalServerError:
 					msg = "500 internal server error"
 					log.Error().Err(err).Msg(msg)
+
 					return resp, err
 				}
 			}
 
 			log.Info().Msg(msg)
 		}
+
 		return resp, err
 	}
 }

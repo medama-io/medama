@@ -10,7 +10,10 @@ import (
 )
 
 // GetWebsiteBrowser returns the browsers for the given hostname.
-func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsBrowsersSummary, error) {
+func (c *Client) GetWebsiteBrowsersSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsBrowsersSummary, error) {
 	var browsers []*model.StatsBrowsersSummary
 
 	// Array of browsers
@@ -46,17 +49,22 @@ func (c *Client) GetWebsiteBrowsersSummary(ctx context.Context, filter *db.Filte
 
 	for rows.Next() {
 		var browser model.StatsBrowsersSummary
+
 		err := rows.StructScan(&browser)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		browsers = append(browsers, &browser)
 	}
 
 	return browsers, nil
 }
 
-func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]*model.StatsBrowsers, error) {
+func (c *Client) GetWebsiteBrowsers(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsBrowsers, error) {
 	var browsers []*model.StatsBrowsers
 
 	// Array of browsers
@@ -98,17 +106,22 @@ func (c *Client) GetWebsiteBrowsers(ctx context.Context, filter *db.Filters) ([]
 
 	for rows.Next() {
 		var browser model.StatsBrowsers
+
 		err := rows.StructScan(&browser)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		browsers = append(browsers, &browser)
 	}
 
 	return browsers, nil
 }
 
-func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsOSSummary, error) {
+func (c *Client) GetWebsiteOSSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsOSSummary, error) {
 	var os []*model.StatsOSSummary
 
 	// Array of operating systems
@@ -144,10 +157,12 @@ func (c *Client) GetWebsiteOSSummary(ctx context.Context, filter *db.Filters) ([
 
 	for rows.Next() {
 		var o model.StatsOSSummary
+
 		err := rows.StructScan(&o)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		os = append(os, &o)
 	}
 
@@ -193,17 +208,22 @@ func (c *Client) GetWebsiteOS(ctx context.Context, filter *db.Filters) ([]*model
 
 	for rows.Next() {
 		var o model.StatsOS
+
 		err := rows.StructScan(&o)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		os = append(os, &o)
 	}
 
 	return os, nil
 }
 
-func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsDevicesSummary, error) {
+func (c *Client) GetWebsiteDevicesSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsDevicesSummary, error) {
 	var devices []*model.StatsDevicesSummary
 
 	// Array of devices
@@ -239,10 +259,12 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 
 	for rows.Next() {
 		var device model.StatsDevicesSummary
+
 		err := rows.StructScan(&device)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		devices = append(devices, &device)
 	}
 
@@ -250,7 +272,10 @@ func (c *Client) GetWebsiteDevicesSummary(ctx context.Context, filter *db.Filter
 }
 
 // GetWebsiteDevices returns the devices for the given hostname.
-func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*model.StatsDevices, error) {
+func (c *Client) GetWebsiteDevices(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsDevices, error) {
 	var devices []*model.StatsDevices
 
 	// Array of devices
@@ -288,10 +313,12 @@ func (c *Client) GetWebsiteDevices(ctx context.Context, filter *db.Filters) ([]*
 
 	for rows.Next() {
 		var device model.StatsDevices
+
 		err := rows.StructScan(&device)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		devices = append(devices, &device)
 	}
 

@@ -14,7 +14,8 @@ func SetupCacheTest(t *testing.T) (*assert.Assertions, *require.Assertions, cont
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
-	ctx := context.Background()
+	ctx := t.Context()
+
 	return assert, require, ctx
 }
 
@@ -22,6 +23,7 @@ func TestGetSet(t *testing.T) {
 	_, require, ctx := SetupCacheTest(t)
 
 	cycle := 100 * time.Millisecond
+
 	c := util.NewCache(ctx, cycle)
 	defer c.Close()
 
@@ -81,9 +83,10 @@ func TestRange(t *testing.T) {
 	c := util.NewCache(ctx, time.Minute)
 	c.Set("hello", "Hello", time.Hour)
 	c.Set("world", "World", time.Hour)
+
 	count := 0
 
-	c.Range(ctx, func(_key, _value interface{}) bool {
+	c.Range(ctx, func(_key, _value any) bool {
 		count++
 		return true
 	})
@@ -98,9 +101,10 @@ func TestRangeTimer(t *testing.T) {
 	c.Set("world", "World", time.Nanosecond)
 	time.Sleep(time.Microsecond)
 
-	c.Range(ctx, func(_key, _value interface{}) bool {
+	c.Range(ctx, func(_key, _value any) bool {
 		t.Log("Cache range mismatch")
 		t.FailNow()
+
 		return true
 	})
 }

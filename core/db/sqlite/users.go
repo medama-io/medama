@@ -35,7 +35,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 		return errors.Wrap(err, "marshaling settings")
 	}
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"id":           user.ID,
 		"username":     user.Username,
 		"password":     user.Password,
@@ -44,9 +44,10 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 		"date_updated": user.DateUpdated,
 	}
 
-	_, err = c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err = c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
-		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) || errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
+		if errors.Is(err, sqlite3.CONSTRAINT_UNIQUE) ||
+			errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrUserExists
 		}
 
@@ -60,8 +61,10 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 	query := `--sql
 	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE id = ?`
 
-	var user model.User
-	var settingsJSON string
+	var (
+		user         model.User
+		settingsJSON string
+	)
 
 	err := c.DB.QueryRowxContext(ctx, query, id).Scan(
 		&user.ID,
@@ -75,12 +78,14 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, model.ErrUserNotFound
 		}
+
 		return nil, errors.Wrap(err, "db")
 	}
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
 		user.Settings = model.NewDefaultSettings()
+
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to unmarshal settings")
@@ -94,8 +99,10 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 	query := `--sql
 	SELECT id, username, password, settings, date_created, date_updated FROM users WHERE username = ?`
 
-	var user model.User
-	var settingsJSON string
+	var (
+		user         model.User
+		settingsJSON string
+	)
 
 	err := c.DB.QueryRowxContext(ctx, query, username).Scan(
 		&user.ID,
@@ -109,12 +116,14 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, model.ErrUserNotFound
 		}
+
 		return nil, errors.Wrap(err, "db")
 	}
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
 		user.Settings = model.NewDefaultSettings()
+
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to unmarshal settings")
@@ -128,13 +137,13 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 	exec := `--sql
 	UPDATE users SET username = :username, date_updated = :date_updated WHERE id = :id`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"id":           id,
 		"username":     username,
 		"date_updated": time.Now().Unix(),
 	}
 
-	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		switch {
 		case errors.Is(err, sqlite3.CONSTRAINT_UNIQUE),
@@ -143,6 +152,7 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 		case errors.Is(err, sql.ErrNoRows):
 			return model.ErrUserNotFound
 		}
+
 		return errors.Wrap(err, "db")
 	}
 
@@ -153,13 +163,13 @@ func (c *Client) UpdateUserPassword(ctx context.Context, id string, password str
 	exec := `--sql
 	UPDATE users SET password = :password, date_updated = :date_updated WHERE id = :id`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"id":           id,
 		"password":     password,
 		"date_updated": time.Now().Unix(),
 	}
 
-	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return model.ErrUserNotFound
@@ -175,7 +185,7 @@ func (c *Client) DeleteUser(ctx context.Context, id string) error {
 	exec := `--sql
 	DELETE FROM users WHERE id = ?`
 
-	res, err := c.DB.ExecContext(ctx, exec, id)
+	res, err := c.ExecContext(ctx, exec, id)
 	if err != nil {
 		return errors.Wrap(err, "db")
 	}

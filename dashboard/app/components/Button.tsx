@@ -66,6 +66,7 @@ const ButtonLink = ({
 }: ButtonLinkProps) => {
 	return (
 		<Link
+			type="button"
 			className={
 				className
 					? className
@@ -74,7 +75,6 @@ const ButtonLink = ({
 						: 'button-link'
 			}
 			prefetch="intent"
-			role="button"
 			{...rest}
 		>
 			{children}

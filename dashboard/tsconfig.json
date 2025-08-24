@@ -1,25 +1,27 @@
 {
-	"include": ["**/*.ts", "**/*.tsx"],
+	"include": [
+		"**/*",
+		"**/.server/**/*",
+		"**/.client/**/*",
+		".react-router/types/**/*"
+	],
 	"compilerOptions": {
-		"target": "ESNext",
-		"isolatedModules": true,
-		"esModuleInterop": true,
+		"lib": ["DOM", "DOM.Iterable", "ES2022"],
+		"types": ["node", "vite/client"],
+		"target": "ES2022",
+		"module": "ES2022",
+		"moduleResolution": "bundler",
 		"jsx": "react-jsx",
-		"resolveJsonModule": true,
-		"strict": true,
-		"noUncheckedIndexedAccess": true,
-		"allowJs": true,
-		"forceConsistentCasingInFileNames": true,
+		"rootDirs": [".", "./.react-router/types"],
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./app/*"]
 		},
-
-		// Remix takes care of building everything in `remix build`.
+		"esModuleInterop": true,
+		"verbatimModuleSyntax": true,
 		"noEmit": true,
-		"types": ["vite/client"],
+		"resolveJsonModule": true,
 		"skipLibCheck": true,
-		"module": "ESNext",
-		"moduleResolution": "Bundler"
+		"strict": true
 	}
 }

@@ -10,7 +10,10 @@ import (
 	"github.com/medama-io/medama/util/logger"
 )
 
-func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsitesIDParams) (api.DeleteWebsitesIDRes, error) {
+func (h *Handler) DeleteWebsitesID(
+	ctx context.Context,
+	params api.DeleteWebsitesIDParams,
+) (api.DeleteWebsitesIDRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("delete website rejected in demo mode")
@@ -33,6 +36,7 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 	}
 
 	var website *model.Website
+
 	for _, w := range websites {
 		if w.Hostname == params.Hostname {
 			website = w
@@ -70,7 +74,10 @@ func (h *Handler) DeleteWebsitesID(ctx context.Context, params api.DeleteWebsite
 	return &api.DeleteWebsitesIDNoContent{}, nil
 }
 
-func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams) (api.GetWebsitesRes, error) {
+func (h *Handler) GetWebsites(
+	ctx context.Context,
+	params api.GetWebsitesParams,
+) (api.GetWebsitesRes, error) {
 	// Get user ID from context
 	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -82,6 +89,7 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 		if errors.Is(err, model.ErrWebsiteNotFound) {
 			return ErrNotFound(err), nil
 		}
+
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -121,7 +129,10 @@ func (h *Handler) GetWebsites(ctx context.Context, params api.GetWebsitesParams)
 	}, nil
 }
 
-func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDParams) (api.GetWebsitesIDRes, error) {
+func (h *Handler) GetWebsitesID(
+	ctx context.Context,
+	params api.GetWebsitesIDParams,
+) (api.GetWebsitesIDRes, error) {
 	// Get user ID from context
 	userID, ok := ctx.Value(model.ContextKeyUserID).(string)
 	if !ok {
@@ -148,7 +159,11 @@ func (h *Handler) GetWebsitesID(ctx context.Context, params api.GetWebsitesIDPar
 	}, nil
 }
 
-func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, params api.PatchWebsitesIDParams) (api.PatchWebsitesIDRes, error) {
+func (h *Handler) PatchWebsitesID(
+	ctx context.Context,
+	req *api.WebsitePatch,
+	params api.PatchWebsitesIDParams,
+) (api.PatchWebsitesIDRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("patch website rejected in demo mode")
@@ -205,7 +220,10 @@ func (h *Handler) PatchWebsitesID(ctx context.Context, req *api.WebsitePatch, pa
 	}, nil
 }
 
-func (h *Handler) PostWebsites(ctx context.Context, req *api.WebsiteCreate) (api.PostWebsitesRes, error) {
+func (h *Handler) PostWebsites(
+	ctx context.Context,
+	req *api.WebsiteCreate,
+) (api.PostWebsitesRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("post website rejected in demo mode")

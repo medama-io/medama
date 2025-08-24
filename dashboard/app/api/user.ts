@@ -1,4 +1,4 @@
-import { type ClientOptions, type DataResponse, client } from './client';
+import { type ClientOptions, client, type DataResponse } from './client';
 
 const userGet = async (
 	opts?: ClientOptions,

@@ -12,11 +12,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func SetupAuthTest(t *testing.T) (*assert.Assertions, *require.Assertions, context.Context, *util.AuthService) {
+func SetupAuthTest(
+	t *testing.T,
+) (*assert.Assertions, *require.Assertions, context.Context, *util.AuthService) {
 	t.Helper()
 	assert := assert.New(t)
 	require := require.New(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	auth, err := util.NewAuthService(ctx, false)
 	require.NoError(err)
@@ -56,7 +58,7 @@ func TestAuthWithInvalidSession(t *testing.T) {
 	// Decrypt cookie
 	userID, err := auth.ReadSession(ctx, "invalid_session")
 	require.ErrorIs(err, model.ErrInvalidSession)
-	assert.Equal("", userID)
+	assert.Empty(userID)
 }
 
 func TestAuthWithExpiredSession(t *testing.T) {
@@ -77,5 +79,5 @@ func TestAuthWithExpiredSession(t *testing.T) {
 	// Try to read from session with expired cookie
 	userID, err := auth.ReadSession(ctx, cookie.Value)
 	require.ErrorIs(err, model.ErrSessionNotFound)
-	assert.Equal("", userID)
+	assert.Empty(userID)
 }

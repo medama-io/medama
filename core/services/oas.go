@@ -2,16 +2,17 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"slices"
 	"strings"
 
-	"github.com/go-faster/errors"
-	"github.com/medama-io/go-referrer-parser"
 	tz "github.com/medama-io/go-timezone-country"
 	"github.com/medama-io/go-useragent"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
+	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
+	"github.com/medama-io/medama/referrer"
 	"github.com/medama-io/medama/util"
 	"github.com/medama-io/medama/util/logger"
 )
@@ -25,6 +26,9 @@ type RuntimeConfig struct {
 	// Short Git commit SHA. Used when returning the version of the server in
 	// X-API-Commit header for client-side cache busting.
 	Commit string
+
+	// IPFilter is used to filter out preset IP addresses that are known to be abusive or user submitted.
+	IPFilter *iputils.IPFilter
 }
 
 type Handler struct {
@@ -45,30 +49,38 @@ type Handler struct {
 }
 
 // NewService returns a new instance of the ogen service handler.
-func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Client, duckdb *duckdb.Client, commit string) (*Handler, error) {
+func NewService(
+	ctx context.Context,
+	auth *util.AuthService,
+	sqlite *sqlite.Client,
+	duckdb *duckdb.Client,
+	commit string,
+) (*Handler, error) {
 	// Load timezone and country maps
 	tzMap, err := tz.NewTimezoneCountryMap()
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to create timezone-country map: %w", err)
 	}
 
 	// Load referrer parser
 	referrerParser, err := referrer.NewParser()
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to create referrer parser: %w", err)
 	}
 
 	// Load hostname cache
 	hostnameCache := util.NewCacheStore()
+
 	hostnames, err := sqlite.ListAllHostnames(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to list hostnames: %w", err)
 	}
+
 	hostnameCache.AddAll(hostnames)
 
 	runtimeConfig, err := NewRuntimeConfig(ctx, sqlite, commit)
 	if err != nil {
-		return nil, errors.Wrap(err, "services init")
+		return nil, fmt.Errorf("failed to create runtime config: %w", err)
 	}
 
 	return &Handler{
@@ -84,29 +96,81 @@ func NewService(ctx context.Context, auth *util.AuthService, sqlite *sqlite.Clie
 }
 
 // NewRuntimeConfig creates a new runtime config.
-func NewRuntimeConfig(ctx context.Context, user *sqlite.Client, commit string) (RuntimeConfig, error) {
+func NewRuntimeConfig(
+	ctx context.Context,
+	user *sqlite.Client,
+	commit string,
+) (RuntimeConfig, error) {
 	// Load the script type from the database.
 	settings, err := user.GetSettings(ctx)
 	if err != nil {
-		return RuntimeConfig{}, errors.Wrap(err, "runtime config")
+		return RuntimeConfig{}, fmt.Errorf("failed to get user settings: %w", err)
 	}
 
 	return RuntimeConfig{
 		ScriptFileName: convertScriptType(settings.ScriptType),
 		Commit:         commit,
+		IPFilter:       iputils.NewIPFilter(),
 	}, nil
 }
 
-func (r *RuntimeConfig) UpdateConfig(ctx context.Context, meta *sqlite.Client, settings *model.UserSettings) error {
+func (r *RuntimeConfig) UpdateConfig(
+	ctx context.Context,
+	meta *sqlite.Client,
+	settings *model.UserSettings,
+) error {
+	l := logger.Get()
+
 	if settings.ScriptType != "" {
 		err := meta.UpdateSetting(ctx, model.SettingsKeyScriptType, settings.ScriptType)
 		if err != nil {
-			return errors.Wrap(err, "script type update config")
+			return fmt.Errorf("failed to update script type setting: %w", err)
 		}
+
 		r.ScriptFileName = convertScriptType(settings.ScriptType)
 
-		log := logger.Get()
-		log.Warn().Str("script_type", settings.ScriptType).Msg("updated script type")
+		l.Debug().Str("script_type", settings.ScriptType).Msg("updated script type")
+	}
+
+	if settings.BlockAbusiveIPs != "" {
+		err := meta.UpdateSetting(ctx, model.SettingsKeyBlockAbusiveIPs, settings.BlockAbusiveIPs)
+		if err != nil {
+			return fmt.Errorf("failed to update block abusive IPs setting: %w", err)
+		}
+
+		l.Debug().
+			Str("block_abusive_ips", settings.BlockAbusiveIPs).
+			Msg("updated block abusive IPs setting")
+
+		r.IPFilter.SetBlockAbusiveIPs(settings.BlockAbusiveIPs == "true")
+	}
+
+	if settings.BlockTorExitNodes != "" {
+		err := meta.UpdateSetting(
+			ctx,
+			model.SettingsKeyBlockTorExitNodes,
+			settings.BlockTorExitNodes,
+		)
+		if err != nil {
+			return fmt.Errorf("failed to update block Tor exit nodes setting: %w", err)
+		}
+
+		l.Debug().
+			Str("block_tor_exit_nodes", settings.BlockTorExitNodes).
+			Msg("updated block Tor exit nodes setting")
+
+		r.IPFilter.SetBlockTorExitNodes(settings.BlockTorExitNodes == "true")
+	}
+
+	if settings.BlockedIPs != "" {
+		err := meta.UpdateSetting(ctx, model.SettingsKeyBlockedIPs, settings.BlockedIPs)
+		if err != nil {
+			return fmt.Errorf("failed to update blocked IPs setting: %w", err)
+		}
+
+		l.Debug().Str("blocked_ips", settings.BlockedIPs).Msg("updated blocked IPs setting")
+
+		r.IPFilter.LoadFromCommaSeparated(settings.BlockedIPs)
 	}
 
 	return nil

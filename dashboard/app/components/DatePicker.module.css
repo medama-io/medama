@@ -23,7 +23,8 @@
 .content {
 	background-color: var(--bg-light);
 	border-radius: 6px;
-	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+	box-shadow:
+		hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
 		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
 	position: fixed;
 	top: 50%;
@@ -55,83 +56,104 @@
 	--rdp-font-family: var(--default-font-family);
 
 	--rdp-day-font: 400 16px var(--rdp-font-family);
-	--rdp-day-height: 2.75rem; /* The height of the day cells. */
-	--rdp-day-width: 2.75rem; /* The width of the day cells. */
+	--rdp-day-height: 2.75rem;
+	/* The height of the day cells. */
+	--rdp-day-width: 2.75rem;
+	/* The width of the day cells. */
 
 	--rdp-day_button-border-radius: 12px;
-	--rdp-day_button-border: 2px solid transparent; /* The border of the day cells. */
-	--rdp-day_button-height: var(
-		--rdp-day-width
-	); /* The height of the day cells. */
-	--rdp-day_button-width: var(
-		--rdp-day-height
-	); /* The width of the day cells. */
+	--rdp-day_button-border: 2px solid transparent;
+	/* The border of the day cells. */
+	--rdp-day_button-height: var(--rdp-day-width);
+	/* The height of the day cells. */
+	--rdp-day_button-width: var(--rdp-day-height);
+	/* The width of the day cells. */
 
-	--rdp-selected-border: 2px solid var(--rdp-accent-color); /* The border of the selected days. */
+	--rdp-selected-border: 2px solid var(--rdp-accent-color);
+	/* The border of the selected days. */
 	--rdp-selected-font: 500 16px var(--rdp-font-family);
 
-	--rdp-disabled-opacity: 0.5; /* The opacity of the disabled days. */
-	--rdp-outside-opacity: 0.75; /* The opacity of the days outside the current month. */
-	--rdp-today-color: var(
-		--rdp-accent-color
-	); /* The color of the today's date. */
+	--rdp-disabled-opacity: 0.5;
+	/* The opacity of the disabled days. */
+	--rdp-outside-opacity: 0.75;
+	/* The opacity of the days outside the current month. */
+	--rdp-today-color: var(--rdp-accent-color);
+	/* The color of the today's date. */
 
-	--rdp-dropdown-gap: 0.5rem; /* The gap between the dropdowns used in the month captons. */
+	--rdp-dropdown-gap: 0.5rem;
+	/* The gap between the dropdowns used in the month captons. */
 
-	--rdp-month_caption-font: bold larger var(--rdp-font-family); /* The font of the month caption. */
-	--rdp-months-gap: 2rem; /* The gap between the months in the multi-month view. */
+	--rdp-month_caption-font: bold larger var(--rdp-font-family);
+	/* The font of the month caption. */
+	--rdp-months-gap: 2rem;
+	/* The gap between the months in the multi-month view. */
 
-	--rdp-nav_button-disabled-opacity: 0.5; /* The opacity of the disabled navigation buttons. */
-	--rdp-nav_button-height: 2.25rem; /* The height of the navigation buttons. */
-	--rdp-nav_button-width: 2.25rem; /* The width of the navigation buttons. */
-	--rdp-nav-height: 2.75rem; /* The height of the navigation bar. */
+	--rdp-nav_button-disabled-opacity: 0.5;
+	/* The opacity of the disabled navigation buttons. */
+	--rdp-nav_button-height: 2.25rem;
+	/* The height of the navigation buttons. */
+	--rdp-nav_button-width: 2.25rem;
+	/* The width of the navigation buttons. */
+	--rdp-nav-height: 2.75rem;
+	/* The height of the navigation bar. */
 
-	--rdp-range_middle-background-color: var(
-		--rdp-accent-background-color
-	); /* The color of the background for days in the middle of a range. */
-	--rdp-range_middle-font: normal medium var(--rdp-font-family); /* The font for days in the middle of a range. */
-	--rdp-range_middle-foreground-color: white; /* The font for days in the middle of a range. */
-	--rdp-range_middle-color: inherit; /* The color of the range text. */
+	--rdp-range_middle-background-color: var(--rdp-accent-background-color);
+	/* The color of the background for days in the middle of a range. */
+	--rdp-range_middle-font: normal medium var(--rdp-font-family);
+	/* The font for days in the middle of a range. */
+	--rdp-range_middle-foreground-color: white;
+	/* The font for days in the middle of a range. */
+	--rdp-range_middle-color: inherit;
+	/* The color of the range text. */
 
-	--rdp-range_start-color: white; /* The color of the range text. */
+	--rdp-range_start-color: white;
+	/* The color of the range text. */
 	--rdp-range_start-background: linear-gradient(
 		var(--rdp-gradient-direction),
 		transparent 50%,
 		var(--rdp-range_middle-background-color) 50%
-	); /* Used for the background of the start of the selected range. */
-	--rdp-range_start-date-background-color: var(
-		--rdp-accent-color
-	); /* The background color of the date when at the start of the selected range. */
+	);
+	/* Used for the background of the start of the selected range. */
+	--rdp-range_start-date-background-color: var(--rdp-accent-color);
+	/* The background color of the date when at the start of the selected range. */
 
 	--rdp-range_end-background: linear-gradient(
 		var(--rdp-gradient-direction),
 		var(--rdp-range_middle-background-color) 50%,
 		transparent 50%
-	); /* Used for the background of the end of the selected range. */
-	--rdp-range_end-color: white; /* The color of the range text. */
-	--rdp-range_end-date-background-color: var(
-		--rdp-accent-color
-	); /* The background color of the date when at the end of the selected range. */
+	);
+	/* Used for the background of the end of the selected range. */
+	--rdp-range_end-color: white;
+	/* The color of the range text. */
+	--rdp-range_end-date-background-color: var(--rdp-accent-color);
+	/* The background color of the date when at the end of the selected range. */
 
-	--rdp-week_number-border-radius: 100%; /* The border radius of the week number. */
-	--rdp-week_number-border: 2px solid transparent; /* The border of the week number. */
-	--rdp-week_number-font: 400 small var(--rdp-font-family); /* The font of the week number cells. */
-	--rdp-week_number-height: var(
-		--rdp-day-height
-	); /* The height of the week number cells. */
-	--rdp-week_number-opacity: 0.75; /* The opacity of the week number. */
-	--rdp-week_number-width: var(
-		--rdp-day-width
-	); /* The width of the week number cells. */
+	--rdp-week_number-border-radius: 100%;
+	/* The border radius of the week number. */
+	--rdp-week_number-border: 2px solid transparent;
+	/* The border of the week number. */
+	--rdp-week_number-font: 400 small var(--rdp-font-family);
+	/* The font of the week number cells. */
+	--rdp-week_number-height: var(--rdp-day-height);
+	/* The height of the week number cells. */
+	--rdp-week_number-opacity: 0.75;
+	/* The opacity of the week number. */
+	--rdp-week_number-width: var(--rdp-day-width);
+	/* The width of the week number cells. */
 
-	--rdp-weekday-font: 500 smaller var(--rdp-font-family); /* The font of the weekday. */
-	--rdp-weekday-opacity: 0.75; /* The opacity of the weekday. */
-	--rdp-weekday-padding: 0.5rem 0rem; /* The padding of the weekday. */
-	--rdp-weekday-text-align: center; /* The text alignment of the weekday cells. */
+	--rdp-weekday-font: 500 smaller var(--rdp-font-family);
+	/* The font of the weekday. */
+	--rdp-weekday-opacity: 0.75;
+	/* The opacity of the weekday. */
+	--rdp-weekday-padding: 0.5rem 0rem;
+	/* The padding of the weekday. */
+	--rdp-weekday-text-align: center;
+	/* The text alignment of the weekday cells. */
 
 	--rdp-gradient-direction: 90deg;
 
-	position: relative; /* Required to position the navigation toolbar. */
+	position: relative;
+	/* Required to position the navigation toolbar. */
 	box-sizing: border-box;
 }
 
@@ -143,7 +165,7 @@
 	height: 400px;
 	display: inline-flex;
 	flex-direction: row;
-	gap: 20px;
+
 	width: 100%;
 	justify-content: center;
 
@@ -252,6 +274,7 @@
 	align-items: center;
 	gap: var(--rdp-dropdown-gap);
 }
+
 .dropdown {
 	z-index: 2;
 
@@ -360,8 +383,7 @@
 }
 
 .range_middle .day_button {
-	border-color: transparent;
-	border: unset;
+	border: unset 0px transparent;
 	border-radius: unset;
 	color: var(--rdp-range_middle-color);
 }
@@ -384,6 +406,7 @@
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}

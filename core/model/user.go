@@ -11,7 +11,14 @@ type User struct {
 }
 
 // NewUser returns a new instance of User with the given values.
-func NewUser(id string, username string, password string, settings *UserSettings, dateCreated int64, dateUpdated int64) *User {
+func NewUser(
+	id string,
+	username string,
+	password string,
+	settings *UserSettings,
+	dateCreated int64,
+	dateUpdated int64,
+) *User {
 	return &User{
 		ID:       id,
 		Username: username,

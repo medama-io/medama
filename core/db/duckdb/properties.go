@@ -15,7 +15,10 @@ const (
 )
 
 // GetWebsiteReferrersSummary returns a summary of the referrers for the given filters.
-func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filters) ([]*model.StatsCustomProperties, error) {
+func (c *Client) GetWebsiteCustomProperties(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsCustomProperties, error) {
 	var properties []*model.StatsCustomProperties
 
 	// Array of custom properties
@@ -74,10 +77,12 @@ func (c *Client) GetWebsiteCustomProperties(ctx context.Context, filter *db.Filt
 
 	for rows.Next() {
 		var property model.StatsCustomProperties
+
 		err := rows.StructScan(&property)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		properties = append(properties, &property)
 	}
 

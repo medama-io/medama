@@ -2,19 +2,19 @@ import { type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
+	data as json,
 	type MetaFunction,
-	json,
 	useLoaderData,
 	useSubmit,
 } from '@remix-run/react';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
-import { useState } from 'react';
 import * as v from 'valibot';
 
 import type { components } from '@/api/types';
 import { userGet, userUpdate } from '@/api/user';
 import { Anchor } from '@/components/Anchor';
-import { CheckBox } from '@/components/Checkbox';
+import { Checkbox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
 import { CodeBlock } from '@/components/settings/Code';
 import {
@@ -23,10 +23,6 @@ import {
 	SectionWrapper,
 } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
-
-interface LoaderData {
-	user: components['schemas']['UserGet'];
-}
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'Tracker Settings | Medama' }];
@@ -45,7 +41,7 @@ const trackerSchema = v.strictObject({
 const getTrackingScript = (hostname: string) =>
 	`<script defer src="https://${hostname}/script.js"></script>`;
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const { data } = await userGet();
 
 	if (!data) {
@@ -54,9 +50,9 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json<LoaderData>({
+	return {
 		user: data,
-	});
+	};
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
@@ -99,49 +95,33 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		withBorder: true,
 		color: '#17cd8c',
 	});
-	return json({ message });
+
+	return { message };
 };
 
 export default function Index() {
-	const { user } = useLoaderData<LoaderData>();
+	const { user } = useLoaderData<typeof clientLoader>();
 	const submit = useSubmit();
-
-	if (!user) {
-		return;
-	}
-
-	const [clickEvents, setClickEvents] = useState(
-		Boolean(user.settings.script_type?.includes('click-events')),
-	);
-	const [outboundLinks, setOutboundLinks] = useState(
-		Boolean(user.settings.script_type?.includes('outbound-links')),
-	);
-	const [pageEvents, setPageEvents] = useState(
-		Boolean(user.settings.script_type?.includes('page-events')),
-	);
-
-	const code =
-		location.hostname === 'localhost'
-			? getTrackingScript('[your-analytics-server].com')
-			: getTrackingScript(location.hostname);
 
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: {
-			_setting: 'tracker',
+			_setting: 'tracker' as const,
 			script_type: {
 				default: true,
-				'click-events': clickEvents,
-				'outbound-links': outboundLinks,
-				'page-events': pageEvents,
+				'click-events': Boolean(
+					user?.settings.script_type?.includes('click-events'),
+				),
+				'page-events': Boolean(
+					user?.settings.script_type?.includes('page-events'),
+				),
+				'outbound-links': Boolean(
+					user?.settings.script_type?.includes('outbound-links'),
+				),
 			},
 		},
 		validate: valibotResolver(trackerSchema),
 		transformValues: (values) => {
-			// It's difficult to get Radix checkboxes to work with @mantine/form for now
-			values.script_type['click-events'] = clickEvents;
-			values.script_type['page-events'] = pageEvents;
-
 			// Convert object to comma-separated string
 			const scriptType = Object.entries(values.script_type)
 				.filter(([, value]) => value)
@@ -155,9 +135,18 @@ export default function Index() {
 		},
 	});
 
+	if (!user) {
+		return;
+	}
+
 	const handleSubmit = (values: TransformedValues<typeof form>) => {
 		submit(values, { method: 'POST' });
 	};
+
+	const code =
+		location.hostname === 'localhost'
+			? getTrackingScript('[your-analytics-server].com')
+			: getTrackingScript(location.hostname);
 
 	return (
 		<>
@@ -172,7 +161,7 @@ export default function Index() {
 					{...form.getInputProps('_setting')}
 				/>
 				<Flex style={{ gap: 16, marginTop: 8 }}>
-					<CheckBox
+					<Checkbox
 						label="Default"
 						value="default"
 						tooltip={
@@ -193,7 +182,7 @@ export default function Index() {
 						key={form.key('script_type.default')}
 						{...form.getInputProps('script_type.default', { type: 'checkbox' })}
 					/>
-					<CheckBox
+					<Checkbox
 						label="Click Events"
 						value="click-events"
 						tooltip={
@@ -216,14 +205,12 @@ export default function Index() {
 								</p>
 							</>
 						}
-						checked={clickEvents}
-						onCheckedChange={() => setClickEvents(!clickEvents)}
 						key={form.key('script_type.click-events')}
 						{...form.getInputProps('script_type.click-events', {
 							type: 'checkbox',
 						})}
 					/>
-					<CheckBox
+					<Checkbox
 						label="Outbound Links"
 						value="outbound-links"
 						tooltip={
@@ -245,14 +232,12 @@ export default function Index() {
 								</p>
 							</>
 						}
-						checked={outboundLinks}
-						onCheckedChange={() => setOutboundLinks(!outboundLinks)}
 						key={form.key('script_type.outbound-links')}
 						{...form.getInputProps('script_type.outbound-links', {
 							type: 'checkbox',
 						})}
 					/>
-					<CheckBox
+					<Checkbox
 						label="Page View Events"
 						value="page-events"
 						tooltip={
@@ -272,8 +257,6 @@ export default function Index() {
 								</p>
 							</>
 						}
-						checked={pageEvents}
-						onCheckedChange={() => setPageEvents(!pageEvents)}
 						key={form.key('script_type.page-events')}
 						{...form.getInputProps('script_type.page-events', {
 							type: 'checkbox',

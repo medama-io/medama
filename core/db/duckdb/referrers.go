@@ -10,7 +10,11 @@ import (
 )
 
 // GetWebsiteReferrersSummary returns a summary of the referrers for the given filters.
-func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, filter *db.Filters) ([]*model.StatsReferrerSummary, error) {
+func (c *Client) GetWebsiteReferrersSummary(
+	ctx context.Context,
+	isGroup bool,
+	filter *db.Filters,
+) ([]*model.StatsReferrerSummary, error) {
 	var referrers []*model.StatsReferrerSummary
 
 	referrerStmt := "referrer_host AS referrer"
@@ -52,10 +56,12 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, f
 
 	for rows.Next() {
 		var referrer model.StatsReferrerSummary
+
 		err := rows.StructScan(&referrer)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		referrers = append(referrers, &referrer)
 	}
 
@@ -63,7 +69,11 @@ func (c *Client) GetWebsiteReferrersSummary(ctx context.Context, isGroup bool, f
 }
 
 // GetWebsiteReferrers returns the referrers for the given hostname.
-func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *db.Filters) ([]*model.StatsReferrers, error) {
+func (c *Client) GetWebsiteReferrers(
+	ctx context.Context,
+	isGroup bool,
+	filter *db.Filters,
+) ([]*model.StatsReferrers, error) {
 	var referrers []*model.StatsReferrers
 
 	referrerStmt := "referrer_host AS referrer"
@@ -111,10 +121,12 @@ func (c *Client) GetWebsiteReferrers(ctx context.Context, isGroup bool, filter *
 
 	for rows.Next() {
 		var referrer model.StatsReferrers
+
 		err := rows.StructScan(&referrer)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		referrers = append(referrers, &referrer)
 	}
 

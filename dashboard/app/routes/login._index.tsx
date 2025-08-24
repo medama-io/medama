@@ -1,8 +1,10 @@
+/** biome-ignore-all lint/suspicious/noDocumentCookie: CookieStore API is not widely available */
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
+	data as json,
 	type MetaFunction,
-	json,
 	redirect,
 } from '@remix-run/react';
 
@@ -10,7 +12,7 @@ import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { Login } from '@/components/login/Login';
-import { LOGGED_IN_COOKIE, hasSession } from '@/utils/cookies';
+import { hasSession, LOGGED_IN_COOKIE } from '@/utils/cookies';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -19,7 +21,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	// If the user is in demo mode (hostname matches demo.medama.io or medama.fly.dev), automatically
 	// log them into the demo account.
 	const hostname = window.location.hostname;
@@ -85,9 +87,10 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 				withBorder: true,
 				color: 'red',
 			});
-			return json({
+
+			return {
 				message: 'Invalid username or password. Please try again.',
-			});
+			};
 		}
 
 		throw new Response('Failed to login.', {

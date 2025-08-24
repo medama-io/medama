@@ -59,7 +59,7 @@ func decodeDeleteUserParams(args [0]string, argsEscaped bool, r *http.Request) (
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -124,7 +124,7 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -357,7 +357,7 @@ func decodeGetUserParams(args [0]string, argsEscaped bool, r *http.Request) (par
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -413,7 +413,7 @@ func decodeGetUserUsageParams(args [0]string, argsEscaped bool, r *http.Request)
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -666,7 +666,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -1610,7 +1610,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -2554,7 +2554,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -3498,7 +3498,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -4499,7 +4499,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -5443,7 +5443,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -6387,7 +6387,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -7331,7 +7331,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -8264,7 +8264,7 @@ func decodeGetWebsiteIDPropertiesParams(args [1]string, argsEscaped bool, r *htt
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -9219,7 +9219,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -10163,7 +10163,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -11200,7 +11200,7 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -11968,7 +11968,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -12727,7 +12727,7 @@ func decodeGetWebsitesParams(args [0]string, argsEscaped bool, r *http.Request) 
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -12838,7 +12838,7 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -12955,7 +12955,7 @@ func decodePatchUserParams(args [0]string, argsEscaped bool, r *http.Request) (p
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -13020,7 +13020,7 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -13137,7 +13137,7 @@ func decodePostAuthLogoutParams(args [0]string, argsEscaped bool, r *http.Reques
 				return err
 			}
 		} else {
-			return validate.ErrFieldRequired
+			return err
 		}
 		return nil
 	}(); err != nil {

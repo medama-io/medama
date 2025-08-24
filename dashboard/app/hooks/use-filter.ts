@@ -1,10 +1,10 @@
+import { useSearchParams } from '@remix-run/react';
+import { useCallback } from 'react';
 import type {
 	Filter,
 	FilterKey,
 	FilterOperator,
 } from '@/components/stats/types';
-import { useSearchParams } from '@remix-run/react';
-import { useCallback } from 'react';
 
 const getKey = (filter: Filter, type: FilterOperator): FilterKey =>
 	`${filter}[${type}]`;

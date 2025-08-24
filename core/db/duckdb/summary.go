@@ -11,7 +11,10 @@ import (
 )
 
 // GetWebsiteSummary returns the summary stats for the given website.
-func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*model.StatsSummarySingle, error) {
+func (c *Client) GetWebsiteSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) (*model.StatsSummarySingle, error) {
 	var summary model.StatsSummarySingle
 
 	// Visitors are determined by the number of is_unique_user values that are true.
@@ -58,11 +61,17 @@ func (c *Client) GetWebsiteSummary(ctx context.Context, filter *db.Filters) (*mo
 }
 
 // GetWebsiteIntervals returns the stats for the given website by intervals.
-func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, interval api.GetWebsiteIDSummaryInterval) ([]*model.StatsIntervals, error) {
+func (c *Client) GetWebsiteIntervals(
+	ctx context.Context,
+	filter *db.Filters,
+	interval api.GetWebsiteIDSummaryInterval,
+) ([]*model.StatsIntervals, error) {
 	var resp []*model.StatsIntervals
+
 	isMonthly := false
 
 	var intervalQuery string
+
 	switch interval {
 	case api.GetWebsiteIDSummaryIntervalMinute:
 		intervalQuery = "1 MINUTE"
@@ -153,9 +162,10 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 		LeftJoin("stats USING (interval)").
 		OrderBy("interval ASC")
 
-	filterMap := map[string]interface{}{
+	filterMap := map[string]any{
 		"interval_query": intervalQuery,
 	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filter.Args(&filterMap))
 	if err != nil {
 		return nil, errors.Wrap(err, "db")
@@ -164,10 +174,12 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 
 	for rows.Next() {
 		var interval model.StatsIntervals
+
 		err := rows.StructScan(&interval)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		resp = append(resp, &interval)
 	}
 
@@ -175,7 +187,10 @@ func (c *Client) GetWebsiteIntervals(ctx context.Context, filter *db.Filters, in
 }
 
 // GetWebsiteSummaryLast24Hours returns the summary stats for the given website in the last 24 hours.
-func (c *Client) GetWebsiteSummaryLast24Hours(ctx context.Context, hostname string) (*model.StatsSummaryLast24Hours, error) {
+func (c *Client) GetWebsiteSummaryLast24Hours(
+	ctx context.Context,
+	hostname string,
+) (*model.StatsSummaryLast24Hours, error) {
 	var summary model.StatsSummaryLast24Hours
 	// Visitors are determined by the number of is_unique_user values that are true.
 	query := qb.New().
@@ -185,9 +200,10 @@ func (c *Client) GetWebsiteSummaryLast24Hours(ctx context.Context, hostname stri
 		From("views").
 		Where("hostname = :hostname AND date_created > now() - INTERVAL '1 DAY'")
 
-	filterMap := map[string]interface{}{
+	filterMap := map[string]any{
 		"hostname": hostname,
 	}
+
 	rows, err := c.NamedQueryContext(ctx, query.Build(), filterMap)
 	if err != nil {
 		return nil, errors.Wrap(err, "db: GetWebsiteSummaryLast24Hours")

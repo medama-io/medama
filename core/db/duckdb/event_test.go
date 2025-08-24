@@ -8,8 +8,10 @@ import (
 
 func TestAddEvents(t *testing.T) {
 	assert, _, ctx, client := SetupDatabase(t)
-	rows := client.DB.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
+	rows := client.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
+
 	var count int
+
 	err := rows.Scan(&count)
 	assert.NoError(err)
 	assert.Equal(0, count)
@@ -29,7 +31,7 @@ func TestAddEvents(t *testing.T) {
 	err = client.AddEvents(ctx, &[]model.EventHit{event1, event2})
 	assert.NoError(err)
 
-	rows = client.DB.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
+	rows = client.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
 	err = rows.Scan(&count)
 	assert.NoError(err)
 	assert.Equal(2, count)
@@ -37,8 +39,10 @@ func TestAddEvents(t *testing.T) {
 
 func TestAddPageView(t *testing.T) {
 	assert, _, ctx, client := SetupDatabase(t)
-	rows := client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+	rows := client.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+
 	var count int
+
 	err := rows.Scan(&count)
 	assert.NoError(err)
 	assert.Equal(0, count)
@@ -63,7 +67,7 @@ func TestAddPageView(t *testing.T) {
 	err = client.AddPageView(ctx, event, nil)
 	assert.NoError(err)
 
-	rows = client.DB.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
+	rows = client.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
 	err = rows.Scan(&count)
 	assert.NoError(err)
 	assert.Equal(1, count)

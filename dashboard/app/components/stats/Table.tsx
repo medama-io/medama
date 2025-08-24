@@ -19,10 +19,9 @@ import { useHover } from '@/hooks/use-hover';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
+import classes from './Table.module.css';
 import type { DataRow, Dataset, Filter } from './types';
 import { sortBy } from './utils';
-
-import classes from './Table.module.css';
 
 type DataRowClick = DataTableRowClickHandler<DataRow>;
 

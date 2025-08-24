@@ -3,10 +3,12 @@ package services
 import (
 	"context"
 	"math"
+	"strconv"
 	"strings"
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
 	"github.com/shirou/gopsutil/v4/cpu"
@@ -31,21 +33,42 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 		}
 
 		log.Error().Msg("failed to get user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 
 	// Convert user settings to API format.
 	scriptFeatures := []api.UserSettingsScriptTypeItem{}
-	for _, v := range strings.Split(user.Settings.ScriptType, ",") {
+	for v := range strings.SplitSeq(user.Settings.ScriptType, ",") {
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
+	}
+
+	blockedIPs, err := iputils.GetAddrList(user.Settings.BlockedIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse blocked IPs")
+	}
+
+	blockAbusiveIPs, err := strconv.ParseBool(user.Settings.BlockAbusiveIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block abusive IPs setting")
+	}
+
+	blockTorExitNodes, err := strconv.ParseBool(user.Settings.BlockTorExitNodes)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block Tor exit nodes setting")
 	}
 
 	return &api.UserGetHeaders{
 		Response: api.UserGet{
 			Username: user.Username,
 			Settings: api.UserSettings{
-				Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
-				ScriptType: scriptFeatures,
+				Language: api.NewOptUserSettingsLanguage(
+					api.UserSettingsLanguage(user.Settings.Language),
+				),
+				ScriptType:        scriptFeatures,
+				BlockAbusiveIPs:   api.NewOptBool(blockAbusiveIPs),
+				BlockTorExitNodes: api.NewOptBool(blockTorExitNodes),
+				BlockedIPs:        blockedIPs,
 			},
 			DateCreated: user.DateCreated,
 			DateUpdated: user.DateUpdated,
@@ -53,12 +76,16 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 	}, nil
 }
 
-func (h *Handler) GetUserUsage(ctx context.Context, _params api.GetUserUsageParams) (api.GetUserUsageRes, error) {
+func (h *Handler) GetUserUsage(
+	ctx context.Context,
+	_params api.GetUserUsageParams,
+) (api.GetUserUsageRes, error) {
 	// CPU statistics.
 	cpuCores, err := cpu.CountsWithContext(ctx, false)
 	if err != nil {
 		return nil, err
 	}
+
 	cpuThreads, err := cpu.CountsWithContext(ctx, true)
 	if err != nil {
 		return nil, err
@@ -73,6 +100,7 @@ func (h *Handler) GetUserUsage(ctx context.Context, _params api.GetUserUsagePara
 	for _, v := range cpuUsageArr {
 		cpuUsage += v
 	}
+
 	cpuUsage /= float64(len(cpuUsageArr))
 
 	// Memory statistics.
@@ -108,13 +136,17 @@ func (h *Handler) GetUserUsage(ctx context.Context, _params api.GetUserUsagePara
 
 func safeConvertUint64ToInt64(value uint64) int64 {
 	if value <= math.MaxInt64 {
-		//nolint:gosec // safe to convert.
 		return int64(value)
 	}
+
 	return math.MaxInt64 // or another sentinel value or error handling
 }
 
-func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api.PatchUserParams) (api.PatchUserRes, error) {
+func (h *Handler) PatchUser(
+	ctx context.Context,
+	req *api.UserPatch,
+	_params api.PatchUserParams,
+) (api.PatchUserRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("patch user rejected in demo mode")
@@ -137,6 +169,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 		}
 
 		log.Error().Msg("failed to get user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -144,6 +177,7 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 	if req.Username.IsSet() {
 		username := req.Username.Value
 		user.Username = username
+
 		err = h.db.UpdateUserUsername(ctx, user.ID, username)
 		if err != nil {
 			log := log.With().Str("username", username).Err(err).Logger()
@@ -159,12 +193,14 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 			}
 
 			log.Error().Msg("failed to update user email")
+
 			return nil, errors.Wrap(err, "services")
 		}
 	}
 
 	if req.Password.IsSet() {
 		password := req.Password.Value
+
 		pwdHash, err := h.auth.HashPassword(password)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to hash password")
@@ -181,8 +217,8 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 	// Settings
 	if req.Settings.IsSet() {
 		settings := user.Settings
-		if req.Settings.Value.Language.IsSet() {
-			settings.Language = string(req.Settings.Value.Language.Value)
+		if v, ok := req.Settings.Value.Language.Get(); ok {
+			settings.Language = string(v)
 		}
 
 		if req.Settings.Value.ScriptType != nil {
@@ -191,7 +227,20 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 			for _, v := range req.Settings.Value.ScriptType {
 				features = append(features, string(v))
 			}
+
 			settings.ScriptType = strings.Join(features, ",")
+		}
+
+		if v, ok := req.Settings.Value.BlockAbusiveIPs.Get(); ok {
+			settings.BlockAbusiveIPs = strconv.FormatBool(v)
+		}
+
+		if v, ok := req.Settings.Value.BlockTorExitNodes.Get(); ok {
+			settings.BlockTorExitNodes = strconv.FormatBool(v)
+		}
+
+		if req.Settings.Value.BlockedIPs != nil {
+			settings.BlockedIPs = iputils.GetAddrListString(req.Settings.Value.BlockedIPs)
 		}
 
 		err = h.db.UpdateSettings(ctx, user.ID, settings)
@@ -210,16 +259,36 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 
 	// Convert user settings to API format.
 	scriptFeatures := []api.UserSettingsScriptTypeItem{}
-	for _, v := range strings.Split(user.Settings.ScriptType, ",") {
+	for v := range strings.SplitSeq(user.Settings.ScriptType, ",") {
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
+	}
+
+	blockedIPs, err := iputils.GetAddrList(user.Settings.BlockedIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse blocked IPs")
+	}
+
+	blockAbusiveIPs, err := strconv.ParseBool(user.Settings.BlockAbusiveIPs)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block abusive IPs setting")
+	}
+
+	blockTorExitNodes, err := strconv.ParseBool(user.Settings.BlockTorExitNodes)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse block Tor exit nodes setting")
 	}
 
 	return &api.UserGetHeaders{
 		Response: api.UserGet{
 			Username: user.Username,
 			Settings: api.UserSettings{
-				Language:   api.NewOptUserSettingsLanguage(api.UserSettingsLanguage(user.Settings.Language)),
-				ScriptType: scriptFeatures,
+				Language: api.NewOptUserSettingsLanguage(
+					api.UserSettingsLanguage(user.Settings.Language),
+				),
+				ScriptType:        scriptFeatures,
+				BlockAbusiveIPs:   api.NewOptBool(blockAbusiveIPs),
+				BlockTorExitNodes: api.NewOptBool(blockTorExitNodes),
+				BlockedIPs:        blockedIPs,
 			},
 			DateCreated: user.DateCreated,
 			DateUpdated: user.DateUpdated,
@@ -227,7 +296,10 @@ func (h *Handler) PatchUser(ctx context.Context, req *api.UserPatch, _params api
 	}, nil
 }
 
-func (h *Handler) DeleteUser(ctx context.Context, _params api.DeleteUserParams) (api.DeleteUserRes, error) {
+func (h *Handler) DeleteUser(
+	ctx context.Context,
+	_params api.DeleteUserParams,
+) (api.DeleteUserRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("delete user rejected in demo mode")
@@ -250,6 +322,7 @@ func (h *Handler) DeleteUser(ctx context.Context, _params api.DeleteUserParams) 
 		}
 
 		log.Error().Msg("failed to get user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 
@@ -261,6 +334,7 @@ func (h *Handler) DeleteUser(ctx context.Context, _params api.DeleteUserParams) 
 			Int64("date_updated", user.DateUpdated).
 			Err(err).
 			Msg("failed to delete user")
+
 		return nil, errors.Wrap(err, "services")
 	}
 

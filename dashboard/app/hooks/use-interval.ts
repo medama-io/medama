@@ -38,14 +38,14 @@ const useInterval = (
 		}
 	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Explicit control.
 	useEffect(() => {
 		fnRef.current = fn;
 		active && start();
 		return stop;
 	}, [fn, active, interval]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Explicit control.
 	useEffect(() => {
 		if (autoInvoke) {
 			start();

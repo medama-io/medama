@@ -42,3 +42,8 @@ core/**/client
 
 # Output of pprof files
 **/*.prof
+
+# AI
+.zed
+.serena
+AGENT.md

@@ -1,0 +1,81 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:best-practices",
+		":dependencyDashboard",
+		":preserveSemverRanges"
+	],
+	"labels": [
+		"dependencies"
+	],
+	"timezone": "Asia/Tokyo",
+	"schedule": [
+		"* 10 * * 6"
+	],
+	"rebaseWhen": "never",
+	"postUpdateOptions": [
+		"gomodTidy",
+		"gomodUpdateImportPaths"
+	],
+	"packageRules": [
+		{
+			"matchManagers": [
+				"gomod"
+			],
+			"matchDepNames": [
+				"go"
+			],
+			"matchDepTypes": [
+				"golang"
+			],
+			"rangeStrategy": "bump"
+		},
+		{
+			"groupName": "all digests",
+			"groupSlug": "all-digests",
+			"matchUpdateTypes": [
+				"digest",
+				"pin"
+			]
+		},
+		{
+			"groupName": "all frontend non-major dependencies",
+			"groupSlug": "all-fe-minor-patch",
+			"matchDatasources": [
+				"npm"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			]
+		},
+		{
+			"groupName": "all non-major dependencies",
+			"groupSlug": "all-minor-patch",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchDatasources": [
+				"!npm"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			]
+		}
+	],
+	"customManagers": [
+		{
+			"customType": "jsonata",
+			"datasourceTemplate": "npm",
+			"depNameTemplate": "@biomejs/biome",
+			"fileFormat": "json",
+			"managerFilePatterns": [
+				"/(^|/)biome.jsonc?$/"
+			],
+			"matchStrings": [
+				"{\"currentValue\": $split($.\"$schema\",(\"/\"))[-2]}"
+			]
+		}
+	]
+}

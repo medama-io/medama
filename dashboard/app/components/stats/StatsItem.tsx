@@ -7,9 +7,8 @@ import { useFilter } from '@/hooks/use-filter';
 import { useHover } from '@/hooks/use-hover';
 
 import { formatCount, formatDuration } from './formatter';
-import type { Filter } from './types';
-
 import classes from './StatsItem.module.css';
+import type { Filter } from './types';
 
 interface StatsItemProps {
 	label: string;

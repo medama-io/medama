@@ -49,7 +49,6 @@ const HeaderNavLink = ({ label, to, onClick }: HeaderNavLinkProps) => {
 			to={to}
 			className={classes.link}
 			data-active={active}
-			role="link"
 			aria-current={active ? 'page' : undefined}
 			onClick={onClick}
 			tabIndex={0}
@@ -107,6 +106,7 @@ const MobileDrawer = ({
 		{...props}
 	>
 		<Drawer.Content>
+			{/* biome-ignore lint/a11y/useSemanticElements: Explicit */}
 			<Drawer.Body role="navigation" aria-label="Main navigation">
 				{isLoggedIn && (
 					<Stack gap={0}>
@@ -144,8 +144,8 @@ export const Header = () => {
 				</Flex>
 				{isLoggedIn && (
 					<Group
+						component="nav"
 						justify="center"
-						role="navigation"
 						aria-label="Main navigation"
 						visibleFrom="xs"
 					>

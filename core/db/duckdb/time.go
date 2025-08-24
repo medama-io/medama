@@ -14,7 +14,10 @@ const (
 )
 
 // GetWebsiteTimeSummary returns a summary of the time for the given hostname.
-func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsTimeSummary, error) {
+func (c *Client) GetWebsiteTimeSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsTimeSummary, error) {
 	var times []*model.StatsTimeSummary
 
 	// Array of time summaries
@@ -59,10 +62,12 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 
 	for rows.Next() {
 		var time model.StatsTimeSummary
+
 		err := rows.StructScan(&time)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		times = append(times, &time)
 	}
 
@@ -70,7 +75,10 @@ func (c *Client) GetWebsiteTimeSummary(ctx context.Context, filter *db.Filters) 
 }
 
 // GetWebsiteTime returns the time for the given hostname.
-func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*model.StatsTime, error) {
+func (c *Client) GetWebsiteTime(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsTime, error) {
 	var times []*model.StatsTime
 
 	// Array of time summaries
@@ -104,6 +112,7 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 		durationsCTE = durationsCTE.
 			LeftJoin(EventsJoinStmt)
 	}
+
 	query := qb.New().WithMaterialized(qb.NewCTE("durations", durationsCTE)).
 		Select(
 			"pathname",
@@ -125,10 +134,12 @@ func (c *Client) GetWebsiteTime(ctx context.Context, filter *db.Filters) ([]*mod
 
 	for rows.Next() {
 		var time model.StatsTime
+
 		err := rows.StructScan(&time)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		times = append(times, &time)
 	}
 

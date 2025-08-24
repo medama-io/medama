@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"sync"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
 	"go.jetify.com/typeid"
@@ -38,7 +38,7 @@ const (
 
 // readerPool is a pool of strings.Reader to reduce memory allocations.
 var readerPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		return new(strings.Reader)
 	},
 }
@@ -46,6 +46,7 @@ var readerPool = sync.Pool{
 func getReader(s string) *strings.Reader {
 	r := readerPool.Get().(*strings.Reader)
 	r.Reset(s)
+
 	return r
 }
 
@@ -53,7 +54,10 @@ func putReader(r *strings.Reader) {
 	readerPool.Put(r)
 }
 
-func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingParams) (api.GetEventPingRes, error) {
+func (h *Handler) GetEventPing(
+	_ctx context.Context,
+	params api.GetEventPingParams,
+) (api.GetEventPingRes, error) {
 	// Check if if-modified-since header is set
 	ifModified := params.IfModifiedSince.Value
 
@@ -80,6 +84,7 @@ func (h *Handler) GetEventPing(_ctx context.Context, params api.GetEventPingPara
 	if err != nil {
 		log := logger.Get()
 		log.Error().Err(err).Msg("failed to parse if-modified-since header")
+
 		return ErrBadRequest(err), nil
 	}
 
@@ -127,14 +132,36 @@ const (
 	IsBotThreshold = 2
 )
 
-func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params api.PostEventHitParams) (api.PostEventHitRes, error) {
+func (h *Handler) PostEventHit(
+	ctx context.Context,
+	req api.EventHit,
+	_params api.PostEventHitParams,
+) (api.PostEventHitRes, error) {
 	log := logger.Get()
+
+	reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
+	if !ok {
+		log.Error().Msg("hit: failed to get request key from context")
+		return ErrInternalServerError(model.ErrRequestContext), nil
+	}
+
+	clientIP, err := iputils.GetIP(reqBody)
+	if err != nil {
+		log.Debug().Err(err).Msg("hit: failed to extract client IP")
+		return ErrBadRequest(err), nil
+	}
+
+	// Check if IP is blocked
+	if h.RuntimeConfig.IPFilter.HasIP(clientIP) {
+		log.Debug().Msg("hit: client IP is blocked")
+		return &api.PostEventHitNoContent{}, nil
+	}
 
 	// If this counter exceeds 2, we want to return early as the event is likely
 	// a bot.
 	//
 	// Ensure all functions that increment this counter occur at the beginning
-	// rather than the end of the function.
+	// rather than the end of the function to bail out early.
 	unknownCounter := 0
 
 	switch req.Type {
@@ -154,13 +181,6 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			pathname = strings.TrimSuffix(pathname, "/")
 		}
 
-		// Get request from context
-		reqBody, ok := ctx.Value(model.RequestKeyBody).(*http.Request)
-		if !ok {
-			log.Error().Msg("hit: failed to get request key from context")
-			return ErrInternalServerError(model.ErrRequestContext), nil
-		}
-
 		// Parse user agent first to catch early if it is a bot.
 		rawUserAgent := reqBody.Header.Get("User-Agent")
 		ua := h.useragent.Parse(rawUserAgent)
@@ -171,34 +191,27 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			return &api.PostEventHitNoContent{}, nil
 		}
 
-		uaBrowser := ua.GetBrowser()
+		uaBrowser := ua.Browser()
 		if uaBrowser == "" {
 			uaBrowser = Unknown
 			unknownCounter++
 		}
 
-		uaOS := ua.GetOS()
+		uaOS := ua.OS()
 		if uaOS == "" {
 			uaOS = Unknown
 			unknownCounter++
 		}
 
-		uaDevice := Unknown
-		switch {
-		case ua.IsDesktop():
-			uaDevice = "Desktop"
-		case ua.IsMobile():
-			uaDevice = "Mobile"
-		case ua.IsTablet():
-			uaDevice = "Tablet"
-		case ua.IsTV():
-			uaDevice = "TV"
-		default:
+		uaDevice := ua.Device()
+		if uaDevice == "" {
+			uaDevice = Unknown
 			unknownCounter++
 		}
 
 		if uaBrowser == Unknown || uaOS == Unknown || uaDevice == Unknown {
 			log.Debug().Str("user_agent", rawUserAgent).Msg("hit: unknown user agent")
+
 			if unknownCounter >= IsBotThreshold {
 				return &api.PostEventHitNoContent{}, nil
 			}
@@ -233,6 +246,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 		// Get the first language from the list which is the most preferred and convert it to a language name
 		languageBase := Unknown
 		languageDialect := Unknown
+
 		if len(languages) > 0 {
 			// Narrow down the language to the base language (e.g. en-US -> en)
 			base, _ := languages[0].Base()
@@ -240,26 +254,17 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			languageDialect = display.English.Tags().Name(languages[0])
 		}
 
-		// Parse referrer URL and remove any query parameters or self-referencing
-		// hostnames.
-		referrerHost := ""
-		referrerGroup := ""
-		if req.EventLoad.R.Value != "" {
-			referrer, err := url.Parse(req.EventLoad.R.Value)
-			if err != nil {
-				log.Warn().Err(err).Msg("hit: failed to parse referrer URL")
-				return ErrBadRequest(err), nil
-			}
+		// Parse referrer URL and extract the host and group name.
+		referrer, err := h.referrer.Parse(req.EventLoad.R.Value, hostname)
+		if err != nil {
+			log.Warn().Err(err).Msg("hit: failed to parse referrer URL")
+			return ErrBadRequest(err), nil
+		}
 
-			referrerHost = referrer.Hostname()
-
-			// If the referrer hostname is the same as the current hostname, we
-			// want to remove it.
-			if referrerHost != hostname {
-				referrerGroup = h.referrer.Parse(referrerHost)
-			} else {
-				referrerHost = ""
-			}
+		// If the referrer is spam, we want to ignore it.
+		if referrer.IsSpam {
+			log.Debug().Str("referrer_host", referrer.Host).Msg("hit: referrer is spam")
+			return &api.PostEventHitNoContent{}, nil
 		}
 
 		// Get utm source, medium, and campaigm from URL query parameters.
@@ -276,15 +281,15 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			IsUniqueUser: req.EventLoad.P,
 			IsUniquePage: req.EventLoad.Q,
 			// Optional
-			ReferrerHost:    referrerHost,
-			ReferrerGroup:   referrerGroup,
+			ReferrerHost:    referrer.Host,
+			ReferrerGroup:   referrer.Group,
 			Country:         countryName,
 			LanguageBase:    languageBase,
 			LanguageDialect: languageDialect,
 
-			BrowserName: uaBrowser,
-			OS:          uaOS,
-			DeviceType:  uaDevice,
+			BrowserName: uaBrowser.String(),
+			OS:          uaOS.String(),
+			DeviceType:  uaDevice.String(),
 
 			UTMSource:   utmSource,
 			UTMMedium:   utmMedium,
@@ -313,6 +318,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 			if err != nil {
 				return nil, errors.Wrap(err, "typeid custom event")
 			}
+
 			batchID := batchIDType.String()
 
 			events := make([]model.EventHit, 0, len(req.EventLoad.D.Value))
@@ -328,7 +334,9 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 				case api.BoolEventLoadDItem:
 					value = strconv.FormatBool(item.Bool)
 				default:
-					return nil, errors.New("invalid custom event property type: " + string(item.Type))
+					return nil, errors.New(
+						"invalid custom event property type: " + string(item.Type),
+					)
 				}
 
 				events = append(events, model.EventHit{
@@ -400,6 +408,7 @@ func (h *Handler) PostEventHit(ctx context.Context, req api.EventHit, _params ap
 		if err != nil {
 			return nil, errors.Wrap(err, "typeid custom event")
 		}
+
 		batchID := batchIDType.String()
 
 		events := make([]model.EventHit, 0, len(req.EventCustom.D))

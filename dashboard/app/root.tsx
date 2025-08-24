@@ -1,5 +1,7 @@
 import '@fontsource-variable/inter/wght.css';
-// Comman
+// Common
+import '@mantine/core/styles/baseline.css';
+import '@mantine/core/styles/default-css-variables.css';
 import '@mantine/core/styles/global.css';
 import '@mantine/core/styles/ScrollArea.css';
 import '@mantine/core/styles/UnstyledButton.css';
@@ -55,13 +57,13 @@ import {
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import {
+	type ClientLoaderFunctionArgs,
+	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	isRouteErrorResponse,
-	json,
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react';
@@ -72,22 +74,18 @@ import {
 	ConflictError,
 	ForbiddenError,
 	InternalServerError,
-	NotFoundError,
 	isStatusError,
+	NotFoundError,
 } from '@/components/layout/Error';
 import theme from '@/styles/theme';
 import { EXPIRE_LOGGED_IN, hasSession } from '@/utils/cookies';
-
-interface LoaderData {
-	isLoggedIn: boolean;
-}
 
 interface DocumentProps {
 	children: React.ReactNode;
 }
 
-export const clientLoader = () => {
-	return json<LoaderData>({ isLoggedIn: Boolean(hasSession()) });
+export const clientLoader = (_: ClientLoaderFunctionArgs) => {
+	return { isLoggedIn: Boolean(hasSession()) };
 };
 
 export const Document = ({ children }: DocumentProps) => {
@@ -155,7 +153,7 @@ export const Document = ({ children }: DocumentProps) => {
 
 export default function App() {
 	// Trigger loader for session check.
-	useLoaderData<LoaderData>();
+	useLoaderData<typeof clientLoader>();
 	return (
 		<Document>
 			<Outlet />
@@ -260,6 +258,7 @@ export const ErrorBoundary = () => {
 		// related to a bad cookie cache from the API restarting. This is probably
 		// a bug in Remix SPA mode.
 		if (error.message.startsWith('You defined a loader for route "routes')) {
+			// biome-ignore lint/suspicious/noDocumentCookie: CookieStore API is not widely available
 			document.cookie = EXPIRE_LOGGED_IN;
 			window.location.reload();
 			return HydrateFallback();

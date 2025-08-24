@@ -9,7 +9,10 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
-func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMSourcesSummary, error) {
+func (c *Client) GetWebsiteUTMSourcesSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsUTMSourcesSummary, error) {
 	var utms []*model.StatsUTMSourcesSummary
 
 	// Array of utm sources
@@ -45,10 +48,12 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 
 	for rows.Next() {
 		var utm model.StatsUTMSourcesSummary
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -56,7 +61,10 @@ func (c *Client) GetWebsiteUTMSourcesSummary(ctx context.Context, filter *db.Fil
 }
 
 // GetWebsiteUTMSources returns the utm sources for the given hostname.
-func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMSources, error) {
+func (c *Client) GetWebsiteUTMSources(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsUTMSources, error) {
 	var utms []*model.StatsUTMSources
 
 	// Array of utm sources
@@ -98,17 +106,22 @@ func (c *Client) GetWebsiteUTMSources(ctx context.Context, filter *db.Filters) (
 
 	for rows.Next() {
 		var utm model.StatsUTMSources
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
 	return utms, nil
 }
 
-func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMMediumsSummary, error) {
+func (c *Client) GetWebsiteUTMMediumsSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsUTMMediumsSummary, error) {
 	var utms []*model.StatsUTMMediumsSummary
 
 	// Array of utm mediums
@@ -144,10 +157,12 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 
 	for rows.Next() {
 		var utm model.StatsUTMMediumsSummary
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -155,7 +170,10 @@ func (c *Client) GetWebsiteUTMMediumsSummary(ctx context.Context, filter *db.Fil
 }
 
 // GetWebsiteUTMMediums returns the utm mediums for the given hostname.
-func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMMediums, error) {
+func (c *Client) GetWebsiteUTMMediums(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsUTMMediums, error) {
 	var utms []*model.StatsUTMMediums
 
 	// Array of utm mediums
@@ -197,17 +215,22 @@ func (c *Client) GetWebsiteUTMMediums(ctx context.Context, filter *db.Filters) (
 
 	for rows.Next() {
 		var utm model.StatsUTMMediums
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
 	return utms, nil
 }
 
-func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMCampaignsSummary, error) {
+func (c *Client) GetWebsiteUTMCampaignsSummary(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsUTMCampaignsSummary, error) {
 	var utms []*model.StatsUTMCampaignsSummary
 
 	// Array of utm campaigns
@@ -243,10 +266,12 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 
 	for rows.Next() {
 		var utm model.StatsUTMCampaignsSummary
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 
@@ -254,7 +279,10 @@ func (c *Client) GetWebsiteUTMCampaignsSummary(ctx context.Context, filter *db.F
 }
 
 // GetWebsiteUTMCampaigns returns the utm campaigns for the given hostname.
-func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters) ([]*model.StatsUTMCampaigns, error) {
+func (c *Client) GetWebsiteUTMCampaigns(
+	ctx context.Context,
+	filter *db.Filters,
+) ([]*model.StatsUTMCampaigns, error) {
 	var utms []*model.StatsUTMCampaigns
 
 	// Array of utm campaigns
@@ -296,10 +324,12 @@ func (c *Client) GetWebsiteUTMCampaigns(ctx context.Context, filter *db.Filters)
 
 	for rows.Next() {
 		var utm model.StatsUTMCampaigns
+
 		err := rows.StructScan(&utm)
 		if err != nil {
 			return nil, errors.Wrap(err, "db")
 		}
+
 		utms = append(utms, &utm)
 	}
 

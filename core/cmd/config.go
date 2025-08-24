@@ -13,17 +13,21 @@ type ServerConfig struct {
 	Logger string `env:"LOGGER"`
 	Level  string `env:"LEVEL"`
 
+	// AutoSSL settings.
+	AutoSSLDomain string `env:"AUTO_SSL"`
+	AutoSSLEmail  string `env:"AUTO_SSL_EMAIL"`
+
 	// Cache settings.
 	CacheCleanupInterval time.Duration
 
 	// CORS Settings.
-	//nolint: tagalign // It removes the comma.
 	CORSAllowedOrigins []string `env:"CORS_ALLOWED_ORIGINS" envSeparator:","`
 
 	// Timeout settings.
-	TimeoutRead  time.Duration
-	TimeoutWrite time.Duration
-	TimeoutIdle  time.Duration
+	TimeoutReadHeader time.Duration
+	TimeoutRead       time.Duration
+	TimeoutWrite      time.Duration
+	TimeoutIdle       time.Duration
 
 	// Misc settings.
 	// Enable /debug/pprof endpoints.
@@ -53,9 +57,10 @@ const (
 	DefaultCacheCleanupInterval = 5 * time.Minute
 
 	// HTTP server constants.
-	DefaultTimeoutRead  = 5 * time.Second
-	DefaultTimeoutWrite = 10 * time.Second
-	DefaultTimeoutIdle  = 15 * time.Second
+	DefaultTimeoutReadHeader = 10 * time.Second
+	DefaultTimeoutRead       = 30 * time.Second
+	DefaultTimeoutWrite      = 2 * time.Minute
+	DefaultTimeoutIdle       = 5 * time.Minute
 
 	// Database constants.
 	DefaultSQLiteHost = "./me_meta.db"
@@ -75,6 +80,7 @@ func NewServerConfig(useEnv bool, version string, commit string) (*ServerConfig,
 	if version == "" {
 		version = "development"
 	}
+
 	if commit == "" {
 		commit = "development"
 	}
@@ -84,6 +90,7 @@ func NewServerConfig(useEnv bool, version string, commit string) (*ServerConfig,
 		CacheCleanupInterval: DefaultCacheCleanupInterval,
 		Logger:               DefaultLogger,
 		Level:                DefaultLoggerLevel,
+		TimeoutReadHeader:    DefaultTimeoutReadHeader,
 		TimeoutRead:          DefaultTimeoutRead,
 		TimeoutWrite:         DefaultTimeoutWrite,
 		TimeoutIdle:          DefaultTimeoutIdle,

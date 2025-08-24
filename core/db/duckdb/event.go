@@ -61,7 +61,11 @@ const addPageViewStmt = `--sql
 		)`
 
 // AddPageView adds a page view to the database.
-func (c *Client) AddPageView(ctx context.Context, event *model.PageViewHit, events *[]model.EventHit) error {
+func (c *Client) AddPageView(
+	ctx context.Context,
+	event *model.PageViewHit,
+	events *[]model.EventHit,
+) error {
 	return c.executeInTransaction(ctx, func(tx *sqlx.Tx) error {
 		stmt, err := c.GetPreparedStmt(ctx, addPageViewName, addPageViewStmt)
 		if err != nil {
@@ -118,7 +122,7 @@ func (c *Client) UpdatePageView(ctx context.Context, event *model.PageViewDurati
 
 // executeInTransaction executes the given function within a transaction.
 func (c *Client) executeInTransaction(ctx context.Context, fn func(*sqlx.Tx) error) error {
-	tx, err := c.DB.BeginTxx(ctx, nil)
+	tx, err := c.BeginTxx(ctx, nil)
 	if err != nil {
 		return errors.Wrap(err, "duckdb: begin transaction")
 	}
@@ -131,6 +135,7 @@ func (c *Client) executeInTransaction(ctx context.Context, fn func(*sqlx.Tx) err
 	if err := tx.Commit(); err != nil {
 		return errors.Wrap(err, "duckdb: commit transaction")
 	}
+
 	return nil
 }
 
@@ -152,7 +157,11 @@ const addEventStmt = `--sql
 		)`
 
 // addEventsWithinTransaction adds events within an existing transaction.
-func (c *Client) addEventsWithinTransaction(ctx context.Context, tx *sqlx.Tx, events *[]model.EventHit) error {
+func (c *Client) addEventsWithinTransaction(
+	ctx context.Context,
+	tx *sqlx.Tx,
+	events *[]model.EventHit,
+) error {
 	if events == nil || len(*events) == 0 {
 		return nil
 	}
@@ -165,7 +174,14 @@ func (c *Client) addEventsWithinTransaction(ctx context.Context, tx *sqlx.Tx, ev
 	txStmt := tx.StmtxContext(ctx, stmt)
 
 	for _, event := range *events {
-		_, err := txStmt.ExecContext(ctx, event.BID, event.BatchID, event.Group, event.Name, event.Value)
+		_, err := txStmt.ExecContext(
+			ctx,
+			event.BID,
+			event.BatchID,
+			event.Group,
+			event.Name,
+			event.Value,
+		)
 		if err != nil {
 			return errors.Wrap(err, "duckdb: execute statement")
 		}

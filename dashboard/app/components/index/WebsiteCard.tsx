@@ -17,7 +17,6 @@ export const WebsiteCard = ({ website }: WebsiteCardProps) => {
 			to={`/${website.hostname}`}
 			prefetch="intent"
 			className={classes.card}
-			role="link"
 			tabIndex={0}
 			aria-label={`Visit ${website.hostname}`}
 			aria-describedby={`${website.hostname}-visitors`}

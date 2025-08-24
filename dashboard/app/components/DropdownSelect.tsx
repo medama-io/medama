@@ -35,7 +35,7 @@ const DropdownSelect = ({
 	const navigate = useNavigate();
 
 	const option = searchParamKey
-		? searchParams.get(searchParamKey) ?? defaultValue
+		? (searchParams.get(searchParamKey) ?? defaultValue)
 		: defaultValue;
 
 	const [radio, setRadio] = useState(option);

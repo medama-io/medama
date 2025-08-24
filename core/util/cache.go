@@ -18,7 +18,7 @@ type Cache struct {
 
 // An item represents arbitrary data with expiration time.
 type item struct {
-	data    interface{}
+	data    any
 	expires int64
 }
 
@@ -44,7 +44,7 @@ func NewCache(_ctx context.Context, cleaningInterval time.Duration) *Cache {
 			case <-ticker.C:
 				now := time.Now().UnixNano()
 
-				cache.items.Range(func(key, value interface{}) bool {
+				cache.items.Range(func(key, value any) bool {
 					item, ok := value.(item)
 					if !ok {
 						return false
@@ -67,7 +67,7 @@ func NewCache(_ctx context.Context, cleaningInterval time.Duration) *Cache {
 }
 
 // Get gets the value for the given key.
-func (c *Cache) Get(_ context.Context, key interface{}) (interface{}, error) {
+func (c *Cache) Get(_ context.Context, key any) (any, error) {
 	obj, exists := c.items.Load(key)
 
 	if !exists {
@@ -87,7 +87,7 @@ func (c *Cache) Get(_ context.Context, key interface{}) (interface{}, error) {
 }
 
 // Has checks if the cache has the given key.
-func (c *Cache) Has(ctx context.Context, key interface{}) (bool, error) {
+func (c *Cache) Has(ctx context.Context, key any) (bool, error) {
 	_, err := c.Get(ctx, key)
 	if errors.Is(err, ErrCacheMiss) || errors.Is(err, ErrCacheExpire) {
 		return false, nil
@@ -102,7 +102,7 @@ func (c *Cache) Has(ctx context.Context, key interface{}) (bool, error) {
 
 // Set sets a value for the given key with an expiration duration.
 // If the duration is 0 or less, it will be stored forever.
-func (c *Cache) Set(key interface{}, value interface{}, duration time.Duration) {
+func (c *Cache) Set(key any, value any, duration time.Duration) {
 	c.items.Store(key, item{
 		data:    value,
 		expires: time.Now().Add(duration).UnixNano(),
@@ -111,10 +111,10 @@ func (c *Cache) Set(key interface{}, value interface{}, duration time.Duration) 
 
 // Range calls f sequentially for each key and value present in the cache.
 // If f returns false, range stops the iteration.
-func (c *Cache) Range(_ context.Context, f func(key, value interface{}) bool) {
+func (c *Cache) Range(_ context.Context, f func(key, value any) bool) {
 	now := time.Now().UnixNano()
 
-	fn := func(key, value interface{}) bool {
+	fn := func(key, value any) bool {
 		item, ok := value.(item)
 		if !ok {
 			return false
@@ -131,12 +131,13 @@ func (c *Cache) Range(_ context.Context, f func(key, value interface{}) bool) {
 }
 
 // Delete deletes the key and its value from the cache.
-func (c *Cache) Delete(key interface{}) {
+func (c *Cache) Delete(key any) {
 	c.items.Delete(key)
 }
 
 // Close closes the cache and frees up resources.
 func (c *Cache) Close() {
 	c.close <- struct{}{}
+
 	c.items = sync.Map{}
 }

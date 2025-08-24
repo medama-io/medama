@@ -24,14 +24,14 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 		:date_updated
 	)`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"user_id":      website.UserID,
 		"hostname":     website.Hostname,
 		"date_created": website.DateCreated,
 		"date_updated": website.DateUpdated,
 	}
 
-	_, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	_, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		switch {
 		case errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY):
@@ -57,6 +57,7 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 
 func (c *Client) ListWebsites(ctx context.Context, userID string) ([]*model.Website, error) {
 	var websites []*model.Website
+
 	log := logger.Get()
 
 	query := `--sql
@@ -86,10 +87,12 @@ func (c *Client) ListAllHostnames(ctx context.Context) ([]string, error) {
 	SELECT hostname FROM websites`
 
 	var hostnames []string
+
 	err := c.SelectContext(ctx, &hostnames, query)
 	if err != nil {
 		log := logger.Get()
 		log.Error().Err(err).Msg("failed to list all hostnames")
+
 		return nil, errors.Wrap(err, "db")
 	}
 
@@ -102,12 +105,12 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 	exec := `--sql
 	UPDATE websites SET hostname = :hostname, date_updated = :date_updated WHERE hostname = :hostname`
 
-	paramMap := map[string]interface{}{
+	paramMap := map[string]any{
 		"hostname":     website.Hostname,
 		"date_updated": website.DateUpdated,
 	}
 
-	res, err := c.DB.NamedExecContext(ctx, exec, paramMap)
+	res, err := c.NamedExecContext(ctx, exec, paramMap)
 	if err != nil {
 		if errors.Is(err, sqlite3.CONSTRAINT_PRIMARYKEY) {
 			return model.ErrWebsiteExists
@@ -143,6 +146,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 func (c *Client) GetWebsite(ctx context.Context, hostname string) (*model.Website, error) {
 	var website model.Website
+
 	log := logger.Get()
 
 	query := `--sql
@@ -168,7 +172,7 @@ func (c *Client) DeleteWebsite(ctx context.Context, hostname string) error {
 	exec := `--sql
 	DELETE FROM websites WHERE hostname = ?`
 
-	res, err := c.DB.ExecContext(ctx, exec, hostname)
+	res, err := c.ExecContext(ctx, exec, hostname)
 	if err != nil {
 		log.Error().
 			Str("hostname", hostname).

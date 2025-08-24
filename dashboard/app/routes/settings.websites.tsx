@@ -2,8 +2,9 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
+	type ClientLoaderFunctionArgs,
+	data as json,
 	type MetaFunction,
-	json,
 	useLoaderData,
 	useSearchParams,
 	useSubmit,
@@ -15,8 +16,8 @@ import * as v from 'valibot';
 import { userGet } from '@/api/user';
 import { websiteDelete, websiteList } from '@/api/websites';
 import { TextInput } from '@/components/Input';
-import { ModalChild, ModalWrapper } from '@/components/Modal';
 import { Group } from '@/components/layout/Flex';
+import { ModalChild, ModalWrapper } from '@/components/Modal';
 import {
 	SectionDanger,
 	SectionTitle,
@@ -31,7 +32,7 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Website Settings | Medama' }];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const [{ data: user }, { data: websites }] = await Promise.all([
 		userGet(),
 		websiteList(),
@@ -43,10 +44,10 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json({
+	return {
 		user,
 		websites: websites.map((website) => website.hostname),
-	});
+	};
 };
 
 export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
@@ -83,7 +84,8 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 		withBorder: true,
 		color: '#17cd8c',
 	});
-	return json({ message });
+
+	return { message };
 };
 
 export default function Index() {

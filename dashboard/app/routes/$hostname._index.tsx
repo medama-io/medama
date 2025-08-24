@@ -2,11 +2,11 @@ import { SimpleGrid } from '@mantine/core';
 import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
-	json,
 	useLoaderData,
 } from '@remix-run/react';
 
 import { TabProperties, TabSelect } from '@/components/stats/Tabs';
+import TabClasses from '@/components/stats/Tabs.module.css';
 import {
 	type CustomPropertyValue,
 	DATASETS,
@@ -15,8 +15,6 @@ import {
 	type TabGroups,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';
-
-import TabClasses from '@/components/stats/Tabs.module.css';
 
 const mapItems = <T extends DataRow>(
 	data: T[] | undefined,
@@ -50,7 +48,8 @@ export const clientLoader = async ({
 		isSummary: true,
 		limit: 5, // Summaries should only show 5 items max
 	});
-	return json(stats);
+
+	return stats;
 };
 
 export default function Index() {

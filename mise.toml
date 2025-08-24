@@ -1,0 +1,12 @@
+[tools]
+go = "latest"
+bun = "latest"
+gofumpt = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+golangci-lint = "2.4.0"
+task = "latest"
+flyctl = "latest"
+
+[env]
+CGO_ENABLED = "1"
+VERSION = "0.5.3"

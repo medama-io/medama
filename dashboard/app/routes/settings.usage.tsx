@@ -1,7 +1,8 @@
 import { SimpleGrid } from '@mantine/core';
 import {
+	type ClientLoaderFunctionArgs,
+	data as json,
 	type MetaFunction,
-	json,
 	useLoaderData,
 	useRevalidator,
 } from '@remix-run/react';
@@ -19,7 +20,7 @@ export const meta: MetaFunction = () => {
 	return [{ title: 'Usage Settings | Medama' }];
 };
 
-export const clientLoader = async () => {
+export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	const { data } = await userUsageGet();
 
 	if (!data) {
@@ -28,9 +29,9 @@ export const clientLoader = async () => {
 		});
 	}
 
-	return json({
+	return {
 		usage: data,
-	});
+	};
 };
 
 export default function Index() {

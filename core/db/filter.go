@@ -92,8 +92,10 @@ type Filter struct {
 
 // NewFilter creates a new filter.
 func NewFilter(field FilterField, param api.OptFilterString) *Filter {
-	var value string
-	var operation FilterOperation
+	var (
+		value     string
+		operation FilterOperation
+	)
 
 	if param.IsSet() {
 		value, operation = FilterStringToValues(param.Value)
@@ -130,9 +132,18 @@ func (f Filter) String() string {
 	case FilterEquals, FilterNotEquals:
 		// e.g. "lower(hostname) = :hostname"
 		return string(f.Field) + " " + filterOperationMap[f.Operation] + " :" + string(f.Field)
-	case FilterContains, FilterNotContains, FilterStartsWith, FilterNotStartsWith, FilterEndsWith, FilterNotEndsWith:
+	case FilterContains,
+		FilterNotContains,
+		FilterStartsWith,
+		FilterNotStartsWith,
+		FilterEndsWith,
+		FilterNotEndsWith:
 		// e.g. "contains(hostname, :hostname)"
-		return filterOperationMap[f.Operation] + "(LOWER(" + string(f.Field) + "), LOWER(:" + string(f.Field) + "))"
+		return filterOperationMap[f.Operation] + "(LOWER(" + string(
+			f.Field,
+		) + "), LOWER(:" + string(
+			f.Field,
+		) + "))"
 	default:
 		return ""
 	}
@@ -170,7 +181,7 @@ type Filters struct {
 }
 
 // CreateFilters uses reflection to create a filter object from the code-generated API parameters.
-func CreateFilters(params interface{}, hostname string) *Filters {
+func CreateFilters(params any, hostname string) *Filters {
 	filters := &Filters{
 		Hostname: hostname,
 	}
@@ -185,24 +196,42 @@ func CreateFilters(params interface{}, hostname string) *Filters {
 		switch fieldName {
 		case "Path":
 			if field.IsValid() && !field.IsZero() {
-				filters.Pathname = NewFilter(FilterPathname, field.Interface().(api.OptFilterString))
+				filters.Pathname = NewFilter(
+					FilterPathname,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "Referrer":
 			if field.IsValid() && !field.IsZero() {
-				filters.Referrer = NewFilter(FilterReferrer, field.Interface().(api.OptFilterString))
-				filters.ReferrerGroup = NewFilter(FilterReferrerGroup, field.Interface().(api.OptFilterString))
+				filters.Referrer = NewFilter(
+					FilterReferrer,
+					field.Interface().(api.OptFilterString),
+				)
+				filters.ReferrerGroup = NewFilter(
+					FilterReferrerGroup,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "UtmSource":
 			if field.IsValid() && !field.IsZero() {
-				filters.UTMSource = NewFilter(FilterUTMSource, field.Interface().(api.OptFilterString))
+				filters.UTMSource = NewFilter(
+					FilterUTMSource,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "UtmMedium":
 			if field.IsValid() && !field.IsZero() {
-				filters.UTMMedium = NewFilter(FilterUTMMedium, field.Interface().(api.OptFilterString))
+				filters.UTMMedium = NewFilter(
+					FilterUTMMedium,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "UtmCampaign":
 			if field.IsValid() && !field.IsZero() {
-				filters.UTMCampaign = NewFilter(FilterUTMCampaign, field.Interface().(api.OptFilterString))
+				filters.UTMCampaign = NewFilter(
+					FilterUTMCampaign,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "Browser":
 			if field.IsValid() && !field.IsZero() {
@@ -222,17 +251,29 @@ func CreateFilters(params interface{}, hostname string) *Filters {
 			}
 		case "Language":
 			if field.IsValid() && !field.IsZero() {
-				filters.Language = NewFilter(FilterLanguage, field.Interface().(api.OptFilterString))
-				filters.LanguageDialect = NewFilter(FilterLanguageDialect, field.Interface().(api.OptFilterString))
+				filters.Language = NewFilter(
+					FilterLanguage,
+					field.Interface().(api.OptFilterString),
+				)
+				filters.LanguageDialect = NewFilter(
+					FilterLanguageDialect,
+					field.Interface().(api.OptFilterString),
+				)
 			}
 		case "PropName":
 			if field.IsValid() && !field.IsZero() {
-				filters.PropertyName = NewFilter(FilterPropertyName, field.Interface().(api.OptFilterString))
+				filters.PropertyName = NewFilter(
+					FilterPropertyName,
+					field.Interface().(api.OptFilterString),
+				)
 				filters.IsCustomEvent = true
 			}
 		case "PropValue":
 			if field.IsValid() && !field.IsZero() {
-				filters.PropertyValue = NewFilter(FilterPropertyValue, field.Interface().(api.OptFilterString))
+				filters.PropertyValue = NewFilter(
+					FilterPropertyValue,
+					field.Interface().(api.OptFilterString),
+				)
 				filters.IsCustomEvent = true
 			}
 		case "Start":
@@ -292,6 +333,7 @@ func (f Filters) WhereString() string {
 	} else {
 		addCondition(&query, f.Referrer)
 	}
+
 	addCondition(&query, f.UTMSource)
 	addCondition(&query, f.UTMMedium)
 	addCondition(&query, f.UTMCampaign)
@@ -313,6 +355,7 @@ func (f Filters) WhereString() string {
 			query.WriteString(" AND views.date_created >= CAST(:start_period AS TIMESTAMPTZ)")
 		}
 	}
+
 	if f.PeriodEnd != "" {
 		if f.SortByEventDates {
 			query.WriteString(" AND events.date_created <= CAST(:end_period AS TIMESTAMPTZ)")
@@ -342,11 +385,12 @@ func (f Filters) PaginationString() string {
 // of the query to prevent SQL injection.
 //
 // The startValues are the values that are passed in addition to the filters.
-func (f Filters) Args(customMap *map[string]interface{}) map[string]interface{} {
+func (f Filters) Args(customMap *map[string]any) map[string]any {
 	// Initialize the args with the start map
 	if customMap == nil {
-		customMap = &map[string]interface{}{}
+		customMap = &map[string]any{}
 	}
+
 	args := *customMap
 
 	args[string(FilterHostname)] = f.Hostname

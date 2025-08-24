@@ -21,7 +21,6 @@ export const useDidUpdate = (
 		[],
 	);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: No need to add fn to dependencies
 	useEffect(() => {
 		if (mounted.current) {
 			return fn();
@@ -29,5 +28,6 @@ export const useDidUpdate = (
 
 		mounted.current = true;
 		return undefined;
+		// biome-ignore lint/correctness/useExhaustiveDependencies: No need to add fn to dependencies
 	}, dependencies);
 };
