@@ -18,7 +18,7 @@ require (
 	github.com/medama-io/go-referrer-parser v0.0.0-20250615084737-7f9d2bca7402
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
 	github.com/medama-io/go-useragent v1.2.1
-	github.com/ncruces/go-sqlite3 v0.27.1
+	github.com/ncruces/go-sqlite3 v0.28.0
 	github.com/ogen-go/ogen v1.14.0
 	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.34.0
