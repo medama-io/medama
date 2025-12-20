@@ -68,7 +68,7 @@
 		"typescript": "^5.8.3",
 		"vite": "^7.1.2",
 		"vite-plugin-commonjs": "^0.10.4",
-		"vite-tsconfig-paths": "^5.0.1"
+		"vite-tsconfig-paths": "^6.0.0"
 	},
 	"overrides": {
 		"react": "18.3.0-canary-8039e6d0b-20231026",
