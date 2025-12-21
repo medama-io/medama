@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/go-faster/errors"
-
 	"github.com/ogen-go/ogen/conv"
 	"github.com/ogen-go/ogen/middleware"
 	"github.com/ogen-go/ogen/ogenerrors"
@@ -170,13 +169,17 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -201,9 +204,9 @@ func decodeDeleteWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Requ
 // GetEventPingParams is parameters of get-event-ping operation.
 type GetEventPingParams struct {
 	// If this exists, then user exists in cache and is not a unique user.
-	IfModifiedSince OptString
+	IfModifiedSince OptString `json:",omitempty,omitzero"`
 	// Optional query parameter that is the current host and pathname of the page.
-	U OptString
+	U OptString `json:",omitempty,omitzero"`
 }
 
 func unpackGetEventPingParams(packed middleware.Parameters) (params GetEventPingParams) {
@@ -433,39 +436,39 @@ type GetWebsiteIDBrowsersParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDBrowsersParams(packed middleware.Parameters) (params GetWebsiteIDBrowsersParams) {
@@ -712,13 +715,17 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1281,6 +1288,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -1346,6 +1354,7 @@ func decodeGetWebsiteIDBrowsersParams(args [1]string, argsEscaped bool, r *http.
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -1377,39 +1386,39 @@ type GetWebsiteIDCampaignsParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDCampaignsParams(packed middleware.Parameters) (params GetWebsiteIDCampaignsParams) {
@@ -1656,13 +1665,17 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -2225,6 +2238,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -2290,6 +2304,7 @@ func decodeGetWebsiteIDCampaignsParams(args [1]string, argsEscaped bool, r *http
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -2321,39 +2336,39 @@ type GetWebsiteIDCountryParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDCountryParams(packed middleware.Parameters) (params GetWebsiteIDCountryParams) {
@@ -2600,13 +2615,17 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -3169,6 +3188,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -3234,6 +3254,7 @@ func decodeGetWebsiteIDCountryParams(args [1]string, argsEscaped bool, r *http.R
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -3265,39 +3286,39 @@ type GetWebsiteIDDeviceParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDDeviceParams(packed middleware.Parameters) (params GetWebsiteIDDeviceParams) {
@@ -3544,13 +3565,17 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -4113,6 +4138,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -4178,6 +4204,7 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -4205,45 +4232,45 @@ func decodeGetWebsiteIDDeviceParams(args [1]string, argsEscaped bool, r *http.Re
 // GetWebsiteIDLanguageParams is parameters of get-website-id-language operation.
 type GetWebsiteIDLanguageParams struct {
 	// Whether to return the language name or the language dialect/locale.
-	Locale OptBool
+	Locale OptBool `json:",omitempty,omitzero"`
 	// Session token for authentication.
 	MeSess string
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDLanguageParams(packed middleware.Parameters) (params GetWebsiteIDLanguageParams) {
@@ -4545,13 +4572,17 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -5114,6 +5145,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -5179,6 +5211,7 @@ func decodeGetWebsiteIDLanguageParams(args [1]string, argsEscaped bool, r *http.
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -5210,39 +5243,39 @@ type GetWebsiteIDMediumsParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDMediumsParams(packed middleware.Parameters) (params GetWebsiteIDMediumsParams) {
@@ -5489,13 +5522,17 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -6058,6 +6095,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -6123,6 +6161,7 @@ func decodeGetWebsiteIDMediumsParams(args [1]string, argsEscaped bool, r *http.R
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -6154,39 +6193,39 @@ type GetWebsiteIDOsParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDOsParams(packed middleware.Parameters) (params GetWebsiteIDOsParams) {
@@ -6433,13 +6472,17 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -7002,6 +7045,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -7067,6 +7111,7 @@ func decodeGetWebsiteIDOsParams(args [1]string, argsEscaped bool, r *http.Reques
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -7098,39 +7143,39 @@ type GetWebsiteIDPagesParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDPagesParams(packed middleware.Parameters) (params GetWebsiteIDPagesParams) {
@@ -7377,13 +7422,17 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -7946,6 +7995,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -8011,6 +8061,7 @@ func decodeGetWebsiteIDPagesParams(args [1]string, argsEscaped bool, r *http.Req
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -8042,37 +8093,37 @@ type GetWebsiteIDPropertiesParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDPropertiesParams(packed middleware.Parameters) (params GetWebsiteIDPropertiesParams) {
@@ -8310,13 +8361,17 @@ func decodeGetWebsiteIDPropertiesParams(args [1]string, argsEscaped bool, r *htt
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -8833,6 +8888,7 @@ func decodeGetWebsiteIDPropertiesParams(args [1]string, argsEscaped bool, r *htt
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -8898,6 +8954,7 @@ func decodeGetWebsiteIDPropertiesParams(args [1]string, argsEscaped bool, r *htt
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -8925,45 +8982,45 @@ func decodeGetWebsiteIDPropertiesParams(args [1]string, argsEscaped bool, r *htt
 // GetWebsiteIDReferrersParams is parameters of get-website-id-referrers operation.
 type GetWebsiteIDReferrersParams struct {
 	// Whether to return the grouped aggregation name or only URLs.
-	Grouped OptBool
+	Grouped OptBool `json:",omitempty,omitzero"`
 	// Session token for authentication.
 	MeSess string
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDReferrersParams(packed middleware.Parameters) (params GetWebsiteIDReferrersParams) {
@@ -9265,13 +9322,17 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -9834,6 +9895,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -9899,6 +9961,7 @@ func decodeGetWebsiteIDReferrersParams(args [1]string, argsEscaped bool, r *http
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -9930,39 +9993,39 @@ type GetWebsiteIDSourcesParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDSourcesParams(packed middleware.Parameters) (params GetWebsiteIDSourcesParams) {
@@ -10209,13 +10272,17 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -10778,6 +10845,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -10843,6 +10911,7 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -10871,42 +10940,42 @@ func decodeGetWebsiteIDSourcesParams(args [1]string, argsEscaped bool, r *http.R
 type GetWebsiteIDSummaryParams struct {
 	// Retrieve the data from the previous period as well. This is useful when comparing data from the
 	// previous period to the current period. Requires the start and end period parameters to be set.
-	Previous OptBool
+	Previous OptBool `json:",omitempty,omitzero"`
 	// The interval to group the data by. This can be set to minute, hour, day, week or month. This will
 	// return an interval property if set.
-	Interval OptGetWebsiteIDSummaryInterval
+	Interval OptGetWebsiteIDSummaryInterval `json:",omitempty,omitzero"`
 	// Session token for authentication.
 	MeSess string
 	// Hostname for the website.
 	Hostname string
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDSummaryParams(packed middleware.Parameters) (params GetWebsiteIDSummaryParams) {
@@ -11246,13 +11315,17 @@ func decodeGetWebsiteIDSummaryParams(args [1]string, argsEscaped bool, r *http.R
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -11735,39 +11808,39 @@ type GetWebsiteIDTimeParams struct {
 	// Hostname for the website.
 	Hostname string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 	// Period start date using date-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	Start OptDateTime
+	Start OptDateTime `json:",omitempty,omitzero"`
 	// Period end date using fdate-time notation in RFC3339 format, for example, (2017-07-21T17:32:28Z).
-	End OptDateTime
+	End OptDateTime `json:",omitempty,omitzero"`
 	// Path of the page.
-	Path OptFilterString
+	Path OptFilterString `json:",omitempty,omitzero"`
 	// Referrer URL of the page hit.
-	Referrer OptFilterString
+	Referrer OptFilterString `json:",omitempty,omitzero"`
 	// UTM source of the page hit.
-	UtmSource OptFilterString
+	UtmSource OptFilterString `json:",omitempty,omitzero"`
 	// UTM medium of the page hit.
-	UtmMedium OptFilterString
+	UtmMedium OptFilterString `json:",omitempty,omitzero"`
 	// UTM campaign of the page hit.
-	UtmCampaign OptFilterString
+	UtmCampaign OptFilterString `json:",omitempty,omitzero"`
 	// Browser name.
-	Browser OptFilterString
+	Browser OptFilterString `json:",omitempty,omitzero"`
 	// Operating system name.
-	Os OptFilterString
+	Os OptFilterString `json:",omitempty,omitzero"`
 	// Device type.
-	Device OptFilterString
+	Device OptFilterString `json:",omitempty,omitzero"`
 	// Country name.
-	Country OptFilterString
+	Country OptFilterString `json:",omitempty,omitzero"`
 	// Language code.
-	Language OptFilterString
+	Language OptFilterString `json:",omitempty,omitzero"`
 	// Name of the property.
-	PropName OptFilterString
+	PropName OptFilterString `json:",omitempty,omitzero"`
 	// Value of the property.
-	PropValue OptFilterString
+	PropValue OptFilterString `json:",omitempty,omitzero"`
 	// Limit the number of results.
-	Limit OptInt
+	Limit OptInt `json:",omitempty,omitzero"`
 	// Offset the results paired with the limit parameter.
-	Offset OptInt
+	Offset OptInt `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsiteIDTimeParams(packed middleware.Parameters) (params GetWebsiteIDTimeParams) {
@@ -12014,13 +12087,17 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -12583,6 +12660,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -12648,6 +12726,7 @@ func decodeGetWebsiteIDTimeParams(args [1]string, argsEscaped bool, r *http.Requ
 							MaxExclusive:  false,
 							MultipleOfSet: false,
 							MultipleOf:    0,
+							Pattern:       nil,
 						}).Validate(int64(value)); err != nil {
 							return errors.Wrap(err, "int")
 						}
@@ -12677,7 +12756,7 @@ type GetWebsitesParams struct {
 	// Session token for authentication.
 	MeSess string
 	// Return a summary of the stats.
-	Summary OptBool
+	Summary OptBool `json:",omitempty,omitzero"`
 }
 
 func unpackGetWebsitesParams(packed middleware.Parameters) (params GetWebsitesParams) {
@@ -12884,13 +12963,17 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -13066,13 +13149,17 @@ func decodePatchWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Reque
 			}
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(params.Hostname)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -13153,9 +13240,9 @@ func decodePostAuthLogoutParams(args [0]string, argsEscaped bool, r *http.Reques
 // PostEventHitParams is parameters of post-event-hit operation.
 type PostEventHitParams struct {
 	// Used to infer user browser, OS and device.
-	UserAgent OptString
+	UserAgent OptString `json:",omitempty,omitzero"`
 	// Used to infer user language.
-	AcceptLanguage OptString
+	AcceptLanguage OptString `json:",omitempty,omitzero"`
 }
 
 func unpackPostEventHitParams(packed middleware.Parameters) (params PostEventHitParams) {

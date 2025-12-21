@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/marcboeker/go-duckdb/v2"
+	_ "github.com/duckdb/duckdb-go/v2"
 	"github.com/medama-io/medama/db/duckdb"
 	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/migrations"

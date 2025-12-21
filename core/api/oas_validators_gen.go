@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/go-faster/errors"
-
 	"github.com/ogen-go/ogen/validate"
 )
 
@@ -18,13 +17,17 @@ func (s *AuthLogin) Validate() error {
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
-			MinLength:    3,
-			MinLengthSet: true,
-			MaxLength:    48,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     false,
-			Regex:        nil,
+			MinLength:     3,
+			MinLengthSet:  true,
+			MaxLength:     48,
+			MaxLengthSet:  true,
+			Email:         false,
+			Hostname:      false,
+			Regex:         nil,
+			MinNumeric:    0,
+			MinNumericSet: false,
+			MaxNumeric:    0,
+			MaxNumericSet: false,
 		}).Validate(string(s.Username)); err != nil {
 			return errors.Wrap(err, "string")
 		}
@@ -37,13 +40,17 @@ func (s *AuthLogin) Validate() error {
 	}
 	if err := func() error {
 		if err := (validate.String{
-			MinLength:    5,
-			MinLengthSet: true,
-			MaxLength:    128,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     false,
-			Regex:        nil,
+			MinLength:     5,
+			MinLengthSet:  true,
+			MaxLength:     128,
+			MaxLengthSet:  true,
+			Email:         false,
+			Hostname:      false,
+			Regex:         nil,
+			MinNumeric:    0,
+			MinNumericSet: false,
+			MaxNumeric:    0,
+			MaxNumericSet: false,
 		}).Validate(string(s.Password)); err != nil {
 			return errors.Wrap(err, "string")
 		}
@@ -92,6 +99,7 @@ func (s *EventUnload) Validate() error {
 			MaxExclusive:  false,
 			MultipleOfSet: false,
 			MultipleOf:    0,
+			Pattern:       nil,
 		}).Validate(int64(s.M)); err != nil {
 			return errors.Wrap(err, "int")
 		}
@@ -1388,13 +1396,17 @@ func (s *UserGet) Validate() error {
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
-			MinLength:    3,
-			MinLengthSet: true,
-			MaxLength:    120,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     false,
-			Regex:        nil,
+			MinLength:     3,
+			MinLengthSet:  true,
+			MaxLength:     120,
+			MaxLengthSet:  true,
+			Email:         false,
+			Hostname:      false,
+			Regex:         nil,
+			MinNumeric:    0,
+			MinNumericSet: false,
+			MaxNumeric:    0,
+			MaxNumericSet: false,
 		}).Validate(string(s.Username)); err != nil {
 			return errors.Wrap(err, "string")
 		}
@@ -1455,13 +1467,17 @@ func (s *UserPatch) Validate() error {
 		if value, ok := s.Username.Get(); ok {
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    3,
-					MinLengthSet: true,
-					MaxLength:    120,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     false,
-					Regex:        nil,
+					MinLength:     3,
+					MinLengthSet:  true,
+					MaxLength:     120,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      false,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1481,13 +1497,17 @@ func (s *UserPatch) Validate() error {
 		if value, ok := s.Password.Get(); ok {
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    5,
-					MinLengthSet: true,
-					MaxLength:    128,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     false,
-					Regex:        nil,
+					MinLength:     5,
+					MinLengthSet:  true,
+					MaxLength:     128,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      false,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1717,13 +1737,17 @@ func (s *WebsiteCreate) Validate() error {
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
-			MinLength:    1,
-			MinLengthSet: true,
-			MaxLength:    253,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     true,
-			Regex:        nil,
+			MinLength:     1,
+			MinLengthSet:  true,
+			MaxLength:     253,
+			MaxLengthSet:  true,
+			Email:         false,
+			Hostname:      true,
+			Regex:         nil,
+			MinNumeric:    0,
+			MinNumericSet: false,
+			MaxNumeric:    0,
+			MaxNumericSet: false,
 		}).Validate(string(s.Hostname)); err != nil {
 			return errors.Wrap(err, "string")
 		}
@@ -1748,13 +1772,17 @@ func (s *WebsiteGet) Validate() error {
 	var failures []validate.FieldError
 	if err := func() error {
 		if err := (validate.String{
-			MinLength:    1,
-			MinLengthSet: true,
-			MaxLength:    253,
-			MaxLengthSet: true,
-			Email:        false,
-			Hostname:     true,
-			Regex:        nil,
+			MinLength:     1,
+			MinLengthSet:  true,
+			MaxLength:     253,
+			MaxLengthSet:  true,
+			Email:         false,
+			Hostname:      true,
+			Regex:         nil,
+			MinNumeric:    0,
+			MinNumericSet: false,
+			MaxNumeric:    0,
+			MaxNumericSet: false,
 		}).Validate(string(s.Hostname)); err != nil {
 			return errors.Wrap(err, "string")
 		}
@@ -1804,13 +1832,17 @@ func (s *WebsitePatch) Validate() error {
 		if value, ok := s.Hostname.Get(); ok {
 			if err := func() error {
 				if err := (validate.String{
-					MinLength:    1,
-					MinLengthSet: true,
-					MaxLength:    253,
-					MaxLengthSet: true,
-					Email:        false,
-					Hostname:     true,
-					Regex:        nil,
+					MinLength:     1,
+					MinLengthSet:  true,
+					MaxLength:     253,
+					MaxLengthSet:  true,
+					Email:         false,
+					Hostname:      true,
+					Regex:         nil,
+					MinNumeric:    0,
+					MinNumericSet: false,
+					MaxNumeric:    0,
+					MaxNumericSet: false,
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
