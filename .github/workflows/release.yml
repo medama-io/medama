@@ -1,7 +1,7 @@
 name: Release Version
 on:
   release:
-    types: [created]
+    types: [published]
 
 permissions:
   contents: write
@@ -33,7 +33,7 @@ jobs:
 
       - name: Save GitHub tag and commit sha to environment
         run: |
-          echo "VERSION=${GITHUB_EVENT_RELEASE_TAG_NAME:-${GITHUB_REF#refs/tags/}}" >> $GITHUB_ENV
+          echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
@@ -69,7 +69,7 @@ jobs:
 
       - name: Save GitHub tag and commit sha to environment
         run: |
-          echo "VERSION=${GITHUB_EVENT_RELEASE_TAG_NAME:-${GITHUB_REF#refs/tags/}}" >> $GITHUB_ENV
+          echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
