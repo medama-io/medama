@@ -3,7 +3,7 @@ module github.com/medama-io/medama
 go 1.25.5
 
 require (
-	github.com/CAFxX/httpcompression v0.0.10-0.20241101105416-f754b5f26260
+	github.com/CAFxX/httpcompression v0.0.10-0.20251023000636-04c6ca452791
 	github.com/alexedwards/argon2id v1.0.0
 	github.com/alphadose/haxmap v1.4.1
 	github.com/caarlos0/env/v11 v11.3.1
