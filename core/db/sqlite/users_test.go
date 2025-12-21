@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/medama-io/medama/model"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCreateUser(t *testing.T) {
@@ -19,10 +20,10 @@ func TestCreateUser(t *testing.T) {
 	)
 
 	err := client.CreateUser(ctx, userCreate)
-	assert.NoError(err)
+	require.NoError(t, err)
 
 	user, err := client.GetUser(ctx, "test")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("test", user.ID)
 	assert.Equal("username", user.Username)
@@ -35,7 +36,7 @@ func TestGetUser(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	user, err := client.GetUser(ctx, "test1")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
@@ -48,7 +49,7 @@ func TestGetUserNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	user, err := client.GetUser(ctx, "doesnotexist")
-	assert.ErrorIs(err, model.ErrUserNotFound)
+	require.ErrorIs(t, err, model.ErrUserNotFound)
 	assert.Nil(user)
 }
 
@@ -56,7 +57,7 @@ func TestGetUserByUsername(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	user, err := client.GetUserByUsername(ctx, "username1")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
@@ -69,7 +70,7 @@ func TestGetDefaultAdminUser(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	user, err := client.GetUserByUsername(ctx, "admin")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("admin", user.Username)
 	assert.Equal("en", user.Settings.Language)
@@ -79,7 +80,7 @@ func TestGetUserByUsernameNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	user, err := client.GetUserByUsername(ctx, "doesnotexist")
-	assert.ErrorIs(err, model.ErrUserNotFound)
+	require.ErrorIs(t, err, model.ErrUserNotFound)
 	assert.Nil(user)
 }
 
@@ -87,7 +88,7 @@ func TestUpdateUserUsername(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	user, err := client.GetUser(ctx, "test1")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
@@ -95,10 +96,10 @@ func TestUpdateUserUsername(t *testing.T) {
 	dateUpdated := user.DateUpdated
 
 	err = client.UpdateUserUsername(ctx, "test1", "usernamenew")
-	assert.NoError(err)
+	require.NoError(t, err)
 
 	user, err = client.GetUser(ctx, "test1")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("usernamenew", user.Username)
@@ -109,7 +110,7 @@ func TestUpdateUserUsernameExisting(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	user, err := client.GetUser(ctx, "test1")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("username1", user.Username)
@@ -122,10 +123,10 @@ func TestUpdateUserPassword(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	err := client.UpdateUserPassword(ctx, "test1", "password2")
-	assert.NoError(err)
+	require.NoError(t, err)
 
 	user, err := client.GetUser(ctx, "test1")
-	assert.NoError(err)
+	require.NoError(t, err)
 	assert.NotNil(user)
 	assert.Equal("test1", user.ID)
 	assert.Equal("password2", user.Password)
@@ -135,16 +136,16 @@ func TestDeleteUser(t *testing.T) {
 	assert, ctx, client := SetupDatabaseWithUsers(t)
 
 	err := client.DeleteUser(ctx, "test1")
-	assert.NoError(err)
+	require.NoError(t, err)
 
 	user, err := client.GetUser(ctx, "test1")
-	assert.ErrorIs(err, model.ErrUserNotFound)
+	require.ErrorIs(t, err, model.ErrUserNotFound)
 	assert.Nil(user)
 }
 
 func TestDeleteUserNotFound(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	_, ctx, client := SetupDatabase(t)
 
 	err := client.DeleteUser(ctx, "doesnotexist")
-	assert.ErrorIs(err, model.ErrUserNotFound)
+	require.ErrorIs(t, err, model.ErrUserNotFound)
 }
