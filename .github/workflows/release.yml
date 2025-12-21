@@ -8,11 +8,56 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  build-linux:
+    runs-on: ${{ matrix.runner }}
+    container: ${{ matrix.container }}
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            arch: amd64
+            container: quay.io/pypa/manylinux_2_28_x86_64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+            container: quay.io/pypa/manylinux_2_28_aarch64
+    steps:
+      - name: Install git, curl, zip
+        run: yum -y install git curl zip unzip
+
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-env
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Save GitHub tag and commit sha to environment
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build
+        run: task core:release:linux:${{ matrix.arch }}
+
+      - name: Create release directory
+        run: mkdir -p release
+
+      - name: Zip artifact
+        run: zip -j release/medama-${{ env.VERSION }}-linux-${{ matrix.arch }}.zip ./core/bin/medama_linux_${{ matrix.arch }}
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-linux-${{ matrix.arch }}
+          path: release/medama-${{ env.VERSION }}-linux-${{ matrix.arch }}.zip
+          retention-days: 1
+          if-no-files-found: error
+
+  build-macos:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [macos-latest]
         arch: [amd64, arm64]
     steps:
       - name: Checkout code
@@ -28,31 +73,25 @@ jobs:
           echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: Install ARM64 toolchain
-        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
       - name: Build
-        run: task core:release:${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}:${{ matrix.arch }}
+        run: task core:release:darwin:${{ matrix.arch }}
 
       - name: Create release directory
         run: mkdir -p release
 
       - name: Zip artifact
-        run: zip -j release/medama-${{ env.VERSION }}-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip ./core/bin/medama_${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
+        run: zip -j release/medama-${{ env.VERSION }}-darwin-${{ matrix.arch }}.zip ./core/bin/medama_darwin_${{ matrix.arch }}
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: release-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}
-          path: release/medama-${{ env.VERSION }}-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}-${{ matrix.arch }}.zip
+          name: release-darwin-${{ matrix.arch }}
+          path: release/medama-${{ env.VERSION }}-darwin-${{ matrix.arch }}.zip
           retention-days: 1
           if-no-files-found: error
 
   release:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build-linux, build-macos]
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
