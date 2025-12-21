@@ -1,7 +1,10 @@
 name: Release Version
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag (e.g., v1.2.3). Must match an existing draft release."
+        required: true
 
 permissions:
   contents: write
@@ -20,8 +23,8 @@ jobs:
             arch: arm64
             container: quay.io/pypa/manylinux_2_34_aarch64
     steps:
-      - name: Install git, curl, zip
-        run: yum -y install git curl zip unzip
+      - name: Install build tooling
+        run: yum -y install git curl zip unzip gcc gcc-c++
 
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -31,9 +34,14 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Save GitHub tag and commit sha to environment
+      - name: Save version and commit sha to environment
         run: |
-          echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          VERSION_INPUT="${{ github.event.inputs.version }}"
+          if [ -z "$VERSION_INPUT" ]; then
+            echo "Version input is required for workflow_dispatch."
+            exit 1
+          fi
+          echo "VERSION=${VERSION_INPUT}" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
@@ -67,9 +75,14 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Save GitHub tag and commit sha to environment
+      - name: Save version and commit sha to environment
         run: |
-          echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          VERSION_INPUT="${{ github.event.inputs.version }}"
+          if [ -z "$VERSION_INPUT" ]; then
+            echo "Version input is required for workflow_dispatch."
+            exit 1
+          fi
+          echo "VERSION=${VERSION_INPUT}" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
@@ -103,6 +116,8 @@ jobs:
         uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
         with:
           files: release/*
-          draft: false
+          tag_name: ${{ env.VERSION }}
+          draft: true
+          prerelease: false
           fail_on_unmatched_files: true
           generate_release_notes: false
