@@ -20,7 +20,7 @@ func TestGetUnknownSetting(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	setting, err := client.GetSetting(ctx, "unknown")
-	assert.ErrorIs(err, model.ErrSettingNotFound)
+	require.ErrorIs(t, err, model.ErrSettingNotFound)
 	assert.Empty(setting)
 }
 

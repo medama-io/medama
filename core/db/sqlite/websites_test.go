@@ -41,11 +41,11 @@ func TestCreateWebsiteDuplicateHostname(t *testing.T) {
 
 	// Test unique id
 	err := client.CreateWebsite(ctx, websiteCreate)
-	assert.NoError(err)
+	require.NoError(t, err)
 
 	// Should give a duplicate error for id
 	err = client.CreateWebsite(ctx, websiteCreate)
-	assert.ErrorIs(err, model.ErrWebsiteExists)
+	require.ErrorIs(t, err, model.ErrWebsiteExists)
 
 	// Test unique email
 	websiteCreate.Hostname = "example2.com"
@@ -101,7 +101,7 @@ func TestGetWebsiteNotFound(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	website, err := client.GetWebsite(ctx, "doesnotexist.com")
-	assert.ErrorIs(err, model.ErrWebsiteNotFound)
+	require.ErrorIs(t, err, model.ErrWebsiteNotFound)
 	assert.Nil(website)
 }
 
@@ -126,13 +126,13 @@ func TestDeleteWebsite(t *testing.T) {
 	require.NoError(t, err)
 
 	website, err = client.GetWebsite(ctx, "website1-test1.com")
-	assert.ErrorIs(err, model.ErrWebsiteNotFound)
+	require.ErrorIs(t, err, model.ErrWebsiteNotFound)
 	assert.Nil(website)
 }
 
 func TestDeleteWebsiteNotFound(t *testing.T) {
-	assert, ctx, client := SetupDatabase(t)
+	_, ctx, client := SetupDatabase(t)
 
 	err := client.DeleteWebsite(ctx, "doesnotexist")
-	assert.ErrorIs(err, model.ErrWebsiteNotFound)
+	require.ErrorIs(t, err, model.ErrWebsiteNotFound)
 }
