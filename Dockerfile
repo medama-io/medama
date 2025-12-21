@@ -1,6 +1,7 @@
 # syntax = docker/dockerfile:1@sha256:38387523653efa0039f8e1c89bb74a30504e76ee9f565e25c9a09841f9427b05
 
-FROM debian:bookworm@sha256:731dd1380d6a8d170a695dbeb17fe0eade0e1c29f654cf0a3a07f372191c3f4b AS build
+ARG MANYLINUX_IMAGE=quay.io/pypa/manylinux_2_34_x86_64
+FROM ${MANYLINUX_IMAGE} AS build
 
 ARG VERSION=development
 ARG COMMIT_SHA=development
@@ -8,10 +9,7 @@ ARG COMMIT_SHA=development
 ENV VERSION=${VERSION}
 ENV COMMIT_SHA=${COMMIT_SHA}
 
-RUN apt-get update  \
-    && apt-get -y --no-install-recommends install  \
-        curl git ca-certificates build-essential unzip \
-    && rm -rf /var/lib/apt/lists/*
+RUN yum -y install git curl unzip zip
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV MISE_DATA_DIR="/mise"

@@ -76,6 +76,7 @@ jobs:
           build-args: |
             VERSION=${{ env.VERSION }}
             COMMIT_SHA=${{ env.COMMIT_SHA }}
+            MANYLINUX_IMAGE=${{ matrix.arch == 'amd64' && 'quay.io/pypa/manylinux_2_34_x86_64' || 'quay.io/pypa/manylinux_2_34_aarch64' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ matrix.platform }}
