@@ -86,6 +86,7 @@ tasks:
       - go build -o ./bin/main -ldflags "-s -w" -trimpath ./cmd/
     env:
       CGO_ENABLED: "1"
+      GOFLAGS: "-buildvcs=false"
 
   # Centralise Docker release command into here for simpler maintenance instead of specifying
   # within Dockerfile
@@ -97,6 +98,7 @@ tasks:
       - echo "docker build done"
     env:
       CGO_ENABLED: "1"
+      GOFLAGS: "-buildvcs=false"
 
   release:linux:amd64:
     deps: [generate]
@@ -108,6 +110,7 @@ tasks:
       CGO_ENABLED: "1"
       GOOS: "linux"
       GOARCH: "amd64"
+      GOFLAGS: "-buildvcs=false"
 
   release:linux:arm64:
     deps: [generate]
@@ -121,6 +124,7 @@ tasks:
       CXX: "aarch64-linux-gnu-g++"
       GOOS: "linux"
       GOARCH: "arm64"
+      GOFLAGS: "-buildvcs=false"
 
   release:darwin:amd64:
     deps: [generate]
@@ -132,6 +136,7 @@ tasks:
       CGO_ENABLED: "1"
       GOOS: "darwin"
       GOARCH: "amd64"
+      GOFLAGS: "-buildvcs=false"
 
   release:darwin:arm64:
     deps: [generate]
@@ -143,3 +148,4 @@ tasks:
       CGO_ENABLED: "1"
       GOOS: "darwin"
       GOARCH: "arm64"
+      GOFLAGS: "-buildvcs=false"
