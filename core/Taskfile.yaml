@@ -120,8 +120,6 @@ tasks:
       - echo "linux/arm64 build done"
     env:
       CGO_ENABLED: "1"
-      CC: "aarch64-linux-gnu-gcc"
-      CXX: "aarch64-linux-gnu-g++"
       GOOS: "linux"
       GOARCH: "arm64"
       GOFLAGS: "-buildvcs=false"
