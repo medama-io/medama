@@ -7,13 +7,13 @@ import (
 )
 
 func TestAddEvents(t *testing.T) {
-	assert, _, ctx, client := SetupDatabase(t)
+	assert, require, ctx, client := SetupDatabase(t)
 	rows := client.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
 
 	var count int
 
 	err := rows.Scan(&count)
-	assert.NoError(err)
+	require.NoError(err)
 	assert.Equal(0, count)
 
 	event1 := model.EventHit{
@@ -29,22 +29,22 @@ func TestAddEvents(t *testing.T) {
 	}
 
 	err = client.AddEvents(ctx, &[]model.EventHit{event1, event2})
-	assert.NoError(err)
+	require.NoError(err)
 
 	rows = client.QueryRow("SELECT COUNT(*) FROM events WHERE group_name = 'add-event-test.io'")
 	err = rows.Scan(&count)
-	assert.NoError(err)
+	require.NoError(err)
 	assert.Equal(2, count)
 }
 
 func TestAddPageView(t *testing.T) {
-	assert, _, ctx, client := SetupDatabase(t)
+	assert, require, ctx, client := SetupDatabase(t)
 	rows := client.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
 
 	var count int
 
 	err := rows.Scan(&count)
-	assert.NoError(err)
+	require.NoError(err)
 	assert.Equal(0, count)
 
 	event := &model.PageViewHit{
@@ -65,16 +65,16 @@ func TestAddPageView(t *testing.T) {
 	}
 
 	err = client.AddPageView(ctx, event, nil)
-	assert.NoError(err)
+	require.NoError(err)
 
 	rows = client.QueryRow("SELECT COUNT(*) FROM views WHERE hostname = 'add-page-view-test.io'")
 	err = rows.Scan(&count)
-	assert.NoError(err)
+	require.NoError(err)
 	assert.Equal(1, count)
 }
 
 func TestUpdatePageView(t *testing.T) {
-	assert, _, ctx, client := SetupDatabase(t)
+	assert, require, ctx, client := SetupDatabase(t)
 
 	event := &model.PageViewHit{
 		BID:          "test_updated_bid",
@@ -92,7 +92,7 @@ func TestUpdatePageView(t *testing.T) {
 	}
 
 	err := client.AddPageView(ctx, event, nil)
-	assert.NoError(err)
+	require.NoError(err)
 
 	event2 := &model.PageViewDuration{
 		BID:        "test_update_bid",

@@ -96,6 +96,7 @@ func (c *Client) GetWebsiteIntervals(
 	// The monthly interval has to be handled differently as we need to use date_trunc to properly
 	// handle month boundaries that have varying days.
 	var query *qb.QueryBuilder
+
 	if isMonthly {
 		statsQuery := qb.New().
 			Select(
