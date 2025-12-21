@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1@sha256:38387523653efa0039f8e1c89bb74a30504e76ee9f565e25c9a09841f9427b05
 
-ARG MANYLINUX_IMAGE=quay.io/pypa/manylinux_2_28_x86_64
+ARG MANYLINUX_IMAGE=quay.io/pypa/manylinux_2_34_x86_64
 FROM ${MANYLINUX_IMAGE} AS build
 
 ARG VERSION=development

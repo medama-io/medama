@@ -16,10 +16,10 @@ jobs:
         include:
           - runner: ubuntu-latest
             arch: amd64
-            container: quay.io/pypa/manylinux_2_28_x86_64
+            container: quay.io/pypa/manylinux_2_34_x86_64
           - runner: ubuntu-24.04-arm
             arch: arm64
-            container: quay.io/pypa/manylinux_2_28_aarch64
+            container: quay.io/pypa/manylinux_2_34_aarch64
     steps:
       - name: Install git, curl, zip
         run: yum -y install git curl zip unzip
