@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
+	_ "github.com/duckdb/duckdb-go/v2"
 	"github.com/gkampitakis/go-snaps/snaps"
-	_ "github.com/marcboeker/go-duckdb/v2"
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/db/duckdb"

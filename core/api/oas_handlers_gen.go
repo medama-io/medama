@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/go-faster/errors"
-
 	ht "github.com/ogen-go/ogen/http"
 	"github.com/ogen-go/ogen/middleware"
 	"github.com/ogen-go/ogen/ogenerrors"
@@ -21,6 +20,10 @@ type codeRecorder struct {
 func (c *codeRecorder) WriteHeader(status int) {
 	c.status = status
 	c.ResponseWriter.WriteHeader(status)
+}
+
+func (c *codeRecorder) Unwrap() http.ResponseWriter {
+	return c.ResponseWriter
 }
 
 func recordError(string, error) {}
@@ -97,6 +100,8 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 		return
 	}
 
+	var rawBody []byte
+
 	var response DeleteUserRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -105,6 +110,7 @@ func (s *Server) handleDeleteUserRequest(args [0]string, argsEscaped bool, w htt
 			OperationSummary: "Delete User",
 			OperationID:      "delete-user",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -222,6 +228,8 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 		return
 	}
 
+	var rawBody []byte
+
 	var response DeleteWebsitesIDRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -230,6 +238,7 @@ func (s *Server) handleDeleteWebsitesIDRequest(args [1]string, argsEscaped bool,
 			OperationSummary: "Delete Website",
 			OperationID:      "delete-websites-id",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -307,6 +316,8 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetEventPingRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -315,6 +326,7 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 			OperationSummary: "Ping",
 			OperationID:      "get-event-ping",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "If-Modified-Since",
@@ -436,6 +448,8 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetUserRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -444,6 +458,7 @@ func (s *Server) handleGetUserRequest(args [0]string, argsEscaped bool, w http.R
 			OperationSummary: "Get User Info",
 			OperationID:      "get-user",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -561,6 +576,8 @@ func (s *Server) handleGetUserUsageRequest(args [0]string, argsEscaped bool, w h
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetUserUsageRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -569,6 +586,7 @@ func (s *Server) handleGetUserUsageRequest(args [0]string, argsEscaped bool, w h
 			OperationSummary: "Get Resource Usage",
 			OperationID:      "get-user-usage",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -686,6 +704,8 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDBrowsersRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -694,6 +714,7 @@ func (s *Server) handleGetWebsiteIDBrowsersRequest(args [1]string, argsEscaped b
 			OperationSummary: "Get Browser Stats",
 			OperationID:      "get-website-id-browsers",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -883,6 +904,8 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDCampaignsRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -891,6 +914,7 @@ func (s *Server) handleGetWebsiteIDCampaignsRequest(args [1]string, argsEscaped 
 			OperationSummary: "Get UTM Campaign Stats",
 			OperationID:      "get-website-id-campaigns",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -1080,6 +1104,8 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDCountryRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -1088,6 +1114,7 @@ func (s *Server) handleGetWebsiteIDCountryRequest(args [1]string, argsEscaped bo
 			OperationSummary: "Get Country Stats",
 			OperationID:      "get-website-id-country",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -1277,6 +1304,8 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDDeviceRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -1285,6 +1314,7 @@ func (s *Server) handleGetWebsiteIDDeviceRequest(args [1]string, argsEscaped boo
 			OperationSummary: "Get Device Stats",
 			OperationID:      "get-website-id-device",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -1474,6 +1504,8 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDLanguageRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -1482,6 +1514,7 @@ func (s *Server) handleGetWebsiteIDLanguageRequest(args [1]string, argsEscaped b
 			OperationSummary: "Get Language Stats",
 			OperationID:      "get-website-id-language",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "locale",
@@ -1675,6 +1708,8 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDMediumsRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -1683,6 +1718,7 @@ func (s *Server) handleGetWebsiteIDMediumsRequest(args [1]string, argsEscaped bo
 			OperationSummary: "Get UTM Medium Stats",
 			OperationID:      "get-website-id-mediums",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -1872,6 +1908,8 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDOsRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -1880,6 +1918,7 @@ func (s *Server) handleGetWebsiteIDOsRequest(args [1]string, argsEscaped bool, w
 			OperationSummary: "Get OS Stats",
 			OperationID:      "get-website-id-os",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -2069,6 +2108,8 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDPagesRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -2077,6 +2118,7 @@ func (s *Server) handleGetWebsiteIDPagesRequest(args [1]string, argsEscaped bool
 			OperationSummary: "Get Page Stats",
 			OperationID:      "get-website-id-pages",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -2267,6 +2309,8 @@ func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDPropertiesRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -2275,6 +2319,7 @@ func (s *Server) handleGetWebsiteIDPropertiesRequest(args [1]string, argsEscaped
 			OperationSummary: "Get Property Stats",
 			OperationID:      "get-website-id-properties",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -2460,6 +2505,8 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDReferrersRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -2468,6 +2515,7 @@ func (s *Server) handleGetWebsiteIDReferrersRequest(args [1]string, argsEscaped 
 			OperationSummary: "Get Referrer Stats",
 			OperationID:      "get-website-id-referrers",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "grouped",
@@ -2661,6 +2709,8 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDSourcesRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -2669,6 +2719,7 @@ func (s *Server) handleGetWebsiteIDSourcesRequest(args [1]string, argsEscaped bo
 			OperationSummary: "Get UTM Source Stats",
 			OperationID:      "get-website-id-sources",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -2858,6 +2909,8 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDSummaryRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -2866,6 +2919,7 @@ func (s *Server) handleGetWebsiteIDSummaryRequest(args [1]string, argsEscaped bo
 			OperationSummary: "Get Stat Summary",
 			OperationID:      "get-website-id-summary",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "previous",
@@ -3051,6 +3105,8 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsiteIDTimeRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -3059,6 +3115,7 @@ func (s *Server) handleGetWebsiteIDTimeRequest(args [1]string, argsEscaped bool,
 			OperationSummary: "Get Time Stats",
 			OperationID:      "get-website-id-time",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -3248,6 +3305,8 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsitesRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -3256,6 +3315,7 @@ func (s *Server) handleGetWebsitesRequest(args [0]string, argsEscaped bool, w ht
 			OperationSummary: "List Websites",
 			OperationID:      "get-websites",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -3377,6 +3437,8 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 		return
 	}
 
+	var rawBody []byte
+
 	var response GetWebsitesIDRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -3385,6 +3447,7 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 			OperationSummary: "Get Website",
 			OperationID:      "get-websites-id",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -3505,7 +3568,9 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
-	request, close, err := s.decodePatchUserRequest(r)
+
+	var rawBody []byte
+	request, rawBody, close, err := s.decodePatchUserRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -3529,6 +3594,7 @@ func (s *Server) handlePatchUserRequest(args [0]string, argsEscaped bool, w http
 			OperationSummary: "Update User Info",
 			OperationID:      "patch-user",
 			Body:             request,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -3645,7 +3711,9 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
-	request, close, err := s.decodePatchWebsitesIDRequest(r)
+
+	var rawBody []byte
+	request, rawBody, close, err := s.decodePatchWebsitesIDRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -3669,6 +3737,7 @@ func (s *Server) handlePatchWebsitesIDRequest(args [1]string, argsEscaped bool, 
 			OperationSummary: "Update Website",
 			OperationID:      "patch-websites-id",
 			Body:             request,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -3735,7 +3804,9 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 			ID:   "post-auth-login",
 		}
 	)
-	request, close, err := s.decodePostAuthLoginRequest(r)
+
+	var rawBody []byte
+	request, rawBody, close, err := s.decodePostAuthLoginRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -3759,6 +3830,7 @@ func (s *Server) handlePostAuthLoginRequest(args [0]string, argsEscaped bool, w 
 			OperationSummary: "Login",
 			OperationID:      "post-auth-login",
 			Body:             request,
+			RawBody:          rawBody,
 			Params:           middleware.Parameters{},
 			Raw:              r,
 		}
@@ -3827,6 +3899,8 @@ func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w
 		return
 	}
 
+	var rawBody []byte
+
 	var response PostAuthLogoutRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
@@ -3835,6 +3909,7 @@ func (s *Server) handlePostAuthLogoutRequest(args [0]string, argsEscaped bool, w
 			OperationSummary: "Logout",
 			OperationID:      "post-auth-logout",
 			Body:             nil,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "_me_sess",
@@ -3907,7 +3982,9 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 		s.cfg.ErrorHandler(ctx, w, r, err)
 		return
 	}
-	request, close, err := s.decodePostEventHitRequest(r)
+
+	var rawBody []byte
+	request, rawBody, close, err := s.decodePostEventHitRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -3931,6 +4008,7 @@ func (s *Server) handlePostEventHitRequest(args [0]string, argsEscaped bool, w h
 			OperationSummary: "Send Hit Event",
 			OperationID:      "post-event-hit",
 			Body:             request,
+			RawBody:          rawBody,
 			Params: middleware.Parameters{
 				{
 					Name: "User-Agent",
@@ -4041,7 +4119,9 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 			return
 		}
 	}
-	request, close, err := s.decodePostWebsitesRequest(r)
+
+	var rawBody []byte
+	request, rawBody, close, err := s.decodePostWebsitesRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -4065,6 +4145,7 @@ func (s *Server) handlePostWebsitesRequest(args [0]string, argsEscaped bool, w h
 			OperationSummary: "Add Website",
 			OperationID:      "post-websites",
 			Body:             request,
+			RawBody:          rawBody,
 			Params:           middleware.Parameters{},
 			Raw:              r,
 		}

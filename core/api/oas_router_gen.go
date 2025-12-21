@@ -664,12 +664,13 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // Route is route object.
 type Route struct {
-	name        string
-	summary     string
-	operationID string
-	pathPattern string
-	count       int
-	args        [1]string
+	name           string
+	summary        string
+	operationID    string
+	operationGroup string
+	pathPattern    string
+	count          int
+	args           [1]string
 }
 
 // Name returns ogen operation name.
@@ -687,6 +688,11 @@ func (r Route) Summary() string {
 // OperationID returns OpenAPI operationId.
 func (r Route) OperationID() string {
 	return r.operationID
+}
+
+// OperationGroup returns the x-ogen-operation-group value.
+func (r Route) OperationGroup() string {
+	return r.operationGroup
 }
 
 // PathPattern returns OpenAPI path.
@@ -776,6 +782,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.name = PostAuthLoginOperation
 							r.summary = "Login"
 							r.operationID = "post-auth-login"
+							r.operationGroup = ""
 							r.pathPattern = "/auth/login"
 							r.args = args
 							r.count = 0
@@ -800,6 +807,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.name = PostAuthLogoutOperation
 							r.summary = "Logout"
 							r.operationID = "post-auth-logout"
+							r.operationGroup = ""
 							r.pathPattern = "/auth/logout"
 							r.args = args
 							r.count = 0
@@ -838,6 +846,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.name = PostEventHitOperation
 							r.summary = "Send Hit Event"
 							r.operationID = "post-event-hit"
+							r.operationGroup = ""
 							r.pathPattern = "/event/hit"
 							r.args = args
 							r.count = 0
@@ -862,6 +871,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.name = GetEventPingOperation
 							r.summary = "Ping"
 							r.operationID = "get-event-ping"
+							r.operationGroup = ""
 							r.pathPattern = "/event/ping"
 							r.args = args
 							r.count = 0
@@ -887,6 +897,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						r.name = DeleteUserOperation
 						r.summary = "Delete User"
 						r.operationID = "delete-user"
+						r.operationGroup = ""
 						r.pathPattern = "/user"
 						r.args = args
 						r.count = 0
@@ -895,6 +906,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						r.name = GetUserOperation
 						r.summary = "Get User Info"
 						r.operationID = "get-user"
+						r.operationGroup = ""
 						r.pathPattern = "/user"
 						r.args = args
 						r.count = 0
@@ -903,6 +915,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						r.name = PatchUserOperation
 						r.summary = "Update User Info"
 						r.operationID = "patch-user"
+						r.operationGroup = ""
 						r.pathPattern = "/user"
 						r.args = args
 						r.count = 0
@@ -927,6 +940,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.name = GetUserUsageOperation
 							r.summary = "Get Resource Usage"
 							r.operationID = "get-user-usage"
+							r.operationGroup = ""
 							r.pathPattern = "/user/usage"
 							r.args = args
 							r.count = 0
@@ -998,6 +1012,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = GetWebsiteIDBrowsersOperation
 									r.summary = "Get Browser Stats"
 									r.operationID = "get-website-id-browsers"
+									r.operationGroup = ""
 									r.pathPattern = "/website/{hostname}/browsers"
 									r.args = args
 									r.count = 1
@@ -1034,6 +1049,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										r.name = GetWebsiteIDCampaignsOperation
 										r.summary = "Get UTM Campaign Stats"
 										r.operationID = "get-website-id-campaigns"
+										r.operationGroup = ""
 										r.pathPattern = "/website/{hostname}/campaigns"
 										r.args = args
 										r.count = 1
@@ -1058,6 +1074,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										r.name = GetWebsiteIDCountryOperation
 										r.summary = "Get Country Stats"
 										r.operationID = "get-website-id-country"
+										r.operationGroup = ""
 										r.pathPattern = "/website/{hostname}/countries"
 										r.args = args
 										r.count = 1
@@ -1084,6 +1101,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = GetWebsiteIDDeviceOperation
 									r.summary = "Get Device Stats"
 									r.operationID = "get-website-id-device"
+									r.operationGroup = ""
 									r.pathPattern = "/website/{hostname}/devices"
 									r.args = args
 									r.count = 1
@@ -1108,6 +1126,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = GetWebsiteIDLanguageOperation
 									r.summary = "Get Language Stats"
 									r.operationID = "get-website-id-language"
+									r.operationGroup = ""
 									r.pathPattern = "/website/{hostname}/languages"
 									r.args = args
 									r.count = 1
@@ -1132,6 +1151,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = GetWebsiteIDMediumsOperation
 									r.summary = "Get UTM Medium Stats"
 									r.operationID = "get-website-id-mediums"
+									r.operationGroup = ""
 									r.pathPattern = "/website/{hostname}/mediums"
 									r.args = args
 									r.count = 1
@@ -1156,6 +1176,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = GetWebsiteIDOsOperation
 									r.summary = "Get OS Stats"
 									r.operationID = "get-website-id-os"
+									r.operationGroup = ""
 									r.pathPattern = "/website/{hostname}/os"
 									r.args = args
 									r.count = 1
@@ -1192,6 +1213,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										r.name = GetWebsiteIDPagesOperation
 										r.summary = "Get Page Stats"
 										r.operationID = "get-website-id-pages"
+										r.operationGroup = ""
 										r.pathPattern = "/website/{hostname}/pages"
 										r.args = args
 										r.count = 1
@@ -1216,6 +1238,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										r.name = GetWebsiteIDPropertiesOperation
 										r.summary = "Get Property Stats"
 										r.operationID = "get-website-id-properties"
+										r.operationGroup = ""
 										r.pathPattern = "/website/{hostname}/properties"
 										r.args = args
 										r.count = 1
@@ -1242,6 +1265,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = GetWebsiteIDReferrersOperation
 									r.summary = "Get Referrer Stats"
 									r.operationID = "get-website-id-referrers"
+									r.operationGroup = ""
 									r.pathPattern = "/website/{hostname}/referrers"
 									r.args = args
 									r.count = 1
@@ -1278,6 +1302,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										r.name = GetWebsiteIDSourcesOperation
 										r.summary = "Get UTM Source Stats"
 										r.operationID = "get-website-id-sources"
+										r.operationGroup = ""
 										r.pathPattern = "/website/{hostname}/sources"
 										r.args = args
 										r.count = 1
@@ -1302,6 +1327,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										r.name = GetWebsiteIDSummaryOperation
 										r.summary = "Get Stat Summary"
 										r.operationID = "get-website-id-summary"
+										r.operationGroup = ""
 										r.pathPattern = "/website/{hostname}/summary"
 										r.args = args
 										r.count = 1
@@ -1328,6 +1354,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.name = GetWebsiteIDTimeOperation
 									r.summary = "Get Time Stats"
 									r.operationID = "get-website-id-time"
+									r.operationGroup = ""
 									r.pathPattern = "/website/{hostname}/time"
 									r.args = args
 									r.count = 1
@@ -1355,6 +1382,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.name = GetWebsitesOperation
 							r.summary = "List Websites"
 							r.operationID = "get-websites"
+							r.operationGroup = ""
 							r.pathPattern = "/websites"
 							r.args = args
 							r.count = 0
@@ -1363,6 +1391,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.name = PostWebsitesOperation
 							r.summary = "Add Website"
 							r.operationID = "post-websites"
+							r.operationGroup = ""
 							r.pathPattern = "/websites"
 							r.args = args
 							r.count = 0
@@ -1396,6 +1425,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.name = DeleteWebsitesIDOperation
 								r.summary = "Delete Website"
 								r.operationID = "delete-websites-id"
+								r.operationGroup = ""
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
 								r.count = 1
@@ -1404,6 +1434,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.name = GetWebsitesIDOperation
 								r.summary = "Get Website"
 								r.operationID = "get-websites-id"
+								r.operationGroup = ""
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
 								r.count = 1
@@ -1412,6 +1443,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								r.name = PatchWebsitesIDOperation
 								r.summary = "Update Website"
 								r.operationID = "patch-websites-id"
+								r.operationGroup = ""
 								r.pathPattern = "/websites/{hostname}"
 								r.args = args
 								r.count = 1

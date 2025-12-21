@@ -1,6 +1,7 @@
-# syntax = docker/dockerfile:1@sha256:38387523653efa0039f8e1c89bb74a30504e76ee9f565e25c9a09841f9427b05
+# syntax = docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
 
-FROM debian:bookworm@sha256:731dd1380d6a8d170a695dbeb17fe0eade0e1c29f654cf0a3a07f372191c3f4b AS build
+ARG MANYLINUX_IMAGE=quay.io/pypa/manylinux_2_34_x86_64
+FROM ${MANYLINUX_IMAGE} AS build
 
 ARG VERSION=development
 ARG COMMIT_SHA=development
@@ -8,10 +9,7 @@ ARG COMMIT_SHA=development
 ENV VERSION=${VERSION}
 ENV COMMIT_SHA=${COMMIT_SHA}
 
-RUN apt-get update  \
-    && apt-get -y --no-install-recommends install  \
-        curl git ca-certificates build-essential unzip \
-    && rm -rf /var/lib/apt/lists/*
+RUN yum -y install git curl unzip zip
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV MISE_DATA_DIR="/mise"
@@ -51,7 +49,7 @@ COPY . .
 RUN --mount=type=cache,target=${GOCACHE} task core:release:docker
 
 # Build the final image
-FROM gcr.io/distroless/cc-debian12@sha256:00cc20b928afcc8296b72525fa68f39ab332f758c4f2a9e8d90845d3e06f1dc4
+FROM gcr.io/distroless/cc-debian12@sha256:0c8eac8ea42a167255d03c3ba6dfad2989c15427ed93d16c53ef9706ea4691df
 
 LABEL org.opencontainers.image.source=https://github.com/medama-io/medama \
 	org.opencontainers.image.description="Cookie-free, privacy-focused website analytics." \
