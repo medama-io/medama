@@ -1,8 +1,7 @@
 name: Release Version
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  release:
+    types: [created]
 
 permissions:
   contents: write
@@ -34,7 +33,7 @@ jobs:
 
       - name: Save GitHub tag and commit sha to environment
         run: |
-          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "VERSION=${GITHUB_EVENT_RELEASE_TAG_NAME:-${GITHUB_REF#refs/tags/}}" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
@@ -70,7 +69,7 @@ jobs:
 
       - name: Save GitHub tag and commit sha to environment
         run: |
-          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "VERSION=${GITHUB_EVENT_RELEASE_TAG_NAME:-${GITHUB_REF#refs/tags/}}" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
@@ -100,10 +99,10 @@ jobs:
           path: release
           merge-multiple: true
 
-      - name: Create release
+      - name: Attach assets to draft release
         uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
         with:
           files: release/*
-          draft: true
+          draft: false
           fail_on_unmatched_files: true
-          generate_release_notes: true
+          generate_release_notes: false
