@@ -7,32 +7,32 @@ require (
 	github.com/alexedwards/argon2id v1.0.0
 	github.com/alphadose/haxmap v1.4.1
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/caddyserver/certmagic v0.25.0
+	github.com/caddyserver/certmagic v0.25.1
 	github.com/duckdb/duckdb-go/v2 v2.5.4
 	github.com/gaissmai/bart v0.26.0
-	github.com/gkampitakis/go-snaps v0.5.18
+	github.com/gkampitakis/go-snaps v0.5.19
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.2.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/medama-io/go-referrer-parser v0.0.0-20250615084737-7f9d2bca7402
 	github.com/medama-io/go-timezone-country v0.0.0-20240903121643-db228bdc5dc1
-	github.com/medama-io/go-useragent v1.2.2
+	github.com/medama-io/go-useragent v1.2.3
 	github.com/ncruces/go-sqlite3 v0.30.4
 	github.com/ogen-go/ogen v1.18.0
 	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.34.0
-	github.com/shirou/gopsutil/v4 v4.25.11
+	github.com/shirou/gopsutil/v4 v4.25.12
 	github.com/stretchr/testify v1.11.1
 	go.jetify.com/typeid v1.3.0
-	golang.org/x/text v0.32.0
+	golang.org/x/text v0.33.0
 )
 
 require (
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/apache/arrow-go/v18 v18.5.0 // indirect
 	github.com/boyter/go-string v1.0.5 // indirect
-	github.com/caddyserver/zerossl v0.1.3 // indirect
+	github.com/caddyserver/zerossl v0.1.4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/duckdb/duckdb-go-bindings v0.1.24 // indirect
