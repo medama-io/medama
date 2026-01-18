@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -31,7 +31,7 @@ jobs:
         run: task dashboard:lint:ci
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -48,7 +48,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-22.04, macos-latest]
         arch: [amd64, arm64]
     steps:
       - name: Checkout code
@@ -60,10 +60,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install ARM64 toolchain
-        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64'
+        if: matrix.os == 'ubuntu-22.04' && matrix.arch == 'arm64'
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Build
-        run: task core:release:${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}:${{ matrix.arch }}
+        run: task core:release:${{ matrix.os == 'ubuntu-22.04' && 'linux' || 'darwin' }}:${{ matrix.arch }}

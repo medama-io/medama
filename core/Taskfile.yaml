@@ -123,6 +123,8 @@ tasks:
       GOOS: "linux"
       GOARCH: "arm64"
       GOFLAGS: "-buildvcs=false"
+      CC: "aarch64-linux-gnu-gcc"
+      CXX: "aarch64-linux-gnu-g++"
 
   release:darwin:amd64:
     deps: [generate]
