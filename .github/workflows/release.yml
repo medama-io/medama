@@ -12,19 +12,19 @@ permissions:
 jobs:
   build-linux:
     runs-on: ${{ matrix.runner }}
-    container: ${{ matrix.container }}
     strategy:
       matrix:
         include:
-          - runner: ubuntu-latest
+          - runner: ubuntu-22.04
             arch: amd64
-            container: quay.io/pypa/manylinux_2_34_x86_64
-          - runner: ubuntu-24.04-arm
+          - runner: ubuntu-22.04
             arch: arm64
-            container: quay.io/pypa/manylinux_2_34_aarch64
     steps:
-      - name: Install build tooling
-        run: yum -y install git curl zip unzip gcc gcc-c++
+      - name: Install build dependencies
+        if: matrix.arch == 'arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
