@@ -10,7 +10,7 @@ require (
 	github.com/caddyserver/certmagic v0.25.1
 	github.com/duckdb/duckdb-go/v2 v2.5.4
 	github.com/gaissmai/bart v0.26.0
-	github.com/gkampitakis/go-snaps v0.5.18
+	github.com/gkampitakis/go-snaps v0.5.19
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.2.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
