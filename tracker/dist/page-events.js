@@ -145,23 +145,6 @@
 		};
 
 	/**
-	 * Extracts key-value pairs from a given data attribute.
-	 * @param {Element} target The target element from which to extract data.
-	 * @param {string} attrName The name of the data attribute to extract (e.g., 'data-m:click').
-	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
-	 */
-	const extractDataAttributes = (target, attrName) =>
-		(target.getAttribute(`data-m:${attrName}`) || '')
-			.split(';') // Split the attribute value into individual key-value pairs.
-			.reduce((acc, pair) => {
-				// Split each pair by '=' and trim whitespace.
-				const [k, v] = pair.split('=').map((s) => s.trim());
-				// If both key and value exist, add them to the accumulator object.
-				if (k && v) acc[k] = v;
-				return acc;
-			}, {});
-
-	/**
 	 * Ping the server with the cache endpoint and read the last modified header to determine
 	 * if the user is unique or not.
 	 *
@@ -185,6 +168,23 @@
 			xhr.setRequestHeader('Content-Type', 'text/plain');
 			xhr.send();
 		});
+
+	/**
+	 * Extracts key-value pairs from a given data attribute.
+	 * @param {Element} target The target element from which to extract data.
+	 * @param {string} attrName The name of the data attribute to extract (e.g., 'data-m:click').
+	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
+	 */
+	const extractDataAttributes = (target, attrName) =>
+		(target.getAttribute(`data-m:${attrName}`) || '')
+			.split(';') // Split the attribute value into individual key-value pairs.
+			.reduce((acc, pair) => {
+				// Split each pair by '=' and trim whitespace.
+				const [k, v] = pair.split('=').map((s) => s.trim());
+				// If both key and value exist, add them to the accumulator object.
+				if (k && v) acc[k] = v;
+				return acc;
+			}, {});
 
 	/**
 	 * Send a load beacon event to the server when the page is loaded.
@@ -270,6 +270,8 @@
 		// Ensure unload is only called once.
 		isUnloadCalled = true;
 	};
+
+
 
 
 	// Prefer pagehide if available because it's more reliable than unload.
