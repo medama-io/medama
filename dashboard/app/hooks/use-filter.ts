@@ -17,12 +17,17 @@ const useFilter = () => {
 			const key = getKey(filter, type);
 			// Check if the filter is already in the search params with the same value.
 			// It is possible to have multiple with the same filter and type but different values.
-			if (!searchParams.getAll(key).includes(value)) {
-				searchParams.append(key, value);
-				setSearchParams(searchParams, { preventScrollReset: true });
-			}
+			setSearchParams(
+				(params) => {
+					if (!params.getAll(key).includes(value)) {
+						params.append(key, value);
+					}
+					return params;
+				},
+				{ preventScrollReset: true },
+			);
 		},
-		[searchParams, setSearchParams],
+		[setSearchParams],
 	);
 
 	const removeFilter = useCallback(
@@ -30,11 +35,37 @@ const useFilter = () => {
 			const key = getKey(filter, type);
 
 			// Remove the filter with the same filter, type, and value.
-			searchParams.delete(key, value);
-			setSearchParams(searchParams, { preventScrollReset: true });
+			setSearchParams(
+				(params) => {
+					params.delete(key, value);
+					return params;
+				},
+				{ preventScrollReset: true },
+			);
 		},
-		[searchParams, setSearchParams],
+		[setSearchParams],
 	);
+
+	const clearAllFilters = useCallback(() => {
+		setSearchParams(
+			(params) => {
+				// Get all filter keys
+				const keysToDelete: string[] = [];
+				for (const key of params.keys()) {
+					// Check if the key is a filter key (contains [ and ])
+					if (key.includes('[') && key.includes(']')) {
+						keysToDelete.push(key);
+					}
+				}
+				// Delete all filter keys
+				for (const key of keysToDelete) {
+					params.delete(key);
+				}
+				return params;
+			},
+			{ preventScrollReset: true },
+		);
+	}, [setSearchParams]);
 
 	const getFilterEq = useCallback(
 		(filter: Filter): string | null => {
@@ -70,6 +101,7 @@ const useFilter = () => {
 		searchParams,
 		addFilter,
 		removeFilter,
+		clearAllFilters,
 		isFilterActive,
 		isFilterActiveEq,
 		getFilterEq,
