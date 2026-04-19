@@ -132,7 +132,7 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 export const Filters = () => {
 	const [opened, setOpened] = useState(false);
 	const [searchParams] = useSearchParams();
-	const { addFilter, removeFilter } = useFilter();
+	const { addFilter, removeFilter, clearAllFilters } = useFilter();
 
 	const [filter, setFilter] = useState<Filter>('path');
 	const [type, setType] = useState<FilterOperator>('eq');
@@ -273,6 +273,16 @@ export const Filters = () => {
 					</Popover.Content>
 				</Popover.Portal>
 			</Popover.Root>
+			{paramsArr.length > 0 && (
+				<button
+					type="button"
+					className={classes.cancel}
+					onClick={clearAllFilters}
+					data-m:click="filter=clear-all"
+				>
+					Clear all
+				</button>
+			)}
 			{paramsArr.map(([label, type, value]) => {
 				return (
 					<div key={label + type + value} className={classes['filter-item']}>

@@ -8,22 +8,32 @@ const useChartType = () => {
 
 	const setChartStat = useCallback(
 		(stat: ChartStat) => {
-			searchParams.set('chart[stat]', stat);
-			setSearchParams(searchParams, {
-				preventScrollReset: true,
-			});
+			setSearchParams(
+				(params) => {
+					params.set('chart[stat]', stat);
+					return params;
+				},
+				{
+					preventScrollReset: true,
+				},
+			);
 		},
-		[searchParams, setSearchParams],
+		[setSearchParams],
 	);
 
 	const setChartType = useCallback(
 		(type: ChartType) => {
-			searchParams.set('chart[type]', type);
-			setSearchParams(searchParams, {
-				preventScrollReset: true,
-			});
+			setSearchParams(
+				(params) => {
+					params.set('chart[type]', type);
+					return params;
+				},
+				{
+					preventScrollReset: true,
+				},
+			);
 		},
-		[searchParams, setSearchParams],
+		[setSearchParams],
 	);
 
 	const getChartStat = useCallback(() => {
