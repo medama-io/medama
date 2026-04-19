@@ -5,10 +5,18 @@
 	justify-content: flex-start;
 	gap: 16px;
 	flex-wrap: wrap;
+	row-gap: 12px;
+
+	@media (--lt-sm) {
+		gap: 12px;
+		row-gap: 10px;
+		align-items: flex-start;
+	}
 }
 
 .popover {
 	width: 494px;
+	max-width: calc(100vw - 32px);
 	padding: 16px 16px 12px 16px;
 	gap: 16px;
 
@@ -22,6 +30,11 @@
 		font-weight: 600;
 		padding-bottom: 8px;
 	}
+
+	@media (--lt-sm) {
+		width: auto;
+		min-width: 280px;
+	}
 }
 
 .trigger {
@@ -29,6 +42,7 @@
 
 	flex: 1 1 0;
 	width: 0;
+	min-width: 120px;
 	height: 36px;
 	padding: 0 10px 0 14px;
 	justify-content: space-between;
@@ -53,11 +67,18 @@
 		margin-left: 4px;
 		color: var(--text-dark);
 	}
+
+	@media (--lt-sm) {
+		flex: 1 1 auto;
+		width: auto;
+		min-width: 140px;
+	}
 }
 
 .input {
 	flex: 1 1 0;
 	width: 0;
+	min-width: 120px;
 	height: 36px;
 	padding: 0 10px 0 14px;
 
@@ -76,6 +97,12 @@
 		outline: 1px solid var(--focus-outline);
 		outline-offset: -1px;
 	}
+
+	@media (--lt-sm) {
+		flex: 1 1 100%;
+		width: auto;
+		min-width: 200px;
+	}
 }
 
 .label {
@@ -89,6 +116,10 @@
 	composes: group from global;
 
 	gap: 8px;
+
+	@media (--lt-sm) {
+		flex-wrap: wrap;
+	}
 }
 
 .dropdown {
@@ -169,6 +200,27 @@
 			width: 15px;
 		}
 	}
+
+	@media (--lt-sm) {
+		white-space: normal;
+		overflow: visible;
+		text-overflow: clip;
+		flex-wrap: wrap;
+		gap: 4px;
+		padding: 8px 8px 8px 16px;
+		height: auto;
+		min-height: 40px;
+
+		span {
+			padding: 2px 0;
+			line-height: 1.4;
+		}
+
+		div {
+			margin-left: auto;
+			align-self: flex-start;
+		}
+	}
 }
 
 /* Buttons */
@@ -191,6 +243,10 @@
 
 	span {
 		font-weight: 600;
+	}
+
+	@media (--lt-sm) {
+		flex-shrink: 0;
 	}
 }
 
