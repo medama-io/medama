@@ -32,28 +32,33 @@ export const useClipboard = ({ timeout = 2000 }: UseClipboardProps = {}) => {
 	}, []);
 
 	const copy = useCallback(
-		(valueToCopy: string) => {
+		async (valueToCopy: string): Promise<boolean> => {
 			const handleSuccess = () => {
 				setCopied(true);
 				setTimeout(() => setCopied(false), timeout);
 			};
 
+			let success = false;
+
 			if ('clipboard' in navigator && 'writeText' in navigator.clipboard) {
-				navigator.clipboard.writeText(valueToCopy).then(
-					handleSuccess,
-					() => {
-						const fallbackSuccess = fallbackCopyTextToClipboard(valueToCopy);
-						if (fallbackSuccess) {
-							handleSuccess();
-						}
+				try {
+					await navigator.clipboard.writeText(valueToCopy);
+					success = true;
+					handleSuccess();
+				} catch {
+					success = fallbackCopyTextToClipboard(valueToCopy);
+					if (success) {
+						handleSuccess();
 					}
-				);
+				}
 			} else {
-				const fallbackSuccess = fallbackCopyTextToClipboard(valueToCopy);
-				if (fallbackSuccess) {
+				success = fallbackCopyTextToClipboard(valueToCopy);
+				if (success) {
 					handleSuccess();
 				}
 			}
+
+			return success;
 		},
 		[timeout, fallbackCopyTextToClipboard],
 	);
