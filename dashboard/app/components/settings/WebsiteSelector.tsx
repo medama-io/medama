@@ -1,5 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { CheckIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import { useMemo } from 'react';
 
 import { ScrollArea } from '@/components/ScrollArea';
@@ -30,7 +30,10 @@ export const WebsiteSelector = ({
 						className={classes.item}
 						data-active={value === website}
 					>
-						{value}
+						<span className={classes.itemIcon}>
+							{value === website && <CheckIcon />}
+						</span>
+						<span className={classes.itemLabel}>{value}</span>
 					</button>
 				</DropdownMenu.Item>
 			)),
