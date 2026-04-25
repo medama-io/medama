@@ -109,6 +109,30 @@
 	--default-monospace-font-family: "Reddit Mono Variable", monospace;
 }
 
+:root[data-mantine-color-scheme="dark"]{
+	/* Text Colors */
+	--text-light: #fcfcfc;
+	--text-dark: #fcfcfc;
+	--text-disabled: #8e9cb4;
+	--text-grey: #7e8c94;
+	--text-muted: #6a777e;
+	--text-red: #fa5252;
+
+	/* Background Colors */
+	--bg-light: #1b1e24;
+	--bg-grey: #262a31;
+	--bg-grey-dark: #111111;
+	--bg-grey-disabled: #111111;
+	--bg-dark: #111111;
+	--bg-grey-blue: #262a31;
+	--bg-grey-blue-dark: #1b1e24;
+	--bg-red-danger: #eb5757;
+	--bg-red-danger-dark: #c53030;
+
+	--badge-positive: #79a346;
+	--badge-negative: #b46934;
+}
+
 body {
 	margin: 0;
 	display: flex;

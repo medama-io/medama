@@ -7,6 +7,9 @@ import {
 	type MantineSize,
 	Stack,
 	Text,
+	Button,
+	useMantineColorScheme,
+	useComputedColorScheme
 } from '@mantine/core';
 import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 
@@ -128,6 +131,25 @@ const MobileDrawer = ({
 	</Drawer.Root>
 );
 
+const ThemeToggleButton = ({
+}: any) => {
+	const { colorScheme, setColorScheme } = useMantineColorScheme();
+	const computedColorScheme = useComputedColorScheme('light');
+	return (
+		<Button onClick={() => setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')} title="Toogle theme">
+			{computedColorScheme == 'dark' && (
+				<span>
+					Dark
+				</span>
+			)}
+			{computedColorScheme != 'dark' && (
+				<span>
+					Light
+				</span>
+			)}
+		</Button>
+	);
+};
 export const Header = () => {
 	const data = useRouteLoaderData<RootLoaderData>('root');
 	const isLoggedIn = Boolean(data?.isLoggedIn);
@@ -154,6 +176,7 @@ export const Header = () => {
 					</Group>
 				)}
 				<Group justify="flex-end">
+					<ThemeToggleButton></ThemeToggleButton>
 					<LoginButton isLoggedIn={isLoggedIn} visibleFrom="xs" />
 					<Burger
 						classNames={{ root: classes.burger }}
