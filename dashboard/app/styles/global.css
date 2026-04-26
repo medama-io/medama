@@ -109,7 +109,7 @@
 	--default-monospace-font-family: "Reddit Mono Variable", monospace;
 }
 
-:root[data-mantine-color-scheme="dark"]{
+:root[data-mantine-color-scheme="dark"] {
 	/* Text Colors */
 	--text-light: #fcfcfc;
 	--text-dark: #fcfcfc;

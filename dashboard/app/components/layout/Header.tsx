@@ -1,5 +1,6 @@
 import {
 	Burger,
+	Button,
 	Drawer,
 	type DrawerProps,
 	Flex,
@@ -7,9 +8,8 @@ import {
 	type MantineSize,
 	Stack,
 	Text,
-	Button,
+	useComputedColorScheme,
 	useMantineColorScheme,
-	useComputedColorScheme
 } from '@mantine/core';
 import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
 
@@ -131,22 +131,18 @@ const MobileDrawer = ({
 	</Drawer.Root>
 );
 
-const ThemeToggleButton = ({
-}: any) => {
-	const { colorScheme, setColorScheme } = useMantineColorScheme();
+const ThemeToggleButton = () => {
+	const { setColorScheme } = useMantineColorScheme();
 	const computedColorScheme = useComputedColorScheme('light');
 	return (
-		<Button onClick={() => setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')} title="Toogle theme">
-			{computedColorScheme == 'dark' && (
-				<span>
-					Dark
-				</span>
-			)}
-			{computedColorScheme != 'dark' && (
-				<span>
-					Light
-				</span>
-			)}
+		<Button
+			onClick={() =>
+				setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')
+			}
+			title="Toogle theme"
+		>
+			{computedColorScheme === 'dark' && <span>Dark</span>}
+			{computedColorScheme !== 'dark' && <span>Light</span>}
 		</Button>
 	);
 };
