@@ -18,25 +18,6 @@ runs:
         cache: true
         github_token: ${{ inputs.token }}
 
-    - name: Restore Go cache
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-      with:
-        path: |
-          ~/go/pkg/mod
-          ~/.cache/go-build
-          ~/Library/Caches/go-build
-        key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('core/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ runner.arch }}-go-
-
-    - name: Restore Bun cache
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-      with:
-        path: ~/.bun/install/cache
-        key: ${{ runner.os }}-${{ runner.arch }}-bun-${{ hashFiles('bun.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ runner.arch }}-bun-
-
     - name: Install dashboard dependencies
       shell: bash
       run: bun install --frozen-lockfile

@@ -75,8 +75,7 @@ func GetAddrList(ips string) ([]netip.Addr, error) {
 		return []netip.Addr{}, nil
 	}
 
-	//nolint:prealloc // We don't know the number in advance.
-	var addrList []netip.Addr
+	addrList := make([]netip.Addr, 0, strings.Count(ips, ",")+1)
 
 	for _, ipStr := range strings.Split(ips, ",") {
 		ipStr = strings.TrimSpace(ipStr)

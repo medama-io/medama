@@ -20,7 +20,6 @@ import (
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/model"
 	_ "github.com/ncruces/go-sqlite3/driver"
-	_ "github.com/ncruces/go-sqlite3/embed"
 	"github.com/ncruces/go-sqlite3/vfs/memdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -85,7 +84,7 @@ func (s SnapRecords) Snapshot() string {
 	sb.WriteString("RECORDS:\n")
 
 	for _, record := range s.Records {
-		sb.WriteString(fmt.Sprintf("%+v\n", record))
+		fmt.Fprintf(&sb, "%+v\n", record)
 	}
 
 	return sb.String()
@@ -168,8 +167,6 @@ func UseDatabaseFixture(
 
 // Generate an array of filters where we incrementally add one new filter to the previous one.
 func generateFilterAll(hostname string) []TestCase {
-	filters := make([]TestCase, 0)
-
 	baseFilter := &db.Filters{
 		Hostname:    hostname,
 		PeriodStart: TimeStart,
@@ -254,6 +251,8 @@ func generateFilterAll(hostname string) []TestCase {
 		},
 	}
 
+	filters := make([]TestCase, 0, len(filterSteps))
+
 	for _, step := range filterSteps {
 		// Modify the base filter with the new filter.
 		switch step.fieldName {
@@ -289,8 +288,10 @@ func generateFilterAll(hostname string) []TestCase {
 
 func getBaseTestCases(_ string) []TestCase {
 	hostname := MediumHostname // For now we only have one hostname.
-	tc := []TestCase{
-		{
+	filterCases := generateFilterAll(hostname)
+	tc := make([]TestCase, 0, 2+len(filterCases))
+	tc = append(tc,
+		TestCase{
 			Name: "Base",
 			Filters: &db.Filters{
 				Hostname:    hostname,
@@ -298,7 +299,7 @@ func getBaseTestCases(_ string) []TestCase {
 				PeriodEnd:   TimeEnd,
 			},
 		},
-		{
+		TestCase{
 			Name: "Empty",
 			Filters: &db.Filters{
 				Hostname:    DoesNotExistHostname,
@@ -306,9 +307,9 @@ func getBaseTestCases(_ string) []TestCase {
 				PeriodEnd:   TimeEnd,
 			},
 		},
-	}
+	)
 
-	tc = append(tc, generateFilterAll(hostname)...)
+	tc = append(tc, filterCases...)
 
 	return tc
 }
