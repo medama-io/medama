@@ -15,15 +15,15 @@ const isCI = !!process.env.CI;
 module.exports = defineConfig({
 	testDir: './tests',
 	timeout: 20_000,
-	globalTimeout: isCI ? 5 * 60 * 1000 : undefined,
+	globalTimeout: isCI ? 10 * 60 * 1000 : undefined,
 	/* Run tests in files in parallel */
-	fullyParallel: true,
+	fullyParallel: !isCI,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: isCI,
 	/* Retry on CI only */
 	retries: isCI ? 1 : 0,
-	/* Keep CI parallelism bounded for the shared tracker test server. */
-	workers: isCI ? 3 : undefined,
+	/* Keep CI deterministic for the shared tracker/core servers. */
+	workers: isCI ? 1 : undefined,
 	/* Stop quickly if shared-state failures cascade. */
 	maxFailures: isCI ? 5 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -37,6 +37,7 @@ module.exports = defineConfig({
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on-first-retry',
+		screenshot: 'only-on-failure',
 	},
 
 	/* Configure projects for major browsers */
@@ -81,7 +82,7 @@ module.exports = defineConfig({
 			command: 'bun run e2e:serve',
 			port: 3000,
 			reuseExistingServer: !process.env.CI,
-			timeout: 2500,
+			timeout: 60_000,
 		},
 		{
 			command:
