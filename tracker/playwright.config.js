@@ -16,14 +16,14 @@ module.exports = defineConfig({
 	testDir: './tests',
 	timeout: 20_000,
 	globalTimeout: isCI ? 8 * 60 * 1000 : undefined,
-	/* Tracker tests share a backend/database and assert visitor state. */
-	fullyParallel: false,
+	/* Run tests in files in parallel */
+	fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: isCI,
 	/* Retry on CI only */
 	retries: isCI ? 1 : 0,
-	/* Keep the shared tracker test server state serial. */
-	workers: 1,
+	/* Keep CI parallelism bounded for the shared tracker test server. */
+	workers: isCI ? 3 : undefined,
 	/* Stop quickly if shared-state failures cascade. */
 	maxFailures: isCI ? 5 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -84,7 +84,8 @@ module.exports = defineConfig({
 			timeout: 2500,
 		},
 		{
-			command: 'mise run :dev',
+			command:
+				'go run ./cmd start -logger=pretty -level=debug -corsorigins=http://localhost:8080,http://localhost:5173',
 			port: 8080,
 			reuseExistingServer: !process.env.CI,
 			cwd: '../core',
