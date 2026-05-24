@@ -15,7 +15,7 @@ const isCI = !!process.env.CI;
 module.exports = defineConfig({
 	testDir: './tests',
 	timeout: 20_000,
-	globalTimeout: isCI ? 8 * 60 * 1000 : undefined,
+	globalTimeout: isCI ? 5 * 60 * 1000 : undefined,
 	/* Run tests in files in parallel */
 	fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */

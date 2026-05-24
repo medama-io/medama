@@ -38,6 +38,11 @@ depends = [":build:default"]
 raw_args = true
 run = "bunx playwright test"
 
+[tasks."test:ci"]
+description = "Build tracker variants and run CI Playwright tests"
+depends = [":build:default"]
+run = "bunx playwright test --project=chromium --project=firefox --project=webkit"
+
 [tasks."test:ui"]
 description = "Run tracker Playwright tests in UI mode"
 run = "bun run e2e:ui"
@@ -45,6 +50,10 @@ run = "bun run e2e:ui"
 [tasks."test:setup"]
 description = "Install Playwright browsers and dependencies"
 run = "bun playwright install --with-deps chromium firefox webkit chrome msedge"
+
+[tasks."test:setup:ci"]
+description = "Install CI Playwright browsers and dependencies"
+run = "bun playwright install --with-deps chromium firefox webkit"
 
 [tasks.serve]
 description = "Run the tracker fixture server"

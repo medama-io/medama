@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   playwright:
-    timeout-minutes: 20
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -30,10 +30,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright with dependencies
-        run: mise run //tracker:test:setup
+        run: mise run //tracker:test:setup:ci
 
       - name: Run Playwright tests
-        run: mise run //tracker:test
+        run: mise run //tracker:test:ci
 
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: ${{ !cancelled() }}
