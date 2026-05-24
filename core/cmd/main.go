@@ -9,7 +9,6 @@ import (
 
 	_ "github.com/duckdb/duckdb-go/v2"
 	_ "github.com/ncruces/go-sqlite3/driver"
-	_ "github.com/ncruces/go-sqlite3/embed"
 )
 
 // Build information. Populated at build time.

@@ -14,7 +14,6 @@ import (
 	"github.com/medama-io/medama/migrations"
 	"github.com/medama-io/medama/model"
 	_ "github.com/ncruces/go-sqlite3/driver"
-	_ "github.com/ncruces/go-sqlite3/embed"
 	"github.com/ncruces/go-sqlite3/vfs/memdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

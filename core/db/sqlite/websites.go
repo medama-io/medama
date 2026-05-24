@@ -28,7 +28,7 @@ func (c *Client) CreateWebsite(ctx context.Context, website *model.Website) erro
 		"user_id":      website.UserID,
 		"hostname":     website.Hostname,
 		"date_created": website.DateCreated,
-		"date_updated": website.DateUpdated,
+		dateUpdatedKey: website.DateUpdated,
 	}
 
 	_, err := c.NamedExecContext(ctx, exec, paramMap)
@@ -107,7 +107,7 @@ func (c *Client) UpdateWebsite(ctx context.Context, website *model.Website) erro
 
 	paramMap := map[string]any{
 		"hostname":     website.Hostname,
-		"date_updated": website.DateUpdated,
+		dateUpdatedKey: website.DateUpdated,
 	}
 
 	res, err := c.NamedExecContext(ctx, exec, paramMap)

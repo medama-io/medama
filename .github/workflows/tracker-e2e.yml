@@ -9,6 +9,10 @@ on:
     paths:
       - "tracker/**"
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
   playwright:
     timeout-minutes: 10
@@ -26,12 +30,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright with dependencies
-        run: task test:setup
-        working-directory: "./tracker"
+        run: mise run //tracker:test:setup:ci
 
       - name: Run Playwright tests
-        run: task test
-        working-directory: "./tracker"
+        run: mise run //tracker:test:ci
 
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: ${{ !cancelled() }}

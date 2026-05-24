@@ -1,24 +1,24 @@
 package middlewares
 
 import (
-	"net"
 	"net/http"
+	"net/url"
 )
 
 // HTTPSRedirectFunc is a handler function that redirects HTTP requests to HTTPS.
-func HTTPSRedirectFunc() http.HandlerFunc {
+func HTTPSRedirectFunc(host string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Remove the port from the host if it exists as we are redirecting to the default HTTPS port.
-		host, _, err := net.SplitHostPort(r.Host)
-		if err != nil {
-			host = r.Host // Probably has no port.
+		target := url.URL{
+			Scheme:   "https",
+			Host:     host,
+			Path:     r.URL.Path,
+			RawPath:  r.URL.RawPath,
+			RawQuery: r.URL.RawQuery,
 		}
-
-		url := "https://" + host + r.URL.RequestURI()
 
 		// Close old HTTP connection.
 		w.Header().Set("Connection", "close")
 
-		http.Redirect(w, r, url, http.StatusMovedPermanently)
+		http.Redirect(w, r, target.String(), http.StatusMovedPermanently)
 	}
 }

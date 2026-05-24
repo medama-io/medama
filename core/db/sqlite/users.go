@@ -41,7 +41,7 @@ func (c *Client) CreateUser(ctx context.Context, user *model.User) error {
 		"password":     user.Password,
 		"settings":     string(settingsJSON),
 		"date_created": user.DateCreated,
-		"date_updated": user.DateUpdated,
+		dateUpdatedKey: user.DateUpdated,
 	}
 
 	_, err = c.NamedExecContext(ctx, exec, paramMap)
@@ -140,7 +140,7 @@ func (c *Client) UpdateUserUsername(ctx context.Context, id string, username str
 	paramMap := map[string]any{
 		"id":           id,
 		"username":     username,
-		"date_updated": time.Now().Unix(),
+		dateUpdatedKey: time.Now().Unix(),
 	}
 
 	_, err := c.NamedExecContext(ctx, exec, paramMap)
@@ -166,7 +166,7 @@ func (c *Client) UpdateUserPassword(ctx context.Context, id string, password str
 	paramMap := map[string]any{
 		"id":           id,
 		"password":     password,
-		"date_updated": time.Now().Unix(),
+		dateUpdatedKey: time.Now().Unix(),
 	}
 
 	_, err := c.NamedExecContext(ctx, exec, paramMap)

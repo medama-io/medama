@@ -1,0 +1,54 @@
+[tasks.dev]
+description = "Generate API types and start the dashboard dev server"
+depends = [":generate"]
+run = "bun run dev"
+
+[tasks.build]
+description = "Generate API types and build the dashboard"
+depends = [":generate"]
+run = [
+  "rm -rf ./build",
+  "bun run build",
+]
+sources = [
+  "**/*.ts",
+  "**/*.tsx",
+  "./package.json",
+  "./public/**/*",
+]
+outputs = ["./build/**/*"]
+
+[tasks.generate]
+description = "Generate dashboard API types from core OpenAPI"
+depends = [":install"]
+run = "bun run generate"
+sources = ["../core/openapi.yaml"]
+outputs = ["./app/api/types.d.ts"]
+
+[tasks.install]
+description = "Install Bun workspace dependencies"
+run = "bun install"
+
+[tasks.embed]
+description = "Build and copy dashboard assets into core/client"
+depends = [":build"]
+run = [
+  "rm -rf ../core/client/*",
+  "mkdir -p ../core/client",
+  "cp -r ./build/client/* ../core/client/",
+]
+sources = ["./build/client/**/*"]
+outputs = ["../core/client/**/*"]
+
+[tasks.lint]
+description = "Run Biome checks with writes enabled"
+alias = "format"
+run = "bun run lint"
+
+[tasks."lint:ci"]
+description = "Run dashboard typecheck, CI lint, and build"
+run = [
+  "bun run typecheck",
+  "bun run lint:ci",
+  { task = ":build" },
+]

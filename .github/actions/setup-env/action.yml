@@ -9,21 +9,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Install Task
-      uses: arduino/setup-task@v2
+    - name: Setup mise
+      uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
       with:
-        repo-token: ${{ inputs.token }}
-
-    - name: Setup Go
-      uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
-      with:
-        go-version-file: ./core/go.mod
-        cache-dependency-path: ./core/go.sum
-
-    - name: Setup Bun
-      uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
-      with:
-        bun-version: latest
+        experimental: true
+        install: true
+        install_args: go bun
+        cache: true
+        github_token: ${{ inputs.token }}
 
     - name: Install dashboard dependencies
       shell: bash
@@ -31,4 +24,4 @@ runs:
 
     - name: Generate embeds
       shell: bash
-      run: task core:generate
+      run: mise run //core:generate

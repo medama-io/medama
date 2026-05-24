@@ -1,0 +1,64 @@
+[tasks.build]
+description = "Build tracker variants and print compressed sizes"
+run = [
+  { task = ":build:default" },
+  "bun run build:size",
+]
+
+[tasks."build:default"]
+description = "Build tracker distribution files"
+run = [
+  "rm -rf ./dist",
+  "mkdir -p ./dist",
+  "bun run build:default",
+]
+sources = [
+  "./src/*.js",
+  "./package.json",
+  "./scripts/*.js",
+]
+outputs = ["./dist/*.js"]
+
+[tasks.embed]
+description = "Copy built tracker scripts into core/client"
+depends = [":build:default"]
+run = [
+  "mkdir -p ../core/client/scripts",
+  "cp ./dist/default.min.js ../core/client/scripts/default.js",
+  "cp ./dist/click-events.min.js ../core/client/scripts/click-events.js",
+  "cp ./dist/page-events.min.js ../core/client/scripts/page-events.js",
+  "cp ./dist/click-events.page-events.min.js ../core/client/scripts/click-events.page-events.js",
+]
+sources = ["./dist/*.min.js"]
+outputs = ["../core/client/scripts/*.js"]
+
+[tasks.test]
+description = "Build tracker variants and run Playwright tests"
+depends = [":build:default"]
+raw_args = true
+run = "bunx playwright test"
+
+[tasks."test:ci"]
+description = "Build tracker variants and run CI Playwright tests"
+depends = [":build:default"]
+run = "bunx playwright test --project=chromium --project=firefox --project=webkit"
+
+[tasks."test:ui"]
+description = "Run tracker Playwright tests in UI mode"
+run = "bun run e2e:ui"
+
+[tasks."test:setup"]
+description = "Install Playwright browsers and dependencies"
+run = "bun playwright install --with-deps chromium firefox webkit chrome msedge"
+
+[tasks."test:setup:ci"]
+description = "Install CI Playwright browsers and dependencies"
+run = "bun playwright install --with-deps chromium firefox webkit"
+
+[tasks.serve]
+description = "Run the tracker fixture server"
+run = "bun run e2e:serve"
+
+[tasks.format]
+description = "Format tracker files"
+run = "bun run format"

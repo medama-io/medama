@@ -1,0 +1,129 @@
+[tasks.dev]
+description = "Generate assets and start the API server with Air"
+depends = [":generate"]
+run = "go tool air -c .air.toml"
+
+[tasks.build]
+description = "Generate assets and build the local server binary"
+depends = [":generate"]
+env = { CGO_ENABLED = "1" }
+run = "go build -o ./bin/main ./cmd/"
+
+[tasks.start]
+description = "Build and run the server binary"
+depends = [":build"]
+raw_args = true
+run = "./bin/main"
+
+[tasks."generate:go"]
+description = "Regenerate Go API code from OpenAPI"
+run = "go generate ./..."
+sources = [
+  "./openapi.yaml",
+  "./.ogen.yml",
+  "./generate.go",
+  "./generate.sh",
+  "./go.mod",
+  "./go.sum",
+]
+outputs = ["./api/**/*.go"]
+
+[tasks.generate]
+description = "Regenerate Go code and embedded dashboard/tracker assets"
+run = [
+  { task = ":generate:go" },
+  { task = "//dashboard:embed" },
+  { task = "//tracker:embed" },
+]
+
+[tasks.deps]
+description = "Update Go dependencies"
+alias = ["update", "upgrade"]
+run = [
+  "go get -u ./...",
+  "go mod tidy",
+]
+
+[tasks.fixtures]
+description = "Regenerate DuckDB test fixtures"
+run = [
+  "rm -rf ./db/duckdb/testdata/fixtures/simple.test.db",
+  "go run ./db/duckdb/testdata",
+]
+
+[tasks.lint]
+description = "Run Go lint checks"
+run = "golangci-lint run"
+
+[tasks."lint:fix"]
+description = "Run Go lint checks with automatic fixes"
+run = "golangci-lint run --fix"
+
+[tasks.coverage]
+description = "Generate Go coverage report"
+tools = { "go:github.com/ory/go-acc" = "0.2.8" }
+run = [
+  "go-acc ./... -o coverage.out",
+  "go tool cover -html=coverage.out",
+]
+
+[tasks.test]
+description = "Regenerate Go API code and run backend tests"
+depends = [":generate:go"]
+run = "go test -v -shuffle on ./..."
+
+[tasks.release]
+description = "Build a local release binary"
+depends = [":generate"]
+env = { CGO_ENABLED = "1", GOFLAGS = "-buildvcs=false" }
+run = 'go build -o ./bin/main -ldflags "-s -w" -trimpath ./cmd/'
+
+[tasks."release:docker"]
+description = "Build the Docker release binary"
+depends = [":generate"]
+env = { CGO_ENABLED = "1", GOFLAGS = "-buildvcs=false" }
+run = [
+  'go build -o ./bin/main -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/',
+  "chmod +x ./bin/main",
+  'echo "docker build done"',
+]
+
+[tasks."release:linux:amd64"]
+description = "Build the linux/amd64 release binary"
+depends = [":generate"]
+env = { CGO_ENABLED = "1", GOOS = "linux", GOARCH = "amd64", GOFLAGS = "-buildvcs=false" }
+run = [
+  'go build -o ./bin/medama_linux_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/',
+  "chmod +x ./bin/medama_linux_amd64",
+  'echo "linux/amd64 build done"',
+]
+
+[tasks."release:linux:arm64"]
+description = "Build the linux/arm64 release binary"
+depends = [":generate"]
+env = { CGO_ENABLED = "1", GOOS = "linux", GOARCH = "arm64", GOFLAGS = "-buildvcs=false", CC = "aarch64-linux-gnu-gcc", CXX = "aarch64-linux-gnu-g++" }
+run = [
+  'go build -o ./bin/medama_linux_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/',
+  "chmod +x ./bin/medama_linux_arm64",
+  'echo "linux/arm64 build done"',
+]
+
+[tasks."release:darwin:amd64"]
+description = "Build the darwin/amd64 release binary"
+depends = [":generate"]
+env = { CGO_ENABLED = "1", GOOS = "darwin", GOARCH = "amd64", GOFLAGS = "-buildvcs=false" }
+run = [
+  'go build -o ./bin/medama_darwin_amd64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/',
+  "chmod +x ./bin/medama_darwin_amd64",
+  'echo "darwin/amd64 build done"',
+]
+
+[tasks."release:darwin:arm64"]
+description = "Build the darwin/arm64 release binary"
+depends = [":generate"]
+env = { CGO_ENABLED = "1", GOOS = "darwin", GOARCH = "arm64", GOFLAGS = "-buildvcs=false" }
+run = [
+  'go build -o ./bin/medama_darwin_arm64 -ldflags "-s -w -X main.Version=$VERSION -X main.Commit=$COMMIT_SHA" -trimpath ./cmd/',
+  "chmod +x ./bin/medama_darwin_arm64",
+  'echo "darwin/arm64 build done"',
+]

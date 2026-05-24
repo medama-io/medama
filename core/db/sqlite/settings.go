@@ -70,7 +70,7 @@ func (c *Client) UpdateSetting(ctx context.Context, key model.SettingsKey, value
 	params := map[string]any{
 		"key":          "$." + string(key),
 		"value":        value,
-		"date_updated": time.Now().Unix(),
+		dateUpdatedKey: time.Now().Unix(),
 	}
 
 	result, err := c.NamedExecContext(ctx, query, params)
@@ -108,7 +108,7 @@ func (c *Client) UpdateSettings(
 	}
 
 	params := map[string]any{
-		"date_updated": time.Now().Unix(),
+		dateUpdatedKey: time.Now().Unix(),
 		"settings":     string(settingsJSON),
 		"user_id":      userID,
 	}

@@ -10,6 +10,8 @@ type Client struct {
 	*sqlx.DB
 }
 
+const dateUpdatedKey = "date_updated"
+
 // Compile time check for Handler.
 var _ db.AppClient = (*Client)(nil)
 

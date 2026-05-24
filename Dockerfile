@@ -16,15 +16,19 @@ ENV MISE_DATA_DIR="/mise"
 ENV MISE_CONFIG_DIR="/mise"
 ENV MISE_CACHE_DIR="/mise/cache"
 ENV MISE_INSTALL_PATH="/usr/local/bin/mise"
+ENV MISE_EXPERIMENTAL="1"
 ENV PATH="/mise/shims:$PATH"
 
 RUN curl https://mise.run | sh
 
 WORKDIR /app
 
-# Install language runtimes from .mise.toml
+# Install language runtimes from mise.toml
 COPY mise.toml ./mise.toml
-RUN mise trust -a -y && mise settings set experimental true && mise install && mise activate --shims bash
+COPY core/mise.toml ./core/mise.toml
+COPY dashboard/mise.toml ./dashboard/mise.toml
+COPY tracker/mise.toml ./tracker/mise.toml
+RUN mise trust -a -y && mise install go bun
 
 # Cache build dependencies
 ENV GOCACHE=/root/.cache/go-build
@@ -46,7 +50,7 @@ RUN echo "VERSION=${VERSION}" && echo "COMMIT_SHA=${COMMIT_SHA}"
 
 # Copy the rest of the source code
 COPY . .
-RUN --mount=type=cache,target=${GOCACHE} task core:release:docker
+RUN --mount=type=cache,target=${GOCACHE} mise run //core:release:docker
 
 # Build the final image
 FROM gcr.io/distroless/cc-debian12@sha256:0c8eac8ea42a167255d03c3ba6dfad2989c15427ed93d16c53ef9706ea4691df
