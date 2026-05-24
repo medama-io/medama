@@ -18,7 +18,11 @@ mkdir -p \
   "$CODEX_TMP_ROOT/bun" \
   "$CODEX_TMP_ROOT/mise-state" \
   "$CODEX_TMP_ROOT/mise-cache" \
-  "$CODEX_TMP_ROOT/mise-tmp"
+  "$CODEX_TMP_ROOT/mise-tmp" \
+  "$CODEX_TMP_ROOT/duckdb/extensions" \
+  "$CODEX_TMP_ROOT/medama-db" \
+  "$CODEX_TMP_ROOT/tmp" \
+  "$CODEX_TMP_ROOT/playwright"
 
 export ZDOTDIR=/private/tmp/codex-zdotdir
 export TERM=xterm-256color
@@ -36,6 +40,13 @@ export BUN_INSTALL_CACHE_DIR="$CODEX_TMP_ROOT/bun"
 export MISE_STATE_DIR="$CODEX_TMP_ROOT/mise-state"
 export MISE_CACHE_DIR="$CODEX_TMP_ROOT/mise-cache"
 export MISE_TMP_DIR="$CODEX_TMP_ROOT/mise-tmp"
+
+export TMPDIR="$CODEX_TMP_ROOT/tmp"
+export PLAYWRIGHT_BROWSERS_PATH="$CODEX_TMP_ROOT/playwright"
+
+export CODEX_DUCKDB_EXTENSION_DIR="$CODEX_TMP_ROOT/duckdb/extensions"
+export CODEX_MEDAMA_APP_DB="$CODEX_TMP_ROOT/medama-db/me_meta.db"
+export CODEX_MEDAMA_ANALYTICS_DB="$CODEX_TMP_ROOT/medama-db/me_analytics.db?extension_directory=$CODEX_DUCKDB_EXTENSION_DIR"
 
 if [ -n "$CODEX_WORKTREE_PATH" ]; then
   export MISE_TRUSTED_CONFIG_PATHS="$CODEX_WORKTREE_PATH"
