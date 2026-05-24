@@ -1,12 +1,6 @@
 import { SimpleGrid } from '@mantine/core';
-import { useEffect } from 'react';
-import {
-	type ClientLoaderFunctionArgs,
-	data as json,
-	type MetaFunction,
-	useLoaderData,
-	useRevalidator,
-} from 'react-router';
+import { useInterval } from '@mantine/hooks';
+import { data as json, useRevalidator } from 'react-router';
 
 import { userUsageGet } from '@/api/user';
 import {
@@ -14,13 +8,13 @@ import {
 	ResourcePanelCPU,
 } from '@/components/settings/Resource';
 import { SectionWrapper } from '@/components/settings/Section';
-import { useInterval } from '@/hooks/use-interval';
+import type { Route } from './+types/settings.usage';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Usage Settings | Medama' }];
 };
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	const { data } = await userUsageGet();
 
 	if (!data) {
@@ -34,16 +28,11 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	};
 };
 
-export default function Index() {
-	const { usage } = useLoaderData<typeof clientLoader>();
+export default function Index({ loaderData }: Route.ComponentProps) {
+	const { usage } = loaderData;
 	const revalidator = useRevalidator();
-	const interval = useInterval(revalidator.revalidate, 2500);
+	useInterval(revalidator.revalidate, 2500, { autoInvoke: true });
 	const { cpu, memory, disk } = usage;
-
-	useEffect(() => {
-		interval.start();
-		return interval.stop;
-	}, [interval.start, interval.stop]);
 
 	return (
 		<SectionWrapper>

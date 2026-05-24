@@ -1,4 +1,5 @@
 import { type DateRange, DayPicker } from '@daypicker/react';
+import { useDidUpdate, useMediaQuery } from '@mantine/hooks';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
@@ -7,8 +8,6 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { Button, CloseButton } from '@/components/Button';
-import { useDidUpdate } from '@/hooks/use-did-update';
-import { useMediaQuery } from '@/hooks/use-media-query';
 
 import classes from './DatePicker.module.css';
 

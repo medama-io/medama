@@ -1,15 +1,8 @@
 import { schemaResolver, useForm } from '@mantine/form';
+import { useDidUpdate, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useState } from 'react';
-import {
-	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
-	data as json,
-	type MetaFunction,
-	useLoaderData,
-	useSearchParams,
-	useSubmit,
-} from 'react-router';
+import { data as json, useSearchParams, useSubmit } from 'react-router';
 import * as v from 'valibot';
 
 import { userGet } from '@/api/user';
@@ -23,15 +16,14 @@ import {
 	SectionWrapper,
 } from '@/components/settings/Section';
 import { WebsiteSelector } from '@/components/settings/WebsiteSelector';
-import { useDidUpdate } from '@/hooks/use-did-update';
-import { useDisclosure } from '@/hooks/use-disclosure';
 import { getString, getType } from '@/utils/form';
+import type { Route } from './+types/settings.websites';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Website Settings | Medama' }];
 };
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	const [{ data: user }, { data: websites }] = await Promise.all([
 		userGet(),
 		websiteList(),
@@ -44,12 +36,11 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	}
 
 	return {
-		user,
 		websites: websites.map((website) => website.hostname),
 	};
 };
 
-export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	const body = await request.formData();
 	const type = getType(body);
 
@@ -87,8 +78,8 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	return { message };
 };
 
-export default function Index() {
-	const { user, websites } = useLoaderData<typeof clientLoader>();
+export default function Index({ loaderData }: Route.ComponentProps) {
+	const { websites } = loaderData;
 	const submit = useSubmit();
 	const [opened, { open, close }] = useDisclosure(false);
 
@@ -132,10 +123,6 @@ export default function Index() {
 		resetAndClose();
 		setWebsite(websites[0] ?? '');
 	};
-
-	if (!user) {
-		return null;
-	}
 
 	const modalChildren = (
 		<ModalWrapper opened={opened} close={close}>

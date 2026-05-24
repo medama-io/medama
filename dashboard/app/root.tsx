@@ -57,14 +57,12 @@ import {
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import {
-	type ClientLoaderFunctionArgs,
 	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useLoaderData,
 	useRouteError,
 } from 'react-router';
 
@@ -79,14 +77,17 @@ import {
 } from '@/components/layout/Error';
 import theme from '@/styles/theme';
 import { EXPIRE_LOGGED_IN, hasSession } from '@/utils/cookies';
+import type { Route } from './+types/root';
 
 interface DocumentProps {
 	children: React.ReactNode;
 }
 
-export const clientLoader = (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = () => {
 	return { isLoggedIn: Boolean(hasSession()) };
 };
+
+export type RootLoaderData = Route.ComponentProps['loaderData'];
 
 export const Document = ({ children }: DocumentProps) => {
 	// While end users will have their API servers at a fixed domain, development mode will have the API server
@@ -152,8 +153,6 @@ export const Document = ({ children }: DocumentProps) => {
 };
 
 export default function App() {
-	// Trigger loader for session check.
-	useLoaderData<typeof clientLoader>();
 	return (
 		<Document>
 			<Outlet />

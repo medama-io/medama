@@ -1,15 +1,8 @@
 import { SimpleGrid } from '@mantine/core';
 import { schemaResolver, useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import { PlusIcon } from '@radix-ui/react-icons';
-import {
-	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
-	data as json,
-	type MetaFunction,
-	redirect,
-	useLoaderData,
-	useSubmit,
-} from 'react-router';
+import { data as json, redirect, useSubmit } from 'react-router';
 import * as v from 'valibot';
 import isFQDN from 'validator/lib/isFQDN';
 import { websiteCreate, websiteList } from '@/api/websites';
@@ -19,16 +12,16 @@ import { WebsiteCard } from '@/components/index/WebsiteCard';
 import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { ModalChild, ModalWrapper } from '@/components/Modal';
-import { useDisclosure } from '@/hooks/use-disclosure';
+import type { Route } from './+types/_index';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [
 		{ title: 'Medama | Privacy Focused Web Analytics' },
 		{ name: 'description', content: 'Privacy focused web analytics.' },
 	];
 };
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	const { data, res } = await websiteList({ query: { summary: true } });
 
 	if (!res.ok || !data) {
@@ -44,7 +37,7 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	return { websites: data };
 };
 
-export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	const body = await request.formData();
 
 	const hostname = body.get('hostname')
@@ -72,8 +65,8 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	return redirect(`/${data.hostname}`);
 };
 
-export default function Index() {
-	const { websites } = useLoaderData<typeof clientLoader>();
+export default function Index({ loaderData }: Route.ComponentProps) {
+	const { websites } = loaderData;
 	const [opened, { open, close }] = useDisclosure(false);
 	const submit = useSubmit();
 

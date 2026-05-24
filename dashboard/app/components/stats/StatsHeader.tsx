@@ -1,3 +1,4 @@
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { CalendarIcon } from '@radix-ui/react-icons';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import type React from 'react';
@@ -13,8 +14,6 @@ import { Group } from '@/components/layout/Flex';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { Tooltip, TooltipProvider } from '@/components/Tooltip';
 import { useChartType } from '@/hooks/use-chart-type';
-import { useDisclosure } from '@/hooks/use-disclosure';
-import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { HeaderDataBox } from './HeaderDataBox';
 import classes from './StatsHeader.module.css';

@@ -1,9 +1,4 @@
 import { SimpleGrid } from '@mantine/core';
-import {
-	type ClientLoaderFunctionArgs,
-	type MetaFunction,
-	useLoaderData,
-} from 'react-router';
 
 import { TabProperties, TabSelect } from '@/components/stats/Tabs';
 import TabClasses from '@/components/stats/Tabs.module.css';
@@ -15,6 +10,7 @@ import {
 	type TabGroups,
 } from '@/components/stats/types';
 import { fetchStats } from '@/utils/stats';
+import type { Route } from './+types/$hostname._index';
 
 const mapItems = <T extends DataRow>(
 	data: T[] | undefined,
@@ -37,12 +33,12 @@ const createStatsData = <T extends DataRow>(
 	items: mapItems(data, accessor),
 });
 
-export const meta: MetaFunction = () => [{ title: 'Dashboard | Medama' }];
+export const meta: Route.MetaFunction = () => [{ title: 'Dashboard | Medama' }];
 
 export const clientLoader = async ({
 	request,
 	params,
-}: ClientLoaderFunctionArgs) => {
+}: Route.ClientLoaderArgs) => {
 	const stats = await fetchStats(request, params, {
 		dataset: DATASETS,
 		isSummary: true,
@@ -52,9 +48,7 @@ export const clientLoader = async ({
 	return stats;
 };
 
-export default function Index() {
-	const stats = useLoaderData<typeof clientLoader>();
-
+export default function Index({ loaderData: stats }: Route.ComponentProps) {
 	const statsGroups: TabGroups[] = [
 		{
 			label: 'pages',

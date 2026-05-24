@@ -1,10 +1,10 @@
+import { useHover } from '@mantine/hooks';
 import React, { useMemo } from 'react';
 import isFQDN from 'validator/lib/isFQDN';
 
 import { IconExternal } from '@/components/icons/external';
 import { Group } from '@/components/layout/Flex';
 import { useFilter } from '@/hooks/use-filter';
-import { useHover } from '@/hooks/use-hover';
 
 import { formatCount, formatDuration } from './formatter';
 import classes from './StatsItem.module.css';

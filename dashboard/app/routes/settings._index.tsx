@@ -1,17 +1,14 @@
-import {
-	type ClientLoaderFunctionArgs,
-	type MetaFunction,
-	redirect,
-} from 'react-router';
+import { redirect } from 'react-router';
+import type { Route } from './+types/settings._index';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [
 		{ title: 'Settings | Medama' },
 		{ name: 'description', content: 'Privacy focused web analytics.' },
 	];
 };
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	return redirect('/settings/account');
 };
 

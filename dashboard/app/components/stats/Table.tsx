@@ -1,3 +1,4 @@
+import { useDidUpdate, useHover, useMediaQuery } from '@mantine/hooks';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import * as Tabs from '@radix-ui/react-tabs';
 import {
@@ -13,10 +14,7 @@ import isFQDN from 'validator/lib/isFQDN';
 import { ButtonIcon, ButtonLink } from '@/components/Button';
 import { IconExternal } from '@/components/icons/external';
 import { Group } from '@/components/layout/Flex';
-import { useDidUpdate } from '@/hooks/use-did-update';
 import { useFilter } from '@/hooks/use-filter';
-import { useHover } from '@/hooks/use-hover';
-import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { formatCount, formatDuration, formatPercentage } from './formatter';
 import classes from './Table.module.css';

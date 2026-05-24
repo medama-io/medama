@@ -1,27 +1,22 @@
 /** biome-ignore-all lint/suspicious/noDocumentCookie: CookieStore API is not widely available */
 import { notifications } from '@mantine/notifications';
-import {
-	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
-	data as json,
-	type MetaFunction,
-	redirect,
-} from 'react-router';
+import { data as json, redirect } from 'react-router';
 
 import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { Login } from '@/components/login/Login';
 import { hasSession, LOGGED_IN_COOKIE } from '@/utils/cookies';
+import type { Route } from './+types/login._index';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [
 		{ title: 'Login | Medama' },
 		{ name: 'description', content: 'Login into Medama Analytics.' },
 	];
 };
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	// If the user is in demo mode (hostname matches demo.medama.io or medama.fly.dev), automatically
 	// log them into the demo account.
 	const hostname = window.location.hostname;
@@ -55,7 +50,7 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	return null;
 };
 
-export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	const body = await request.formData();
 
 	const username = body.get('username')

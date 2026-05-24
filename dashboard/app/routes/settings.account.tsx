@@ -1,21 +1,15 @@
 import { schemaResolver, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import {
-	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
-	data as json,
-	type MetaFunction,
-	useLoaderData,
-	useSubmit,
-} from 'react-router';
+import { data as json, useSubmit } from 'react-router';
 import * as v from 'valibot';
 
 import { userGet, userUpdate } from '@/api/user';
 import { PasswordInput, TextInput } from '@/components/Input';
 import { Section } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
+import type { Route } from './+types/settings.account';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Account Settings | Medama' }];
 };
 
@@ -42,7 +36,7 @@ const accountSchema = v.object({
 	),
 });
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	const { data } = await userGet();
 
 	if (!data) {
@@ -56,7 +50,7 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	};
 };
 
-export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	const body = await request.formData();
 	const type = getType(body);
 
@@ -99,23 +93,19 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	return { message };
 };
 
-export default function Index() {
-	const { user } = useLoaderData<typeof clientLoader>();
+export default function Index({ loaderData }: Route.ComponentProps) {
+	const { user } = loaderData;
 	const submit = useSubmit();
 
 	const account = useForm({
 		mode: 'uncontrolled',
 		initialValues: {
 			_setting: 'account',
-			username: user?.username || '',
+			username: user.username,
 			password: '',
 		},
 		validate: schemaResolver(accountSchema),
 	});
-
-	if (!user) {
-		return;
-	}
 
 	const handleSubmit = (values: typeof account.values) => {
 		submit(values, { method: 'POST' });
