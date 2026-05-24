@@ -6,6 +6,7 @@ gofumpt = "latest"
 golangci-lint = "2.7.2"
 task = "latest"
 flyctl = "latest"
+air = "latest"
 
 [env]
 CGO_ENABLED = "1"

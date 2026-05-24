@@ -24,9 +24,9 @@ tasks:
     cmds:
       - mkdir -p ../core/client/scripts
       - |
-        files=("default" "click-events" "page-events" "click-events.page-events")
-        for file in "${files[@]}"; do
-          cp ./dist/$file.min.js ../core/client/scripts/$file.js
+        for file in ./dist/*.min.js; do
+          filename=$(basename "$file")
+          cp "$file" "../core/client/scripts/${filename%.min.js}.js"
         done
     sources:
       - ./dist/*.min.js

@@ -33,6 +33,7 @@ const trackerSchema = v.strictObject({
 	script_type: v.object({
 		default: v.boolean(),
 		'click-events': v.boolean(),
+		'outbound-links': v.boolean(),
 		'page-events': v.boolean(),
 	}),
 });
@@ -113,6 +114,9 @@ export default function Index() {
 				),
 				'page-events': Boolean(
 					user?.settings.script_type?.includes('page-events'),
+				),
+				'outbound-links': Boolean(
+					user?.settings.script_type?.includes('outbound-links'),
 				),
 			},
 		},
@@ -203,6 +207,33 @@ export default function Index() {
 						}
 						key={form.key('script_type.click-events')}
 						{...form.getInputProps('script_type.click-events', {
+							type: 'checkbox',
+						})}
+					/>
+					<Checkbox
+						label="Outbound Links"
+						value="outbound-links"
+						tooltip={
+							<>
+								<p>
+									Enable automatic tracking of outbound links on your website.
+								</p>
+								<br />
+								<p>
+									Read our{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/overview">
+										Custom Properties
+									</Anchor>{' '}
+									and{' '}
+									<Anchor href="http://oss.medama.io/features/custom-properties/outbound-links">
+										Outbound Links
+									</Anchor>{' '}
+									guide for more information.
+								</p>
+							</>
+						}
+						key={form.key('script_type.outbound-links')}
+						{...form.getInputProps('script_type.outbound-links', {
 							type: 'checkbox',
 						})}
 					/>

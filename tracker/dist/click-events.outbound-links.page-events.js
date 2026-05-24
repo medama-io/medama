@@ -169,6 +169,22 @@
 			xhr.send();
 		});
 
+	/**
+	 * Extracts key-value pairs from a given data attribute.
+	 * @param {Element} target The target element from which to extract data.
+	 * @param {string} attrName The name of the data attribute to extract (e.g., 'data-m:click').
+	 * @returns {Object<string, string>} An object containing key-value pairs from the attribute.
+	 */
+	const extractDataAttributes = (target, attrName) =>
+		(target.getAttribute(`data-m:${attrName}`) || '')
+			.split(';') // Split the attribute value into individual key-value pairs.
+			.reduce((acc, pair) => {
+				// Split each pair by '=' and trim whitespace.
+				const [k, v] = pair.split('=').map((s) => s.trim());
+				// If both key and value exist, add them to the accumulator object.
+				if (k && v) acc[k] = v;
+				return acc;
+			}, {});
 
 	/**
 	 * Send a load beacon event to the server when the page is loaded.
@@ -204,6 +220,14 @@
 						 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#return_value
 						 */
 						"t": Intl.DateTimeFormat().resolvedOptions().timeZone,
+						// Helper function to extract data attributes and merge them.
+						"d":  [...document.querySelectorAll('[data-m\\:load]')].reduce(
+								(acc, elem) => ({
+									...acc,
+									...extractDataAttributes(elem, 'load'),
+								}),
+								{},
+							),
 					}),
 				),
 				// Will make the response opaque, but we don't need it.
@@ -247,8 +271,78 @@
 		isUnloadCalled = true;
 	};
 
+	/**
+	 * Send a custom beacon event to the server.
+	 * @param {Object} data Custom data to send to the server.
+	 * @returns {Promise<void>}
+	 */
+	const sendCustomBeacon = async (data) => {
+		if (Object.keys(data).length > 0) {
+			// We use fetch here because it is more reliable than XHR.
+			fetch(host + 'event/hit', {
+				method: 'POST',
+				body: JSON.stringify(
+					// biome-ignore format: We use string literals for the keys to tell Closure Compiler to not rename them.
+					/**
+					 * Payload to send to the server.
+					 * @type {CustomPayload}
+					 */ ({
+						"b": uid,
+						"e": "custom",
+						"g": location.hostname,
+						"d": data,
+					}),
+				),
+				// Will make the response opaque, but we don't need it.
+				mode: 'no-cors',
+				keepalive: true,
+			});
+		}
+	};
 
+	/**
+	 * Click event listener to track custom events.
+	 * @param {MouseEvent} event The click event.
+	 * @returns {void}
+	 */
+	const clickTracker = (event) => {
+		// Must be an alement with a data-m:click attribute and a left or middle click.
+		if (
+			event.target instanceof HTMLElement &&
+			event.target.hasAttribute('data-m:click') &&
+			event.button < 2
+		) {
+			// Extract all data-m:click attributes and send them as custom properties.
+			const data = extractDataAttributes(event.target, 'click');
+			sendCustomBeacon(data);
+		}
+	};
 
+	// Click event listener only listens to primary left clicks.
+	addEventListener('click', clickTracker, { capture: true });
+	// Auxclick event listener listens to middle clicks and right clicks.
+	addEventListener('auxclick', clickTracker, { capture: true });
+
+	/**
+	 * Tracks clicks on outbound links using a single event listener.
+	 * @param {MouseEvent} event The click event.
+	 */
+	const outboundLinkTracker = (event) => {
+		// If the target is not an anchor element, and the hostname is not the same as the current
+		// hostname, then it is an outbound link.
+		if (
+			event.target instanceof HTMLAnchorElement &&
+			event.target.href &&
+			// Button must be a left or middle click.
+			event.button < 2 &&
+			new URL(event.target.href, location.href).hostname !== location.hostname
+		) {
+			sendCustomBeacon({ outbound: event.target.href });
+		}
+	};
+
+	addEventListener('click', outboundLinkTracker, { capture: true });
+	addEventListener('auxclick', outboundLinkTracker, { capture: true });
 
 	// Prefer pagehide if available because it's more reliable than unload.
 	// We also prefer pagehide because it doesn't break bfcache.
