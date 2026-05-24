@@ -15,9 +15,9 @@ const isCI = !!process.env.CI;
 module.exports = defineConfig({
 	testDir: './tests',
 	timeout: 20_000,
-	globalTimeout: isCI ? 10 * 60 * 1000 : undefined,
+	globalTimeout: isCI ? 5 * 60 * 1000 : undefined,
 	/* Run tests in files in parallel */
-	fullyParallel: !isCI,
+	fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: isCI,
 	/* Retry on CI only */
@@ -37,7 +37,6 @@ module.exports = defineConfig({
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on-first-retry',
-		screenshot: 'only-on-failure',
 	},
 
 	/* Configure projects for major browsers */

@@ -185,8 +185,7 @@ const matchRequests = async (page, responses, expectedRequests) => {
 				status = response.status();
 				if (status !== 204) {
 					try {
-						const responseBuffer = await response.body();
-						responseBody = responseBuffer ? await response.text() : null;
+						responseBody = await response.text();
 					} catch (error) {
 						console.warn(`Failed to read response body: ${error.message}`);
 						responseBody = null;
