@@ -15,6 +15,7 @@ import (
 func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *DeleteUserNoContent:
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -40,6 +41,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -71,6 +73,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -102,6 +105,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -133,6 +137,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -164,6 +169,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -201,6 +207,7 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter) err
 func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *DeleteWebsitesIDNoContent:
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -226,6 +233,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -257,6 +265,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -288,6 +297,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -319,6 +329,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -350,6 +361,7 @@ func encodeDeleteWebsitesIDResponse(response DeleteWebsitesIDRes, w http.Respons
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -430,6 +442,7 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -461,6 +474,7 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -499,6 +513,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *UserGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -530,6 +545,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -561,6 +577,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -592,6 +609,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -623,6 +641,7 @@ func encodeGetUserResponse(response GetUserRes, w http.ResponseWriter) error {
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -661,6 +680,7 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 	switch response := response.(type) {
 	case *UserUsageGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -692,6 +712,7 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -723,6 +744,7 @@ func encodeGetUserUsageResponse(response GetUserUsageRes, w http.ResponseWriter)
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -761,6 +783,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 	switch response := response.(type) {
 	case *StatsBrowsersHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -792,6 +815,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -823,6 +847,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -854,6 +879,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -885,6 +911,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -916,6 +943,7 @@ func encodeGetWebsiteIDBrowsersResponse(response GetWebsiteIDBrowsersRes, w http
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -954,6 +982,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 	switch response := response.(type) {
 	case *StatsUTMCampaignsHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -985,6 +1014,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1016,6 +1046,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1047,6 +1078,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1078,6 +1110,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1109,6 +1142,7 @@ func encodeGetWebsiteIDCampaignsResponse(response GetWebsiteIDCampaignsRes, w ht
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1147,6 +1181,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 	switch response := response.(type) {
 	case *StatsCountriesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1178,6 +1213,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1209,6 +1245,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1240,6 +1277,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1271,6 +1309,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1302,6 +1341,7 @@ func encodeGetWebsiteIDCountryResponse(response GetWebsiteIDCountryRes, w http.R
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1340,6 +1380,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 	switch response := response.(type) {
 	case *StatsDevicesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1371,6 +1412,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1402,6 +1444,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1433,6 +1476,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1464,6 +1508,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1495,6 +1540,7 @@ func encodeGetWebsiteIDDeviceResponse(response GetWebsiteIDDeviceRes, w http.Res
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1533,6 +1579,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 	switch response := response.(type) {
 	case *StatsLanguagesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1564,6 +1611,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1595,6 +1643,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1626,6 +1675,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1657,6 +1707,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1688,6 +1739,7 @@ func encodeGetWebsiteIDLanguageResponse(response GetWebsiteIDLanguageRes, w http
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1726,6 +1778,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 	switch response := response.(type) {
 	case *StatsUTMMediumsHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1757,6 +1810,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1788,6 +1842,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1819,6 +1874,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1850,6 +1906,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1881,6 +1938,7 @@ func encodeGetWebsiteIDMediumsResponse(response GetWebsiteIDMediumsRes, w http.R
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1919,6 +1977,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 	switch response := response.(type) {
 	case *StatsOSHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1950,6 +2009,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -1981,6 +2041,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2012,6 +2073,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2043,6 +2105,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2074,6 +2137,7 @@ func encodeGetWebsiteIDOsResponse(response GetWebsiteIDOsRes, w http.ResponseWri
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2112,6 +2176,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 	switch response := response.(type) {
 	case *StatsPagesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2143,6 +2208,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2174,6 +2240,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2205,6 +2272,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2236,6 +2304,7 @@ func encodeGetWebsiteIDPagesResponse(response GetWebsiteIDPagesRes, w http.Respo
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2274,6 +2343,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 	switch response := response.(type) {
 	case *StatsPropertiesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2305,6 +2375,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2336,6 +2407,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2367,6 +2439,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2398,6 +2471,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2429,6 +2503,7 @@ func encodeGetWebsiteIDPropertiesResponse(response GetWebsiteIDPropertiesRes, w 
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2467,6 +2542,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 	switch response := response.(type) {
 	case *StatsReferrersHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2498,6 +2574,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2529,6 +2606,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2560,6 +2638,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2591,6 +2670,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2622,6 +2702,7 @@ func encodeGetWebsiteIDReferrersResponse(response GetWebsiteIDReferrersRes, w ht
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2660,6 +2741,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 	switch response := response.(type) {
 	case *StatsUTMSourcesHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2691,6 +2773,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2722,6 +2805,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2753,6 +2837,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2784,6 +2869,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2815,6 +2901,7 @@ func encodeGetWebsiteIDSourcesResponse(response GetWebsiteIDSourcesRes, w http.R
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2853,6 +2940,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 	switch response := response.(type) {
 	case *StatsSummaryHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2884,6 +2972,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2915,6 +3004,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2946,6 +3036,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -2977,6 +3068,7 @@ func encodeGetWebsiteIDSummaryResponse(response GetWebsiteIDSummaryRes, w http.R
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3015,6 +3107,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 	switch response := response.(type) {
 	case *StatsTimeHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3046,6 +3139,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3077,6 +3171,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3108,6 +3203,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3139,6 +3235,7 @@ func encodeGetWebsiteIDTimeResponse(response GetWebsiteIDTimeRes, w http.Respons
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3177,6 +3274,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 	switch response := response.(type) {
 	case *GetWebsitesOKHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3212,6 +3310,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3243,6 +3342,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3274,6 +3374,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3305,6 +3406,7 @@ func encodeGetWebsitesResponse(response GetWebsitesRes, w http.ResponseWriter) e
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3343,6 +3445,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 	switch response := response.(type) {
 	case *WebsiteGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3374,6 +3477,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3405,6 +3509,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3436,6 +3541,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3467,6 +3573,7 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3505,6 +3612,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 	switch response := response.(type) {
 	case *UserGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3536,6 +3644,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3567,6 +3676,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3598,6 +3708,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3629,6 +3740,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3660,6 +3772,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 
 	case *ConflictErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3691,6 +3804,7 @@ func encodePatchUserResponse(response PatchUserRes, w http.ResponseWriter) error
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3729,6 +3843,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 	switch response := response.(type) {
 	case *WebsiteGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3760,6 +3875,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3791,6 +3907,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3822,6 +3939,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3853,6 +3971,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3884,6 +4003,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3921,6 +4041,7 @@ func encodePatchWebsitesIDResponse(response PatchWebsitesIDRes, w http.ResponseW
 func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *PostAuthLoginOK:
+		w.Header().Set("Access-Control-Expose-Headers", "Set-Cookie,X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3958,6 +4079,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -3989,6 +4111,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4020,6 +4143,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4057,6 +4181,7 @@ func encodePostAuthLoginResponse(response PostAuthLoginRes, w http.ResponseWrite
 func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
 	case *PostAuthLogoutNoContent:
+		w.Header().Set("Access-Control-Expose-Headers", "Set-Cookie,X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4094,6 +4219,7 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4125,6 +4251,7 @@ func encodePostAuthLogoutResponse(response PostAuthLogoutRes, w http.ResponseWri
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4168,6 +4295,7 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4199,6 +4327,7 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 
 	case *NotFoundErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4230,6 +4359,7 @@ func encodePostEventHitResponse(response PostEventHitRes, w http.ResponseWriter)
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4268,6 +4398,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 	switch response := response.(type) {
 	case *WebsiteGetHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4299,6 +4430,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 
 	case *BadRequestErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4330,6 +4462,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 
 	case *UnauthorisedErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4361,6 +4494,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 
 	case *ForbiddenErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4392,6 +4526,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 
 	case *ConflictErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
@@ -4423,6 +4558,7 @@ func encodePostWebsitesResponse(response PostWebsitesRes, w http.ResponseWriter)
 
 	case *InternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
 		{
 			h := uri.NewHeaderEncoder(w.Header())
