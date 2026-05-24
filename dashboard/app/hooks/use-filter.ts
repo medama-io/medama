@@ -1,5 +1,5 @@
-import { useSearchParams } from '@remix-run/react';
 import { useCallback } from 'react';
+import { useSearchParams } from 'react-router';
 import type {
 	Filter,
 	FilterKey,
@@ -76,4 +76,4 @@ const useFilter = () => {
 	};
 };
 
-export { useFilter, getKey };
+export { getKey, useFilter };

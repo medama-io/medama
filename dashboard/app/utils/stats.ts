@@ -1,4 +1,4 @@
-import type { Params } from '@remix-run/react';
+import type { Params } from 'react-router';
 
 import {
 	statsBrowsers,
@@ -230,4 +230,4 @@ const fetchStats = async (
 	};
 };
 
-export { fetchStats, isDatasetItem, type DatasetItem, type Datasets };
+export { type DatasetItem, type Datasets, fetchStats, isDatasetItem };

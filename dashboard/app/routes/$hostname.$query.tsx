@@ -1,40 +1,32 @@
-import {
-	type ClientLoaderFunctionArgs,
-	type MetaFunction,
-	useLoaderData,
-	useParams,
-} from '@remix-run/react';
-
 import { Table } from '@/components/stats/Table';
-import type { DataRow } from '@/components/stats/types';
-import { type DatasetItem, fetchStats, isDatasetItem } from '@/utils/stats';
+import type { Dataset } from '@/components/stats/types';
+import { fetchStats, isDatasetItem } from '@/utils/stats';
+import type { Route } from './+types/$hostname.$query';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
 };
+
+const isDataset = (value: string | undefined): value is Dataset =>
+	Boolean(value && value !== 'summary' && isDatasetItem(value));
 
 export const clientLoader = async ({
 	request,
 	params,
-}: ClientLoaderFunctionArgs) => {
-	const query = params.query as DatasetItem;
-	if (!query || query === 'summary' || !isDatasetItem(query)) {
+}: Route.ClientLoaderArgs) => {
+	const query = params.query;
+	if (!isDataset(query)) {
 		throw new Error('Invalid dataset item');
 	}
 
 	const stats = await fetchStats(request, params, { dataset: [query] });
 
-	return stats;
+	return {
+		query,
+		data: stats[query] ?? [],
+	};
 };
 
-export default function Index() {
-	const params = useParams();
-	const data = useLoaderData<Omit<typeof clientLoader, 'summary'>>();
-
-	// We can safely assume that the dataset items are present as the loader function
-	// has already validated the query parameter
-	const query = params.query as keyof typeof data;
-	const stats = data[query] as DataRow[];
-
-	return <Table query={query} data={stats} />;
+export default function Index({ loaderData }: Route.ComponentProps) {
+	return <Table query={loaderData.query} data={loaderData.data} />;
 }

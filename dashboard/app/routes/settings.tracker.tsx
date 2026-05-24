@@ -1,14 +1,6 @@
-import { type TransformedValues, useForm } from '@mantine/form';
+import { schemaResolver, type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import {
-	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
-	data as json,
-	type MetaFunction,
-	useLoaderData,
-	useSubmit,
-} from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
+import { data as json, useSubmit } from 'react-router';
 import * as v from 'valibot';
 
 import type { components } from '@/api/types';
@@ -23,8 +15,9 @@ import {
 	SectionWrapper,
 } from '@/components/settings/Section';
 import { getString, getType } from '@/utils/form';
+import type { Route } from './+types/settings.tracker';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Tracker Settings | Medama' }];
 };
 
@@ -40,7 +33,7 @@ const trackerSchema = v.strictObject({
 const getTrackingScript = (hostname: string) =>
 	`<script defer src="https://${hostname}/script.js"></script>`;
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	const { data } = await userGet();
 
 	if (!data) {
@@ -54,7 +47,7 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	};
 };
 
-export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	const body = await request.formData();
 	const type = getType(body);
 	const scriptType = getString(body, 'script_type');
@@ -81,7 +74,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res || !res.ok) {
+	if (!res?.ok) {
 		throw new Response(res?.statusText || 'Failed to update user.', {
 			status: res?.status || 500,
 		});
@@ -98,8 +91,8 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	return { message };
 };
 
-export default function Index() {
-	const { user } = useLoaderData<typeof clientLoader>();
+export default function Index({ loaderData }: Route.ComponentProps) {
+	const { user } = loaderData;
 	const submit = useSubmit();
 
 	const form = useForm({
@@ -109,14 +102,14 @@ export default function Index() {
 			script_type: {
 				default: true,
 				'click-events': Boolean(
-					user?.settings.script_type?.includes('click-events'),
+					user.settings.script_type?.includes('click-events'),
 				),
 				'page-events': Boolean(
-					user?.settings.script_type?.includes('page-events'),
+					user.settings.script_type?.includes('page-events'),
 				),
 			},
 		},
-		validate: valibotResolver(trackerSchema),
+		validate: schemaResolver(trackerSchema),
 		transformValues: (values) => {
 			// Convert object to comma-separated string
 			const scriptType = Object.entries(values.script_type)
@@ -130,10 +123,6 @@ export default function Index() {
 			};
 		},
 	});
-
-	if (!user) {
-		return;
-	}
 
 	const handleSubmit = (values: TransformedValues<typeof form>) => {
 		submit(values, { method: 'POST' });

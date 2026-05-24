@@ -1,4 +1,4 @@
-import { json } from '@remix-run/react';
+import { data as json } from 'react-router';
 
 import { expireSession } from '@/utils/cookies';
 
@@ -122,4 +122,4 @@ const client = async (
 	return res;
 };
 
-export { API_BASE, API_URL, DEFAULT_HEADERS, client };
+export { API_BASE, API_URL, client, DEFAULT_HEADERS };

@@ -1,7 +1,7 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { sync as brotliSize } from 'brotli-size';
 import { gzipSize } from 'gzip-size';
-import path from 'node:path';
-import fs from 'node:fs/promises';
 
 /** Print file size of dist files into console */
 

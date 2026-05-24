@@ -123,18 +123,18 @@ type FilterOperator = (typeof FILTER_OPERATOR)[number];
 
 type FilterKey = `${Filter}[${FilterOperator}]`;
 
-export { DATASETS };
 export type {
 	ChartStat,
 	ChartType,
+	CustomPropertyValue,
 	DataRow,
 	Dataset,
+	Filter,
+	FilterKey,
+	FilterOperator,
+	PageViewValue,
 	StatHeaderData,
 	TabData,
 	TabGroups,
-	PageViewValue,
-	CustomPropertyValue,
-	Filter,
-	FilterOperator,
-	FilterKey,
 };
+export { DATASETS };

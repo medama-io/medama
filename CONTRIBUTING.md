@@ -23,15 +23,23 @@ We recommend using [mise-en-place](https://mise.jdx.dev/) as a convenient versio
 
 We use mise tasks to run project workflows. Run `mise install` from the repository root first, then use the package tasks for normal development.
 
-A full development setup can be done by running the following commands in separate terminals:
+To start the API and dashboard together, run:
 
-
-```bash [Terminal 1]
-mise run core:dev # Start API server
+```bash
+mise dev
 ```
 
-```bash [Terminal 2]
-mise run dashboard:dev # Start dashboard dev server with HMR
+To seed local databases with deterministic dashboard data before starting the app, run:
+
+```bash
+mise run seed -- --reset
+```
+
+You can still run each service separately when needed:
+
+```bash
+mise run core:dev
+mise run dashboard:dev
 ```
 
 More details on the development setup can be found in the respective sub-project READMEs.

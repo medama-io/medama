@@ -1,4 +1,4 @@
-import { Outlet } from '@remix-run/react';
+import { Outlet } from 'react-router';
 
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { SettingsLayout } from '@/components/settings/Layout';

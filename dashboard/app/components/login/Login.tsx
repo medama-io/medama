@@ -1,6 +1,5 @@
-import { useForm } from '@mantine/form';
-import { Form, useSubmit } from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
+import { schemaResolver, useForm } from '@mantine/form';
+import { Form, useSubmit } from 'react-router';
 import * as v from 'valibot';
 
 import { Button } from '@/components/Button';
@@ -27,7 +26,7 @@ export const Login = () => {
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: { username: '', password: '' },
-		validate: valibotResolver(loginSchema),
+		validate: schemaResolver(loginSchema),
 	});
 
 	const handleSubmit = (values: typeof form.values) => {

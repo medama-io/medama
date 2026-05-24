@@ -4,9 +4,9 @@ import {
 	AreaChart as MantineAreaChart,
 	BarChart as MantineBarChart,
 } from '@mantine/charts';
-import { useSearchParams } from '@remix-run/react';
 import { format, parseISO } from 'date-fns';
 import React, { useMemo } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { Group } from '@/components/layout/Flex';
 import classes from './Chart.module.css';
@@ -25,15 +25,15 @@ interface ChartProps {
 
 interface TooltipPayload {
 	name: string;
-	value: number;
-	color: string;
+	value?: number;
+	color?: string;
 }
 
 interface ChartTooltipProps {
 	label: string;
-	date: string;
+	date: string | number | undefined;
 	period: Period | null;
-	payload: TooltipPayload[];
+	payload?: readonly TooltipPayload[];
 	valueFormatter: (value: number) => string;
 }
 
@@ -100,7 +100,7 @@ const ChartTooltip = React.memo(
 		}, [period]);
 
 		const dateLabel = useMemo(() => {
-			if (!date) return '';
+			if (typeof date !== 'string') return '';
 
 			const value = dateTimeFormat.format(parseISO(date));
 
@@ -119,10 +119,10 @@ const ChartTooltip = React.memo(
 			return value;
 		}, [dateTimeFormat, date, period]);
 
-		if (!payload || !label || !date) return null;
+		if (!payload || !label || typeof date !== 'string') return null;
 
 		const item = payload[0];
-		if (!item) return null;
+		if (!item || typeof item.value !== 'number') return null;
 
 		return (
 			<div className={classes.tooltip}>
@@ -178,7 +178,7 @@ const Chart = ({ type, label, data }: ChartProps) => {
 		}
 
 		if (period?.endsWith('d')) {
-			if (Number.parseInt(period) <= 7) {
+			if (Number.parseInt(period, 10) <= 7) {
 				return (date: Date) => format(date, 'EEEEEE, MMM d');
 			}
 
@@ -197,6 +197,17 @@ const Chart = ({ type, label, data }: ChartProps) => {
 	const chartStyleProps: BarChartProps & AreaChartProps = {
 		h: 400,
 		my: 'xl',
+		styles: {
+			root: { minWidth: 0 },
+			container: { minHeight: 400, minWidth: 0 },
+		},
+		attributes: {
+			container: {
+				initialDimension: { width: 800, height: 400 },
+				minHeight: 400,
+				minWidth: 0,
+			},
+		},
 		data,
 		dataKey: 'date',
 		series: [{ name: 'value', label, color: '#9D5DEF' }],
@@ -213,7 +224,7 @@ const Chart = ({ type, label, data }: ChartProps) => {
 					label={label}
 					date={date}
 					period={period}
-					payload={payload as TooltipPayload[]}
+					payload={payload as readonly TooltipPayload[] | undefined}
 					valueFormatter={valueFormatter}
 				/>
 			),

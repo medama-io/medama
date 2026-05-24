@@ -1,11 +1,9 @@
+import { useDidUpdate, useDisclosure } from '@mantine/hooks';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
-import { useNavigate, useSearchParams } from '@remix-run/react';
 import type React from 'react';
 import { Fragment, useMemo, useState } from 'react';
-
-import { useDidUpdate } from '@/hooks/use-did-update';
-import { useDisclosure } from '@/hooks/use-disclosure';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import classes from './DropdownSelect.module.css';
 
@@ -39,7 +37,7 @@ const DropdownSelect = ({
 		: defaultValue;
 
 	const [radio, setRadio] = useState(option);
-	const [open, { close, toggle }] = useDisclosure(false);
+	const [open, { close, set: setOpen }] = useDisclosure(false);
 
 	const options = useMemo(
 		() =>
@@ -95,7 +93,7 @@ const DropdownSelect = ({
 		typeof records[option] === 'string' ? records[option] : defaultLabel;
 
 	return (
-		<DropdownMenu.Root open={open} onOpenChange={toggle} modal={false}>
+		<DropdownMenu.Root open={open} onOpenChange={setOpen} modal={false}>
 			<DropdownMenu.Trigger asChild>
 				<button
 					type="button"

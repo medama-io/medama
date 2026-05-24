@@ -1,5 +1,5 @@
-import { Link } from '@remix-run/react';
 import type { ReactNode } from 'react';
+import { Link } from 'react-router';
 
 import classes from './Error.module.css';
 
@@ -157,7 +157,7 @@ export {
 	ConflictError,
 	ForbiddenError,
 	InternalServerError,
+	isStatusError,
 	NotFoundError,
 	StatusError,
-	isStatusError,
 };

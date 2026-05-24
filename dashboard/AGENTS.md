@@ -2,7 +2,7 @@
 
 ## Role
 
-You are working on `dashboard`, the Remix SPA / React TypeScript dashboard for Medama. Keep the user experience consistent with an operational analytics product: dense, readable, responsive, and focused on recurring dashboard workflows.
+You are working on `dashboard`, the React Router SPA / React TypeScript dashboard for Medama. Keep the user experience consistent with an operational analytics product: dense, readable, responsive, and focused on recurring dashboard workflows.
 
 ## Success Criteria
 
@@ -16,7 +16,7 @@ You are working on `dashboard`, the Remix SPA / React TypeScript dashboard for M
 - Prefer existing local components, Mantine components, Radix primitives, hooks, and icons before adding dependencies.
 - Use CSS modules for component-scoped styles and existing global/theme tokens for shared layout, colors, typography, and media queries.
 - Preserve accessibility behavior for dialogs, icon buttons, labels, loading states, forms, and route errors.
-- Keep browser-only code guarded where needed; tooling still has server/prerender boundaries even though the app runs in Remix SPA mode.
+- Keep browser-only code guarded where needed; tooling still has server/prerender boundaries even though the app runs in React Router SPA mode.
 - Avoid broad visual redesigns while fixing narrow functional issues.
 
 ## API and Generated Types
@@ -39,6 +39,10 @@ You are working on `dashboard`, the Remix SPA / React TypeScript dashboard for M
 
 - For UI or route behavior changes, run the smallest relevant check that covers the touched area, usually `mise run lint:ci` or a narrower typecheck/build command when appropriate.
 - For visible UI changes, verify the affected route in a browser when practical.
+- For frontend dependency, routing, styling, or component changes, capture a before/after browser baseline when practical. Prefer a production build with Vite preview for reviewable comparisons; use dev mode mainly for debugging.
+- When browser verification needs API data, run the local core server with temporary databases and CORS for the dashboard origin.
+- For realistic local dashboard data, prefer `mise run seed -- --reset` over hand-created records.
+- In final notes, name the compared routes, server mode, and any meaningful visual differences. Save screenshots when they make the comparison easier to review.
 - For generated type changes, run the generation task and review the generated diff.
 - For documentation-only changes, `git diff --check` is enough.
 

@@ -22,8 +22,8 @@ module.exports = defineConfig({
 	forbidOnly: isCI,
 	/* Retry on CI only */
 	retries: isCI ? 1 : 0,
-	/* Keep CI parallelism bounded for the shared tracker test server. */
-	workers: isCI ? 3 : undefined,
+	/* Keep CI deterministic for the shared tracker/core servers. */
+	workers: isCI ? 1 : undefined,
 	/* Stop quickly if shared-state failures cascade. */
 	maxFailures: isCI ? 5 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -81,7 +81,7 @@ module.exports = defineConfig({
 			command: 'bun run e2e:serve',
 			port: 3000,
 			reuseExistingServer: !process.env.CI,
-			timeout: 2500,
+			timeout: 60_000,
 		},
 		{
 			command:

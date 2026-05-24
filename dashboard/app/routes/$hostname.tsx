@@ -1,28 +1,23 @@
-import {
-	type ClientLoaderFunctionArgs,
-	type MetaFunction,
-	Outlet,
-	type ShouldRevalidateFunctionArgs,
-	useLoaderData,
-} from '@remix-run/react';
 import { useMemo } from 'react';
+import { Outlet, type ShouldRevalidateFunctionArgs } from 'react-router';
 
 import { websiteList } from '@/api/websites';
 import { Chart } from '@/components/stats/Chart';
 import { Filters } from '@/components/stats/Filter';
 import { StatsHeader } from '@/components/stats/StatsHeader';
-import type { StatHeaderData } from '@/components/stats/types';
+import type { ChartStat, StatHeaderData } from '@/components/stats/types';
 import { useChartType } from '@/hooks/use-chart-type';
 import { fetchStats } from '@/utils/stats';
+import type { Route } from './+types/$hostname';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Dashboard | Medama' }];
 };
 
 export const clientLoader = async ({
 	request,
 	params,
-}: ClientLoaderFunctionArgs) => {
+}: Route.ClientLoaderArgs) => {
 	// Check chart param for the chart data to display
 	const searchParams = new URL(request.url).searchParams;
 	const chart = searchParams.get('chart[stat]');
@@ -38,15 +33,15 @@ export const clientLoader = async ({
 	return { stats, websites: websites.data };
 };
 
-const LABEL_MAP = {
+const LABEL_MAP: Record<ChartStat, string> = {
 	visitors: 'Visitors',
 	pageviews: 'Page Views',
 	duration: 'Time Spent',
 	bounces: 'Bounce Rate',
 };
 
-export default function Index() {
-	const { stats, websites } = useLoaderData<typeof clientLoader>();
+export default function Index({ loaderData }: Route.ComponentProps) {
+	const { stats, websites } = loaderData;
 	const { summary } = stats;
 	if (!websites) throw new Error('Websites data is required');
 	if (!summary) throw new Error('Summary data is required');
@@ -86,7 +81,7 @@ export default function Index() {
 	const chartData = useMemo(
 		() =>
 			summary.interval?.map((item) => {
-				const valueMap = {
+				const valueMap: Record<ChartStat, number> = {
 					visitors: item.visitors ?? 0,
 					pageviews: item.pageviews ?? 0,
 					bounces: item.bounce_percentage ?? 0,
@@ -95,7 +90,7 @@ export default function Index() {
 
 				return {
 					date: item.date,
-					value: valueMap[chart as keyof typeof valueMap],
+					value: valueMap[chart],
 				};
 			}) ?? [],
 		[summary.interval, chart],
@@ -103,7 +98,7 @@ export default function Index() {
 
 	const websiteList = websites.map((website) => website.hostname);
 
-	const label = LABEL_MAP[chart as keyof typeof LABEL_MAP];
+	const label = LABEL_MAP[chart];
 
 	return (
 		<>

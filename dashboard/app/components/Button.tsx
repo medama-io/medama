@@ -1,7 +1,7 @@
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { Link, type LinkProps } from '@remix-run/react';
 import type React from 'react';
+import { Link, type LinkProps } from 'react-router';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	loading?: boolean;
@@ -104,4 +104,4 @@ const CloseButton = ({ label, ...rest }: CloseButtonProps) => {
 };
 
 // TODO: Add ButtonNavLink with pending spinners.
-export { Button, ButtonLink, CloseButton, ButtonIcon };
+export { Button, ButtonIcon, ButtonLink, CloseButton };

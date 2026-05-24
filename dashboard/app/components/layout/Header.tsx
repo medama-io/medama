@@ -8,12 +8,13 @@ import {
 	Stack,
 	Text,
 } from '@mantine/core';
-import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
+import { useDisclosure } from '@mantine/hooks';
+import { Link, useLocation, useRouteLoaderData } from 'react-router';
 
 import { ButtonLink } from '@/components/Button';
 import { BannerLogo } from '@/components/icons/banner-transparent';
 import { IconSettings } from '@/components/icons/settings';
-import { useDisclosure } from '@/hooks/use-disclosure';
+import type { RootLoaderData } from '@/root';
 
 import classes from './Header.module.css';
 
@@ -33,10 +34,6 @@ interface LoginButtonProps {
 interface MobileDrawerProps extends DrawerProps {
 	isLoggedIn: boolean;
 	toggleDrawer: () => void;
-}
-
-interface RootLoaderData {
-	isLoggedIn: boolean;
 }
 
 const HeaderNavLink = ({ label, to, onClick }: HeaderNavLinkProps) => {
@@ -106,7 +103,6 @@ const MobileDrawer = ({
 		{...props}
 	>
 		<Drawer.Content>
-			{/* biome-ignore lint/a11y/useSemanticElements: Explicit */}
 			<Drawer.Body role="navigation" aria-label="Main navigation">
 				{isLoggedIn && (
 					<Stack gap={0}>

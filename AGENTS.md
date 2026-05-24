@@ -7,7 +7,7 @@ You are working in the Medama monorepo, a self-hosted, cookie-free website analy
 ## Repository Map
 
 - `core`: Go API server and single-binary application. It owns the OpenAPI contract, SQLite/DuckDB persistence, migrations, embedded dashboard assets, and embedded tracker scripts.
-- `dashboard`: Remix SPA / React TypeScript dashboard. It consumes generated API types from `core/openapi.yaml`.
+- `dashboard`: React Router SPA / React TypeScript dashboard. It consumes generated API types from `core/openapi.yaml`.
 - `tracker`: Tiny browser JavaScript tracker. It is size-sensitive and ships generated tracked build artifacts.
 
 For package-specific work, read the nearest package `AGENTS.md` before changing files there. If multiple guides apply, follow all of them; the most specific guide wins when instructions differ.

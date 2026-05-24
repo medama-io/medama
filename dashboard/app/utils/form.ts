@@ -21,4 +21,4 @@ const getBoolean = (body: FormData, key: string) => {
 const getType = (body: FormData) =>
 	body.get('_setting') ? String(body.get('_setting')) : undefined;
 
-export { getString, getNumber, getBoolean, getType };
+export { getBoolean, getNumber, getString, getType };

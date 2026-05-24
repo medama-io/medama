@@ -1,10 +1,13 @@
 import { PassThrough } from 'node:stream';
 
-import type { AppLoadContext, EntryContext } from '@remix-run/node';
-import { createReadableStreamFromReadable } from '@remix-run/node';
-import { RemixServer } from '@remix-run/react';
+import { createReadableStreamFromReadable } from '@react-router/node';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
+import {
+	type AppLoadContext,
+	type EntryContext,
+	ServerRouter,
+} from 'react-router';
 
 // Reject/cancel all pending promises after 5 seconds
 export const streamTimeout = 5000;
@@ -13,24 +16,24 @@ export default function handleRequest(
 	request: Request,
 	responseStatusCode: number,
 	responseHeaders: Headers,
-	remixContext: EntryContext,
+	routerContext: EntryContext,
 	_loadContext: AppLoadContext,
 ) {
 	const prohibitOutOfOrderStreaming =
-		isBotRequest(request.headers.get('user-agent')) || remixContext.isSpaMode;
+		isBotRequest(request.headers.get('user-agent')) || routerContext.isSpaMode;
 
 	return prohibitOutOfOrderStreaming
 		? handleBotRequest(
 				request,
 				responseStatusCode,
 				responseHeaders,
-				remixContext,
+				routerContext,
 			)
 		: handleBrowserRequest(
 				request,
 				responseStatusCode,
 				responseHeaders,
-				remixContext,
+				routerContext,
 			);
 }
 
@@ -46,12 +49,12 @@ function handleBotRequest(
 	request: Request,
 	responseStatusCode: number,
 	responseHeaders: Headers,
-	remixContext: EntryContext,
+	routerContext: EntryContext,
 ) {
 	return new Promise((resolve, reject) => {
 		let shellRendered = false;
 		const { pipe, abort } = renderToPipeableStream(
-			<RemixServer context={remixContext} url={request.url} />,
+			<ServerRouter context={routerContext} url={request.url} />,
 			{
 				onAllReady() {
 					shellRendered = true;
@@ -94,12 +97,12 @@ function handleBrowserRequest(
 	request: Request,
 	responseStatusCode: number,
 	responseHeaders: Headers,
-	remixContext: EntryContext,
+	routerContext: EntryContext,
 ) {
 	return new Promise((resolve, reject) => {
 		let shellRendered = false;
 		const { pipe, abort } = renderToPipeableStream(
-			<RemixServer context={remixContext} url={request.url} />,
+			<ServerRouter context={routerContext} url={request.url} />,
 			{
 				onShellReady() {
 					shellRendered = true;

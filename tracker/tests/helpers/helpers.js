@@ -1,7 +1,7 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { loadUnloadTests } from './load-unload';
 import { clickEventTests } from './click-events';
+import { loadUnloadTests } from './load-unload';
 
 /**
  * @typedef {('simple'|'history')} Tests
@@ -35,10 +35,12 @@ import { clickEventTests } from './click-events';
 /**
  * @typedef {Object} RequestResponsePair
  * @property {import('@playwright/test').Request} request
- * @property {import('@playwright/test').Response} response
+ * @property {import('@playwright/test').Response|null} response
  */
 
 const TIMEOUT_DELAY = 1250;
+const REQUEST_TIMEOUT = 10_000;
+const RESPONSE_TIMEOUT = 5_000;
 
 /**
  * Get the browser name from the page context.
@@ -49,6 +51,70 @@ const TIMEOUT_DELAY = 1250;
 const getBrowser = (page) => page.context().browser().browserType().name();
 
 /**
+ * Filter browser-specific expected requests.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @param {Array<ExpectedRequest>} expectedRequests
+ * @returns {Array<ExpectedRequest>}
+ */
+const getExpectedRequests = (page, expectedRequests) => {
+	const browserName = getBrowser(page);
+	return expectedRequests.filter(
+		(req) => !req.ignoreBrowsers?.includes(browserName),
+	);
+};
+
+/**
+ * @param {string} requestURL
+ * @returns {string}
+ */
+const getPathWithSearch = (requestURL) => {
+	const url = new URL(requestURL);
+	return url.pathname + url.search;
+};
+
+/**
+ * @param {import('@playwright/test').Request} request
+ * @param {ExpectedRequest} expectedRequest
+ * @returns {boolean}
+ */
+const matchesExpectedRequest = (request, expectedRequest) => {
+	if (request.method() !== expectedRequest.method) {
+		return false;
+	}
+
+	const pathWithSearch = getPathWithSearch(request.url());
+	return expectedRequest.url.includes('?')
+		? pathWithSearch.startsWith(expectedRequest.url)
+		: pathWithSearch === expectedRequest.url;
+};
+
+/**
+ * @param {import('@playwright/test').Request} request
+ * @param {ExpectedRequest} expectedRequest
+ * @returns {Promise<RequestResponsePair>}
+ */
+const collectRequestResponse = async (request, expectedRequest) => {
+	if (expectedRequest.method === 'POST' && expectedRequest.status === 204) {
+		return { request, response: request.existingResponse() };
+	}
+
+	let timeoutID;
+	const timeout = new Promise((resolve) => {
+		timeoutID = setTimeout(() => resolve(null), RESPONSE_TIMEOUT);
+	});
+
+	try {
+		const response = await Promise.race([request.response(), timeout]);
+		clearTimeout(timeoutID);
+		return { request, response };
+	} catch (error) {
+		console.warn(`Failed to collect response: ${error.message}`);
+		return { request, response: null };
+	}
+};
+
+/**
  * Add request and response listeners to the page to track API calls.
  *
  * @param {import('@playwright/test').Page} page
@@ -56,50 +122,44 @@ const getBrowser = (page) => page.context().browser().browserType().name();
  * @returns {Promise<RequestResponsePair[]>}
  */
 const addRequestListeners = (page, expectedRequests) => {
-	/** @type {RequestResponsePair[]} */
-	const pairs = [];
+	const requestsToMatch = getExpectedRequests(page, expectedRequests);
 
 	return new Promise((resolve) => {
-		let matchedCount = 0;
-		const timeoutId = setTimeout(() => {
+		/** @type {Array<Promise<RequestResponsePair>>} */
+		const pairs = [];
+
+		const finish = () => {
+			clearTimeout(timeoutID);
+			page.off('request', onRequest);
+			Promise.all(pairs).then(resolve);
+		};
+
+		const timeoutID = setTimeout(() => {
 			console.warn(
 				'Timeout waiting for requests. Resolving with partial data.',
 			);
-			resolve(pairs);
-		}, 4000); // 4 second timeout
+			finish();
+		}, REQUEST_TIMEOUT);
 
-		page.on('request', (request) => {
-			const matchingExpected = expectedRequests.find(
-				(ereq) =>
-					request.url().includes(ereq.url) && request.method() === ereq.method,
+		/**
+		 * @param {import('@playwright/test').Request} request
+		 */
+		const onRequest = (request) => {
+			const matchingExpected = requestsToMatch.find((expectedRequest) =>
+				matchesExpectedRequest(request, expectedRequest),
 			);
-			if (matchingExpected) {
-				console.log('>>', request.method(), request.url());
-				pairs.push({ request, response: null });
+			if (!matchingExpected) {
+				return;
 			}
-		});
 
-		page.on('response', (response) => {
-			const matchingExpected = expectedRequests.find(
-				(ereq) =>
-					response.url().includes(ereq.url) &&
-					response.status() === ereq.status,
-			);
-			if (matchingExpected) {
-				console.log('<<', response.status(), response.url());
-				const pair = pairs.find(
-					(p) => !p.response && p.request.url() === response.url(),
-				);
-				if (pair) {
-					pair.response = response;
-					matchedCount++;
-					if (matchedCount === expectedRequests.length) {
-						clearTimeout(timeoutId);
-						resolve(pairs);
-					}
-				}
+			console.log('>>', request.method(), request.url());
+			pairs.push(collectRequestResponse(request, matchingExpected));
+			if (pairs.length === requestsToMatch.length) {
+				finish();
 			}
-		});
+		};
+
+		page.on('request', onRequest);
 	});
 };
 
@@ -125,8 +185,7 @@ const matchRequests = async (page, responses, expectedRequests) => {
 				status = response.status();
 				if (status !== 204) {
 					try {
-						const responseBuffer = await response.body();
-						responseBody = responseBuffer ? await response.text() : null;
+						responseBody = await response.text();
 					} catch (error) {
 						console.warn(`Failed to read response body: ${error.message}`);
 						responseBody = null;
@@ -143,7 +202,7 @@ const matchRequests = async (page, responses, expectedRequests) => {
 
 			return {
 				method: request.method(),
-				url: request.url(),
+				url: getPathWithSearch(request.url()),
 				status: status,
 				postData:
 					request.method() === 'POST' ? request.postDataJSON() : undefined,
@@ -152,42 +211,22 @@ const matchRequests = async (page, responses, expectedRequests) => {
 		}),
 	);
 
-	// Get browser name to ignore certain requests]
-	const browserName = getBrowser(page);
+	const expected = getExpectedRequests(page, expectedRequests).map((exp) => ({
+		method: exp.method,
+		url: exp.url.includes('?') ? expect.stringContaining(exp.url) : exp.url,
+		status: exp.status,
+		postData: exp.postData
+			? expect.objectContaining({
+					...exp.postData,
+					...(exp.postData.u
+						? { u: expect.stringContaining(exp.postData.u) }
+						: {}),
+				})
+			: undefined,
+		responseBody: exp.status !== 204 ? exp.responseBody : undefined,
+	}));
 
-	const expected = expectedRequests
-		.map((req) => {
-			if (req.ignoreBrowsers && req.ignoreBrowsers.includes(browserName)) {
-				return null;
-			}
-
-			return {
-				method: req.method,
-				url: req.url,
-				status: req.status,
-				postData: req.method === 'POST' ? req.postData : undefined,
-				responseBody: req.status !== 204 ? req.responseBody : undefined,
-			};
-		})
-		.filter((req) => req !== null);
-
-	expect.soft(actualRequests).toEqual(
-		expected.map((exp) => ({
-			method: exp.method,
-			url: expect.stringContaining(exp.url),
-			status: exp.status,
-			postData: exp.postData
-				? expect.objectContaining({
-						...exp.postData,
-						...(exp.postData.u
-							? { u: expect.stringContaining(exp.postData.u) }
-							: {}),
-					})
-				: undefined,
-			responseBody: exp.responseBody,
-		})),
-	);
-
+	expect.soft(actualRequests).toEqual(expect.arrayContaining(expected));
 	expect(actualRequests.length).toBe(expected.length);
 };
 

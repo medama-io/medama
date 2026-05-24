@@ -1,9 +1,9 @@
+import { useDisclosure } from '@mantine/hooks';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import * as Label from '@radix-ui/react-label';
 import type React from 'react';
 
 import { ButtonIcon } from '@/components/Button';
-import { useDisclosure } from '@/hooks/use-disclosure';
 
 import classes from './Input.module.css';
 
@@ -274,4 +274,4 @@ const InputWithButton = ({
 	);
 };
 
-export { TextArea, TextInput, PasswordInput, InputWithButton };
+export { InputWithButton, PasswordInput, TextArea, TextInput };

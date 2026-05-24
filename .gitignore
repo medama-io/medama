@@ -5,6 +5,7 @@
 **/*.log
 
 **/.cache
+**/.react-router
 **/build
 **/.env
 

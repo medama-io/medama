@@ -1,24 +1,19 @@
-import {
-	type ClientLoaderFunctionArgs,
-	type MetaFunction,
-	redirect,
-	useLoaderData,
-	useRevalidator,
-} from '@remix-run/react';
 import { useEffect } from 'react';
+import { redirect, useRevalidator } from 'react-router';
 
 import { authLogout } from '@/api/auth';
 import { InnerHeader } from '@/components/layout/InnerHeader';
 import { expireSession, hasSession } from '@/utils/cookies';
+import type { Route } from './+types/logout._index';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [
 		{ title: 'Logout | Medama' },
 		{ name: 'description', content: 'Logout from Medama Analytics.' },
 	];
 };
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	// If the user is already logged in, expire session cookie with success message.
 	if (hasSession()) {
 		const { res } = await authLogout();
@@ -33,9 +28,6 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 };
 
 export default function Index() {
-	// Trigger loader for cookie expiration.
-	useLoaderData();
-
 	// We want to call the revalidator to trigger the root loader and update the header accordingly.
 	const revalidator = useRevalidator();
 	useEffect(() => {

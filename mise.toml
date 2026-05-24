@@ -19,6 +19,14 @@ flyctl = "0.4.54"
 CGO_ENABLED = "1"
 VERSION = "0.6.2"
 
+[tasks.dev]
+description = "Start the API and dashboard dev servers"
+run = "mise run core:dev:server ::: dashboard:dev"
+
+[tasks.seed]
+description = "Seed local dev databases with deterministic dashboard data"
+run = "mise run core:seed"
+
 [tasks."deploy:demo"]
 description = "Deploy the demo app to Fly"
 run = "flyctl deploy --remote-only"

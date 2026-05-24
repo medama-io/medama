@@ -1,16 +1,8 @@
 import { Box, Code, Flex, Stack, Text } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { schemaResolver, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import {
-	type ClientActionFunctionArgs,
-	type ClientLoaderFunctionArgs,
-	data as json,
-	type MetaFunction,
-	useLoaderData,
-	useSubmit,
-} from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { useCallback, useState } from 'react';
+import { data as json, useSubmit } from 'react-router';
 import * as v from 'valibot';
 
 import { userGet, userUpdate } from '@/api/user';
@@ -21,8 +13,9 @@ import { Checkbox } from '@/components/Checkbox';
 import { InputWithButton } from '@/components/Input';
 import { SectionStack, SectionSubtitle } from '@/components/settings/Section';
 import { getBoolean, getType } from '@/utils/form';
+import type { Route } from './+types/settings.spam';
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Spam Settings | Medama' }];
 };
 
@@ -36,7 +29,7 @@ const spamSchema = v.object({
 	blockedIPs: v.array(v.string()),
 });
 
-export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
+export const clientLoader = async () => {
 	const { data } = await userGet();
 
 	if (!data) {
@@ -54,7 +47,7 @@ export const clientLoader = async (_: ClientLoaderFunctionArgs) => {
 	};
 };
 
-export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	const body = await request.formData();
 	const type = getType(body);
 
@@ -85,7 +78,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res || !res.ok) {
+	if (!res?.ok) {
 		throw new Response(res?.statusText || 'Failed to update settings.', {
 			status: res?.status || 500,
 		});
@@ -101,8 +94,8 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 	return { ok: true };
 };
 
-export default function SpamPage() {
-	const { settings } = useLoaderData<typeof clientLoader>();
+export default function SpamPage({ loaderData }: Route.ComponentProps) {
+	const { settings } = loaderData;
 	const submit = useSubmit();
 	const [newIP, setNewIP] = useState('');
 
@@ -114,7 +107,7 @@ export default function SpamPage() {
 			blockTorExitNodes: settings.blockTorExitNodes,
 			blockedIPs: settings.blockedIPs || [],
 		},
-		validate: valibotResolver(spamSchema),
+		validate: schemaResolver(spamSchema),
 	});
 
 	const handleSubmit = useCallback(
