@@ -21,12 +21,17 @@ tasks:
       - ./build/**/*
 
   generate:
+    deps: [install]
     cmds:
       - bun run generate
     sources:
       - ../core/openapi.yaml
     generates:
       - ./app/api/types.d.ts
+
+  install:
+    cmds:
+      - bun install
 
   embed:
     deps: [build]

@@ -16,7 +16,7 @@ tasks:
   dev:
     deps: [generate]
     cmds:
-      - air -c .air.toml
+      - go tool air -c .air.toml
 
   build:
     deps: [generate]
