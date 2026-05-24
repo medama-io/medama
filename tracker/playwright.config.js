@@ -76,7 +76,7 @@ module.exports = defineConfig({
 			timeout: 2500,
 		},
 		{
-			command: 'task dev -- start',
+			command: 'mise run :dev',
 			port: 8080,
 			reuseExistingServer: !process.env.CI,
 			cwd: '../core',

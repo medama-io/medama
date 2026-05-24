@@ -45,7 +45,7 @@ jobs:
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
-        run: task core:release:linux:${{ matrix.arch }}
+        run: mise run //core:release:linux:${{ matrix.arch }}
 
       - name: Create release directory
         run: mkdir -p release
@@ -86,7 +86,7 @@ jobs:
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
-        run: task core:release:darwin:${{ matrix.arch }}
+        run: mise run //core:release:darwin:${{ matrix.arch }}
 
       - name: Create release directory
         run: mkdir -p release

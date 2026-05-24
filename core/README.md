@@ -4,21 +4,21 @@ The backend API service for Medama written in Golang.
 
 ## Development
 
-- Install the Go version specified in `go.mod`
+- Use the Go version specified in the root `mise.toml`
 - Ensure you have `gcc` installed as CGO is required
-- Ensure you have `Taskfile` installed
+- Install repository tools with `mise install` from the repository root
 - Setup gofumpt and golangci-lint to automatically format and lint your code in IDE
 - Run `go mod download`
 
-To start the API server, run:
+From `core`, start the API server with:
 
 ```bash
-task dev -- start # Passes start command as an argument to dev task
+mise run dev
 ```
 
 ### Tests
 
-- Run `task test`
+- From `core`, run `mise run test`
 
 ## License
 

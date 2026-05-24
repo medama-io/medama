@@ -4,9 +4,9 @@ The frontend dashboard for Medama written in React TypeScript.
 
 ## Development
 
-- Install Bun
+- Install repository tools with `mise install` from the repository root
 - Run `bun install`
-- Run `task dev`
+- From `dashboard`, run `mise run dev`
 
 ## License
 

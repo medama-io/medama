@@ -1,24 +1,52 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"configMigration": true,
 	"extends": [
 		"config:best-practices",
 		":dependencyDashboard",
-		":preserveSemverRanges"
+		":semanticPrefixFixDepsChoreOthers",
+		":separateMultipleMajorReleases",
+		":separateMajorReleases",
+		":preserveSemverRanges",
+		"group:monorepos",
+		"replacements:all",
+		"workarounds:all",
+		"helpers:pinGitHubActionDigests",
+		"docker:pinDigests"
+	],
+	"enabledManagers": [
+		"bun",
+		"custom.jsonata",
+		"dockerfile",
+		"github-actions",
+		"gomod",
+		"mise"
 	],
 	"labels": [
-		"dependencies"
+		"dependencies",
+		"renovate"
 	],
 	"timezone": "Asia/Tokyo",
+	"minimumReleaseAge": "7 days",
 	"schedule": [
-		"* 10 * * 6"
+		"* 9-11 * * 4"
 	],
+	"prHourlyLimit": 5,
 	"rebaseWhen": "never",
 	"postUpdateOptions": [
 		"gomodTidy",
 		"gomodUpdateImportPaths"
 	],
+	"prBodyColumns": [
+		"Package",
+		"Update",
+		"Change",
+		"Package file",
+		"Pending"
+	],
 	"packageRules": [
 		{
+			"description": "Bump the core go.mod directive instead of preserving stale Go versions",
 			"matchManagers": [
 				"gomod"
 			],
@@ -31,36 +59,177 @@
 			"rangeStrategy": "bump"
 		},
 		{
-			"groupName": "all digests",
-			"groupSlug": "all-digests",
+			"description": "Group core and repo maintenance non-major updates",
+			"matchManagers": [
+				"bun",
+				"custom.jsonata",
+				"dockerfile",
+				"github-actions",
+				"gomod",
+				"mise"
+			],
+			"matchFileNames": [
+				".github/**",
+				"Dockerfile",
+				"biome.json",
+				"core/go.mod",
+				"core/mise.toml",
+				"dashboard/mise.toml",
+				"mise.toml",
+				"package.json",
+				"tracker/mise.toml"
+			],
 			"matchUpdateTypes": [
 				"digest",
-				"pin"
+				"minor",
+				"patch",
+				"pin",
+				"pinDigest"
+			],
+			"groupName": "core and repo maintenance non-major dependencies",
+			"groupSlug": "core-repo-maintenance-minor-patch",
+			"dependencyDashboardCategory": "Core",
+			"addLabels": [
+				"core",
+				"tooling"
 			]
 		},
 		{
-			"groupName": "all frontend non-major dependencies",
-			"groupSlug": "all-fe-minor-patch",
-			"matchDatasources": [
-				"npm"
+			"description": "Label core major updates, but keep them as separate PRs",
+			"matchManagers": [
+				"gomod",
+				"dockerfile"
+			],
+			"matchFileNames": [
+				"core/go.mod",
+				"Dockerfile"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"dependencyDashboardCategory": "Core",
+			"addLabels": [
+				"core",
+				"major"
+			]
+		},
+		{
+			"description": "Group dashboard non-major updates",
+			"matchManagers": [
+				"bun"
+			],
+			"matchFileNames": [
+				"dashboard/package.json"
 			],
 			"matchUpdateTypes": [
 				"minor",
 				"patch"
+			],
+			"groupName": "dashboard non-major dependencies",
+			"groupSlug": "dashboard-minor-patch",
+			"dependencyDashboardCategory": "Dashboard",
+			"addLabels": [
+				"dashboard"
 			]
 		},
 		{
-			"groupName": "all non-major dependencies",
-			"groupSlug": "all-minor-patch",
+			"description": "Require dashboard major updates to be approved from the Dependency Dashboard",
+			"matchManagers": [
+				"bun"
+			],
+			"matchFileNames": [
+				"dashboard/package.json"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"dependencyDashboardApproval": true,
+			"dependencyDashboardCategory": "Dashboard",
+			"addLabels": [
+				"dashboard",
+				"major"
+			]
+		},
+		{
+			"description": "Require explicit approval for React canary updates in the dashboard",
+			"matchManagers": [
+				"bun"
+			],
+			"matchFileNames": [
+				"dashboard/package.json"
+			],
 			"matchPackageNames": [
-				"*"
+				"react",
+				"react-dom",
+				"react-is"
 			],
-			"matchDatasources": [
-				"!npm"
+			"dependencyDashboardApproval": true,
+			"dependencyDashboardCategory": "Dashboard",
+			"addLabels": [
+				"dashboard",
+				"react-canary"
+			]
+		},
+		{
+			"description": "Group tracker non-major updates",
+			"matchManagers": [
+				"bun"
+			],
+			"matchFileNames": [
+				"tracker/package.json"
 			],
 			"matchUpdateTypes": [
 				"minor",
 				"patch"
+			],
+			"groupName": "tracker non-major dependencies",
+			"groupSlug": "tracker-minor-patch",
+			"dependencyDashboardCategory": "Tracker",
+			"addLabels": [
+				"tracker"
+			]
+		},
+		{
+			"description": "Label tracker major updates, but keep them as separate PRs",
+			"matchManagers": [
+				"bun"
+			],
+			"matchFileNames": [
+				"tracker/package.json"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"dependencyDashboardCategory": "Tracker",
+			"addLabels": [
+				"tracker",
+				"major"
+			]
+		},
+		{
+			"description": "Label repo maintenance major updates, but keep them as separate PRs",
+			"matchManagers": [
+				"bun",
+				"custom.jsonata",
+				"github-actions",
+				"mise"
+			],
+			"matchFileNames": [
+				".github/**",
+				"biome.json",
+				"core/mise.toml",
+				"dashboard/mise.toml",
+				"mise.toml",
+				"package.json",
+				"tracker/mise.toml"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"dependencyDashboardCategory": "Tooling",
+			"addLabels": [
+				"tooling",
+				"major"
 			]
 		}
 	],
@@ -77,5 +246,9 @@
 				"{\"currentValue\": $split($.\"$schema\",(\"/\"))[-2]}"
 			]
 		}
-	]
+	],
+	"vulnerabilityAlerts": {
+		"enabled": true,
+		"minimumReleaseAge": "0 days"
+	}
 }

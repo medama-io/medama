@@ -6,6 +6,9 @@ on:
     types: [completed]
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Deploy app
@@ -20,7 +23,14 @@ jobs:
         run: sleep 45s
         shell: bash
 
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
+        with:
+          experimental: true
+          install: true
+          install_args: flyctl
+          cache: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: mise run //:deploy:demo
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

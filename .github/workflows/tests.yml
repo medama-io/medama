@@ -21,14 +21,19 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Read lint tool version
+        id: lint-tool-version
+        run: echo "golangci_lint=v$(mise current golangci-lint)" >> "$GITHUB_OUTPUT"
+
       - name: Lint core
-        uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9 # v8
+        uses: golangci/golangci-lint-action@63c23d5020da8f97005b6de340504130bdbe42c7 # v9
         with:
-          version: v2.7.2
+          version: ${{ steps.lint-tool-version.outputs.golangci_lint }}
           working-directory: core
+          problem-matchers: true
 
       - name: Lint dashboard
-        run: task dashboard:lint:ci
+        run: mise run //dashboard:lint:ci
 
   test:
     runs-on: ubuntu-22.04
@@ -42,7 +47,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test
-        run: task core:test
+        run: mise run //core:test
 
   build:
     runs-on: ${{ matrix.os }}
@@ -66,4 +71,4 @@ jobs:
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Build
-        run: task core:release:${{ matrix.os == 'ubuntu-22.04' && 'linux' || 'darwin' }}:${{ matrix.arch }}
+        run: mise run //core:release:${{ matrix.os == 'ubuntu-22.04' && 'linux' || 'darwin' }}:${{ matrix.arch }}

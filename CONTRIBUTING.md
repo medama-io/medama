@@ -15,25 +15,23 @@ Install the following tools for the project:
 - [Go](https://go.dev/dl/) - API server (core)
 - [gcc](https://gcc.gnu.org/install/) - Required for CGO in Go (core)
 - [Bun](https://bun.sh/docs/installation) - JavaScript runtime (dashboard, tracker)
-- [Taskfile](https://taskfile.dev/installation/) - Global task runnner
+- [mise-en-place](https://mise.jdx.dev/) - Tool and workflow manager
 
 We recommend using [mise-en-place](https://mise.jdx.dev/) as a convenient version manager tool for all the languages and tools required for this project.
 
 ### Setup
 
-We use [Taskfile](https://taskfile.dev/) to run scripts and tasks to simplify the development process. Please refer to each sub-project's Taskfile for understanding the available tasks.
+We use mise tasks to run project workflows. Run `mise install` from the repository root first, then use the package tasks for normal development.
 
 A full development setup can be done by running the following commands in separate terminals:
 
 
 ```bash [Terminal 1]
-cd ./core
-task dev -- start # Start API server
+mise run core:dev # Start API server
 ```
 
 ```bash [Terminal 2]
-cd ./dashboard
-task dev # Start dashboard dev server with HMR
+mise run dashboard:dev # Start dashboard dev server with HMR
 ```
 
 More details on the development setup can be found in the respective sub-project READMEs.
