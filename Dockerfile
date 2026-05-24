@@ -23,12 +23,12 @@ RUN curl https://mise.run | sh
 
 WORKDIR /app
 
-# Install language runtimes from .mise.toml
+# Install language runtimes from mise.toml
 COPY mise.toml ./mise.toml
 COPY core/mise.toml ./core/mise.toml
 COPY dashboard/mise.toml ./dashboard/mise.toml
 COPY tracker/mise.toml ./tracker/mise.toml
-RUN mise trust -a -y && mise install go bun && mise activate --shims bash
+RUN mise trust -a -y && mise install go bun
 
 # Cache build dependencies
 ENV GOCACHE=/root/.cache/go-build

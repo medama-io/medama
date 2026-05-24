@@ -1,6 +1,6 @@
 module github.com/medama-io/medama
 
-go 1.25.3
+go 1.26.3
 
 require (
 	github.com/CAFxX/httpcompression v0.0.10-0.20251023000636-04c6ca452791

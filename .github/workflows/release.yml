@@ -116,7 +116,7 @@ jobs:
         uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
         with:
           files: release/*
-          tag_name: ${{ env.VERSION }}
+          tag_name: ${{ github.event.inputs.version }}
           draft: true
           prerelease: false
           fail_on_unmatched_files: true
