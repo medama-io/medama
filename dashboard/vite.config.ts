@@ -1,16 +1,10 @@
 import fs from 'node:fs';
-import { vitePlugin as remix } from '@remix-run/dev';
+import { reactRouter } from '@react-router/dev/vite';
+import babel from '@rolldown/plugin-babel';
+import { reactCompilerPreset } from '@vitejs/plugin-react';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import { defineConfig } from 'vite';
-import commonjs from 'vite-plugin-commonjs';
-import tsconfigPaths from 'vite-tsconfig-paths';
-
-declare module '@remix-run/react' {
-	interface Future {
-		v3_singleFetch: true;
-	}
-}
 
 const targets = browserslistToTargets(
 	browserslist([
@@ -38,14 +32,16 @@ export default defineConfig({
 	},
 	resolve:
 		process.env.NODE_ENV === 'development'
-			? {}
+			? {
+					tsconfigPaths: true,
+				}
 			: {
+					tsconfigPaths: true,
 					alias: {
 						'react-dom/server': 'react-dom/server.node',
 					},
 				},
 	plugins: [
-		commonjs(),
 		{
 			name: 'css-additional-data',
 			enforce: 'pre',
@@ -55,18 +51,9 @@ export default defineConfig({
 				}
 			},
 		},
-		remix({
-			ssr: false,
-			future: {
-				v3_fetcherPersist: true,
-				v3_relativeSplatPath: true,
-				v3_throwAbortReason: true,
-				v3_lazyRouteDiscovery: true,
-				v3_singleFetch: true,
-				v3_routeConfig: true,
-			},
-			// biome-ignore lint/suspicious/noExplicitAny: Issue until we migrate to react-router.
-		}) as any,
-		tsconfigPaths(),
+		babel({
+			presets: [reactCompilerPreset()],
+		}),
+		reactRouter(),
 	],
 });

@@ -1,6 +1,6 @@
 // @ts-check
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('data-api', () => {
 	test('data-api connects to alternative api', async ({ page }) => {

@@ -1,6 +1,7 @@
 import { Box, Code, Flex, Stack, Text } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { schemaResolver, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { useCallback, useState } from 'react';
 import {
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
@@ -8,9 +9,7 @@ import {
 	type MetaFunction,
 	useLoaderData,
 	useSubmit,
-} from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
-import { useCallback, useState } from 'react';
+} from 'react-router';
 import * as v from 'valibot';
 
 import { userGet, userUpdate } from '@/api/user';
@@ -85,7 +84,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res || !res.ok) {
+	if (!res?.ok) {
 		throw new Response(res?.statusText || 'Failed to update settings.', {
 			status: res?.status || 500,
 		});
@@ -114,7 +113,7 @@ export default function SpamPage() {
 			blockTorExitNodes: settings.blockTorExitNodes,
 			blockedIPs: settings.blockedIPs || [],
 		},
-		validate: valibotResolver(spamSchema),
+		validate: schemaResolver(spamSchema),
 	});
 
 	const handleSubmit = useCallback(

@@ -1,10 +1,10 @@
+import { type DateRange, DayPicker } from '@daypicker/react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import { useSearchParams } from '@remix-run/react';
 import { formatISO, parseISO, sub } from 'date-fns';
 import { useState } from 'react';
-import { type DateRange, DayPicker } from 'react-day-picker';
+import { useSearchParams } from 'react-router';
 
 import { Button, CloseButton } from '@/components/Button';
 import { useDidUpdate } from '@/hooks/use-did-update';

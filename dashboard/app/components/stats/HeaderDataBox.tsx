@@ -1,5 +1,5 @@
-import { useSearchParams } from '@remix-run/react';
 import React, { useMemo } from 'react';
+import { useSearchParams } from 'react-router';
 import { Group } from '@/components/layout/Flex';
 import { Tooltip, TooltipProvider } from '@/components/Tooltip';
 import { useChartType } from '@/hooks/use-chart-type';

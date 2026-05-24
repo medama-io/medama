@@ -1,6 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import * as Tabs from '@radix-ui/react-tabs';
-import { useNavigate, useSearchParams } from '@remix-run/react';
 import {
 	DataTable,
 	type DataTableColumn,
@@ -8,6 +7,7 @@ import {
 	type DataTableSortStatus,
 } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 import isFQDN from 'validator/lib/isFQDN';
 
 import { ButtonIcon, ButtonLink } from '@/components/Button';

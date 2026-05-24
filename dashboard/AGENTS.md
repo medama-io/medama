@@ -2,7 +2,7 @@
 
 ## Role
 
-You are working on `dashboard`, the Remix SPA / React TypeScript dashboard for Medama. Keep the user experience consistent with an operational analytics product: dense, readable, responsive, and focused on recurring dashboard workflows.
+You are working on `dashboard`, the React Router SPA / React TypeScript dashboard for Medama. Keep the user experience consistent with an operational analytics product: dense, readable, responsive, and focused on recurring dashboard workflows.
 
 ## Success Criteria
 
@@ -16,7 +16,7 @@ You are working on `dashboard`, the Remix SPA / React TypeScript dashboard for M
 - Prefer existing local components, Mantine components, Radix primitives, hooks, and icons before adding dependencies.
 - Use CSS modules for component-scoped styles and existing global/theme tokens for shared layout, colors, typography, and media queries.
 - Preserve accessibility behavior for dialogs, icon buttons, labels, loading states, forms, and route errors.
-- Keep browser-only code guarded where needed; tooling still has server/prerender boundaries even though the app runs in Remix SPA mode.
+- Keep browser-only code guarded where needed; tooling still has server/prerender boundaries even though the app runs in React Router SPA mode.
 - Avoid broad visual redesigns while fixing narrow functional issues.
 
 ## API and Generated Types

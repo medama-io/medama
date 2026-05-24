@@ -2,7 +2,7 @@ import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
-} from '@remix-run/react';
+} from 'react-router';
 
 export const meta: MetaFunction = () => {
 	return [

@@ -1,11 +1,11 @@
+import { useEffect } from 'react';
 import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
 	useLoaderData,
 	useRevalidator,
-} from '@remix-run/react';
-import { useEffect } from 'react';
+} from 'react-router';
 
 import { authLogout } from '@/api/auth';
 import { InnerHeader } from '@/components/layout/InnerHeader';

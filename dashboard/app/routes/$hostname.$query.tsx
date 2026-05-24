@@ -3,7 +3,7 @@ import {
 	type MetaFunction,
 	useLoaderData,
 	useParams,
-} from '@remix-run/react';
+} from 'react-router';
 
 import { Table } from '@/components/stats/Table';
 import type { DataRow } from '@/components/stats/types';

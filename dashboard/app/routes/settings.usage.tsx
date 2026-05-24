@@ -1,12 +1,12 @@
 import { SimpleGrid } from '@mantine/core';
+import { useEffect } from 'react';
 import {
 	type ClientLoaderFunctionArgs,
 	data as json,
 	type MetaFunction,
 	useLoaderData,
 	useRevalidator,
-} from '@remix-run/react';
-import { useEffect } from 'react';
+} from 'react-router';
 
 import { userUsageGet } from '@/api/user';
 import {

@@ -66,7 +66,7 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 	useRouteError,
-} from '@remix-run/react';
+} from 'react-router';
 
 import { AppShell } from '@/components/layout/AppShell';
 import {
@@ -256,7 +256,7 @@ export const ErrorBoundary = () => {
 	if (error instanceof Error) {
 		// If the error is due to a loader mismatch, reload the page as it may be
 		// related to a bad cookie cache from the API restarting. This is probably
-		// a bug in Remix SPA mode.
+		// a bug in React Router SPA mode.
 		if (error.message.startsWith('You defined a loader for route "routes')) {
 			// biome-ignore lint/suspicious/noDocumentCookie: CookieStore API is not widely available
 			document.cookie = EXPIRE_LOGGED_IN;

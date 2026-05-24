@@ -6,7 +6,7 @@ import {
 	data as json,
 	type MetaFunction,
 	redirect,
-} from '@remix-run/react';
+} from 'react-router';
 
 import { authLogin } from '@/api/auth';
 import { userGet } from '@/api/user';

@@ -100,9 +100,9 @@ export {
 	statsMediums,
 	statsOS,
 	statsPages,
+	statsProperties,
 	statsReferrers,
 	statsSources,
 	statsSummary,
 	statsTime,
-	statsProperties,
 };

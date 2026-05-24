@@ -1,9 +1,9 @@
 import { CalendarIcon } from '@radix-ui/react-icons';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
-import { useParams, useSearchParams } from '@remix-run/react';
 import type React from 'react';
 import { Fragment } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
+import { useParams, useSearchParams } from 'react-router';
 
 import { DatePickerRange, datePickerClasses } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';

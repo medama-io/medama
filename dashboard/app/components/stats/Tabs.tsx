@@ -1,5 +1,5 @@
 import * as Tabs from '@radix-ui/react-tabs';
-import { useSearchParams } from '@remix-run/react';
+import { useSearchParams } from 'react-router';
 
 import { ButtonLink } from '@/components/Button';
 import { useFilter } from '@/hooks/use-filter';
@@ -136,4 +136,4 @@ const LoadMoreButton = ({ label, searchParams }: LoadMoreButtonProps) => (
 	</div>
 );
 
-export { TabSelect, TabProperties };
+export { TabProperties, TabSelect };

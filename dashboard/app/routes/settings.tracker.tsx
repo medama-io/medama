@@ -1,4 +1,4 @@
-import { type TransformedValues, useForm } from '@mantine/form';
+import { schemaResolver, type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -7,8 +7,7 @@ import {
 	type MetaFunction,
 	useLoaderData,
 	useSubmit,
-} from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
+} from 'react-router';
 import * as v from 'valibot';
 
 import type { components } from '@/api/types';
@@ -81,7 +80,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res || !res.ok) {
+	if (!res?.ok) {
 		throw new Response(res?.statusText || 'Failed to update user.', {
 			status: res?.status || 500,
 		});
@@ -116,7 +115,7 @@ export default function Index() {
 				),
 			},
 		},
-		validate: valibotResolver(trackerSchema),
+		validate: schemaResolver(trackerSchema),
 		transformValues: (values) => {
 			// Convert object to comma-separated string
 			const scriptType = Object.entries(values.script_type)

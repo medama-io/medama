@@ -1,5 +1,6 @@
-import { useForm } from '@mantine/form';
+import { schemaResolver, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { useState } from 'react';
 import {
 	type ClientActionFunctionArgs,
 	type ClientLoaderFunctionArgs,
@@ -8,9 +9,7 @@ import {
 	useLoaderData,
 	useSearchParams,
 	useSubmit,
-} from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
-import { useState } from 'react';
+} from 'react-router';
 import * as v from 'valibot';
 
 import { userGet } from '@/api/user';
@@ -71,7 +70,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res || !res.ok) {
+	if (!res?.ok) {
 		throw new Response(res?.statusText || 'Failed to delete website.', {
 			status: res?.status || 500,
 		});
@@ -120,7 +119,7 @@ export default function Index() {
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: { _setting: 'delete', hostname: '' },
-		validate: valibotResolver(deleteSchema),
+		validate: schemaResolver(deleteSchema),
 	});
 
 	const resetAndClose = () => {

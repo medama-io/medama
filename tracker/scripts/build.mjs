@@ -1,8 +1,8 @@
 // @ts-check
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { preprocess } from 'preprocess';
 import { $ } from 'bun';
+import { preprocess } from 'preprocess';
 
 const srcDir = path.resolve(path.join(__dirname, '../src'));
 const outputDir = path.resolve(path.join(__dirname, '../dist'));

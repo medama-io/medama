@@ -274,4 +274,4 @@ const InputWithButton = ({
 	);
 };
 
-export { TextArea, TextInput, PasswordInput, InputWithButton };
+export { InputWithButton, PasswordInput, TextArea, TextInput };

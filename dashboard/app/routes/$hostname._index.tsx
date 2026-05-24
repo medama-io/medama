@@ -3,7 +3,7 @@ import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	useLoaderData,
-} from '@remix-run/react';
+} from 'react-router';
 
 import { TabProperties, TabSelect } from '@/components/stats/Tabs';
 import TabClasses from '@/components/stats/Tabs.module.css';

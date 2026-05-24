@@ -1,8 +1,8 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { ChevronDownIcon, Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
 import * as Popover from '@radix-ui/react-popover';
-import { useSearchParams } from '@remix-run/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { ScrollArea } from '@/components/ScrollArea';
 import { useFilter } from '@/hooks/use-filter';

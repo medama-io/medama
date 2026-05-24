@@ -11,14 +11,13 @@ const useInterval = (
 	{ autoInvoke = false }: UseIntervalOptions = {},
 ) => {
 	const [active, setActive] = useState(false);
-	const intervalRef = useRef<number>();
-	const fnRef = useRef<() => void>();
+	const intervalRef = useRef<number | undefined>(undefined);
+	const fnRef = useRef(fn);
 
 	const start = () => {
 		setActive((old) => {
 			if (!old && !intervalRef.current) {
-				// biome-ignore lint/style/noNonNullAssertion: guaranteed to be defined
-				intervalRef.current = window.setInterval(fnRef.current!, interval);
+				intervalRef.current = window.setInterval(fnRef.current, interval);
 			}
 			return true;
 		});

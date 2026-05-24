@@ -1,11 +1,11 @@
+import { useMemo } from 'react';
 import {
 	type ClientLoaderFunctionArgs,
 	type MetaFunction,
 	Outlet,
 	type ShouldRevalidateFunctionArgs,
 	useLoaderData,
-} from '@remix-run/react';
-import { useMemo } from 'react';
+} from 'react-router';
 
 import { websiteList } from '@/api/websites';
 import { Chart } from '@/components/stats/Chart';

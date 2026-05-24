@@ -1,7 +1,7 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { loadUnloadTests } from './load-unload';
 import { clickEventTests } from './click-events';
+import { loadUnloadTests } from './load-unload';
 
 /**
  * @typedef {('simple'|'history')} Tests

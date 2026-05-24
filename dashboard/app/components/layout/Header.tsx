@@ -8,7 +8,7 @@ import {
 	Stack,
 	Text,
 } from '@mantine/core';
-import { Link, useLocation, useRouteLoaderData } from '@remix-run/react';
+import { Link, useLocation, useRouteLoaderData } from 'react-router';
 
 import { ButtonLink } from '@/components/Button';
 import { BannerLogo } from '@/components/icons/banner-transparent';
@@ -106,7 +106,6 @@ const MobileDrawer = ({
 		{...props}
 	>
 		<Drawer.Content>
-			{/* biome-ignore lint/a11y/useSemanticElements: Explicit */}
 			<Drawer.Body role="navigation" aria-label="Main navigation">
 				{isLoggedIn && (
 					<Stack gap={0}>

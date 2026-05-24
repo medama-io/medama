@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { schemaResolver, useForm } from '@mantine/form';
 import { PlusIcon } from '@radix-ui/react-icons';
 import {
 	type ClientActionFunctionArgs,
@@ -9,8 +9,7 @@ import {
 	redirect,
 	useLoaderData,
 	useSubmit,
-} from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
+} from 'react-router';
 import * as v from 'valibot';
 import isFQDN from 'validator/lib/isFQDN';
 import { websiteCreate, websiteList } from '@/api/websites';
@@ -95,7 +94,7 @@ export default function Index() {
 	const form = useForm({
 		mode: 'uncontrolled',
 		initialValues: { hostname: '' },
-		validate: valibotResolver(addWebsiteSchema),
+		validate: schemaResolver(addWebsiteSchema),
 	});
 
 	const resetAndClose = () => {

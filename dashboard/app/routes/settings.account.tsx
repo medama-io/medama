@@ -1,4 +1,4 @@
-import { useForm } from '@mantine/form';
+import { schemaResolver, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import {
 	type ClientActionFunctionArgs,
@@ -7,8 +7,7 @@ import {
 	type MetaFunction,
 	useLoaderData,
 	useSubmit,
-} from '@remix-run/react';
-import { valibotResolver } from 'mantine-form-valibot-resolver';
+} from 'react-router';
 import * as v from 'valibot';
 
 import { userGet, userUpdate } from '@/api/user';
@@ -83,7 +82,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 			});
 	}
 
-	if (!res || !res.ok) {
+	if (!res?.ok) {
 		throw new Response(res?.statusText || 'Failed to update user.', {
 			status: res?.status || 500,
 		});
@@ -111,7 +110,7 @@ export default function Index() {
 			username: user?.username || '',
 			password: '',
 		},
-		validate: valibotResolver(accountSchema),
+		validate: schemaResolver(accountSchema),
 	});
 
 	if (!user) {

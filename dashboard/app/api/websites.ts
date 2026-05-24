@@ -27,4 +27,4 @@ const websiteDelete = async (opts: ClientOptions): Promise<DataResponse> => {
 	return { res };
 };
 
-export { websiteCreate, websiteList, websiteDelete };
+export { websiteCreate, websiteDelete, websiteList };

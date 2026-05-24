@@ -5,8 +5,8 @@ import {
 	Modal as MantineModal,
 	Text,
 } from '@mantine/core';
-import { Form } from '@remix-run/react';
 import type React from 'react';
+import { Form } from 'react-router';
 
 import { Button } from '@/components/Button';
 import { IconArrowRight } from '@/components/icons/arrow-right';
