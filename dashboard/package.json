@@ -47,6 +47,7 @@
 		"react-dom": "^19.2.6",
 		"react-indiana-drag-scroll": "^3.0.3-alpha",
 		"react-router": "^7.15.1",
+		"react-router-dom": "^7.15.1",
 		"recharts": "^3.8.1",
 		"valibot": "^1.4.0",
 		"validator": "^13.15.35"

@@ -41,6 +41,7 @@ You are working on `dashboard`, the React Router SPA / React TypeScript dashboar
 - For visible UI changes, verify the affected route in a browser when practical.
 - For frontend dependency, routing, styling, or component changes, capture a before/after browser baseline when practical. Prefer a production build with Vite preview for reviewable comparisons; use dev mode mainly for debugging.
 - When browser verification needs API data, run the local core server with temporary databases and CORS for the dashboard origin.
+- For realistic local dashboard data, prefer `mise run seed -- --reset` over hand-created records.
 - In final notes, name the compared routes, server mode, and any meaningful visual differences. Save screenshots when they make the comparison easier to review.
 - For generated type changes, run the generation task and review the generated diff.
 - For documentation-only changes, `git diff --check` is enough.

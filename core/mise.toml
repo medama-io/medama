@@ -3,6 +3,14 @@ description = "Generate assets and start the API server with Air"
 depends = [":generate"]
 run = "go tool air -c .air.toml"
 
+[tasks."dev:server"]
+description = "Start the API server with Air"
+run = "go tool air -c .air.toml"
+
+[tasks.seed]
+description = "Seed local dev databases with deterministic dashboard data"
+run = "go run ./tools/seed"
+
 [tasks.build]
 description = "Generate assets and build the local server binary"
 depends = [":generate"]
