@@ -10,7 +10,7 @@ require (
 	github.com/caddyserver/certmagic v0.25.3
 	github.com/duckdb/duckdb-go/v2 v2.10503.0
 	github.com/gaissmai/bart v0.28.0
-	github.com/gkampitakis/go-snaps v0.5.18
+	github.com/gkampitakis/go-snaps v0.5.21
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.2.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
@@ -30,7 +30,7 @@ require (
 
 require (
 	dario.cat/mergo v1.0.2 // indirect
-	github.com/air-verse/air v1.65.1 // indirect
+	github.com/air-verse/air v1.65.2 // indirect
 	github.com/andybalholm/brotli v1.2.1 // indirect
 	github.com/apache/arrow-go/v18 v18.6.0 // indirect
 	github.com/bep/godartsass/v2 v2.5.0 // indirect
