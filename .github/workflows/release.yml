@@ -53,7 +53,7 @@ jobs:
       - name: Zip artifact
         run: zip -j release/medama-${{ env.VERSION }}-linux-${{ matrix.arch }}.zip ./core/bin/medama_linux_${{ matrix.arch }}
 
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: release-linux-${{ matrix.arch }}
           path: release/medama-${{ env.VERSION }}-linux-${{ matrix.arch }}.zip
@@ -94,7 +94,7 @@ jobs:
       - name: Zip artifact
         run: zip -j release/medama-${{ env.VERSION }}-darwin-${{ matrix.arch }}.zip ./core/bin/medama_darwin_${{ matrix.arch }}
 
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: release-darwin-${{ matrix.arch }}
           path: release/medama-${{ env.VERSION }}-darwin-${{ matrix.arch }}.zip
