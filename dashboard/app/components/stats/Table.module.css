@@ -39,7 +39,8 @@
 		background-color: var(--black-a1);
 	}
 
-	&[data-state="active"] {
+	&[data-state="active"],
+	&[data-active="true"] {
 		color: var(--text-dark);
 		font-weight: 600;
 	}

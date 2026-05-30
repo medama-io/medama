@@ -1,6 +1,6 @@
+import { Tabs } from '@mantine/core';
 import { useDidUpdate, useHover, useMediaQuery } from '@mantine/hooks';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import * as Tabs from '@radix-ui/react-tabs';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
 	DataTable,
 	type DataTableColumn,
@@ -166,7 +166,7 @@ const BackButton = () => {
 			}}
 			className={classes.back}
 		>
-			<ChevronLeftIcon />
+			<ChevronLeft size={18} />
 			<span>Go back</span>
 		</ButtonLink>
 	);
@@ -323,7 +323,7 @@ const TablePagination = ({
 					onClick={() => onPageChange(page - 1)}
 					disabled={page <= 1}
 				>
-					<ChevronLeftIcon />
+					<ChevronLeft size={18} />
 				</ButtonIcon>
 				<span>
 					Page {page} of {totalPages}
@@ -334,7 +334,7 @@ const TablePagination = ({
 					onClick={() => onPageChange(page + 1)}
 					disabled={page >= totalPages}
 				>
-					<ChevronRightIcon />
+					<ChevronRight size={18} />
 				</ButtonIcon>
 			</Group>
 		</div>
@@ -521,27 +521,27 @@ export const Table = ({ query, data }: StatsTableProps) => {
 	const isMobile = useMediaQuery('(max-width: 75em)');
 
 	return (
-		<Tabs.Root
+		<Tabs
 			value={query}
 			className={classes.root}
 			orientation="vertical"
-			onValueChange={handleTabChange}
+			onChange={handleTabChange}
 		>
 			{!isMobile && (
 				<div className={classes.list}>
 					<BackButton />
 					<Tabs.List className={classes['list-triggers']}>
 						{Object.entries(LABEL_MAP).map(([key, label]) => (
-							<Tabs.Trigger key={key} value={key} className={classes.trigger}>
+							<Tabs.Tab key={key} value={key} className={classes.trigger}>
 								{label}
-							</Tabs.Trigger>
+							</Tabs.Tab>
 						))}
 					</Tabs.List>
 				</div>
 			)}
-			<Tabs.Content value={query} className={classes.panel}>
+			<Tabs.Panel value={query} className={classes.panel}>
 				<QueryTable query={query} data={data} isMobile={isMobile} />
-			</Tabs.Content>
-		</Tabs.Root>
+			</Tabs.Panel>
+		</Tabs>
 	);
 };

@@ -1,6 +1,5 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { ChevronDownIcon, Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
-import * as Popover from '@radix-ui/react-popover';
+import { Menu, Popover } from '@mantine/core';
+import { ChevronDown, Plus, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
@@ -105,27 +104,29 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 
 	const options = useMemo(() => {
 		return Object.entries(choices).map(([key, filter]) => (
-			<DropdownMenu.Item key={key} onSelect={() => setValue(key)} asChild>
-				<button type="button" className={classes.item}>
-					{filter.label}
-				</button>
-			</DropdownMenu.Item>
+			<Menu.Item
+				key={key}
+				className={classes.item}
+				onClick={() => setValue(key)}
+			>
+				{filter.label}
+			</Menu.Item>
 		));
 	}, [choices, setValue]);
 
 	return (
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild>
+		<Menu position="bottom-start" offset={8} withinPortal>
+			<Menu.Target>
 				<button type="button" className={classes.trigger}>
 					<span className={classes.label}>{label ?? 'Unknown'}</span>
-					<ChevronDownIcon />
+					<ChevronDown size={16} />
 				</button>
-			</DropdownMenu.Trigger>
+			</Menu.Target>
 
-			<DropdownMenu.Content className={classes.dropdown} sideOffset={8}>
+			<Menu.Dropdown className={classes.dropdown}>
 				<ScrollArea vertical>{options}</ScrollArea>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
+			</Menu.Dropdown>
+		</Menu>
 	);
 };
 
@@ -191,12 +192,15 @@ export const Filters = () => {
 
 	return (
 		<div className={classes.root}>
-			<Popover.Root
-				// width={454}
-				open={opened}
-				onOpenChange={setOpened}
+			<Popover
+				opened={opened}
+				onChange={setOpened}
+				position="bottom-start"
+				offset={8}
+				trapFocus
+				withinPortal
 			>
-				<Popover.Trigger asChild>
+				<Popover.Target>
 					<button
 						type="button"
 						className={classes.add}
@@ -211,68 +215,62 @@ export const Filters = () => {
 						}}
 						data-m:click="filter=open"
 					>
-						<PlusIcon />
+						<Plus size={16} />
 						<span>Add filter</span>
 					</button>
-				</Popover.Trigger>
-				<Popover.Portal>
-					<Popover.Content
-						className={classes.popover}
-						align="start"
-						sideOffset={8}
-					>
-						<h5>New filter</h5>
-						<div className={classes['dropdown-list']}>
-							<FilterDropdown
-								choices={FILTER_OPTIONS}
-								value={filter}
-								setValue={setFilter as (value: string) => void}
-							/>
-							<FilterDropdown
-								choices={FILTER_TYPES}
-								value={type}
-								setValue={setType as (value: string) => void}
-							/>
-							<input
-								className={classes.input}
-								value={value}
-								onChange={(event) => {
-									setValue(event.currentTarget.value);
-								}}
-								onKeyDown={(event) => {
-									if (event.key === 'Enter' && value !== '') {
-										handleAddFilters();
-									}
-								}}
-								placeholder={chosenFilter?.placeholder}
-							/>
-						</div>
-						<div className={classes.select}>
-							<button
-								type="reset"
-								className={classes.cancel}
-								onClick={() => {
-									setOpened(false);
-								}}
-								data-m:click="filter=cancel"
-							>
-								Cancel
-							</button>
-							<button
-								className={classes.apply}
-								type="submit"
-								onClick={() => {
+				</Popover.Target>
+				<Popover.Dropdown className={classes.popover}>
+					<h5>New filter</h5>
+					<div className={classes['dropdown-list']}>
+						<FilterDropdown
+							choices={FILTER_OPTIONS}
+							value={filter}
+							setValue={setFilter as (value: string) => void}
+						/>
+						<FilterDropdown
+							choices={FILTER_TYPES}
+							value={type}
+							setValue={setType as (value: string) => void}
+						/>
+						<input
+							className={classes.input}
+							value={value}
+							onChange={(event) => {
+								setValue(event.currentTarget.value);
+							}}
+							onKeyDown={(event) => {
+								if (event.key === 'Enter' && value !== '') {
 									handleAddFilters();
-								}}
-								disabled={value === ''}
-								data-m:click="filter=apply"
-							>
-								Apply
-							</button>
-						</div>
-					</Popover.Content>
-				</Popover.Portal>
-			</Popover.Root>
+								}
+							}}
+							placeholder={chosenFilter?.placeholder}
+						/>
+					</div>
+					<div className={classes.select}>
+						<button
+							type="reset"
+							className={classes.cancel}
+							onClick={() => {
+								setOpened(false);
+							}}
+							data-m:click="filter=cancel"
+						>
+							Cancel
+						</button>
+						<button
+							className={classes.apply}
+							type="submit"
+							onClick={() => {
+								handleAddFilters();
+							}}
+							disabled={value === ''}
+							data-m:click="filter=apply"
+						>
+							Apply
+						</button>
+					</div>
+				</Popover.Dropdown>
+			</Popover>
 			{paramsArr.map(([label, type, value]) => {
 				return (
 					<div key={label + type + value} className={classes['filter-item']}>
@@ -282,7 +280,8 @@ export const Filters = () => {
 						</span>
 						<span>{value}</span>
 						<div>
-							<Cross1Icon
+							<X
+								size={16}
 								onClick={handleRemoveFilter(
 									label,
 									type as FilterOperator,

@@ -1,7 +1,7 @@
 import { SimpleGrid } from '@mantine/core';
 import { schemaResolver, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { PlusIcon } from '@radix-ui/react-icons';
+import { Plus } from 'lucide-react';
 import { data as json, redirect, useSubmit } from 'react-router';
 import * as v from 'valibot';
 import isFQDN from 'validator/lib/isFQDN';
@@ -107,7 +107,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 					<h1>My Websites</h1>
 					<Button onClick={open} data-visible-from="xs">
 						<Group style={{ gap: 8 }}>
-							<PlusIcon />
+							<Plus size={16} />
 							<span>Add Website</span>
 						</Group>
 					</Button>

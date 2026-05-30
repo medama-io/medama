@@ -1,4 +1,4 @@
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
+import { ScrollArea as MantineScrollArea } from '@mantine/core';
 
 import classes from './ScrollArea.module.css';
 
@@ -9,29 +9,21 @@ interface ScrollAreaProps {
 }
 
 const ScrollArea = ({ children, horizontal, vertical }: ScrollAreaProps) => {
+	const scrollbars = horizontal && vertical ? 'xy' : horizontal ? 'x' : 'y';
+
 	return (
-		<ScrollAreaPrimitive.Root className={classes.root}>
-			<ScrollAreaPrimitive.Viewport className={classes.viewport}>
-				{children}
-			</ScrollAreaPrimitive.Viewport>
-			{vertical && (
-				<ScrollAreaPrimitive.Scrollbar
-					className={classes.scrollbar}
-					orientation="vertical"
-				>
-					<ScrollAreaPrimitive.Thumb className={classes.thumb} />
-				</ScrollAreaPrimitive.Scrollbar>
-			)}
-			{horizontal && (
-				<ScrollAreaPrimitive.Scrollbar
-					className={classes.scrollbar}
-					orientation="horizontal"
-				>
-					<ScrollAreaPrimitive.Thumb className={classes.thumb} />
-				</ScrollAreaPrimitive.Scrollbar>
-			)}
-			<ScrollAreaPrimitive.Corner className={classes.corner} />
-		</ScrollAreaPrimitive.Root>
+		<MantineScrollArea
+			className={classes.root}
+			scrollbars={scrollbars}
+			classNames={{
+				viewport: classes.viewport,
+				scrollbar: classes.scrollbar,
+				thumb: classes.thumb,
+				corner: classes.corner,
+			}}
+		>
+			{children}
+		</MantineScrollArea>
 	);
 };
 

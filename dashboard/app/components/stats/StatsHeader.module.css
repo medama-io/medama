@@ -84,9 +84,15 @@
 
 	position: relative;
 	z-index: 1;
+	color: var(--text-disabled);
 
 	svg {
 		width: 20px;
 		height: 20px;
 	}
+}
+
+.control[data-active="true"] .controlLabel,
+.control:hover .controlLabel {
+	color: var(--text-light);
 }

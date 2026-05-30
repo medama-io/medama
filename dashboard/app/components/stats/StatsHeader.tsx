@@ -1,12 +1,11 @@
+import { SegmentedControl, VisuallyHidden } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { CalendarIcon } from '@radix-ui/react-icons';
-import * as ToggleGroup from '@radix-ui/react-toggle-group';
+import { Calendar } from 'lucide-react';
 import type React from 'react';
-import { Fragment } from 'react';
 import { ScrollContainer } from 'react-indiana-drag-scroll';
-import { useParams, useSearchParams } from 'react-router';
+import { useParams } from 'react-router';
 
-import { DatePickerRange, datePickerClasses } from '@/components/DatePicker';
+import { DatePickerRange } from '@/components/DatePicker';
 import { DropdownSelect } from '@/components/DropdownSelect';
 import { IconAreaChart } from '@/components/icons/area';
 import { IconBarChart } from '@/components/icons/bar';
@@ -48,46 +47,36 @@ const SegmentedChartControl = () => {
 		setChartType(value);
 	};
 
-	const chartTypes = CHART_TYPES.map((item) => (
-		<Fragment key={item.value}>
+	const chartTypes = CHART_TYPES.map((item) => ({
+		value: item.value,
+		label: (
 			<Tooltip content={item.label}>
-				<ToggleGroup.Item value={item.value} asChild>
-					<button
-						type="submit"
-						className={classes.control}
-						aria-label={item.label}
-						onClick={() => handleChartChange(item.value)}
-						onKeyDown={(e) => {
-							if (e.key === 'Enter') {
-								handleChartChange(item.value);
-							}
-						}}
-						data-active={chartType === item.value}
-					>
-						<span className={classes.controlLabel}>{item.icon}</span>
-					</button>
-				</ToggleGroup.Item>
+				<span className={classes.controlLabel} data-chart-toggle={item.value}>
+					{item.icon}
+					<VisuallyHidden>{item.label}</VisuallyHidden>
+				</span>
 			</Tooltip>
-		</Fragment>
-	));
+		),
+	}));
 
 	return (
-		<ToggleGroup.Root
-			type="single"
-			value={chartType}
-			onValueChange={handleChartChange}
-			asChild
-		>
-			<div className={classes.toggle}>
-				<TooltipProvider delayDuration={500}>{chartTypes}</TooltipProvider>
-			</div>
-		</ToggleGroup.Root>
+		<TooltipProvider delayDuration={500}>
+			<SegmentedControl
+				value={chartType}
+				onChange={(value) => handleChartChange(value as ChartType)}
+				data={chartTypes}
+				classNames={{
+					root: classes.toggle,
+					control: classes.control,
+					label: classes.controlLabel,
+				}}
+			/>
+		</TooltipProvider>
 	);
 };
 
 const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 	const { hostname } = useParams();
-	const [searchParams] = useSearchParams();
 	const [dateOpened, { toggle: toggleDate }] = useDisclosure(false);
 	const hideWebsiteSelector = useMediaQuery('(36em < width < 62em)');
 
@@ -109,18 +98,7 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 		half: 'Previous half year',
 		year: 'Previous year',
 		all: 'All time',
-		custom: (
-			<button
-				type="button"
-				onClick={toggleDate}
-				className={datePickerClasses.button}
-				data-state={
-					searchParams.get('period') === 'custom' ? 'checked' : 'unchecked'
-				}
-			>
-				Custom range
-			</button>
-		),
+		custom: 'Custom range',
 	};
 
 	return (
@@ -142,7 +120,8 @@ const StatsHeader = ({ stats, chart, websites }: StatsHeaderProps) => {
 						defaultValue="today"
 						defaultLabel="Custom range"
 						ariaLabel="Select date range"
-						icon={CalendarIcon}
+						icon={Calendar}
+						customActions={{ custom: toggleDate }}
 						searchParamKey="period"
 						separatorValues={DATE_GROUP_END_VALUES}
 					/>

@@ -1,4 +1,4 @@
-import * as Tabs from '@radix-ui/react-tabs';
+import { Tabs } from '@mantine/core';
 import { useSearchParams } from 'react-router';
 
 import { ButtonLink } from '@/components/Button';
@@ -28,21 +28,21 @@ const TabSelect = ({ data }: TabSelectProps) => {
 	const [searchParams] = useSearchParams();
 
 	return (
-		<Tabs.Root className={classes.root} defaultValue={data[0]?.label}>
+		<Tabs className={classes.root} defaultValue={data[0]?.label}>
 			<Tabs.List className={classes.list} aria-label="Select tab options">
 				{data.map((tab) => (
-					<Tabs.Trigger
+					<Tabs.Tab
 						key={tab.label}
 						className={classes.trigger}
 						value={tab.label}
 						aria-label={tab.label}
 					>
 						{tab.label}
-					</Tabs.Trigger>
+					</Tabs.Tab>
 				))}
 			</Tabs.List>
 			{data.map((tab) => (
-				<Tabs.Content key={tab.label} value={tab.label}>
+				<Tabs.Panel key={tab.label} value={tab.label}>
 					<div className={classes.items} data-empty={tab.items.length === 0}>
 						{tab.items.map((item) => (
 							<StatsItem key={item.label} tab={tab.label} {...item} />
@@ -52,9 +52,9 @@ const TabSelect = ({ data }: TabSelectProps) => {
 						)}
 					</div>
 					<LoadMoreButton label={tab.label} searchParams={searchParams} />
-				</Tabs.Content>
+				</Tabs.Panel>
 			))}
-		</Tabs.Root>
+		</Tabs>
 	);
 };
 
@@ -82,19 +82,19 @@ const TabProperties = ({ label, choices, data }: TabPropertiesProps) => {
 	));
 
 	return (
-		<Tabs.Root className={classes.root} defaultValue={label}>
+		<Tabs className={classes.root} defaultValue={label}>
 			<Tabs.List className={classes.list} aria-label="Select tab options">
-				<Tabs.Trigger
+				<Tabs.Tab
 					key={label}
 					className={classes.trigger}
 					value={label}
 					aria-label={`Select ${label} tab`}
 				>
 					Properties
-				</Tabs.Trigger>
+				</Tabs.Tab>
 			</Tabs.List>
 
-			<Tabs.Content value={label}>
+			<Tabs.Panel value={label}>
 				<div>
 					<Combobox
 						root={{
@@ -115,8 +115,8 @@ const TabProperties = ({ label, choices, data }: TabPropertiesProps) => {
 					</div>
 				</div>
 				<LoadMoreButton label={label} searchParams={searchParams} />
-			</Tabs.Content>
-		</Tabs.Root>
+			</Tabs.Panel>
+		</Tabs>
 	);
 };
 
