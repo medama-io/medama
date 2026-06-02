@@ -21,10 +21,26 @@ Stores user data. Currently, only a single `admin` user is supported.
 
 ```json
 {
-    "script_type": string, // Comma separated string of script features. Can only include 'default' or 'tagged-events'.
-    "language": string, // Only supports 'en' for now
+    "language": string // Only supports 'en' for now
 }
 ```
+
+### `system_settings` - SQLite
+
+Stores global system settings. Migrated from `users.settings` JSON in migration `0007`.
+
+| Column         | Type                  | Description         |
+| -------------- | --------------------- | ------------------- |
+| `key`          | `TEXT PRIMARY KEY`    | Setting key         |
+| `value`        | `TEXT NOT NULL`       | Setting value       |
+| `date_updated` | `INTEGER NOT NULL`    | Date updated (Unix) |
+
+| Key                    | Type     | Description                                    |
+| ---------------------- | -------- | ---------------------------------------------- |
+| `script_type`          | `string` | Script features (`default` or `tagged-events`) |
+| `block_abusive_ips`    | `string` | Block known abusive IPs (`true`/`false`)       |
+| `block_tor_exit_nodes` | `string` | Block Tor exit nodes (`true`/`false`)          |
+| `blocked_ips`          | `string` | Manually blocked IPs (comma-separated)         |
 
 ### `views` - DuckDB
 
