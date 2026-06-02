@@ -47,7 +47,7 @@ func (c *Client) GetSettings(ctx context.Context) (*model.UserSettings, error) {
 		COALESCE(JSON_EXTRACT(settings, '$.blocked_ips'), '') AS blocked_ips
 	FROM users LIMIT 1`
 
-	settings := model.NewDefaultSettings()
+	settings := model.NewDefaultUserSettings()
 
 	err := c.GetContext(ctx, settings, query)
 	if errors.Is(err, sql.ErrNoRows) {
