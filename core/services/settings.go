@@ -21,7 +21,7 @@ func (h *Handler) GetSystemSettings(ctx context.Context, _params api.GetSystemSe
 
 	response, err := buildSystemSettingsResponse(settings)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get system settings")
+		return nil, errors.Wrap(err, "failed to build system settings response")
 	}
 
 	return response, nil
@@ -61,7 +61,7 @@ func (h *Handler) PatchSystemSettings(
 		modifiedSettings.BlockTorExitNodes = &blockTorExitNodes
 	}
 
-	for req.BlockedIPs != nil {
+	if req.BlockedIPs != nil {
 		blockedIPs := iputils.GetAddrListString(req.BlockedIPs)
 		modifiedSettings.BlockedIPs = &blockedIPs
 	}
