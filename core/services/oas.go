@@ -122,22 +122,11 @@ func (r *RuntimeConfig) UpdateConfig(
 	l := logger.Get()
 
 	if settings.ScriptType != "" {
-		err := meta.UpdateSetting(ctx, model.SettingsKeyScriptType, settings.ScriptType)
-		if err != nil {
-			return fmt.Errorf("failed to update script type setting: %w", err)
-		}
-
 		r.ScriptFileName = convertScriptType(settings.ScriptType)
-
 		l.Debug().Str("script_type", settings.ScriptType).Msg("updated script type")
 	}
 
 	if settings.BlockAbusiveIPs != "" {
-		err := meta.UpdateSetting(ctx, model.SettingsKeyBlockAbusiveIPs, settings.BlockAbusiveIPs)
-		if err != nil {
-			return fmt.Errorf("failed to update block abusive IPs setting: %w", err)
-		}
-
 		l.Debug().
 			Str("block_abusive_ips", settings.BlockAbusiveIPs).
 			Msg("updated block abusive IPs setting")
@@ -146,15 +135,6 @@ func (r *RuntimeConfig) UpdateConfig(
 	}
 
 	if settings.BlockTorExitNodes != "" {
-		err := meta.UpdateSetting(
-			ctx,
-			model.SettingsKeyBlockTorExitNodes,
-			settings.BlockTorExitNodes,
-		)
-		if err != nil {
-			return fmt.Errorf("failed to update block Tor exit nodes setting: %w", err)
-		}
-
 		l.Debug().
 			Str("block_tor_exit_nodes", settings.BlockTorExitNodes).
 			Msg("updated block Tor exit nodes setting")
@@ -163,13 +143,7 @@ func (r *RuntimeConfig) UpdateConfig(
 	}
 
 	if settings.BlockedIPs != "" {
-		err := meta.UpdateSetting(ctx, model.SettingsKeyBlockedIPs, settings.BlockedIPs)
-		if err != nil {
-			return fmt.Errorf("failed to update blocked IPs setting: %w", err)
-		}
-
 		l.Debug().Str("blocked_ips", settings.BlockedIPs).Msg("updated blocked IPs setting")
-
 		r.IPFilter.LoadFromCommaSeparated(settings.BlockedIPs)
 	}
 
