@@ -26,6 +26,12 @@ type Handler interface {
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
+	// GetSystemSettings implements get-system-settings operation.
+	//
+	// Get a list of all system settings.
+	//
+	// GET /system/settings
+	GetSystemSettings(ctx context.Context, params GetSystemSettingsParams) (GetSystemSettingsRes, error)
 	// GetUser implements get-user operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
@@ -129,6 +135,12 @@ type Handler interface {
 	//
 	// GET /websites/{hostname}
 	GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error)
+	// PatchSystemSettings implements patch-system-settings operation.
+	//
+	// Partial update of system settings.
+	//
+	// PATCH /system/settings
+	PatchSystemSettings(ctx context.Context, req *SystemSettings, params PatchSystemSettingsParams) (PatchSystemSettingsRes, error)
 	// PatchUser implements patch-user operation.
 	//
 	// Update a user account's details.

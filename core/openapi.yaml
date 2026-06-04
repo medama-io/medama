@@ -276,6 +276,66 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "500":
           $ref: "#/components/responses/InternalServerError"
+  /system/settings:
+    get:
+      tags:
+        - System
+        - Settings
+      security:
+        - CookieAuth: []
+      summary: List System Settings
+      description: Get a list of all system settings.
+      operationId: get-system-settings
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      responses:
+        "200":
+          description: Returns a list of all system settings.
+          headers:
+            X-Api-Commit:
+              $ref: "#/components/headers/X-Api-Commit"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemSettings"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    patch:
+      tags:
+        - System
+        - Settings
+      security:
+        - CookieAuth: []
+      summary: Update System Settings
+      description: Partial update of system settings.
+      operationId: patch-system-settings
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      requestBody:
+        description: System Settings to update.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemSettings"
+        required: true
+      responses:
+        "200":
+          description: Returns updated system settings.
+          headers:
+            X-Api-Commit:
+              $ref: "#/components/headers/X-Api-Commit"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemSettings"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /websites:
     get:
       tags:
@@ -1602,6 +1662,7 @@ components:
           default: en
         script_type:
           type: array
+          description: (Property is deprecated in favor of system settings)
           items:
             type: string
             enum:
@@ -1609,19 +1670,23 @@ components:
               - click-events
               - page-events
           uniqueItems: true
+          deprecated: true
         blockAbusiveIPs:
           type: boolean
-          description: Block known abusive IP addresses.
+          description: Block known abusive IP addresses. (Property is deprecated in favor of system settings)
+          deprecated: true
         blockTorExitNodes:
           type: boolean
-          description: Block traffic from Tor exit nodes.
+          description: Block traffic from Tor exit nodes. (Property is deprecated in favor of system settings)
+          deprecated: true
         blockedIPs:
           type: array
-          description: List of manually blocked IP addresses.
+          description: List of manually blocked IP addresses. (Property is deprecated in favor of system settings)
           items:
             type: string
             format: ipv4
           uniqueItems: true
+          deprecated: true
     UserGet:
       type: object
       title: UserGet
@@ -1707,6 +1772,33 @@ components:
           format: password
         settings:
           $ref: "#/components/schemas/UserSettings"
+    SystemSettings:
+      type: object
+      title: SystemSettings
+      description: Schema for system setting.
+      properties:
+        script_type:
+          type: array
+          items:
+            type: string
+            enum:
+              - default
+              - click-events
+              - page-events
+          uniqueItems: true
+        blockAbusiveIPs:
+          type: boolean
+          description: Block known abusive IP addresses.
+        blockTorExitNodes:
+          type: boolean
+          description: Block traffic from Tor exit nodes.
+        blockedIPs:
+          type: array
+          description: List of manually blocked IP addresses.
+          items:
+            type: string
+            format: ipv4
+          uniqueItems: true
     WebsiteGet:
       type: object
       title: WebsiteGet

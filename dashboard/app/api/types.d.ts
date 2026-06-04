@@ -132,6 +132,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/system/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List System Settings
+         * @description Get a list of all system settings.
+         */
+        get: operations["get-system-settings"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update System Settings
+         * @description Partial update of system settings.
+         */
+        patch: operations["patch-system-settings"];
+        trace?: never;
+    };
     "/websites": {
         parameters: {
             query?: never;
@@ -558,12 +582,25 @@ export interface components {
              * @enum {string}
              */
             language?: "en";
+            /**
+             * @deprecated
+             * @description (Property is deprecated in favor of system settings)
+             */
             script_type?: ("default" | "click-events" | "page-events")[];
-            /** @description Block known abusive IP addresses. */
+            /**
+             * @deprecated
+             * @description Block known abusive IP addresses. (Property is deprecated in favor of system settings)
+             */
             blockAbusiveIPs?: boolean;
-            /** @description Block traffic from Tor exit nodes. */
+            /**
+             * @deprecated
+             * @description Block traffic from Tor exit nodes. (Property is deprecated in favor of system settings)
+             */
             blockTorExitNodes?: boolean;
-            /** @description List of manually blocked IP addresses. */
+            /**
+             * @deprecated
+             * @description List of manually blocked IP addresses. (Property is deprecated in favor of system settings)
+             */
             blockedIPs?: string[];
         };
         /**
@@ -611,6 +648,19 @@ export interface components {
             /** Format: password */
             password?: string;
             settings?: components["schemas"]["UserSettings"];
+        };
+        /**
+         * SystemSettings
+         * @description Schema for system setting.
+         */
+        SystemSettings: {
+            script_type?: ("default" | "click-events" | "page-events")[];
+            /** @description Block known abusive IP addresses. */
+            blockAbusiveIPs?: boolean;
+            /** @description Block traffic from Tor exit nodes. */
+            blockTorExitNodes?: boolean;
+            /** @description List of manually blocked IP addresses. */
+            blockedIPs?: string[];
         };
         /**
          * WebsiteGet
@@ -1299,6 +1349,64 @@ export interface operations {
                 };
             };
             401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-system-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns a list of all system settings. */
+            200: {
+                headers: {
+                    "X-Api-Commit": components["headers"]["X-Api-Commit"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemSettings"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "patch-system-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        /** @description System Settings to update. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SystemSettings"];
+            };
+        };
+        responses: {
+            /** @description Returns updated system settings. */
+            200: {
+                headers: {
+                    "X-Api-Commit": components["headers"]["X-Api-Commit"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemSettings"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
             500: components["responses"]["InternalServerError"];
         };
     };

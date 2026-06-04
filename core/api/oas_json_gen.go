@@ -5500,6 +5500,186 @@ func (s *StatsUTMSourcesItem) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *SystemSettings) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *SystemSettings) encodeFields(e *jx.Encoder) {
+	{
+		if s.ScriptType != nil {
+			e.FieldStart("script_type")
+			e.ArrStart()
+			for _, elem := range s.ScriptType {
+				elem.Encode(e)
+			}
+			e.ArrEnd()
+		}
+	}
+	{
+		if s.BlockAbusiveIPs.Set {
+			e.FieldStart("blockAbusiveIPs")
+			s.BlockAbusiveIPs.Encode(e)
+		}
+	}
+	{
+		if s.BlockTorExitNodes.Set {
+			e.FieldStart("blockTorExitNodes")
+			s.BlockTorExitNodes.Encode(e)
+		}
+	}
+	{
+		if s.BlockedIPs != nil {
+			e.FieldStart("blockedIPs")
+			e.ArrStart()
+			for _, elem := range s.BlockedIPs {
+				json.EncodeIPv4(e, elem)
+			}
+			e.ArrEnd()
+		}
+	}
+}
+
+var jsonFieldsNameOfSystemSettings = [4]string{
+	0: "script_type",
+	1: "blockAbusiveIPs",
+	2: "blockTorExitNodes",
+	3: "blockedIPs",
+}
+
+// Decode decodes SystemSettings from json.
+func (s *SystemSettings) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode SystemSettings to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "script_type":
+			if err := func() error {
+				s.ScriptType = make([]SystemSettingsScriptTypeItem, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem SystemSettingsScriptTypeItem
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.ScriptType = append(s.ScriptType, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"script_type\"")
+			}
+		case "blockAbusiveIPs":
+			if err := func() error {
+				s.BlockAbusiveIPs.Reset()
+				if err := s.BlockAbusiveIPs.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"blockAbusiveIPs\"")
+			}
+		case "blockTorExitNodes":
+			if err := func() error {
+				s.BlockTorExitNodes.Reset()
+				if err := s.BlockTorExitNodes.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"blockTorExitNodes\"")
+			}
+		case "blockedIPs":
+			if err := func() error {
+				s.BlockedIPs = make([]netip.Addr, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem netip.Addr
+					v, err := json.DecodeIPv4(d)
+					elem = v
+					if err != nil {
+						return err
+					}
+					s.BlockedIPs = append(s.BlockedIPs, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"blockedIPs\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode SystemSettings")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *SystemSettings) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *SystemSettings) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes SystemSettingsScriptTypeItem as json.
+func (s SystemSettingsScriptTypeItem) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes SystemSettingsScriptTypeItem from json.
+func (s *SystemSettingsScriptTypeItem) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode SystemSettingsScriptTypeItem to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch SystemSettingsScriptTypeItem(v) {
+	case SystemSettingsScriptTypeItemDefault:
+		*s = SystemSettingsScriptTypeItemDefault
+	case SystemSettingsScriptTypeItemClickEvents:
+		*s = SystemSettingsScriptTypeItemClickEvents
+	case SystemSettingsScriptTypeItemPageEvents:
+		*s = SystemSettingsScriptTypeItemPageEvents
+	default:
+		*s = SystemSettingsScriptTypeItem(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s SystemSettingsScriptTypeItem) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *SystemSettingsScriptTypeItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *UnauthorisedError) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)

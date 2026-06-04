@@ -911,6 +911,7 @@ func (*ForbiddenErrorHeaders) getWebsiteIDOsRes()         {}
 func (*ForbiddenErrorHeaders) getWebsiteIDPropertiesRes() {}
 func (*ForbiddenErrorHeaders) getWebsiteIDReferrersRes()  {}
 func (*ForbiddenErrorHeaders) getWebsiteIDSourcesRes()    {}
+func (*ForbiddenErrorHeaders) patchSystemSettingsRes()    {}
 func (*ForbiddenErrorHeaders) patchUserRes()              {}
 func (*ForbiddenErrorHeaders) patchWebsitesIDRes()        {}
 func (*ForbiddenErrorHeaders) postWebsitesRes()           {}
@@ -1127,6 +1128,7 @@ func (s *InternalServerErrorHeaders) SetResponse(val InternalServerError) {
 func (*InternalServerErrorHeaders) deleteUserRes()             {}
 func (*InternalServerErrorHeaders) deleteWebsitesIDRes()       {}
 func (*InternalServerErrorHeaders) getEventPingRes()           {}
+func (*InternalServerErrorHeaders) getSystemSettingsRes()      {}
 func (*InternalServerErrorHeaders) getUserRes()                {}
 func (*InternalServerErrorHeaders) getUserUsageRes()           {}
 func (*InternalServerErrorHeaders) getWebsiteIDBrowsersRes()   {}
@@ -1144,6 +1146,7 @@ func (*InternalServerErrorHeaders) getWebsiteIDSummaryRes()    {}
 func (*InternalServerErrorHeaders) getWebsiteIDTimeRes()       {}
 func (*InternalServerErrorHeaders) getWebsitesIDRes()          {}
 func (*InternalServerErrorHeaders) getWebsitesRes()            {}
+func (*InternalServerErrorHeaders) patchSystemSettingsRes()    {}
 func (*InternalServerErrorHeaders) patchUserRes()              {}
 func (*InternalServerErrorHeaders) patchWebsitesIDRes()        {}
 func (*InternalServerErrorHeaders) postAuthLoginRes()          {}
@@ -3208,6 +3211,135 @@ func (s *StatsUTMSourcesItem) SetDuration(val OptInt) {
 	s.Duration = val
 }
 
+// Schema for system setting.
+// Ref: #/components/schemas/SystemSettings
+type SystemSettings struct {
+	ScriptType []SystemSettingsScriptTypeItem `json:"script_type"`
+	// Block known abusive IP addresses.
+	BlockAbusiveIPs OptBool `json:"blockAbusiveIPs"`
+	// Block traffic from Tor exit nodes.
+	BlockTorExitNodes OptBool `json:"blockTorExitNodes"`
+	// List of manually blocked IP addresses.
+	BlockedIPs []netip.Addr `json:"blockedIPs"`
+}
+
+// GetScriptType returns the value of ScriptType.
+func (s *SystemSettings) GetScriptType() []SystemSettingsScriptTypeItem {
+	return s.ScriptType
+}
+
+// GetBlockAbusiveIPs returns the value of BlockAbusiveIPs.
+func (s *SystemSettings) GetBlockAbusiveIPs() OptBool {
+	return s.BlockAbusiveIPs
+}
+
+// GetBlockTorExitNodes returns the value of BlockTorExitNodes.
+func (s *SystemSettings) GetBlockTorExitNodes() OptBool {
+	return s.BlockTorExitNodes
+}
+
+// GetBlockedIPs returns the value of BlockedIPs.
+func (s *SystemSettings) GetBlockedIPs() []netip.Addr {
+	return s.BlockedIPs
+}
+
+// SetScriptType sets the value of ScriptType.
+func (s *SystemSettings) SetScriptType(val []SystemSettingsScriptTypeItem) {
+	s.ScriptType = val
+}
+
+// SetBlockAbusiveIPs sets the value of BlockAbusiveIPs.
+func (s *SystemSettings) SetBlockAbusiveIPs(val OptBool) {
+	s.BlockAbusiveIPs = val
+}
+
+// SetBlockTorExitNodes sets the value of BlockTorExitNodes.
+func (s *SystemSettings) SetBlockTorExitNodes(val OptBool) {
+	s.BlockTorExitNodes = val
+}
+
+// SetBlockedIPs sets the value of BlockedIPs.
+func (s *SystemSettings) SetBlockedIPs(val []netip.Addr) {
+	s.BlockedIPs = val
+}
+
+// SystemSettingsHeaders wraps SystemSettings with response headers.
+type SystemSettingsHeaders struct {
+	XAPICommit OptString
+	Response   SystemSettings
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *SystemSettingsHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *SystemSettingsHeaders) GetResponse() SystemSettings {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *SystemSettingsHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *SystemSettingsHeaders) SetResponse(val SystemSettings) {
+	s.Response = val
+}
+
+func (*SystemSettingsHeaders) getSystemSettingsRes()   {}
+func (*SystemSettingsHeaders) patchSystemSettingsRes() {}
+
+type SystemSettingsScriptTypeItem string
+
+const (
+	SystemSettingsScriptTypeItemDefault     SystemSettingsScriptTypeItem = "default"
+	SystemSettingsScriptTypeItemClickEvents SystemSettingsScriptTypeItem = "click-events"
+	SystemSettingsScriptTypeItemPageEvents  SystemSettingsScriptTypeItem = "page-events"
+)
+
+// AllValues returns all SystemSettingsScriptTypeItem values.
+func (SystemSettingsScriptTypeItem) AllValues() []SystemSettingsScriptTypeItem {
+	return []SystemSettingsScriptTypeItem{
+		SystemSettingsScriptTypeItemDefault,
+		SystemSettingsScriptTypeItemClickEvents,
+		SystemSettingsScriptTypeItemPageEvents,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s SystemSettingsScriptTypeItem) MarshalText() ([]byte, error) {
+	switch s {
+	case SystemSettingsScriptTypeItemDefault:
+		return []byte(s), nil
+	case SystemSettingsScriptTypeItemClickEvents:
+		return []byte(s), nil
+	case SystemSettingsScriptTypeItemPageEvents:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *SystemSettingsScriptTypeItem) UnmarshalText(data []byte) error {
+	switch SystemSettingsScriptTypeItem(data) {
+	case SystemSettingsScriptTypeItemDefault:
+		*s = SystemSettingsScriptTypeItemDefault
+		return nil
+	case SystemSettingsScriptTypeItemClickEvents:
+		*s = SystemSettingsScriptTypeItemClickEvents
+		return nil
+	case SystemSettingsScriptTypeItemPageEvents:
+		*s = SystemSettingsScriptTypeItemPageEvents
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 type UnauthorisedError struct {
 	Error UnauthorisedErrorError `json:"error"`
 }
@@ -3275,6 +3407,7 @@ func (s *UnauthorisedErrorHeaders) SetResponse(val UnauthorisedError) {
 
 func (*UnauthorisedErrorHeaders) deleteUserRes()             {}
 func (*UnauthorisedErrorHeaders) deleteWebsitesIDRes()       {}
+func (*UnauthorisedErrorHeaders) getSystemSettingsRes()      {}
 func (*UnauthorisedErrorHeaders) getUserRes()                {}
 func (*UnauthorisedErrorHeaders) getUserUsageRes()           {}
 func (*UnauthorisedErrorHeaders) getWebsiteIDBrowsersRes()   {}
@@ -3292,6 +3425,7 @@ func (*UnauthorisedErrorHeaders) getWebsiteIDSummaryRes()    {}
 func (*UnauthorisedErrorHeaders) getWebsiteIDTimeRes()       {}
 func (*UnauthorisedErrorHeaders) getWebsitesIDRes()          {}
 func (*UnauthorisedErrorHeaders) getWebsitesRes()            {}
+func (*UnauthorisedErrorHeaders) patchSystemSettingsRes()    {}
 func (*UnauthorisedErrorHeaders) patchUserRes()              {}
 func (*UnauthorisedErrorHeaders) patchWebsitesIDRes()        {}
 func (*UnauthorisedErrorHeaders) postAuthLoginRes()          {}
@@ -3417,13 +3551,22 @@ func (s *UserPatch) SetSettings(val OptUserSettings) {
 // Response body for getting user settings.
 // Ref: #/components/schemas/UserSettings
 type UserSettings struct {
-	Language   OptUserSettingsLanguage      `json:"language"`
+	Language OptUserSettingsLanguage `json:"language"`
+	// (Property is deprecated in favor of system settings).
+	//
+	// Deprecated: schema marks this property as deprecated.
 	ScriptType []UserSettingsScriptTypeItem `json:"script_type"`
-	// Block known abusive IP addresses.
+	// Block known abusive IP addresses. (Property is deprecated in favor of system settings).
+	//
+	// Deprecated: schema marks this property as deprecated.
 	BlockAbusiveIPs OptBool `json:"blockAbusiveIPs"`
-	// Block traffic from Tor exit nodes.
+	// Block traffic from Tor exit nodes. (Property is deprecated in favor of system settings).
+	//
+	// Deprecated: schema marks this property as deprecated.
 	BlockTorExitNodes OptBool `json:"blockTorExitNodes"`
-	// List of manually blocked IP addresses.
+	// List of manually blocked IP addresses. (Property is deprecated in favor of system settings).
+	//
+	// Deprecated: schema marks this property as deprecated.
 	BlockedIPs []netip.Addr `json:"blockedIPs"`
 }
 

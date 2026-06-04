@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
+	"github.com/medama-io/medama/db/sqlite"
 	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
@@ -37,23 +38,28 @@ func (h *Handler) GetUser(ctx context.Context, _params api.GetUserParams) (api.G
 		return nil, errors.Wrap(err, "services")
 	}
 
-	// Convert user settings to API format.
+	// Return system settings as part of user settings, to preserve backward compatibility
+	settings, err := h.db.GetSystemSettings(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to retrieve system settings")
+	}
+
 	scriptFeatures := []api.UserSettingsScriptTypeItem{}
-	for v := range strings.SplitSeq(user.Settings.ScriptType, ",") {
+	for v := range strings.SplitSeq(settings.ScriptType, ",") {
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 
-	blockedIPs, err := iputils.GetAddrList(user.Settings.BlockedIPs)
+	blockedIPs, err := iputils.GetAddrList(settings.BlockedIPs)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse blocked IPs")
 	}
 
-	blockAbusiveIPs, err := strconv.ParseBool(user.Settings.BlockAbusiveIPs)
+	blockAbusiveIPs, err := strconv.ParseBool(settings.BlockAbusiveIPs)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse block abusive IPs setting")
 	}
 
-	blockTorExitNodes, err := strconv.ParseBool(user.Settings.BlockTorExitNodes)
+	blockTorExitNodes, err := strconv.ParseBool(settings.BlockTorExitNodes)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse block Tor exit nodes setting")
 	}
@@ -215,11 +221,16 @@ func (h *Handler) PatchUser(
 	}
 
 	// Settings
+	shouldUpdateRuntimeConfig := false
+
 	if req.Settings.IsSet() {
 		settings := user.Settings
 		if v, ok := req.Settings.Value.Language.Get(); ok {
 			settings.Language = string(v)
 		}
+
+		// Store part of user settings as system settings, to preserve backward compatibility
+		modifiedSettings := &sqlite.UpdateSystemSettings{}
 
 		if req.Settings.Value.ScriptType != nil {
 			// Convert to string slice.
@@ -228,28 +239,49 @@ func (h *Handler) PatchUser(
 				features = append(features, string(v))
 			}
 
-			settings.ScriptType = strings.Join(features, ",")
+			scriptType := strings.Join(features, ",")
+			modifiedSettings.ScriptType = &scriptType
+
+			shouldUpdateRuntimeConfig = true
 		}
 
 		if v, ok := req.Settings.Value.BlockAbusiveIPs.Get(); ok {
-			settings.BlockAbusiveIPs = strconv.FormatBool(v)
+			blockAbusiveIPs := strconv.FormatBool(v)
+			modifiedSettings.BlockAbusiveIPs = &blockAbusiveIPs
+
+			shouldUpdateRuntimeConfig = true
 		}
 
 		if v, ok := req.Settings.Value.BlockTorExitNodes.Get(); ok {
-			settings.BlockTorExitNodes = strconv.FormatBool(v)
+			blockTorExitNodes := strconv.FormatBool(v)
+			modifiedSettings.BlockTorExitNodes = &blockTorExitNodes
+
+			shouldUpdateRuntimeConfig = true
 		}
 
 		if req.Settings.Value.BlockedIPs != nil {
-			settings.BlockedIPs = iputils.GetAddrListString(req.Settings.Value.BlockedIPs)
+			blockedIPs := iputils.GetAddrListString(req.Settings.Value.BlockedIPs)
+			modifiedSettings.BlockedIPs = &blockedIPs
+
+			shouldUpdateRuntimeConfig = true
 		}
 
-		err = h.db.UpdateSettings(ctx, user.ID, settings)
+		err = h.db.UpdateSystemSettings(ctx, modifiedSettings)
 		if err != nil {
-			log.Error().Err(err).Msg("failed to update user settings")
+			log.Error().Err(err).Msg("failed to update system settings")
 			return nil, errors.Wrap(err, "services")
 		}
+	}
 
-		// Also update live runtime config to dynamically update script type.
+	// Returning system settings as part of user modal, to preserve backward compatibility
+	settings, err := h.db.GetSystemSettings(ctx)
+	if err != nil {
+		log.Error().Err(err).Msg("faield to retrieve system settings")
+		return nil, errors.Wrap(err, "services")
+	}
+
+	// If settings has been updated, also update live runtime config to dynamically update script type
+	if shouldUpdateRuntimeConfig {
 		err = h.RuntimeConfig.UpdateConfig(ctx, h.db, settings)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to update runtime config")
@@ -257,23 +289,22 @@ func (h *Handler) PatchUser(
 		}
 	}
 
-	// Convert user settings to API format.
 	scriptFeatures := []api.UserSettingsScriptTypeItem{}
-	for v := range strings.SplitSeq(user.Settings.ScriptType, ",") {
+	for v := range strings.SplitSeq(settings.ScriptType, ",") {
 		scriptFeatures = append(scriptFeatures, api.UserSettingsScriptTypeItem(v))
 	}
 
-	blockedIPs, err := iputils.GetAddrList(user.Settings.BlockedIPs)
+	blockedIPs, err := iputils.GetAddrList(settings.BlockedIPs)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse blocked IPs")
 	}
 
-	blockAbusiveIPs, err := strconv.ParseBool(user.Settings.BlockAbusiveIPs)
+	blockAbusiveIPs, err := strconv.ParseBool(settings.BlockAbusiveIPs)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse block abusive IPs setting")
 	}
 
-	blockTorExitNodes, err := strconv.ParseBool(user.Settings.BlockTorExitNodes)
+	blockTorExitNodes, err := strconv.ParseBool(settings.BlockTorExitNodes)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse block Tor exit nodes setting")
 	}

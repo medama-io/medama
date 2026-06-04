@@ -102,7 +102,7 @@ func NewRuntimeConfig(
 	commit string,
 ) (RuntimeConfig, error) {
 	// Load the script type from the database.
-	settings, err := user.GetSettings(ctx)
+	settings, err := user.GetSystemSettings(ctx)
 	if err != nil {
 		return RuntimeConfig{}, fmt.Errorf("failed to get user settings: %w", err)
 	}
@@ -117,7 +117,7 @@ func NewRuntimeConfig(
 func (r *RuntimeConfig) UpdateConfig(
 	ctx context.Context,
 	meta *sqlite.Client,
-	settings *model.UserSettings,
+	settings *model.SystemSettings,
 ) error {
 	l := logger.Get()
 
