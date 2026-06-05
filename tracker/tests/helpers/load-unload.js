@@ -203,7 +203,7 @@ const loadUnloadTests = (name) => {
 					postData: {
 						e: 'load',
 						u: createURL(name, 'index', false),
-						p: name == 'simple' ? true : false, // Returning visitor
+						p: name === 'simple', // Returning visitor
 						q: false, // Returning page view
 						d: {
 							load: 'test',
@@ -281,7 +281,7 @@ const loadUnloadTests = (name) => {
 					postData: {
 						e: 'load',
 						u: createURL(name, 'index', false),
-						p: name == 'simple' ? true : false, // Returning visitor
+						p: name === 'simple', // Returning visitor
 						q: false, // Returning page view
 						d: {
 							load: 'test',

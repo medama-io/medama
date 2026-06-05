@@ -1,9 +1,26 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
 	"files": {
-		"includes": ["**", "!**/types.d.ts", "!**/dist"]
+		"includes": [
+			"**",
+			"!!**/.react-router",
+			"!!**/build",
+			"!!**/dist",
+			"!!core/client",
+			"!**/types.d.ts",
+			"!dashboard/app/api/types.d.ts",
+			"!bun.lock"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"useEditorconfig": true,
+		"lineWidth": 80,
+		"indentStyle": "tab",
+		"indentWidth": 2
 	},
 	"assist": {
+		"enabled": true,
 		"actions": {
 			"source": {
 				"organizeImports": "on"
@@ -12,26 +29,54 @@
 	},
 	"linter": {
 		"enabled": true,
-		"includes": ["**", "!**/types.d.ts", "!**/*.js", "!**/bun.lock"],
+		"domains": {
+			"react": "recommended",
+			"test": "recommended",
+			"project": "recommended"
+		},
+		"includes": [
+			"**",
+			"!**/types.d.ts",
+			"!dashboard/app/api/types.d.ts",
+			"!bun.lock"
+		],
 		"rules": {
 			"recommended": true,
+			"complexity": {
+				"noImportantStyles": "error"
+			},
 			"correctness": {
-				"noUnknownMediaFeatureName": "off"
+				"noUndeclaredDependencies": "error",
+				"noUnknownMediaFeatureName": "off",
+				"noUnusedVariables": "error",
+				"useExhaustiveDependencies": {
+					"level": "error",
+					"options": {
+						"reportMissingDependenciesArray": true
+					}
+				}
 			},
 			"suspicious": {
+				"noExplicitAny": "error",
 				"noUnknownAtRules": "off"
 			},
 			"style": {
-				"noDescendingSpecificity": "off"
+				"noCommonJs": "error",
+				"noDescendingSpecificity": "off",
+				"noNonNullAssertion": "error",
+				"useImportType": "error"
 			}
 		}
 	},
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": true
+		"useIgnoreFile": true,
+		"root": ".",
+		"defaultBranch": "main"
 	},
 	"javascript": {
+		"jsxRuntime": "transparent",
 		"formatter": {
 			"quoteStyle": "single"
 		}
@@ -40,5 +85,49 @@
 		"parser": {
 			"cssModules": true
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["tracker/src/tracker.js"],
+			"linter": {
+				"enabled": false
+			}
+		},
+		{
+			"includes": ["tracker/tests/fixtures/**/*.html"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"useButtonType": "off"
+					},
+					"correctness": {
+						"noUnusedVariables": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["tracker/tests/**/*.js"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noUselessUndefinedInitialization": "off"
+					},
+					"style": {
+						"useTemplate": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["tracker/playwright.config.js"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noCommonJs": "off"
+					}
+				}
+			}
+		}
+	]
 }
