@@ -51,7 +51,7 @@ const SegmentedChartControl = () => {
 		value: item.value,
 		label: (
 			<Tooltip content={item.label}>
-				<span className={classes.controlLabel} data-chart-toggle={item.value}>
+				<span className={classes.controlIcon} data-chart-toggle={item.value}>
 					{item.icon}
 					<VisuallyHidden>{item.label}</VisuallyHidden>
 				</span>
@@ -67,6 +67,7 @@ const SegmentedChartControl = () => {
 				data={chartTypes}
 				classNames={{
 					root: classes.toggle,
+					indicator: classes.indicator,
 					control: classes.control,
 					label: classes.controlLabel,
 				}}

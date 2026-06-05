@@ -92,8 +92,8 @@
 }
 
 .dropdown {
-	height: 200px;
-	width: 154px;
+	max-height: 220px;
+	overflow: hidden;
 
 	background-color: white;
 	border: 1px solid var(--border-muted);
@@ -103,8 +103,11 @@
 .item {
 	composes: button from global;
 
-	padding: 6px 14px;
-	height: fit-content;
+	min-height: 32px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.25;
+	height: auto;
 	width: 100%;
 	text-align: left;
 	justify-content: flex-start;

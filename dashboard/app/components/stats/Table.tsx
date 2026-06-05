@@ -1,4 +1,3 @@
-import { Tabs } from '@mantine/core';
 import { useDidUpdate, useHover, useMediaQuery } from '@mantine/hooks';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
@@ -8,7 +7,7 @@ import {
 	type DataTableSortStatus,
 } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import isFQDN from 'validator/lib/isFQDN';
 
 import { ButtonIcon, ButtonLink } from '@/components/Button';
@@ -54,6 +53,8 @@ const LABEL_MAP: Record<Dataset, string> = {
 	languages: 'Languages',
 	properties: 'Properties',
 } as const;
+
+const LABEL_ENTRIES = Object.entries(LABEL_MAP) as [Dataset, string][];
 
 const ACCESSOR_MAP: Record<Dataset, keyof DataRow> = {
 	pages: 'path',
@@ -502,46 +503,39 @@ const getColumnsForQuery = (
 };
 
 export const Table = ({ query, data }: StatsTableProps) => {
-	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-
-	const handleTabChange = useCallback(
-		(value: string | null) => {
-			navigate(
-				{
-					pathname: `../${value}`,
-					search: searchParams.toString(),
-				},
-				{ preventScrollReset: true },
-			);
-		},
-		[navigate, searchParams],
-	);
-
 	const isMobile = useMediaQuery('(max-width: 75em)');
 
 	return (
-		<Tabs
-			value={query}
-			className={classes.root}
-			orientation="vertical"
-			onChange={handleTabChange}
-		>
+		<div className={classes.root}>
 			{!isMobile && (
 				<div className={classes.list}>
 					<BackButton />
-					<Tabs.List className={classes['list-triggers']}>
-						{Object.entries(LABEL_MAP).map(([key, label]) => (
-							<Tabs.Tab key={key} value={key} className={classes.trigger}>
+					<nav
+						className={classes['list-triggers']}
+						aria-label="Select stats table"
+					>
+						{LABEL_ENTRIES.map(([key, label]) => (
+							<ButtonLink
+								key={key}
+								to={{
+									pathname: `../${key}`,
+									search: searchParams.toString(),
+								}}
+								preventScrollReset
+								className={classes.trigger}
+								data-active={query === key}
+								aria-current={query === key ? 'page' : undefined}
+							>
 								{label}
-							</Tabs.Tab>
+							</ButtonLink>
 						))}
-					</Tabs.List>
+					</nav>
 				</div>
 			)}
-			<Tabs.Panel value={query} className={classes.panel}>
+			<div className={classes.panel}>
 				<QueryTable query={query} data={data} isMobile={isMobile} />
-			</Tabs.Panel>
-		</Tabs>
+			</div>
+		</div>
 	);
 };

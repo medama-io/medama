@@ -1,7 +1,8 @@
 .root {
 	background-color: var(--bg-grey);
 
-	display: inline-flex;
+	display: flex;
+	align-items: stretch;
 
 	padding: 16px;
 	border-radius: 8px;
@@ -16,11 +17,14 @@
 }
 
 .list-triggers {
-	composes: flex from global;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 
 	width: 192px;
 
 	padding: 8px 0 0 0;
+	gap: 2px;
 }
 
 .trigger {
@@ -33,21 +37,38 @@
 
 	background-color: transparent;
 	color: var(--text-disabled);
-	border: none;
+	border: 1px solid transparent;
+	text-align: left;
 
 	&:hover {
 		background-color: var(--black-a1);
 	}
 
+	&:focus-visible {
+		outline: 2px solid var(--focus-outline);
+		outline-offset: -2px;
+	}
+
+	&:visited {
+		color: var(--text-disabled);
+	}
+
 	&[data-state="active"],
-	&[data-active="true"] {
+	&[data-active="true"],
+	&[aria-current="page"] {
 		color: var(--text-dark);
 		font-weight: 600;
+	}
+
+	&[data-active="true"]:visited,
+	&[aria-current="page"]:visited {
+		color: var(--text-dark);
 	}
 }
 
 .panel {
 	width: 100%;
+	min-width: 0;
 	overflow-x: auto;
 }
 

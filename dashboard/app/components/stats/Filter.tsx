@@ -98,6 +98,7 @@ interface FilterDropdownProps {
 }
 
 const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
+	const menuWidth = isFilterType(choices) ? 220 : 180;
 	const label = isFilterType(choices)
 		? choices[value as FilterOperator]?.label
 		: choices[value as Filter]?.label;
@@ -115,7 +116,13 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 	}, [choices, setValue]);
 
 	return (
-		<Menu position="bottom-start" offset={8} withinPortal>
+		<Menu
+			position="bottom-start"
+			offset={8}
+			width={menuWidth}
+			withinPortal
+			classNames={{ dropdown: classes.dropdown }}
+		>
 			<Menu.Target>
 				<button type="button" className={classes.trigger}>
 					<span className={classes.label}>{label ?? 'Unknown'}</span>
@@ -123,7 +130,7 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 				</button>
 			</Menu.Target>
 
-			<Menu.Dropdown className={classes.dropdown}>
+			<Menu.Dropdown>
 				<ScrollArea vertical>{options}</ScrollArea>
 			</Menu.Dropdown>
 		</Menu>
