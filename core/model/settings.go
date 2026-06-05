@@ -37,7 +37,7 @@ func NewDefaultUserSettings() *UserSettings {
 	}
 }
 
-// NewDefaultSystemSettings returns a new instance of Systems settings with default values.
+// NewDefaultSystemSettings returns a new instance of System settings with default values.
 func NewDefaultSystemSettings() *SystemSettings {
 	return &SystemSettings{
 		ScriptType:        "default",

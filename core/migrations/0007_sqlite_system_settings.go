@@ -1,13 +1,14 @@
 package migrations
 
 import (
+	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/db/sqlite"
 )
 
 func Up0007(c *sqlite.Client) error {
 	tx, err := c.Beginx()
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to begin migration")
 	}
 
 	// Create system_settings table
@@ -20,9 +21,13 @@ func Up0007(c *sqlite.Client) error {
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {
-			return rollbackErr
+			return errors.Wrap(
+				errors.Join(err, rollbackErr),
+				"failed to create system_settings table",
+			)
 		}
-		return err
+
+		return errors.Wrap(err, "failed to create system_settings table")
 	}
 
 	// Migrate script_type, block_abusive_ips, block_tor_exit_nodes, blocked_ips
@@ -42,9 +47,13 @@ func Up0007(c *sqlite.Client) error {
 		if err != nil {
 			rollbackErr := tx.Rollback()
 			if rollbackErr != nil {
-				return rollbackErr
+				return errors.Wrap(
+					errors.Join(err, rollbackErr),
+					"failed to migrate settings to system_settings table",
+				)
 			}
-			return err
+
+			return errors.Wrap(err, "failed to migrate settings to system_settings table")
 		}
 	}
 
@@ -61,9 +70,13 @@ func Up0007(c *sqlite.Client) error {
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {
-			return rollbackErr
+			return errors.Wrap(
+				errors.Join(err, rollbackErr),
+				"failed to cleanup user settings",
+			)
 		}
-		return err
+
+		return errors.Wrap(err, "failed to cleanup user settings")
 	}
 
 	return tx.Commit()
@@ -72,7 +85,7 @@ func Up0007(c *sqlite.Client) error {
 func Down0007(c *sqlite.Client) error {
 	tx, err := c.Beginx()
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to begin migration rollback")
 	}
 
 	// Restore system settings back into users.settings JSON
@@ -88,9 +101,13 @@ func Down0007(c *sqlite.Client) error {
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {
-			return rollbackErr
+			return errors.Wrap(
+				errors.Join(err, rollbackErr),
+				"failed to restore user settings",
+			)
 		}
-		return err
+
+		return errors.Wrap(err, "failed to restore user settings")
 	}
 
 	// Drop system_settings table
@@ -99,9 +116,13 @@ func Down0007(c *sqlite.Client) error {
 	if err != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {
-			return rollbackErr
+			return errors.Wrap(
+				errors.Join(err, rollbackErr),
+				"failed to remove system_settings table",
+			)
 		}
-		return err
+
+		return errors.Wrap(err, "failed to remove system_settings table")
 	}
 
 	return tx.Commit()

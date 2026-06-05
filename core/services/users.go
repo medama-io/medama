@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
-	"github.com/medama-io/medama/db/sqlite"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
@@ -229,13 +229,19 @@ func (h *Handler) PatchUser(
 			settings.Language = string(v)
 		}
 
-		// Store part of user settings as system settings, to preserve backward compatibility
-		modifiedSettings := &sqlite.UpdateSystemSettings{}
+		err = h.db.UpdateUserSettings(ctx, user.ID, settings)
+		if err != nil {
+			log.Error().Err(err).Msg("failed to update user settings")
+			return nil, errors.Wrap(err, "services")
+		}
 
-		if req.Settings.Value.ScriptType != nil {
+		// Store part of user settings as system settings, to preserve backward compatibility
+		modifiedSettings := &db.UpdateSystemSettings{}
+
+		if req.Settings.Value.ScriptType != nil { //nolint:staticcheck
 			// Convert to string slice.
 			var features []string
-			for _, v := range req.Settings.Value.ScriptType {
+			for _, v := range req.Settings.Value.ScriptType { //nolint:staticcheck
 				features = append(features, string(v))
 			}
 
@@ -245,22 +251,22 @@ func (h *Handler) PatchUser(
 			shouldUpdateRuntimeConfig = true
 		}
 
-		if v, ok := req.Settings.Value.BlockAbusiveIPs.Get(); ok {
+		if v, ok := req.Settings.Value.BlockAbusiveIPs.Get(); ok { //nolint:staticcheck
 			blockAbusiveIPs := strconv.FormatBool(v)
 			modifiedSettings.BlockAbusiveIPs = &blockAbusiveIPs
 
 			shouldUpdateRuntimeConfig = true
 		}
 
-		if v, ok := req.Settings.Value.BlockTorExitNodes.Get(); ok {
+		if v, ok := req.Settings.Value.BlockTorExitNodes.Get(); ok { //nolint:staticcheck
 			blockTorExitNodes := strconv.FormatBool(v)
 			modifiedSettings.BlockTorExitNodes = &blockTorExitNodes
 
 			shouldUpdateRuntimeConfig = true
 		}
 
-		if req.Settings.Value.BlockedIPs != nil {
-			blockedIPs := iputils.GetAddrListString(req.Settings.Value.BlockedIPs)
+		if req.Settings.Value.BlockedIPs != nil { //nolint:staticcheck
+			blockedIPs := iputils.GetAddrListString(req.Settings.Value.BlockedIPs) //nolint:staticcheck
 			modifiedSettings.BlockedIPs = &blockedIPs
 
 			shouldUpdateRuntimeConfig = true
@@ -276,13 +282,13 @@ func (h *Handler) PatchUser(
 	// Returning system settings as part of user modal, to preserve backward compatibility
 	settings, err := h.db.GetSystemSettings(ctx)
 	if err != nil {
-		log.Error().Err(err).Msg("faield to retrieve system settings")
+		log.Error().Err(err).Msg("failed to retrieve system settings")
 		return nil, errors.Wrap(err, "services")
 	}
 
 	// If settings has been updated, also update live runtime config to dynamically update script type
 	if shouldUpdateRuntimeConfig {
-		err = h.RuntimeConfig.UpdateConfig(ctx, h.db, settings)
+		err = h.RuntimeConfig.UpdateConfig(settings)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to update runtime config")
 			return nil, errors.Wrap(err, "services")

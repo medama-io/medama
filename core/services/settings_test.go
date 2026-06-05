@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/medama-io/medama/api"
-	"github.com/medama-io/medama/db/sqlite"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 	"github.com/stretchr/testify/require"
 )
@@ -63,7 +63,7 @@ func TestPatchSystemSettings(t *testing.T) {
 func TestPatchSystemSettingsPartial(t *testing.T) {
 	assert, ctx, handler, sqliteClient := NewTestHandler(t)
 
-	err := sqliteClient.UpdateSystemSettings(ctx, &sqlite.UpdateSystemSettings{
+	err := sqliteClient.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
 		ScriptType:        ptr("click-events"),
 		BlockAbusiveIPs:   ptr("false"),
 		BlockTorExitNodes: ptr("false"),

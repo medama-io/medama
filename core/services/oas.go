@@ -115,8 +115,6 @@ func NewRuntimeConfig(
 }
 
 func (r *RuntimeConfig) UpdateConfig(
-	ctx context.Context,
-	meta *sqlite.Client,
 	settings *model.SystemSettings,
 ) error {
 	l := logger.Get()

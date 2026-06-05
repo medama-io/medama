@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/medama-io/medama/api"
-	"github.com/medama-io/medama/db/sqlite"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/iputils"
 	"github.com/medama-io/medama/model"
 	"github.com/medama-io/medama/util/logger"
@@ -38,8 +38,8 @@ func (h *Handler) PatchSystemSettings(
 		return ErrForbidden(model.ErrDemoMode), nil
 	}
 
-	// Convert system settings from request to model foramt
-	modifiedSettings := &sqlite.UpdateSystemSettings{}
+	// Convert system settings from request to model format
+	modifiedSettings := &db.UpdateSystemSettings{}
 
 	if req.ScriptType != nil {
 		features := make([]string, 0, len(req.ScriptType))
@@ -79,7 +79,7 @@ func (h *Handler) PatchSystemSettings(
 	}
 
 	// Update runtime settings
-	err = h.RuntimeConfig.UpdateConfig(ctx, h.db, settings)
+	err = h.RuntimeConfig.UpdateConfig(settings)
 	if err != nil {
 		return nil, errors.Wrap(err, "update system settings: update runtime config")
 	}
@@ -95,8 +95,10 @@ func (h *Handler) PatchSystemSettings(
 
 func buildSystemSettingsResponse(settings *model.SystemSettings) (*api.SystemSettingsHeaders, error) {
 	scriptFeatures := []api.SystemSettingsScriptTypeItem{}
-	for v := range strings.SplitSeq(settings.ScriptType, ",") {
-		scriptFeatures = append(scriptFeatures, api.SystemSettingsScriptTypeItem(v))
+	if settings.ScriptType != "" {
+		for v := range strings.SplitSeq(settings.ScriptType, ",") {
+			scriptFeatures = append(scriptFeatures, api.SystemSettingsScriptTypeItem(v))
+		}
 	}
 
 	blockedIPs, err := iputils.GetAddrList(settings.BlockedIPs)

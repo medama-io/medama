@@ -28,6 +28,8 @@ type AppClient interface {
 	UpdateUserUsername(ctx context.Context, id string, username string) error
 	// UpdateUserPassword updates a user's password in the database.
 	UpdateUserPassword(ctx context.Context, id string, password string) error
+	// UpdateUserSettings updates a user's settings in the database.
+	UpdateUserSettings(ctx context.Context, id string, settings *model.UserSettings) error
 	// DeleteUser deletes a user from the database.
 	DeleteUser(ctx context.Context, id string) error
 
