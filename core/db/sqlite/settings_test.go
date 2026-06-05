@@ -3,7 +3,7 @@ package sqlite_test
 import (
 	"testing"
 
-	"github.com/medama-io/medama/db/sqlite"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +26,7 @@ func TestGetSystemSettingsCustomValues(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	for key, value := range map[model.SettingsKey]string{
-		model.SettingsKeyScriptType:       "tagged-events",
+		model.SettingsKeyScriptType:        "tagged-events",
 		model.SettingsKeyBlockAbusiveIPs:   "false",
 		model.SettingsKeyBlockTorExitNodes: "false",
 		model.SettingsKeyBlockedIPs:        "10.0.0.1,10.0.0.2",
@@ -78,7 +78,7 @@ func TestUpdateSystemSettingsAll(t *testing.T) {
 	blockTor := "false"
 	blockedIPs := "10.0.0.1,10.0.0.2"
 
-	err := client.UpdateSystemSettings(ctx, &sqlite.UpdateSystemSettings{
+	err := client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
 		ScriptType:        &scriptType,
 		BlockAbusiveIPs:   &blockAbusive,
 		BlockTorExitNodes: &blockTor,
@@ -104,7 +104,7 @@ func TestUpdateSystemSettingsPartial(t *testing.T) {
 	blIPs := "1.1.1.1"
 	scType := "spa"
 
-	err := client.UpdateSystemSettings(ctx, &sqlite.UpdateSystemSettings{
+	err := client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
 		ScriptType:        &scType,
 		BlockAbusiveIPs:   &blAbusive,
 		BlockTorExitNodes: &blTor,
@@ -114,7 +114,7 @@ func TestUpdateSystemSettingsPartial(t *testing.T) {
 
 	newScript := "tagged-events"
 	newIPs := "2.2.2.2"
-	err = client.UpdateSystemSettings(ctx, &sqlite.UpdateSystemSettings{
+	err = client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
 		ScriptType: &newScript,
 		BlockedIPs: &newIPs,
 	})
@@ -133,7 +133,7 @@ func TestUpdateSystemSettingsPartial(t *testing.T) {
 func TestUpdateSystemSettingsEmpty(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	err := client.UpdateSystemSettings(ctx, &sqlite.UpdateSystemSettings{})
+	err := client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{})
 	require.NoError(t, err)
 
 	settings, err := client.GetSystemSettings(ctx)

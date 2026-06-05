@@ -6,30 +6,19 @@ import (
 	"time"
 
 	"github.com/go-faster/errors"
+	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/model"
 )
 
 type SystemSetting struct {
-	Key   model.SettingsKey
-	Value string
-}
-
-type UpdateSystemSettings struct {
-	ScriptType        *string
-	BlockAbusiveIPs   *string
-	BlockTorExitNodes *string
-	BlockedIPs        *string
+	Key   model.SettingsKey `db:"key"`
+	Value string            `db:"value"`
 }
 
 func (c *Client) GetSystemSettings(ctx context.Context) (*model.SystemSettings, error) {
 	var selectSettings []*SystemSetting
 
-	err := c.SelectContext(
-		ctx,
-		&selectSettings,
-		"SELECT key, value FROM system_settings",
-	)
-
+	err := c.SelectContext(ctx, &selectSettings, "SELECT key, value FROM system_settings")
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to load system settings")
 	}
@@ -46,6 +35,8 @@ func (c *Client) GetSystemSettings(ctx context.Context) (*model.SystemSettings, 
 			systemSettings.BlockTorExitNodes = setting.Value
 		case model.SettingsKeyBlockedIPs:
 			systemSettings.BlockedIPs = setting.Value
+		case model.SettingsKeyLanguage:
+			// exhaustive:ignore
 		}
 	}
 
@@ -54,9 +45,9 @@ func (c *Client) GetSystemSettings(ctx context.Context) (*model.SystemSettings, 
 
 func (c *Client) UpdateSystemSettings(
 	ctx context.Context,
-	settings *UpdateSystemSettings,
+	settings *db.UpdateSystemSettings,
 ) error {
-	tx := c.DB.MustBeginTx(ctx, nil)
+	tx := c.MustBeginTx(ctx, nil)
 
 	propertiesToUpdate := map[model.SettingsKey]*string{
 		model.SettingsKeyScriptType:        settings.ScriptType,
@@ -84,7 +75,13 @@ func (c *Client) UpdateSystemSettings(
 		)
 
 		if err != nil {
-			tx.Rollback()
+			if rbErr := tx.Rollback(); rbErr != nil {
+				return errors.Wrap(
+					errors.Join(err, rbErr),
+					fmt.Sprintf("failed to persist %s setting", key),
+				)
+			}
+
 			return errors.Wrap(err, fmt.Sprintf("failed to persist %s setting", key))
 		}
 	}
