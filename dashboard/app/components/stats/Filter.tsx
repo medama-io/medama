@@ -3,7 +3,6 @@ import { ChevronDown, Plus, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
-import { ScrollArea } from '@/components/ScrollArea';
 import { useFilter } from '@/hooks/use-filter';
 import classes from './Filter.module.css';
 import type { Filter, FilterOperator } from './types';
@@ -120,7 +119,7 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 			position="bottom-start"
 			offset={8}
 			width={menuWidth}
-			withinPortal
+			withinPortal={false}
 			classNames={{ dropdown: classes.dropdown }}
 		>
 			<Menu.Target>
@@ -130,9 +129,7 @@ const FilterDropdown = ({ choices, value, setValue }: FilterDropdownProps) => {
 				</button>
 			</Menu.Target>
 
-			<Menu.Dropdown>
-				<ScrollArea vertical>{options}</ScrollArea>
-			</Menu.Dropdown>
+			<Menu.Dropdown>{options}</Menu.Dropdown>
 		</Menu>
 	);
 };

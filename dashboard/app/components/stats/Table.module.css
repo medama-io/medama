@@ -44,7 +44,7 @@
 		background-color: var(--black-a1);
 	}
 
-	&:focus-visible {
+	&:focus {
 		outline: 2px solid var(--focus-outline);
 		outline-offset: -2px;
 	}

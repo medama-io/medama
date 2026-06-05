@@ -93,7 +93,8 @@
 
 .dropdown {
 	max-height: 220px;
-	overflow: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
 
 	background-color: white;
 	border: 1px solid var(--border-muted);
