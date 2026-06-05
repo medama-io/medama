@@ -1,5 +1,5 @@
-import { Cross1Icon } from '@radix-ui/react-icons';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { VisuallyHidden } from '@mantine/core';
+import { X } from 'lucide-react';
 import type React from 'react';
 import { Link, type LinkProps } from 'react-router';
 
@@ -98,7 +98,7 @@ const ButtonIcon = ({ children, label, ...rest }: ButtonIconProps) => {
 const CloseButton = ({ label, ...rest }: CloseButtonProps) => {
 	return (
 		<ButtonIcon label={label} {...rest}>
-			<Cross1Icon />
+			<X size={16} />
 		</ButtonIcon>
 	);
 };

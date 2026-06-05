@@ -1,5 +1,5 @@
 import { useClipboard } from '@mantine/hooks';
-import { CheckIcon, CopyIcon } from '@radix-ui/react-icons';
+import { Check, Copy } from 'lucide-react';
 
 import { ButtonIcon } from '@/components/Button';
 import { ScrollArea } from '@/components/ScrollArea';
@@ -23,7 +23,7 @@ const CodeBlock = ({ code }: CodeBlockProps) => {
 						label="Copy tracking script code"
 						onClick={() => copy(code)}
 					>
-						{copied ? <CheckIcon /> : <CopyIcon />}
+						{copied ? <Check size={16} /> : <Copy size={16} />}
 					</ButtonIcon>
 				</pre>
 			</ScrollArea>

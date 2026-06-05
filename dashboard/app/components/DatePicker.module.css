@@ -26,10 +26,6 @@
 	box-shadow:
 		hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
 		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 
 	max-height: 85vh;
 	padding: 25px;
@@ -37,6 +33,12 @@
 
 	&:focus {
 		outline: none;
+	}
+
+	@media (--lt-sm) {
+		width: calc(100vw - 32px);
+		max-width: calc(100vw - 32px);
+		padding: 20px;
 	}
 }
 

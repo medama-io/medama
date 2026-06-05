@@ -1,5 +1,5 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { Menu } from '@mantine/core';
+import { ChevronDown } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ScrollArea } from '@/components/ScrollArea';
@@ -20,26 +20,26 @@ export const WebsiteSelector = ({
 	const options = useMemo(
 		() =>
 			websites.map((value) => (
-				<DropdownMenu.Item
+				<Menu.Item
 					key={value}
-					onSelect={() => setWebsite(value)}
-					asChild
+					className={classes.item}
+					data-active={value === website}
+					onClick={() => setWebsite(value)}
 				>
-					<button
-						type="button"
-						className={classes.item}
-						data-active={value === website}
-					>
-						{value}
-					</button>
-				</DropdownMenu.Item>
+					{value}
+				</Menu.Item>
 			)),
 		[websites, website, setWebsite],
 	);
 
 	return (
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild>
+		<Menu
+			position="bottom-start"
+			offset={8}
+			withinPortal
+			classNames={{ dropdown: classes.dropdown }}
+		>
+			<Menu.Target>
 				<button
 					type="button"
 					className={classes.trigger}
@@ -47,17 +47,13 @@ export const WebsiteSelector = ({
 					disabled={websites.length === 0}
 				>
 					<span className={classes.label}>{website ?? 'No websites'}</span>
-					<ChevronDownIcon />
+					<ChevronDown size={16} />
 				</button>
-			</DropdownMenu.Trigger>
+			</Menu.Target>
 
-			<DropdownMenu.Content
-				className={classes.dropdown}
-				sideOffset={8}
-				data-scroll={options.length > 5}
-			>
+			<Menu.Dropdown data-scroll={options.length > 5}>
 				<ScrollArea vertical>{options}</ScrollArea>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
+			</Menu.Dropdown>
+		</Menu>
 	);
 };

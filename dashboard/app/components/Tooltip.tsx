@@ -1,4 +1,4 @@
-import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import { Tooltip as MantineTooltip } from '@mantine/core';
 
 import classes from './Tooltip.module.css';
 
@@ -18,36 +18,36 @@ const Tooltip = ({
 	content,
 	open,
 	defaultOpen,
-	onOpenChange,
 	contentClassname,
 	arrowClassname,
-	...props
 }: TooltipProps) => {
 	return (
-		<TooltipPrimitive.Root
-			open={open}
-			defaultOpen={defaultOpen}
-			onOpenChange={onOpenChange}
+		<MantineTooltip
+			label={content}
+			opened={open}
+			defaultOpened={defaultOpen}
+			classNames={{
+				tooltip: contentClassname ?? classes.content,
+				arrow: arrowClassname ?? classes.arrow,
+			}}
+			withArrow
+			arrowSize={11}
+			offset={5}
+			position="top"
+			events={{ hover: true, focus: true, touch: false }}
 		>
-			<TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-			<TooltipPrimitive.Content
-				className={contentClassname ?? classes.content}
-				sideOffset={5}
-				side="top"
-				align="center"
-				{...props}
-			>
-				{content}
-				<TooltipPrimitive.Arrow
-					className={arrowClassname ?? classes.arrow}
-					width={11}
-					height={5}
-				/>
-			</TooltipPrimitive.Content>
-		</TooltipPrimitive.Root>
+			{children}
+		</MantineTooltip>
 	);
 };
 
-const TooltipProvider = TooltipPrimitive.Provider;
+const TooltipProvider = ({
+	children,
+	delayDuration,
+}: React.PropsWithChildren<{ delayDuration?: number }>) => (
+	<MantineTooltip.Group openDelay={delayDuration}>
+		{children}
+	</MantineTooltip.Group>
+);
 
 export { Tooltip, TooltipProvider };
