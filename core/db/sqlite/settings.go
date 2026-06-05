@@ -49,6 +49,7 @@ func (c *Client) UpdateSystemSettings(
 ) error {
 	tx := c.MustBeginTx(ctx, nil)
 
+	//nolint:exhaustive
 	propertiesToUpdate := map[model.SettingsKey]*string{
 		model.SettingsKeyScriptType:        settings.ScriptType,
 		model.SettingsKeyBlockAbusiveIPs:   settings.BlockAbusiveIPs,
@@ -73,7 +74,6 @@ func (c *Client) UpdateSystemSettings(
 				"date_updated": time.Now().Unix(),
 			},
 		)
-
 		if err != nil {
 			if rbErr := tx.Rollback(); rbErr != nil {
 				return errors.Wrap(

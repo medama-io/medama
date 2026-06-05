@@ -266,7 +266,9 @@ func (h *Handler) PatchUser(
 		}
 
 		if req.Settings.Value.BlockedIPs != nil { //nolint:staticcheck
-			blockedIPs := iputils.GetAddrListString(req.Settings.Value.BlockedIPs) //nolint:staticcheck
+			blockedIPs := iputils.GetAddrListString(
+				req.Settings.Value.BlockedIPs, //nolint:staticcheck
+			)
 			modifiedSettings.BlockedIPs = &blockedIPs
 
 			shouldUpdateRuntimeConfig = true

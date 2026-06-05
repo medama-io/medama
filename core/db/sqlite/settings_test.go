@@ -25,6 +25,7 @@ func TestGetSystemSettingsDefaults(t *testing.T) {
 func TestGetSystemSettingsCustomValues(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
+	//nolint:exhaustive
 	for key, value := range map[model.SettingsKey]string{
 		model.SettingsKeyScriptType:        "tagged-events",
 		model.SettingsKeyBlockAbusiveIPs:   "false",

@@ -13,7 +13,10 @@ import (
 	"github.com/medama-io/medama/util/logger"
 )
 
-func (h *Handler) GetSystemSettings(ctx context.Context, _params api.GetSystemSettingsParams) (api.GetSystemSettingsRes, error) {
+func (h *Handler) GetSystemSettings(
+	ctx context.Context,
+	_params api.GetSystemSettingsParams,
+) (api.GetSystemSettingsRes, error) {
 	settings, err := h.db.GetSystemSettings(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get system settings")
@@ -93,8 +96,11 @@ func (h *Handler) PatchSystemSettings(
 	return response, nil
 }
 
-func buildSystemSettingsResponse(settings *model.SystemSettings) (*api.SystemSettingsHeaders, error) {
+func buildSystemSettingsResponse(
+	settings *model.SystemSettings,
+) (*api.SystemSettingsHeaders, error) {
 	scriptFeatures := []api.SystemSettingsScriptTypeItem{}
+
 	if settings.ScriptType != "" {
 		for v := range strings.SplitSeq(settings.ScriptType, ",") {
 			scriptFeatures = append(scriptFeatures, api.SystemSettingsScriptTypeItem(v))

@@ -181,7 +181,11 @@ func (c *Client) UpdateUserPassword(ctx context.Context, id string, password str
 	return nil
 }
 
-func (c *Client) UpdateUserSettings(ctx context.Context, id string, settings *model.UserSettings) error {
+func (c *Client) UpdateUserSettings(
+	ctx context.Context,
+	id string,
+	settings *model.UserSettings,
+) error {
 	exec := `--sql
 	UPDATE users SET settings = :settings, date_updated = :date_updated WHERE id = :id`
 
