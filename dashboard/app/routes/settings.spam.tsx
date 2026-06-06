@@ -123,7 +123,7 @@ export default function SpamPage({ loaderData }: Route.ComponentProps) {
       form.insertListItem("blockedIPs", trimmedIP);
       setNewIP("");
 
-      handleSubmit(currentValues);
+      handleSubmit(form.getValues());
     }
   }, [form, newIP, handleSubmit]);
 
