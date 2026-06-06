@@ -34,13 +34,13 @@
 	justify-content: space-between;
 
 	color: var(--text-dark);
-	background-color: white;
+	background-color: var(--bg-light);
 
 	border: 1px solid var(--border-light);
 	border-radius: 4px;
 
 	&:hover {
-		background-color: var(--text-light);
+		background-color: var(--bg-light);
 	}
 
 	&:focus,
@@ -62,13 +62,13 @@
 	padding: 0 10px 0 14px;
 
 	color: var(--text-dark);
-	background-color: white;
+	background-color: var(--bg-light);
 
 	border: 1px solid var(--border-light);
 	border-radius: 4px;
 
 	&:hover {
-		background-color: var(--text-light);
+		background-color: var(--bg-light);
 	}
 
 	&:focus,
@@ -96,7 +96,7 @@
 	overflow-y: auto;
 	overscroll-behavior: contain;
 
-	background-color: white;
+	background-color: var(--bg-light);
 	border: 1px solid var(--border-muted);
 	border-radius: 4px;
 }
@@ -114,7 +114,7 @@
 	justify-content: flex-start;
 
 	color: var(--text-dark);
-	background-color: white;
+	background-color: var(--bg-light);
 
 	border: none;
 	border-radius: 4px;

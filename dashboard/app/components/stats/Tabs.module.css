@@ -15,7 +15,7 @@
 
 .root {
 	min-height: 393px;
-	background-color: var(--text-light);
+	background-color: var(--bg-light);
 	border-radius: 8px;
 }
 
