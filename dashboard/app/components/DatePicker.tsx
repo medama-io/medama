@@ -1,9 +1,7 @@
-import { type DateRange, DayPicker } from '@daypicker/react';
+import { Modal, VisuallyHidden } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
 import { useDidUpdate, useMediaQuery } from '@mantine/hooks';
-import * as Dialog from '@radix-ui/react-dialog';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import { formatISO, parseISO, sub } from 'date-fns';
+import { formatISO, sub } from 'date-fns';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 
@@ -11,41 +9,42 @@ import { Button, CloseButton } from '@/components/Button';
 
 import classes from './DatePicker.module.css';
 
-interface DatePickerProps {
+interface DatePickerRangeProps {
 	open: boolean;
 	setOpen: (open: boolean) => void;
 }
 
-const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
+type DateRangeValue = [string | null, string | null];
+
+const today = () => formatISO(new Date(), { representation: 'date' });
+const previousMonth = () =>
+	formatISO(sub(new Date(), { months: 1 }), { representation: 'date' });
+
+const DatePickerRange = ({ open, setOpen }: DatePickerRangeProps) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const getDateRange = () => {
+	const getDateRange = (): DateRangeValue => {
 		const start = searchParams.get('start');
 		const end = searchParams.get('end');
 		if (searchParams.get('period') === 'custom' && start && end) {
-			return {
-				from: parseISO(start),
-				to: parseISO(end),
-			};
+			return [start, end];
 		}
-		return undefined;
+		return [null, null];
 	};
 
-	const [date, setDate] = useState<DateRange | undefined>(getDateRange());
+	const [date, setDate] = useState<DateRangeValue>(getDateRange());
 
-	// If the search params change, we should verify if the date range has changed
 	useDidUpdate(() => {
 		setDate(getDateRange());
 	}, [searchParams]);
 
 	const handleSubmit = () => {
-		if (date) {
+		const [start, end] = date;
+		if (start && end) {
 			setSearchParams((params) => {
 				params.set('period', 'custom');
-				if (date.from)
-					params.set('start', formatISO(date.from, { representation: 'date' }));
-				if (date.to)
-					params.set('end', formatISO(date.to, { representation: 'date' }));
+				params.set('start', start);
+				params.set('end', end);
 				return params;
 			});
 		}
@@ -55,48 +54,39 @@ const DatePickerRange = ({ open, setOpen }: DatePickerProps) => {
 	const isMobile = useMediaQuery('(max-width: 48em)');
 
 	return (
-		<Dialog.Root open={open} onOpenChange={setOpen}>
-			<Dialog.Portal>
-				<Dialog.Overlay className={classes.overlay} />
-				<Dialog.Content className={classes.content}>
-					<div className={classes.header}>
-						<Dialog.Title className={classes.title}>
-							Select a date range
-						</Dialog.Title>
-						<Dialog.Close asChild>
-							<CloseButton label="Close date picker" />
-						</Dialog.Close>
-					</div>
-					<VisuallyHidden.Root asChild>
-						<Dialog.Description>
-							Select the start and end date for the date range.
-						</Dialog.Description>
-					</VisuallyHidden.Root>
-					<DayPicker
-						mode="range"
-						classNames={classes}
-						selected={date}
-						onSelect={setDate}
-						numberOfMonths={isMobile ? 1 : 2}
-						components={{
-							Chevron: (props) => {
-								if (props.orientation === 'left') {
-									return <ChevronLeftIcon {...props} />;
-								}
-								return <ChevronRightIcon {...props} />;
-							},
-						}}
-						defaultMonth={sub(new Date(), { months: 1 })}
-						startMonth={new Date(2024, 0)}
-						endMonth={new Date()}
-					/>
-					<Button className={classes.apply} onClick={handleSubmit}>
-						Apply
-					</Button>
-				</Dialog.Content>
-			</Dialog.Portal>
-		</Dialog.Root>
+		<Modal
+			opened={open}
+			onClose={() => setOpen(false)}
+			withCloseButton={false}
+			centered
+			size="auto"
+			classNames={{
+				overlay: classes.overlay,
+				content: classes.content,
+			}}
+		>
+			<div className={classes.header}>
+				<h2 className={classes.title}>Select a date range</h2>
+				<CloseButton label="Close date picker" onClick={() => setOpen(false)} />
+			</div>
+			<VisuallyHidden>
+				Select the start and end date for the date range.
+			</VisuallyHidden>
+			<DatePicker
+				type="range"
+				className={classes.root}
+				value={date}
+				onChange={setDate}
+				numberOfColumns={isMobile ? 1 : 2}
+				defaultDate={previousMonth()}
+				minDate="2024-01-01"
+				maxDate={today()}
+			/>
+			<Button className={classes.apply} onClick={handleSubmit}>
+				Apply
+			</Button>
+		</Modal>
 	);
 };
 
-export { classes as datePickerClasses, DatePickerRange };
+export { DatePickerRange };

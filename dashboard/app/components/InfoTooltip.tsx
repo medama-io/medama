@@ -1,5 +1,6 @@
-import { InfoCircledIcon } from '@radix-ui/react-icons';
-import * as Popover from '@radix-ui/react-popover';
+import { Popover } from '@mantine/core';
+import { Info } from 'lucide-react';
+import { useState } from 'react';
 
 import classes from './InfoTooltip.module.css';
 
@@ -8,19 +9,30 @@ interface InfoTooltipProps {
 }
 
 const InfoTooltip = ({ children }: InfoTooltipProps) => {
+	const [opened, setOpened] = useState(false);
+
 	return (
-		<Popover.Root>
-			<Popover.Trigger asChild>
-				<button type="button" className={classes.icon}>
-					<InfoCircledIcon />
+		<Popover opened={opened} position="bottom" offset={5} withinPortal>
+			<Popover.Target>
+				<button
+					type="button"
+					className={classes.icon}
+					aria-label="Show information"
+					data-info-tooltip
+					onClickCapture={() => setOpened((current) => !current)}
+					onKeyDown={(event) => {
+						if (event.key === 'Escape') {
+							setOpened(false);
+						}
+					}}
+				>
+					<Info size={16} />
 				</button>
-			</Popover.Trigger>
-			<Popover.Portal>
-				<Popover.Content className={classes.content} sideOffset={5} asChild>
-					<div>{children}</div>
-				</Popover.Content>
-			</Popover.Portal>
-		</Popover.Root>
+			</Popover.Target>
+			<Popover.Dropdown className={classes.content}>
+				{children}
+			</Popover.Dropdown>
+		</Popover>
 	);
 };
 

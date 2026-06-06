@@ -32,8 +32,7 @@
 
 .popover {
 	z-index: 50;
-	max-height: min(var(--radix-select-content-available-height), 336px);
-	width: var(--radix-select-trigger-width);
+	max-height: 336px;
 
 	background-color: var(--bg-light);
 	border: 1px solid var(--border-muted);
@@ -47,7 +46,7 @@
 	padding: 4px 6px;
 
 	position: relative;
-	width: var(--radix-select-trigger-width);
+	width: 100%;
 	display: flex;
 	align-items: center;
 }
@@ -99,7 +98,9 @@
 	outline-offset: 2px;
 	cursor: pointer;
 
-	&[data-active-item] {
+	&[data-active-item],
+	&[data-combobox-active="true"],
+	&[data-combobox-selected="true"] {
 		background-color: var(--selected-snow);
 	}
 }

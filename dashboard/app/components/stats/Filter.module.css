@@ -27,8 +27,8 @@
 .trigger {
 	composes: button from global;
 
-	flex: 1 1 0;
-	width: 0;
+	flex: 0 0 150px;
+	width: 150px;
 	height: 36px;
 	padding: 0 10px 0 14px;
 	justify-content: space-between;
@@ -56,8 +56,8 @@
 }
 
 .input {
-	flex: 1 1 0;
-	width: 0;
+	flex: 0 0 150px;
+	width: 150px;
 	height: 36px;
 	padding: 0 10px 0 14px;
 
@@ -92,8 +92,9 @@
 }
 
 .dropdown {
-	height: 200px;
-	width: var(--radix-dropdown-menu-trigger-width);
+	max-height: 220px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
 
 	background-color: white;
 	border: 1px solid var(--border-muted);
@@ -103,8 +104,11 @@
 .item {
 	composes: button from global;
 
-	padding: 6px 14px;
-	height: fit-content;
+	min-height: 32px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.25;
+	height: auto;
 	width: 100%;
 	text-align: left;
 	justify-content: flex-start;

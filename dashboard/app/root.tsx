@@ -8,6 +8,7 @@ import '@mantine/core/styles/UnstyledButton.css';
 import '@mantine/core/styles/VisuallyHidden.css';
 import '@mantine/core/styles/Paper.css';
 import '@mantine/core/styles/Popover.css';
+import '@mantine/core/styles/Menu.css';
 import '@mantine/core/styles/Group.css';
 import '@mantine/core/styles/Overlay.css';
 import '@mantine/core/styles/ModalBase.css';
@@ -25,13 +26,17 @@ import '@mantine/core/styles/Drawer.css';
 import '@mantine/core/styles/ActionIcon.css';
 import '@mantine/core/styles/Burger.css';
 import '@mantine/core/styles/CloseButton.css';
+import '@mantine/core/styles/Button.css';
 // Inputs
 import '@mantine/core/styles/Checkbox.css';
 import '@mantine/core/styles/Combobox.css';
+import '@mantine/core/styles/SegmentedControl.css';
 // Navigation
 import '@mantine/core/styles/Burger.css';
 import '@mantine/core/styles/NavLink.css';
+import '@mantine/core/styles/Tabs.css';
 // Feedback
+import '@mantine/core/styles/Progress.css';
 import '@mantine/core/styles/Skeleton.css';
 import '@mantine/core/styles/Tooltip.css';
 // Misc
@@ -42,6 +47,7 @@ import '@mantine/core/styles/Anchor.css';
 import '@mantine/core/styles/Notification.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/charts/styles.css';
+import '@mantine/dates/styles.css';
 import 'mantine-datatable/styles.css';
 import 'react-indiana-drag-scroll/dist/style.css';
 

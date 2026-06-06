@@ -60,8 +60,9 @@
 }
 
 .separator {
-	border-bottom: 1px solid transparent;
-	border-bottom-color: var(--text-grey);
+	margin: 0;
+	border-top: 1px solid var(--border-dark);
+	border-bottom: 0;
 }
 
 .option {

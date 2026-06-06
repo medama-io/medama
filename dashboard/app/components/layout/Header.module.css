@@ -28,6 +28,7 @@
 		margin-top: 40px;
 
 		font-size: 16px;
+		/* biome-ignore lint/complexity/noImportantStyles: overrides the shared button utility for the mobile drawer login action. */
 		padding: 22px 20px !important;
 	}
 }

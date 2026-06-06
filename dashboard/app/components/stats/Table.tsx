@@ -1,6 +1,5 @@
 import { useDidUpdate, useHover, useMediaQuery } from '@mantine/hooks';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import * as Tabs from '@radix-ui/react-tabs';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
 	DataTable,
 	type DataTableColumn,
@@ -8,7 +7,7 @@ import {
 	type DataTableSortStatus,
 } from 'mantine-datatable';
 import { useCallback, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import isFQDN from 'validator/lib/isFQDN';
 
 import { ButtonIcon, ButtonLink } from '@/components/Button';
@@ -54,6 +53,8 @@ const LABEL_MAP: Record<Dataset, string> = {
 	languages: 'Languages',
 	properties: 'Properties',
 } as const;
+
+const LABEL_ENTRIES = Object.entries(LABEL_MAP) as [Dataset, string][];
 
 const ACCESSOR_MAP: Record<Dataset, keyof DataRow> = {
 	pages: 'path',
@@ -166,7 +167,7 @@ const BackButton = () => {
 			}}
 			className={classes.back}
 		>
-			<ChevronLeftIcon />
+			<ChevronLeft size={18} />
 			<span>Go back</span>
 		</ButtonLink>
 	);
@@ -323,7 +324,7 @@ const TablePagination = ({
 					onClick={() => onPageChange(page - 1)}
 					disabled={page <= 1}
 				>
-					<ChevronLeftIcon />
+					<ChevronLeft size={18} />
 				</ButtonIcon>
 				<span>
 					Page {page} of {totalPages}
@@ -334,7 +335,7 @@ const TablePagination = ({
 					onClick={() => onPageChange(page + 1)}
 					disabled={page >= totalPages}
 				>
-					<ChevronRightIcon />
+					<ChevronRight size={18} />
 				</ButtonIcon>
 			</Group>
 		</div>
@@ -502,46 +503,39 @@ const getColumnsForQuery = (
 };
 
 export const Table = ({ query, data }: StatsTableProps) => {
-	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-
-	const handleTabChange = useCallback(
-		(value: string | null) => {
-			navigate(
-				{
-					pathname: `../${value}`,
-					search: searchParams.toString(),
-				},
-				{ preventScrollReset: true },
-			);
-		},
-		[navigate, searchParams],
-	);
-
 	const isMobile = useMediaQuery('(max-width: 75em)');
 
 	return (
-		<Tabs.Root
-			value={query}
-			className={classes.root}
-			orientation="vertical"
-			onValueChange={handleTabChange}
-		>
+		<div className={classes.root}>
 			{!isMobile && (
 				<div className={classes.list}>
 					<BackButton />
-					<Tabs.List className={classes['list-triggers']}>
-						{Object.entries(LABEL_MAP).map(([key, label]) => (
-							<Tabs.Trigger key={key} value={key} className={classes.trigger}>
+					<nav
+						className={classes['list-triggers']}
+						aria-label="Select stats table"
+					>
+						{LABEL_ENTRIES.map(([key, label]) => (
+							<ButtonLink
+								key={key}
+								to={{
+									pathname: `../${key}`,
+									search: searchParams.toString(),
+								}}
+								preventScrollReset
+								className={classes.trigger}
+								data-active={query === key}
+								aria-current={query === key ? 'page' : undefined}
+							>
 								{label}
-							</Tabs.Trigger>
+							</ButtonLink>
 						))}
-					</Tabs.List>
+					</nav>
 				</div>
 			)}
-			<Tabs.Content value={query} className={classes.panel}>
+			<div className={classes.panel}>
 				<QueryTable query={query} data={data} isMobile={isMobile} />
-			</Tabs.Content>
-		</Tabs.Root>
+			</div>
+		</div>
 	);
 };

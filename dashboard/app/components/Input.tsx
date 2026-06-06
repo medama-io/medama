@@ -1,6 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
-import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
-import * as Label from '@radix-ui/react-label';
+import { Eye, EyeOff } from 'lucide-react';
 import type React from 'react';
 
 import { ButtonIcon } from '@/components/Button';
@@ -52,7 +51,7 @@ const TextWrapper = ({
 			style={{ flexDirection: direction, ...style }}
 		>
 			{label && (
-				<Label.Root htmlFor={inputId} className={classes.label}>
+				<label htmlFor={inputId} className={classes.label}>
 					{label}
 					{required && (
 						<span className={classes.required} aria-hidden="true">
@@ -60,7 +59,7 @@ const TextWrapper = ({
 							*
 						</span>
 					)}
-				</Label.Root>
+				</label>
 			)}
 			{description && (
 				<div id={descriptionId} className={classes.description}>
@@ -175,7 +174,7 @@ const PasswordInput = ({
 						}
 					}}
 				>
-					{visible ? <EyeNoneIcon /> : <EyeOpenIcon />}
+					{visible ? <EyeOff size={16} /> : <Eye size={16} />}
 				</ButtonIcon>
 			</div>
 		</TextWrapper>

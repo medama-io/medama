@@ -1,13 +1,11 @@
 import {
-	ComboboxItem,
-	ComboboxList,
-	ComboboxProvider,
-	Combobox as ComboboxRoot,
-} from '@ariakit/react';
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import * as RadixSelect from '@radix-ui/react-select';
+	Combobox as MantineCombobox,
+	useCombobox,
+	VisuallyHidden,
+} from '@mantine/core';
+import { ChevronDown, Search } from 'lucide-react';
 import { matchSorter } from 'match-sorter';
-import { startTransition, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import classes from './Combobox.module.css';
 
@@ -33,18 +31,20 @@ const Combobox = ({
 	value,
 	setValue,
 }: ComboboxProps) => {
-	const [open, setOpen] = useState(false);
 	const [searchValue, setSearchValue] = useState('');
+	const combobox = useCombobox({
+		onDropdownClose: () => {
+			combobox.resetSelectedOption();
+			setSearchValue('');
+		},
+	});
 
 	const matches = useMemo(() => {
 		if (!searchValue) return choices;
 		const matches = matchSorter(choices, searchValue, {
-			// Use the original index of items as the tie breaker
 			baseSort: (a, b) => (a.index < b.index ? -1 : 1),
 		});
-		// Radix Select does not work if we don't render the selected item, so we
-		// make sure to include it in the list of matches.
-		const selectedResult = choices.find((res) => res === value);
+		const selectedResult = choices.find((choice) => choice === value);
 		if (selectedResult && !matches.includes(selectedResult)) {
 			matches.unshift(selectedResult);
 		}
@@ -53,89 +53,69 @@ const Combobox = ({
 	}, [searchValue, value, choices]);
 
 	const isEmpty = choices.length === 0;
-	if (isEmpty) {
-		value = '';
-	}
+	const label = value || (isEmpty ? root.emptyPlaceholder : root.placeholder);
+	const options = matches.map((label) => (
+		<MantineCombobox.Option
+			key={label}
+			value={label}
+			className={classes.item}
+			active={label === value}
+		>
+			{label}
+		</MantineCombobox.Option>
+	));
 
 	return (
-		<RadixSelect.Root
-			value={value}
-			onValueChange={setValue}
-			open={open}
-			onOpenChange={setOpen}
+		<MantineCombobox
+			store={combobox}
+			onOptionSubmit={(nextValue) => {
+				setValue(nextValue);
+				combobox.closeDropdown();
+			}}
+			withinPortal
 		>
-			<ComboboxProvider
-				open={open}
-				setOpen={setOpen}
-				resetValueOnHide
-				includesBaseElement={false}
-				setValue={(value) => {
-					startTransition(() => {
-						setSearchValue(value);
-					});
-				}}
-			>
+			<MantineCombobox.Target>
 				<div className={classes['select-wrapper']}>
-					<RadixSelect.Trigger
+					<button
+						type="button"
 						aria-label={root.label}
 						className={classes.select}
 						disabled={isEmpty}
+						data-disabled={isEmpty || undefined}
+						onClick={() => combobox.toggleDropdown()}
 					>
-						<RadixSelect.Value
-							placeholder={isEmpty ? root.emptyPlaceholder : root.placeholder}
-						/>
-						<RadixSelect.Icon className={classes['select-icon']}>
-							<ChevronDownIcon />
-						</RadixSelect.Icon>
-					</RadixSelect.Trigger>
+						<span>{label}</span>
+						<ChevronDown className={classes['select-icon']} size={16} />
+					</button>
 				</div>
-				<RadixSelect.Content
-					role="dialog"
-					aria-label={root.label}
-					position="popper"
-					className={classes.popover}
-					sideOffset={4}
-				>
-					<div className={classes['combobox-wrapper']}>
-						<div className={classes['combobox-icon']}>
-							<MagnifyingGlassIcon />
-						</div>
-						<ComboboxRoot
-							autoSelect
-							placeholder={search.placeholder}
-							className={classes.combobox}
-							// Ariakit's Combobox manually triggers a blur event on virtually
-							// blurred items, making them work as if they had actual DOM
-							// focus. These blur events might happen after the corresponding
-							// focus events in the capture phase, leading Radix Select to
-							// close the popover. This happens because Radix Select relies on
-							// the order of these captured events to discern if the focus was
-							// outside the element. Since we don't have access to the
-							// onInteractOutside prop in the Radix SelectContent component to
-							// stop this behavior, we can turn off Ariakit's behavior here.
-							onBlurCapture={(event) => {
-								event.preventDefault();
-								event.stopPropagation();
-							}}
-						/>
+			</MantineCombobox.Target>
+			<MantineCombobox.Dropdown className={classes.popover}>
+				<div className={classes['combobox-wrapper']}>
+					<div className={classes['combobox-icon']}>
+						<Search size={16} />
 					</div>
-					<ComboboxList className={classes.listbox}>
-						{matches.map((label) => (
-							<RadixSelect.Item
-								key={label}
-								value={label}
-								asChild
-								className={classes.item}
-							>
-								<ComboboxItem>
-									<RadixSelect.ItemText>{label}</RadixSelect.ItemText>
-								</ComboboxItem>
-							</RadixSelect.Item>
-						))}
-					</ComboboxList>
-				</RadixSelect.Content>
-			</ComboboxProvider>
-		</RadixSelect.Root>
+					<VisuallyHidden>{root.label}</VisuallyHidden>
+					<MantineCombobox.Search
+						placeholder={search.placeholder}
+						className={classes.combobox}
+						value={searchValue}
+						onChange={(event) => {
+							setSearchValue(event.currentTarget.value);
+							combobox.updateSelectedOptionIndex();
+						}}
+					/>
+				</div>
+				<MantineCombobox.Options className={classes.listbox}>
+					{options.length > 0 ? (
+						options
+					) : (
+						<MantineCombobox.Empty>
+							{root.emptyPlaceholder}
+						</MantineCombobox.Empty>
+					)}
+				</MantineCombobox.Options>
+			</MantineCombobox.Dropdown>
+		</MantineCombobox>
 	);
 };
 

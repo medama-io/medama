@@ -1,4 +1,4 @@
-import * as Progress from '@radix-ui/react-progress';
+import { Progress } from '@mantine/core';
 import byteSize from 'byte-size';
 
 import { Group } from '@/components/layout/Flex';
@@ -33,12 +33,13 @@ const Panel = ({
 				{usage.toFixed(2)}%
 			</p>
 		</Group>
-		<Progress.Root className={classes.progress} value={Math.round(usage)}>
-			<Progress.Indicator
-				className={classes.indicator}
-				style={{ transform: `translateX(-${100 - Math.round(usage)}%)` }}
-			/>
-		</Progress.Root>
+		<Progress
+			className={classes.progress}
+			value={Math.round(usage)}
+			color="var(--violet)"
+			size={16}
+			radius={4}
+		/>
 		{children}
 	</div>
 );
