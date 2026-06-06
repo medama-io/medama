@@ -1680,67 +1680,6 @@ func (s *UserSettings) Validate() error {
 			Error: err,
 		})
 	}
-	if err := func() error {
-		if s.ScriptType == nil {
-			return nil // optional
-		}
-		if err := (validate.Array{
-			MinLength:    0,
-			MinLengthSet: false,
-			MaxLength:    0,
-			MaxLengthSet: false,
-		}).ValidateLength(len(s.ScriptType)); err != nil {
-			return errors.Wrap(err, "array")
-		}
-		if err := validate.UniqueItems(s.ScriptType); err != nil {
-			return errors.Wrap(err, "array")
-		}
-		var failures []validate.FieldError
-		for i, elem := range s.ScriptType {
-			if err := func() error {
-				if err := elem.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				failures = append(failures, validate.FieldError{
-					Name:  fmt.Sprintf("[%d]", i),
-					Error: err,
-				})
-			}
-		}
-		if len(failures) > 0 {
-			return &validate.Error{Fields: failures}
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "script_type",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if s.BlockedIPs == nil {
-			return nil // optional
-		}
-		if err := (validate.Array{
-			MinLength:    0,
-			MinLengthSet: false,
-			MaxLength:    0,
-			MaxLengthSet: false,
-		}).ValidateLength(len(s.BlockedIPs)); err != nil {
-			return errors.Wrap(err, "array")
-		}
-		if err := validate.UniqueItems(s.BlockedIPs); err != nil {
-			return errors.Wrap(err, "array")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "blockedIPs",
-			Error: err,
-		})
-	}
 	if len(failures) > 0 {
 		return &validate.Error{Fields: failures}
 	}
@@ -1750,19 +1689,6 @@ func (s *UserSettings) Validate() error {
 func (s UserSettingsLanguage) Validate() error {
 	switch s {
 	case "en":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s UserSettingsScriptTypeItem) Validate() error {
-	switch s {
-	case "default":
-		return nil
-	case "click-events":
-		return nil
-	case "page-events":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)

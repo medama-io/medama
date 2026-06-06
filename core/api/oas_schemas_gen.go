@@ -3552,22 +3552,6 @@ func (s *UserPatch) SetSettings(val OptUserSettings) {
 // Ref: #/components/schemas/UserSettings
 type UserSettings struct {
 	Language OptUserSettingsLanguage `json:"language"`
-	// (Property is deprecated in favor of system settings).
-	//
-	// Deprecated: schema marks this property as deprecated.
-	ScriptType []UserSettingsScriptTypeItem `json:"script_type"`
-	// Block known abusive IP addresses. (Property is deprecated in favor of system settings).
-	//
-	// Deprecated: schema marks this property as deprecated.
-	BlockAbusiveIPs OptBool `json:"blockAbusiveIPs"`
-	// Block traffic from Tor exit nodes. (Property is deprecated in favor of system settings).
-	//
-	// Deprecated: schema marks this property as deprecated.
-	BlockTorExitNodes OptBool `json:"blockTorExitNodes"`
-	// List of manually blocked IP addresses. (Property is deprecated in favor of system settings).
-	//
-	// Deprecated: schema marks this property as deprecated.
-	BlockedIPs []netip.Addr `json:"blockedIPs"`
 }
 
 // GetLanguage returns the value of Language.
@@ -3575,49 +3559,9 @@ func (s *UserSettings) GetLanguage() OptUserSettingsLanguage {
 	return s.Language
 }
 
-// GetScriptType returns the value of ScriptType.
-func (s *UserSettings) GetScriptType() []UserSettingsScriptTypeItem {
-	return s.ScriptType
-}
-
-// GetBlockAbusiveIPs returns the value of BlockAbusiveIPs.
-func (s *UserSettings) GetBlockAbusiveIPs() OptBool {
-	return s.BlockAbusiveIPs
-}
-
-// GetBlockTorExitNodes returns the value of BlockTorExitNodes.
-func (s *UserSettings) GetBlockTorExitNodes() OptBool {
-	return s.BlockTorExitNodes
-}
-
-// GetBlockedIPs returns the value of BlockedIPs.
-func (s *UserSettings) GetBlockedIPs() []netip.Addr {
-	return s.BlockedIPs
-}
-
 // SetLanguage sets the value of Language.
 func (s *UserSettings) SetLanguage(val OptUserSettingsLanguage) {
 	s.Language = val
-}
-
-// SetScriptType sets the value of ScriptType.
-func (s *UserSettings) SetScriptType(val []UserSettingsScriptTypeItem) {
-	s.ScriptType = val
-}
-
-// SetBlockAbusiveIPs sets the value of BlockAbusiveIPs.
-func (s *UserSettings) SetBlockAbusiveIPs(val OptBool) {
-	s.BlockAbusiveIPs = val
-}
-
-// SetBlockTorExitNodes sets the value of BlockTorExitNodes.
-func (s *UserSettings) SetBlockTorExitNodes(val OptBool) {
-	s.BlockTorExitNodes = val
-}
-
-// SetBlockedIPs sets the value of BlockedIPs.
-func (s *UserSettings) SetBlockedIPs(val []netip.Addr) {
-	s.BlockedIPs = val
 }
 
 type UserSettingsLanguage string
@@ -3648,54 +3592,6 @@ func (s *UserSettingsLanguage) UnmarshalText(data []byte) error {
 	switch UserSettingsLanguage(data) {
 	case UserSettingsLanguageEn:
 		*s = UserSettingsLanguageEn
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-type UserSettingsScriptTypeItem string
-
-const (
-	UserSettingsScriptTypeItemDefault     UserSettingsScriptTypeItem = "default"
-	UserSettingsScriptTypeItemClickEvents UserSettingsScriptTypeItem = "click-events"
-	UserSettingsScriptTypeItemPageEvents  UserSettingsScriptTypeItem = "page-events"
-)
-
-// AllValues returns all UserSettingsScriptTypeItem values.
-func (UserSettingsScriptTypeItem) AllValues() []UserSettingsScriptTypeItem {
-	return []UserSettingsScriptTypeItem{
-		UserSettingsScriptTypeItemDefault,
-		UserSettingsScriptTypeItemClickEvents,
-		UserSettingsScriptTypeItemPageEvents,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s UserSettingsScriptTypeItem) MarshalText() ([]byte, error) {
-	switch s {
-	case UserSettingsScriptTypeItemDefault:
-		return []byte(s), nil
-	case UserSettingsScriptTypeItemClickEvents:
-		return []byte(s), nil
-	case UserSettingsScriptTypeItemPageEvents:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UserSettingsScriptTypeItem) UnmarshalText(data []byte) error {
-	switch UserSettingsScriptTypeItem(data) {
-	case UserSettingsScriptTypeItemDefault:
-		*s = UserSettingsScriptTypeItemDefault
-		return nil
-	case UserSettingsScriptTypeItemClickEvents:
-		*s = UserSettingsScriptTypeItemClickEvents
-		return nil
-	case UserSettingsScriptTypeItemPageEvents:
-		*s = UserSettingsScriptTypeItemPageEvents
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)

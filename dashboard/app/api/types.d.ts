@@ -582,26 +582,6 @@ export interface components {
              * @enum {string}
              */
             language?: "en";
-            /**
-             * @deprecated
-             * @description (Property is deprecated in favor of system settings)
-             */
-            script_type?: ("default" | "click-events" | "page-events")[];
-            /**
-             * @deprecated
-             * @description Block known abusive IP addresses. (Property is deprecated in favor of system settings)
-             */
-            blockAbusiveIPs?: boolean;
-            /**
-             * @deprecated
-             * @description Block traffic from Tor exit nodes. (Property is deprecated in favor of system settings)
-             */
-            blockTorExitNodes?: boolean;
-            /**
-             * @deprecated
-             * @description List of manually blocked IP addresses. (Property is deprecated in favor of system settings)
-             */
-            blockedIPs?: string[];
         };
         /**
          * UserGet
