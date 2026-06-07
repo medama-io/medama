@@ -4,7 +4,7 @@ import { notifications } from '@mantine/notifications';
 import { useCallback, useState } from 'react';
 import { data as json, useSubmit } from 'react-router';
 import * as v from 'valibot';
-import { systemSettingsGet, systemSettingsUpdate } from '@/api/settings';
+import { tenantSettingsGet, tenantSettingsUpdate } from '@/api/settings';
 import { Anchor } from '@/components/Anchor';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
@@ -29,10 +29,10 @@ const spamSchema = v.object({
 });
 
 export const clientLoader = async () => {
-	const { data } = await systemSettingsGet();
+	const { data } = await tenantSettingsGet();
 
 	if (!data) {
-		throw json('Failed to get system settings.', {
+		throw json('Failed to get tenant settings.', {
 			status: 500,
 		});
 	}
@@ -57,7 +57,7 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 				(ip) => ip.trim() !== '',
 			);
 
-			const update = await systemSettingsUpdate({
+			const update = await tenantSettingsUpdate({
 				body: {
 					blockAbusiveIPs: getBoolean(body, 'blockAbusiveIPs'),
 					blockTorExitNodes: getBoolean(body, 'blockTorExitNodes'),

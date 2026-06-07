@@ -13,36 +13,36 @@ import (
 	"github.com/medama-io/medama/util/logger"
 )
 
-func (h *Handler) GetSystemSettings(
+func (h *Handler) GetTenantSettings(
 	ctx context.Context,
-	_params api.GetSystemSettingsParams,
-) (api.GetSystemSettingsRes, error) {
-	settings, err := h.db.GetSystemSettings(ctx)
+	_params api.GetTenantSettingsParams,
+) (api.GetTenantSettingsRes, error) {
+	settings, err := h.db.GetTenantSettings(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get system settings")
+		return nil, errors.Wrap(err, "failed to get tenant settings")
 	}
 
-	response, err := buildSystemSettingsResponse(settings)
+	response, err := buildTenantSettingsResponse(settings)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to build system settings response")
+		return nil, errors.Wrap(err, "failed to build tenant settings response")
 	}
 
 	return response, nil
 }
 
-func (h *Handler) PatchSystemSettings(
+func (h *Handler) PatchTenantSettings(
 	ctx context.Context,
-	req *api.SystemSettings,
-	_params api.PatchSystemSettingsParams,
-) (api.PatchSystemSettingsRes, error) {
+	req *api.TenantSettings,
+	_params api.PatchTenantSettingsParams,
+) (api.PatchTenantSettingsRes, error) {
 	log := logger.Get()
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("patch user rejected in demo mode")
 		return ErrForbidden(model.ErrDemoMode), nil
 	}
 
-	// Convert system settings from request to model format
-	modifiedSettings := &db.UpdateSystemSettings{}
+	// Convert tenant settings from request to model format
+	modifiedSettings := &db.UpdateTenantSettings{}
 
 	if req.ScriptType != nil {
 		features := make([]string, 0, len(req.ScriptType))
@@ -69,16 +69,16 @@ func (h *Handler) PatchSystemSettings(
 		modifiedSettings.BlockedIPs = &blockedIPs
 	}
 
-	// Update system settings in database
-	err := h.db.UpdateSystemSettings(ctx, modifiedSettings)
+	// Update tenant settings in database
+	err := h.db.UpdateTenantSettings(ctx, modifiedSettings)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to update system settings")
+		return nil, errors.Wrap(err, "failed to update tenant settings")
 	}
 
 	// Retrieve fresh settings
-	settings, err := h.db.GetSystemSettings(ctx)
+	settings, err := h.db.GetTenantSettings(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to update system settings")
+		return nil, errors.Wrap(err, "failed to update tenant settings")
 	}
 
 	// Update runtime settings
@@ -87,23 +87,23 @@ func (h *Handler) PatchSystemSettings(
 		return nil, errors.Wrap(err, "update system settings: update runtime config")
 	}
 
-	// Build system settings response
-	response, err := buildSystemSettingsResponse(settings)
+	// Build tenant settings response
+	response, err := buildTenantSettingsResponse(settings)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to update system settings")
+		return nil, errors.Wrap(err, "failed to update tenant settings")
 	}
 
 	return response, nil
 }
 
-func buildSystemSettingsResponse(
-	settings *model.SystemSettings,
-) (*api.SystemSettingsHeaders, error) {
-	scriptFeatures := []api.SystemSettingsScriptTypeItem{}
+func buildTenantSettingsResponse(
+	settings *model.TenantSettings,
+) (*api.TenantSettingsHeaders, error) {
+	scriptFeatures := []api.TenantSettingsScriptTypeItem{}
 
 	if settings.ScriptType != "" {
 		for v := range strings.SplitSeq(settings.ScriptType, ",") {
-			scriptFeatures = append(scriptFeatures, api.SystemSettingsScriptTypeItem(v))
+			scriptFeatures = append(scriptFeatures, api.TenantSettingsScriptTypeItem(v))
 		}
 	}
 
@@ -122,8 +122,8 @@ func buildSystemSettingsResponse(
 		return nil, errors.Wrap(err, "failed to parse block Tor exit nodes setting")
 	}
 
-	return &api.SystemSettingsHeaders{
-		Response: api.SystemSettings{
+	return &api.TenantSettingsHeaders{
+		Response: api.TenantSettings{
 			ScriptType:        scriptFeatures,
 			BlockAbusiveIPs:   api.NewOptBool(blockAbusiveIPs),
 			BlockTorExitNodes: api.NewOptBool(blockTorExitNodes),

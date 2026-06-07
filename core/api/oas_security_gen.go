@@ -37,7 +37,7 @@ func findAuthorization(h http.Header, prefix string) (string, bool) {
 var operationRolesCookieAuth = map[string][]string{
 	DeleteUserOperation:             []string{},
 	DeleteWebsitesIDOperation:       []string{},
-	GetSystemSettingsOperation:      []string{},
+	GetTenantSettingsOperation:      []string{},
 	GetUserOperation:                []string{},
 	GetUserUsageOperation:           []string{},
 	GetWebsiteIDBrowsersOperation:   []string{},
@@ -55,7 +55,7 @@ var operationRolesCookieAuth = map[string][]string{
 	GetWebsiteIDTimeOperation:       []string{},
 	GetWebsitesOperation:            []string{},
 	GetWebsitesIDOperation:          []string{},
-	PatchSystemSettingsOperation:    []string{},
+	PatchTenantSettingsOperation:    []string{},
 	PatchUserOperation:              []string{},
 	PatchWebsitesIDOperation:        []string{},
 	PostWebsitesOperation:           []string{},

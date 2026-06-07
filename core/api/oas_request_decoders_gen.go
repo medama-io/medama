@@ -14,8 +14,8 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func (s *Server) decodePatchSystemSettingsRequest(r *http.Request) (
-	req *SystemSettings,
+func (s *Server) decodePatchTenantSettingsRequest(r *http.Request) (
+	req *TenantSettings,
 	rawBody []byte,
 	close func() error,
 	rerr error,
@@ -62,7 +62,7 @@ func (s *Server) decodePatchSystemSettingsRequest(r *http.Request) (
 		rawBody = append(rawBody, buf...)
 		d := jx.DecodeBytes(buf)
 
-		var request SystemSettings
+		var request TenantSettings
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err

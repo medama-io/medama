@@ -2,7 +2,7 @@ import { schemaResolver, type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { data as json, useSubmit } from 'react-router';
 import * as v from 'valibot';
-import { systemSettingsGet, systemSettingsUpdate } from '@/api/settings';
+import { tenantSettingsGet, tenantSettingsUpdate } from '@/api/settings';
 import type { components } from '@/api/types';
 import { Anchor } from '@/components/Anchor';
 import { Checkbox } from '@/components/Checkbox';
@@ -20,8 +20,8 @@ export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Tracker Settings | Medama' }];
 };
 
-type SystemSettingsScriptType =
-	components['schemas']['SystemSettings']['script_type'];
+type TenantSettingsScriptType =
+	components['schemas']['TenantSettings']['script_type'];
 
 const trackerSchema = v.strictObject({
 	_setting: v.literal('tracker', 'Invalid setting type.'),
@@ -36,16 +36,16 @@ const getTrackingScript = (hostname: string) =>
 	`<script defer src="https://${hostname}/script.js"></script>`;
 
 export const clientLoader = async () => {
-	const { data } = await systemSettingsGet();
+	const { data } = await tenantSettingsGet();
 
 	if (!data) {
-		throw json('Failed to get system settings.', {
+		throw json('Failed to get tenant settings.', {
 			status: 500,
 		});
 	}
 
 	return {
-		systemSettings: data,
+		tenantSettings: data,
 	};
 };
 
@@ -57,9 +57,9 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	let res: Response | undefined;
 	switch (type) {
 		case 'tracker': {
-			const update = await systemSettingsUpdate({
+			const update = await tenantSettingsUpdate({
 				body: {
-					script_type: scriptType?.split(',') as SystemSettingsScriptType,
+					script_type: scriptType?.split(',') as TenantSettingsScriptType,
 				},
 				shouldThrow: false,
 			});
@@ -90,7 +90,7 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 };
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-	const { systemSettings } = loaderData;
+	const { tenantSettings } = loaderData;
 	const submit = useSubmit();
 
 	const form = useForm({
@@ -100,10 +100,10 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 			script_type: {
 				default: true,
 				'click-events': Boolean(
-					systemSettings.script_type?.includes('click-events'),
+					tenantSettings.script_type?.includes('click-events'),
 				),
 				'page-events': Boolean(
-					systemSettings.script_type?.includes('page-events'),
+					tenantSettings.script_type?.includes('page-events'),
 				),
 			},
 		},

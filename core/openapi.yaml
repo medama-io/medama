@@ -276,60 +276,58 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  /system/settings:
+  /tenant/settings:
     get:
       tags:
-        - System
         - Settings
       security:
         - CookieAuth: []
-      summary: List System Settings
-      description: Get a list of all system settings.
-      operationId: get-system-settings
+      summary: List Tenant Settings
+      description: Get a list of all tenant settings.
+      operationId: get-tenant-settings
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
       responses:
         "200":
-          description: Returns a list of all system settings.
+          description: Returns a list of all tenant settings.
           headers:
             X-Api-Commit:
               $ref: "#/components/headers/X-Api-Commit"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SystemSettings"
+                $ref: "#/components/schemas/TenantSettings"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
         "500":
           $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-        - System
         - Settings
       security:
         - CookieAuth: []
-      summary: Update System Settings
-      description: Partial update of system settings.
-      operationId: patch-system-settings
+      summary: Update Tenant Settings
+      description: Partial update of tenant settings.
+      operationId: patch-tenant-settings
       parameters:
         - $ref: "#/components/parameters/SessionAuth"
       requestBody:
-        description: System Settings to update.
+        description: Tenant Settings to update.
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemSettings"
+                $ref: "#/components/schemas/TenantSettings"
         required: true
       responses:
         "200":
-          description: Returns updated system settings.
+          description: Returns updated tenant settings.
           headers:
             X-Api-Commit:
               $ref: "#/components/headers/X-Api-Commit"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SystemSettings"
+                $ref: "#/components/schemas/TenantSettings"
         "401":
           $ref: "#/components/responses/UnauthorisedError"
         "403":
@@ -1745,10 +1743,10 @@ components:
           format: password
         settings:
           $ref: "#/components/schemas/UserSettings"
-    SystemSettings:
+    TenantSettings:
       type: object
-      title: SystemSettings
-      description: Schema for system setting.
+      title: TenantSettings
+      description: Schema for tenant setting.
       properties:
         script_type:
           type: array

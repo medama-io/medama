@@ -1388,7 +1388,7 @@ func (s *StatsUTMSourcesItem) Validate() error {
 	return nil
 }
 
-func (s *SystemSettings) Validate() error {
+func (s *TenantSettings) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -1461,7 +1461,7 @@ func (s *SystemSettings) Validate() error {
 	return nil
 }
 
-func (s *SystemSettingsHeaders) Validate() error {
+func (s *TenantSettingsHeaders) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -1484,7 +1484,7 @@ func (s *SystemSettingsHeaders) Validate() error {
 	return nil
 }
 
-func (s SystemSettingsScriptTypeItem) Validate() error {
+func (s TenantSettingsScriptTypeItem) Validate() error {
 	switch s {
 	case "default":
 		return nil

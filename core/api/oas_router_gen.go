@@ -213,9 +213,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 				}
 
-			case 's': // Prefix: "system/settings"
+			case 't': // Prefix: "tenant/settings"
 
-				if l := len("system/settings"); len(elem) >= l && elem[0:l] == "system/settings" {
+				if l := len("tenant/settings"); len(elem) >= l && elem[0:l] == "tenant/settings" {
 					elem = elem[l:]
 				} else {
 					break
@@ -225,9 +225,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					// Leaf node.
 					switch r.Method {
 					case "GET":
-						s.handleGetSystemSettingsRequest([0]string{}, elemIsEscaped, w, r)
+						s.handleGetTenantSettingsRequest([0]string{}, elemIsEscaped, w, r)
 					case "PATCH":
-						s.handlePatchSystemSettingsRequest([0]string{}, elemIsEscaped, w, r)
+						s.handlePatchTenantSettingsRequest([0]string{}, elemIsEscaped, w, r)
 					default:
 						s.notAllowed(w, r, notAllowedParams{
 							allowedMethods: "GET,PATCH",
@@ -1039,9 +1039,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 				}
 
-			case 's': // Prefix: "system/settings"
+			case 't': // Prefix: "tenant/settings"
 
-				if l := len("system/settings"); len(elem) >= l && elem[0:l] == "system/settings" {
+				if l := len("tenant/settings"); len(elem) >= l && elem[0:l] == "tenant/settings" {
 					elem = elem[l:]
 				} else {
 					break
@@ -1051,20 +1051,20 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					// Leaf node.
 					switch method {
 					case "GET":
-						r.name = GetSystemSettingsOperation
-						r.summary = "List System Settings"
-						r.operationID = "get-system-settings"
+						r.name = GetTenantSettingsOperation
+						r.summary = "List Tenant Settings"
+						r.operationID = "get-tenant-settings"
 						r.operationGroup = ""
-						r.pathPattern = "/system/settings"
+						r.pathPattern = "/tenant/settings"
 						r.args = args
 						r.count = 0
 						return r, true
 					case "PATCH":
-						r.name = PatchSystemSettingsOperation
-						r.summary = "Update System Settings"
-						r.operationID = "patch-system-settings"
+						r.name = PatchTenantSettingsOperation
+						r.summary = "Update Tenant Settings"
+						r.operationID = "patch-tenant-settings"
 						r.operationGroup = ""
-						r.pathPattern = "/system/settings"
+						r.pathPattern = "/tenant/settings"
 						r.args = args
 						r.count = 0
 						return r, true

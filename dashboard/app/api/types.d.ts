@@ -132,7 +132,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/system/settings": {
+    "/tenant/settings": {
         parameters: {
             query?: never;
             header?: never;
@@ -140,20 +140,20 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List System Settings
-         * @description Get a list of all system settings.
+         * List Tenant Settings
+         * @description Get a list of all tenant settings.
          */
-        get: operations["get-system-settings"];
+        get: operations["get-tenant-settings"];
         put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
         /**
-         * Update System Settings
-         * @description Partial update of system settings.
+         * Update Tenant Settings
+         * @description Partial update of tenant settings.
          */
-        patch: operations["patch-system-settings"];
+        patch: operations["patch-tenant-settings"];
         trace?: never;
     };
     "/websites": {
@@ -630,10 +630,10 @@ export interface components {
             settings?: components["schemas"]["UserSettings"];
         };
         /**
-         * SystemSettings
-         * @description Schema for system setting.
+         * TenantSettings
+         * @description Schema for tenant setting.
          */
-        SystemSettings: {
+        TenantSettings: {
             script_type?: ("default" | "click-events" | "page-events")[];
             /** @description Block known abusive IP addresses. */
             blockAbusiveIPs?: boolean;
@@ -1332,7 +1332,7 @@ export interface operations {
             500: components["responses"]["InternalServerError"];
         };
     };
-    "get-system-settings": {
+    "get-tenant-settings": {
         parameters: {
             query?: never;
             header?: never;
@@ -1344,21 +1344,21 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Returns a list of all system settings. */
+            /** @description Returns a list of all tenant settings. */
             200: {
                 headers: {
                     "X-Api-Commit": components["headers"]["X-Api-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SystemSettings"];
+                    "application/json": components["schemas"]["TenantSettings"];
                 };
             };
             401: components["responses"]["UnauthorisedError"];
             500: components["responses"]["InternalServerError"];
         };
     };
-    "patch-system-settings": {
+    "patch-tenant-settings": {
         parameters: {
             query?: never;
             header?: never;
@@ -1368,21 +1368,21 @@ export interface operations {
                 _me_sess: components["parameters"]["SessionAuth"];
             };
         };
-        /** @description System Settings to update. */
+        /** @description Tenant Settings to update. */
         requestBody: {
             content: {
-                "application/json": components["schemas"]["SystemSettings"];
+                "application/json": components["schemas"]["TenantSettings"];
             };
         };
         responses: {
-            /** @description Returns updated system settings. */
+            /** @description Returns updated tenant settings. */
             200: {
                 headers: {
                     "X-Api-Commit": components["headers"]["X-Api-Commit"];
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SystemSettings"];
+                    "application/json": components["schemas"]["TenantSettings"];
                 };
             };
             401: components["responses"]["UnauthorisedError"];

@@ -202,10 +202,10 @@ func (h *Handler) PatchUser(
 		}
 	}
 
-	// Returning system settings as part of user modal, to preserve backward compatibility
-	settings, err := h.db.GetSystemSettings(ctx)
+	// Returning tenant settings as part of user modal, to preserve backward compatibility
+	settings, err := h.db.GetTenantSettings(ctx)
 	if err != nil {
-		log.Error().Err(err).Msg("failed to retrieve system settings")
+		log.Error().Err(err).Msg("failed to retrieve tenant settings")
 		return nil, errors.Wrap(err, "services")
 	}
 

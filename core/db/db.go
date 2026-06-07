@@ -7,7 +7,7 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
-type UpdateSystemSettings struct {
+type UpdateTenantSettings struct {
 	ScriptType        *string
 	BlockAbusiveIPs   *string
 	BlockTorExitNodes *string
@@ -47,11 +47,11 @@ type AppClient interface {
 	// DeleteWebsite deletes a website from the database.
 	DeleteWebsite(ctx context.Context, id string) error
 
-	// System settings
-	// GetSystemSettings returns current system settings from the database.
-	GetSystemSettings(ctx context.Context) (*model.SystemSettings, error)
-	// UpdateSystemSettings insert or updates system settings in the database.
-	UpdateSystemSettings(ctx context.Context, settings *UpdateSystemSettings) error
+	// Tenant settings
+	// GetTenantSettings returns current tenant settings from the database.
+	GetTenantSettings(ctx context.Context) (*model.TenantSettings, error)
+	// UpdateTenantSettings insert or updates tenant settings in the database.
+	UpdateTenantSettings(ctx context.Context, settings *UpdateTenantSettings) error
 }
 
 // AnalyticsClient is the interface that groups all database operations related

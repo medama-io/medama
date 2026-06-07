@@ -317,13 +317,13 @@ func decodeGetEventPingParams(args [0]string, argsEscaped bool, r *http.Request)
 	return params, nil
 }
 
-// GetSystemSettingsParams is parameters of get-system-settings operation.
-type GetSystemSettingsParams struct {
+// GetTenantSettingsParams is parameters of get-tenant-settings operation.
+type GetTenantSettingsParams struct {
 	// Session token for authentication.
 	MeSess string
 }
 
-func unpackGetSystemSettingsParams(packed middleware.Parameters) (params GetSystemSettingsParams) {
+func unpackGetTenantSettingsParams(packed middleware.Parameters) (params GetTenantSettingsParams) {
 	{
 		key := middleware.ParameterKey{
 			Name: "_me_sess",
@@ -334,7 +334,7 @@ func unpackGetSystemSettingsParams(packed middleware.Parameters) (params GetSyst
 	return params
 }
 
-func decodeGetSystemSettingsParams(args [0]string, argsEscaped bool, r *http.Request) (params GetSystemSettingsParams, _ error) {
+func decodeGetTenantSettingsParams(args [0]string, argsEscaped bool, r *http.Request) (params GetTenantSettingsParams, _ error) {
 	c := uri.NewCookieDecoder(r)
 	// Decode cookie: _me_sess.
 	if err := func() error {
@@ -13051,13 +13051,13 @@ func decodeGetWebsitesIDParams(args [1]string, argsEscaped bool, r *http.Request
 	return params, nil
 }
 
-// PatchSystemSettingsParams is parameters of patch-system-settings operation.
-type PatchSystemSettingsParams struct {
+// PatchTenantSettingsParams is parameters of patch-tenant-settings operation.
+type PatchTenantSettingsParams struct {
 	// Session token for authentication.
 	MeSess string
 }
 
-func unpackPatchSystemSettingsParams(packed middleware.Parameters) (params PatchSystemSettingsParams) {
+func unpackPatchTenantSettingsParams(packed middleware.Parameters) (params PatchTenantSettingsParams) {
 	{
 		key := middleware.ParameterKey{
 			Name: "_me_sess",
@@ -13068,7 +13068,7 @@ func unpackPatchSystemSettingsParams(packed middleware.Parameters) (params Patch
 	return params
 }
 
-func decodePatchSystemSettingsParams(args [0]string, argsEscaped bool, r *http.Request) (params PatchSystemSettingsParams, _ error) {
+func decodePatchTenantSettingsParams(args [0]string, argsEscaped bool, r *http.Request) (params PatchTenantSettingsParams, _ error) {
 	c := uri.NewCookieDecoder(r)
 	// Decode cookie: _me_sess.
 	if err := func() error {

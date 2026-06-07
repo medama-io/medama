@@ -26,12 +26,12 @@ type Handler interface {
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
-	// GetSystemSettings implements get-system-settings operation.
+	// GetTenantSettings implements get-tenant-settings operation.
 	//
-	// Get a list of all system settings.
+	// Get a list of all tenant settings.
 	//
-	// GET /system/settings
-	GetSystemSettings(ctx context.Context, params GetSystemSettingsParams) (GetSystemSettingsRes, error)
+	// GET /tenant/settings
+	GetTenantSettings(ctx context.Context, params GetTenantSettingsParams) (GetTenantSettingsRes, error)
 	// GetUser implements get-user operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
@@ -135,12 +135,12 @@ type Handler interface {
 	//
 	// GET /websites/{hostname}
 	GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error)
-	// PatchSystemSettings implements patch-system-settings operation.
+	// PatchTenantSettings implements patch-tenant-settings operation.
 	//
-	// Partial update of system settings.
+	// Partial update of tenant settings.
 	//
-	// PATCH /system/settings
-	PatchSystemSettings(ctx context.Context, req *SystemSettings, params PatchSystemSettingsParams) (PatchSystemSettingsRes, error)
+	// PATCH /tenant/settings
+	PatchTenantSettings(ctx context.Context, req *TenantSettings, params PatchTenantSettingsParams) (PatchTenantSettingsRes, error)
 	// PatchUser implements patch-user operation.
 	//
 	// Update a user account's details.

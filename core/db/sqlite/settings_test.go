@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetSystemSettingsDefaults(t *testing.T) {
+func TestGetTenantSettingsDefaults(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	settings, err := client.GetSystemSettings(ctx)
+	settings, err := client.GetTenantSettings(ctx)
 	require.NoError(t, err)
 	require.NotNil(t, settings)
 
-	defaults := model.NewDefaultSystemSettings()
+	defaults := model.NewDefaultTenantSettings()
 	assert.Equal(defaults.ScriptType, settings.ScriptType)
 	assert.Equal(defaults.BlockAbusiveIPs, settings.BlockAbusiveIPs)
 	assert.Equal(defaults.BlockTorExitNodes, settings.BlockTorExitNodes)
 	assert.Equal(defaults.BlockedIPs, settings.BlockedIPs)
 }
 
-func TestGetSystemSettingsCustomValues(t *testing.T) {
+func TestGetTenantSettingsCustomValues(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	//nolint:exhaustive
@@ -33,12 +33,12 @@ func TestGetSystemSettingsCustomValues(t *testing.T) {
 		model.SettingsKeyBlockedIPs:        "10.0.0.1,10.0.0.2",
 	} {
 		_, err := client.ExecContext(ctx,
-			"INSERT INTO system_settings (key, value, date_updated) VALUES (?, ?, ?)",
+			"INSERT INTO tenant_settings (key, value, date_updated) VALUES (?, ?, ?)",
 			key, value, 1)
 		require.NoError(t, err)
 	}
 
-	settings, err := client.GetSystemSettings(ctx)
+	settings, err := client.GetTenantSettings(ctx)
 	require.NoError(t, err)
 	require.NotNil(t, settings)
 
@@ -48,20 +48,20 @@ func TestGetSystemSettingsCustomValues(t *testing.T) {
 	assert.Equal("10.0.0.1,10.0.0.2", settings.BlockedIPs)
 }
 
-func TestGetSystemSettingsPartialValues(t *testing.T) {
+func TestGetTenantSettingsPartialValues(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	_, err := client.ExecContext(ctx,
-		"INSERT INTO system_settings (key, value, date_updated) VALUES (?, ?, ?)",
+		"INSERT INTO tenant_settings (key, value, date_updated) VALUES (?, ?, ?)",
 		model.SettingsKeyScriptType, "tagged-events", 1)
 	require.NoError(t, err)
 
 	_, err = client.ExecContext(ctx,
-		"INSERT INTO system_settings (key, value, date_updated) VALUES (?, ?, ?)",
+		"INSERT INTO tenant_settings (key, value, date_updated) VALUES (?, ?, ?)",
 		model.SettingsKeyBlockedIPs, "10.0.0.1", 1)
 	require.NoError(t, err)
 
-	settings, err := client.GetSystemSettings(ctx)
+	settings, err := client.GetTenantSettings(ctx)
 	require.NoError(t, err)
 	require.NotNil(t, settings)
 
@@ -71,7 +71,7 @@ func TestGetSystemSettingsPartialValues(t *testing.T) {
 	assert.Equal("true", settings.BlockTorExitNodes)
 }
 
-func TestUpdateSystemSettingsAll(t *testing.T) {
+func TestUpdateTenantSettingsAll(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	scriptType := "tagged-events"
@@ -79,7 +79,7 @@ func TestUpdateSystemSettingsAll(t *testing.T) {
 	blockTor := "false"
 	blockedIPs := "10.0.0.1,10.0.0.2"
 
-	err := client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
+	err := client.UpdateTenantSettings(ctx, &db.UpdateTenantSettings{
 		ScriptType:        &scriptType,
 		BlockAbusiveIPs:   &blockAbusive,
 		BlockTorExitNodes: &blockTor,
@@ -87,7 +87,7 @@ func TestUpdateSystemSettingsAll(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	settings, err := client.GetSystemSettings(ctx)
+	settings, err := client.GetTenantSettings(ctx)
 	require.NoError(t, err)
 	require.NotNil(t, settings)
 
@@ -97,7 +97,7 @@ func TestUpdateSystemSettingsAll(t *testing.T) {
 	assert.Equal("10.0.0.1,10.0.0.2", settings.BlockedIPs)
 }
 
-func TestUpdateSystemSettingsPartial(t *testing.T) {
+func TestUpdateTenantSettingsPartial(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
 	blAbusive := "false"
@@ -105,7 +105,7 @@ func TestUpdateSystemSettingsPartial(t *testing.T) {
 	blIPs := "1.1.1.1"
 	scType := "spa"
 
-	err := client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
+	err := client.UpdateTenantSettings(ctx, &db.UpdateTenantSettings{
 		ScriptType:        &scType,
 		BlockAbusiveIPs:   &blAbusive,
 		BlockTorExitNodes: &blTor,
@@ -115,13 +115,13 @@ func TestUpdateSystemSettingsPartial(t *testing.T) {
 
 	newScript := "tagged-events"
 	newIPs := "2.2.2.2"
-	err = client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
+	err = client.UpdateTenantSettings(ctx, &db.UpdateTenantSettings{
 		ScriptType: &newScript,
 		BlockedIPs: &newIPs,
 	})
 	require.NoError(t, err)
 
-	settings, err := client.GetSystemSettings(ctx)
+	settings, err := client.GetTenantSettings(ctx)
 	require.NoError(t, err)
 	require.NotNil(t, settings)
 
@@ -131,17 +131,17 @@ func TestUpdateSystemSettingsPartial(t *testing.T) {
 	assert.Equal("2.2.2.2", settings.BlockedIPs)
 }
 
-func TestUpdateSystemSettingsEmpty(t *testing.T) {
+func TestUpdateTenantSettingsEmpty(t *testing.T) {
 	assert, ctx, client := SetupDatabase(t)
 
-	err := client.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{})
+	err := client.UpdateTenantSettings(ctx, &db.UpdateTenantSettings{})
 	require.NoError(t, err)
 
-	settings, err := client.GetSystemSettings(ctx)
+	settings, err := client.GetTenantSettings(ctx)
 	require.NoError(t, err)
 	require.NotNil(t, settings)
 
-	defaults := model.NewDefaultSystemSettings()
+	defaults := model.NewDefaultTenantSettings()
 	assert.Equal(defaults.ScriptType, settings.ScriptType)
 	assert.Equal(defaults.BlockAbusiveIPs, settings.BlockAbusiveIPs)
 	assert.Equal(defaults.BlockTorExitNodes, settings.BlockTorExitNodes)

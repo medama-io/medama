@@ -5500,14 +5500,14 @@ func (s *StatsUTMSourcesItem) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s *SystemSettings) Encode(e *jx.Encoder) {
+func (s *TenantSettings) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
 // encodeFields encodes fields.
-func (s *SystemSettings) encodeFields(e *jx.Encoder) {
+func (s *TenantSettings) encodeFields(e *jx.Encoder) {
 	{
 		if s.ScriptType != nil {
 			e.FieldStart("script_type")
@@ -5542,26 +5542,26 @@ func (s *SystemSettings) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfSystemSettings = [4]string{
+var jsonFieldsNameOfTenantSettings = [4]string{
 	0: "script_type",
 	1: "blockAbusiveIPs",
 	2: "blockTorExitNodes",
 	3: "blockedIPs",
 }
 
-// Decode decodes SystemSettings from json.
-func (s *SystemSettings) Decode(d *jx.Decoder) error {
+// Decode decodes TenantSettings from json.
+func (s *TenantSettings) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode SystemSettings to nil")
+		return errors.New("invalid: unable to decode TenantSettings to nil")
 	}
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "script_type":
 			if err := func() error {
-				s.ScriptType = make([]SystemSettingsScriptTypeItem, 0)
+				s.ScriptType = make([]TenantSettingsScriptTypeItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
-					var elem SystemSettingsScriptTypeItem
+					var elem TenantSettingsScriptTypeItem
 					if err := elem.Decode(d); err != nil {
 						return err
 					}
@@ -5618,63 +5618,63 @@ func (s *SystemSettings) Decode(d *jx.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode SystemSettings")
+		return errors.Wrap(err, "decode TenantSettings")
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *SystemSettings) MarshalJSON() ([]byte, error) {
+func (s *TenantSettings) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *SystemSettings) UnmarshalJSON(data []byte) error {
+func (s *TenantSettings) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
-// Encode encodes SystemSettingsScriptTypeItem as json.
-func (s SystemSettingsScriptTypeItem) Encode(e *jx.Encoder) {
+// Encode encodes TenantSettingsScriptTypeItem as json.
+func (s TenantSettingsScriptTypeItem) Encode(e *jx.Encoder) {
 	e.Str(string(s))
 }
 
-// Decode decodes SystemSettingsScriptTypeItem from json.
-func (s *SystemSettingsScriptTypeItem) Decode(d *jx.Decoder) error {
+// Decode decodes TenantSettingsScriptTypeItem from json.
+func (s *TenantSettingsScriptTypeItem) Decode(d *jx.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode SystemSettingsScriptTypeItem to nil")
+		return errors.New("invalid: unable to decode TenantSettingsScriptTypeItem to nil")
 	}
 	v, err := d.StrBytes()
 	if err != nil {
 		return err
 	}
 	// Try to use constant string.
-	switch SystemSettingsScriptTypeItem(v) {
-	case SystemSettingsScriptTypeItemDefault:
-		*s = SystemSettingsScriptTypeItemDefault
-	case SystemSettingsScriptTypeItemClickEvents:
-		*s = SystemSettingsScriptTypeItemClickEvents
-	case SystemSettingsScriptTypeItemPageEvents:
-		*s = SystemSettingsScriptTypeItemPageEvents
+	switch TenantSettingsScriptTypeItem(v) {
+	case TenantSettingsScriptTypeItemDefault:
+		*s = TenantSettingsScriptTypeItemDefault
+	case TenantSettingsScriptTypeItemClickEvents:
+		*s = TenantSettingsScriptTypeItemClickEvents
+	case TenantSettingsScriptTypeItemPageEvents:
+		*s = TenantSettingsScriptTypeItemPageEvents
 	default:
-		*s = SystemSettingsScriptTypeItem(v)
+		*s = TenantSettingsScriptTypeItem(v)
 	}
 
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s SystemSettingsScriptTypeItem) MarshalJSON() ([]byte, error) {
+func (s TenantSettingsScriptTypeItem) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *SystemSettingsScriptTypeItem) UnmarshalJSON(data []byte) error {
+func (s *TenantSettingsScriptTypeItem) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

@@ -911,7 +911,7 @@ func (*ForbiddenErrorHeaders) getWebsiteIDOsRes()         {}
 func (*ForbiddenErrorHeaders) getWebsiteIDPropertiesRes() {}
 func (*ForbiddenErrorHeaders) getWebsiteIDReferrersRes()  {}
 func (*ForbiddenErrorHeaders) getWebsiteIDSourcesRes()    {}
-func (*ForbiddenErrorHeaders) patchSystemSettingsRes()    {}
+func (*ForbiddenErrorHeaders) patchTenantSettingsRes()    {}
 func (*ForbiddenErrorHeaders) patchUserRes()              {}
 func (*ForbiddenErrorHeaders) patchWebsitesIDRes()        {}
 func (*ForbiddenErrorHeaders) postWebsitesRes()           {}
@@ -1128,7 +1128,7 @@ func (s *InternalServerErrorHeaders) SetResponse(val InternalServerError) {
 func (*InternalServerErrorHeaders) deleteUserRes()             {}
 func (*InternalServerErrorHeaders) deleteWebsitesIDRes()       {}
 func (*InternalServerErrorHeaders) getEventPingRes()           {}
-func (*InternalServerErrorHeaders) getSystemSettingsRes()      {}
+func (*InternalServerErrorHeaders) getTenantSettingsRes()      {}
 func (*InternalServerErrorHeaders) getUserRes()                {}
 func (*InternalServerErrorHeaders) getUserUsageRes()           {}
 func (*InternalServerErrorHeaders) getWebsiteIDBrowsersRes()   {}
@@ -1146,7 +1146,7 @@ func (*InternalServerErrorHeaders) getWebsiteIDSummaryRes()    {}
 func (*InternalServerErrorHeaders) getWebsiteIDTimeRes()       {}
 func (*InternalServerErrorHeaders) getWebsitesIDRes()          {}
 func (*InternalServerErrorHeaders) getWebsitesRes()            {}
-func (*InternalServerErrorHeaders) patchSystemSettingsRes()    {}
+func (*InternalServerErrorHeaders) patchTenantSettingsRes()    {}
 func (*InternalServerErrorHeaders) patchUserRes()              {}
 func (*InternalServerErrorHeaders) patchWebsitesIDRes()        {}
 func (*InternalServerErrorHeaders) postAuthLoginRes()          {}
@@ -3211,10 +3211,10 @@ func (s *StatsUTMSourcesItem) SetDuration(val OptInt) {
 	s.Duration = val
 }
 
-// Schema for system setting.
-// Ref: #/components/schemas/SystemSettings
-type SystemSettings struct {
-	ScriptType []SystemSettingsScriptTypeItem `json:"script_type"`
+// Schema for tenant setting.
+// Ref: #/components/schemas/TenantSettings
+type TenantSettings struct {
+	ScriptType []TenantSettingsScriptTypeItem `json:"script_type"`
 	// Block known abusive IP addresses.
 	BlockAbusiveIPs OptBool `json:"blockAbusiveIPs"`
 	// Block traffic from Tor exit nodes.
@@ -3224,99 +3224,99 @@ type SystemSettings struct {
 }
 
 // GetScriptType returns the value of ScriptType.
-func (s *SystemSettings) GetScriptType() []SystemSettingsScriptTypeItem {
+func (s *TenantSettings) GetScriptType() []TenantSettingsScriptTypeItem {
 	return s.ScriptType
 }
 
 // GetBlockAbusiveIPs returns the value of BlockAbusiveIPs.
-func (s *SystemSettings) GetBlockAbusiveIPs() OptBool {
+func (s *TenantSettings) GetBlockAbusiveIPs() OptBool {
 	return s.BlockAbusiveIPs
 }
 
 // GetBlockTorExitNodes returns the value of BlockTorExitNodes.
-func (s *SystemSettings) GetBlockTorExitNodes() OptBool {
+func (s *TenantSettings) GetBlockTorExitNodes() OptBool {
 	return s.BlockTorExitNodes
 }
 
 // GetBlockedIPs returns the value of BlockedIPs.
-func (s *SystemSettings) GetBlockedIPs() []netip.Addr {
+func (s *TenantSettings) GetBlockedIPs() []netip.Addr {
 	return s.BlockedIPs
 }
 
 // SetScriptType sets the value of ScriptType.
-func (s *SystemSettings) SetScriptType(val []SystemSettingsScriptTypeItem) {
+func (s *TenantSettings) SetScriptType(val []TenantSettingsScriptTypeItem) {
 	s.ScriptType = val
 }
 
 // SetBlockAbusiveIPs sets the value of BlockAbusiveIPs.
-func (s *SystemSettings) SetBlockAbusiveIPs(val OptBool) {
+func (s *TenantSettings) SetBlockAbusiveIPs(val OptBool) {
 	s.BlockAbusiveIPs = val
 }
 
 // SetBlockTorExitNodes sets the value of BlockTorExitNodes.
-func (s *SystemSettings) SetBlockTorExitNodes(val OptBool) {
+func (s *TenantSettings) SetBlockTorExitNodes(val OptBool) {
 	s.BlockTorExitNodes = val
 }
 
 // SetBlockedIPs sets the value of BlockedIPs.
-func (s *SystemSettings) SetBlockedIPs(val []netip.Addr) {
+func (s *TenantSettings) SetBlockedIPs(val []netip.Addr) {
 	s.BlockedIPs = val
 }
 
-// SystemSettingsHeaders wraps SystemSettings with response headers.
-type SystemSettingsHeaders struct {
+// TenantSettingsHeaders wraps TenantSettings with response headers.
+type TenantSettingsHeaders struct {
 	XAPICommit OptString
-	Response   SystemSettings
+	Response   TenantSettings
 }
 
 // GetXAPICommit returns the value of XAPICommit.
-func (s *SystemSettingsHeaders) GetXAPICommit() OptString {
+func (s *TenantSettingsHeaders) GetXAPICommit() OptString {
 	return s.XAPICommit
 }
 
 // GetResponse returns the value of Response.
-func (s *SystemSettingsHeaders) GetResponse() SystemSettings {
+func (s *TenantSettingsHeaders) GetResponse() TenantSettings {
 	return s.Response
 }
 
 // SetXAPICommit sets the value of XAPICommit.
-func (s *SystemSettingsHeaders) SetXAPICommit(val OptString) {
+func (s *TenantSettingsHeaders) SetXAPICommit(val OptString) {
 	s.XAPICommit = val
 }
 
 // SetResponse sets the value of Response.
-func (s *SystemSettingsHeaders) SetResponse(val SystemSettings) {
+func (s *TenantSettingsHeaders) SetResponse(val TenantSettings) {
 	s.Response = val
 }
 
-func (*SystemSettingsHeaders) getSystemSettingsRes()   {}
-func (*SystemSettingsHeaders) patchSystemSettingsRes() {}
+func (*TenantSettingsHeaders) getTenantSettingsRes()   {}
+func (*TenantSettingsHeaders) patchTenantSettingsRes() {}
 
-type SystemSettingsScriptTypeItem string
+type TenantSettingsScriptTypeItem string
 
 const (
-	SystemSettingsScriptTypeItemDefault     SystemSettingsScriptTypeItem = "default"
-	SystemSettingsScriptTypeItemClickEvents SystemSettingsScriptTypeItem = "click-events"
-	SystemSettingsScriptTypeItemPageEvents  SystemSettingsScriptTypeItem = "page-events"
+	TenantSettingsScriptTypeItemDefault     TenantSettingsScriptTypeItem = "default"
+	TenantSettingsScriptTypeItemClickEvents TenantSettingsScriptTypeItem = "click-events"
+	TenantSettingsScriptTypeItemPageEvents  TenantSettingsScriptTypeItem = "page-events"
 )
 
-// AllValues returns all SystemSettingsScriptTypeItem values.
-func (SystemSettingsScriptTypeItem) AllValues() []SystemSettingsScriptTypeItem {
-	return []SystemSettingsScriptTypeItem{
-		SystemSettingsScriptTypeItemDefault,
-		SystemSettingsScriptTypeItemClickEvents,
-		SystemSettingsScriptTypeItemPageEvents,
+// AllValues returns all TenantSettingsScriptTypeItem values.
+func (TenantSettingsScriptTypeItem) AllValues() []TenantSettingsScriptTypeItem {
+	return []TenantSettingsScriptTypeItem{
+		TenantSettingsScriptTypeItemDefault,
+		TenantSettingsScriptTypeItemClickEvents,
+		TenantSettingsScriptTypeItemPageEvents,
 	}
 }
 
 // MarshalText implements encoding.TextMarshaler.
-func (s SystemSettingsScriptTypeItem) MarshalText() ([]byte, error) {
+func (s TenantSettingsScriptTypeItem) MarshalText() ([]byte, error) {
 	switch s {
-	case SystemSettingsScriptTypeItemDefault:
+	case TenantSettingsScriptTypeItemDefault:
 		return []byte(s), nil
-	case SystemSettingsScriptTypeItemClickEvents:
+	case TenantSettingsScriptTypeItemClickEvents:
 		return []byte(s), nil
-	case SystemSettingsScriptTypeItemPageEvents:
+	case TenantSettingsScriptTypeItemPageEvents:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -3324,16 +3324,16 @@ func (s SystemSettingsScriptTypeItem) MarshalText() ([]byte, error) {
 }
 
 // UnmarshalText implements encoding.TextUnmarshaler.
-func (s *SystemSettingsScriptTypeItem) UnmarshalText(data []byte) error {
-	switch SystemSettingsScriptTypeItem(data) {
-	case SystemSettingsScriptTypeItemDefault:
-		*s = SystemSettingsScriptTypeItemDefault
+func (s *TenantSettingsScriptTypeItem) UnmarshalText(data []byte) error {
+	switch TenantSettingsScriptTypeItem(data) {
+	case TenantSettingsScriptTypeItemDefault:
+		*s = TenantSettingsScriptTypeItemDefault
 		return nil
-	case SystemSettingsScriptTypeItemClickEvents:
-		*s = SystemSettingsScriptTypeItemClickEvents
+	case TenantSettingsScriptTypeItemClickEvents:
+		*s = TenantSettingsScriptTypeItemClickEvents
 		return nil
-	case SystemSettingsScriptTypeItemPageEvents:
-		*s = SystemSettingsScriptTypeItemPageEvents
+	case TenantSettingsScriptTypeItemPageEvents:
+		*s = TenantSettingsScriptTypeItemPageEvents
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
@@ -3407,7 +3407,7 @@ func (s *UnauthorisedErrorHeaders) SetResponse(val UnauthorisedError) {
 
 func (*UnauthorisedErrorHeaders) deleteUserRes()             {}
 func (*UnauthorisedErrorHeaders) deleteWebsitesIDRes()       {}
-func (*UnauthorisedErrorHeaders) getSystemSettingsRes()      {}
+func (*UnauthorisedErrorHeaders) getTenantSettingsRes()      {}
 func (*UnauthorisedErrorHeaders) getUserRes()                {}
 func (*UnauthorisedErrorHeaders) getUserUsageRes()           {}
 func (*UnauthorisedErrorHeaders) getWebsiteIDBrowsersRes()   {}
@@ -3425,7 +3425,7 @@ func (*UnauthorisedErrorHeaders) getWebsiteIDSummaryRes()    {}
 func (*UnauthorisedErrorHeaders) getWebsiteIDTimeRes()       {}
 func (*UnauthorisedErrorHeaders) getWebsitesIDRes()          {}
 func (*UnauthorisedErrorHeaders) getWebsitesRes()            {}
-func (*UnauthorisedErrorHeaders) patchSystemSettingsRes()    {}
+func (*UnauthorisedErrorHeaders) patchTenantSettingsRes()    {}
 func (*UnauthorisedErrorHeaders) patchUserRes()              {}
 func (*UnauthorisedErrorHeaders) patchWebsitesIDRes()        {}
 func (*UnauthorisedErrorHeaders) postAuthLoginRes()          {}

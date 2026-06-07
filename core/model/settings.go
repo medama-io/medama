@@ -20,7 +20,7 @@ type UserSettings struct {
 	Language string `db:"language" json:"language"`
 }
 
-type SystemSettings struct {
+type TenantSettings struct {
 	// Tracker
 	ScriptType string `db:"script_type" json:"script_type"`
 
@@ -37,9 +37,9 @@ func NewDefaultUserSettings() *UserSettings {
 	}
 }
 
-// NewDefaultSystemSettings returns a new instance of System settings with default values.
-func NewDefaultSystemSettings() *SystemSettings {
-	return &SystemSettings{
+// NewDefaultTenantSettings returns a new instance of Tenant settings with default values.
+func NewDefaultTenantSettings() *TenantSettings {
+	return &TenantSettings{
 		ScriptType:        "default",
 		BlockAbusiveIPs:   "true",
 		BlockTorExitNodes: "true",

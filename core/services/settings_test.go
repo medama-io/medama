@@ -11,17 +11,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetSystemSettings(t *testing.T) {
+func TestGetTenantSettings(t *testing.T) {
 	assert, ctx, handler, _ := NewTestHandler(t)
 
-	resp, err := handler.GetSystemSettings(ctx, api.GetSystemSettingsParams{})
+	resp, err := handler.GetTenantSettings(ctx, api.GetTenantSettingsParams{})
 	require.NoError(t, err)
 
-	settings, ok := resp.(*api.SystemSettingsHeaders)
+	settings, ok := resp.(*api.TenantSettingsHeaders)
 	require.True(t, ok)
 
 	assert.Equal(
-		[]api.SystemSettingsScriptTypeItem{api.SystemSettingsScriptTypeItemDefault},
+		[]api.TenantSettingsScriptTypeItem{api.TenantSettingsScriptTypeItemDefault},
 		settings.Response.ScriptType,
 	)
 	assert.Equal(api.NewOptBool(true), settings.Response.BlockAbusiveIPs)
@@ -29,29 +29,29 @@ func TestGetSystemSettings(t *testing.T) {
 	assert.Empty(settings.Response.BlockedIPs)
 }
 
-func TestPatchSystemSettings(t *testing.T) {
+func TestPatchTenantSettings(t *testing.T) {
 	assert, ctx, handler, _ := NewTestHandler(t)
 
-	req := &api.SystemSettings{
-		ScriptType: []api.SystemSettingsScriptTypeItem{
-			api.SystemSettingsScriptTypeItemClickEvents,
-			api.SystemSettingsScriptTypeItemPageEvents,
+	req := &api.TenantSettings{
+		ScriptType: []api.TenantSettingsScriptTypeItem{
+			api.TenantSettingsScriptTypeItemClickEvents,
+			api.TenantSettingsScriptTypeItemPageEvents,
 		},
 		BlockAbusiveIPs:   api.NewOptBool(false),
 		BlockTorExitNodes: api.NewOptBool(false),
 		BlockedIPs:        []netip.Addr{netip.MustParseAddr("10.0.0.1")},
 	}
 
-	resp, err := handler.PatchSystemSettings(ctx, req, api.PatchSystemSettingsParams{})
+	resp, err := handler.PatchTenantSettings(ctx, req, api.PatchTenantSettingsParams{})
 	require.NoError(t, err)
 
-	settings, ok := resp.(*api.SystemSettingsHeaders)
+	settings, ok := resp.(*api.TenantSettingsHeaders)
 	require.True(t, ok)
 
 	assert.Equal(
-		[]api.SystemSettingsScriptTypeItem{
-			api.SystemSettingsScriptTypeItemClickEvents,
-			api.SystemSettingsScriptTypeItemPageEvents,
+		[]api.TenantSettingsScriptTypeItem{
+			api.TenantSettingsScriptTypeItemClickEvents,
+			api.TenantSettingsScriptTypeItemPageEvents,
 		},
 		settings.Response.ScriptType,
 	)
@@ -60,10 +60,10 @@ func TestPatchSystemSettings(t *testing.T) {
 	assert.Equal([]netip.Addr{netip.MustParseAddr("10.0.0.1")}, settings.Response.BlockedIPs)
 }
 
-func TestPatchSystemSettingsPartial(t *testing.T) {
+func TestPatchTenantSettingsPartial(t *testing.T) {
 	assert, ctx, handler, sqliteClient := NewTestHandler(t)
 
-	err := sqliteClient.UpdateSystemSettings(ctx, &db.UpdateSystemSettings{
+	err := sqliteClient.UpdateTenantSettings(ctx, &db.UpdateTenantSettings{
 		ScriptType:        ptr("click-events"),
 		BlockAbusiveIPs:   ptr("false"),
 		BlockTorExitNodes: ptr("false"),
@@ -71,20 +71,20 @@ func TestPatchSystemSettingsPartial(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	req := &api.SystemSettings{
-		ScriptType: []api.SystemSettingsScriptTypeItem{
-			api.SystemSettingsScriptTypeItemPageEvents,
+	req := &api.TenantSettings{
+		ScriptType: []api.TenantSettingsScriptTypeItem{
+			api.TenantSettingsScriptTypeItemPageEvents,
 		},
 	}
 
-	resp, err := handler.PatchSystemSettings(ctx, req, api.PatchSystemSettingsParams{})
+	resp, err := handler.PatchTenantSettings(ctx, req, api.PatchTenantSettingsParams{})
 	require.NoError(t, err)
 
-	settings, ok := resp.(*api.SystemSettingsHeaders)
+	settings, ok := resp.(*api.TenantSettingsHeaders)
 	require.True(t, ok)
 
 	assert.Equal(
-		[]api.SystemSettingsScriptTypeItem{api.SystemSettingsScriptTypeItemPageEvents},
+		[]api.TenantSettingsScriptTypeItem{api.TenantSettingsScriptTypeItemPageEvents},
 		settings.Response.ScriptType,
 	)
 	assert.Equal(api.NewOptBool(false), settings.Response.BlockAbusiveIPs)
@@ -92,16 +92,16 @@ func TestPatchSystemSettingsPartial(t *testing.T) {
 	assert.Equal([]netip.Addr{netip.MustParseAddr("10.0.0.1")}, settings.Response.BlockedIPs)
 }
 
-func TestPatchSystemSettingsDemoMode(t *testing.T) {
+func TestPatchTenantSettingsDemoMode(t *testing.T) {
 	assert, ctx, handler, _ := NewTestHandlerDemoMode(t)
 
-	req := &api.SystemSettings{
-		ScriptType: []api.SystemSettingsScriptTypeItem{
-			api.SystemSettingsScriptTypeItemClickEvents,
+	req := &api.TenantSettings{
+		ScriptType: []api.TenantSettingsScriptTypeItem{
+			api.TenantSettingsScriptTypeItemClickEvents,
 		},
 	}
 
-	resp, err := handler.PatchSystemSettings(ctx, req, api.PatchSystemSettingsParams{})
+	resp, err := handler.PatchTenantSettings(ctx, req, api.PatchTenantSettingsParams{})
 	require.NoError(t, err)
 
 	forbidden, ok := resp.(*api.ForbiddenErrorHeaders)

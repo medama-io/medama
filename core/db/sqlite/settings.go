@@ -10,42 +10,42 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
-type SystemSetting struct {
+type TenantSetting struct {
 	Key   model.SettingsKey `db:"key"`
 	Value string            `db:"value"`
 }
 
-func (c *Client) GetSystemSettings(ctx context.Context) (*model.SystemSettings, error) {
-	var selectSettings []*SystemSetting
+func (c *Client) GetTenantSettings(ctx context.Context) (*model.TenantSettings, error) {
+	var selectSettings []*TenantSetting
 
-	err := c.SelectContext(ctx, &selectSettings, "SELECT key, value FROM system_settings")
+	err := c.SelectContext(ctx, &selectSettings, "SELECT key, value FROM tenant_settings")
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to load system settings")
+		return nil, errors.Wrap(err, "failed to load tenant settings")
 	}
 
-	systemSettings := model.NewDefaultSystemSettings()
+	tenantSettings := model.NewDefaultTenantSettings()
 
 	for _, setting := range selectSettings {
 		switch setting.Key {
 		case model.SettingsKeyScriptType:
-			systemSettings.ScriptType = setting.Value
+			tenantSettings.ScriptType = setting.Value
 		case model.SettingsKeyBlockAbusiveIPs:
-			systemSettings.BlockAbusiveIPs = setting.Value
+			tenantSettings.BlockAbusiveIPs = setting.Value
 		case model.SettingsKeyBlockTorExitNodes:
-			systemSettings.BlockTorExitNodes = setting.Value
+			tenantSettings.BlockTorExitNodes = setting.Value
 		case model.SettingsKeyBlockedIPs:
-			systemSettings.BlockedIPs = setting.Value
+			tenantSettings.BlockedIPs = setting.Value
 		case model.SettingsKeyLanguage:
 			// exhaustive:ignore
 		}
 	}
 
-	return systemSettings, nil
+	return tenantSettings, nil
 }
 
-func (c *Client) UpdateSystemSettings(
+func (c *Client) UpdateTenantSettings(
 	ctx context.Context,
-	settings *db.UpdateSystemSettings,
+	settings *db.UpdateTenantSettings,
 ) error {
 	tx := c.MustBeginTx(ctx, nil)
 
@@ -65,7 +65,7 @@ func (c *Client) UpdateSystemSettings(
 		_, err := tx.NamedExecContext(
 			ctx,
 			`--sql
-			INSERT INTO system_settings (key, value, date_updated)
+			INSERT INTO tenant_settings (key, value, date_updated)
 			VALUES (:key, :value, :date_updated)
 			ON CONFLICT(key) DO UPDATE SET value=excluded.value, date_updated=excluded.date_updated`,
 			map[string]any{

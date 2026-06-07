@@ -102,9 +102,9 @@ func NewRuntimeConfig(
 	commit string,
 ) (RuntimeConfig, error) {
 	// Load the script type from the database.
-	settings, err := user.GetSystemSettings(ctx)
+	settings, err := user.GetTenantSettings(ctx)
 	if err != nil {
-		return RuntimeConfig{}, fmt.Errorf("failed to get user settings: %w", err)
+		return RuntimeConfig{}, fmt.Errorf("failed to get tenant settings: %w", err)
 	}
 
 	return RuntimeConfig{
@@ -115,7 +115,7 @@ func NewRuntimeConfig(
 }
 
 func (r *RuntimeConfig) UpdateConfig(
-	settings *model.SystemSettings,
+	settings *model.TenantSettings,
 ) error {
 	l := logger.Get()
 

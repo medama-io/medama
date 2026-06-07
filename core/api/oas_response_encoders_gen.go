@@ -509,9 +509,9 @@ func encodeGetEventPingResponse(response GetEventPingRes, w http.ResponseWriter)
 	}
 }
 
-func encodeGetSystemSettingsResponse(response GetSystemSettingsRes, w http.ResponseWriter) error {
+func encodeGetTenantSettingsResponse(response GetTenantSettingsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *SystemSettingsHeaders:
+	case *TenantSettingsHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.
@@ -3711,9 +3711,9 @@ func encodeGetWebsitesIDResponse(response GetWebsitesIDRes, w http.ResponseWrite
 	}
 }
 
-func encodePatchSystemSettingsResponse(response PatchSystemSettingsRes, w http.ResponseWriter) error {
+func encodePatchTenantSettingsResponse(response PatchTenantSettingsRes, w http.ResponseWriter) error {
 	switch response := response.(type) {
-	case *SystemSettingsHeaders:
+	case *TenantSettingsHeaders:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.Header().Set("Access-Control-Expose-Headers", "X-Api-Commit")
 		// Encoding response headers.

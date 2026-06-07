@@ -376,12 +376,12 @@ func (s *Server) handleGetEventPingRequest(args [0]string, argsEscaped bool, w h
 	}
 }
 
-// handleGetSystemSettingsRequest handles get-system-settings operation.
+// handleGetTenantSettingsRequest handles get-tenant-settings operation.
 //
-// Get a list of all system settings.
+// Get a list of all tenant settings.
 //
-// GET /system/settings
-func (s *Server) handleGetSystemSettingsRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+// GET /tenant/settings
+func (s *Server) handleGetTenantSettingsRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	statusWriter := &codeRecorder{ResponseWriter: w}
 	w = statusWriter
 	ctx := r.Context()
@@ -389,15 +389,15 @@ func (s *Server) handleGetSystemSettingsRequest(args [0]string, argsEscaped bool
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: GetSystemSettingsOperation,
-			ID:   "get-system-settings",
+			Name: GetTenantSettingsOperation,
+			ID:   "get-tenant-settings",
 		}
 	)
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, GetSystemSettingsOperation, r)
+			sctx, ok, err := s.securityCookieAuth(ctx, GetTenantSettingsOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -437,7 +437,7 @@ func (s *Server) handleGetSystemSettingsRequest(args [0]string, argsEscaped bool
 			return
 		}
 	}
-	params, err := decodeGetSystemSettingsParams(args, argsEscaped, r)
+	params, err := decodeGetTenantSettingsParams(args, argsEscaped, r)
 	if err != nil {
 		err = &ogenerrors.DecodeParamsError{
 			OperationContext: opErrContext,
@@ -450,13 +450,13 @@ func (s *Server) handleGetSystemSettingsRequest(args [0]string, argsEscaped bool
 
 	var rawBody []byte
 
-	var response GetSystemSettingsRes
+	var response GetTenantSettingsRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    GetSystemSettingsOperation,
-			OperationSummary: "List System Settings",
-			OperationID:      "get-system-settings",
+			OperationName:    GetTenantSettingsOperation,
+			OperationSummary: "List Tenant Settings",
+			OperationID:      "get-tenant-settings",
 			Body:             nil,
 			RawBody:          rawBody,
 			Params: middleware.Parameters{
@@ -470,8 +470,8 @@ func (s *Server) handleGetSystemSettingsRequest(args [0]string, argsEscaped bool
 
 		type (
 			Request  = struct{}
-			Params   = GetSystemSettingsParams
-			Response = GetSystemSettingsRes
+			Params   = GetTenantSettingsParams
+			Response = GetTenantSettingsRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -480,14 +480,14 @@ func (s *Server) handleGetSystemSettingsRequest(args [0]string, argsEscaped bool
 		](
 			m,
 			mreq,
-			unpackGetSystemSettingsParams,
+			unpackGetTenantSettingsParams,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.GetSystemSettings(ctx, params)
+				response, err = s.h.GetTenantSettings(ctx, params)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.GetSystemSettings(ctx, params)
+		response, err = s.h.GetTenantSettings(ctx, params)
 	}
 	if err != nil {
 		defer recordError("Internal", err)
@@ -495,7 +495,7 @@ func (s *Server) handleGetSystemSettingsRequest(args [0]string, argsEscaped bool
 		return
 	}
 
-	if err := encodeGetSystemSettingsResponse(response, w); err != nil {
+	if err := encodeGetTenantSettingsResponse(response, w); err != nil {
 		defer recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
@@ -3625,12 +3625,12 @@ func (s *Server) handleGetWebsitesIDRequest(args [1]string, argsEscaped bool, w 
 	}
 }
 
-// handlePatchSystemSettingsRequest handles patch-system-settings operation.
+// handlePatchTenantSettingsRequest handles patch-tenant-settings operation.
 //
-// Partial update of system settings.
+// Partial update of tenant settings.
 //
-// PATCH /system/settings
-func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+// PATCH /tenant/settings
+func (s *Server) handlePatchTenantSettingsRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	statusWriter := &codeRecorder{ResponseWriter: w}
 	w = statusWriter
 	ctx := r.Context()
@@ -3638,15 +3638,15 @@ func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bo
 	var (
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: PatchSystemSettingsOperation,
-			ID:   "patch-system-settings",
+			Name: PatchTenantSettingsOperation,
+			ID:   "patch-tenant-settings",
 		}
 	)
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			sctx, ok, err := s.securityCookieAuth(ctx, PatchSystemSettingsOperation, r)
+			sctx, ok, err := s.securityCookieAuth(ctx, PatchTenantSettingsOperation, r)
 			if err != nil {
 				err = &ogenerrors.SecurityError{
 					OperationContext: opErrContext,
@@ -3686,7 +3686,7 @@ func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bo
 			return
 		}
 	}
-	params, err := decodePatchSystemSettingsParams(args, argsEscaped, r)
+	params, err := decodePatchTenantSettingsParams(args, argsEscaped, r)
 	if err != nil {
 		err = &ogenerrors.DecodeParamsError{
 			OperationContext: opErrContext,
@@ -3698,7 +3698,7 @@ func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bo
 	}
 
 	var rawBody []byte
-	request, rawBody, close, err := s.decodePatchSystemSettingsRequest(r)
+	request, rawBody, close, err := s.decodePatchTenantSettingsRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -3714,13 +3714,13 @@ func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bo
 		}
 	}()
 
-	var response PatchSystemSettingsRes
+	var response PatchTenantSettingsRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    PatchSystemSettingsOperation,
-			OperationSummary: "Update System Settings",
-			OperationID:      "patch-system-settings",
+			OperationName:    PatchTenantSettingsOperation,
+			OperationSummary: "Update Tenant Settings",
+			OperationID:      "patch-tenant-settings",
 			Body:             request,
 			RawBody:          rawBody,
 			Params: middleware.Parameters{
@@ -3733,9 +3733,9 @@ func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bo
 		}
 
 		type (
-			Request  = *SystemSettings
-			Params   = PatchSystemSettingsParams
-			Response = PatchSystemSettingsRes
+			Request  = *TenantSettings
+			Params   = PatchTenantSettingsParams
+			Response = PatchTenantSettingsRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -3744,14 +3744,14 @@ func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bo
 		](
 			m,
 			mreq,
-			unpackPatchSystemSettingsParams,
+			unpackPatchTenantSettingsParams,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.PatchSystemSettings(ctx, request, params)
+				response, err = s.h.PatchTenantSettings(ctx, request, params)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.PatchSystemSettings(ctx, request, params)
+		response, err = s.h.PatchTenantSettings(ctx, request, params)
 	}
 	if err != nil {
 		defer recordError("Internal", err)
@@ -3759,7 +3759,7 @@ func (s *Server) handlePatchSystemSettingsRequest(args [0]string, argsEscaped bo
 		return
 	}
 
-	if err := encodePatchSystemSettingsResponse(response, w); err != nil {
+	if err := encodePatchTenantSettingsResponse(response, w); err != nil {
 		defer recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)
