@@ -6,11 +6,12 @@ import (
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
+	"github.com/medama-io/medama/metest"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGetTenantSettings(t *testing.T) {
-	assert, ctx, handler, _ := NewTestHandler(t)
+	assert, ctx, handler, _ := metest.NewTestHandler(t)
 
 	resp, err := handler.GetTenantSettings(ctx, api.GetTenantSettingsParams{})
 	require.NoError(t, err)
@@ -28,7 +29,7 @@ func TestGetTenantSettings(t *testing.T) {
 }
 
 func TestPatchTenantSettings(t *testing.T) {
-	assert, ctx, handler, _ := NewTestHandler(t)
+	assert, ctx, handler, _ := metest.NewTestHandler(t)
 
 	req := &api.TenantSettings{
 		ScriptType: []api.TenantSettingsScriptTypeItem{
@@ -59,7 +60,7 @@ func TestPatchTenantSettings(t *testing.T) {
 }
 
 func TestPatchTenantSettingsPartial(t *testing.T) {
-	assert, ctx, handler, sqliteClient := NewTestHandler(t)
+	assert, ctx, handler, sqliteClient := metest.NewTestHandler(t)
 
 	err := sqliteClient.UpdateTenantSettings(ctx, &db.UpdateTenantSettings{
 		ScriptType:        ptr("click-events"),
