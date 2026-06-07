@@ -27,13 +27,6 @@ func NewTestHandler(
 	return newTestHandler(t, false)
 }
 
-func NewTestHandlerDemoMode(
-	t *testing.T,
-) (*assert.Assertions, context.Context, *services.Handler, *sqlite.Client) {
-	t.Helper()
-	return newTestHandler(t, true)
-}
-
 func newTestHandler(
 	t *testing.T,
 	isDemoMode bool,

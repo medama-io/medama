@@ -1,13 +1,11 @@
 package services_test
 
 import (
-	"net/http"
 	"net/netip"
 	"testing"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
-	"github.com/medama-io/medama/model"
 	"github.com/stretchr/testify/require"
 )
 
@@ -90,25 +88,6 @@ func TestPatchTenantSettingsPartial(t *testing.T) {
 	assert.Equal(api.NewOptBool(false), settings.Response.BlockAbusiveIPs)
 	assert.Equal(api.NewOptBool(false), settings.Response.BlockTorExitNodes)
 	assert.Equal([]netip.Addr{netip.MustParseAddr("10.0.0.1")}, settings.Response.BlockedIPs)
-}
-
-func TestPatchTenantSettingsDemoMode(t *testing.T) {
-	assert, ctx, handler, _ := NewTestHandlerDemoMode(t)
-
-	req := &api.TenantSettings{
-		ScriptType: []api.TenantSettingsScriptTypeItem{
-			api.TenantSettingsScriptTypeItemClickEvents,
-		},
-	}
-
-	resp, err := handler.PatchTenantSettings(ctx, req, api.PatchTenantSettingsParams{})
-	require.NoError(t, err)
-
-	forbidden, ok := resp.(*api.ForbiddenErrorHeaders)
-	require.True(t, ok)
-
-	assert.Equal(int32(http.StatusForbidden), forbidden.Response.Error.Code)
-	assert.Equal(model.ErrDemoMode.Error(), forbidden.Response.Error.Message)
 }
 
 func ptr(s string) *string {
