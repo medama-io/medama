@@ -13,6 +13,10 @@ type GetEventPingRes interface {
 	getEventPingRes()
 }
 
+type GetTenantSettingsRes interface {
+	getTenantSettingsRes()
+}
+
 type GetUserRes interface {
 	getUserRes()
 }
@@ -79,6 +83,10 @@ type GetWebsitesIDRes interface {
 
 type GetWebsitesRes interface {
 	getWebsitesRes()
+}
+
+type PatchTenantSettingsRes interface {
+	patchTenantSettingsRes()
 }
 
 type PatchUserRes interface {

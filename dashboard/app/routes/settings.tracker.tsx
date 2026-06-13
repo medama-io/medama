@@ -2,9 +2,8 @@ import { schemaResolver, type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { data as json, useSubmit } from 'react-router';
 import * as v from 'valibot';
-
+import { tenantSettingsGet, tenantSettingsUpdate } from '@/api/settings';
 import type { components } from '@/api/types';
-import { userGet, userUpdate } from '@/api/user';
 import { Anchor } from '@/components/Anchor';
 import { Checkbox } from '@/components/Checkbox';
 import { Flex } from '@/components/layout/Flex';
@@ -21,6 +20,9 @@ export const meta: Route.MetaFunction = () => {
 	return [{ title: 'Tracker Settings | Medama' }];
 };
 
+type TenantSettingsScriptType =
+	components['schemas']['TenantSettings']['script_type'];
+
 const trackerSchema = v.strictObject({
 	_setting: v.literal('tracker', 'Invalid setting type.'),
 	script_type: v.object({
@@ -34,16 +36,16 @@ const getTrackingScript = (hostname: string) =>
 	`<script defer src="https://${hostname}/script.js"></script>`;
 
 export const clientLoader = async () => {
-	const { data } = await userGet();
+	const { data } = await tenantSettingsGet();
 
 	if (!data) {
-		throw json('Failed to get user.', {
+		throw json('Failed to get tenant settings.', {
 			status: 500,
 		});
 	}
 
 	return {
-		user: data,
+		tenantSettings: data,
 	};
 };
 
@@ -55,13 +57,9 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 	let res: Response | undefined;
 	switch (type) {
 		case 'tracker': {
-			const update = await userUpdate({
+			const update = await tenantSettingsUpdate({
 				body: {
-					settings: {
-						script_type: scriptType?.split(
-							',',
-						) as components['schemas']['UserGet']['settings']['script_type'],
-					},
+					script_type: scriptType?.split(',') as TenantSettingsScriptType,
 				},
 				shouldThrow: false,
 			});
@@ -92,7 +90,7 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 };
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-	const { user } = loaderData;
+	const { tenantSettings } = loaderData;
 	const submit = useSubmit();
 
 	const form = useForm({
@@ -102,10 +100,10 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 			script_type: {
 				default: true,
 				'click-events': Boolean(
-					user.settings.script_type?.includes('click-events'),
+					tenantSettings.script_type?.includes('click-events'),
 				),
 				'page-events': Boolean(
-					user.settings.script_type?.includes('page-events'),
+					tenantSettings.script_type?.includes('page-events'),
 				),
 			},
 		},

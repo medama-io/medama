@@ -4,8 +4,7 @@ import { notifications } from '@mantine/notifications';
 import { useCallback, useState } from 'react';
 import { data as json, useSubmit } from 'react-router';
 import * as v from 'valibot';
-
-import { userGet, userUpdate } from '@/api/user';
+import { tenantSettingsGet, tenantSettingsUpdate } from '@/api/settings';
 import { Anchor } from '@/components/Anchor';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
@@ -30,19 +29,19 @@ const spamSchema = v.object({
 });
 
 export const clientLoader = async () => {
-	const { data } = await userGet();
+	const { data } = await tenantSettingsGet();
 
 	if (!data) {
-		throw json('Failed to get user.', {
+		throw json('Failed to get tenant settings.', {
 			status: 500,
 		});
 	}
 
 	return {
 		settings: {
-			blockAbusiveIPs: data.settings?.blockAbusiveIPs ?? false,
-			blockTorExitNodes: data.settings?.blockTorExitNodes ?? false,
-			blockedIPs: data.settings?.blockedIPs ?? [],
+			blockAbusiveIPs: data.blockAbusiveIPs ?? false,
+			blockTorExitNodes: data.blockTorExitNodes ?? false,
+			blockedIPs: data.blockedIPs ?? [],
 		},
 	};
 };
@@ -58,13 +57,11 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 				(ip) => ip.trim() !== '',
 			);
 
-			const update = await userUpdate({
+			const update = await tenantSettingsUpdate({
 				body: {
-					settings: {
-						blockAbusiveIPs: getBoolean(body, 'blockAbusiveIPs'),
-						blockTorExitNodes: getBoolean(body, 'blockTorExitNodes'),
-						blockedIPs: blockedIPs,
-					},
+					blockAbusiveIPs: getBoolean(body, 'blockAbusiveIPs'),
+					blockTorExitNodes: getBoolean(body, 'blockTorExitNodes'),
+					blockedIPs: blockedIPs,
 				},
 
 				shouldThrow: false,
@@ -125,7 +122,7 @@ export default function SpamPage({ loaderData }: Route.ComponentProps) {
 			form.insertListItem('blockedIPs', trimmedIP);
 			setNewIP('');
 
-			handleSubmit(currentValues);
+			handleSubmit(form.getValues());
 		}
 	}, [form, newIP, handleSubmit]);
 

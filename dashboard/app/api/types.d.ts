@@ -132,6 +132,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/tenant/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Tenant Settings
+         * @description Get a list of all tenant settings.
+         */
+        get: operations["get-tenant-settings"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Tenant Settings
+         * @description Partial update of tenant settings.
+         */
+        patch: operations["patch-tenant-settings"];
+        trace?: never;
+    };
     "/websites": {
         parameters: {
             query?: never;
@@ -558,13 +582,6 @@ export interface components {
              * @enum {string}
              */
             language?: "en";
-            script_type?: ("default" | "click-events" | "page-events")[];
-            /** @description Block known abusive IP addresses. */
-            blockAbusiveIPs?: boolean;
-            /** @description Block traffic from Tor exit nodes. */
-            blockTorExitNodes?: boolean;
-            /** @description List of manually blocked IP addresses. */
-            blockedIPs?: string[];
         };
         /**
          * UserGet
@@ -611,6 +628,19 @@ export interface components {
             /** Format: password */
             password?: string;
             settings?: components["schemas"]["UserSettings"];
+        };
+        /**
+         * TenantSettings
+         * @description Schema for tenant setting.
+         */
+        TenantSettings: {
+            script_type?: ("default" | "click-events" | "page-events")[];
+            /** @description Block known abusive IP addresses. */
+            blockAbusiveIPs?: boolean;
+            /** @description Block traffic from Tor exit nodes. */
+            blockTorExitNodes?: boolean;
+            /** @description List of manually blocked IP addresses. */
+            blockedIPs?: string[];
         };
         /**
          * WebsiteGet
@@ -1299,6 +1329,64 @@ export interface operations {
                 };
             };
             401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "get-tenant-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns a list of all tenant settings. */
+            200: {
+                headers: {
+                    "X-Api-Commit": components["headers"]["X-Api-Commit"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantSettings"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "patch-tenant-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie: {
+                /** @description Session token for authentication. */
+                _me_sess: components["parameters"]["SessionAuth"];
+            };
+        };
+        /** @description Tenant Settings to update. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TenantSettings"];
+            };
+        };
+        responses: {
+            /** @description Returns updated tenant settings. */
+            200: {
+                headers: {
+                    "X-Api-Commit": components["headers"]["X-Api-Commit"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantSettings"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
+            403: components["responses"]["ForbiddenError"];
             500: components["responses"]["InternalServerError"];
         };
     };

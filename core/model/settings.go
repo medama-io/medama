@@ -18,7 +18,9 @@ const (
 type UserSettings struct {
 	// Account
 	Language string `db:"language" json:"language"`
+}
 
+type TenantSettings struct {
 	// Tracker
 	ScriptType string `db:"script_type" json:"script_type"`
 
@@ -28,12 +30,16 @@ type UserSettings struct {
 	BlockedIPs        string `db:"blocked_ips"          json:"blocked_ips"`
 }
 
-type WebsiteSettings struct{}
-
-// NewSettings returns a new instance of Settings with default values.
-func NewDefaultSettings() *UserSettings {
+// NewDefaultUserSettings returns a new instance of UserSettings with default values.
+func NewDefaultUserSettings() *UserSettings {
 	return &UserSettings{
-		Language:          "en",
+		Language: "en",
+	}
+}
+
+// NewDefaultTenantSettings returns a new instance of Tenant settings with default values.
+func NewDefaultTenantSettings() *TenantSettings {
+	return &TenantSettings{
 		ScriptType:        "default",
 		BlockAbusiveIPs:   "true",
 		BlockTorExitNodes: "true",

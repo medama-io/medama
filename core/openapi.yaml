@@ -276,6 +276,64 @@ paths:
           $ref: "#/components/responses/UnauthorisedError"
         "500":
           $ref: "#/components/responses/InternalServerError"
+  /tenant/settings:
+    get:
+      tags:
+        - Settings
+      security:
+        - CookieAuth: []
+      summary: List Tenant Settings
+      description: Get a list of all tenant settings.
+      operationId: get-tenant-settings
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      responses:
+        "200":
+          description: Returns a list of all tenant settings.
+          headers:
+            X-Api-Commit:
+              $ref: "#/components/headers/X-Api-Commit"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantSettings"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    patch:
+      tags:
+        - Settings
+      security:
+        - CookieAuth: []
+      summary: Update Tenant Settings
+      description: Partial update of tenant settings.
+      operationId: patch-tenant-settings
+      parameters:
+        - $ref: "#/components/parameters/SessionAuth"
+      requestBody:
+        description: Tenant Settings to update.
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/TenantSettings"
+        required: true
+      responses:
+        "200":
+          description: Returns updated tenant settings.
+          headers:
+            X-Api-Commit:
+              $ref: "#/components/headers/X-Api-Commit"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantSettings"
+        "401":
+          $ref: "#/components/responses/UnauthorisedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /websites:
     get:
       tags:
@@ -1600,28 +1658,6 @@ components:
           type: string
           enum: [en]
           default: en
-        script_type:
-          type: array
-          items:
-            type: string
-            enum:
-              - default
-              - click-events
-              - page-events
-          uniqueItems: true
-        blockAbusiveIPs:
-          type: boolean
-          description: Block known abusive IP addresses.
-        blockTorExitNodes:
-          type: boolean
-          description: Block traffic from Tor exit nodes.
-        blockedIPs:
-          type: array
-          description: List of manually blocked IP addresses.
-          items:
-            type: string
-            format: ipv4
-          uniqueItems: true
     UserGet:
       type: object
       title: UserGet
@@ -1707,6 +1743,33 @@ components:
           format: password
         settings:
           $ref: "#/components/schemas/UserSettings"
+    TenantSettings:
+      type: object
+      title: TenantSettings
+      description: Schema for tenant setting.
+      properties:
+        script_type:
+          type: array
+          items:
+            type: string
+            enum:
+              - default
+              - click-events
+              - page-events
+          uniqueItems: true
+        blockAbusiveIPs:
+          type: boolean
+          description: Block known abusive IP addresses.
+        blockTorExitNodes:
+          type: boolean
+          description: Block traffic from Tor exit nodes.
+        blockedIPs:
+          type: array
+          description: List of manually blocked IP addresses.
+          items:
+            type: string
+            format: ipv4
+          uniqueItems: true
     WebsiteGet:
       type: object
       title: WebsiteGet

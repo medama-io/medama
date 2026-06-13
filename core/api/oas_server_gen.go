@@ -26,6 +26,12 @@ type Handler interface {
 	//
 	// GET /event/ping
 	GetEventPing(ctx context.Context, params GetEventPingParams) (GetEventPingRes, error)
+	// GetTenantSettings implements get-tenant-settings operation.
+	//
+	// Get a list of all tenant settings.
+	//
+	// GET /tenant/settings
+	GetTenantSettings(ctx context.Context, params GetTenantSettingsParams) (GetTenantSettingsRes, error)
 	// GetUser implements get-user operation.
 	//
 	// Retrieve the information of the user with the matching user ID.
@@ -129,6 +135,12 @@ type Handler interface {
 	//
 	// GET /websites/{hostname}
 	GetWebsitesID(ctx context.Context, params GetWebsitesIDParams) (GetWebsitesIDRes, error)
+	// PatchTenantSettings implements patch-tenant-settings operation.
+	//
+	// Partial update of tenant settings.
+	//
+	// PATCH /tenant/settings
+	PatchTenantSettings(ctx context.Context, req *TenantSettings, params PatchTenantSettingsParams) (PatchTenantSettingsRes, error)
 	// PatchUser implements patch-user operation.
 	//
 	// Update a user account's details.

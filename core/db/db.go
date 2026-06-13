@@ -7,16 +7,19 @@ import (
 	"github.com/medama-io/medama/model"
 )
 
+type UpdateTenantSettings struct {
+	ScriptType        *string
+	BlockAbusiveIPs   *string
+	BlockTorExitNodes *string
+	BlockedIPs        *string
+}
+
 // AppClient is the interface that groups all database operations related to
 // user or website management.
 type AppClient interface {
 	// Users
 	// CreateUser adds a new user to the database.
 	CreateUser(ctx context.Context, user *model.User) error
-	// GetSetting retrieves a user setting from the database.
-	GetSetting(ctx context.Context, key model.SettingsKey) (string, error)
-	// GetSettings retrieves all the user settings from the database.
-	GetSettings(ctx context.Context) (*model.UserSettings, error)
 	// GetUser retrieves a user from the database by id.
 	GetUser(ctx context.Context, id string) (*model.User, error)
 	// GetUserByUsername retrieves a user from the database by username.
@@ -25,10 +28,8 @@ type AppClient interface {
 	UpdateUserUsername(ctx context.Context, id string, username string) error
 	// UpdateUserPassword updates a user's password in the database.
 	UpdateUserPassword(ctx context.Context, id string, password string) error
-	// UpdateSetting updates a user setting in the database.
-	UpdateSetting(ctx context.Context, key model.SettingsKey, value string) error
-	// UpdateSettings updates a user's settings in the database.
-	UpdateSettings(ctx context.Context, id string, settings *model.UserSettings) error
+	// UpdateUserSettings updates a user's settings in the database.
+	UpdateUserSettings(ctx context.Context, id string, settings *model.UserSettings) error
 	// DeleteUser deletes a user from the database.
 	DeleteUser(ctx context.Context, id string) error
 
@@ -45,6 +46,12 @@ type AppClient interface {
 	GetWebsite(ctx context.Context, id string) (*model.Website, error)
 	// DeleteWebsite deletes a website from the database.
 	DeleteWebsite(ctx context.Context, id string) error
+
+	// Tenant settings
+	// GetTenantSettings returns current tenant settings from the database.
+	GetTenantSettings(ctx context.Context) (*model.TenantSettings, error)
+	// UpdateTenantSettings insert or updates tenant settings in the database.
+	UpdateTenantSettings(ctx context.Context, settings *UpdateTenantSettings) error
 }
 
 // AnalyticsClient is the interface that groups all database operations related

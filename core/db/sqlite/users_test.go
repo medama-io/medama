@@ -14,7 +14,7 @@ func TestCreateUser(t *testing.T) {
 		"test",
 		"username",
 		"password",
-		model.NewDefaultSettings(),
+		model.NewDefaultUserSettings(),
 		1,
 		2,
 	)

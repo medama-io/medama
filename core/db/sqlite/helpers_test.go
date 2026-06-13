@@ -66,7 +66,7 @@ func SetupDatabaseWithUsers(t *testing.T) (*assert.Assertions, context.Context, 
 			id,
 			usernames[i],
 			passwords[i],
-			model.NewDefaultSettings(),
+			model.NewDefaultUserSettings(),
 			1,
 			2,
 		)

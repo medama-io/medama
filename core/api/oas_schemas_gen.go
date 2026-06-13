@@ -911,6 +911,7 @@ func (*ForbiddenErrorHeaders) getWebsiteIDOsRes()         {}
 func (*ForbiddenErrorHeaders) getWebsiteIDPropertiesRes() {}
 func (*ForbiddenErrorHeaders) getWebsiteIDReferrersRes()  {}
 func (*ForbiddenErrorHeaders) getWebsiteIDSourcesRes()    {}
+func (*ForbiddenErrorHeaders) patchTenantSettingsRes()    {}
 func (*ForbiddenErrorHeaders) patchUserRes()              {}
 func (*ForbiddenErrorHeaders) patchWebsitesIDRes()        {}
 func (*ForbiddenErrorHeaders) postWebsitesRes()           {}
@@ -1127,6 +1128,7 @@ func (s *InternalServerErrorHeaders) SetResponse(val InternalServerError) {
 func (*InternalServerErrorHeaders) deleteUserRes()             {}
 func (*InternalServerErrorHeaders) deleteWebsitesIDRes()       {}
 func (*InternalServerErrorHeaders) getEventPingRes()           {}
+func (*InternalServerErrorHeaders) getTenantSettingsRes()      {}
 func (*InternalServerErrorHeaders) getUserRes()                {}
 func (*InternalServerErrorHeaders) getUserUsageRes()           {}
 func (*InternalServerErrorHeaders) getWebsiteIDBrowsersRes()   {}
@@ -1144,6 +1146,7 @@ func (*InternalServerErrorHeaders) getWebsiteIDSummaryRes()    {}
 func (*InternalServerErrorHeaders) getWebsiteIDTimeRes()       {}
 func (*InternalServerErrorHeaders) getWebsitesIDRes()          {}
 func (*InternalServerErrorHeaders) getWebsitesRes()            {}
+func (*InternalServerErrorHeaders) patchTenantSettingsRes()    {}
 func (*InternalServerErrorHeaders) patchUserRes()              {}
 func (*InternalServerErrorHeaders) patchWebsitesIDRes()        {}
 func (*InternalServerErrorHeaders) postAuthLoginRes()          {}
@@ -3208,6 +3211,135 @@ func (s *StatsUTMSourcesItem) SetDuration(val OptInt) {
 	s.Duration = val
 }
 
+// Schema for tenant setting.
+// Ref: #/components/schemas/TenantSettings
+type TenantSettings struct {
+	ScriptType []TenantSettingsScriptTypeItem `json:"script_type"`
+	// Block known abusive IP addresses.
+	BlockAbusiveIPs OptBool `json:"blockAbusiveIPs"`
+	// Block traffic from Tor exit nodes.
+	BlockTorExitNodes OptBool `json:"blockTorExitNodes"`
+	// List of manually blocked IP addresses.
+	BlockedIPs []netip.Addr `json:"blockedIPs"`
+}
+
+// GetScriptType returns the value of ScriptType.
+func (s *TenantSettings) GetScriptType() []TenantSettingsScriptTypeItem {
+	return s.ScriptType
+}
+
+// GetBlockAbusiveIPs returns the value of BlockAbusiveIPs.
+func (s *TenantSettings) GetBlockAbusiveIPs() OptBool {
+	return s.BlockAbusiveIPs
+}
+
+// GetBlockTorExitNodes returns the value of BlockTorExitNodes.
+func (s *TenantSettings) GetBlockTorExitNodes() OptBool {
+	return s.BlockTorExitNodes
+}
+
+// GetBlockedIPs returns the value of BlockedIPs.
+func (s *TenantSettings) GetBlockedIPs() []netip.Addr {
+	return s.BlockedIPs
+}
+
+// SetScriptType sets the value of ScriptType.
+func (s *TenantSettings) SetScriptType(val []TenantSettingsScriptTypeItem) {
+	s.ScriptType = val
+}
+
+// SetBlockAbusiveIPs sets the value of BlockAbusiveIPs.
+func (s *TenantSettings) SetBlockAbusiveIPs(val OptBool) {
+	s.BlockAbusiveIPs = val
+}
+
+// SetBlockTorExitNodes sets the value of BlockTorExitNodes.
+func (s *TenantSettings) SetBlockTorExitNodes(val OptBool) {
+	s.BlockTorExitNodes = val
+}
+
+// SetBlockedIPs sets the value of BlockedIPs.
+func (s *TenantSettings) SetBlockedIPs(val []netip.Addr) {
+	s.BlockedIPs = val
+}
+
+// TenantSettingsHeaders wraps TenantSettings with response headers.
+type TenantSettingsHeaders struct {
+	XAPICommit OptString
+	Response   TenantSettings
+}
+
+// GetXAPICommit returns the value of XAPICommit.
+func (s *TenantSettingsHeaders) GetXAPICommit() OptString {
+	return s.XAPICommit
+}
+
+// GetResponse returns the value of Response.
+func (s *TenantSettingsHeaders) GetResponse() TenantSettings {
+	return s.Response
+}
+
+// SetXAPICommit sets the value of XAPICommit.
+func (s *TenantSettingsHeaders) SetXAPICommit(val OptString) {
+	s.XAPICommit = val
+}
+
+// SetResponse sets the value of Response.
+func (s *TenantSettingsHeaders) SetResponse(val TenantSettings) {
+	s.Response = val
+}
+
+func (*TenantSettingsHeaders) getTenantSettingsRes()   {}
+func (*TenantSettingsHeaders) patchTenantSettingsRes() {}
+
+type TenantSettingsScriptTypeItem string
+
+const (
+	TenantSettingsScriptTypeItemDefault     TenantSettingsScriptTypeItem = "default"
+	TenantSettingsScriptTypeItemClickEvents TenantSettingsScriptTypeItem = "click-events"
+	TenantSettingsScriptTypeItemPageEvents  TenantSettingsScriptTypeItem = "page-events"
+)
+
+// AllValues returns all TenantSettingsScriptTypeItem values.
+func (TenantSettingsScriptTypeItem) AllValues() []TenantSettingsScriptTypeItem {
+	return []TenantSettingsScriptTypeItem{
+		TenantSettingsScriptTypeItemDefault,
+		TenantSettingsScriptTypeItemClickEvents,
+		TenantSettingsScriptTypeItemPageEvents,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s TenantSettingsScriptTypeItem) MarshalText() ([]byte, error) {
+	switch s {
+	case TenantSettingsScriptTypeItemDefault:
+		return []byte(s), nil
+	case TenantSettingsScriptTypeItemClickEvents:
+		return []byte(s), nil
+	case TenantSettingsScriptTypeItemPageEvents:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *TenantSettingsScriptTypeItem) UnmarshalText(data []byte) error {
+	switch TenantSettingsScriptTypeItem(data) {
+	case TenantSettingsScriptTypeItemDefault:
+		*s = TenantSettingsScriptTypeItemDefault
+		return nil
+	case TenantSettingsScriptTypeItemClickEvents:
+		*s = TenantSettingsScriptTypeItemClickEvents
+		return nil
+	case TenantSettingsScriptTypeItemPageEvents:
+		*s = TenantSettingsScriptTypeItemPageEvents
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 type UnauthorisedError struct {
 	Error UnauthorisedErrorError `json:"error"`
 }
@@ -3275,6 +3407,7 @@ func (s *UnauthorisedErrorHeaders) SetResponse(val UnauthorisedError) {
 
 func (*UnauthorisedErrorHeaders) deleteUserRes()             {}
 func (*UnauthorisedErrorHeaders) deleteWebsitesIDRes()       {}
+func (*UnauthorisedErrorHeaders) getTenantSettingsRes()      {}
 func (*UnauthorisedErrorHeaders) getUserRes()                {}
 func (*UnauthorisedErrorHeaders) getUserUsageRes()           {}
 func (*UnauthorisedErrorHeaders) getWebsiteIDBrowsersRes()   {}
@@ -3292,6 +3425,7 @@ func (*UnauthorisedErrorHeaders) getWebsiteIDSummaryRes()    {}
 func (*UnauthorisedErrorHeaders) getWebsiteIDTimeRes()       {}
 func (*UnauthorisedErrorHeaders) getWebsitesIDRes()          {}
 func (*UnauthorisedErrorHeaders) getWebsitesRes()            {}
+func (*UnauthorisedErrorHeaders) patchTenantSettingsRes()    {}
 func (*UnauthorisedErrorHeaders) patchUserRes()              {}
 func (*UnauthorisedErrorHeaders) patchWebsitesIDRes()        {}
 func (*UnauthorisedErrorHeaders) postAuthLoginRes()          {}
@@ -3417,14 +3551,7 @@ func (s *UserPatch) SetSettings(val OptUserSettings) {
 // Response body for getting user settings.
 // Ref: #/components/schemas/UserSettings
 type UserSettings struct {
-	Language   OptUserSettingsLanguage      `json:"language"`
-	ScriptType []UserSettingsScriptTypeItem `json:"script_type"`
-	// Block known abusive IP addresses.
-	BlockAbusiveIPs OptBool `json:"blockAbusiveIPs"`
-	// Block traffic from Tor exit nodes.
-	BlockTorExitNodes OptBool `json:"blockTorExitNodes"`
-	// List of manually blocked IP addresses.
-	BlockedIPs []netip.Addr `json:"blockedIPs"`
+	Language OptUserSettingsLanguage `json:"language"`
 }
 
 // GetLanguage returns the value of Language.
@@ -3432,49 +3559,9 @@ func (s *UserSettings) GetLanguage() OptUserSettingsLanguage {
 	return s.Language
 }
 
-// GetScriptType returns the value of ScriptType.
-func (s *UserSettings) GetScriptType() []UserSettingsScriptTypeItem {
-	return s.ScriptType
-}
-
-// GetBlockAbusiveIPs returns the value of BlockAbusiveIPs.
-func (s *UserSettings) GetBlockAbusiveIPs() OptBool {
-	return s.BlockAbusiveIPs
-}
-
-// GetBlockTorExitNodes returns the value of BlockTorExitNodes.
-func (s *UserSettings) GetBlockTorExitNodes() OptBool {
-	return s.BlockTorExitNodes
-}
-
-// GetBlockedIPs returns the value of BlockedIPs.
-func (s *UserSettings) GetBlockedIPs() []netip.Addr {
-	return s.BlockedIPs
-}
-
 // SetLanguage sets the value of Language.
 func (s *UserSettings) SetLanguage(val OptUserSettingsLanguage) {
 	s.Language = val
-}
-
-// SetScriptType sets the value of ScriptType.
-func (s *UserSettings) SetScriptType(val []UserSettingsScriptTypeItem) {
-	s.ScriptType = val
-}
-
-// SetBlockAbusiveIPs sets the value of BlockAbusiveIPs.
-func (s *UserSettings) SetBlockAbusiveIPs(val OptBool) {
-	s.BlockAbusiveIPs = val
-}
-
-// SetBlockTorExitNodes sets the value of BlockTorExitNodes.
-func (s *UserSettings) SetBlockTorExitNodes(val OptBool) {
-	s.BlockTorExitNodes = val
-}
-
-// SetBlockedIPs sets the value of BlockedIPs.
-func (s *UserSettings) SetBlockedIPs(val []netip.Addr) {
-	s.BlockedIPs = val
 }
 
 type UserSettingsLanguage string
@@ -3505,54 +3592,6 @@ func (s *UserSettingsLanguage) UnmarshalText(data []byte) error {
 	switch UserSettingsLanguage(data) {
 	case UserSettingsLanguageEn:
 		*s = UserSettingsLanguageEn
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-type UserSettingsScriptTypeItem string
-
-const (
-	UserSettingsScriptTypeItemDefault     UserSettingsScriptTypeItem = "default"
-	UserSettingsScriptTypeItemClickEvents UserSettingsScriptTypeItem = "click-events"
-	UserSettingsScriptTypeItemPageEvents  UserSettingsScriptTypeItem = "page-events"
-)
-
-// AllValues returns all UserSettingsScriptTypeItem values.
-func (UserSettingsScriptTypeItem) AllValues() []UserSettingsScriptTypeItem {
-	return []UserSettingsScriptTypeItem{
-		UserSettingsScriptTypeItemDefault,
-		UserSettingsScriptTypeItemClickEvents,
-		UserSettingsScriptTypeItemPageEvents,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s UserSettingsScriptTypeItem) MarshalText() ([]byte, error) {
-	switch s {
-	case UserSettingsScriptTypeItemDefault:
-		return []byte(s), nil
-	case UserSettingsScriptTypeItemClickEvents:
-		return []byte(s), nil
-	case UserSettingsScriptTypeItemPageEvents:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UserSettingsScriptTypeItem) UnmarshalText(data []byte) error {
-	switch UserSettingsScriptTypeItem(data) {
-	case UserSettingsScriptTypeItemDefault:
-		*s = UserSettingsScriptTypeItemDefault
-		return nil
-	case UserSettingsScriptTypeItemClickEvents:
-		*s = UserSettingsScriptTypeItemClickEvents
-		return nil
-	case UserSettingsScriptTypeItemPageEvents:
-		*s = UserSettingsScriptTypeItemPageEvents
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)

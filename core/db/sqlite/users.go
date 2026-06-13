@@ -84,7 +84,7 @@ func (c *Client) GetUser(ctx context.Context, id string) (*model.User, error) {
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
-		user.Settings = model.NewDefaultSettings()
+		user.Settings = model.NewDefaultUserSettings()
 
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
@@ -122,7 +122,7 @@ func (c *Client) GetUserByUsername(ctx context.Context, username string) (*model
 
 	// Parse the JSON settings
 	if settingsJSON != "" {
-		user.Settings = model.NewDefaultSettings()
+		user.Settings = model.NewDefaultUserSettings()
 
 		err = json.Unmarshal([]byte(settingsJSON), user.Settings)
 		if err != nil {
@@ -176,6 +176,33 @@ func (c *Client) UpdateUserPassword(ctx context.Context, id string, password str
 		}
 
 		return errors.Wrap(err, "db")
+	}
+
+	return nil
+}
+
+func (c *Client) UpdateUserSettings(
+	ctx context.Context,
+	id string,
+	settings *model.UserSettings,
+) error {
+	exec := `--sql
+	UPDATE users SET settings = :settings, date_updated = :date_updated WHERE id = :id`
+
+	serializedSettings, err := json.Marshal(settings)
+	if err != nil {
+		return errors.Wrap(err, "failed to serialize user settings")
+	}
+
+	paramMap := map[string]any{
+		"id":           id,
+		"settings":     serializedSettings,
+		dateUpdatedKey: time.Now().Unix(),
+	}
+
+	_, err = c.NamedExecContext(ctx, exec, paramMap)
+	if err != nil {
+		return errors.Wrap(err, "failed to persist user settings")
 	}
 
 	return nil

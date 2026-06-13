@@ -54,6 +54,7 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 	sqliteMigrations := []*Migration[sqlite.Client]{
 		{ID: 1, Name: "0001_sqlite_schema.go", Type: SQLite, Up: Up0001, Down: Down0001},
 		{ID: 6, Name: "0006_sqlite_settings.go", Type: SQLite, Up: Up0006, Down: Down0006},
+		{ID: 7, Name: "0007_sqlite_tenant_settings.go", Type: SQLite, Up: Up0007, Down: Down0007},
 	}
 
 	duckdbMigrations := []*Migration[duckdb.Client]{
@@ -193,7 +194,7 @@ func (s *Service) AutoMigrate(ctx context.Context) error {
 
 	dateCreated := time.Now().Unix()
 	dateUpdated := dateCreated
-	err = s.sqlite.CreateUser(ctx, model.NewUser(id, "admin", pwdHash, model.NewDefaultSettings(), dateCreated, dateUpdated))
+	err = s.sqlite.CreateUser(ctx, model.NewUser(id, "admin", pwdHash, model.NewDefaultUserSettings(), dateCreated, dateUpdated))
 	if err != nil {
 		return err
 	}
