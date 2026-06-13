@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1@sha256:87999aa3d42bdc6bea60565083ee17e86d1f3339802f543c0d03998580f9cb89
 
-ARG MANYLINUX_IMAGE=quay.io/pypa/manylinux_2_34_x86_64@sha256:42b9c13a7cb538e59c2faf75835e8f7dd3c7a764ed7546937b71e2cfec980d6e
+ARG MANYLINUX_IMAGE=quay.io/pypa/manylinux_2_34_x86_64@sha256:fab7c428345081656cfe4bd5dfa5228b8ce276f0da2c22b470a29134056398c3
 FROM ${MANYLINUX_IMAGE} AS build
 
 ARG VERSION=development
@@ -53,7 +53,7 @@ COPY . .
 RUN --mount=type=cache,target=${GOCACHE} mise run //core:release:docker
 
 # Build the final image
-FROM gcr.io/distroless/cc-debian12@sha256:aa0b7af67fa8211751ea6e00baa8373ba56cc1417ffc986ec9619bd0e1556b56
+FROM gcr.io/distroless/cc-debian12@sha256:d703b626ba455c4e6c6fbe5f36e6f427c85d51445598d564652a2f334179f96e
 
 LABEL org.opencontainers.image.source=https://github.com/medama-io/medama \
 	org.opencontainers.image.description="Cookie-free, privacy-focused website analytics." \
