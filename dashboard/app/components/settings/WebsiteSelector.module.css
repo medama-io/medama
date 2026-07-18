@@ -27,7 +27,7 @@
 	height: 100%;
 	min-width: 192px;
 
-	background-color: white;
+	background-color: var(--bg-light);
 	border: 1px solid var(--border-muted);
 	border-radius: 8px;
 
@@ -46,7 +46,7 @@
 	justify-content: flex-start;
 
 	color: var(--text-dark);
-	background-color: white;
+	background-color: var(--bg-light);
 
 	border: none;
 	border-radius: 8px;

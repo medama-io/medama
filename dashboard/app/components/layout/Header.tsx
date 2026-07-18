@@ -1,5 +1,6 @@
 import {
 	Burger,
+	Button,
 	Drawer,
 	type DrawerProps,
 	Flex,
@@ -7,6 +8,8 @@ import {
 	type MantineSize,
 	Stack,
 	Text,
+	useComputedColorScheme,
+	useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, useLocation, useRouteLoaderData } from 'react-router';
@@ -124,6 +127,21 @@ const MobileDrawer = ({
 	</Drawer.Root>
 );
 
+const ThemeToggleButton = () => {
+	const { setColorScheme } = useMantineColorScheme();
+	const computedColorScheme = useComputedColorScheme('light');
+	return (
+		<Button
+			onClick={() =>
+				setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')
+			}
+			title="Toogle theme"
+		>
+			{computedColorScheme === 'dark' && <span>Dark</span>}
+			{computedColorScheme !== 'dark' && <span>Light</span>}
+		</Button>
+	);
+};
 export const Header = () => {
 	const data = useRouteLoaderData<RootLoaderData>('root');
 	const isLoggedIn = Boolean(data?.isLoggedIn);
@@ -150,6 +168,7 @@ export const Header = () => {
 					</Group>
 				)}
 				<Group justify="flex-end">
+					<ThemeToggleButton></ThemeToggleButton>
 					<LoginButton isLoggedIn={isLoggedIn} visibleFrom="xs" />
 					<Burger
 						classNames={{ root: classes.burger }}

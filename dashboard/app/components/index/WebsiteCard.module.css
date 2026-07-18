@@ -1,5 +1,5 @@
 .card {
-	color: var(--text-grey);
+	color: var(--text-dark);
 	padding: 16px;
 	border: 1px solid var(--border-muted);
 	border-radius: 8px;
@@ -13,7 +13,7 @@
 	}
 
 	&:visited {
-		color: var(--text-grey);
+		color: var(--text-dark);
 	}
 
 	p {
