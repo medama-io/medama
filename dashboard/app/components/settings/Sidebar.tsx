@@ -7,6 +7,7 @@ const SETTINGS_MAP = [
 	{ label: 'Spam', path: 'spam' },
 	{ label: 'Tracker', path: 'tracker' },
 	{ label: 'Usage', path: 'usage' },
+	{ label: 'API', path: 'api' },
 ] as const;
 
 export const Sidebar = () => {

@@ -55,6 +55,7 @@ func NewMigrationsService(ctx context.Context, sqliteC *sqlite.Client, duckdbC *
 		{ID: 1, Name: "0001_sqlite_schema.go", Type: SQLite, Up: Up0001, Down: Down0001},
 		{ID: 6, Name: "0006_sqlite_settings.go", Type: SQLite, Up: Up0006, Down: Down0006},
 		{ID: 7, Name: "0007_sqlite_tenant_settings.go", Type: SQLite, Up: Up0007, Down: Down0007},
+		{ID: 8, Name: "0008_sqlite_api_keys.go", Type: SQLite, Up: Up0008, Down: Down0008},
 	}
 
 	duckdbMigrations := []*Migration[duckdb.Client]{

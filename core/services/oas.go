@@ -33,6 +33,7 @@ type RuntimeConfig struct {
 
 type Handler struct {
 	auth        *util.AuthService
+	apiKeys     *util.ApiKeysService
 	db          *sqlite.Client
 	analyticsDB *duckdb.Client
 
@@ -83,8 +84,14 @@ func NewService(
 		return nil, fmt.Errorf("failed to create runtime config: %w", err)
 	}
 
+	apiKeys, err := util.NewApiKeysService(sqlite)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create api keys service: %w", err)
+	}
+
 	return &Handler{
 		auth:               auth,
+		apiKeys:            apiKeys,
 		db:                 sqlite,
 		analyticsDB:        duckdb,
 		useragent:          useragent.NewParser(),

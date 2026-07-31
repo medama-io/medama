@@ -30,6 +30,31 @@ func TestCreateUser(t *testing.T) {
 	assert.Equal("en", user.Settings.Language)
 	assert.Equal(int64(1), user.DateCreated)
 	assert.Equal(int64(2), user.DateUpdated)
+	assert.Nil(user.ApiKey)
+}
+
+func TestCreateUserWithApiKey(t *testing.T) {
+	assert, ctx, client := SetupDatabase(t)
+	apiKey := "some_api_key"
+
+	userCreate := model.NewUser(
+		"test",
+		"username",
+		"password",
+		model.NewDefaultUserSettings(),
+		1,
+		2,
+	)
+	userCreate.ApiKey = &apiKey
+
+	err := client.CreateUser(ctx, userCreate)
+	require.NoError(t, err)
+
+	user, err := client.GetUser(ctx, "test")
+	require.NoError(t, err)
+	assert.NotNil(user)
+	assert.NotNil(user.ApiKey)
+	assert.Equal(*user.ApiKey, apiKey)
 }
 
 func TestGetUser(t *testing.T) {

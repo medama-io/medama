@@ -112,6 +112,34 @@ export interface paths {
         patch: operations["patch-user"];
         trace?: never;
     };
+    "/user/api-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User API Key
+         * @description Get current user configured API key.
+         */
+        get: operations["get-user-api-key"];
+        put?: never;
+        /**
+         * Regenerate User API Key
+         * @description Regenerate current user API key to a random string.
+         */
+        post: operations["regenerate-user-api-key"];
+        /**
+         * Delete User API Key
+         * @description Delete current user API key.
+         */
+        delete: operations["delete-user-api-key"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/user/usage": {
         parameters: {
             query?: never;
@@ -596,6 +624,13 @@ export interface components {
             dateUpdated: number;
         };
         /**
+         * UserApiKeyGet
+         * @description Response body for user API key.
+         */
+        UserApiKey: {
+            api_key?: string;
+        };
+        /**
          * UserUsageGet
          * @description Response body for getting CPU, memory and disk usage of the server.
          */
@@ -1052,6 +1087,8 @@ export interface components {
     parameters: {
         /** @description Session token for authentication. */
         SessionAuth: string;
+        /** @description Key for accessing instance using API calls. */
+        ApiKey: string;
         /** @description Hostname for the website. */
         Hostname: string;
         /** @description Return a summary of the stats. */
@@ -1132,9 +1169,9 @@ export interface operations {
             query?: never;
             header?: never;
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1219,11 +1256,14 @@ export interface operations {
     "get-user": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1247,11 +1287,14 @@ export interface operations {
     "delete-user": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1274,11 +1317,14 @@ export interface operations {
     "patch-user": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         /** @description User details to update. */
@@ -1306,14 +1352,103 @@ export interface operations {
             500: components["responses"]["InternalServerError"];
         };
     };
+    "get-user-api-key": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
+            path?: never;
+            cookie?: {
+                /** @description Session token for authentication. */
+                _me_sess?: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    "X-Api-Commit": components["headers"]["X-Api-Commit"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserApiKey"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "regenerate-user-api-key": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
+            path?: never;
+            cookie?: {
+                /** @description Session token for authentication. */
+                _me_sess?: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    "X-Api-Commit": components["headers"]["X-Api-Commit"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserApiKey"];
+                };
+            };
+            401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    "delete-user-api-key": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
+            path?: never;
+            cookie?: {
+                /** @description Session token for authentication. */
+                _me_sess?: components["parameters"]["SessionAuth"];
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success No Content */
+            204: {
+                headers: {
+                    "X-Api-Commit": components["headers"]["X-Api-Commit"];
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorisedError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
     "get-user-usage": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1335,11 +1470,14 @@ export interface operations {
     "get-tenant-settings": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1361,11 +1499,14 @@ export interface operations {
     "patch-tenant-settings": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         /** @description Tenant Settings to update. */
@@ -1396,11 +1537,14 @@ export interface operations {
                 /** @description Return a summary of the stats. */
                 summary?: components["parameters"]["Summary"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path?: never;
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1454,14 +1598,17 @@ export interface operations {
     "get-websites-id": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1485,14 +1632,17 @@ export interface operations {
     "delete-websites-id": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1515,14 +1665,17 @@ export interface operations {
     "patch-websites-id": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         /** @description Website details to update. */
@@ -1585,14 +1738,17 @@ export interface operations {
                 /** @description Value of the property. */
                 prop_value?: components["parameters"]["PropertyValue"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1651,14 +1807,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1717,14 +1876,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1785,14 +1947,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1852,14 +2017,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1919,14 +2087,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -1986,14 +2157,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -2053,14 +2227,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -2120,14 +2297,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -2187,14 +2367,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -2254,14 +2437,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -2323,14 +2509,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;
@@ -2388,14 +2577,17 @@ export interface operations {
                 /** @description Offset the results paired with the limit parameter. */
                 offset?: components["parameters"]["Offset"];
             };
-            header?: never;
+            header?: {
+                /** @description Key for accessing instance using API calls. */
+                "x-api-key"?: components["parameters"]["ApiKey"];
+            };
             path: {
                 /** @description Hostname for the website. */
                 hostname: components["parameters"]["Hostname"];
             };
-            cookie: {
+            cookie?: {
                 /** @description Session token for authentication. */
-                _me_sess: components["parameters"]["SessionAuth"];
+                _me_sess?: components["parameters"]["SessionAuth"];
             };
         };
         requestBody?: never;

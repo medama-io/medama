@@ -13,6 +13,9 @@ import (
 
 // SecurityHandler is handler for security parameters.
 type SecurityHandler interface {
+	// HandleApiKey handles ApiKey security.
+	// Key for accessing instance using API calls.
+	HandleApiKey(ctx context.Context, operationName OperationName, t ApiKey) (context.Context, error)
 	// HandleCookieAuth handles CookieAuth security.
 	// Session token for authentication.
 	HandleCookieAuth(ctx context.Context, operationName OperationName, t CookieAuth) (context.Context, error)
@@ -33,12 +36,14 @@ func findAuthorization(h http.Header, prefix string) (string, bool) {
 	return "", false
 }
 
-// operationRolesCookieAuth is a private map storing roles per operation.
-var operationRolesCookieAuth = map[string][]string{
+// operationRolesApiKey is a private map storing roles per operation.
+var operationRolesApiKey = map[string][]string{
 	DeleteUserOperation:             []string{},
+	DeleteUserAPIKeyOperation:       []string{},
 	DeleteWebsitesIDOperation:       []string{},
 	GetTenantSettingsOperation:      []string{},
 	GetUserOperation:                []string{},
+	GetUserAPIKeyOperation:          []string{},
 	GetUserUsageOperation:           []string{},
 	GetWebsiteIDBrowsersOperation:   []string{},
 	GetWebsiteIDCampaignsOperation:  []string{},
@@ -59,6 +64,59 @@ var operationRolesCookieAuth = map[string][]string{
 	PatchUserOperation:              []string{},
 	PatchWebsitesIDOperation:        []string{},
 	PostWebsitesOperation:           []string{},
+	RegenerateUserAPIKeyOperation:   []string{},
+}
+
+// GetRolesForApiKey returns the required roles for the given operation.
+//
+// This is useful for authorization scenarios where you need to know which roles
+// are required for an operation.
+//
+// Example:
+//
+//	requiredRoles := GetRolesForApiKey(AddPetOperation)
+//
+// Returns nil if the operation has no role requirements or if the operation is unknown.
+func GetRolesForApiKey(operation string) []string {
+	roles, ok := operationRolesApiKey[operation]
+	if !ok {
+		return nil
+	}
+	// Return a copy to prevent external modification
+	result := make([]string, len(roles))
+	copy(result, roles)
+	return result
+}
+
+// operationRolesCookieAuth is a private map storing roles per operation.
+var operationRolesCookieAuth = map[string][]string{
+	DeleteUserOperation:             []string{},
+	DeleteUserAPIKeyOperation:       []string{},
+	DeleteWebsitesIDOperation:       []string{},
+	GetTenantSettingsOperation:      []string{},
+	GetUserOperation:                []string{},
+	GetUserAPIKeyOperation:          []string{},
+	GetUserUsageOperation:           []string{},
+	GetWebsiteIDBrowsersOperation:   []string{},
+	GetWebsiteIDCampaignsOperation:  []string{},
+	GetWebsiteIDCountryOperation:    []string{},
+	GetWebsiteIDDeviceOperation:     []string{},
+	GetWebsiteIDLanguageOperation:   []string{},
+	GetWebsiteIDMediumsOperation:    []string{},
+	GetWebsiteIDOsOperation:         []string{},
+	GetWebsiteIDPagesOperation:      []string{},
+	GetWebsiteIDPropertiesOperation: []string{},
+	GetWebsiteIDReferrersOperation:  []string{},
+	GetWebsiteIDSourcesOperation:    []string{},
+	GetWebsiteIDSummaryOperation:    []string{},
+	GetWebsiteIDTimeOperation:       []string{},
+	GetWebsitesOperation:            []string{},
+	GetWebsitesIDOperation:          []string{},
+	PatchTenantSettingsOperation:    []string{},
+	PatchUserOperation:              []string{},
+	PatchWebsitesIDOperation:        []string{},
+	PostWebsitesOperation:           []string{},
+	RegenerateUserAPIKeyOperation:   []string{},
 }
 
 // GetRolesForCookieAuth returns the required roles for the given operation.
@@ -80,6 +138,24 @@ func GetRolesForCookieAuth(operation string) []string {
 	result := make([]string, len(roles))
 	copy(result, roles)
 	return result
+}
+
+func (s *Server) securityApiKey(ctx context.Context, operationName OperationName, req *http.Request) (context.Context, bool, error) {
+	var t ApiKey
+	const parameterName = "x-api-key"
+	value := req.Header.Get(parameterName)
+	if value == "" {
+		return ctx, false, nil
+	}
+	t.APIKey = value
+	t.Roles = operationRolesApiKey[operationName]
+	rctx, err := s.sec.HandleApiKey(ctx, operationName, t)
+	if errors.Is(err, ogenerrors.ErrSkipServerSecurity) {
+		return nil, false, nil
+	} else if err != nil {
+		return nil, false, err
+	}
+	return rctx, true, err
 }
 
 func (s *Server) securityCookieAuth(ctx context.Context, operationName OperationName, req *http.Request) (context.Context, bool, error) {

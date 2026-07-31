@@ -15,6 +15,10 @@ func (h *Handler) GetWebsiteIDProperties(
 ) (api.GetWebsiteIDPropertiesRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {

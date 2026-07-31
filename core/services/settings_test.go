@@ -1,17 +1,20 @@
 package services_test
 
 import (
+	"context"
 	"net/netip"
 	"testing"
 
 	"github.com/medama-io/medama/api"
 	"github.com/medama-io/medama/db"
 	"github.com/medama-io/medama/metest"
+	"github.com/medama-io/medama/model"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGetTenantSettings(t *testing.T) {
 	assert, ctx, handler, _ := metest.NewTestHandler(t)
+	ctx = context.WithValue(ctx, model.ContextKeyUserID, "userID")
 
 	resp, err := handler.GetTenantSettings(ctx, api.GetTenantSettingsParams{})
 	require.NoError(t, err)
@@ -30,6 +33,7 @@ func TestGetTenantSettings(t *testing.T) {
 
 func TestPatchTenantSettings(t *testing.T) {
 	assert, ctx, handler, _ := metest.NewTestHandler(t)
+	ctx = context.WithValue(ctx, model.ContextKeyUserID, "userID")
 
 	req := &api.TenantSettings{
 		ScriptType: []api.TenantSettingsScriptTypeItem{
@@ -61,6 +65,7 @@ func TestPatchTenantSettings(t *testing.T) {
 
 func TestPatchTenantSettingsPartial(t *testing.T) {
 	assert, ctx, handler, sqliteClient := metest.NewTestHandler(t)
+	ctx = context.WithValue(ctx, model.ContextKeyUserID, "userID")
 
 	err := sqliteClient.UpdateTenantSettings(ctx, &db.UpdateTenantSettings{
 		ScriptType:        ptr("click-events"),

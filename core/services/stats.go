@@ -16,6 +16,10 @@ func (h *Handler) GetWebsiteIDSummary(
 ) (api.GetWebsiteIDSummaryRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
@@ -105,6 +109,10 @@ func (h *Handler) GetWebsiteIDPages(
 ) (api.GetWebsiteIDPagesRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists.
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
@@ -177,6 +185,10 @@ func (h *Handler) GetWebsiteIDTime(
 ) (api.GetWebsiteIDTimeRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
@@ -247,6 +259,10 @@ func (h *Handler) GetWebsiteIDReferrers(
 	params api.GetWebsiteIDReferrersParams,
 ) (api.GetWebsiteIDReferrersRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
+
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -322,6 +338,10 @@ func (h *Handler) GetWebsiteIDSources(
 ) (api.GetWebsiteIDSourcesRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
@@ -386,6 +406,10 @@ func (h *Handler) GetWebsiteIDMediums(
 	params api.GetWebsiteIDMediumsParams,
 ) (api.GetWebsiteIDMediumsRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
+
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -456,6 +480,10 @@ func (h *Handler) GetWebsiteIDCampaigns(
 ) (api.GetWebsiteIDCampaignsRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
@@ -524,6 +552,10 @@ func (h *Handler) GetWebsiteIDBrowsers(
 	params api.GetWebsiteIDBrowsersParams,
 ) (api.GetWebsiteIDBrowsersRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
+
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -594,6 +626,10 @@ func (h *Handler) GetWebsiteIDOs(
 ) (api.GetWebsiteIDOsRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
@@ -663,6 +699,10 @@ func (h *Handler) GetWebsiteIDDevice(
 ) (api.GetWebsiteIDDeviceRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
 
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
 	if !exists {
@@ -731,6 +771,10 @@ func (h *Handler) GetWebsiteIDLanguage(
 	params api.GetWebsiteIDLanguageParams,
 ) (api.GetWebsiteIDLanguageRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
+
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)
@@ -804,6 +848,10 @@ func (h *Handler) GetWebsiteIDCountry(
 	params api.GetWebsiteIDCountryParams,
 ) (api.GetWebsiteIDCountryRes, error) {
 	log := logger.Get().With().Str("hostname", params.Hostname).Logger()
+
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
 
 	// Check if website exists
 	exists := h.hostnames.Has(params.Hostname)

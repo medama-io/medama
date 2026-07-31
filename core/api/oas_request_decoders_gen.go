@@ -277,7 +277,7 @@ func (s *Server) decodePostAuthLoginRequest(r *http.Request) (
 		return req, rawBody, close, errors.Wrap(err, "parse media type")
 	}
 	switch {
-    case ct == "application/json", ct == "text/plain":
+	case ct == "application/json":
 		if r.ContentLength == 0 {
 			return req, rawBody, close, validate.ErrBodyRequired
 		}
@@ -356,7 +356,7 @@ func (s *Server) decodePostEventHitRequest(r *http.Request) (
 		return req, rawBody, close, errors.Wrap(err, "parse media type")
 	}
 	switch {
-	case ct == "application/json":
+	case ct == "application/json", ct == "text/plain":
 		if r.ContentLength == 0 {
 			return req, rawBody, close, validate.ErrBodyRequired
 		}

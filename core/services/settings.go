@@ -17,6 +17,10 @@ func (h *Handler) GetTenantSettings(
 	ctx context.Context,
 	_params api.GetTenantSettingsParams,
 ) (api.GetTenantSettingsRes, error) {
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	settings, err := h.db.GetTenantSettings(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get tenant settings")
@@ -36,6 +40,11 @@ func (h *Handler) PatchTenantSettings(
 	_params api.PatchTenantSettingsParams,
 ) (api.PatchTenantSettingsRes, error) {
 	log := logger.Get()
+
+	if _, ok := ctx.Value(model.ContextKeyUserID).(string); !ok {
+		return ErrUnauthorised(model.ErrSessionNotFound), nil
+	}
+
 	if h.auth.IsDemoMode {
 		log.Debug().Msg("patch user rejected in demo mode")
 		return ErrForbidden(model.ErrDemoMode), nil

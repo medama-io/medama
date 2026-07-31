@@ -5888,6 +5888,69 @@ func (s *UnauthorisedErrorError) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *UserApiKey) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *UserApiKey) encodeFields(e *jx.Encoder) {
+	{
+		if s.APIKey.Set {
+			e.FieldStart("api_key")
+			s.APIKey.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfUserApiKey = [1]string{
+	0: "api_key",
+}
+
+// Decode decodes UserApiKey from json.
+func (s *UserApiKey) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode UserApiKey to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "api_key":
+			if err := func() error {
+				s.APIKey.Reset()
+				if err := s.APIKey.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"api_key\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode UserApiKey")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *UserApiKey) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *UserApiKey) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *UserGet) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)

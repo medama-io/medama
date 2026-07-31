@@ -49,7 +49,7 @@ func (h *Handler) PostAuthLogout(
 	ctx context.Context,
 	params api.PostAuthLogoutParams,
 ) (api.PostAuthLogoutRes, error) {
-	h.auth.RevokeSession(ctx, params.MeSess)
+	h.auth.RevokeSession(ctx, params.MeSess.Value)
 
 	// Expire cookie.
 	cookie := &http.Cookie{

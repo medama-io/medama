@@ -1,0 +1,8 @@
+.button--danger {
+	background-color: var(--bg-red-danger);
+	border-color: var(--bg-red-danger);
+
+	&:hover {
+		background-color: var(--bg-red-danger-dark);
+	}
+}

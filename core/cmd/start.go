@@ -178,6 +178,12 @@ func (s *StartCommand) Run(ctx context.Context) error {
 		return errors.Wrap(err, "failed to create auth service")
 	}
 
+	// Setup api keys service
+	apiKeys, err := util.NewApiKeysService(sqlite)
+	if err != nil {
+		return errors.Wrap(err, "failed to create api keys service")
+	}
+
 	// Setup handlers
 	service, err := services.NewService(ctx, auth, sqlite, duckdb, s.Server.Commit)
 	if err != nil {
@@ -191,7 +197,7 @@ func (s *StartCommand) Run(ctx context.Context) error {
 	}
 
 	apiHandler, err := api.NewServer(service,
-		middlewares.NewAuthHandler(auth),
+		middlewares.NewAuthHandler(auth, apiKeys),
 		api.WithMiddleware(mw...),
 		api.WithErrorHandler(middlewares.ErrorHandler),
 		api.WithNotFound(middlewares.NotFound()),

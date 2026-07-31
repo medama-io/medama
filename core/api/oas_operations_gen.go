@@ -7,10 +7,12 @@ type OperationName = string
 
 const (
 	DeleteUserOperation             OperationName = "DeleteUser"
+	DeleteUserAPIKeyOperation       OperationName = "DeleteUserAPIKey"
 	DeleteWebsitesIDOperation       OperationName = "DeleteWebsitesID"
 	GetEventPingOperation           OperationName = "GetEventPing"
 	GetTenantSettingsOperation      OperationName = "GetTenantSettings"
 	GetUserOperation                OperationName = "GetUser"
+	GetUserAPIKeyOperation          OperationName = "GetUserAPIKey"
 	GetUserUsageOperation           OperationName = "GetUserUsage"
 	GetWebsiteIDBrowsersOperation   OperationName = "GetWebsiteIDBrowsers"
 	GetWebsiteIDCampaignsOperation  OperationName = "GetWebsiteIDCampaigns"
@@ -34,4 +36,5 @@ const (
 	PostAuthLogoutOperation         OperationName = "PostAuthLogout"
 	PostEventHitOperation           OperationName = "PostEventHit"
 	PostWebsitesOperation           OperationName = "PostWebsites"
+	RegenerateUserAPIKeyOperation   OperationName = "RegenerateUserAPIKey"
 )

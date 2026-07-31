@@ -38,6 +38,12 @@ export interface DataResponseArray<
 	res: Response;
 }
 
+export interface ApiError {
+	init?: {
+		status?: number;
+	};
+}
+
 export type ClientOptions<
 	Body extends ComponentSchema | undefined = ComponentSchema,
 > = Partial<{

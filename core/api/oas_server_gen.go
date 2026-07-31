@@ -14,6 +14,12 @@ type Handler interface {
 	//
 	// DELETE /user
 	DeleteUser(ctx context.Context, params DeleteUserParams) (DeleteUserRes, error)
+	// DeleteUserAPIKey implements delete-user-api-key operation.
+	//
+	// Delete current user API key.
+	//
+	// DELETE /user/api-key
+	DeleteUserAPIKey(ctx context.Context, params DeleteUserAPIKeyParams) (DeleteUserAPIKeyRes, error)
 	// DeleteWebsitesID implements delete-websites-id operation.
 	//
 	// Delete a website.
@@ -38,6 +44,12 @@ type Handler interface {
 	//
 	// GET /user
 	GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error)
+	// GetUserAPIKey implements get-user-api-key operation.
+	//
+	// Get current user configured API key.
+	//
+	// GET /user/api-key
+	GetUserAPIKey(ctx context.Context, params GetUserAPIKeyParams) (GetUserAPIKeyRes, error)
 	// GetUserUsage implements get-user-usage operation.
 	//
 	// Get the current CPU, memory and disk usage of the server.
@@ -177,6 +189,12 @@ type Handler interface {
 	//
 	// POST /websites
 	PostWebsites(ctx context.Context, req *WebsiteCreate) (PostWebsitesRes, error)
+	// RegenerateUserAPIKey implements regenerate-user-api-key operation.
+	//
+	// Regenerate current user API key to a random string.
+	//
+	// POST /user/api-key
+	RegenerateUserAPIKey(ctx context.Context, params RegenerateUserAPIKeyParams) (RegenerateUserAPIKeyRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and
