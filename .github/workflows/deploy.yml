@@ -23,7 +23,7 @@ jobs:
         run: sleep 45s
         shell: bash
 
-      - uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4
+      - uses: jdx/mise-action@7a4e45a543138629540c9a1616d08632b893e492 # v5
         with:
           experimental: true
           install: true
